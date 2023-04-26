@@ -133,6 +133,7 @@ namespace Player {
 	std::string command_line;
 	int speed_modifier = 3;
 	int speed_modifier_plus = 10;
+	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
 #ifdef EMSCRIPTEN
@@ -179,7 +180,11 @@ void Player::Init(std::vector<std::string> args) {
 	Output::Debug("CLI: {}", command_line);
 
 	Game_Clock::logClockInfo();
-	Rand::SeedRandomNumberGenerator(time(NULL));
+	if (rng_seed < 0) {
+		Rand::SeedRandomNumberGenerator(time(NULL));
+	} else {
+		Rand::SeedRandomNumberGenerator(rng_seed);
+	}
 
 	Main_Data::Init();
 
@@ -563,8 +568,8 @@ Game_Config Player::ParseCommandLine() {
 			// overwrite start map by filename
 		}*/
 		if (cp.ParseNext(arg, 1, "--seed")) {
-			if (arg.ParseValue(0, li_value)) {
-				Rand::SeedRandomNumberGenerator(li_value);
+			if (arg.ParseValue(0, li_value) && li_value > 0) {
+				rng_seed = li_value;
 			}
 			continue;
 		}

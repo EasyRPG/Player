@@ -1,6 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
+#include "output.h"
+
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
 #endif
@@ -14,5 +16,8 @@ int main(int argc, char** argv) {
 		EP_TEST_PATH, EP_NATIVE_TEST_PATH
 	);
 #endif
+
+	Output::SetLogLevel(LogLevel::Error);
+
 	return doctest::Context(argc, argv).run();
 }

@@ -62,8 +62,6 @@ TEST_CASE("Variable names") {
 	CHECK(args[0] == "4");
 	CHECK(args[1] == "4");
 	CHECK(args[2] == "100");
-
-	Output::SetLogLevel(LogLevel::Error);
 }
 
 TEST_CASE("Variable names with junk") {

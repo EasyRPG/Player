@@ -245,7 +245,7 @@ protected:
 	bool CommandKeyInputProc(lcf::rpg::EventCommand const& com);
 	bool CommandChangeMapTileset(lcf::rpg::EventCommand const& com);
 	bool CommandChangePBG(lcf::rpg::EventCommand const& com);
-	bool CommandChangeEncounterRate(lcf::rpg::EventCommand const& com);
+	bool CommandChangeEncounterSteps(lcf::rpg::EventCommand const& com);
 	bool CommandTileSubstitution(lcf::rpg::EventCommand const& com);
 	bool CommandTeleportTargets(lcf::rpg::EventCommand const& com);
 	bool CommandChangeTeleportAccess(lcf::rpg::EventCommand const& com);
