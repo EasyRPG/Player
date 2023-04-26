@@ -921,8 +921,6 @@ void Sdl2Ui::ProcessControllerAxisEvent(SDL_Event &evnt) {
 
 void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 #if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-	SDL_TouchID touchid;
-
 	int xw = viewport.w;
 	int yh = viewport.h;
 
