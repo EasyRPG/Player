@@ -22,12 +22,18 @@
 #include "filefinder.h"
 #include "game_battle.h"
 #include "input.h"
+#include "options.h"
 #include "player.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
 #include "output.h"
-#include "logo.h"
+#include "generated/logo.h"
+#include "generated/logo2.h"
 #include "utils.h"
+#include "rand.h"
+#include "text.h"
+#include "version.h"
+#include <ctime>
 
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
@@ -36,8 +42,18 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
-		logo.reset(new Sprite());
+		std::time_t t = std::time(nullptr);
+		std::tm* tm = std::localtime(&t);
+
+		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
+			logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
+		} else {
+			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+		}
+
+		DrawText(false);
+
+		logo = std::make_unique<Sprite>();
 		logo->SetBitmap(logo_img);
 		logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
 		logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
@@ -82,6 +98,11 @@ void Scene_Logo::vUpdate() {
 
 	++frame_counter;
 
+	if (Input::IsPressed(Input::SHIFT)) {
+		DrawText(true);
+		--frame_counter;
+	}
+
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
 		frame_counter == 60 ||
@@ -113,6 +134,22 @@ void Scene_Logo::vUpdate() {
 
 void Scene_Logo::DrawBackground(Bitmap& dst) {
 	dst.Clear();
+}
+
+void Scene_Logo::DrawText(bool verbose) {
+	Rect text_rect = {17, 215, 320 - 32, 16};
+	Color text_color = {185, 199, 173, 255};
+	Color shadow_color = {69, 69, 69, 255};
+	logo_img->ClearRect(text_rect);
+
+	for (auto& color: {shadow_color, text_color}) {
+		logo_img->TextDraw(text_rect, color, "v" + Version::GetVersionString(verbose, verbose), Text::AlignLeft);
+		if (!verbose) {
+			logo_img->TextDraw(text_rect, color, WEBSITE_ADDRESS, Text::AlignRight);
+		}
+		text_rect.x--;
+		text_rect.y--;
+	}
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {

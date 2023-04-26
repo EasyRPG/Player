@@ -82,6 +82,8 @@ Available options:
 EasyRPG Player is free software available under the GPLv3 license. See the file
 [COPYING] for license conditions. For Author information see [AUTHORS document].
 
+EasyRPG [Logo] and [Logo2] are licensed under the CC-BY-SA 4.0 license.
+
 
 ### 3rd party software
 
@@ -114,6 +116,8 @@ EasyRPG Player makes use of the following 3rd party software:
 [#easyrpg at irc.libera.chat]: https://kiwiirc.com/nextclient/#ircs://irc.libera.chat/#easyrpg?nick=rpgguest??
 [COPYING]: COPYING
 [AUTHORS document]: docs/AUTHORS.md
+[Logo]: resources/logo.png
+[Logo2]: resources/logo2.png
 [FMMidi]: http://unhaut.epizy.com/fmmidi
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson

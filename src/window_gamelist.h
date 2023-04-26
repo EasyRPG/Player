@@ -47,7 +47,7 @@ public:
 	 */
 	void DrawItem(int index);
 
-	void DrawErrorText();
+	void DrawErrorText(bool show_dotdot);
 
 	/**
 	 * @return true if at least one entry is in the directory

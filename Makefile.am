@@ -48,9 +48,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/bitmap.h \
 	src/bitmapfont.h \
 	src/bitmapfont_glyph.h \
-	src/bitmapfont_rmg2000.h \
-	src/bitmapfont_ttyp0.h \
-	src/bitmapfont_wqy.h \
 	src/bitmap_hslrgb.h \
 	src/cache.cpp \
 	src/cache.h \
@@ -182,6 +179,13 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_vehicle.h \
 	src/game_windows.cpp \
 	src/game_windows.h \
+	src/generated/bitmapfont_rmg2000.h \
+	src/generated/bitmapfont_ttyp0.h \
+	src/generated/bitmapfont_wqy.h \
+	src/generated/logo.h \
+	src/generated/logo2.h \
+	src/generated/shinonome_gothic.h \
+	src/generated/shinonome_mincho.h \
 	src/graphics.cpp \
 	src/graphics.h \
 	src/hslrgb.cpp \
@@ -202,7 +206,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/instrumentation.cpp \
 	src/instrumentation.h \
 	src/keys.h \
-	src/logo.h \
 	src/main_data.cpp \
 	src/main_data.h \
 	src/maniac_patch.cpp \
@@ -298,8 +301,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/screen.cpp \
 	src/screen.h \
 	src/shake.h \
-	src/shinonome_gothic.h \
-	src/shinonome_mincho.h \
 	src/span.h \
 	src/sprite.cpp \
 	src/sprite.h \

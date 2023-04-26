@@ -44,6 +44,12 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 	for (auto& dir : *files) {
 		assert(!dir.second.name.empty() && "VFS BUG: Empty filename in the folder");
 
+#ifdef EMSCRIPTEN
+		if (dir.second.name == "Save") {
+			continue;
+		}
+#endif
+
 		if (StringView(dir.second.name).ends_with(".save")) {
 			continue;
 		}
@@ -87,7 +93,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 			DrawItem(0);
 		}
 
-		DrawErrorText();
+		DrawErrorText(show_dotdot);
 	}
 
 	return true;
@@ -106,34 +112,41 @@ void Window_GameList::DrawItem(int index) {
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
 }
 
-void Window_GameList::DrawErrorText() {
+void Window_GameList::DrawErrorText(bool show_dotdot) {
 	std::vector<std::string> error_msg = {
 #ifdef EMSCRIPTEN
 		"Did you type in a wrong URL?",
 		"",
-		"If you followed a link and stranded here",
-		"please notify us (see About page)."
+		"If you think this is an error, contact the owner",
+		"of this website.",
+		"",
+		"Technical information: index.json was not found.",
+		"",
+		"Ensure through the dev tools of your browser that",
+		"the file is at the correct location.",
 #else
-		"Games must be in a direct subdirectory",
-		"and must have the files RPG_RT.ldb and",
-		"RPG_RT.lmt in their main directory.",
+		"With EasyRPG Player you can play games created",
+		"with RPG Maker 2000 and RPG Maker 2003.",
 		"",
-		"This engine only supports RPG Maker 2000",
-		"and 2003 games.",
+		"These games have an RPG_RT.ldb and they can be",
+		"extracted or in ZIP archives.",
 		"",
-		"RPG Maker XP, VX, VX Ace and MV are NOT",
-		"supported."
+		"Newer engines such as RPG Maker XP, VX, MV and MZ",
+		"are not supported."
 #endif
 	};
 
+	int y = (show_dotdot ? 4 + 14 : 0);
+
 #ifdef EMSCRIPTEN
-	contents->TextDraw(0, 0, Font::ColorKnockout, "The game was not found.");
+	contents->TextDraw(0, y, Font::ColorKnockout, "The game was not found.");
 #else
-	contents->TextDraw(0, 4 + 14, Font::ColorKnockout, "No games found in the current directory.");
+	contents->TextDraw(0, y, Font::ColorKnockout, "No games found in the current directory.");
 #endif
 
+	y += 14 * 2;
 	for (size_t i = 0; i < error_msg.size(); ++i) {
-		contents->TextDraw(0, 4 + 14 * (i + 3), Font::ColorCritical, error_msg[i]);
+		contents->TextDraw(0, y + 14 * i, Font::ColorCritical, error_msg[i]);
 	}
 }
 

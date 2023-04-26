@@ -33,11 +33,12 @@ Window_About::Window_About(int ix, int iy, int iwidth, int iheight) :
 void Window_About::Refresh() {
 	std::vector<std::string> about_msg = {
 		"EasyRPG Player is a RPG Maker 2000/2003",
-		"interpreter. Licensed under the GPLv3.",
+		"interpreter.",
+		"Licensed under the GPLv3.",
 		"",
-		"Version: " + Version::GetVersionString(true, false),
+		"v" + Version::GetVersionString(true, true),
+		"",
 		"Website: easyrpg.org",
-		"",
 		"Contact us: easyrpg.org/contact",
 		"",
 		"Bugs: github.com/EasyRPG/Player/issues",
