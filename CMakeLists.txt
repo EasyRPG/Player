@@ -807,8 +807,9 @@ if(PLAYER_BUILD_LIBLCF)
 	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
-	find_package(liblcf REQUIRED CONFIG)
-	target_link_libraries(${PROJECT_NAME} liblcf::liblcf)
+	player_find_package(NAME liblcf VERSION 0.8
+		TARGET liblcf::liblcf
+		REQUIRED)
 endif()
 
 # Detect all required libraries
