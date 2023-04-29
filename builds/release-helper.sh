@@ -75,9 +75,10 @@ sed -i "/liblcf >= /,1 s/[0-9]\(.[0-9]\)\{1,3\}/$lcfversion/" $file
 print_verbose 'm4_define(\[ep_version_' $file
 print_verbose "liblcf >= [0-9]" $file
 
+# + 2 because of two extra commits: version commit itself & merge commit
 file="builds/android/gradle.properties"
 print_file
-_android_commits=`git rev-list HEAD --count`
+_android_commits=$((`git rev-list HEAD --count` + 2))
 sed -i -e "/VERSION_NAME/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" \
        -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" $file
 print_verbose 'VERSION_.*=[0-9]' $file
