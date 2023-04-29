@@ -1263,6 +1263,10 @@ else()
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")
+
+		if(WIN32)
+			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT easyrpg_libretro)
+		endif()
 	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_library(easyrpg_android
 			src/platform/android/android.h

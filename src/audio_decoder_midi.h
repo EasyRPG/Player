@@ -151,6 +151,11 @@ public:
 	 */
 	void Reset();
 
+	/**
+	 * @return Whether the MIDI playback is paused
+	 */
+	bool IsPaused() const;
+
 	std::vector<uint8_t> file_buffer;
 	size_t file_buffer_pos = 0;
 private:
