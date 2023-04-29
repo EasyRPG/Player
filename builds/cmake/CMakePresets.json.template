@@ -24,7 +24,6 @@
 		{
 			"name": "windows-x86",
 			"displayName": "Windows (x86)",
-			"hidden": true,
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
 			},
@@ -33,7 +32,6 @@
 		{
 			"name": "windows-x86-vs2022",
 			"displayName": "Windows (x86) using Visual Studio 2022",
-			"hidden": true,
 			"generator": "Visual Studio 17 2022",
 			"architecture": "Win32",
 			"cacheVariables": {
@@ -44,7 +42,6 @@
 		{
 			"name": "windows-x64",
 			"displayName": "Windows (x64)",
-			"hidden": true,
 			"architecture": "x64",
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
@@ -54,7 +51,6 @@
 		{
 			"name": "windows-x64-vs2022",
 			"displayName": "Windows (x64) using Visual Studio 2022",
-			"hidden": true,
 			"generator": "Visual Studio 17 2022",
 			"architecture": "x64",
 			"cacheVariables": {
