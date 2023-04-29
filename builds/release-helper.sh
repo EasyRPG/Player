@@ -51,11 +51,18 @@ IFS='.' read -r _maj _min _pat _twk <<< $version
 _pat=${_pat:-0}
 _twk=${_twk:-0}
 
+if [ $_pat == 0 ]; then
+  lcfversion="${_maj}.${_min}"
+else
+  lcfversion="${_maj}.${_min}.${_pat}"
+fi
+
 echo "Updating Version in:"
 
 file="CMakeLists.txt"
 print_file
 sed -i "/EasyRPG_Player VERSION/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" $file
+sed -i "/liblcf VERSION/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$lcfversion/" $file
 print_verbose " VERSION " $file
 
 file=configure.ac
@@ -64,11 +71,14 @@ sed -i -e "/ep_version_major/,1 s/\[[0-9]\+\]/[$_maj]/" \
        -e "/ep_version_minor/,1 s/\[[0-9]\+\]/[$_min]/" \
        -e "/ep_version_patch/,1 s/\[[0-9]\+\]/[$_pat]/" \
        -e "/ep_version_tweak/,1 s/\[[0-9]\+\]/[$_twk]/" $file
+sed -i "/liblcf >= /,1 s/[0-9]\(.[0-9]\)\{1,3\}/$lcfversion/" $file
 print_verbose 'm4_define(\[ep_version_' $file
+print_verbose "liblcf >= [0-9]" $file
 
+# + 2 because of two extra commits: version commit itself & merge commit
 file="builds/android/gradle.properties"
 print_file
-_android_commits=`git rev-list HEAD --count`
+_android_commits=$((`git rev-list HEAD --count` + 2))
 sed -i -e "/VERSION_NAME/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" \
        -e "/VERSION_CODE/,1 s/[0-9]\+/${_android_commits}/" $file
 print_verbose 'VERSION_.*=[0-9]' $file
