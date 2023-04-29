@@ -83,10 +83,14 @@
     <string name="navigation_drawer_open">Abrir panel de navegación</string>
     <string name="navigation_drawer_close">Cerrar panel de navegación</string>
     <string name="menu">Abrir menú de Android</string>
-    <string name="no_games_found_and_explanation_android_30">No se han encontrado juegos de RPG Maker 2000/2003. Colócalos en subcarpetas de la carpeta games.
-\nLos juegos pueden estar en directorios o en archivos ZIP. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
-    <string name="open_games_folder">Abrir la carpeta games</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Coloca los juegos de RPG Maker 2000/2003 en subcarpetas de la carpeta games.
+    <string name="no_games_found_and_explanation_android_30">No se han encontrado juegos de RPG Maker 2000/2003.
+\n
+\nLa carpeta de EasyRPG que has seleccionado contiene una carpeta \"games\". Utiliza una aplicación de gestión de ficheros para poner los juegos en esta carpeta.
+\nLos juegos se pueden colocar en subcarpetas o en archivos ZIP.
+\n
+\nLa carpeta de EasyRPG se puede cambiar en la configuración.</string>
+    <string name="open_games_folder">Abrir la carpeta de juegos (\"games\")</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Coloca los juegos de RPG Maker 2000/2003 en subcarpetas de la carpeta \"games\".
 \nLos juegos tienen que estar descomprimidos o en un archivo ZIP.
 \nLos archivos RAR, LZH y EXE NO están soportados.
 \n
@@ -102,11 +106,11 @@
     <string name="settings_soundfont_found">Soundfonts encontrados:</string>
     <string name="settings_default_soundfont">Soundfont predeterminado</string>
     <string name="select_the_games_folder">Seleccionar carpeta de EasyRPG</string>
-    <string name="id_select_games_folder_explanation">Debes seleccionar una carpeta para poder utilizar EasyRPG Player.
-\nEsta carpeta es exclusiva para el uso de EasyRPG Player.
+    <string name="id_select_games_folder_explanation">EasyRPG Player. requiere una carpeta exclusiva. Tras tocar el botón se te solicitará seleccionar una carpeta.
 \n
-\nNo selecciones una carpeta que contenga otras cosas, como por ejemplo la carpeta de descargas.
-\nLos juegos de RPG Maker 2000/2003 deben colocarse en una subcarpeta de juegos (games) de esta carpeta.</string>
+\nSi estás utilizando esta aplicación por primera vez no habrá carpeta EasyRPG. Crea una nueva carpeta EasyRPG y después selecciónala.
+\n
+\nSi has utilizado esta aplicación anteriormente, selecciona una carpeta EasyRPG existente.</string>
     <string name="Loading">Cargando…</string>
     <string name="enable_rtp_support">Activar soporte RTP</string>
     <string name="rtp_explanation">El RTP proporciona archivos comunes usados por algunos juegos.
@@ -116,7 +120,7 @@
     <string name="horizontal_input_layout">Distribución de los botones horizontal (apaisada)</string>
     <string name="vertical_input_layout">Distribución de los botones vertical (retrato)</string>
     <string name="settings_edit_layout_explanation">Se pueden añadir botones al editar una distribución (por ejemplo, un botón shift).
-\nPara añadir un botón, presiona el botón Atrás y selecciona Añadir un botón.</string>
+\n Para añadir un botón, presiona el botón Atrás y selecciona Añadir un botón.</string>
     <string name="scale_nearest">Escalar al tamaño de pantalla usando el vecino más próximo (rápido, mala calidad)</string>
     <string name="scale_integer">Escalar a un múltiplo de la resolución del juego (rápido, imagen más pequeña, buena calidad)</string>
     <string name="scale_bilinear">Escalar al tamaño de la pantalla y aplicar un filtro bilineal (lento, buena calidad)</string>
@@ -125,8 +129,8 @@
     <string name="sound_volume">Volumen de los efectos de sonido</string>
     <string name="launch_debug_mode">Lanzar en modo depuración</string>
     <string name="visit_website">Visita nuestro sitio web</string>
-    <string name="error_no_games_folder">La carpeta de juegos (games) no existe o no es una carpeta.</string>
-    <string name="error_games_no_rw">La carpeta de juegos (games) no es legible o escribible. Selecciona una ubicación diferente para la carpeta de EasyRPG. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
+    <string name="error_no_games_folder">La carpeta de juegos (\"games\") no existe o no es una carpeta. Créala manualmente o selecciona una ubicación diferente para la carpeta de EasyRPG. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
+    <string name="error_games_no_rw">La carpeta de juegos (\"games\") no es legible o escribible. Selecciona una ubicación diferente para la carpeta de EasyRPG. La carpeta de EasyRPG se puede cambiar en la configuración.</string>
     <string name="key_debug_walk_through_walls">Caminar a través de las paredes (requiere modo depuración)</string>
     <string name="key_debug_menu">Abrir menú de depuración (requiere modo depuración)</string>
     <string name="settings_resolution">Resolución del juego:</string>
@@ -134,4 +138,14 @@
     <string name="settings_resolution_original">Original (320x240, 4:3, recomendado)</string>
     <string name="settings_resolution_widescreen">Panorámico (416x240, 16:9, Experimental)</string>
     <string name="settings_resolution_ultrawide">Ultrapanorámico (560x240, 21:9, experimental)</string>
+    <string name="watch_explanation_video">Empezar y añadir juegos (guía en vídeo)</string>
+    <string name="error_saf_title">Carpeta seleccionada incorrecta</string>
+    <string name="error_saf_select_easyrpg">Cree una carpeta EasyRPG vacía y selecciónala.</string>
+    <string name="error_saf_download_selected">La carpeta de descarga no se puede utilizar como carpeta EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">La carpeta seleccionada contiene otros archivos y no se puede utilizar como carpeta EasyRPG. Si eliminas todos los archivos dentro de la carpeta entonces podrás usarla como la carpeta EasyRPG.</string>
+    <string name="error_saf_bad_content_provider">La carpeta seleccionada no se puede utilizar como carpeta EasyRPG. Este problema puede ocurrir por varias razones, por ejemplo, si has seleccionado el directorio raíz o una ubicación de almacenamiento en la nube.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">mantener</string>
+    <string name="fast_forward_mode_tap">tocar</string>
 </resources>

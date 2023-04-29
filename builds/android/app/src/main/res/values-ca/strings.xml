@@ -83,10 +83,14 @@
     <string name="navigation_drawer_open">Obre safata de navegació</string>
     <string name="navigation_drawer_close">Tanca safata de navegació</string>
     <string name="menu">Obre menú de l\'Android</string>
-    <string name="no_games_found_and_explanation_android_30">No s\'han trobat jocs de RPG Maker 2000/2003. Col·loca\'ls en subcarpetes de la carpeta de jocs (games).
-\nEls jocs poden estar dins de carpetes o dins d\'arxius ZIP. La carpeta EasyRPG es pot canviar a la configuració.</string>
-    <string name="open_games_folder">Obre la carpeta de jocs (games)</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Col·loca els jocs de RPG Maker 2000/2003 a subcarpetes de la carpeta de jocs (games).
+    <string name="no_games_found_and_explanation_android_30">No s\'han trobat jocs de RPG Maker 2000/2003.
+\n
+\nLa carpeta de EasyRPG que has seleccionat conté una carpeta \"games\". Fes servir una aplicació de gestió de fitxers per posar els jocs en aquesta carpeta.
+\nEls jocs es poden posar encarpetes o en arxius ZIP.
+\n
+\nLa carpeta EasyRPG es pot canviar a la configuració.</string>
+    <string name="open_games_folder">Obre la carpeta de jocs (\"games\")</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Col·loca els jocs de RPG Maker 2000/2003 a subcarpetes de la carpeta de jocs (\"games\").
 \nEls jocs han de ser descomprimits o en un arxiu ZIP.
 \nEls fitxers RAR, LZH i EXE NO estan suportats.
 \n
@@ -102,11 +106,11 @@
     <string name="settings_soundfont_found">Soundfonts trobats:</string>
     <string name="settings_default_soundfont">Soundfont predeterminat</string>
     <string name="select_the_games_folder">Selecciona la carpeta de l\'EasyRPG</string>
-    <string name="id_select_games_folder_explanation">Heu de seleccionar una carpeta per poder utilitzar l\'EasyRPG Player.
-\nAquesta carpeta és exclusiva per a l\'ús de l\'EasyRPG Player.
+    <string name="id_select_games_folder_explanation">EasyRPG Player requereix una carpeta exclusiva. Després de tocar el botó, se\'t demanarà que seleccionis una carpeta.
 \n
-\nNo seleccionis una carpeta que contingui altres coses, com ara la carpeta de baixades.
-\nEls jocs del RPG Maker 2000/2003 s\'han de col·locar a una subcarpeta de jocs (games) d\'aquesta carpeta.</string>
+\nSi és la primera vegada que fas servir aquesta aplicació no hi ha carpeta EasyRPG. Crea una nova carpeta EasyRPG i selecciona-la.
+\n
+\nSi has fet servit aquesta aplicació abans, selecciona la carpeta EasyRPG existent.</string>
     <string name="Loading">S\'està carregant…</string>
     <string name="enable_rtp_support">Activa el suport RTP</string>
     <string name="rtp_explanation">El RTP proporciona fitxers comuns utilitzats per alguns jocs.
@@ -125,8 +129,8 @@
     <string name="sound_volume">Volum de l\'efecte de so</string>
     <string name="launch_debug_mode">Inicia en mode de depuració</string>
     <string name="visit_website">Visita el nostre lloc web</string>
-    <string name="error_no_games_folder">La carpeta de jocs (games) no existeix o no és una carpeta.</string>
-    <string name="error_games_no_rw">La carpeta de jocs (games) no es pot llegir o escriure. Selecciona una ubicació diferent per a la carpeta de l\'EasyRPG. La carpeta de l\'EasyRPG es pot canviar a la configuració.</string>
+    <string name="error_no_games_folder">La carpeta de jocs (\"games\") no existeix o no és una carpeta. Crea-la manualment o selecciona una ubicació diferent per a la carpeta de l\'EasyRPG. La carpeta de l\'EasyRPG es pot canviar a la configuració.</string>
+    <string name="error_games_no_rw">La carpeta de jocs (\"games\") no es pot llegir o escriure. Selecciona una ubicació diferent per a la carpeta de l\'EasyRPG. La carpeta de l\'EasyRPG es pot canviar a la configuració.</string>
     <string name="key_debug_walk_through_walls">Caminar a través de les parets (requereix el mode de depuració)</string>
     <string name="key_debug_menu">Obre el menú de depuració (requereix el mode de depuració)</string>
     <string name="settings_resolution">Resolució del joc:</string>
@@ -134,4 +138,14 @@
     <string name="settings_resolution_original">Original (320x240, 4:3, recomanat)</string>
     <string name="settings_resolution_widescreen">Panoràmic (416x240, 16:9, experimental)</string>
     <string name="settings_resolution_ultrawide">Ultrapanoràmic (560x240, 21:9, experimental)</string>
+    <string name="watch_explanation_video">Començar i afegir jocs (guia en vídeo)</string>
+    <string name="error_saf_title">Carpeta seleccionada incorrecta</string>
+    <string name="error_saf_select_easyrpg">Crea una carpeta EasyRPG buida i selecciona-la.</string>
+    <string name="error_saf_download_selected">La carpeta de descàrrega no es pot utilitzar com a carpeta EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">La carpeta seleccionada conté altres fitxers i no es pot utilitzar com a carpeta de l\'EasyRPG. Quan eliminis tots els fitxers dins de la carpeta podràs utilitzar-la com a carpeta de l\'EasyRPG.</string>
+    <string name="error_saf_bad_content_provider">La carpeta seleccionada no es pot utilitzar com a carpeta EasyRPG. Aquest problema pot ocórrer per diversos motius, per exemple, si has seleccionat el directori arrel o una ubicació d\'emmagatzematge al núvol.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">mantenir</string>
+    <string name="fast_forward_mode_tap">tocar</string>
 </resources>

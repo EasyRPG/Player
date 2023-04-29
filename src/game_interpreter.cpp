@@ -2879,9 +2879,10 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	size_t param_size = com.parameters.size();
 
 	if (Player::IsRPG2k() || Player::IsRPG2k3E() || Player::IsPatchManiac()) {
-		if (param_size > 17 && Player::IsRPG2k3Commands()) {
+		if (param_size > 17 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
 			// Handling of RPG2k3 1.12 chunks
-			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+			// Maniac Patch uses the upper bits for "wait is variable", mask it away
+			pic_id = ValueOrVariable(com.parameters[17] & 0xFF, pic_id);
 			// Currently unused by RPG Maker
 			//int chars_to_replace = com.parameters[18];
 			//int replace_with = com.parameters[19];
@@ -2902,6 +2903,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			} else if (blend_mode == 3) {
 				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
 			}
+			params.duration = ValueOrVariableBitfield(com.parameters[17], 2, params.duration);
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
 			params.origin = com.parameters[1] >> 8;

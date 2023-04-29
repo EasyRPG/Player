@@ -5,6 +5,7 @@
 			"name": "base",
 			"displayName": "base preset",
 			"hidden": true,
+			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/${presetName}",
 			"cacheVariables": {
 				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
@@ -38,9 +39,7 @@
 			"name": "win-base",
 			"displayName": "windows base preset",
 			"hidden": true,
-			"cacheVariables": {
-				"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake"
-			},
+			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/windows/vcpkg/scripts/buildsystems/vcpkg.cmake",
 			"inherits": ["base"],
 			"condition": {
 				"type": "equals",

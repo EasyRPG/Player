@@ -112,21 +112,6 @@ void GenericAudioMidiOut::UpdateMidiOut(std::chrono::microseconds delta) {
 	LockMutex();
 	assert(midi_out);
 
-	// Prevent stuck notes when the clock stops incrementing
-	// libretro does this and there is no callback to detect a lost focus
-	constexpr int stuck_treshold = 30;
-	if (delta == 0us) {
-		++midi_output_stuck;
-		if (midi_output_stuck == stuck_treshold) {
-			midi_out->Pause();
-		}
-	} else {
-		if (midi_output_stuck >= stuck_treshold) {
-			midi_out->Resume();
-		}
-		midi_output_stuck = 0;
-	}
-
 	midi_out->UpdateMidi(delta);
 	UnlockMutex();
 }
@@ -143,15 +128,17 @@ void GenericAudioMidiOut::StopThread() {
 }
 
 void GenericAudioMidiOut::ThreadFunction() {
-	Game_Clock::time_point start_ticks = Game_Clock::now();
+	// The libretro clock is not updating often enough for good MIDI timing but
+	// all platforms that support Native Midi also have a working high precision clock
+	using clock = std::chrono::steady_clock;
+
+	auto start_ticks = clock::now();
 	while (!stop_thread) {
-		auto ticks = Game_Clock::now();
+		auto ticks = clock::now();
 
 		auto us = std::chrono::duration_cast<std::chrono::microseconds>(ticks - start_ticks);
 		UpdateMidiOut(us);
 
-		// Some clocks (libretro) do not support sleeping
-		// All platforms that support Native Midi have working sleep_for
 		std::this_thread::sleep_for(1ms);
 
 		start_ticks = ticks;

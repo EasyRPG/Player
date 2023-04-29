@@ -83,8 +83,12 @@
     <string name="navigation_drawer_open">Navigation einblenden</string>
     <string name="navigation_drawer_close">Navigation ausblenden</string>
     <string name="menu">Android-Menü öffnen</string>
-    <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden. Diese müssen im Ordner \"games\" liegen.
-\nSpiele können in Ordnern oder ZIP-Archiven sein. Du kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
+    <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden.
+\n
+\nDer von dir ausgewählte EasyRPG-Ordner enthält einen Spiele-Ordner (games). Verwende die Datei-App deines Systems um Spiele in diesem Ordner abzulegen.
+\nSpiele können in Ordnern oder ZIP-Archiven sein.
+\n
+\nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
     <string name="open_games_folder">Den Spiele-Ordner (games) öffnen</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003-Spiele müssen im Unterverzeichnis \"games\" platziert werden.
 \nDie Spiele müssen entpackt sein oder in einem ZIP-Archiv vorliegen.
@@ -102,11 +106,11 @@
     <string name="settings_soundfont_found">Gefundene Soundfonts:</string>
     <string name="settings_default_soundfont">Standard-Soundfont (Integriert)</string>
     <string name="select_the_games_folder">EasyRPG-Ordner auswählen</string>
-    <string name="id_select_games_folder_explanation">Um EasyRPG Player verwenden zu können, musst du einen Ordner festlegen.
-\nDieser Ordner wird exklusiv von EasyRPG Player verwendet werden.
+    <string name="id_select_games_folder_explanation">EasyRPG Player benötigt einen eigenen Ordner. Nachdem berühren der Schaltfläche wirst du aufgefordert, einen Ordner auszuwählen.
 \n
-\nWähle keinen Ordner aus, der bereits von anderen Dingen verwendet wird. Dies wäre beispielsweise der Download-Ordner.
-\nRPG Maker 2000/2003 müssen im \"games\"-Verzeichnis in diesem Ordner platziert werden.</string>
+\nWenn du diese App zum ersten Mal verwendest, gibt es noch keinen EasyRPG-Ordner. Erstelle stattdessen einen neuen EasyRPG-Ordner und wähle ihn dann aus.
+\n
+\nWenn diese App bereits vorher verwendet wurde, wähle den vorhandenen EasyRPG-Ordner aus.</string>
     <string name="Loading">Laden…</string>
     <string name="enable_rtp_support">RTP-Unterstützung aktivieren</string>
     <string name="rtp_explanation">Das RTP stellt gemeinsame Assets bereit, die von einigen Spielen verwendet werden.
@@ -125,7 +129,7 @@
     <string name="sound_volume">Lautstärke von Soundeffekten</string>
     <string name="launch_debug_mode">Im Debugmodus starten</string>
     <string name="visit_website">Unsere Website besuchen</string>
-    <string name="error_no_games_folder">Der \"games\"-Ordner existiert nicht oder ist kein Ordner.</string>
+    <string name="error_no_games_folder">Der \"games\"-Ordner existiert nicht oder ist kein Ordner. Bitte erstelle ihn manuell oder wähle einen anderen Ort für den EasyRPG-Ordner. Der EasyRPG-Ordner kann in den Einstellungen geändert werden.</string>
     <string name="error_games_no_rw">Der \"games\"-Ordner ist nicht lesbar oder nicht schreibbar. Wähle einen anderen Ort für den EasyRPG-Ordner. Der EasyRPG-Ordner kann in den Einstellungen geändert werden.</string>
     <string name="key_debug_walk_through_walls">Durch Wände gehen (nur im Debugmodus)</string>
     <string name="key_debug_menu">Debugmenü öffnen (nur im Debugmodus)</string>
@@ -134,4 +138,14 @@
     <string name="settings_resolution_original">Original (320x240, 4:3, Empfohlen)</string>
     <string name="settings_resolution_widescreen">Breitbild (416x240, 16:9, Experimentell)</string>
     <string name="settings_resolution_ultrawide">Extrabreit (560x240, 21:9, Experimentell)</string>
+    <string name="watch_explanation_video">Erste Schritte und Spiele hinzufügen (Videoanleitung)</string>
+    <string name="error_saf_title">Ungeeigneter Ordner ausgewählt</string>
+    <string name="error_saf_select_easyrpg">Bitte erstelle einen leeren EasyRPG-Ordner und wähle ihn aus.</string>
+    <string name="error_saf_download_selected">Der Download-Ordner kann nicht als EasyRPG-Ordner verwendet werden.</string>
+    <string name="error_saf_folder_not_empty">Der ausgewählte Ordner enthält andere Dateien und kann daher nicht als EasyRPG-Ordner verwendet werden. Wenn du ihn als EasyRPG-Ordner verwenden möchtest, musst du zuerst alle Dateien in diesem Ordner löschen.</string>
+    <string name="error_saf_bad_content_provider">Der ausgewählte Ordner kann nicht als EasyRPG-Ordner verwendet werden. Dies kann verschiedene Ursache haben. Beispielsweise funktioniert es nicht, wenn du das Stammverzeichnis deines Systems oder einen Ort in der Cloud ausgewählt hast.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">halten</string>
+    <string name="fast_forward_mode_tap">antippen</string>
 </resources>

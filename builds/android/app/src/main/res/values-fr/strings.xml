@@ -79,10 +79,14 @@
     <string name="fast_forward">Mode du bouton pour l\'avance rapide :</string>
     <string name="fast_forward_factor">Multiplicateur de vitesse :</string>
     <string name="key_fast_forward">Avance rapide</string>
-    <string name="no_games_found_and_explanation_android_30">Aucun jeu RPG Maker 2000/2003 n\'a été trouvé. Mettez-les dans les sous-répertoires du dossier games.
-\nLes jeux peuvent être placés dans des répertoires ou dans des archives ZIP. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
-    <string name="open_games_folder">Ouvrir le dossier games</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Mettez vos jeux RPG Maker 2000/2003 dans les sous-répertoires du dossier games.
+    <string name="no_games_found_and_explanation_android_30">Aucun jeu RPG Maker 2000/2003 n\'a été trouvé.
+\n
+\nLe dossier EasyRPG que vous avez sélectionné contient un dossier pour les jeux (games). Utiliser une application de gestionnaire de fichiers pour mettre vos jeux dans ce dossier.
+\nLes jeux peuvent être placés dans des sous-répertoires ou dans des archives ZIP.
+\n
+\nLe dossier d\'EasyRPG peut être changé dans les paramètres.</string>
+    <string name="open_games_folder">Ouvrir le dossier « games »</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Mettez vos jeux RPG Maker 2000/2003 dans les sous-répertoires du dossier « games ».
 \nLes jeux doivent être décompressés ou dans une archive ZIP.
 \nLes fichiers RAR, LZH et EXE ne sont PAS supportés.
 \n
@@ -90,7 +94,7 @@
 \n- Le RTP (assets partagés utilisés par certains jeux) peut être fourni
 \n- Un soundfont personnalisé pour altérer comment sonnent les musiques MIDI peut être fourni</string>
     <string name="easyrpg_folders">Dossiers EasyRPG</string>
-    <string name="screen_size">Taille de l\'écran :</string>
+    <string name="screen_size">Agrandissement de l\'écran :</string>
     <string name="settings_custom_soundfont">Soundfont personnalisé :</string>
     <string name="open_the_sound_fonts_folder">Ouvrir le dossier des soundfonts</string>
     <string name="settings_soundfont_explanation">Mettez vos soundfonts au format SF2 dans le dossier « soundfonts ». Les soundfonts altèrent comment sonnent les musiques MIDI.</string>
@@ -98,14 +102,14 @@
     <string name="settings_soundfont_found">Soundfonts trouvés :</string>
     <string name="settings_default_soundfont">Soundfont par défaut</string>
     <string name="select_the_games_folder">Choisir le dossier d\'EasyRPG</string>
-    <string name="id_select_games_folder_explanation">Pour utiliser EasyRPG Player vous devez sélectionner un dossier.
-\nCe dossier est exclusif à EasyRPG Player.
+    <string name="id_select_games_folder_explanation">EasyRPG Player a besoin d\'un dossier dédié. Après avoir appuyé sur le bouton vous serez demandé de sélectionner un dossier.
 \n
-\nVeuillez ne pas sélectionner un dossier contenant d\'autres choses, tel que le dossier téléchargement.
-\nLes jeux RPG Maker 2000/2003 doivent être mis dans le sous-répertoire jeux de ce dossier.</string>
+\nSi vous utilisez cette application pour la première fois, il n\'y a pas de dossier EasyRPG. Créez un nouveau dossier EasyRPG et sélectionnez-le.
+\n
+\nSi vous avez utilisé cette application auparavant, veuillez sélectionner le dossier EasyRPG existant.</string>
     <string name="Loading">Chargement…</string>
     <string name="enable_rtp_support">Activer le support du RTP</string>
-    <string name="rtp_explanation">Le RTP donne accès à certains assets partagés utilisés par certains jeux.
+    <string name="rtp_explanation">Le RTP donne accès à certaines ressources partagées utilisées par certains jeux.
 \nMettez le RTP de RPG Maker 2000 dans « rtp/2000 » et le RTP de RPG Maker 2003 dans « rtp/2003 ».
 \nVeuillez noter qu\'activer le support du RTP va significativement augmenter le temps de chargement initial d\'un jeu.</string>
     <string name="open_rtp_folder">Ouvrir le dossier du RTP</string>
@@ -121,8 +125,8 @@
     <string name="sound_volume">Volume des effets sonores</string>
     <string name="launch_debug_mode">Démarrer en mode de débogage</string>
     <string name="visit_website">Visiter notre site web</string>
-    <string name="error_no_games_folder">Le dossier games n\'existe pas ou n\'est pas un dossier.</string>
-    <string name="error_games_no_rw">Le dossier games n\'a pas pu être lu ou n\'a pas pu être écrit. Veuillez sélectionner un emplacement différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
+    <string name="error_no_games_folder">Le dossier « games » n\'existe pas ou n\'est pas un dossier. Veuillez le créer manuellement ou sélectionner un lieu différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
+    <string name="error_games_no_rw">Le dossier « games » n\'a pas pu être lu ou n\'a pas pu être écrit. Veuillez sélectionner un emplacement différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
     <string name="key_debug_walk_through_walls">Marcher à travers les murs (Nécessite le mode de débogage)</string>
     <string name="key_debug_menu">Ouvrir le menu de débogage (Nécessite le mode de débogage)</string>
     <string name="settings_resolution">Résolution du jeu :</string>
@@ -130,4 +134,14 @@
     <string name="settings_resolution_original">Original (320x240, 4:3, Recommandé)</string>
     <string name="settings_resolution_widescreen">Écran large (416x240, 16:9, Expérimental)</string>
     <string name="settings_resolution_ultrawide">Ultra large (560x240, 21:9, Expérimental)</string>
+    <string name="watch_explanation_video">Commencer et ajouter des jeux (Guide vidéo)</string>
+    <string name="error_saf_title">Mauvais dossier sélectionné</string>
+    <string name="error_saf_select_easyrpg">Veuillez créer un dossier EasyRPG vide et le sélectionner.</string>
+    <string name="error_saf_download_selected">Le dossier Téléchargements ne peut pas être utilisé en tant que dossier d\'EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">Le dossier sélectionné contient d\'autres fichiers et ne peut pas être utilisé en tant que dossier d\'EasyRPG. Vous pourrez l\'utiliser en tant que dossier d\'EasyRPG une fois que tous les fichiers à l\'intérieur du dossier seront retirés.</string>
+    <string name="error_saf_bad_content_provider">Le dossier sélectionné ne peut pas être utilisé en tant que dossier d\'EasyRPG. Ce problème peut arriver pour diverses raisons, comme par exemple si vous avez sélectionné le répertoire à la racine ou un emplacement de stockage dans le cloud.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">maintenir</string>
+    <string name="fast_forward_mode_tap">appuyer</string>
 </resources>

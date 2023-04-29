@@ -286,6 +286,10 @@ void AudioDecoderMidi::Reset() {
 	reset();
 }
 
+bool AudioDecoderMidi::IsPaused() const {
+	return paused;
+}
+
 int AudioDecoderMidi::FillBuffer(uint8_t* buffer, int length) {
 	if (loops_to_end) {
 		memset(buffer, '\0', length);

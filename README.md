@@ -101,7 +101,7 @@ EasyRPG Player makes use of the following 3rd party software:
 
 * [Baekmuk] font family (Korean) - Copyright (c) 1986-2002 Kim Jeong-Hwan,
   provided under the Baekmuk License
-* [Shinonome] font familiy (Japanese) - Copyright (c) 1999-2000 Yasuyuki
+* [Shinonome] font family (Japanese) - Copyright (c) 1999-2000 Yasuyuki
   Furukawa and contributors, provided under public domain. Glyphs were added
   and modified for use in EasyRPG Player, all changes under public domain.
 * [ttyp0] font family - Copyright (c) 2012-2015 Uwe Waldmann, provided under

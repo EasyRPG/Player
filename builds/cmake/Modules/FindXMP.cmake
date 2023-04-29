@@ -38,7 +38,7 @@ find_path(XMP_INCLUDE_DIR
 # Allow XMP_LIBRARY to be set manually, as the location of the XMP library
 if(NOT XMP_LIBRARY)
 	find_library(XMP_LIBRARY
-		NAMES libxmp xmp libxmp-lite xmp-lite
+		NAMES libxmp xmp libxmp-static xmp-static libxmp-lite xmp-lite
 		HINTS ${PC_XMP_LIBRARY_DIRS})
 endif()
 
@@ -68,7 +68,7 @@ if(XMP_FOUND)
 			IMPORTED_LOCATION "${XMP_LIBRARY}")
 		if(WIN32)
 			set_target_properties(XMP::XMP PROPERTIES
-				INTERFACE_COMPILE_DEFINITIONS "BUILDING_STATIC=1")
+				INTERFACE_COMPILE_DEFINITIONS "LIBXMP_STATIC=1")
 		endif()
 	endif()
 endif()
