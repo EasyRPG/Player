@@ -1475,7 +1475,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 
 	if(TARGET Vorbis::vorbisfile)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
-	elseif(TARGET tremor::tremor)
+	elseif(TARGET Tremor::Tremor)
 		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
 		message(STATUS "Ogg Vorbis playback: None")
@@ -1495,7 +1495,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 
 	if(TARGET speexdsp::speexdsp)
 		message(STATUS "Resampler: speexdsp")
-	elseif(Samplerate::Samplerate)
+	elseif(TARGET Samplerate::Samplerate)
 		message(STATUS "Resampler: libsamplerate")
 	else()
 		message(STATUS "Resampler: None")
