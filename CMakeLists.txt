@@ -1475,7 +1475,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 
 	if(TARGET Vorbis::vorbisfile)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
-	elseif(TARGET tremor::tremor)
+	elseif(TARGET Tremor::Tremor)
 		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
 		message(STATUS "Ogg Vorbis playback: None")
