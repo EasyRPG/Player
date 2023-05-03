@@ -18,7 +18,7 @@
 #include "filesystem_root.h"
 #include "output.h"
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #  include "platform/android/filesystem_apk.h"
 #  include "platform/android/filesystem_saf.h"
 #endif
@@ -27,7 +27,7 @@ constexpr const StringView root_ns = "root://";
 
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 	// Add platform specific namespaces here
-#ifdef __ANDROID__
+#if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 	fs_list.push_back(std::make_pair("apk", std::make_unique<ApkFilesystem>()));
 	fs_list.push_back(std::make_pair("content", std::make_unique<SafFilesystem>("", FilesystemView())));
 #endif
