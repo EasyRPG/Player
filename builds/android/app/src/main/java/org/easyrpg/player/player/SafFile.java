@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.Helper;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,11 +20,16 @@ import java.util.ArrayList;
  */
 public class SafFile {
     private final Context context;
-    private final DocumentFile root;
+    private final Uri rootUri;
 
-    private SafFile(Context context, DocumentFile root) {
+    private boolean metadataPopulated = false;
+    private boolean metaIsFile = false;
+    private boolean metaExists = false;
+    private long metaFileSize = 0;
+
+    private SafFile(Context context, Uri rootUri) {
         this.context = context;
-        this.root = root;
+        this.rootUri = rootUri;
     }
 
     public static SafFile fromPath(Context context, String path) {
@@ -58,44 +65,32 @@ public class SafFile {
         }
         Uri uri = Uri.parse(path);
 
-        DocumentFile f = DocumentFile.fromTreeUri(context, uri);
-
-        if (f == null || !f.getUri().toString().equals(uri.toString())) {
-            // When providing a non-existent file fromTreeUri sometimes returns a tree to the root.
-            // Prevent this nonsense.
-            return null;
-        }
-
-        return new SafFile(context, f);
+        return new SafFile(context, uri);
     }
 
     public boolean isFile() {
-        return root != null && root.isFile();
+        populateMetadata();
+        return metaExists && metaIsFile;
     }
 
     public boolean isDirectory() {
-        return root != null && root.isDirectory();
+        populateMetadata();
+        return metaExists && !metaIsFile;
     }
 
     public boolean exists() {
-        return root != null && root.exists();
+        populateMetadata();
+        return metaExists;
     }
 
     public long getFilesize() {
-        if (root == null || !root.exists()) {
-            return -1L;
-        }
-
-        return root.length();
+        populateMetadata();
+        return metaFileSize;
     }
 
     public int createInputFileDescriptor() {
-        if (root == null) {
-            return -1;
-        }
-
         // No difference between read mode and binary read mode
-        try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(root.getUri(), "r")) {
+        try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(rootUri, "r")) {
             return fd.detachFd();
         } catch (IOException | IllegalArgumentException e) {
             return -1;
@@ -103,15 +98,11 @@ public class SafFile {
     }
 
     public int createOutputFileDescriptor(boolean append) {
-        if (root == null) {
-            return -1;
-        }
-
-        Uri actualFile = root.getUri();
+        Uri actualFile = rootUri;
         if (!exists()) {
             // The file must exist beforehand
             // To create it the parent directory must be obtained
-            String full_path = root.getUri().toString();
+            String full_path = rootUri.toString();
             String directory = full_path.substring(0, full_path.lastIndexOf("%2F"));
             String filename = full_path.substring(full_path.lastIndexOf("%2F") + 3);
             filename = Uri.decode(filename);
@@ -150,31 +141,23 @@ public class SafFile {
     }
 
     DirectoryTree getDirectoryContent() {
-        if (root == null || !root.isDirectory()) {
-            return null;
-        }
-
-        Uri root_uri = root.getUri();
-
         ArrayList<String> files = new ArrayList<>();
         ArrayList<Boolean> is_dir = new ArrayList<>();
 
         final ContentResolver resolver = context.getContentResolver();
-        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(root_uri, DocumentsContract.getDocumentId(root_uri));
+        String documentId = DocumentsContract.getTreeDocumentId(rootUri);
+        if (DocumentsContract.isDocumentUri(context, rootUri)) {
+            documentId = DocumentsContract.getDocumentId(rootUri);
+        }
+
+        final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(rootUri, documentId);
 
         Cursor c = resolver.query(childrenUri,new String[] {
-                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
                 DocumentsContract.Document.COLUMN_MIME_TYPE },
                 null, null, null);
         while (c.moveToNext()) {
-            // The name can be something like ``primary:path/of/the/folder/the_file.txt
-            // Get rid of all that junk
             String file_path = c.getString(0);
-            int slash_pos = file_path.lastIndexOf('/');
-            if (slash_pos != -1) {
-                file_path = file_path.substring(slash_pos + 1);
-            }
-
             String mime_type = c.getString(1);
 
             files.add(file_path);
@@ -183,5 +166,35 @@ public class SafFile {
         c.close();
 
         return new DirectoryTree(files, is_dir);
+    }
+
+    private void populateMetadata() {
+        if (metadataPopulated) {
+            return;
+        }
+
+        metadataPopulated = true;
+
+        final ContentResolver resolver = context.getContentResolver();
+
+        Cursor c;
+
+        try {
+            c = resolver.query(rootUri, new String[]{
+                    DocumentsContract.Document.COLUMN_MIME_TYPE,
+                    DocumentsContract.Document.COLUMN_SIZE},
+                null, null, null);
+        } catch (IllegalArgumentException e) {
+            metaExists = false;
+            return;
+        }
+
+        if (c.moveToNext()) {
+            metaExists = true;
+            metaIsFile = !Helper.isDirectoryFromMimeType(c.getString(0));
+            metaFileSize = c.getLong(1);
+        }
+
+        c.close();
     }
 }
