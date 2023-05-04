@@ -21,7 +21,13 @@
 #ifdef WANT_DRWAV
 
 #define DR_WAV_IMPLEMENTATION
-#include "external/dr_wav.h"
+// Use system dr_wav header if available
+#if __has_include(<dr_wav.h>)
+#  include <dr_wav.h>
+#else
+#  include "external/dr_wav.h"
+#endif
+
 
 DrWavDecoder::DrWavDecoder() {
 	music_type = "wav";
