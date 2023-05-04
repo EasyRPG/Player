@@ -235,7 +235,7 @@ std::string Platform::Directory::GetEntryName() const {
 }
 
 #if !defined(__vita__) && !defined(_WIN32)
-static inline Platform::FileType GetEntryType(...) {
+[[maybe_unused]] static inline Platform::FileType GetEntryType(...) {
 	return Platform::FileType::Unknown;
 }
 
