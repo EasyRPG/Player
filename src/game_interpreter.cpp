@@ -1092,7 +1092,14 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			break;
 		case 3: {
 			// Random between range
-			value = ControlVariables::Random(com.parameters[5], com.parameters[6]);
+			int32_t arg1 = com.parameters[5];
+			int32_t arg2 = com.parameters[6];
+			if (Player::IsPatchManiac() && com.parameters.size() >= 8) {
+				arg1 = ValueOrVariableBitfield(com.parameters[7], 0, arg1);
+				arg2 = ValueOrVariableBitfield(com.parameters[7], 1, arg2);
+			}
+
+			value = ControlVariables::Random(arg1, arg2);
 			break;
 		}
 		case 4: {
