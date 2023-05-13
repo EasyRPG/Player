@@ -3551,9 +3551,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		if (Player::IsPatchManiac()) {
 			switch (com.parameters[1]) {
 				case 0:
-					// FIXME: Game was loaded in this frame
-					Output::Warning("Maniac: Condition 'Loaded' not implemented");
-					result = false;
+					result = Main_Data::game_system->IsLoadedThisFrame();
 					break;
 				case 1:
 					// Joypad is active (We always read from Controller so simply report 'true')
