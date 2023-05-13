@@ -54,6 +54,14 @@ void Sprite::BlitScreen(Bitmap& dst) {
 		// only has the size of this subrect instead of the whole bitmap
 		rect.x %= bitmap_effects->GetWidth();
 		rect.y %= bitmap_effects->GetHeight();
+
+		if (flipx_effect) {
+			rect.x = bitmap_effects->GetWidth() - rect.x - rect.width;
+		}
+
+		if (flipy_effect) {
+			rect.y = bitmap_effects->GetHeight() - rect.y - rect.height;
+		}
 	}
 
 	BlitScreenIntern(dst, *draw_bitmap, rect);

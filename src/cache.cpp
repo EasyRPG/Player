@@ -482,7 +482,7 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 				bitmap_effects->Flip(flip_x, flip_y);
 			} else {
 				bitmap_effects = create();
-				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::Opaque());
+				bitmap_effects->FlipBlit(0, 0, *src_bitmap, rect, flip_x, flip_y, Opacity::Opaque());
 			}
 		}
 
