@@ -45,12 +45,19 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 		return;
 	}
 	while (sections) {
+		uint32_t secName = GetU32(sectionsOfs);
 		uint32_t sectVs = GetU32(sectionsOfs + 0x08);
 		uint32_t sectRs = GetU32(sectionsOfs + 0x10);
+
 		if (sectRs > sectVs) {
 			// Actually a problem in some files.
 			sectVs = sectRs;
 		}
+
+		if (secName == 0x45444F43) { // CODE
+			file_info.code_size = sectVs;
+		}
+
 		uint32_t sectRva = GetU32(sectionsOfs + 0x0C);
 		uint32_t sectRdptr = GetU32(sectionsOfs + 0x14);
 		if ((sectRva <= resource_rva) && ((sectRva + sectVs) > resource_rva)) {
@@ -299,7 +306,7 @@ bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 }
 
 void EXEReader::FileInfo::Print() const {
-	Output::Debug("RPG_RT information: version={} logos={} i386={} easyrpg={}", version_str, logos, is_i386, is_easyrpg_player);
+	Output::Debug("RPG_RT information: version={} logos={} code={:#x} i386={} easyrpg={}", version_str, logos, code_size, is_i386, is_easyrpg_player);
 }
 
 int EXEReader::FileInfo::GetEngineType() const {
@@ -308,12 +315,17 @@ int EXEReader::FileInfo::GetEngineType() const {
 	}
 
 	if (version_str.empty()) {
-		// Only RPG2k has no VERSIONINFO
+		// RPG2k and Rpg2k3 < 1.0.2.1 has no VERSIONINFO
 		if (logos == 3) {
 			// three logos only appear in old RPG2k
 			return Player::EngineRpg2k;
 		} else if (logos == 1) {
-			// VALUE! has only one logo
+			// VALUE! or Rpg2k3 < 1.0.2.1
+			// Check CODE segment size to be sure
+			if (code_size > 0xB0000) {
+				return Player::EngineRpg2k3;
+			}
+
 			return Player::EngineRpg2k | Player::EngineMajorUpdated;
 		}
 

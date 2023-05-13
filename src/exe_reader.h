@@ -46,6 +46,7 @@ public:
 		uint64_t version = 0;
 		int logos = 0;
 		std::string version_str;
+		uint32_t code_size = 0;
 		bool is_i386 = true;
 		bool is_easyrpg_player = false;
 

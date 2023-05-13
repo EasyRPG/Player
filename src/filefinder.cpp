@@ -281,8 +281,7 @@ std::string FileFinder::GetPathInsidePath(StringView path_to, StringView path_in
 }
 
 std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
-	// FIXME return FileFinder::GetPathInsidePath(ToString(Root().GetRootPath()), path_in);
-	return ToString(path_in);
+	return FileFinder::GetPathInsidePath(Game().GetFullPath(), path_in);
 }
 
 void FileFinder::Quit() {
