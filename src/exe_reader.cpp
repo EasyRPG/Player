@@ -26,22 +26,23 @@
 #include <fstream>
 
 EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(core)) {
-	// The Incredibly Dumb Resource Grabber (tm)
-	// The idea is that this code will eventually be moved to happen earlier or broken down as-needed.
-	// Since EXFONT is the only thing that matters right now, it's the only thing handled.
+	// The Incredibly Dumb PE parser (tm)
+	// Extracts data from the resource section for engine detection and can read ExFont.
 	uint32_t ofs = GetU32(0x3C);
 	uint16_t machine = GetU16(ofs + 4);
 	if (machine != 0x14c) {
+		// FIXME: Newer versions of Maniac Patch can be 64 Bit
 		Output::Debug("EXEReader: Machine type is not i386 ({:#x})", machine);
 		file_info.is_i386 = false;
 		return;
 	}
 
-	uint16_t sections = GetU16(ofs + 6);
+	// The largest known exe has 11 segments, guard against bogus section data here
+	uint16_t sections = std::min<uint16_t>(GetU16(ofs + 6), 11);
 	uint32_t sectionsOfs = ofs + 0x18 + GetU16(ofs + 0x14);
 	resource_rva = GetU32(ofs + 0x88);
 	if (!resource_rva) {
-		resource_ofs = 0;
+		// Is some kind of encrypted EXE -> Give up
 		return;
 	}
 	while (sections) {
@@ -56,21 +57,22 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 
 		if (secName == 0x45444F43) { // CODE
 			file_info.code_size = sectVs;
+		} else if (secName == 0x52454843) { // CHER(RY)
+			file_info.cherry_size = sectVs;
+		} else if (secName == 0x50454547) { // GEEP
+			file_info.geep_size = sectVs;
+		} else if (secName == 0x30585055) { // UPX0
+			Output::Debug("EXE is UPX compressed. Engine detection could be incorrect.");
 		}
 
 		uint32_t sectRva = GetU32(sectionsOfs + 0x0C);
 		uint32_t sectRdptr = GetU32(sectionsOfs + 0x14);
-		if ((sectRva <= resource_rva) && ((sectRva + sectVs) > resource_rva)) {
+		if (resource_ofs == 0 && (sectRva <= resource_rva) && ((sectRva + sectVs) > resource_rva)) {
 			// Resources located.
 			resource_ofs = sectRdptr + (resource_rva - sectRva);
-			break;
 		}
 		sections--;
 		sectionsOfs += 0x28;
-	}
-	if (sections == 0) {
-		resource_rva = 0;
-		resource_ofs = 0;
 	}
 }
 
@@ -306,10 +308,12 @@ bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 }
 
 void EXEReader::FileInfo::Print() const {
-	Output::Debug("RPG_RT information: version={} logos={} code={:#x} i386={} easyrpg={}", version_str, logos, code_size, is_i386, is_easyrpg_player);
+	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} i386={} easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, is_i386, is_easyrpg_player);
 }
 
-int EXEReader::FileInfo::GetEngineType() const {
+int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
+	is_maniac_patch = false;
+
 	if (is_easyrpg_player || !is_i386) {
 		return Player::EngineNone;
 	}
@@ -332,16 +336,27 @@ int EXEReader::FileInfo::GetEngineType() const {
 		return Player::EngineNone;
 	}
 
-	// Everything with a VERSIONINFO must have one logo
-	if (logos != 1) {
-		return Player::EngineNone;
-	}
-
 	std::array<decltype(version), 4> ver = {
 		(version >> 48) & 0xFF,
 		(version >> 32) & 0xFF,
 		(version >> 16) & 0xFF,
 		(version & 0xFF)};
+
+	if (logos == 0) {
+		// New version of Maniac Patch is version 1.1.2.1 and is an rewrite of the engine
+		// Has no logos, no CODE segment and no CHERRY segment
+		if (ver[0] == 1 && ver[1] == 1 && ver[2] == 2 && ver[3] == 1 && code_size == 0 && cherry_size == 0) {
+			is_maniac_patch = true;
+			return Player::EngineRpg2k3 | Player::EngineMajorUpdated | Player::EngineEnglish;
+		}
+
+		return Player::EngineNone;
+	}
+
+	// Everything else with a VERSIONINFO must have one logo
+	if (logos != 1) {
+		return Player::EngineNone;
+	}
 
 	if (ver[0] == 1) {
 		if (ver[1] == 6) {
@@ -355,6 +370,13 @@ int EXEReader::FileInfo::GetEngineType() const {
 				return Player::EngineRpg2k3 | Player::EngineMajorUpdated;
 			}
 		} else if (ver[1] == 1) {
+			if (ver[2] == 2 && ver[3] == 1) {
+				// Old versions of Maniac Patch are a hacked 1.1.2.1
+				// The first versions have a GEEP segment (No idea what this abbreviation means)
+				// Later versions have no GEEP segment but an enlarged CHERRY segment
+				is_maniac_patch = (geep_size > 0 || cherry_size > 0x10000);
+			}
+
 			return Player::EngineRpg2k3 | Player::EngineMajorUpdated | Player::EngineEnglish;
 		}
 	}
