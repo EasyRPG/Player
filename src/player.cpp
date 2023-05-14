@@ -1240,7 +1240,7 @@ void Player::SetupBattleTest() {
 		}
 
 		Output::Debug("BattleTest Mode 2k3 troop=({}) background=({}) formation=({}) condition=({}) terrain=({})",
-				args.troop_id, args.background.c_str(), args.formation, args.condition, args.terrain_id);
+				args.troop_id, args.background, static_cast<int>(args.formation), static_cast<int>(args.condition), args.terrain_id);
 	} else {
 		Output::Debug("BattleTest Mode 2k troop=({}) background=({})", args.troop_id, args.background);
 	}

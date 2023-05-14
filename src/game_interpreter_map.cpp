@@ -345,7 +345,7 @@ bool Game_Interpreter_Map::CommandEndShop(lcf::rpg::EventCommand const& /* com *
 
 bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { // code 10730
 	int inn_type = com.parameters[0];
-	auto inn_price = com.parameters[1];
+	int inn_price = com.parameters[1];
 	// Not used, but left here for documentation purposes
 	// bool has_inn_handlers = com.parameters[2] != 0;
 

@@ -2187,7 +2187,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 	if (!vehicle) {
-		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID {}", vehicle_id);
+		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID {}", static_cast<int>(vehicle_id));
 		return true;
 	}
 
@@ -2261,7 +2261,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 			// 0 because we adjust all vehicle IDs by +1 to match the lcf values
 			Output::Debug("SetVehicleLocation: Party referenced");
 		} else {
-			Output::Warning("SetVehicleLocation: Invalid vehicle ID {}", vehicle_id);
+			Output::Warning("SetVehicleLocation: Invalid vehicle ID {}", static_cast<int>(vehicle_id));
 			return true;
 		}
 	}
@@ -3494,7 +3494,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 		if (!vehicle) {
-			Output::Warning("ConditionalBranch: Invalid vehicle ID {}", vehicle_id);
+			Output::Warning("ConditionalBranch: Invalid vehicle ID {}", static_cast<int>(vehicle_id));
 			return true;
 		}
 
