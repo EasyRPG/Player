@@ -763,7 +763,6 @@ void Player::CreateGameObjects() {
 	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
 
 	if (exeis) {
-		Output::Debug("Analyzing RPG_RT {}", exeis.GetName());
 		exe_reader.reset(new EXEReader(std::move(exeis)));
 		Cache::exfont_custom = exe_reader->GetExFont();
 		if (!Cache::exfont_custom.empty()) {
@@ -773,7 +772,11 @@ void Player::CreateGameObjects() {
 		if (engine == EngineNone) {
 			auto version_info = exe_reader->GetFileInfo();
 			version_info.Print();
-			engine = version_info.GetEngineType();
+			bool is_patch_maniac;
+			engine = version_info.GetEngineType(is_patch_maniac);
+			if (!game_config.patch_override) {
+				game_config.patch_maniac.Set(is_patch_maniac);
+			}
 		}
 
 		if (engine == EngineNone) {
@@ -785,7 +788,7 @@ void Player::CreateGameObjects() {
 #endif
 
 	if (exfont_stream) {
-		Output::Debug("Using custom ExFont: {}", exfont_stream.GetName());
+		Output::Debug("Using custom ExFont: {}", FileFinder::GetPathInsideGamePath(exfont_stream.GetName()));
 		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
