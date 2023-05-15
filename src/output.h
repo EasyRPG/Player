@@ -22,16 +22,7 @@
 #include <string>
 #include <iosfwd>
 #include <fmt/core.h>
-#include <lcf/dbstring.h>
-
 #include "filesystem_stream.h"
-
-namespace lcf {
-// FIXME: liblcf doesn't depend on fmt, so we need to add this here to enable fmtlib support for lcf::DBString
-inline fmt::basic_string_view<char> to_string_view(const lcf::DBString& s) {
-	return to_string_view(StringView(s));
-}
-}
 
 enum class LogLevel {
 	Error,

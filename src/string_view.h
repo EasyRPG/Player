@@ -22,9 +22,9 @@
 #include <lcf/dbstring.h>
 #include <fmt/core.h>
 
-// FIXME: needed to allow building with fmt 5, older versions are untested.
+// Needed to allow building with fmt 5, older versions are untested.
 #if FMT_VERSION < 60000
-#include <fmt/ostream.h>
+#  include <fmt/ostream.h>
 #endif
 
 using StringView = lcf::StringView;
@@ -33,12 +33,33 @@ using U32StringView = lcf::U32StringView;
 using lcf::ToString;
 using lcf::ToStringView;
 
+// Version required to use the new formatting API
+#define EP_FMT_MODERN_VERSION 80000
+
 // FIXME: liblcf doesn't depend on fmt, so we need to add this here to enable fmtlib support for our StringView.
+#if FMT_VERSION >= EP_FMT_MODERN_VERSION
+template<>
+struct fmt::formatter<lcf::StringView> : fmt::formatter<fmt::string_view> {
+	auto format(const lcf::StringView& s, format_context& ctx) const -> decltype(ctx.out());
+};
+
+template<>
+struct fmt::formatter<lcf::DBString> : formatter<string_view> {
+	auto format(const lcf::DBString& s, format_context& ctx) const -> decltype(ctx.out());
+};
+#else
 namespace nonstd { namespace sv_lite {
 template <typename C, typename T>
 inline fmt::basic_string_view<C> to_string_view(basic_string_view<C,T> s) {
-    return fmt::basic_string_view<C>(s.data(), s.size());
+	return fmt::basic_string_view<C>(s.data(), s.size());
 }
 } }
+
+namespace lcf {
+inline fmt::basic_string_view<char> to_string_view(const lcf::DBString& s) {
+	return to_string_view(StringView(s));
+}
+}
+#endif
 
 #endif

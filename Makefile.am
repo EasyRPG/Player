@@ -327,6 +327,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/state.cpp \
 	src/state.h \
 	src/std_clock.h \
+	src/string_view.cpp \
 	src/string_view.h \
 	src/system.h \
 	src/teleport_target.h \
