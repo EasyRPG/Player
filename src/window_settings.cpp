@@ -276,10 +276,16 @@ void Window_Settings::RefreshAudio() {
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
-	// FIXME: Remove the &cfg after moving to VS2022
+	// FIXME: Binding &cfg is not needed and generates a warning but requires it
+#ifdef _MSC_VER
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
+#else
+	AddOption(cfg.settings_autosave, [](){ cfg.settings_autosave.Toggle(); });
+	AddOption(cfg.settings_in_title, [](){ cfg.settings_in_title.Toggle(); });
+	AddOption(cfg.settings_in_menu, [](){ cfg.settings_in_menu.Toggle(); });
+#endif
 }
 
 void Window_Settings::RefreshLicense() {

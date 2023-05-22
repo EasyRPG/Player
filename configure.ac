@@ -149,8 +149,8 @@ esac
 # Pass the conditionals to automake
 AM_CONDITIONAL([MACOS], [test "$EP_BUILD_MAC" = "YES"])
 
-# C++14 is mandatory
-AX_CXX_COMPILE_STDCXX(14, noext)
+# C++17 is mandatory
+AX_CXX_COMPILE_STDCXX(17, noext)
 
 # Checks for header files.
 AC_CHECK_HEADERS([cstdint cstdlib string iostream unistd.h wchar.h])
