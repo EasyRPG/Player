@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -33,6 +34,9 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
     public static final String TAG_ORIENTATION = "orientation";
     public static final int TAG_ORIENTATION_VALUE_HORIZONTAL = 0,TAG_ORIENTATION_VALUE_VERTICAL = 1;
+
+    public static boolean samsungMultitouchWorkaround = false;
+    public static int pointerCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,12 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
             drawButtons();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        pointerCount = ev.getPointerCount();
+        return super.dispatchTouchEvent(ev);
     }
 
     /**
@@ -252,12 +262,29 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
         switch (action) {
             case (MotionEvent.ACTION_DOWN):
+                // Samsung reports incorrect coordinates when a multitouch across multiple views
+                // happens while a game is running. When the bug happens then a touch event will
+                // report out-of-bounds coordinates for the initial touch. We use this to detect
+                // the bug (see #2915)
+                if (pointerCount > 1 && (event.getX() < 0 || event.getY() < 0)) {
+                    Log.i("EasyRPG", "Applying Samsung Touch Workaround");
+                    samsungMultitouchWorkaround = true;
+                }
+                // fallthrough
             case (MotionEvent.ACTION_MOVE):
                 // Calculation of the new view position
+                ViewGroup parentVg = (ViewGroup)v.getParent();
+
                 x = (v.getLeft() + event.getX() - v.getWidth() / 2f)
-                        / v.getResources().getDisplayMetrics().widthPixels;
+                        / parentVg.getMeasuredWidth();
                 y = (v.getTop() + event.getY() - v.getHeight() / 2f)
-                        / v.getResources().getDisplayMetrics().heightPixels;
+                        / parentVg.getMeasuredHeight();
+
+                if (pointerCount > 1 && samsungMultitouchWorkaround) {
+                    double scale = Helper.getTouchScale(v.getContext());
+                    x /= scale;
+                    y /= scale;
+                }
 
                 // Rounding (x,y) in order to place the buttons on a grid
                 x = Math.round(x*100f) / 100f;

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.player.EasyRpgPlayerActivity;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
@@ -60,13 +62,23 @@ public class VirtualCross extends VirtualButton {
             int action = event.getActionMasked();
             int keyCode = -1;
 
-            if (boundLeft.contains(this.getLeft() + (int) event.getX(), this.getTop() + (int) event.getY())) {
+            float x = event.getX() + this.getLeft();
+            float y = event.getY() + this.getTop();
+
+            // bug is hard to detect here, instead rely on the detection by the other buttons (see #2915)
+            if (EasyRpgPlayerActivity.pointerCount > 1 && EasyRpgPlayerActivity.samsungMultitouchWorkaround) {
+                double scale = Helper.getTouchScale(getContext());
+                x /= scale;
+                y /= scale;
+            }
+
+            if (boundLeft.contains((int)x, (int)y)) {
                 keyCode = KeyEvent.KEYCODE_DPAD_LEFT;
-            } else if (boundRight.contains(this.getLeft() + (int) event.getX(), this.getTop() + (int) event.getY())) {
+            } else if (boundRight.contains((int)x, (int)y)) {
                 keyCode = KeyEvent.KEYCODE_DPAD_RIGHT;
-            } else if (boundUp.contains(this.getLeft() + (int) event.getX(), this.getTop() + (int) event.getY())) {
+            } else if (boundUp.contains((int)x, (int)y)) {
                 keyCode = KeyEvent.KEYCODE_DPAD_UP;
-            } else if (boundDown.contains(this.getLeft() + (int) event.getX(), this.getTop() + (int) event.getY())) {
+            } else if (boundDown.contains((int)x, (int)y)) {
                 keyCode = KeyEvent.KEYCODE_DPAD_DOWN;
             }
 

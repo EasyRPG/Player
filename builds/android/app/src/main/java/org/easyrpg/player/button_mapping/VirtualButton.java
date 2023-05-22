@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.player.EasyRpgPlayerActivity;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
@@ -20,7 +22,6 @@ public class VirtualButton extends View {
     protected int originalSize, originalLetterSize, resizeFactor, realSize;
     protected char charButton; // The char displayed on the button
     protected Paint painter;
-    protected Rect bound;
     protected boolean isPressed; // To know when the touch go out the button
     protected boolean debug_mode;
     protected Activity activity;
@@ -130,20 +131,38 @@ public class VirtualButton extends View {
         if (debug_mode) {
             ButtonMappingActivity.dragVirtualButton(this, event);
         } else {
-            bound = new Rect(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
-
             int action = event.getActionMasked();
 
             switch (action) {
                 case (MotionEvent.ACTION_DOWN):
+                    if (EasyRpgPlayerActivity.pointerCount > 1 && (event.getX() < 0 || event.getY() < 0)) {
+                        // Samsung reports incorrect coordinates when a multitouch across multiple views
+                        // happens while a game is running. When the bug happens then a touch event will
+                        // report out-of-bounds coordinates for the initial touch. We use this to detect
+                        // the bug (see #2915)
+                        Log.i("EasyRPG", "Applying Samsung Touch Workaround");
+                        EasyRpgPlayerActivity.samsungMultitouchWorkaround = true;
+                    }
                     onPressed();
                     return true;
                 case (MotionEvent.ACTION_UP):
                     onReleased();
                     return true;
                 case (MotionEvent.ACTION_MOVE):
-                    if (!bound.contains(this.getLeft() + (int) event.getX(), this.getTop() + (int) event.getY())) {
+                    float x = event.getX() + this.getLeft();
+                    float y = event.getY() + this.getTop();
+
+                    Rect bound = new Rect(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
+
+                    if (EasyRpgPlayerActivity.pointerCount > 1 && EasyRpgPlayerActivity.samsungMultitouchWorkaround) {
+                        double scale = Helper.getTouchScale(getContext());
+                        x /= scale;
+                        y /= scale;
+                    }
+
+                    if (!bound.contains((int)x, (int)y)) {
                         // User moved outside bounds
+                        Log.i("EasyRPG", "Outside");
                         onReleased();
                     }
                     return true;
