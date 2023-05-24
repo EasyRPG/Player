@@ -432,6 +432,10 @@ public:
 
 	/** @return the RpgRt event message active flag */
 	bool GetMessageEventMessageActive();
+
+	/** @return Whether the game was loaded from a savegame in the current frame */
+	bool IsLoadedThisFrame() const;
+
 private:
 	void OnBgmReady(FileRequestResult* result);
 	void OnBgmInelukiReady(FileRequestResult* result);
@@ -445,6 +449,7 @@ private:
 	std::map<std::string, FileRequestBinding> se_request_ids;
 	Color bg_color = Color{ 0, 0, 0, 255 };
 	bool bgm_pending = false;
+	uint32_t loaded_frame_count = 0;
 };
 
 inline bool Game_System::HasSystemGraphic() {
@@ -536,6 +541,10 @@ inline void Game_System::SetMessageEventMessageActive(bool value) {
 
 inline bool Game_System::GetMessageEventMessageActive() {
 	return data.event_message_active;
+}
+
+inline bool Game_System::IsLoadedThisFrame() const {
+	return loaded_frame_count + 1 == data.frame_count;
 }
 
 inline Game_System::AtbMode Game_System::GetAtbMode() {

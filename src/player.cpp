@@ -1180,6 +1180,8 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	if (!load_on_map) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
 	} else {
+		// Increment frame counter for consistency with a normal savegame load
+		IncFrame();
 		Scene::instance->Start();
 	}
 }

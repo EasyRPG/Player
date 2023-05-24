@@ -275,7 +275,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 							case 'C':
 							{
 								// Color
-								Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+								text_index = Game_Message::ParseColor(text_index, end, Player::escape_char, true).next;
 							}
 							break;
 						}

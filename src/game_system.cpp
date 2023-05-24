@@ -43,6 +43,7 @@ Game_System::Game_System()
 
 void Game_System::SetupFromSave(lcf::rpg::SaveSystem save) {
 	data = std::move(save);
+	loaded_frame_count = data.frame_count;
 }
 
 const lcf::rpg::SaveSystem& Game_System::GetSaveData() const {
