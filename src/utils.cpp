@@ -96,7 +96,7 @@ int Utils::StrICmp(StringView l, StringView r) {
 std::u16string Utils::DecodeUTF16(StringView str) {
 	std::u16string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
-		uint8_t c1 = *it;
+		uint8_t c1 = static_cast<uint8_t>(*it);
 		if (c1 < 0x80) {
 			result.push_back(static_cast<uint16_t>(c1));
 		}
@@ -106,7 +106,7 @@ std::u16string Utils::DecodeUTF16(StringView str) {
 		else if (c1 < 0xE0) {
 			if (str_end-it < 2)
 				break;
-			uint8_t c2 = *(++it);
+			uint8_t c2 = static_cast<uint8_t>(*(++it));
 			if ((c2 & 0xC0) != 0x80)
 				continue;
 			result.push_back(static_cast<uint16_t>(((c1 & 0x1F) << 6) | (c2 & 0x3F)));
@@ -114,8 +114,8 @@ std::u16string Utils::DecodeUTF16(StringView str) {
 		else if (c1 < 0xF0) {
 			if (str_end-it < 3)
 				break;
-			uint8_t c2 = *(++it);
-			uint8_t c3 = *(++it);
+			uint8_t c2 = static_cast<uint8_t>(*(++it));
+			uint8_t c3 = static_cast<uint8_t>(*(++it));
 			if (c1 == 0xE0) {
 				if ((c2 & 0xE0) != 0xA0)
 					continue;
@@ -135,9 +135,9 @@ std::u16string Utils::DecodeUTF16(StringView str) {
 		else if (c1 < 0xF5) {
 			if (str_end-it < 4)
 				break;
-			uint8_t c2 = *(++it);
-			uint8_t c3 = *(++it);
-			uint8_t c4 = *(++it);
+			uint8_t c2 = static_cast<uint8_t>(*(++it));
+			uint8_t c3 = static_cast<uint8_t>(*(++it));
+			uint8_t c4 = static_cast<uint8_t>(*(++it));
 			if (c1 == 0xF0) {
 				if (!(0x90 <= c2 && c2 <= 0xBF))
 					continue;
@@ -171,7 +171,7 @@ std::u16string Utils::DecodeUTF16(StringView str) {
 std::u32string Utils::DecodeUTF32(StringView str) {
 	std::u32string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
-		uint8_t c1 = *it;
+		uint8_t c1 = static_cast<uint8_t>(*it);
 		if (c1 < 0x80) {
 			result.push_back(static_cast<uint32_t>(c1));
 		}
@@ -190,8 +190,8 @@ std::u32string Utils::DecodeUTF32(StringView str) {
 		else if (c1 < 0xF0) {
 			if (str_end-it < 3)
 				break;
-			uint8_t c2 = *(++it);
-			uint8_t c3 = *(++it);
+			uint8_t c2 = static_cast<uint8_t>(*(++it));
+			uint8_t c3 = static_cast<uint8_t>(*(++it));
 			if (c1 == 0xE0) {
 				if ((c2 & 0xE0) != 0xA0)
 					continue;
@@ -211,9 +211,9 @@ std::u32string Utils::DecodeUTF32(StringView str) {
 		else if (c1 < 0xF5) {
 			if (str_end-it < 4)
 				break;
-			uint8_t c2 = *(++it);
-			uint8_t c3 = *(++it);
-			uint8_t c4 = *(++it);
+			uint8_t c2 = static_cast<uint8_t>(*(++it));
+			uint8_t c3 = static_cast<uint8_t>(*(++it));
+			uint8_t c4 = static_cast<uint8_t>(*(++it));
 			if (c1 == 0xF0) {
 				if (!(0x90 <= c2 && c2 <= 0xBF))
 					continue;
@@ -240,16 +240,16 @@ std::string Utils::EncodeUTF(const std::u16string& str) {
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint16_t wc1 = *it;
 		if (wc1 < 0x0080) {
-			result.push_back(static_cast<uint8_t>(wc1));
+			result.push_back(static_cast<char>(wc1));
 		}
 		else if (wc1 < 0x0800) {
-			result.push_back(static_cast<uint8_t>(0xC0 | (wc1 >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 | (wc1 & 0x03F)));
+			result.push_back(static_cast<char>(0xC0 | (wc1 >> 6)));
+			result.push_back(static_cast<char>(0x80 | (wc1 & 0x03F)));
 		}
 		else if (wc1 < 0xD800) {
-			result.push_back(static_cast<uint8_t>(0xE0 |  (wc1 >> 12)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0FC0) >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 |  (wc1 & 0x003F)));
+			result.push_back(static_cast<char>(0xE0 |  (wc1 >> 12)));
+			result.push_back(static_cast<char>(0x80 | ((wc1 & 0x0FC0) >> 6)));
+			result.push_back(static_cast<char>(0x80 |  (wc1 & 0x003F)));
 		}
 		else if (wc1 < 0xDC00) {
 			if (str_end-it < 2)
@@ -261,18 +261,18 @@ std::string Utils::EncodeUTF(const std::u16string& str) {
 				((wc1 & 0x003FUL) << 10) + (wc2 & 0x03FF) > 0x10FFFF)
 				continue;
 			uint8_t z = ((wc1 & 0x03C0) >> 6) + 1;
-			result.push_back(static_cast<uint8_t>(0xF0 | (z >> 2)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((z & 0x03) << 4)     | ((wc1 & 0x003C) >> 2)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0003) << 4) | ((wc2 & 0x03C0) >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 |  (wc2 & 0x003F)));
+			result.push_back(static_cast<char>(0xF0 | (z >> 2)));
+			result.push_back(static_cast<char>(0x80 | ((z & 0x03) << 4)     | ((wc1 & 0x003C) >> 2)));
+			result.push_back(static_cast<char>(0x80 | ((wc1 & 0x0003) << 4) | ((wc2 & 0x03C0) >> 6)));
+			result.push_back(static_cast<char>(0x80 |  (wc2 & 0x003F)));
 		}
 		else if (wc1 < 0xE000) {
 			continue;
 		}
 		else {
-			result.push_back(static_cast<uint8_t>(0xE0 |  (wc1 >> 12)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0FC0) >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 |  (wc1 & 0x003F)));
+			result.push_back(static_cast<char>(0xE0 |  (wc1 >> 12)));
+			result.push_back(static_cast<char>(0x80 | ((wc1 & 0x0FC0) >> 6)));
+			result.push_back(static_cast<char>(0x80 |  (wc1 & 0x003F)));
 		}
 	}
 	return result;
@@ -284,22 +284,22 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 		if ((wc & 0xFFFFF800) == 0x00D800 || wc > 0x10FFFF)
 			break;
 		if (wc < 0x000080) {
-			result.push_back(static_cast<uint8_t>(wc));
+			result.push_back(static_cast<char>(wc));
 		}
 		else if (wc < 0x000800) {
-			result.push_back(static_cast<uint8_t>(0xC0 | (wc >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 | (wc & 0x03F)));
+			result.push_back(static_cast<char>(0xC0 | (wc >> 6)));
+			result.push_back(static_cast<char>(0x80 | (wc & 0x03F)));
 		}
 		else if (wc < 0x010000) {
-			result.push_back(static_cast<uint8_t>(0xE0 |  (wc >> 12)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x0FC0) >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 |  (wc & 0x003F)));
+			result.push_back(static_cast<char>(0xE0 |  (wc >> 12)));
+			result.push_back(static_cast<char>(0x80 | ((wc & 0x0FC0) >> 6)));
+			result.push_back(static_cast<char>(0x80 |  (wc & 0x003F)));
 		}
 		else {
-			result.push_back(static_cast<uint8_t>(0xF0 |  (wc >> 18)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x03F000) >> 12)));
-			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x000FC0) >> 6)));
-			result.push_back(static_cast<uint8_t>(0x80 |  (wc & 0x00003F)));
+			result.push_back(static_cast<char>(0xF0 |  (wc >> 18)));
+			result.push_back(static_cast<char>(0x80 | ((wc & 0x03F000) >> 12)));
+			result.push_back(static_cast<char>(0x80 | ((wc & 0x000FC0) >> 6)));
+			result.push_back(static_cast<char>(0x80 |  (wc & 0x00003F)));
 		}
 	}
 	return result;
@@ -307,7 +307,7 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 
 Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 	while (iter != end) {
-		uint8_t c1 = *iter;
+		uint8_t c1 = static_cast<uint8_t>(*iter);
 		++iter;
 		if (c1 < 0x80) {
 			return { iter, static_cast<uint32_t>(c1) };
@@ -318,7 +318,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 		if (iter == end) {
 			break;
 		}
-		uint8_t c2 = *iter;
+		uint8_t c2 = static_cast<uint8_t>(*iter);
 		++iter;
 		if (c1 < 0xE0) {
 			if ((c2 & 0xC0) != 0x80)
@@ -329,7 +329,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 		if (iter == end) {
 			break;
 		}
-		uint8_t c3 = *iter;
+		uint8_t c3 = static_cast<uint8_t>(*iter);
 		++iter;
 		if (c1 < 0xF0) {
 			if (c1 == 0xE0) {
@@ -352,7 +352,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 		if (iter == end) {
 			break;
 		}
-		uint8_t c4 = *iter;
+		uint8_t c4 = static_cast<uint8_t>(*iter);
 		++iter;
 		if (c1 < 0xF5) {
 			if (c1 == 0xF0) {
