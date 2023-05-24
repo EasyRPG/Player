@@ -997,10 +997,10 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 	endif()
 
 	# opusfile
-	player_find_package(NAME Opusfile
+	player_find_package(NAME OpusFile
 		CONDITION PLAYER_WITH_OPUS
 		DEFINITION HAVE_OPUS
-		TARGET Opusfile::Opusfile)
+		TARGET OpusFile::opusfile)
 
 	# wildmidi
 	player_find_package(NAME WildMidi
@@ -1490,7 +1490,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 		message(STATUS "MOD playback: None")
 	endif()
 
-	if(TARGET Opusfile::Opusfile)
+	if(TARGET OpusFile::opusfile)
 		message(STATUS "Opus playback: opusfile")
 	else()
 		message(STATUS "Opus playback: None")
