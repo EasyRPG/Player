@@ -83,14 +83,14 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, Telep
 }
 
 void Game_Player::ReserveTeleport(const lcf::rpg::SaveTarget& target) {
-	int map_id = target.map_id;
+	const auto* target_map_info = &Game_Map::GetMapInfo(target.map_id);
 
-	if (Game_Map::GetMapType(target.map_id) == lcf::rpg::TreeMap::MapType_area) {
+	if (target_map_info->type == lcf::rpg::TreeMap::MapType_area) {
 		// Area: Obtain the map the area belongs to
-		map_id = Game_Map::GetParentId(target.map_id);
+		target_map_info = &Game_Map::GetParentMapInfo(*target_map_info);
 	}
 
-	ReserveTeleport(map_id, target.map_x, target.map_y, Down, TeleportTarget::eSkillTeleport);
+	ReserveTeleport(target_map_info->ID, target.map_x, target.map_y, Down, TeleportTarget::eSkillTeleport);
 
 	if (target.switch_on) {
 		Main_Data::game_switches->Set(target.switch_id, true);
