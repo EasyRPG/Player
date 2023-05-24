@@ -687,10 +687,10 @@ public:
 	virtual int GetScreenY(bool apply_shift = false, bool apply_jump = true) const;
 
 	/**
-	 * Gets screen z coordinate in pixels.
+	 * Gets screen z coordinate
 	 *
 	 * @param apply_shift Forwarded to GetScreenY
-	 * @return screen z coordinate in pixels.
+	 * @return screen z coordinate
 	 */
 	virtual Drawable::Z_t GetScreenZ(bool apply_shift = false) const;
 
