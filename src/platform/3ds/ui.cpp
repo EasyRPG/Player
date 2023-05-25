@@ -56,7 +56,8 @@ namespace {
 	constexpr int width_pow2 = 512;
 	constexpr int height_pow2 = 256;
 	constexpr int z = 0.5f;
-	u32* main_buffer;
+	u32* screen_buffer;
+	BitmapRef screen_surface; // contains screen_surface, linear heap allocated
 	aptHookCookie cookie;
 #ifndef _DEBUG
 	struct _batt {
@@ -136,17 +137,13 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 
-	const DynamicFormat format(
-		32,
-		0x00FF0000,
-		0x0000FF00,
-		0x000000FF,
-		0xFF000000,
-		PF::NoAlpha);
+	const auto format = format_B8G8R8A8_n().format();
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
+	main_surface = Bitmap::Create(width, height, Color(0, 0, 0, 255));
 
-	main_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
-	main_surface = Bitmap::Create(main_buffer, width, height, width_pow2*4, format);
+	const auto screen_format = format_A8B8G8R8_n().format();
+	screen_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
+	screen_surface = Bitmap::Create(screen_buffer, width, height, width_pow2*4, screen_format);
 
 	// default for both screens
 	subt3x.width = width_pow2;
@@ -312,26 +309,12 @@ void CtrUi::ProcessEvents() {
 #endif
 }
 
-static __attribute__((always_inline, optimize(3))) inline u32 NDS3D_Reverse32(u32 val)
-{
-	__asm("ROR %0, %1, #24" : "=r" (val) : "r" (val));
-
-	return val;
-}
-
 void CtrUi::UpdateDisplay() {
-	// rotate ARGB buffer to RGBA buffer
-	// required because pixman has no fast-paths for non AXXX buffers
-	u32* line = main_buffer;
-	for (int i = 0; i <= 240; ++i) {
-		for (int j = 0; j <= 320; ++j) {
-			u32* val = line + j;
-			*val = NDS3D_Reverse32(*val);
-		}
-		line += width_pow2;
-	}
+	// convert ARGB buffer to RGBA buffer
+	// required because pixman has no fast-paths for non AXXX buffers and 3DS wants RGBA
+	screen_surface->BlitFast(0, 0, *main_surface, main_surface->GetRect(), Opacity::Opaque());
 
-	GSPGPU_FlushDataCache(main_buffer, (width_pow2*height_pow2*4));
+	GSPGPU_FlushDataCache(screen_buffer, (width_pow2*height_pow2*4));
 
 	// Using RGB8 as output format is faster and improves framerate ¯\_(ツ)_/¯
 	const u32 flags = (GX_TRANSFER_FLIP_VERT(0) |
@@ -344,7 +327,7 @@ void CtrUi::UpdateDisplay() {
 	// Doing this after FrameBegin corrupts the output, probably because this
 	// is asynchronous and FrameBegin will block until it finishes
 	C3D_SyncDisplayTransfer(
-		(u32*)main_buffer,
+		(u32*)screen_buffer,
 		GX_BUFFER_DIM(width_pow2, height_pow2),
 		(u32*)top_image.tex->data,
 		GX_BUFFER_DIM(width_pow2, height_pow2),
