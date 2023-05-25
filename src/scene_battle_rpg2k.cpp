@@ -460,6 +460,8 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 			SetCommandWindows(Player::menu_offset_x);
 		}
 		SetSceneActionSubState(eWaitForInput);
+		// Prevent that DECISION from a closed message triggers a battle option in eWaitForInput
+		Input::ResetTriggerKeys();
 		return SceneActionReturn::eContinueThisFrame;
 	}
 
