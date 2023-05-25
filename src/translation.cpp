@@ -38,7 +38,6 @@
 
 // Name of the translate directory
 #define TRDIR_NAME "language"
-#define TRDIR_NAME_LEGACY "languages"
 
 // Name of expected files
 #define TRFILE_RPG_RT_LDB    "rpg_rt.ldb.po"
@@ -94,11 +93,9 @@ void Translation::InitTranslations()
 	auto fs = FileFinder::Game();
 	auto game_tree = fs.ListDirectory();
 	for (const auto& tr_name : *game_tree) {
-		if (tr_name.first == TRDIR_NAME_LEGACY) {
-			Output::Warning("Deprecation warning: Please rename \"languages\" directory to \"language\"");
+		if (tr_name.first == TRDIR_NAME) {
 			translation_root_fs = fs.Subtree(tr_name.second.name);
-		} else if (tr_name.first == TRDIR_NAME) {
-			translation_root_fs = fs.Subtree(tr_name.second.name);
+			break;
 		}
 	}
 	if (translation_root_fs) {
