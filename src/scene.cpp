@@ -203,6 +203,8 @@ void Scene::MainFunction() {
 			TransitionOut(next_scene);
 		}
 
+		Input::ResetKeys();
+
 		init = false;
 	}
 }
