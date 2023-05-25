@@ -113,8 +113,8 @@ int64_t SafFilesystem::GetFilesize(StringView path) const {
 
 class FdStreamBufIn : public std::streambuf {
 public:
-	FdStreamBufIn(int fd) : std::streambuf(), fd(fd) {
-		setg(buffer_start, buffer_end, buffer_end);
+	FdStreamBufIn(int fd, std::array<char, 4096> buffer, ssize_t bytes_read) : std::streambuf(), fd(fd), buffer(buffer) {
+		setg(buffer_start, buffer_start, buffer_start + bytes_read);
 	}
 
 	~FdStreamBufIn() override {
@@ -171,7 +171,19 @@ std::streambuf* SafFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		return nullptr;
 	}
 
-	return new FdStreamBufIn(fd);
+	// When the URI points to an inexistant file SAF will give us a fd to a directory
+	// Try reading from the descriptor and if it fails consider it invalid
+	// This is faster than querying SAF if the file exists beforehand
+	std::array<char, 4096> buffer;
+	ssize_t bytes_read = read(fd, buffer.data(), buffer.size());
+	if (bytes_read < 0) {
+		Output::Debug("read failed: {}", strerror(errno));
+		close(fd);
+		return nullptr;
+	}
+
+	// When successful the buffer is forwarded to avoid a seek-to-beginning
+	return new FdStreamBufIn(fd, buffer, bytes_read);
 }
 
 class FdStreamBufOut : public std::streambuf {
