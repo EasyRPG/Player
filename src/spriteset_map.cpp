@@ -54,8 +54,8 @@ Spriteset_Map::Spriteset_Map() {
 
 void Spriteset_Map::Refresh() {
 	tilemap.reset(new Tilemap());
-	tilemap->SetWidth(Game_Map::GetWidth());
-	tilemap->SetHeight(Game_Map::GetHeight());
+	tilemap->SetWidth(Game_Map::GetTilesX());
+	tilemap->SetHeight(Game_Map::GetTilesY());
 
 	airship_shadows.clear();
 	character_sprites.clear();
