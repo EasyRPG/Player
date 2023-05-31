@@ -38,6 +38,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public static final String TAG_COMMAND_LINE = "command_line";
     public static final String TAG_STANDALONE = "standalone_mode";
     public static final int LAYOUT_EDIT = 12345;
+
+    public static boolean samsungMultitouchWorkaround = false;
+    public static int pointerCount = 0;
 
     DrawerLayout drawer;
     InputLayout inputLayout;
@@ -145,6 +149,12 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         setFastForwardMultiplier(SettingsManager.getFastForwardMultiplier());
 
         showInputLayout();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        pointerCount = ev.getPointerCount();
+        return super.dispatchTouchEvent(ev);
     }
 
     /**

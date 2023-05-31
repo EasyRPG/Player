@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
@@ -318,5 +319,16 @@ public class Helper {
             return mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR);
         }
         return false;
+    }
+
+    public static double getTouchScale(Context context) {
+        // via https://github.com/F0RIS/SamsungMultitouchBugSample/blob/Fix1/app/src/main/java/com/jelly/blob/TouchView.java
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        Point outSmallestSize = new Point();
+        Point outLargestSize = new Point();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        ((Activity)context).getWindowManager().getDefaultDisplay().getCurrentSizeRange(outSmallestSize, outLargestSize);
+
+        return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels) / (float) outLargestSize.x;
     }
 }
