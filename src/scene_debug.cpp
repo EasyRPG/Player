@@ -30,6 +30,7 @@
 #include "game_battle.h"
 #include "scene_debug.h"
 #include "scene_load.h"
+#include "scene_menu.h"
 #include "scene_save.h"
 #include "scene_map.h"
 #include "scene_battle.h"
@@ -285,12 +286,7 @@ void Scene_Debug::vUpdate() {
 		if (mode == eMain) {
 			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
 			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
-				const auto is_battle = Game_Battle::IsBattleRunning();
-				if (
-						(is_battle && (next_mode == eSave || next_mode == eBattle || next_mode == eMap || next_mode == eCallMapEvent))
-						|| (!is_battle && (next_mode == eCallBattleEvent))
-				   )
-				{
+				if (!range_window->IsItemEnabled(range_window->GetIndex())) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 				} else {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
@@ -440,6 +436,9 @@ void Scene_Debug::vUpdate() {
 					}
 				}
 				break;
+			case eOpenMenu:
+				DoOpenMenu();
+				break;
 		}
 		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
@@ -512,6 +511,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Call ComEvent");
 				addItem("Call MapEvent", !is_battle);
 				addItem("Call BtlEvent", is_battle);
+				addItem("Open Menu", !is_battle);
 			}
 			break;
 		case eSwitch:
@@ -836,6 +836,14 @@ void Scene_Debug::DoCallBattleEvent() {
 	Game_Battle::GetInterpreter().Push(page.event_commands, 0, false);
 	Scene::PopUntil(Scene::Battle);
 	Output::Debug("Debug Scene Forced execution of battle troop {} event page {} on the map foreground interpreter.", troop->ID, page.ID);
+}
+
+void Scene_Debug::DoOpenMenu() {
+	if (Scene::Find(Scene::Menu)) {
+		Scene::PopUntil(Scene::Menu);
+	} else {
+		Scene::Push(std::make_shared<Scene_Menu>(), true);
+	}
 }
 
 void Scene_Debug::TransitionIn(SceneType /* prev_scene */) {

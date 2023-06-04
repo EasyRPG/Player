@@ -67,6 +67,7 @@ public:
 		eCallCommonEvent,
 		eCallMapEvent,
 		eCallBattleEvent,
+		eOpenMenu,
 		eLastMainMenuOption,
 	};
 
@@ -109,6 +110,7 @@ private:
 	void DoCallCommonEvent();
 	void DoCallMapEvent();
 	void DoCallBattleEvent();
+	void DoOpenMenu();
 
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
