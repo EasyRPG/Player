@@ -116,9 +116,9 @@ Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
 		z = Priority_EventsAbove;
 	}
 
-	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(apply_shift, false));
-
-	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX(apply_shift));
+	// 0x8000 (32768) is added to shift negative numbers into the positive range
+	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(apply_shift, false) + 0x8000);
+	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX(apply_shift) + 0x8000);
 
 	// The rendering order of characters is: Highest Y-coordinate, Highest X-coordinate, Highest ID
 	// To encode this behaviour all of them get 16 Bit in the Z value
@@ -917,4 +917,3 @@ void Game_Character::UpdateFacing() {
 		SetFacing(dir);
 	}
 }
-
