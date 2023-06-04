@@ -84,6 +84,9 @@ namespace {
 	bool reset_panorama_y_on_next_init = true;
 
 	bool translation_changed = false;
+
+	// Used when the current map is not in the maptree
+	const lcf::rpg::MapInfo empty_map_info;
 }
 
 namespace Game_Map {
@@ -167,16 +170,18 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	}
 
 	// Save allowed
-	int current_index = GetMapIndex(GetMapId());
-	int can_save = lcf::Data::treemap.maps[current_index].save;
-	int can_escape = lcf::Data::treemap.maps[current_index].escape;
-	int can_teleport = lcf::Data::treemap.maps[current_index].teleport;
+	const auto* current_info = &GetMapInfo();
+	int current_index = current_info->ID;
+	int can_save = current_info->save;
+	int can_escape = current_info->escape;
+	int can_teleport = current_info->teleport;
 
 	while (can_save == lcf::rpg::MapInfo::TriState_parent
 			|| can_escape == lcf::rpg::MapInfo::TriState_parent
 			|| can_teleport == lcf::rpg::MapInfo::TriState_parent)
 	{
-		int parent_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
+		const auto* parent_info = &GetParentMapInfo(*current_info);
+		int parent_index = parent_info->ID;
 		if (parent_index == 0) {
 			// If parent is 0 and flag is parent, it's implicitly enabled.
 			break;
@@ -185,19 +190,15 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 			Output::Warning("Map {} has parent pointing to itself!", current_index);
 			break;
 		}
-		if (parent_index < 0) {
-			Output::Warning("Map {} has invalid parent id {}!", lcf::Data::treemap.maps[current_index].ID, lcf::Data::treemap.maps[current_index].parent_map);
-			break;
-		}
-		current_index = parent_index;
+		current_info = parent_info;
 		if (can_save == lcf::rpg::MapInfo::TriState_parent) {
-			can_save = lcf::Data::treemap.maps[current_index].save;
+			can_save = current_info->save;
 		}
 		if (can_escape == lcf::rpg::MapInfo::TriState_parent) {
-			can_escape = lcf::Data::treemap.maps[current_index].escape;
+			can_escape = current_info->escape;
 		}
 		if (can_teleport == lcf::rpg::MapInfo::TriState_parent) {
-			can_teleport = lcf::Data::treemap.maps[current_index].teleport;
+			can_teleport = current_info->teleport;
 		}
 	}
 	Main_Data::game_system->SetAllowSave(can_save != lcf::rpg::MapInfo::TriState_forbid);
@@ -340,18 +341,7 @@ void Game_Map::SetupCommon() {
 	}
 	SetNeedRefresh(true);
 
-	int current_index = GetMapIndex(GetMapId());
-
-	std::ostringstream ss;
-	for (int cur = current_index;
-		GetMapIndex(lcf::Data::treemap.maps[cur].parent_map) != cur;
-		cur = GetMapIndex(lcf::Data::treemap.maps[cur].parent_map)) {
-		if (cur != current_index) {
-			ss << " < ";
-		}
-		ss << lcf::Data::treemap.maps[cur].name.c_str();
-	}
-	Output::Debug("Tree: {}", ss.str());
+	PrintPathToMap();
 
 	// Restart all common events after translation change
 	// Otherwise new strings are not applied
@@ -403,16 +393,16 @@ void Game_Map::PrepareSave(lcf::rpg::Save& save) {
 }
 
 void Game_Map::PlayBgm() {
-	int current_index = GetMapIndex(GetMapId());
-	while (lcf::Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
+	const auto* current_info = &GetMapInfo();
+	while (current_info->music_type == 0 && GetParentMapInfo(*current_info).ID != current_info->ID) {
+		current_info = &GetParentMapInfo(*current_info);
 	}
 
-	if ((current_index > 0) && !lcf::Data::treemap.maps[current_index].music.name.empty()) {
-		if (lcf::Data::treemap.maps[current_index].music_type == 1) {
+	if ((current_info->ID > 0) && !current_info->music.name.empty()) {
+		if (current_info->music_type == 1) {
 			return;
 		}
-		auto& music = lcf::Data::treemap.maps[current_index].music;
+		auto& music = current_info->music;
 		if (!Main_Data::game_player->IsAboard()) {
 			Main_Data::game_system->BgmPlay(music);
 		} else {
@@ -1176,9 +1166,26 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 }
 
 lcf::rpg::MapInfo const& Game_Map::GetMapInfo() {
-	auto idx = GetMapIndex(GetMapId());
-	assert(idx >= 0 && idx < static_cast<int>(lcf::Data::treemap.maps.size()));
-	return lcf::Data::treemap.maps[idx];
+	return GetMapInfo(GetMapId());
+}
+
+lcf::rpg::MapInfo const& Game_Map::GetMapInfo(int map_id) {
+	for (const auto& mi: lcf::Data::treemap.maps) {
+		if (mi.ID == map_id) {
+			return mi;
+		}
+	}
+
+	Output::Debug("Map {} not in Maptree", map_id);
+	return empty_map_info;
+}
+
+const lcf::rpg::MapInfo& Game_Map::GetParentMapInfo() {
+	return GetParentMapInfo(GetMapInfo());
+}
+
+const lcf::rpg::MapInfo& Game_Map::GetParentMapInfo(const lcf::rpg::MapInfo& map_info) {
+	return GetMapInfo(map_info.parent_map);
 }
 
 lcf::rpg::Map const& Game_Map::GetMap() {
@@ -1189,16 +1196,26 @@ int Game_Map::GetMapId() {
 	return Main_Data::game_player->GetMapId();
 }
 
+void Game_Map::PrintPathToMap() {
+	const auto* current_info = &GetMapInfo();
+	std::ostringstream ss;
+	ss << current_info->name;
+
+	current_info = &GetParentMapInfo(*current_info);
+	while (current_info->ID != 0 && current_info->ID != GetMapId()) {
+		ss << " < " << current_info->name;
+		current_info = &GetParentMapInfo(*current_info);
+	}
+
+	Output::Debug("Tree: {}", ss.str());
+}
+
 int Game_Map::GetWidth() {
 	return map->width;
 }
 
 int Game_Map::GetHeight() {
 	return map->height;
-}
-
-std::vector<lcf::rpg::Encounter>& Game_Map::GetEncounterList() {
-	return lcf::Data::treemap.maps[GetMapIndex(GetMapId())].encounters;
 }
 
 int Game_Map::GetOriginalEncounterSteps() {
@@ -1333,12 +1350,13 @@ void Game_Map::SetupBattle(BattleArgs& args) {
 
 	args.terrain_id = GetTerrainTag(x, y);
 
-	int current_index = GetMapIndex(GetMapId());
-	while (lcf::Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(lcf::Data::treemap.maps[current_index].parent_map);
+	const auto* current_info = &GetMapInfo();
+	while (current_info->background_type == 0 && GetParentMapInfo(*current_info).ID != current_info->ID) {
+		current_info = &GetParentMapInfo(*current_info);
 	}
-	if (lcf::Data::treemap.maps[current_index].background_type == 2) {
-		args.background = ToString(lcf::Data::treemap.maps[current_index].background_name);
+
+	if (current_info->background_type == 2) {
+		args.background = ToString(current_info->background_name);
 	}
 }
 
@@ -1454,16 +1472,6 @@ std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 
-int Game_Map::GetMapIndex(int id) {
-	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
-		if (lcf::Data::treemap.maps[i].ID == id) {
-			return i;
-		}
-	}
-	// nothing found
-	return -1;
-}
-
 StringView Game_Map::GetMapName(int id) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		if (lcf::Data::treemap.maps[i].ID == id) {
@@ -1472,24 +1480,6 @@ StringView Game_Map::GetMapName(int id) {
 	}
 	// nothing found
 	return {};
-}
-
-int Game_Map::GetMapType(int map_id) {
-	int index = Game_Map::GetMapIndex(map_id);
-	if (index == -1) {
-		return 0;
-	}
-
-	return lcf::Data::treemap.maps[index].type;
-}
-
-int Game_Map::GetParentId(int map_id) {
-	int index = Game_Map::GetMapIndex(map_id);
-	if (index == -1) {
-		return 0;
-	}
-
-	return lcf::Data::treemap.maps[index].parent_map;
 }
 
 void Game_Map::SetChipset(int id) {
