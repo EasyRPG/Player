@@ -77,7 +77,7 @@ public:
 	bool RequireClear(DrawableList& drawable_list);
 
 	/**
-	 * Determines the map render offset when Fake Resolution is used.
+	 * Determines the map render offset when Fake Resolution is used and sets the viewport of the screen for cropping.
 	 */
 	void CalculateMapRenderOffset();
 

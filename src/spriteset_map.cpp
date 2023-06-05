@@ -282,6 +282,7 @@ void Spriteset_Map::CalculateMapRenderOffset() {
 
 	panorama->SetRenderOx(0);
 	panorama->SetRenderOy(0);
+	screen->SetViewport(Rect());
 
 	if (Player::game_config.fake_resolution.Get()) {
 		// Resolution hack for tiles and sprites
@@ -297,6 +298,8 @@ void Spriteset_Map::CalculateMapRenderOffset() {
 		}
 
 		CalculatePanoramaRenderOffset();
+
+		screen->SetViewport({map_render_ox, map_render_oy, map_tiles_x, map_tiles_y});
 	}
 }
 
