@@ -52,7 +52,7 @@ Spriteset_Map::Spriteset_Map() {
 }
 
 void Spriteset_Map::Refresh() {
-	CalculateRenderOffset();
+	CalculateMapRenderOffset();
 
 	tilemap = std::make_unique<Tilemap>();
 	tilemap->SetWidth(Game_Map::GetTilesX());
@@ -271,11 +271,14 @@ void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	BitmapRef panorama_bmp = Cache::Panorama(result->file);
 	panorama->SetBitmap(panorama_bmp);
 	Game_Map::Parallax::Initialize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
+	CalculatePanoramaRenderOffset();
 }
 
-void Spriteset_Map::CalculateRenderOffset() {
+void Spriteset_Map::CalculateMapRenderOffset() {
 	map_render_ox = 0;
 	map_render_oy = 0;
+	map_tiles_x = 0;
+	map_tiles_y = 0;
 
 	panorama->SetRenderOx(0);
 	panorama->SetRenderOy(0);
@@ -283,17 +286,23 @@ void Spriteset_Map::CalculateRenderOffset() {
 	if (Player::game_config.fake_resolution.Get()) {
 		// Resolution hack for tiles and sprites
 		// Smallest possible map. Smaller maps are hacked
-		int tiles_x = std::max<int>(Game_Map::GetTilesX(), 20) * TILE_SIZE;
-		int tiles_y = std::max<int>(Game_Map::GetTilesY(), 15) * TILE_SIZE;
+		map_tiles_x = std::max<int>(Game_Map::GetTilesX(), 20) * TILE_SIZE;
+		map_tiles_y = std::max<int>(Game_Map::GetTilesY(), 15) * TILE_SIZE;
 
-		if (tiles_x < Player::screen_width) {
-			map_render_ox = (Player::screen_width - tiles_x) / 2;
+		if (map_tiles_x < Player::screen_width) {
+			map_render_ox = (Player::screen_width - map_tiles_x) / 2;
 		}
-		if (tiles_y < Player::screen_height) {
-			map_render_oy = (Player::screen_height - tiles_y) / 2;
+		if (map_tiles_y < Player::screen_height) {
+			map_render_oy = (Player::screen_height - map_tiles_y) / 2;
 		}
 
-		// Resolution hack for Panorama
+		CalculatePanoramaRenderOffset();
+	}
+}
+
+void Spriteset_Map::CalculatePanoramaRenderOffset() {
+	// Resolution hack for Panorama
+	if (Player::game_config.fake_resolution.Get()) {
 		if (Game_Map::Parallax::FakeXPosition()) {
 			panorama->SetRenderOx((Player::screen_width - SCREEN_TARGET_WIDTH) / 2);
 		}

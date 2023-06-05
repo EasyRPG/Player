@@ -78,9 +78,13 @@ public:
 
 	/**
 	 * Determines the map render offset when Fake Resolution is used.
-	 * Applies offset for panorama.
 	 */
-	void CalculateRenderOffset();
+	void CalculateMapRenderOffset();
+
+	/**
+	 * Determines the panorama offset when Fake Resolution is used.
+	 */
+	void CalculatePanoramaRenderOffset();
 
 protected:
 	std::unique_ptr<Tilemap> tilemap;
@@ -107,6 +111,8 @@ protected:
 
 	int map_render_ox = 0;
 	int map_render_oy = 0;
+	int map_tiles_x = 0;
+	int map_tiles_y = 0;
 
 	bool vehicle_loaded[3] = {};
 
