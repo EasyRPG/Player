@@ -76,6 +76,12 @@ public:
 	 */
 	bool RequireClear(DrawableList& drawable_list);
 
+	/**
+	 * Determines the map render offset when Fake Resolution is used.
+	 * Applies offset for panorama.
+	 */
+	void CalculateRenderOffset();
+
 protected:
 	std::unique_ptr<Tilemap> tilemap;
 	std::unique_ptr<Plane> panorama;
@@ -98,6 +104,9 @@ protected:
 
 	bool need_x_clone = false;
 	bool need_y_clone = false;
+
+	int map_render_ox = 0;
+	int map_render_oy = 0;
 
 	bool vehicle_loaded[3] = {};
 

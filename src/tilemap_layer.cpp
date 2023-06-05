@@ -205,17 +205,17 @@ static uint32_t MakeAbTileHash(int id, int anim_step) {
 	return static_cast<uint32_t>((id + (anim_step << 12)) | (4 << 24));
 }
 
-void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order) {
+void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order, int render_ox, int render_oy) {
 	// Get the number of tiles that can be displayed on window
 	int tiles_x = (int)ceil(Player::screen_width / (float)TILE_SIZE);
 	int tiles_y = (int)ceil(Player::screen_height / (float)TILE_SIZE);
 
 	// If ox or oy are not equal to the tile size draw the next tile too
 	// to prevent black (empty) tiles at the borders
-	if (ox % TILE_SIZE != 0) {
+	if ((ox - render_ox) % TILE_SIZE != 0) {
 		++tiles_x;
 	}
-	if (oy % TILE_SIZE != 0) {
+	if ((oy - render_oy) % TILE_SIZE != 0) {
 		++tiles_y;
 	}
 
@@ -244,11 +244,11 @@ void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order) {
 		}
 	}
 
-	const int div_ox = div_rounding_down(ox, TILE_SIZE);
-	const int div_oy = div_rounding_down(oy, TILE_SIZE);
+	const int div_ox = div_rounding_down(ox - render_ox, TILE_SIZE);
+	const int div_oy = div_rounding_down(oy - render_oy, TILE_SIZE);
 
-	const int mod_ox = mod(ox, TILE_SIZE);
-	const int mod_oy = mod(oy, TILE_SIZE);
+	const int mod_ox = mod(ox - render_ox, TILE_SIZE);
+	const int mod_oy = mod(oy - render_oy, TILE_SIZE);
 
 	for (int y = 0; y < tiles_y; y++) {
 		for (int x = 0; x < tiles_x; x++) {
@@ -688,7 +688,7 @@ void TilemapSubLayer::Draw(Bitmap& dst) {
 		return;
 	}
 
-	tilemap->Draw(dst, internal_z);
+	tilemap->Draw(dst, internal_z, GetRenderOx(), GetRenderOy());
 }
 
 void TilemapLayer::SetTone(Tone tone) {

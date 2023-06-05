@@ -47,8 +47,8 @@ void Plane::Draw(Bitmap& dst) {
 	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;
 
 	Rect dst_rect = dst.GetRect();
-	int src_x = -ox;
-	int src_y = -oy;
+	int src_x = -ox - GetRenderOx();
+	int src_y = -oy - GetRenderOy();
 
 	// Apply screen shaking
 	const int shake_x = Main_Data::game_screen->GetShakeOffsetX();

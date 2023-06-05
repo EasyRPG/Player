@@ -52,9 +52,13 @@ Spriteset_Map::Spriteset_Map() {
 }
 
 void Spriteset_Map::Refresh() {
-	tilemap.reset(new Tilemap());
+	CalculateRenderOffset();
+
+	tilemap = std::make_unique<Tilemap>();
 	tilemap->SetWidth(Game_Map::GetTilesX());
 	tilemap->SetHeight(Game_Map::GetTilesY());
+	tilemap->SetRenderOx(map_render_ox);
+	tilemap->SetRenderOy(map_render_oy);
 
 	airship_shadows.clear();
 	character_sprites.clear();
@@ -90,18 +94,8 @@ void Spriteset_Map::Update() {
 		character_sprite->SetTone(new_tone);
 	}
 
-	int pan_x_off = 0;
-	int pan_y_off = 0;
-	if (Player::game_config.fake_resolution.Get()) {
-		if (Game_Map::Parallax::FakeXPosition()) {
-			pan_x_off = (static_cast<float>(Player::screen_width) - SCREEN_TARGET_WIDTH) / 2;
-		}
-		if (Game_Map::Parallax::FakeYPosition()) {
-			pan_y_off = (static_cast<float>(Player::screen_height) - SCREEN_TARGET_HEIGHT) / 2;
-		}
-	}
-	panorama->SetOx(Game_Map::Parallax::GetX() + pan_x_off);
-	panorama->SetOy(Game_Map::Parallax::GetY() + pan_y_off);
+	panorama->SetOx(Game_Map::Parallax::GetX());
+	panorama->SetOy(Game_Map::Parallax::GetY());
 	panorama->SetTone(new_tone);
 
 	Game_Vehicle* vehicle;
@@ -216,15 +210,21 @@ bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
 	using CloneType = Sprite_Character::CloneType;
 
-	character_sprites.push_back(std::make_unique<Sprite_Character>(character));
+	auto add_sprite = [&](auto&& chara) {
+		chara->SetRenderOx(map_render_ox);
+		chara->SetRenderOy(map_render_oy);
+		character_sprites.push_back(std::forward<decltype(chara)>(chara));
+	};
+
+	add_sprite(std::make_unique<Sprite_Character>(character));
 	if (create_x_clone) {
-		character_sprites.push_back(std::make_unique<Sprite_Character>(character, CloneType::XClone));
+		add_sprite(std::make_unique<Sprite_Character>(character, CloneType::XClone));
 	}
 	if (create_y_clone) {
-		character_sprites.push_back(std::make_unique<Sprite_Character>(character, CloneType::YClone));
+		add_sprite(std::make_unique<Sprite_Character>(character, CloneType::YClone));
 	}
 	if (create_x_clone && create_y_clone) {
-		character_sprites.push_back(std::make_unique<Sprite_Character>(character,
+		add_sprite(std::make_unique<Sprite_Character>(character,
 			(CloneType)(CloneType::XClone | CloneType::YClone)));
 	}
 }
@@ -232,15 +232,21 @@ void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone,
 void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone) {
 	using CloneType = Sprite_AirshipShadow::CloneType;
 
-	airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>());
+	auto add_sprite = [&](auto&& chara) {
+		chara->SetRenderOx(map_render_ox);
+		chara->SetRenderOy(map_render_oy);
+		airship_shadows.push_back(std::forward<decltype(chara)>(chara));
+	};
+
+	add_sprite(std::make_unique<Sprite_AirshipShadow>());
 	if (create_x_clone) {
-		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(CloneType::XClone));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(CloneType::XClone));
 	}
 	if (create_y_clone) {
-		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(CloneType::YClone));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(CloneType::YClone));
 	}
 	if (create_x_clone && create_y_clone) {
-		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(
 			(CloneType)(CloneType::XClone | CloneType::YClone)));
 	}
 }
@@ -265,4 +271,34 @@ void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	BitmapRef panorama_bmp = Cache::Panorama(result->file);
 	panorama->SetBitmap(panorama_bmp);
 	Game_Map::Parallax::Initialize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
+}
+
+void Spriteset_Map::CalculateRenderOffset() {
+	map_render_ox = 0;
+	map_render_oy = 0;
+
+	panorama->SetRenderOx(0);
+	panorama->SetRenderOy(0);
+
+	if (Player::game_config.fake_resolution.Get()) {
+		// Resolution hack for tiles and sprites
+		// Smallest possible map. Smaller maps are hacked
+		int tiles_x = std::max<int>(Game_Map::GetTilesX(), 20) * TILE_SIZE;
+		int tiles_y = std::max<int>(Game_Map::GetTilesY(), 15) * TILE_SIZE;
+
+		if (tiles_x < Player::screen_width) {
+			map_render_ox = (Player::screen_width - tiles_x) / 2;
+		}
+		if (tiles_y < Player::screen_height) {
+			map_render_oy = (Player::screen_height - tiles_y) / 2;
+		}
+
+		// Resolution hack for Panorama
+		if (Game_Map::Parallax::FakeXPosition()) {
+			panorama->SetRenderOx((Player::screen_width - SCREEN_TARGET_WIDTH) / 2);
+		}
+		if (Game_Map::Parallax::FakeYPosition()) {
+			panorama->SetRenderOy((Player::screen_height - SCREEN_TARGET_HEIGHT) / 2);
+		}
+	}
 }

@@ -52,6 +52,10 @@ public:
 	void SetOx(int nox);
 	int GetOy() const;
 	void SetOy(int noy);
+	int GetRenderOx() const;
+	void SetRenderOx(int offset_x);
+	int GetRenderOy() const;
+	void SetRenderOy(int offset_y);
 	int GetWidth() const;
 	void SetWidth(int nwidth);
 	int GetHeight() const;
