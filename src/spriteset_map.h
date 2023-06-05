@@ -25,11 +25,11 @@
 #include "plane.h"
 #include "screen.h"
 #include "sprite_airshipshadow.h"
+#include "sprite_character.h"
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
 
-class Sprite_Character;
 class Game_Character;
 class FileRequestAsync;
 class DrawableList;
@@ -45,11 +45,6 @@ public:
 	void Refresh();
 
 	void Update();
-
-	/**
-	 * Finds the sprite for a specific character.
-	 */
-	Sprite_Character* FindCharacter(Game_Character* character) const;
 
 	/**
 	 * Notifies that the map's chipset has changed.
@@ -85,8 +80,8 @@ protected:
 	std::unique_ptr<Tilemap> tilemap;
 	std::unique_ptr<Plane> panorama;
 	std::string panorama_name;
-	std::vector<std::shared_ptr<Sprite_Character>> character_sprites;
-	std::vector<std::shared_ptr<Sprite_AirshipShadow>> airship_shadows;
+	std::vector<std::unique_ptr<Sprite_Character>> character_sprites;
+	std::vector<std::unique_ptr<Sprite_AirshipShadow>> airship_shadows;
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
 	std::unique_ptr<Screen> screen;

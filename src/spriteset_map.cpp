@@ -31,18 +31,17 @@
 #include "player.h"
 #include "drawable_list.h"
 
-// Constructor
 Spriteset_Map::Spriteset_Map() {
-	panorama.reset(new Plane());
+	panorama = std::make_unique<Plane>();
 	panorama->SetZ(Priority_Background);
 
-	timer1.reset(new Sprite_Timer(0));
-	timer2.reset(new Sprite_Timer(1));
+	timer1 = std::make_unique<Sprite_Timer>(0);
+	timer2 = std::make_unique<Sprite_Timer>(1);
 
-	screen.reset(new Screen());
+	screen = std::make_unique<Screen>();
 
 	if (Player::IsRPG2k3()) {
-		frame.reset(new Frame());
+		frame = std::make_unique<Frame>();
 	}
 
 	ParallaxUpdated();
@@ -86,9 +85,9 @@ void Spriteset_Map::Update() {
 	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_SIZE / TILE_SIZE));
 	tilemap->SetTone(new_tone);
 
-	for (size_t i = 0; i < character_sprites.size(); i++) {
-		character_sprites[i]->Update();
-		character_sprites[i]->SetTone(new_tone);
+	for (const auto& character_sprite : character_sprites) {
+		character_sprite->Update();
+		character_sprite->SetTone(new_tone);
 	}
 
 	int pan_x_off = 0;
@@ -122,18 +121,6 @@ void Spriteset_Map::Update() {
 	}
 
 	DynRpg::Update();
-}
-
-// Finds the sprite for a specific character
-Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
-{
-	std::vector<std::shared_ptr<Sprite_Character> >::const_iterator it;
-	for (it = character_sprites.begin(); it != character_sprites.end(); ++it) {
-		Sprite_Character* sprite = it->get();
-		if (sprite->GetCharacter() == character)
-			return sprite;
-	}
-	return NULL;
 }
 
 void Spriteset_Map::ChipsetUpdated() {
@@ -229,15 +216,15 @@ bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
 	using CloneType = Sprite_Character::CloneType;
 
-	character_sprites.push_back(std::make_shared<Sprite_Character>(character));
+	character_sprites.push_back(std::make_unique<Sprite_Character>(character));
 	if (create_x_clone) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(character, CloneType::XClone));
+		character_sprites.push_back(std::make_unique<Sprite_Character>(character, CloneType::XClone));
 	}
 	if (create_y_clone) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(character, CloneType::YClone));
+		character_sprites.push_back(std::make_unique<Sprite_Character>(character, CloneType::YClone));
 	}
 	if (create_x_clone && create_y_clone) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(character,
+		character_sprites.push_back(std::make_unique<Sprite_Character>(character,
 			(CloneType)(CloneType::XClone | CloneType::YClone)));
 	}
 }
@@ -245,15 +232,15 @@ void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone,
 void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone) {
 	using CloneType = Sprite_AirshipShadow::CloneType;
 
-	airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>());
+	airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>());
 	if (create_x_clone) {
-		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(CloneType::XClone));
+		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(CloneType::XClone));
 	}
 	if (create_y_clone) {
-		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(CloneType::YClone));
+		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(CloneType::YClone));
 	}
 	if (create_x_clone && create_y_clone) {
-		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(
+		airship_shadows.push_back(std::make_unique<Sprite_AirshipShadow>(
 			(CloneType)(CloneType::XClone | CloneType::YClone)));
 	}
 }
