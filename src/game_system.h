@@ -449,7 +449,7 @@ private:
 	std::map<std::string, FileRequestBinding> se_request_ids;
 	Color bg_color = Color{ 0, 0, 0, 255 };
 	bool bgm_pending = false;
-	uint32_t loaded_frame_count = 0;
+	int loaded_frame_count = 0;
 };
 
 inline bool Game_System::HasSystemGraphic() {
