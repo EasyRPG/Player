@@ -203,7 +203,7 @@ void Scene::MainFunction() {
 			TransitionOut(next_scene);
 		}
 
-		Input::ResetKeys();
+		Input::ResetNonSystemKeys();
 
 		init = false;
 	}
