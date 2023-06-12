@@ -184,7 +184,7 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 			return a.first < b.first;
 		});
 	} else {
-		Output::Warning("ZipFS: {} is not a valid archive", GetPath());
+		Output::Debug("ZipFS: {} is not a valid archive", GetPath());
 	}
 }
 

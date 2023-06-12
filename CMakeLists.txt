@@ -122,6 +122,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/fileext_guesser.h
 	src/filesystem.cpp
 	src/filesystem.h
+	src/filesystem_lzh.cpp
+	src/filesystem_lzh.h
 	src/filesystem_native.cpp
 	src/filesystem_native.h
 	src/filesystem_root.cpp
@@ -827,7 +829,7 @@ endif()
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
 player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
 
-# Do not use player_find_package. enable_language used by pixman on Android does work properly inside function calls
+# Do not use player_find_package. enable_language used by pixman on Android does not work properly inside function calls
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
@@ -856,6 +858,15 @@ if(TARGET freetype)
 		TARGET harfbuzz::harfbuzz
 		CONFIG_BROKEN)
 endif()
+
+# lzh archive support
+option(PLAYER_WITH_LHASA "Support running games in lzh archives" ON)
+
+player_find_package(NAME lhasa
+	CONDITION PLAYER_WITH_LHASA
+	DEFINITION HAVE_LHASA
+	TARGET LHASA::liblhasa
+)
 
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
@@ -1452,7 +1463,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(WAV_LIBS)
 		message(STATUS "WAV playback: ${WAV_LIBS}")
 	else()
-		message(STATUS "WAV playback: None")
+		message(STATUS "WAV playback: No")
 	endif()
 
 	set(MIDI_LIBS)
@@ -1475,13 +1486,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(MIDI_LIBS)
 		message(STATUS "MIDI playback: ${MIDI_LIBS}")
 	else()
-		message(STATUS "MIDI playback: None")
+		message(STATUS "MIDI playback: No")
 	endif()
 
 	if(TARGET MPG123::libmpg123)
 		message(STATUS "MP3 playback: mpg123")
 	else()
-		message(STATUS "MP3 playback: None")
+		message(STATUS "MP3 playback: No")
 	endif()
 
 	if(TARGET Vorbis::vorbisfile)
@@ -1489,19 +1500,19 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	elseif(TARGET Tremor::Tremor)
 		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
-		message(STATUS "Ogg Vorbis playback: None")
+		message(STATUS "Ogg Vorbis playback: No")
 	endif()
 
 	if(TARGET XMP::XMP)
 		message(STATUS "MOD playback: libxmp")
 	else()
-		message(STATUS "MOD playback: None")
+		message(STATUS "MOD playback: No")
 	endif()
 
 	if(TARGET OpusFile::opusfile)
 		message(STATUS "Opus playback: opusfile")
 	else()
-		message(STATUS "Opus playback: None")
+		message(STATUS "Opus playback: No")
 	endif()
 
 	if(TARGET speexdsp::speexdsp)
@@ -1509,7 +1520,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	elseif(TARGET Samplerate::Samplerate)
 		message(STATUS "Resampler: libsamplerate")
 	else()
-		message(STATUS "Resampler: None")
+		message(STATUS "Resampler: No")
 	endif()
 endif()
 
@@ -1521,6 +1532,12 @@ elseif(TARGET freetype)
 	message(STATUS "Font rendering: Freetype and built-in")
 else()
 	message(STATUS "Font rendering: built-in")
+endif()
+
+if(TARGET LHASA::liblhasa)
+	message(STATUS "LZH archive support: lhasa")
+else()
+	message(STATUS "LZH archive support: No")
 endif()
 
 message(STATUS "")
