@@ -25,6 +25,7 @@
 #include "window_shop.h"
 #include "bitmap.h"
 #include "font.h"
+#include <output.h>
 
 Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -176,12 +177,36 @@ void Window_Shop::Update() {
 	Window_Base::Update();
 
 	if (active) {
+		if (Input::GetUseMouseButton() && Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT) && IsVisible() && leave_index > 0 && GetCursorRect().height > 0) {
+			Point mouseP = Input::GetMousePosition();
+			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
+			//Output::Debug("Mouse : {}", GetItemMax());
+
+			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+				mouseP.y >= GetY() + GetBorderY() + 16 && mouseP.y < GetY() + GetHeight() - GetBorderY() + 16) {
+
+
+				int new_index = (mouseP.y - GetBorderY() - GetY()) / GetCursorRect().height;
+
+				//Output::Debug("Index : {} {}", new_index, leave_index);
+
+				if (new_index <= leave_index && new_index >= 0)
+					index = new_index;
+
+			}
+			else {
+				index = -999;
+			}
+		}
 		switch (mode) {
 			case Scene_Shop::BuySellLeave:
 			case Scene_Shop::BuySellLeave2:
 				if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 					if (index < leave_index) {
-						index++;
+						if (index == -999)
+							index = 1;
+						else
+							index++;
 					}
 					else {
 						index = 1;
@@ -197,7 +222,7 @@ void Window_Shop::Update() {
 					}
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
-				if (Input::IsTriggered(Input::DECISION)) {
+				if (Input::IsTriggered(Input::DECISION) && index >= 0) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					if (index == buy_index)
 						choice = Scene_Shop::Buy;

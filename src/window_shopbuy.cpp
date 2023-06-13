@@ -82,7 +82,7 @@ void Window_ShopBuy::DrawItem(int index) {
 
 void Window_ShopBuy::UpdateHelp() {
 	std::string help_text = "";
-	if (!data.empty()) {
+	if (!data.empty() && index < data.size()) {
 		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, data[index]);
 		if (item) {
 			help_text = ToString(item->description);

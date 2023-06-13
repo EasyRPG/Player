@@ -21,6 +21,7 @@
 #include "input.h"
 #include "util_macro.h"
 #include "bitmap.h"
+#include <output.h>
 
 constexpr int arrow_animation_frames = 20;
 
@@ -36,6 +37,10 @@ void Window_Selectable::CreateContents() {
 }
 
 // Properties
+
+int Window_Selectable::GetItemMax() const {
+	return item_max;
+}
 
 int Window_Selectable::GetIndex() const {
 	return index;
@@ -134,6 +139,44 @@ void Window_Selectable::UpdateArrows() {
 // Update
 void Window_Selectable::Update() {
 	Window_Base::Update();
+
+	if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
+		if (Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT)) {
+
+			mouseTimeArrow++;
+
+			Point mouseP = Input::GetMousePosition();
+
+			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+
+				index = GetTopRow();
+				UpdateCursorRect();
+			}
+			else {
+				index = -999;
+				if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
+					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
+						mouseP.y >= GetY() + GetHeight() - GetBorderY() && mouseP.y < GetY() + GetHeight()) {
+						if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
+							SetTopRow(GetTopRow() + 1);
+						}
+					}
+				if (GetTopRow() > 0)
+					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
+						mouseP.y >= GetY() && mouseP.y < GetY() + GetBorderY()) {
+						if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
+							SetTopRow(GetTopRow() - 1);
+						}
+					}
+			}
+		}
+		else
+			mouseTimeArrow = 0;
+	}
+	else
+		mouseTimeArrow = 0;
+
 	if (active && item_max > 0 && index >= 0) {
 		if (scroll_dir != 0) {
 			scroll_progress++;
@@ -152,6 +195,28 @@ void Window_Selectable::Update() {
 		}
 
 		int old_index = index;
+
+		if (Input::GetUseMouseButton() && Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT) && IsVisible() && GetItemMax() > 0) {
+			Point mouseP = Input::GetMousePosition();
+			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
+			//Output::Debug("Mouse : {}", GetItemMax());
+
+			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+
+				if (index != -999)	
+					mouseOldIndex = index;
+
+				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
+				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
+
+				//Output::Debug("Index : {} {} {} {}", GetTopRow(), new_index, GetPageRowMax(), GetItemMax());
+
+				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max)
+					index = new_index;
+
+			}
+		}
 
 		auto move_down = [&]() {
 			if (index < item_max - column_max || column_max == 1 ) {
@@ -223,6 +288,25 @@ void Window_Selectable::Update() {
 	}
 	UpdateCursorRect();
 	UpdateArrows();
+
+	if (index == -999) {
+		if (Input::IsTriggered(Input::DOWN)) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = mouseOldIndex;
+		}
+		if (Input::IsTriggered(Input::UP)) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = mouseOldIndex;
+		}
+		if (Input::IsTriggered(Input::RIGHT)) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = mouseOldIndex;
+		}
+		if (Input::IsTriggered(Input::LEFT)) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = mouseOldIndex;
+		}
+	}
 }
 
 // Set endless scrolling state

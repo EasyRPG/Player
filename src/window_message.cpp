@@ -184,6 +184,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	}
 
 	item_max = min(4, pending_message.GetNumChoices());
+	startCursorY = pending_message.GetChoiceStartLine();
 
 	text_index = text.data();
 
@@ -398,7 +399,37 @@ void Window_Message::Update() {
 
 	const bool was_closing = IsClosing();
 
+	if (Input::GetUseMouseButton()) {
+		if (Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT)) {
+			Point mouseP = Input::GetMousePosition();
+			int startChoiceY = 0;
+			int maxChoiceY = 0;
+			if (pending_message.HasChoices()) {
+				startChoiceY = pending_message.GetChoiceStartLine() * 16;
+				maxChoiceY = pending_message.GetNumChoices() * 16;
+			}
+			if (!(mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() * 2 &&
+				mouseP.y >= GetY() + GetBorderY() + startChoiceY && mouseP.y < GetY() + GetHeight() - GetBorderY() + startChoiceY - maxChoiceY)) {
+				index = -999;
+			}
+			else {
+				index = -1;
+			}
+		}
+		else if (Input::IsPressed(Input::DECISION)) {
+			index = -1;
+		}
+		if (index == -999) {
+			UpdateArrows();
+			Window_Base::Update();
+			number_input_window->Update();
+			return;
+		}
+	}
+
 	Window_Selectable::Update();
+
+
 	number_input_window->Update();
 	gold_window->Update();
 

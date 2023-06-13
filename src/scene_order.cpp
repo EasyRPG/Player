@@ -61,7 +61,7 @@ void Scene_Order::UpdateOrder() {
 			window_right->SetItemText(actor_counter, "");
 			actors[actor_counter] = 0;
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && window_left->GetIndex() < Main_Data::game_party->GetActors().size()) {
 		if (std::find(actors.begin(), actors.end(), window_left->GetIndex() + 1) != actors.end()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		} else {
@@ -92,7 +92,7 @@ void Scene_Order::UpdateConfirm() {
 		if (window_confirm->GetIndex() == 0) {
 			Confirm();
 			Scene::Pop();
-		} else {
+		} else if(window_confirm->GetIndex() == 1) {
 			Redo();
 		}
 	}

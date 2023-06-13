@@ -292,30 +292,35 @@ void Scene_Settings::UpdateMain() {
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-		auto idx = main_window->GetIndex();
-
-		if (main_window->IsItemEnabled(idx)) {
+		if (main_window->GetIndex() > 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-		} else {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
-			return;
-		}
+			auto idx = main_window->GetIndex();
 
-		if (modes[idx] == Window_Settings::eSave) {
-			SaveConfig();
-			return;
-		} else if (modes[idx] == Window_Settings::eEnd) {
-			if (Scene::Find(Scene::GameBrowser)) {
-				Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
+			if (main_window->IsItemEnabled(idx)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			} else {
-				Scene::Push(std::make_unique<Scene_End>(Scene::Null));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+				return;
 			}
-			return;
-		}
 
-		SetMode(modes[idx]);
-		options_window->Push(modes[idx]);
+
+			if (modes[idx] == Window_Settings::eSave) {
+				SaveConfig();
+				return;
+			}
+			else if (modes[idx] == Window_Settings::eEnd) {
+				if (Scene::Find(Scene::GameBrowser)) {
+					Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
+				}
+				else {
+					Scene::Push(std::make_unique<Scene_End>(Scene::Null));
+				}
+				return;
+			}
+
+			SetMode(modes[idx]);
+			options_window->Push(modes[idx]);
+		}
 	}
 }
 
@@ -348,7 +353,7 @@ void Scene_Settings::UpdateOptions() {
 		return;
 	}
 
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && options_window->GetIndex() >= 0) {
 		if (options_window->IsCurrentActionEnabled()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			auto& option = options_window->GetCurrentOption();

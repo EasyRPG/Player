@@ -75,12 +75,14 @@ void Scene_Equip::vUpdate() {
 }
 
 void Scene_Equip::UpdateItemWindows() {
-	for (size_t i = 0; i < item_windows.size(); ++i) {
-		item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
-		item_windows[i]->Update();
-	}
+	if (equip_window->GetIndex() < item_windows.size()) {
+		for (size_t i = 0; i < item_windows.size(); ++i) {
+			item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
+			item_windows[i]->Update();
+		}
 
-	item_window = item_windows[equip_window->GetIndex()];
+		item_window = item_windows[equip_window->GetIndex()];
+	}
 }
 
 void Scene_Equip::UpdateEquipWindow() {
@@ -166,7 +168,7 @@ void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && equip_window->GetIndex() >= 0) {
 		if (!CanRemoveEquipment(actor, equip_window->GetIndex())) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
@@ -195,7 +197,7 @@ void Scene_Equip::UpdateItemSelection() {
 		equip_window->SetActive(true);
 		item_window->SetActive(false);
 		item_window->SetIndex(-1);
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && item_window->GetIndex() >= 0) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
 		const lcf::rpg::Item* current_item = item_window->GetItem();

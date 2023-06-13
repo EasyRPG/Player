@@ -1194,7 +1194,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 	}
 
 	if (scene_action_substate == eWaitInput) {
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::IsTriggered(Input::DECISION) && options_window->GetIndex() < battle_options.size()) {
 			if (message_window->IsVisible()) {
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
