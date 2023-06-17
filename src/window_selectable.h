@@ -100,6 +100,8 @@ public:
 	 * @param wrap enable/disable single column wrap
 	 */
 	void SetSingleColumnWrapping(bool wrap);
+	void SetMouseOldIndex(int i);
+	int GetMouseOldIndex();
 
 protected:
 	void UpdateArrows();

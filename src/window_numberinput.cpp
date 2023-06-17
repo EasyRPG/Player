@@ -140,7 +140,7 @@ void Window_NumberInput::Update() {
 	if (active) {
 
 		if (Input::GetUseMouseButton()) {
-			if (Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT)) {
+			if (Input::IsPressed(Input::MOUSE_LEFT)) {
 				waitMouseControl++;
 				if (waitMouseControl == 1 || (waitMouseControl >= Input::start_repeat_time && waitMouseControl % Input::repeat_time == 1)) {
 					Point mouseP = Input::GetMousePosition();
@@ -148,6 +148,8 @@ void Window_NumberInput::Update() {
 					int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
 					if (mouseP.x >= GetX() + GetBorderX() + x && mouseP.x <= GetX() + GetBorderX() + x + 14 &&
 						mouseP.y >= GetY() + GetBorderY() - 2 && mouseP.y < GetY() + 32 - GetBorderY() + 2) {
+
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 
 						int place = 1;
 						for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
@@ -241,7 +243,9 @@ void Window_NumberInput::ResetIndex() {
 }
 
 void Window_NumberInput::SetIndex(int nindex) {
+	mouseOldIndex = index;
 	index = min(nindex, digits_max - 1);
 	index = max(index, 0);
+	//index = nindex;
 	UpdateCursorRect();
 }

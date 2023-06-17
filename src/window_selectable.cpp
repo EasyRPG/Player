@@ -141,7 +141,7 @@ void Window_Selectable::Update() {
 	Window_Base::Update();
 
 	if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
-		if (Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT)) {
+		if (Input::IsPressed(Input::MOUSE_LEFT)) {
 
 			mouseTimeArrow++;
 
@@ -150,11 +150,15 @@ void Window_Selectable::Update() {
 			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
 				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-				index = GetTopRow();
+				if (index != -999 && index != -1)
+					mouseOldIndex = index;
+				else
+					index = GetTopRow();
 				UpdateCursorRect();
+				
 			}
 			else {
-				if (index != -999)
+				if (index != -999 && index != -1)
 					mouseOldIndex = index;
 				index = -999;
 				if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
@@ -198,7 +202,7 @@ void Window_Selectable::Update() {
 
 		int old_index = index;
 
-		if (Input::GetUseMouseButton() && Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT) && IsVisible() && GetItemMax() > 0) {
+		if (Input::GetUseMouseButton() && Input::IsPressed(Input::MOUSE_LEFT) && IsVisible() && GetItemMax() > 0) {
 			Point mouseP = Input::GetMousePosition();
 			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
 			//Output::Debug("Mouse : {}", GetItemMax());
@@ -209,11 +213,13 @@ void Window_Selectable::Update() {
 				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
 				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
 
-				//Output::Debug("Index : {} {} {} {} {}", GetTopRow(), new_index, GetPageRowMax(), GetItemMax(), mouseOldIndex);
+				//Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
 
-				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max)
-					index = new_index;
-
+				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+					if (new_index != mouseOldIndex)
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					SetIndex(new_index);
+				}
 			}
 		}
 
@@ -288,7 +294,7 @@ void Window_Selectable::Update() {
 	UpdateCursorRect();
 	UpdateArrows();
 
-	if (index == -999) {
+	if (index == -999 && active) {
 		if (Input::IsTriggered(Input::DOWN)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index = mouseOldIndex;
@@ -321,3 +327,9 @@ void Window_Selectable::SetMenuItemHeight(int height) {
 void Window_Selectable::SetSingleColumnWrapping(bool wrap) {
 	wrap_limit = wrap ? 1 : 2;
 }
+void Window_Selectable::SetMouseOldIndex(int i) {
+	mouseOldIndex = i;
+}
+int Window_Selectable::GetMouseOldIndex() {
+	return mouseOldIndex;
+ }
