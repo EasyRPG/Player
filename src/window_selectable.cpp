@@ -154,6 +154,8 @@ void Window_Selectable::Update() {
 				UpdateCursorRect();
 			}
 			else {
+				if (index != -999)
+					mouseOldIndex = index;
 				index = -999;
 				if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
 					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
@@ -165,7 +167,7 @@ void Window_Selectable::Update() {
 				if (GetTopRow() > 0)
 					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
 						mouseP.y >= GetY() && mouseP.y < GetY() + GetBorderY()) {
-						if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
+						if (mouseTimeArrow == 1 || (mouseTimeArrow >= Input::start_repeat_time && mouseTimeArrow % Input::repeat_time == 1)) {
 							SetTopRow(GetTopRow() - 1);
 						}
 					}
@@ -204,13 +206,10 @@ void Window_Selectable::Update() {
 			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
 				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-				if (index != -999)	
-					mouseOldIndex = index;
-
 				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
 				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
 
-				//Output::Debug("Index : {} {} {} {}", GetTopRow(), new_index, GetPageRowMax(), GetItemMax());
+				//Output::Debug("Index : {} {} {} {} {}", GetTopRow(), new_index, GetPageRowMax(), GetItemMax(), mouseOldIndex);
 
 				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max)
 					index = new_index;

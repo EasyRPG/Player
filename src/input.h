@@ -37,6 +37,21 @@
  * assigned keys can vary by the system.
  */
 namespace Input {
+
+	/**
+	 * Start repeat time (in frames) a key has
+	 * to be maintained pressed before being
+	 * repeated for fist time.
+	 */
+	constexpr int start_repeat_time = 23;
+
+	/**
+	 * Repeat time (in frames) a key has to be
+	 * maintained pressed after the start repeat time
+	 * has passed for being repeated again.
+	 */
+	constexpr int repeat_time = 4;
+
 	/**
 	 * Initializes Input.
 	 *

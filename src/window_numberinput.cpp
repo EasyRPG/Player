@@ -28,6 +28,8 @@
 
 #include <cstdio>
 #include <fmt/format.h>
+#include <output.h>
+#include <input.h>
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
@@ -52,13 +54,26 @@ void Window_NumberInput::Refresh() {
 	contents->Clear();
 
 	auto s = fmt::format("{0}{1:0{2}d}",
-			show_operator ? (plus ? "+" : "-") : "",
-			number, digits_max);
+		show_operator ? (plus ? "+" : "-") : "",
+		number, digits_max);
 
 	for (int i = 0; i < digits_max + (int)show_operator; ++i) {
-		char c[2] = {s[i], '\0'};
+		char c[2] = { s[i], '\0' };
 		int x = i * (cursor_width - 2) + (show_operator ? 2 : 12);
 		contents->TextDraw(x, 2, Font::ColorDefault, c);
+	}
+
+	if (Input::GetUseMouseButton()) {
+		int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
+
+		Rect src_rectUp(40, 8, 16, 8);
+		contents->Blit(x, 0, *windowskin, src_rectUp, 255);
+
+		Rect src_rectDown(40, 16, 16, 8);
+		contents->Blit(x, 8, *windowskin, src_rectDown, 255);
+
+
+		contents->TextDraw(x + 32, 2, Font::ColorDefault, "OK");
 	}
 }
 
@@ -123,6 +138,42 @@ void Window_NumberInput::UpdateCursorRect() {
 void Window_NumberInput::Update() {
 	Window_Selectable::Update();
 	if (active) {
+
+		if (Input::GetUseMouseButton()) {
+			if (Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT)) {
+				waitMouseControl++;
+				if (waitMouseControl == 1 || (waitMouseControl >= Input::start_repeat_time && waitMouseControl % Input::repeat_time == 1)) {
+					Point mouseP = Input::GetMousePosition();
+
+					int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
+					if (mouseP.x >= GetX() + GetBorderX() + x && mouseP.x <= GetX() + GetBorderX() + x + 14 &&
+						mouseP.y >= GetY() + GetBorderY() - 2 && mouseP.y < GetY() + 32 - GetBorderY() + 2) {
+
+						int place = 1;
+						for (int i = 0; i < (digits_max - 1 - (int)index + (int)show_operator); ++i) {
+							place *= 10;
+						}
+						int64_t n = number / place % 10;
+						number -= n * place;
+						if (mouseP.y > GetY() + GetBorderY() + 7)
+						{
+							n = (n + 9) % 10;
+						}
+						else
+						{
+							n = (n + 1) % 10;
+						}
+						number += n * place;
+						Refresh();
+					}
+				}
+			}
+			else {
+				waitMouseControl = 0;
+			}
+		}
+
+
 		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::UP)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 
@@ -187,4 +238,10 @@ void Window_NumberInput::Update() {
 
 void Window_NumberInput::ResetIndex() {
 	index = digits_max - 1 + int(show_operator);
+}
+
+void Window_NumberInput::SetIndex(int nindex) {
+	index = min(nindex, digits_max - 1);
+	index = max(index, 0);
+	UpdateCursorRect();
 }

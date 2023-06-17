@@ -97,6 +97,8 @@ public:
 	 */
 	void Update() override;
 
+	void SetIndex(int nindex);
+
 protected:
 	int64_t number;
 	int digits_max;
@@ -106,6 +108,8 @@ protected:
 	bool plus;
 
 	void ResetIndex();
+
+	int waitMouseControl = 0;
 };
 
 #endif

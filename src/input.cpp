@@ -32,19 +32,6 @@
 #include <cassert>
 
 namespace Input {
-	/**
-	 * Start repeat time (in frames) a key has
-	 * to be maintained pressed before being
-	 * repeated for fist time.
-	 */
-	constexpr int start_repeat_time = 23;
-
-	/**
-	 * Repeat time (in frames) a key has to be
-	 * maintained pressed after the start repeat time
-	 * has passed for being repeated again.
-	 */
-	constexpr int repeat_time = 4;
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
@@ -265,12 +252,12 @@ bool Input::IsTriggered(InputButton button) {
 	WaitInput(true);
 		if (useMouseButton) {
 		if (button == Input::DECISION) {
-			if (IsRawKeyReleased(Input::Keys::MOUSE_LEFT)) {
+			if (IsReleased(Input::MOUSE_LEFT)) {
 				return true;
 			}
 		}
 		if (button == Input::CANCEL) {
-			if (IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT))
+			if (IsTriggered(Input::MOUSE_RIGHT))
 				return true;
 		}
 	}
