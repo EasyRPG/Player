@@ -83,7 +83,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 	while (iter != end) {
 		auto ret = Utils::UTF8Next(iter, end);
 		if (ret.ch != escape_char) {
-			iter = ret.next;
+			iter = const_cast<char*>(ret.next);
 			continue;
 		}
 
@@ -95,7 +95,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 		output.append(start_copy, iter - start_copy);
 		start_copy = iter;
 
-		iter = ret.next;
+		iter = const_cast<char*>(ret.next);
 		if (iter == end) {
 			break;
 		}
@@ -105,7 +105,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 
 		if (ch == 'N' || ch == 'n') {
 			auto parse_ret = Game_Message::ParseActor(iter, end, escape_char, true);
-			iter = parse_ret.next;
+			iter = const_cast<char*>(parse_ret.next);
 			int value = parse_ret.value;
 
 			const auto* actor = Main_Data::game_actors->GetActor(value);
@@ -118,7 +118,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			start_copy = iter;
 		} else if (ch == 'V' || ch == 'v') {
 			auto parse_ret = Game_Message::ParseVariable(iter, end, escape_char, true);
-			iter = parse_ret.next;
+			iter = const_cast<char*>(parse_ret.next);
 			int value = parse_ret.value;
 
 			int variable_value = Main_Data::game_variables->Get(value);

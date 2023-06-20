@@ -459,6 +459,25 @@ add_library(${PROJECT_NAME} OBJECT
 #	src/platform/opendingux/opendingux_input_buttons.cpp
 #	src/platform/psp/psp_input_buttons.cpp
 
+target_sources(${PROJECT_NAME} PRIVATE
+	src/multiplayer/connection.cpp
+	src/multiplayer/connection.h
+	src/multiplayer/client.cpp
+	src/multiplayer/client.h
+	src/multiplayer/server.cpp
+	src/multiplayer/server.h
+	src/multiplayer/game_multiplayer.h
+	src/multiplayer/game_playerother.h
+	src/multiplayer/messages.h
+	src/multiplayer/packet.cpp
+	src/multiplayer/packet.h
+	src/multiplayer/game_multiplayer.cpp
+	src/multiplayer/chatname.cpp
+	src/multiplayer/chatname.h
+	src/multiplayer/playerother.cpp
+	src/multiplayer/playerother.h
+)
+
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -788,6 +807,12 @@ option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf, clone liblcf into lib/l
 set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING "Git repository of liblcf to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
 set(PLAYER_BUILD_LIBLCF_BRANCH "master" CACHE STRING "Branch of the liblcf repository to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
 
+# build libs
+option(PLAYER_BUILD_LIBS "Clone all libs into lib/ and built it along with the Player." OFF)
+if(PLAYER_BUILD_LIBS)
+	set(PLAYER_BUILD_LIBLCF ON)
+endif()
+
 if(PLAYER_BUILD_LIBLCF)
 	# liblcf is built as part of this cmake file
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
@@ -813,6 +838,23 @@ else()
 	player_find_package(NAME liblcf VERSION 0.8
 		TARGET liblcf::liblcf
 		REQUIRED)
+endif()
+
+if(PLAYER_BUILD_LIBS)
+	set(SOCKPP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/sockpp")
+	if(NOT EXISTS ${SOCKPP_PATH})
+		find_package(Git REQUIRED)
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" "--branch"
+			"v0.8.1"
+			"https://github.com/fpagliughi/sockpp"
+			"${SOCKPP_PATH}")
+	endif()
+	add_subdirectory(${SOCKPP_PATH})
+	target_include_directories(${PROJECT_NAME}
+		PUBLIC ${SOCKPP_PATH}/generated/include
+		PRIVATE ${SOCKPP_PATH}/include
+	)
+	target_link_libraries(${PROJECT_NAME} sockpp)
 endif()
 
 # Detect all required libraries

@@ -170,6 +170,8 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 		"Font/ExFont", // Custom ExFont
 		"Font/Font", // Custom Gothic Font
 		"Font/Font2", // Custom Mincho Font
+		"Font/NameText",
+		"Font/NameText2",
 		"easyrpg.soundfont", // Custom SF2 soundfont
 		"autorun.script" // Key Patch Startup script
 	);

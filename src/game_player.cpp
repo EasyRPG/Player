@@ -112,6 +112,7 @@ void Game_Player::PerformTeleport() {
 	const auto map_changed = (GetMapId() != teleport_target.GetMapId());
 	MoveTo(teleport_target.GetMapId(), teleport_target.GetX(), teleport_target.GetY());
 
+	GMI().MainPlayerTeleported(teleport_target.GetMapId(), teleport_target.GetX(), teleport_target.GetY());
 
 	if (teleport_target.GetDirection() >= 0) {
 		SetDirection(teleport_target.GetDirection());
@@ -443,7 +444,11 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			const auto triggered = ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			result |= triggered;
+			if (triggered) {
+				GMI().MainPlayerTriggeredEvent(ev.GetId(), triggered_by_decision_key);
+			}
 		}
 	}
 	return result;
@@ -464,7 +469,11 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			const auto triggered = ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			result |= triggered;
+			if (triggered) {
+				GMI().MainPlayerTriggeredEvent(ev.GetId(), triggered_by_decision_key);
+			}
 		}
 	}
 	return result;
@@ -654,6 +663,7 @@ bool Game_Player::Move(int dir) {
 		}
 		if ((!terrain->on_damage_se || red_flash) && Player::IsRPG2k3()) {
 			Main_Data::game_system->SePlay(terrain->footstep);
+			GMI().SePlayed(terrain->footstep);
 		}
 	} else {
 		Output::Warning("Player BeginMove: Invalid terrain ID {} at ({}, {})", terrain_id, GetX(), GetY());

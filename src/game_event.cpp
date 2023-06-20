@@ -372,6 +372,7 @@ void Game_Event::OnFinishForegroundEvent() {
 bool Game_Event::CheckEventAutostart() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_auto_start) {
 		ScheduleForegroundExecution(false, false);
+		GMI().MainPlayerTriggeredEvent(GetId(), false);
 		return true;
 	}
 	return false;
@@ -386,6 +387,7 @@ bool Game_Event::CheckEventCollision() {
 			&& Main_Data::game_player->GetY() == GetY())
 	{
 		ScheduleForegroundExecution(false, true);
+		GMI().MainPlayerTriggeredEvent(GetId(), false);
 		SetStopCount(0);
 		return true;
 	}
@@ -406,6 +408,7 @@ void Game_Event::CheckCollisonOnMoveFailure() {
 			&& GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
 	{
 		ScheduleForegroundExecution(false, true);
+		GMI().MainPlayerTriggeredEvent(GetId(), false);
 		// Events with trigger collision and layer same always reset their
 		// stop_count when they fail movement to a tile that the player inhabits.
 		SetStopCount(0);

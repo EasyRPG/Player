@@ -111,6 +111,7 @@ __MACOSX
 
 # legacy
 /lib/liblcf/
+/lib/sockpp/
 .buildconfig
 
 # Android

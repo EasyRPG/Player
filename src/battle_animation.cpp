@@ -32,8 +32,8 @@
 #include "options.h"
 #include "drawable_mgr.h"
 
-BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound, int cutoff) :
-	animation(anim), only_sound(only_sound)
+BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_sound, int cutoff, bool synced, bool multiplayer) :
+	animation(anim), only_sound(only_sound), synced(synced), multiplayer(multiplayer)
 {
 	num_frames = GetRealFrames() * 2;
 	if (cutoff >= 0 && cutoff < num_frames) {
@@ -147,8 +147,13 @@ void BattleAnimation::ProcessAnimationFlash(const lcf::rpg::AnimationTiming& tim
 }
 
 void BattleAnimation::ProcessAnimationTiming(const lcf::rpg::AnimationTiming& timing) {
-	// Play the SE.
-	Main_Data::game_system->SePlay(timing.se);
+	if (!IsMultiplayer()) {
+		// Play the SE.
+		Main_Data::game_system->SePlay(timing.se);
+		if (IsSynced()) {
+			GMI().SePlayed(timing.se);
+		}
+	}
 	if (IsOnlySound()) {
 		return;
 	}
@@ -228,8 +233,8 @@ static int CalculateOffset(int pos, int target_height) {
 
 /////////
 
-BattleAnimationMap::BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global) :
-	BattleAnimation(anim), target(target), global(global)
+BattleAnimationMap::BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global, bool synced, bool multiplayer) :
+	BattleAnimation(anim, false, -1, synced, multiplayer), target(target), global(global)
 {
 }
 

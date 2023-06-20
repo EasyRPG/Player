@@ -35,7 +35,7 @@ Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	// Initialize Z value for legacy pictures. Will be overriden in OnPictureShow if
 	// priority layers feature is enabled.
 	// Battle Animations are below pictures
-	SetZ(Priority_PictureOld + pic_id);
+	SetZ(Priority_PictureOld + (((pic_id - 1) % 50) * 2) + (pic_id > 50 ? 0 : 1) + 1);
 }
 
 void Sprite_Picture::OnPictureShow() {

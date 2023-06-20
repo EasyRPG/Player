@@ -32,6 +32,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "algo.h"
+#include "multiplayer/game_multiplayer.h"
 
 Game_Party::Game_Party() {
 }
@@ -170,11 +171,13 @@ int Game_Party::GetMaxItemCount(int item_id) const {
 void Game_Party::GainGold(int n) {
 	data.gold = data.gold + n;
 	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
+	GMI().VariableSet(10000, GetGold());
 }
 
 void Game_Party::LoseGold(int n) {
 	data.gold = data.gold - n;
 	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
+	GMI().VariableSet(10000, GetGold());
 }
 
 void Game_Party::AddItem(int item_id, int amount) {

@@ -34,6 +34,7 @@
 #include "game_system.h"
 #include "game_message.h"
 #include "game_screen.h"
+#include "multiplayer/game_multiplayer.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_map.h"
@@ -569,6 +570,9 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(lcf::rpg::EventCommand con
 
 	int frames = Main_Data::game_screen->ShowBattleAnimation(animation_id, evt_id, global);
 
+	if (chara->GetType() == Game_Character::Player && !global)
+		GMI().PlayerBattleAnimShown(animation_id);
+
 	if (waiting_battle_anim) {
 		_state.wait_time = frames;
 	}
@@ -588,7 +592,10 @@ bool Game_Interpreter_Map::CommandFlashSprite(lcf::rpg::EventCommand const& com)
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		event->Flash(r, g, b, p, tenths * DEFAULT_FPS / 10);
+		int frames = tenths * DEFAULT_FPS / 10;
+		event->Flash(r, g, b, p, frames);
+		if (event->GetType() == Game_Character::Player)
+			GMI().MainPlayerFlashed(r, g, b, p, frames);
 
 		if (wait) {
 			SetupWait(tenths);

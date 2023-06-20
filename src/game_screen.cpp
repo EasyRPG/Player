@@ -24,6 +24,7 @@
 #include "game_battler.h"
 #include "game_screen.h"
 #include "game_system.h"
+#include "multiplayer/game_multiplayer.h"
 #include "game_variables.h"
 #include "game_map.h"
 #include "output.h"
@@ -102,6 +103,8 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 		data.tint_current_green = data.tint_finish_green;
 		data.tint_current_blue = data.tint_finish_blue;
 		data.tint_current_sat = data.tint_finish_sat;
+
+		GMI().ApplyScreenTone();
 	}
 }
 
@@ -114,6 +117,8 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int frames) {
 	data.flash_time_left = frames;
 	data.flash_continuous = false;
 	flash_period = 0;
+
+	GMI().ApplyFlash(r, g, b, s, frames);
 }
 
 void Game_Screen::FlashBegin(int r, int g, int b, int s, int frames) {
@@ -308,6 +313,8 @@ void Game_Screen::UpdateScreenEffects() {
 		data.tint_current_blue = interpolate(data.tint_time_left, data.tint_current_blue, data.tint_finish_blue);
 		data.tint_current_sat = interpolate(data.tint_time_left, data.tint_current_sat, data.tint_finish_sat);
 		data.tint_time_left = data.tint_time_left - 1;
+
+		GMI().ApplyScreenTone();
 	}
 
 	Flash::Update(data.flash_current_level,
@@ -375,7 +382,7 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 	data.battleanim_active = true;
 	data.battleanim_frame = start_frame;
 
-	animation.reset(new BattleAnimationMap(*anim, *chara, global));
+	animation.reset(new BattleAnimationMap(*anim, *chara, global, GMI().IsBattleAnimSynced(animation_id)));
 
 	if (start_frame) {
 		animation->SetFrame(start_frame);
@@ -397,6 +404,8 @@ void Game_Screen::UpdateBattleAnimation() {
 			CancelBattleAnimation();
 		}
 	}
+
+	GMI().ApplyPlayerBattleAnimUpdates();
 }
 
 void Game_Screen::CancelBattleAnimation() {

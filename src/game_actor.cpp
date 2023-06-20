@@ -36,6 +36,7 @@
 #include "attribute.h"
 #include "rand.h"
 #include "algo.h"
+#include "multiplayer/game_multiplayer.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -1162,6 +1163,7 @@ void Game_Actor::SetBaseMaxHp(int maxhp) {
 	data.hp_mod = ClampMaxHpMod(new_hp_mod, this);
 
 	SetHp(data.current_hp);
+	GMI().VariableSet(10001, GetBaseMaxHp());
 }
 
 void Game_Actor::SetBaseMaxSp(int maxsp) {

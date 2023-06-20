@@ -27,6 +27,7 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 #include "game_screen.h"
+#include "multiplayer/game_multiplayer.h"
 #include "bitmap.h"
 #include "player.h"
 #include "drawable_list.h"
@@ -90,6 +91,8 @@ void Spriteset_Map::Update() {
 		character_sprites[i]->Update();
 		character_sprites[i]->SetTone(new_tone);
 	}
+
+	GMI().ApplyRepeatingFlashes();
 
 	int pan_x_off = 0;
 	int pan_y_off = 0;
