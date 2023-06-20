@@ -281,11 +281,36 @@ namespace Game_Map {
 	void Update(MapUpdateAsyncContext& actx, bool is_preupdate = false);
 
 	/**
-	 * Gets current map_info.
+	 * Gets current map info.
 	 *
 	 * @return current map_info.
 	 */
-	lcf::rpg::MapInfo const& GetMapInfo();
+	const lcf::rpg::MapInfo& GetMapInfo();
+
+	/**
+	 * Gets map info of the specified map id.
+	 *
+	 * @param map_id map id
+	 * @return map_info.
+	 */
+	const lcf::rpg::MapInfo& GetMapInfo(int map_id);
+
+	/**
+	 * Gets the map info of the parent map of the current map.
+	 * The root of the tree has ID 0.
+	 *
+	 * @return parent map info
+	 */
+	const lcf::rpg::MapInfo& GetParentMapInfo();
+
+	/**
+	 * Gets map info of the parent map.
+	 * The root of the tree has ID 0.
+	 *
+	 * @param map_info map info whose parent to retrieve
+	 * @return parent map info
+	 */
+	const lcf::rpg::MapInfo& GetParentMapInfo(const lcf::rpg::MapInfo& map_info);
 
 	/**
 	 * Gets current map.
@@ -302,6 +327,11 @@ namespace Game_Map {
 	int GetMapId();
 
 	/**
+	 * Outputs the path in the map tree to reach the current map.
+	 */
+	void PrintPathToMap();
+
+	/**
 	 * Gets current map width.
 	 *
 	 * @return current map width.
@@ -314,13 +344,6 @@ namespace Game_Map {
 	 * @return current map height.
 	 */
 	int GetHeight();
-
-	/**
-	 * Gets battle encounters list.
-	 *
-	 * @return battle encounters list.
-	 */
-	std::vector<lcf::rpg::Encounter>& GetEncounterList();
 
 	/** @return original map battle encounter rate steps. */
 	int GetOriginalEncounterSteps();
@@ -521,37 +544,12 @@ namespace Game_Map {
 	int YwithDirection(int y, int direction);
 
 	/**
-	 * Gets the map index from MapInfo vector using map ID.
-	 *
-	 * @param id map ID.
-	 * @return map index from MapInfo vector.
-	 */
-	int GetMapIndex(int id);
-
-	/**
 	 * Gets the map name from MapInfo vector using map ID.
 	 *
 	 * @param id map ID.
 	 * @return map name from MapInfo vector.
 	 */
 	StringView GetMapName(int id);
-
-	/**
-	 * Gets the type (1 = normal, 2 = area) of the map.
-	 *
-	 * @param map_id map id
-	 * @return type of the map
-	 */
-	int GetMapType(int map_id);
-
-	/**
-	 * Gets the ID of the parent map.
-	 * The root of the tree has ID 0.
-	 *
-	 * @param map_id map id
-	 * @return parent map id
-	 */
-	int GetParentId(int map_id);
 
 	/**
 	 * Sets the chipset.

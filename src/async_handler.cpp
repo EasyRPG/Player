@@ -71,17 +71,72 @@ namespace {
 	}
 
 #ifdef EMSCRIPTEN
-	void download_success(unsigned, void* userData, const char*) {
-		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
-		//Output::Debug("DL Success: {}", req->GetPath());
-		req->DownloadDone(true);
+	constexpr size_t ASYNC_MAX_RETRY_COUNT{ 16 };
+
+	struct async_download_context {
+		std::string url, file, param;
+		FileRequestAsync* obj;
+		size_t count;
+
+		async_download_context(
+			std::string u,
+			std::string f,
+			std::string p,
+			FileRequestAsync* o
+		) : url{ std::move(u) }, file{ std::move(f) }, param{ std::move(p) }, obj{ o }, count{} {}
+	};
+
+	void download_success_retry(unsigned, void* userData, const char*) {
+		auto ctx = static_cast<async_download_context*>(userData);
+		ctx->obj->DownloadDone(true);
+		delete ctx;
 	}
 
-	void download_failure(unsigned, void* userData, int) {
-		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
-		Output::Debug("DL Failure: {}", req->GetPath());
-		req->DownloadDone(false);
+	void start_async_wget_with_retry(async_download_context* ctx);
+
+	void download_failure_retry(unsigned, void* userData, int status) {
+		auto ctx = static_cast<async_download_context*>(userData);
+		++ctx->count;
+		if (ctx->count >= ASYNC_MAX_RETRY_COUNT) {
+			Output::Warning("DL Failure: max retries exceeded: {}", ctx->obj->GetPath());
+			ctx->obj->DownloadDone(false);
+			delete ctx;
+			return;
+		}
+		if (status >= 400) {
+			Output::Warning("DL Failure: file not available: {}", ctx->obj->GetPath());
+			ctx->obj->DownloadDone(false);
+			delete ctx;
+			return;
+		}
+		Output::Debug("DL Failure: {}. Retrying", ctx->obj->GetPath());
+		start_async_wget_with_retry(ctx);
 	}
+
+	void start_async_wget_with_retry(async_download_context* ctx) {
+		emscripten_async_wget2(
+			ctx->url.data(),
+			ctx->file.data(),
+			"GET",
+			ctx->param.data(),
+			ctx,
+			download_success_retry,
+			download_failure_retry,
+			nullptr
+		);
+	}
+
+	void async_wget_with_retry(
+		std::string url,
+		std::string file,
+		std::string param,
+		FileRequestAsync* obj
+	) {
+		// ctx will be deleted when download succeeds
+		auto ctx = new async_download_context{ url, file, param, obj };
+		start_async_wget_with_retry(ctx);
+	}
+
 #endif
 }
 
@@ -304,15 +359,8 @@ void FileRequestAsync::Start() {
 	request_path = Utils::ReplaceAll(request_path, "#", "%23");
 	request_path = Utils::ReplaceAll(request_path, "+", "%2B");
 
-	emscripten_async_wget2(
-		request_path.c_str(),
-		(it != file_mapping.end() ? it->second : path).c_str(),
-		"GET",
-		NULL,
-		this,
-		download_success,
-		download_failure,
-		NULL);
+	auto request_file = (it != file_mapping.end() ? it->second : path);
+	async_wget_with_retry(request_path, std::move(request_file), "", this);
 #else
 #  ifdef EM_GAME_URL
 #    warning EM_GAME_URL set and not an Emscripten build!

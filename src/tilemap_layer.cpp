@@ -583,10 +583,14 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::unordered_map<ui
 		// unpack the quarters data
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
+				constexpr int mask = ~(0xFu << 28);
+
 				int x = quarters_hash >> 28;
+				quarters_hash &= mask;
 				quarters_hash <<= 4;
 
 				int y = quarters_hash >> 28;
+				quarters_hash &= mask;
 				quarters_hash <<= 4;
 
 				rect.x = (x * 2 + i) * (TILE_SIZE/2);

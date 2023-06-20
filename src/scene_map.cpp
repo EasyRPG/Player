@@ -279,7 +279,6 @@ void Scene_Map::UpdateStage2() {
 }
 
 void Scene_Map::UpdateSceneCalling() {
-
 	auto call = TakeRequestedScene();
 
 	if (call == nullptr) {
@@ -288,34 +287,13 @@ void Scene_Map::UpdateSceneCalling() {
 		}
 	}
 
-	if (call == nullptr && !Game_Message::IsMessageActive()) {
-		if (Player::debug_flag) {
-			if (call == nullptr) {
-				// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
-				if (Input::IsPressed(Input::SHIFT)) {
-					if (Input::IsTriggered(Input::CANCEL)) {
-						debug_menuoverwrite_counter++;
-						if (debug_menuoverwrite_counter >= 5) {
-							call = std::make_shared<Scene_Menu>();
-							debug_menuoverwrite_counter = 0;
-						}
-					}
-				} else {
-					debug_menuoverwrite_counter = 0;
-				}
-			}
+	if (Player::debug_flag) {
+		if (call == nullptr && Input::IsTriggered(Input::DEBUG_MENU)) {
+			call = std::make_shared<Scene_Debug>();
+		}
 
-			if (call == nullptr) {
-				if (Input::IsTriggered(Input::DEBUG_MENU)) {
-					call = std::make_shared<Scene_Debug>();
-				}
-				else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-					call = std::make_shared<Scene_Save>();
-				}
-				else if (Input::IsTriggered(Input::SETTINGS_MENU)) {
-					call = std::make_shared<Scene_Settings>();
-				}
-			}
+		if (call == nullptr && Input::IsTriggered(Input::DEBUG_SAVE)) {
+			call = std::make_shared<Scene_Save>();
 		}
 	}
 

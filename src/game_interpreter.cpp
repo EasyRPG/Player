@@ -2005,7 +2005,7 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 	bool maniac = Player::IsPatchManiac();
 
 	// Wait a given time
-	if (com.parameters.size() <= 1 || (!maniac && !Player::IsRPG2k3ECommands())) {
+	if (com.parameters.size() <= 1 || (!maniac && !Player::IsRPG2k3Commands())) {
 		SetupWait(com.parameters[0]);
 		return true;
 	}
