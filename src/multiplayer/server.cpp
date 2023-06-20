@@ -1,5 +1,4 @@
 #include "server.h"
-#include <iostream>
 #include <thread>
 #include "../output.h"
 
@@ -29,24 +28,22 @@ void Server::MainThread() {
 			Output::Error("MP: Failed to get the incoming connection: ",
 				acceptor.last_error_str());
 		} else {
-			bool wait = true;
-			std::thread thread([this, &wait, &sock]() { SockThread(wait, std::move(sock)); });
+			std::thread thread([this](sockpp::tcp_socket sock) {
+				SockThread(sock);
+			}, std::move(sock));
 			thread.detach();
-			while(wait) {}
 		}
 	}
 }
 
-void Server::SockThread(bool &wait, sockpp::tcp_socket sock)
+void Server::SockThread(sockpp::tcp_socket& sock)
 {
-	wait = false;
-
 	char buf[512];
 	ssize_t n;
 	bool close = false;
 
 	if (!sock.read_timeout(std::chrono::seconds(6))) {
-		Output::Warning("MP: Failed to set the timeout on sock stream: ",
+		Output::Warning("MP: Failed to set the timeout on sock stream: {}",
 			sock.last_error_str());
 	}
 

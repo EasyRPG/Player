@@ -8,7 +8,7 @@ public:
 	Server();
 protected:
 	void MainThread();
-	void SockThread(bool &wait, sockpp::tcp_socket sock);
+	void SockThread(sockpp::tcp_socket& sock);
 };
 
 #endif
