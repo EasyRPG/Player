@@ -708,7 +708,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionEnem
 	}
 
 	if (scene_action_substate == eWaitForInput) {
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::IsTriggered(Input::DECISION) && target_window->GetIndex() >= 0) {
 			EnemySelected();
 			return SceneActionReturn::eWaitTillNextFrame;
 		}

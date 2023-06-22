@@ -75,6 +75,8 @@ public:
 	static const int col_max = 10;
 	static Keyboard_Layout layouts[MODE_END];
 
+	bool mouseOutside = false;
+
 protected:
 	static const int border_x = 8;
 	static const int border_y = 4;

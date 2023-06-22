@@ -70,6 +70,8 @@ public:
 
 	void RefreshActiveFromValid();
 
+	bool mouseOutside = false;
+
 protected:
 	/**
 	 * Updates the cursor rectangle.

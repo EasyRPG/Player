@@ -282,8 +282,45 @@ void Window_BattleStatus::Update() {
 		RefreshGauge();
 	}
 
+	if (Input::GetUseMouseButton() && active && IsVisible()) {
+
+		if (Input::IsPressed(Input::MOUSE_LEFT)) {
+			Point mouseP = Input::GetMousePosition();
+			mouseOutside = true;
+
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
+				
+				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+					mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+
+					int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
+					new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
+
+					// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
+
+					if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+						if (new_index != mouseOldIndex)
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+						SetIndex(new_index);
+						mouseOldIndex = new_index;
+						mouseOutside = false;
+					}
+				}
+			}
+			else
+			{
+
+			}
+		}
+		else if (!(Input::IsPressed(Input::MOUSE_LEFT) || Input::IsReleased(Input::MOUSE_LEFT)) && Input::IsTriggered(Input::DECISION))
+		{
+			mouseOutside = false;
+		}
+	}
+
 	if (active && index >= 0) {
-		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+
+		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			for (int i = 1; i < item_max; i++) {
 				int new_index = (index + i) % item_max;

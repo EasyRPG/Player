@@ -111,7 +111,7 @@ void Scene_Name::vUpdate() {
 		} else {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && !kbd_window->mouseOutside) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		std::string const& s = kbd_window->GetSelected();
 

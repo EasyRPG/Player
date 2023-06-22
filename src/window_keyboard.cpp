@@ -23,6 +23,7 @@
 #include "input.h"
 #include "bitmap.h"
 #include "font.h"
+#include <output.h>
 
 const char* const Window_Keyboard::DONE = "<Done>";
 const char* const Window_Keyboard::SPACE = "SPACE";
@@ -269,6 +270,34 @@ void Window_Keyboard::Update() {
 
 	// move left on wide fields
 	int skip_dir = -1;
+
+	if (Input::GetUseMouseButton() && IsVisible() && active) {
+		if (Input::IsPressed(Input::MOUSE_LEFT)) {
+			mouseOutside = true;
+			for (int j = 0; j < row_max; j++) {
+				for (int i = 0; i < col_max; i++) {
+					Point mouseP = Input::GetMousePosition();
+					mouseP.x -= x + GetBorderX();
+					mouseP.y -= y + GetBorderY();
+					int minx = GetItemRect(j, i).x;
+					int maxx = GetItemRect(j, i).x + GetItemRect(j, i).width;
+					int miny = GetItemRect(j, i).y;
+					int maxy = GetItemRect(j, i).y + GetItemRect(j, i).height;
+					if (mouseP.x >= minx && mouseP.x <= maxx &&
+						mouseP.y >= miny && mouseP.y <= maxy) {
+						if (GetKey(j, i) != "") {
+							col = i;
+							row = j;
+							// Output::Debug("{} {}", i, j);
+							mouseOutside = false;
+							break;
+						}
+					}
+					
+				}
+			}
+		}
+	}
 
 	if (active) {
 		if (Input::IsRepeated(Input::DOWN)) {
