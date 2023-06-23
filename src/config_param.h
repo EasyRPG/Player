@@ -210,11 +210,11 @@ public:
 	}
 
 	template <typename U = T, typename std::enable_if<!std::is_enum<U>::value, int>::type = 0>
-    void ToIni(std::ostream& ini) const {
+	void ToIni(std::ostream& ini) const {
 		if (IsOptionVisible()) {
-    		ini << _config_key << '=' << Get() << "\n";
+			ini << _config_key << '=' << Get() << "\n";
 		}
-    }
+	}
 
 protected:
 	virtual bool vIsValid(const T& value) const = 0;
@@ -250,7 +250,7 @@ public:
 template <typename T>
 class LockedConfigParam final : public ConfigParam<T> {
 public:
-    explicit LockedConfigParam(StringView name, StringView description, T value = {}) :
+	explicit LockedConfigParam(StringView name, StringView description, T value = {}) :
 		ConfigParam<T>(name, description, "", "", value) {
 		this->Lock(value);
 	}
@@ -420,7 +420,7 @@ public:
 
 	void ToIni(std::ostream& ini) const {
 		if (this->IsOptionVisible()) {
-    		ini << this->_config_key << '=' << _tags[static_cast<int>(this->Get())] << "\n";
+			ini << this->_config_key << '=' << _tags[static_cast<int>(this->Get())] << "\n";
 		}
 	}
 

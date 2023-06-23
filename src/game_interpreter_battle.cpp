@@ -230,7 +230,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_pincers) {
 			this->force_flee_enabled = true;
 		}
-	    break;
+		break;
 	case 1:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
 			int num_escaped = 0;
@@ -245,7 +245,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
 			}
 		}
-	    break;
+		break;
 	case 2:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
 			auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
@@ -255,7 +255,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Escape));
 			}
 		}
-	    break;
+		break;
 	}
 
 	return true;
@@ -301,13 +301,13 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
-	    break;
+		break;
 	case 1:
 		change = Main_Data::game_variables->Get(com.parameters[3]);
-	    break;
+		break;
 	case 2:
 		change = com.parameters[3] * hp / 100;
-	    break;
+		break;
 	}
 
 	if (lose) {
@@ -339,10 +339,10 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(lcf::rpg::EventCommand cons
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
-	    break;
+		break;
 	case 1:
 		change = Main_Data::game_variables->Get(com.parameters[3]);
-	    break;
+		break;
 	}
 
 	if (lose)

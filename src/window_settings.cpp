@@ -34,7 +34,7 @@
 
 class MenuItem final : public ConfigParam<StringView> {
 public:
-    explicit MenuItem(StringView name, StringView description, StringView value) :
+	explicit MenuItem(StringView name, StringView description, StringView value) :
 		ConfigParam<StringView>(name, description, "", "", value) {
 	}
 };

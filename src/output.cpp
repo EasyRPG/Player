@@ -119,21 +119,21 @@ EM_ASM({
   msg = UTF8ToString($1);
 
   switch (lvl) {
-    case 0:
-      console.error(msg);
-      break;
-    case 1:
-      console.warn(msg);
-      break;
-    case 2:
-      console.info(msg);
-      break;
-    case 3:
-      console.debug(msg);
-      break;
-    default:
-      console.log(msg);
-      break;
+	case 0:
+	  console.error(msg);
+	  break;
+	case 1:
+	  console.warn(msg);
+	  break;
+	case 2:
+	  console.info(msg);
+	  break;
+	case 3:
+	  console.debug(msg);
+	  break;
+	default:
+	  console.log(msg);
+	  break;
   }
 }, static_cast<int>(lvl), msg.c_str());
 

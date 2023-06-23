@@ -592,12 +592,12 @@ uint32_t Utils::CRC32(std::istream& stream) {
 
 // via https://stackoverflow.com/q/3418231/
 std::string Utils::ReplaceAll(std::string str, const std::string& search, const std::string& replace) {
-    size_t start_pos = 0;
-    while((start_pos = str.find(search, start_pos)) != std::string::npos) {
-        str.replace(start_pos, search.length(), replace);
-        start_pos += replace.length(); // Handles case where 'replace' is a substring of 'search'
-    }
-    return str;
+	size_t start_pos = 0;
+	while((start_pos = str.find(search, start_pos)) != std::string::npos) {
+		str.replace(start_pos, search.length(), replace);
+		start_pos += replace.length(); // Handles case where 'replace' is a substring of 'search'
+	}
+	return str;
 }
 
 std::string Utils::ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values) {

@@ -52,7 +52,7 @@
 
 // Static variables.
 namespace {
-    template <typename T>
+	template <typename T>
 	BitmapFontGlyph const* find_glyph(const T& glyphset, char32_t code) {
 		auto iter = std::lower_bound(std::begin(glyphset), std::end(glyphset), code);
 		if(iter != std::end(glyphset) && iter->code == code) {
@@ -296,7 +296,7 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 
 #ifdef HAVE_HARFBUZZ
 	hb_buffer = hb_buffer_create();
-    hb_font = hb_ft_font_create_referenced(face);
+	hb_font = hb_ft_font_create_referenced(face);
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
@@ -368,7 +368,7 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 }
 
 Font::GlyphRet FTFont::vRender(char32_t glyph) const {
-    auto glyph_index = FT_Get_Char_Index(face, glyph);
+	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
 	if (glyph_index == 0 && fallback_font) {
 		return fallback_font->vRender(glyph);
@@ -466,9 +466,9 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 
 	hb_shape(hb_font, hb_buffer, nullptr, 0);
 
-    unsigned int glyph_count;
-    hb_glyph_info_t* glyph_info = hb_buffer_get_glyph_infos(hb_buffer, &glyph_count);
-    hb_glyph_position_t* glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
+	unsigned int glyph_count;
+	hb_glyph_info_t* glyph_info = hb_buffer_get_glyph_infos(hb_buffer, &glyph_count);
+	hb_glyph_position_t* glyph_pos = hb_buffer_get_glyph_positions(hb_buffer, &glyph_count);
 
 	std::vector<Font::ShapeRet> ret;
 	Point advance;
