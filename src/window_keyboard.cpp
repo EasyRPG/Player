@@ -24,6 +24,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include <output.h>
+#include <baseui.h>
 
 const char* const Window_Keyboard::DONE = "<Done>";
 const char* const Window_Keyboard::SPACE = "SPACE";
@@ -274,18 +275,27 @@ void Window_Keyboard::Update() {
 	if (Input::GetUseMouseButton() && IsVisible() && active) {
 		if (Input::IsPressed(Input::MOUSE_LEFT)) {
 			mouseOutside = true;
-			for (int j = 0; j < row_max; j++) {
-				for (int i = 0; i < col_max; i++) {
-					Point mouseP = Input::GetMousePosition();
-					mouseP.x -= x + GetBorderX();
-					mouseP.y -= y + GetBorderY();
-					int minx = GetItemRect(j, i).x;
-					int maxx = GetItemRect(j, i).x + GetItemRect(j, i).width;
-					int miny = GetItemRect(j, i).y;
-					int maxy = GetItemRect(j, i).y + GetItemRect(j, i).height;
-					if (mouseP.x >= minx && mouseP.x <= maxx &&
-						mouseP.y >= miny && mouseP.y <= maxy) {
+		}
+		for (int j = 0; j < row_max; j++) {
+			for (int i = 0; i < col_max; i++) {
+				Point mouseP = Input::GetMousePosition();
+				mouseP.x -= x + GetBorderX();
+				mouseP.y -= y + GetBorderY();
+				int minx = GetItemRect(j, i).x;
+				int maxx = GetItemRect(j, i).x + GetItemRect(j, i).width;
+				int miny = GetItemRect(j, i).y;
+				int maxy = GetItemRect(j, i).y + GetItemRect(j, i).height;
+				if (mouseP.x >= minx && mouseP.x <= maxx &&
+					mouseP.y >= miny && mouseP.y <= maxy) {
+
+					// Change cursor (Hand)
+					DisplayUi->ChangeCursor(1);
+
+					if (Input::IsPressed(Input::MOUSE_LEFT)) {
 						if (GetKey(j, i) != "") {
+							if (i != col || j != row) {
+								play_cursor = true;
+							}
 							col = i;
 							row = j;
 							// Output::Debug("{} {}", i, j);
@@ -300,22 +310,42 @@ void Window_Keyboard::Update() {
 	}
 
 	if (active) {
-		if (Input::IsRepeated(Input::DOWN)) {
-			play_cursor = true;
-			row = (row + 1) % row_max;
+		if (mouseOutside) {
+			if (Input::IsRepeated(Input::DOWN)) {
+				play_cursor = true;
+				mouseOutside = false;
+			}
+			if (Input::IsRepeated(Input::UP)) {
+				play_cursor = true;
+				mouseOutside = false;
+			}
+			if (Input::IsRepeated(Input::RIGHT)) {
+				play_cursor = true;
+				mouseOutside = false;
+			}
+			if (Input::IsRepeated(Input::LEFT)) {
+				play_cursor = true;
+				mouseOutside = false;
+			}
 		}
-		if (Input::IsRepeated(Input::UP)) {
-			play_cursor = true;
-			row = (row + row_max - 1) % row_max;
-		}
-		if (Input::IsRepeated(Input::RIGHT)) {
-			play_cursor = true;
-			col = (col + 1) % col_max;
-			skip_dir = 1;
-		}
-		if (Input::IsRepeated(Input::LEFT)) {
-			play_cursor = true;
-			col = (col + col_max - 1) % col_max;
+		else {
+			if (Input::IsRepeated(Input::DOWN)) {
+				play_cursor = true;
+				row = (row + 1) % row_max;
+			}
+			if (Input::IsRepeated(Input::UP)) {
+				play_cursor = true;
+				row = (row + row_max - 1) % row_max;
+			}
+			if (Input::IsRepeated(Input::RIGHT)) {
+				play_cursor = true;
+				col = (col + 1) % col_max;
+				skip_dir = 1;
+			}
+			if (Input::IsRepeated(Input::LEFT)) {
+				play_cursor = true;
+				col = (col + col_max - 1) % col_max;
+			}
 		}
 	}
 
@@ -338,4 +368,9 @@ void Window_Keyboard::Update() {
 		play_cursor = false;
 	}
 	UpdateCursorRect();
+	if (mouseOutside)
+	{
+		Rect r;
+		SetCursorRect(r);
+	}
 }

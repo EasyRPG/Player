@@ -72,6 +72,9 @@ public:
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 	Rect GetWindowMetrics() const override;
 
+	void ChangeCursor(int curs_type) override;
+	void Load_Cursor(std::string s, int curs_type) override;
+
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
 #endif
@@ -131,6 +134,9 @@ private:
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
 	SDL_Joystick *sdl_joystick = nullptr;
+
+	SDL_Cursor* cursorHand;
+	SDL_Cursor* cursorArrow;
 
 	Rect window_mode_metrics;
 	SDL_Rect viewport = {};

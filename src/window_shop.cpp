@@ -26,6 +26,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include <output.h>
+#include <baseui.h>
 
 Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -177,7 +178,8 @@ void Window_Shop::Update() {
 	Window_Base::Update();
 
 	if (active) {
-		if (Input::GetUseMouseButton() && Input::IsRawKeyPressed(Input::Keys::MOUSE_LEFT) && IsVisible() && leave_index > 0 && GetCursorRect().height > 0) {
+
+		if (Input::GetUseMouseButton() && IsVisible() && leave_index > 0 && GetCursorRect().height > 0) {
 			Point mouseP = Input::GetMousePosition();
 			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
 			//Output::Debug("Mouse : {}", GetItemMax());
@@ -185,16 +187,24 @@ void Window_Shop::Update() {
 			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
 				mouseP.y >= GetY() + GetBorderY() + 16 && mouseP.y < GetY() + GetHeight() - GetBorderY() + 16) {
 
-
 				int new_index = (mouseP.y - GetBorderY() - GetY()) / GetCursorRect().height;
 
 				//Output::Debug("Index : {} {}", new_index, leave_index);
 
-				if (new_index <= leave_index && new_index >= 0)
-					index = new_index;
+				if (new_index <= leave_index && new_index >= 0) {
+
+					// Change cursor (Hand)
+					DisplayUi->ChangeCursor(1);
+
+					if (Input::IsPressed(Input::MOUSE_LEFT)) {
+						if (index != new_index)
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+						index = new_index;
+					}
+				}
 
 			}
-			else {
+			else if (Input::IsPressed(Input::MOUSE_LEFT)) {
 				index = -999;
 			}
 		}
@@ -236,4 +246,8 @@ void Window_Shop::Update() {
 	}
 
 	UpdateCursorRect();
+}
+
+int Window_Shop::GetIndex() const {
+	return index;
 }

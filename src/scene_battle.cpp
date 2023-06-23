@@ -410,7 +410,8 @@ void Scene_Battle::ItemSelected() {
 	const lcf::rpg::Item* item = item_window->GetItem();
 
 	if (!item || !item_window->CheckEnable(item->ID)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		if (item_window->GetIndex() >= 0)
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 
@@ -456,7 +457,8 @@ void Scene_Battle::SkillSelected() {
 	const lcf::rpg::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !skill_window->CheckEnable(skill->ID)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		if (skill_window->GetIndex() >= 0)
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 

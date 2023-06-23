@@ -234,6 +234,10 @@ public:
 	 */
 	Game_ConfigVideo GetConfig() const;
 
+
+	virtual void ChangeCursor(int curs_type);
+	virtual void Load_Cursor(std::string s, int curs_type);
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateUi instead.
@@ -385,6 +389,13 @@ inline void BaseUi::SetFrameLimit(int fps_limit) {
 	vcfg.fps_limit.Set(fps_limit);
 
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
+}
+
+inline void BaseUi::ChangeCursor(int curs_type) {
+
+}
+inline void BaseUi::Load_Cursor(std::string s, int curs_type) {
+
 }
 
 #endif

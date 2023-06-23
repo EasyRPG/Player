@@ -42,6 +42,8 @@ public:
 	 */
 	void Update() override;
 
+	int GetIndex() const;
+
 	void SetMode(int nmode);
 	int GetChoice() const;
 	void SetChoice(int nchoice);

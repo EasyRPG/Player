@@ -30,6 +30,7 @@
 #include "output.h"
 #include "window_battlestatus.h"
 #include "feature.h"
+#include <baseui.h>
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
 	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
@@ -284,20 +285,23 @@ void Window_BattleStatus::Update() {
 
 	if (Input::GetUseMouseButton() && active && IsVisible()) {
 
-		if (Input::IsPressed(Input::MOUSE_LEFT)) {
-			Point mouseP = Input::GetMousePosition();
-			mouseOutside = true;
-
-			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
+		
+		Point mouseP = Input::GetMousePosition();
+		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 				
-				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-					mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-					int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
-					new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
+				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
+				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
 
-					// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
-
+				if (new_index >= 0 && new_index < GetItemMax()) {
+					// Change cursor (Hand)
+					DisplayUi->ChangeCursor(1);
+				}
+				// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
+				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					mouseOutside = true;
 					if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
 						if (new_index != mouseOldIndex)
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
@@ -306,10 +310,6 @@ void Window_BattleStatus::Update() {
 						mouseOutside = false;
 					}
 				}
-			}
-			else
-			{
-
 			}
 		}
 		else if (!(Input::IsPressed(Input::MOUSE_LEFT) || Input::IsReleased(Input::MOUSE_LEFT)) && Input::IsTriggered(Input::DECISION))

@@ -928,6 +928,9 @@ void Player::ResetGameObjects() {
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	Input::ResetMask();
+
+	DisplayUi->Load_Cursor("mouseCursor", 0);
+	DisplayUi->Load_Cursor("mouseCursorHand", 1);
 }
 
 static bool DefaultLmuStartFileExists(const FilesystemView& fs) {

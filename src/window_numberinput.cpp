@@ -30,6 +30,7 @@
 #include <fmt/format.h>
 #include <output.h>
 #include <input.h>
+#include <baseui.h>
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
@@ -140,15 +141,19 @@ void Window_NumberInput::Update() {
 	if (active) {
 
 		if (Input::GetUseMouseButton()) {
-			if (Input::IsPressed(Input::MOUSE_LEFT)) {
-				waitMouseControl++;
-				if (waitMouseControl == 1 || (waitMouseControl >= Input::start_repeat_time && waitMouseControl % Input::repeat_time == 1)) {
-					Point mouseP = Input::GetMousePosition();
+			
+			Point mouseP = Input::GetMousePosition();
 
-					int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
-					if (mouseP.x >= GetX() + GetBorderX() + x && mouseP.x <= GetX() + GetBorderX() + x + 14 &&
-						mouseP.y >= GetY() + GetBorderY() - 2 && mouseP.y < GetY() + 32 - GetBorderY() + 2) {
+			int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
+			if (mouseP.x >= GetX() + GetBorderX() + x && mouseP.x <= GetX() + GetBorderX() + x + 14 &&
+				mouseP.y >= GetY() + GetBorderY() - 2 && mouseP.y < GetY() + 32 - GetBorderY() + 2) {
 
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+
+				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					waitMouseControl++;
+					if (waitMouseControl == 1 || (waitMouseControl >= Input::start_repeat_time && waitMouseControl % Input::repeat_time == 1)) {
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 
 						int place = 1;
@@ -169,9 +174,9 @@ void Window_NumberInput::Update() {
 						Refresh();
 					}
 				}
-			}
-			else {
-				waitMouseControl = 0;
+				else {
+					waitMouseControl = 0;
+				}
 			}
 		}
 

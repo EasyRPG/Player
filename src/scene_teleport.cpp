@@ -44,7 +44,7 @@ void Scene_Teleport::Start() {
 void Scene_Teleport::vUpdate() {
 	teleport_window->Update();
 
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && teleport_window->GetIndex() >= 0) {
 		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
 		} else {

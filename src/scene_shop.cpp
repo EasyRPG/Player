@@ -230,7 +230,7 @@ void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && shop_window->GetIndex() >= 0) {
 		switch (shop_window->GetChoice()) {
 			case Buy:
 			case Sell:
@@ -272,7 +272,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 			SetMode(BuyHowMany);
 		}
-		else {
+		else if (buy_window->GetIndex() >= 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	}
@@ -296,9 +296,11 @@ void Scene_Shop::UpdateSellSelection() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);
-		} else {
+		}
+		else if (sell_window->GetIndex() >= 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
+		
 	}
 }
 

@@ -22,6 +22,7 @@
 #include "util_macro.h"
 #include "bitmap.h"
 #include <output.h>
+#include <baseui.h>
 
 constexpr int arrow_animation_frames = 20;
 
@@ -141,11 +142,39 @@ void Window_Selectable::Update() {
 	Window_Base::Update();
 
 	if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
+
+		Point mouseP = Input::GetMousePosition();
+
+		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+			int h = 1;
+			int w = 1;
+			if (!GetCursorRect().IsEmpty()) {
+				h = GetCursorRect().height;
+				w = GetCursorRect().width;
+			}
+			else if (!GetItemRect(0).IsEmpty()) {
+				h = GetItemRect(0).height + 4;
+				w = GetItemRect(0).width;
+			}
+
+			//Output::Debug("Cursor height {}", h);
+
+			int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h + startCursorY * 16) / h * column_max;
+			new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+
+			if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+
+				if (new_index < GetItemMax() && new_index >= 0) {
+					// Change cursor (Hand)
+					DisplayUi->ChangeCursor(1);
+				}
+			}
+		}
+
 		if (Input::IsPressed(Input::MOUSE_LEFT)) {
 
 			mouseTimeArrow++;
-
-			Point mouseP = Input::GetMousePosition();
 
 			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
 				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
@@ -155,7 +184,7 @@ void Window_Selectable::Update() {
 				else
 					index = GetTopRow();
 				UpdateCursorRect();
-				
+
 			}
 			else {
 				if (index != -999 && index != -1)
@@ -177,11 +206,13 @@ void Window_Selectable::Update() {
 					}
 			}
 		}
-		else
+		else {
 			mouseTimeArrow = 0;
+		}
 	}
-	else
+	else {
 		mouseTimeArrow = 0;
+	}
 
 	if (active && item_max > 0 && index >= 0) {
 		if (scroll_dir != 0) {
@@ -215,10 +246,17 @@ void Window_Selectable::Update() {
 
 				//Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
 
-				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-					if (new_index != mouseOldIndex)
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-					SetIndex(new_index);
+				if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+					if (new_index < GetItemMax()) {
+						if (new_index != mouseOldIndex)
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+						SetIndex(new_index);
+					}
+					else {
+						if (index != -999 && index != -1)
+							mouseOldIndex = index;
+						index = -999;
+					}
 				}
 			}
 		}

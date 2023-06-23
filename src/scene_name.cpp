@@ -145,4 +145,8 @@ void Scene_Name::vUpdate() {
 			name_window->Append(s);
 		}
 	}
+	else if (Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT) && kbd_window->mouseOutside) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+		kbd_window->mouseOutside = false;
+	}
 }

@@ -33,6 +33,7 @@ Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	} else {
 		SetContents(Bitmap::Create(width - 16, height - 16));
 	}
+	menu_item_height = 48;
 
 	Refresh();
 }

@@ -31,6 +31,7 @@
 #include "main_data.h"
 #include "scene_settings.h"
 #include "game_map.h"
+#include <baseui.h>
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -220,6 +221,11 @@ void Scene::TransitionIn(SceneType) {
 
 void Scene::TransitionOut(SceneType) {
 	Transition::instance().InitErase(Transition::TransitionFadeOut, this, 6);
+	if (Input::GetUseMouseButton()) {
+
+		// Reset cursor (Arrow)
+		DisplayUi->ChangeCursor(0);
+	}
 }
 
 void Scene::Suspend(SceneType /* next_scene */) {
@@ -242,6 +248,11 @@ bool Scene::IsAsyncPending() {
 }
 
 void Scene::Update() {
+	if (Input::GetUseMouseButton()) {
+		// Reset cursor (Arrow)
+		DisplayUi->ChangeCursor(0);
+	}
+
 	// Allow calling of settings scene everywhere except from Logo (Player is currently starting up)
 	// and from Map (has own handling to prevent breakage)
 	if (instance->type != Scene::Logo &&
