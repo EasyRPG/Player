@@ -196,7 +196,8 @@ void Window_Shop::Update() {
 					// Change cursor (Hand)
 					DisplayUi->ChangeCursor(1);
 
-					if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					//if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					if (Input::mouseHover()) {
 						if (index != new_index)
 							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 						index = new_index;

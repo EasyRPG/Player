@@ -350,6 +350,8 @@ namespace Input {
 
 	void SetUseMouse(bool b);
 	bool GetUseMouseButton();
+
+	bool mouseHover();
 }
 
 #endif

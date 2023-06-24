@@ -310,7 +310,8 @@ void Window_BattleStatus::Update() {
 					DisplayUi->ChangeCursor(1);
 				}
 				// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
-				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+				//if (Input::IsPressed(Input::MOUSE_LEFT)) {
+				if (Input::mouseHover()) {
 					mouseOutside = true;
 					if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
 						if (new_index != mouseOldIndex)

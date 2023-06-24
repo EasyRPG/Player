@@ -246,6 +246,18 @@ bool Input::GetUseMouseButton() {
 	return useMouseButton;
 }
 
+int oldMouseX;
+int oldMouseY;
+bool Input::mouseHover() {
+	Point mouseP = Input::GetMousePosition();
+	if (mouseP.x != oldMouseX || mouseP.y != oldMouseY ||Input::IsPressed(Input::DECISION)) {
+		oldMouseX = mouseP.x;
+		oldMouseY = mouseP.y;
+		return true;
+	}
+	return false;
+}
+
 
 bool Input::IsTriggered(InputButton button) {
 	assert(!IsSystemButton(button));

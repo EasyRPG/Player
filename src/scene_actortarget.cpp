@@ -151,7 +151,7 @@ void Scene_ActorTarget::UpdateItem() {
 }
 
 void Scene_ActorTarget::UpdateSkill() {
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && target_window->GetIndex() >= 0) {
 		Game_Actor* actor = &(*Main_Data::game_party)[actor_index];
 
 		if (actor->GetSp() < actor->CalculateSkillCost(id) || actor->GetHp() <= actor->CalculateSkillHpCost(id)) {

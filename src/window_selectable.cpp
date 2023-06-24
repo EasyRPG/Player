@@ -141,6 +141,8 @@ void Window_Selectable::UpdateArrows() {
 void Window_Selectable::Update() {
 	Window_Base::Update();
 
+	int old_index = index;
+
 	if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
 
 		Point mouseP = Input::GetMousePosition();
@@ -173,6 +175,7 @@ void Window_Selectable::Update() {
 		}
 
 		if (Input::IsPressed(Input::MOUSE_LEFT)) {
+		//if (Input::mouseHover()) {
 
 			mouseTimeArrow++;
 
@@ -209,6 +212,46 @@ void Window_Selectable::Update() {
 		else {
 			mouseTimeArrow = 0;
 		}
+
+		//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
+		//Output::Debug("Mouse : {}", GetItemMax());
+		//if (Input::IsPressed(Input::DECISION)) {
+		if (Input::mouseHover()) {
+			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+
+				int w = 1;
+				int h = 1;
+				if (!GetCursorRect().IsEmpty()) {
+					h = GetCursorRect().height;
+					w = GetCursorRect().width;
+				}
+				else if (!GetItemRect(0).IsEmpty()) {
+					h = GetItemRect(0).height;
+					w = GetItemRect(0).width;
+				}
+				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
+				new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+
+				// Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
+				
+				if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+					if (new_index < GetItemMax() && !IsOpeningOrClosing()) {
+						if (new_index != mouseOldIndex)
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+						if (index != -999 && index != -1)
+							mouseOldIndex = new_index;
+						SetIndex(new_index);
+					}
+					else if (!IsOpeningOrClosing()) {
+						if (index != -999 && index != -1)
+							mouseOldIndex = index;
+						index = -999;
+					}
+				}
+				
+			}
+		}
 	}
 	else {
 		mouseTimeArrow = 0;
@@ -228,36 +271,6 @@ void Window_Selectable::Update() {
 					UpdateHelp();
 				}
 				UpdateCursorRect();
-			}
-		}
-
-		int old_index = index;
-
-		if (Input::GetUseMouseButton() && Input::IsPressed(Input::MOUSE_LEFT) && IsVisible() && GetItemMax() > 0) {
-			Point mouseP = Input::GetMousePosition();
-			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
-			//Output::Debug("Mouse : {}", GetItemMax());
-
-			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-
-				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
-				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
-
-				//Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
-
-				if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-					if (new_index < GetItemMax()) {
-						if (new_index != mouseOldIndex)
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-						SetIndex(new_index);
-					}
-					else {
-						if (index != -999 && index != -1)
-							mouseOldIndex = index;
-						index = -999;
-					}
-				}
 			}
 		}
 
@@ -329,6 +342,7 @@ void Window_Selectable::Update() {
 	if (active && help_window != NULL) {
 		UpdateHelp();
 	}
+
 	UpdateCursorRect();
 	UpdateArrows();
 
