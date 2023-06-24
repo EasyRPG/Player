@@ -318,7 +318,7 @@ void Game_Multiplayer::InitConnection() {
 			chat_name->SetSystemGraphic(std::string(p.name));
 		}
 	});
-	connection.RegisterHandler<SEPacket>("se", [this] (SEPacket& p) {
+	connection.RegisterHandler<SEPacket>("se", [this] (SEPacket& p) { // se: sound effect
 		if (players.find(p.id) == players.end()) return;
 		if (settings.enable_sounds) {
 			auto& player = players[p.id];
