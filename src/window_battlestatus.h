@@ -70,6 +70,7 @@ public:
 
 	void RefreshActiveFromValid();
 
+	void SetMouseOutside(bool b);
 	bool mouseOutside = false;
 
 protected:

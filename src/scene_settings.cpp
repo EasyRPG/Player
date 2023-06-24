@@ -331,7 +331,49 @@ void Scene_Settings::UpdateOptions() {
 		option.current_value = Utils::Clamp(number_window->GetNumber(), option.min_value, option.max_value);
 		option.action();
 
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::GetUseMouseButton()) {
+			Point mouseP = Input::GetMousePosition();
+
+			int new_index = (mouseP.x - number_window->GetX() - number_window->GetBorderX() - number_window->GetItemRect(0).x + 4) / (12) - 1;
+
+			if (new_index >= 0 && new_index < number_window->GetMaxDigits()) {
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+
+					number_window->SetIndex(-999);
+					// Output::Debug("{} {} {}", new_index, number_input_window->GetIndex(), number_input_window->GetMouseOldIndex());
+
+					if (new_index != number_window->GetMouseOldIndex())
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+
+					if (number_window->GetIndex() != -999 && number_window->GetIndex() != -1)
+						number_window->SetMouseOldIndex(number_window->GetIndex());
+
+					number_window->SetIndex(new_index);
+
+				}
+			}
+
+			number_window->UpdateCursorRect();
+
+			int dx = number_window->GetMaxDigits() * 12 + 32 + 12;
+			if ((mouseP.x >= number_window->GetX() + number_window->GetBorderX() + dx && mouseP.x <= number_window->GetX() + number_window->GetBorderX() + dx + 14 &&
+				mouseP.y >= number_window->GetY() + number_window->GetBorderY() && mouseP.y < number_window->GetY() + number_window->GetBorderY() + number_window->GetItemRect(0).height)) {
+
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+
+				if (Input::IsReleased(Input::MOUSE_LEFT)) {
+					options_window->Refresh();
+					number_window.reset();
+					options_window->SetActive(true);
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+				}
+			}
+		}
+
+		if (Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT)) {
 			options_window->Refresh();
 			number_window.reset();
 			options_window->SetActive(true);

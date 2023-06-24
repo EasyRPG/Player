@@ -24,6 +24,8 @@
 #include "bitmap.h"
 #include "font.h"
 #include <lcf/reader_util.h>
+#include <baseui.h>
+#include <output.h>
 
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -59,6 +61,16 @@ void Window_ShopNumber::Refresh() {
 	}
 
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
+
+	if (Input::GetUseMouseButton()) {
+
+		Rect src_rectUp(40, 8, 16, 8);
+		contents->Blit(132 + 16, y + 3 - 16, *windowskin, src_rectUp, 255);
+
+		Rect src_rectDown(40, 16, 16, 8);
+		contents->Blit(132 + 16, y + 3 + 16, *windowskin, src_rectDown, 255);
+
+	}
 }
 
 int Window_ShopNumber::GetNumber() const {
@@ -68,8 +80,58 @@ int Window_ShopNumber::GetNumber() const {
 void Window_ShopNumber::Update() {
 	Window_Base::Update();
 
+	int last_number = number;
+
+	if (Input::GetUseMouseButton() && IsVisible()) {
+		Point mouseP = Input::GetMousePosition();
+
+		if (Input::IsPressed(Input::MOUSE_LEFT)) {
+			disabledByMouse = true;
+		}
+		
+		// Up Arrow
+		if (mouseP.x >= GetX() + GetBorderX() + 132 + 14 && mouseP.x <= GetX() + GetBorderX() + 132 + 14 + 14 &&
+			mouseP.y >= GetY() + GetBorderY() + 37 - 16 && mouseP.y < GetY() + GetBorderY() + 37 - 16 + 8) {
+
+			// Change cursor (Hand)
+			DisplayUi->ChangeCursor(1);
+
+			if (Input::IsRepeated(Input::MOUSE_LEFT) && number < item_max) {
+				number++;
+			}
+		}
+
+		// Down Arrow
+		if (mouseP.x >= GetX() + GetBorderX() + 132 + 14 && mouseP.x <= GetX() + GetBorderX() + 132 + 14 + 14 &&
+			mouseP.y >= GetY() + GetBorderY() + 37 + 16 && mouseP.y < GetY() + GetBorderY() + 37 + 16 + 8) {
+
+			// Change cursor (Hand)
+			DisplayUi->ChangeCursor(1);
+
+			if (Input::IsRepeated(Input::MOUSE_LEFT) && number > 1) {
+				number--;
+			}
+		}
+
+		// Validate
+		if (mouseP.x >= GetX() + GetBorderX() + GetCursorRect().x && mouseP.x <= GetX() + GetBorderX() + GetCursorRect().x + GetCursorRect().width &&
+			mouseP.y >= GetY() + GetBorderY() + GetCursorRect().y && mouseP.y < GetY() + GetBorderY() + GetCursorRect().y + GetCursorRect().height) {
+
+			// Change cursor (Hand)
+			DisplayUi->ChangeCursor(1);
+
+			if (Input::IsReleased(Input::MOUSE_LEFT)) {
+				disabledByMouse = false;
+			}
+		}
+
+
+		if (Input::IsTriggered(Input::DECISION) && (!Input::IsReleased(Input::MOUSE_LEFT))) {
+			disabledByMouse = false;
+		}
+	}
+
 	if (active) {
-		int last_number = number;
 		if (Input::IsRepeated(Input::RIGHT) && number < item_max) {
 			number++;
 		} else if (Input::IsRepeated(Input::LEFT) && number > 1) {

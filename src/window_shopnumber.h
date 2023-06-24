@@ -72,6 +72,8 @@ public:
 	 */
 	int GetTotal() const;
 
+	int disabledByMouse = false;
+
 protected:
 	int item_max;
 	int price;

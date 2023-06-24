@@ -283,17 +283,27 @@ void Window_BattleStatus::Update() {
 		RefreshGauge();
 	}
 
-	if (Input::GetUseMouseButton() && active && IsVisible()) {
+	if (Input::GetUseMouseButton() && active && IsVisible() && lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 
-		
 		Point mouseP = Input::GetMousePosition();
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 				
 			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
 				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * GetCursorRect().height - startCursorY * 16) / GetCursorRect().height * column_max;
-				new_index += (mouseP.x - GetBorderX() - GetX()) / GetCursorRect().width;
+				int h = 1;
+				int w = 1;
+				if (!GetCursorRect().IsEmpty()) {
+					h = GetCursorRect().height;
+					w = GetCursorRect().width;
+				}
+				else if (!GetItemRect(0).IsEmpty()) {
+					h = GetItemRect(0).height + 4;
+					w = GetItemRect(0).width;
+				}
+
+				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
+				new_index += (mouseP.x - GetBorderX() - GetX()) / w;
 
 				if (new_index >= 0 && new_index < GetItemMax()) {
 					// Change cursor (Hand)
@@ -311,8 +321,11 @@ void Window_BattleStatus::Update() {
 					}
 				}
 			}
+			else if (Input::IsPressed(Input::MOUSE_LEFT)) {
+				mouseOutside = true;
+			}
 		}
-		else if (!(Input::IsPressed(Input::MOUSE_LEFT) || Input::IsReleased(Input::MOUSE_LEFT)) && Input::IsTriggered(Input::DECISION))
+		else if (!(Input::IsPressed(Input::MOUSE_LEFT) || !Input::IsReleased(Input::MOUSE_LEFT)) && Input::IsTriggered(Input::DECISION))
 		{
 			mouseOutside = false;
 		}
@@ -341,8 +354,11 @@ void Window_BattleStatus::Update() {
 			}
 		}
 	}
-
-	UpdateCursorRect();
+	if (mouseOutside) {
+		Rect r;
+		SetCursorRect(r);
+	} else
+		UpdateCursorRect();
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
@@ -396,4 +412,9 @@ void Window_BattleStatus::RefreshActiveFromValid() {
 		SetActive(false);
 	}
 	UpdateCursorRect();
+}
+
+
+void Window_BattleStatus::SetMouseOutside(bool b) {
+	mouseOutside = b;
 }

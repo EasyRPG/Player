@@ -140,6 +140,7 @@ void Scene_File::Start() {
 	down_arrow = Scene_File::MakeArrowSprite(true);
 
 	index = latest_slot;
+	oldIndex = index;
 	top_index = std::max(0, index - 2);
 
 	RefreshWindows();
@@ -162,7 +163,10 @@ void Scene_File::RefreshWindows() {
 	for (int i = 0; i < (int)file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
-		w->SetActive(i == index);
+		if (disabledByMouse)
+			w->SetActive(false);
+		else
+			w->SetActive(i == index);
 		w->Refresh();
 	}
 }
@@ -188,11 +192,77 @@ void Scene_File::vUpdate() {
 	if (HandleExtraCommandsWindow()) {
 		return;
 	}
+	
+	int old_top_index = top_index;
+	int old_index = index;
+	int max_index = static_cast<int>(file_windows.size()) - 1;
+
+	if (Input::GetUseMouseButton()) {
+		int i = 0;
+		bool mouseOutside = true;
+		Point mouseP = Input::GetMousePosition();
+
+		if (mouseP.y >= 40 - file_windows[0]->GetBorderY() && mouseP.y < 40 && up_arrow) {
+
+			// Change cursor (Hand)
+			DisplayUi->ChangeCursor(1);
+
+			if (Input::IsRepeated(Input::MOUSE_LEFT)) {
+				top_index = std::max(0, top_index - 1);
+				index = top_index;
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			}
+
+		}
+		else if (mouseP.y >= Player::screen_height - file_windows[0]->GetBorderY() && mouseP.y < Player::screen_height && down_arrow) {
+
+			// Change cursor (Hand)
+			DisplayUi->ChangeCursor(1);
+
+			if (Input::IsRepeated(Input::MOUSE_LEFT)) {
+				top_index = std::min(max_index - 2, top_index + 1);
+				index = top_index;
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			}
+
+		}
+		else if (mouseP.y >= 40) {
+			for (auto& fw : file_windows) {
+				if (fw->IsVisible()) {
+					
+
+					if (mouseP.x >= fw->GetX() + fw->GetBorderX() && mouseP.x <= fw->GetX() + fw->GetWidth() - fw->GetBorderX() &&
+						mouseP.y >= fw->GetY() + fw->GetBorderY() && mouseP.y < fw->GetY() + fw->GetHeight() - fw->GetBorderY()) {
+
+						// Change cursor (Hand)
+						DisplayUi->ChangeCursor(1);
+
+						if (Input::IsPressed(Input::MOUSE_LEFT)) {
+							mouseOutside = false;
+							if (oldIndex != i)
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+							oldIndex = index;
+							index = i;
+							disabledByMouse = false;
+							Refresh();
+							break;
+						}
+					}
+				}
+				i++;
+			}
+		}
+
+		if (Input::IsPressed(Input::MOUSE_LEFT) && mouseOutside) {
+			disabledByMouse = true;
+			Refresh();
+		}
+	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && !disabledByMouse) {
 		if (IsSlotValid(index)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			Action(index);
@@ -210,36 +280,48 @@ void Scene_File::vUpdate() {
 #endif
 	}
 
-	int old_top_index = top_index;
-	int old_index = index;
-	int max_index = static_cast<int>(file_windows.size()) - 1;
+	if (disabledByMouse) {
+		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::SCROLL_DOWN)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				disabledByMouse = false;
+				index = oldIndex;
+				Refresh();
+		}
+		if (Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::SCROLL_UP)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				disabledByMouse = false;
+				index = oldIndex;
+				Refresh();
+		}
+	}
+	else {
+		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+			if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)
+				|| index < max_index) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				index = (index + 1) % file_windows.size();
+			}
 
-	if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-		if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)
-			|| index < max_index) {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-			index = (index + 1) % file_windows.size();
+			//top_index = std::max(top_index, index - 3 + 1);
+		}
+		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+			if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)
+				|| index >= 1) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				index = (index + max_index) % file_windows.size();
+			}
+
+			//top_index = std::min(top_index, index);
 		}
 
-		//top_index = std::max(top_index, index - 3 + 1);
-	}
-	if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
-		if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)
-			|| index >= 1) {
+		if (Input::IsRepeated(Input::PAGE_DOWN) && index < max_index) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-			index = (index + max_index) % file_windows.size();
+			index = (index + 3 <= max_index) ? index + 3 : max_index;
 		}
-
-		//top_index = std::min(top_index, index);
-	}
-
-	if (Input::IsRepeated(Input::PAGE_DOWN) && index < max_index) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-		index = (index + 3 <= max_index) ? index + 3 : max_index;
-	}
-	if (Input::IsRepeated(Input::PAGE_UP) && index >= 1) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-		index = (index > 3) ? index - 3 : 0;
+		if (Input::IsRepeated(Input::PAGE_UP) && index >= 1) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = (index > 3) ? index - 3 : 0;
+		}
 	}
 
 	if (index > top_index + 2) {

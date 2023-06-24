@@ -125,6 +125,27 @@ void Window_ShopParty::Refresh() {
 	contents->Clear();
 
 	BitmapRef system = Cache::SystemOrBlack();
+	if (item_id == -1) {
+
+		const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
+		for (int i = 0; i < static_cast<int>(actors.size()) && i < 4; i++) {
+			Game_Actor* actor = actors[i];
+			int phase = (cycle / anim_rate) % 4;
+			int phasecmp = phase;
+			if (phase == 3) {
+				phase = 1;
+			}
+			// RPG_RT displays the actors in an empty shop.
+			bool usable = false;
+			BitmapRef bm = bitmaps[i][usable ? phase : 1][usable ? 1 : 0];
+
+			if (bm) {
+				contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
+			}
+		}
+
+		return;
+	}
 
 	if (item_id < 0 || item_id > static_cast<int>(lcf::Data::items.size()))
 		return;

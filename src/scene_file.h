@@ -83,6 +83,8 @@ protected:
 
 	int arrow_frame = 0;
 
+	int oldIndex = 0;
+	bool disabledByMouse = false;
 };
 
 #endif
