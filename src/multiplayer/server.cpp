@@ -28,9 +28,7 @@ void Server::MainThread() {
 			Output::Error("MP: Failed to get the incoming connection: ",
 				acceptor.last_error_str());
 		} else {
-			std::thread thread([this](sockpp::tcp_socket sock) {
-				SockThread(sock);
-			}, std::move(sock));
+			std::thread thread([this](auto s) { SockThread(s); }, std::move(sock));
 			thread.detach();
 		}
 	}

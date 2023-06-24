@@ -138,10 +138,17 @@ void Client::FlushQueue() {
 		std::string bulk;
 		while (!m_queue.empty()) {
 			auto& e = m_queue.front();
+			/*!
+			 * if namecmp, break: flush packet queue by "name" (v != "name")
+			 * not "name":true include:false: concat
+			 * is "name":false include:false: break, Send, toggle include
+			 * is "name":false include:true: concat
+			 * not "name":true include:true: break, Send, toggle include
+			 */
 			if (namecmp(e->GetName(), include))
 				break;
 			auto data = e->ToBytes();
-			// send before overflow
+			// prevent overflow
 			if (bulk.size() + data.size() > MAX_QUEUE_SIZE) {
 				Send(bulk);
 				bulk.clear();
