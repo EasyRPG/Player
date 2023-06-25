@@ -77,7 +77,7 @@ public:
 	NametagMode nametag_mode{NametagMode::CLASSIC};
 
 	std::map<int, PlayerOther> players;
-	std::vector<PlayerOther> dc_players;
+	std::vector<PlayerOther> dc_players; // disconnect and player fade
 	std::vector<int> sync_switches;
 	std::vector<int> sync_vars;
 	std::vector<int> sync_events;
