@@ -1,3 +1,4 @@
+The simple multiplayer flowchart:
                    +-------------+
                +---+   Packet    +---+
                |   +-------------+   |
@@ -5,19 +6,19 @@
 | Build +--+ C2SPacket |     | S2CPacket +--+ Decode |
 +-------+  +-----+-----+     +-----+-----+  +--------+
                  |                 |
-       +---------+-----------------+--------+         +--------------------+
-       |  Messages:                         <---------+                    |
-       |    C2S: SwitchRoomPacket, ...      |         |  Game_Multiplayer  |
-       |    S2C: SyncPlayerDataPacket, ...  +---v     |   S2C, C2S, ...    |
-       +------------------------------------+   |     |                    |
-                                                |     +----+-+-------------+
-       +------------------------------------+   |          | |
-    +--+ Connection:                        |   |          | |
-    |  |  SendPacketAsync, Dispatch, queue  <---+          | |
-    |  |   ...                              +--------------+ |
-    |  +------------------------------------+                |
-    |    +--------------------------+                        |
-    +----+ Client:                  +<-----------------------+
+       +---------+-----------------+--------+      +------------------+
+       |  Messages:                         +<-----+ Game_Multiplayer |
+       |    C2S: SwitchRoomPacket, ...      |      |  S2C, C2S, ...   |
+       |    S2C: SyncPlayerDataPacket, ...  +---v  +--+----+----------+
+       +------------------------------------+   |     |    |
+                                                |     |    |
+       +------------------------------------+   |     |    |
+    +--+ Connection:                        |   |     |    |
+    |  |  SendPacketAsync, Dispatch, queue  +<--+     |    |
+    |  |   ...                              +---------+    |
+    |  +------------------------------------+              |
+    |    +--------------------------+                      |
+    +----+ Client:                  +<---------------------+
          |    FlushQueue, Send, ... |   +--------------+
          +--+-----------------------+   |              |
             |    +----------+           |    Server    |
@@ -26,3 +27,11 @@
                       ^                   |
                       |                   |
                       +-------------------+
+
+Explaining the ynoclient:game_multiplayer.cpp sync_* (roughly):
+server: handle*: checkRoomConditions
+server: badges checkRoomConditions, send ss
+client: received ss(SyncSwitch), wait Player event triggered, send ss
+server: received ss(SyncSwitch), send sv(SyncVariable)
+client: received sv(SyncVariable), wait Player event triggered, send sv
+server: received sv(SyncVariable), tryWritePlayer*
