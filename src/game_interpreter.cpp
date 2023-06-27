@@ -4725,9 +4725,23 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			}
 
 			// min_size
-			result = Main_Data::game_strings->PrependMin(result, args[1]);
+			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
 			break;
 		case 1: //Number <fn(int number, int min_size)>
+			switch (modes[0])
+			{
+			case 0: break;
+			case 1: args[0] = Main_Data::game_variables->Get(args[0]); break;
+			case 2: args[0] = Main_Data::game_variables->GetIndirect(args[0]); break;
+			}
+			switch (modes[1])
+			{
+			case 0: break;
+			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
+			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
+			}
+			result = (Game_Strings::Str_t)std::to_string(args[0]);
+			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
 		case 3: //Database Names <fn(int id, bool dynamic)>
 			break;

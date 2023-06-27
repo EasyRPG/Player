@@ -48,7 +48,7 @@ public:
 
 	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op);
 
-	Str_t PrependMin(Str_t string, int min_size);
+	Str_t PrependMin(Str_t string, int min_size, char c);
 private:
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;

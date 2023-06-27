@@ -91,10 +91,10 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string
 	return GetData();
 }
 
-Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size) {
+Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size, char c) {
 	if (string.size() < min_size) {
 		int s = min_size - string.size();
-		std::string res = std::string(s, ' ') + (std::string)string;
+		std::string res = std::string(s, c) + (std::string)string;
 		return (Str_t)res;
 	}
 	return string;
