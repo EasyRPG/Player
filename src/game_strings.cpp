@@ -59,3 +59,43 @@ Game_Strings::Str_t Game_Strings::Cat(int string_id, Str_t string) {
 	s = (Str_t)op_string;
 	return s;
 }
+
+const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string_id_1, Str_t string, int op) {
+	if (EP_UNLIKELY(ShouldWarn(string_id_0))) {
+		WarnGet(string_id_0);
+	}
+	if (EP_UNLIKELY(ShouldWarn(string_id_1))) {
+		WarnGet(string_id_1);
+	}
+
+	if (string_id_0 <= 0) {	string_id_0 = 1; }
+	if (string_id_1 <= 0) {	string_id_1 = 1; }
+
+	// swap so that id_0 is < id_1
+	if (string_id_0 > string_id_1) {
+		string_id_0 = string_id_0 ^ string_id_1;
+		string_id_1 = string_id_1 ^ string_id_0;
+		string_id_0 = string_id_0 ^ string_id_1;
+	}
+
+	if (EP_UNLIKELY(string_id_1 > static_cast<int>(_strings.size()))) {
+		_strings.resize(string_id_1, "");
+	}
+
+	for (int i = string_id_0; i <= string_id_1; i++) {
+		switch (op) {
+		case 0: Asg(i, string); break;
+		case 1: Cat(i, string); break;
+		}
+	}
+	return GetData();
+}
+
+Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size) {
+	if (string.size() < min_size) {
+		int s = min_size - string.size();
+		std::string res = std::string(s, ' ') + (std::string)string;
+		return (Str_t)res;
+	}
+	return string;
+}

@@ -46,9 +46,13 @@ public:
 	Str_t Asg(int string_id, Str_t string);
 	Str_t Cat(int string_id, Str_t string);
 
+	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op);
+
+	Str_t PrependMin(Str_t string, int min_size);
 private:
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
+
 private:
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
@@ -80,4 +84,3 @@ inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
 	auto val_indirect = Main_Data::game_variables->Get(id);
 	return Get(static_cast<int>(val_indirect));
 }
-

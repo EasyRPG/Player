@@ -4723,6 +4723,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
 			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
 			}
+
+			// min_size
+			result = Main_Data::game_strings->PrependMin(result, args[1]);
 			break;
 		case 1: //Number <fn(int number, int min_size)>
 			break;
@@ -4748,11 +4751,16 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			Output::Warning("Unknown or unimplemented string sub-operation {}", op);
 			break;
 		}
-		if (op == 0) {
-			Main_Data::game_strings->Asg(string_id_0, result);
+		if (is_range) {
+			Main_Data::game_strings->RangeOp(string_id_0, string_id_1, result, op);
 		}
 		else {
-			Main_Data::game_strings->Cat(string_id_0, result);
+			if (op == 0) {
+				Main_Data::game_strings->Asg(string_id_0, result);
+			}
+			else {
+				Main_Data::game_strings->Cat(string_id_0, result);
+			}
 		}
 		Output::Debug("t[{}]: {}", string_id_0, Main_Data::game_strings->Get(string_id_0));
 		break;
