@@ -4810,6 +4810,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		}
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+			result = (Game_Strings::Str_t)((std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]);
 			break;
 		case 10: //Join (join) <fn(string delimiter, int var_id, int size)>
 			break;
