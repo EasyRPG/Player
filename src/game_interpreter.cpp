@@ -17,12 +17,13 @@
 
 // Headers
 #include <algorithm>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <cassert>
-#include <ctime>
 #include "game_interpreter.h"
 #include "audio.h"
 #include "dynrpg.h"
@@ -4684,6 +4685,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	int fn    = (com.parameters[3] >>  8) & 255;
 	int flags = (com.parameters[3] >> 16) & 255;
 
+	int first_flag = (flags >> 3) & 1;
 	int hex_flag     = (flags >> 17) & 1;
 	int extract_flag = (flags >> 18) & 1;
 
@@ -4784,11 +4786,13 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 7: //Insert (ins) <fn(string base, int index, string insert)>
 		{
 			int pos = 0;
-			std::string base;
-			std::string insert;
+			std::string base, insert;
 
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			
+			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
+			insert = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+
+			result = (Game_Strings::Str_t)base.insert(args[1], insert);
 			break;
 		}
 		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
@@ -4814,14 +4818,44 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 			result = (Game_Strings::Str_t)((std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]);
 			break;
-		case 10: //Join (join) <fn(string delimiter, int var_id, int size)>
+		case 10: //Join Variables (join) <fn(string delimiter, int var_id, int size)>
+		{
+			std::string op_string = "";
+			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+			// mode of arg[1] is weird, seems offset by +2, not sure what the intent is
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1] - 2);
+			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+
+			while (args[2] > 0) {
+				op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
+				if (--args[2] > 0) op_string += delimiter;
+			}
+
+			result = (Game_Strings::Str_t)op_string;
 			break;
+		}
 		case 12: //File (file) <fn(string filename, int encode)>
 			break;
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+			result = (Game_Strings::Str_t)((std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).erase(args[1], args[2]);
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
+		{
+			int pos = 0;
+			std::string base, search, replacement;
+
+			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
+			search = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos);
+			replacement = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+
+			std::regex rexp(search);
+
+			if (first_flag) result = (Game_Strings::Str_t)std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only); 
+			else result = (Game_Strings::Str_t)std::regex_replace(base, rexp, replacement);
 			break;
+		}
 		default:
 			Output::Warning("Unknown or unimplemented string sub-operation {}", op);
 			break;
