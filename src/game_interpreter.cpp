@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <cassert>
 #include <ctime>
 #include "game_interpreter.h"
@@ -4704,6 +4705,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 
 	Game_Strings::Str_t result = "";
 
+	Output::Debug("com.string: {}", com.string);
+	Output::Debug("op: {}, fn: {}", op, fn);
+	Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
+	Output::Debug("modes[]: {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
+	Output::Debug("flags: {}", flags);
+
 	switch (op)
 	{
 	case 0: //asg <fn(string text)>
@@ -4746,37 +4753,62 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
 			switch (args[0])
 			{
-			case 0: result = (Game_Strings::Str_t)Main_Data::game_actors->GetActor(args[1])->GetName();  break;  //.actor[a].name
-			case 1:    break;  //.skill[a].name
-			case 2:    break;  //.item[a].name
-			case 3:    break;  //.enemy[a].name
-			case 4:    break;  //.troop[a].name
-			case 5:    break;  //.terrain[a].name
-			case 6:    break;  //.element[a].name
-			case 7:    break;  //.state[a].name
-			case 8:    break;  //.anim[a].name
-			case 9:    break;  //.tileset[a].name
+			case 0:  //.actor[a].name
+				if (args[2]) {
+					result = (Game_Strings::Str_t)Main_Data::game_actors->GetActor(args[1])->GetName();
+				}
+				else {
+					result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name;
+				}
+				break;
+			case 1: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->name; break;  //.skill[a].name
+			case 2: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->name; break;  //.item[a].name
+			case 3: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::enemies, args[1])->name; break;  //.enemy[a].name
+			case 4: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::troops, args[1])->name; break;  //.troop[a].name
+			case 5: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::terrains, args[1])->name; break;  //.terrain[a].name
+			case 6: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::attributes, args[1])->name; break;  //.element[a].name
+			case 7: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::states, args[1])->name; break;  //.state[a].name
+			case 8: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::animations, args[1])->name; break;  //.anim[a].name
+			case 9: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::chipsets, args[1])->name; break;  //.tileset[a].name
 			case 10: result = (Game_Strings::Str_t)Main_Data::game_switches->GetName(args[1]); break;  //.s[a].name
 			case 11: result = (Game_Strings::Str_t)Main_Data::game_variables->GetName(args[1]); break;  //.v[a].name
-			case 12:   break;  //.t[a].name -- not sure how to get this for now
+			case 12: break;  //.t[a].name -- not sure how to get this for now
 			case 13: //.cev[a].name
 				// assuming the vector of common events here is ordered by common event ID
 				if (Game_Map::GetCommonEvents().size() >= args[1]) {
 					result = (Game_Strings::Str_t)Game_Map::GetCommonEvents()[args[1]-1].GetName();
 				}
 				break;  
-			case 14:   break;  //.class[a].name
-			case 15:   break;  //.anim2[a].name
+			case 14: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::classes, args[1])->name; break;  //.class[a].name
+			case 15: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, args[1])->name; break;  //.anim2[a].name
 			case 16: result = (Game_Strings::Str_t)Game_Map::GetMapName(args[1]); break;  //.map[a].name
 			case 17: result = (Game_Strings::Str_t)Game_Map::GetEvent(args[1])->GetName(); break;  //.mev[a].name
 			case 18: result = (Game_Strings::Str_t)Main_Data::game_party->GetActor(args[1])->GetName(); break;  //.member[a].name
 			}
-			Output::Debug("com.string: {}", com.string);
-			Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
-			Output::Debug("flags: {}", flags);
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
 			break;
+		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
+		{
+			int it = 0;
+			std::string op_string = "";
+			for (int i = 0; i < 3; i++) {
+				switch (modes[i]) {
+				case 0: // part of the raw command string
+					op_string += ((std::string)com.string).substr(it, args[i]);
+					it += args[i];
+					break;
+				case 1: // direct string reference
+					op_string += (std::string)Main_Data::game_strings->Get(args[i]);
+					break;
+				case 2: // indirect string reference
+					op_string += (std::string)Main_Data::game_strings->GetIndirect(args[i]);
+					break;
+				}
+			}
+			result = (Game_Strings::Str_t)op_string;
+			break;
+		}
 		case 7: //Insert (ins) <fn(string base, int index, string insert)>
 			break;
 		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
