@@ -48,6 +48,7 @@ public:
 
 	Var_t Get(int variable_id) const;
 	Var_t GetIndirect(int variable_id) const;
+	Var_t GetWithMode(int id, int mode) const;
 
 	Var_t Set(int variable_id, Var_t value);
 	Var_t Add(int variable_id, Var_t value);
@@ -203,6 +204,17 @@ inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
 inline Game_Variables::Var_t Game_Variables::GetIndirect(int variable_id) const {
 	auto val_indirect = Get(variable_id);
 	return Get(static_cast<int>(val_indirect));
+}
+
+// mode 0: pass through id value
+// mode 1: get by id
+// mode 2: get indirect by id
+inline Game_Variables::Var_t Game_Variables::GetWithMode(int id, int mode) const {
+	switch (mode) {
+	case 1: return Get(id); break;
+	case 2: return GetIndirect(id); break;
+	}
+	return id;
 }
 
 inline void Game_Variables::SetWarning(int w) {

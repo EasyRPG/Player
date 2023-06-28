@@ -4718,39 +4718,22 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		switch (fn)
 		{
 		case 0: //String <fn(string text, int min_size)>
-			switch (modes[0])
-			{
-			case 0: result = (Game_Strings::Str_t)com.string; break;
-			case 1: result = Main_Data::game_strings->Get(args[0]); break;
-			case 2: result = Main_Data::game_strings->GetIndirect(args[0]); break;
-			}
-			switch (modes[1])
-			{
-			case 0: break;
-			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
-			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
-			}
+			result = Main_Data::game_strings->GetWithMode((Game_Strings::Str_t)com.string, args[0], modes[0]);
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
 			// min_size
 			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
 			break;
 		case 1: //Number <fn(int number, int min_size)>
-			switch (modes[0])
-			{
-			case 0: break;
-			case 1: args[0] = Main_Data::game_variables->Get(args[0]); break;
-			case 2: args[0] = Main_Data::game_variables->GetIndirect(args[0]); break;
-			}
-			switch (modes[1])
-			{
-			case 0: break;
-			case 1: args[1] = Main_Data::game_variables->Get(args[1]); break;
-			case 2: args[1] = Main_Data::game_variables->GetIndirect(args[1]); break;
-			}
+			args[0] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+
 			result = (Game_Strings::Str_t)std::to_string(args[0]);
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+
 			switch (args[0])
 			{
 			case 0:  //.actor[a].name
@@ -4790,29 +4773,42 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
 		{
-			int it = 0;
-			std::string op_string = "";
+			int pos = 0;
+			std::string op_string;
 			for (int i = 0; i < 3; i++) {
-				switch (modes[i]) {
-				case 0: // part of the raw command string
-					op_string += ((std::string)com.string).substr(it, args[i]);
-					it += args[i];
-					break;
-				case 1: // direct string reference
-					op_string += (std::string)Main_Data::game_strings->Get(args[i]);
-					break;
-				case 2: // indirect string reference
-					op_string += (std::string)Main_Data::game_strings->GetIndirect(args[i]);
-					break;
-				}
+				op_string += (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[i], modes[i], &pos);
 			}
 			result = (Game_Strings::Str_t)op_string;
 			break;
 		}
 		case 7: //Insert (ins) <fn(string base, int index, string insert)>
+		{
+			int pos = 0;
+			std::string base;
+			std::string insert;
+
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			
 			break;
+		}
 		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
+		{
+			int pos = 0;
+			std::string base, search, replacement;
+
+			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
+			search = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos);
+			replacement = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+
+			std::size_t index = base.find(search);
+			while (index != std::string::npos) {
+				base.replace(index, search.length(), replacement);
+				index = base.find(search, index + replacement.length());
+			}
+
+			result = (Game_Strings::Str_t)base;
 			break;
+		}
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
 			break;
 		case 10: //Join (join) <fn(string delimiter, int var_id, int size)>

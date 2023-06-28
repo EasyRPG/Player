@@ -42,6 +42,8 @@ public:
 
 	Str_t Get(int id) const;
 	Str_t GetIndirect(int id) const;
+	Str_t GetWithMode(Str_t str_data, int mode, int arg) const;
+	Str_t GetWithModeAndPos(Str_t str_data, int mode, int arg, int* pos);
 
 	Str_t Asg(int string_id, Str_t string);
 	Str_t Cat(int string_id, Str_t string);
@@ -83,4 +85,33 @@ inline Game_Strings::Str_t Game_Strings::Get(int id) const {
 inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
 	auto val_indirect = Main_Data::game_variables->Get(id);
 	return Get(static_cast<int>(val_indirect));
+}
+
+inline Game_Strings::Str_t Game_Strings::GetWithMode(Str_t str_data, int arg, int mode) const {
+	switch (mode) {
+	case 1: // direct string reference
+		return Get(arg);
+		break;
+	case 2: // indirect string reference
+		return GetIndirect(arg);
+		break;
+	}
+	return str_data;
+}
+
+inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int arg, int mode, int* pos) {
+	Str_t ret;
+	switch (mode) {
+	case 0:
+		ret = (Str_t)((std::string)str_data).substr(*pos, arg);
+		*pos += arg;
+		break;
+	case 1: // direct string reference
+		ret = Get(arg);
+		break;
+	case 2: // indirect string reference
+		ret = GetIndirect(arg);
+		break;
+	}
+	return ret;
 }
