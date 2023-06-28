@@ -4743,7 +4743,37 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			result = (Game_Strings::Str_t)std::to_string(args[0]);
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
-		case 3: //Database Names <fn(int id, bool dynamic)>
+		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
+			switch (args[0])
+			{
+			case 0: result = (Game_Strings::Str_t)Main_Data::game_actors->GetActor(args[1])->GetName();  break;  //.actor[a].name
+			case 1:    break;  //.skill[a].name
+			case 2:    break;  //.item[a].name
+			case 3:    break;  //.enemy[a].name
+			case 4:    break;  //.troop[a].name
+			case 5:    break;  //.terrain[a].name
+			case 6:    break;  //.element[a].name
+			case 7:    break;  //.state[a].name
+			case 8:    break;  //.anim[a].name
+			case 9:    break;  //.tileset[a].name
+			case 10: result = (Game_Strings::Str_t)Main_Data::game_switches->GetName(args[1]); break;  //.s[a].name
+			case 11: result = (Game_Strings::Str_t)Main_Data::game_variables->GetName(args[1]); break;  //.v[a].name
+			case 12:   break;  //.t[a].name -- not sure how to get this for now
+			case 13: //.cev[a].name
+				// assuming the vector of common events here is ordered by common event ID
+				if (Game_Map::GetCommonEvents().size() >= args[1]) {
+					result = (Game_Strings::Str_t)Game_Map::GetCommonEvents()[args[1]-1].GetName();
+				}
+				break;  
+			case 14:   break;  //.class[a].name
+			case 15:   break;  //.anim2[a].name
+			case 16: result = (Game_Strings::Str_t)Game_Map::GetMapName(args[1]); break;  //.map[a].name
+			case 17: result = (Game_Strings::Str_t)Game_Map::GetEvent(args[1])->GetName(); break;  //.mev[a].name
+			case 18: result = (Game_Strings::Str_t)Main_Data::game_party->GetActor(args[1])->GetName(); break;  //.member[a].name
+			}
+			Output::Debug("com.string: {}", com.string);
+			Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
+			Output::Debug("flags: {}", flags);
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
 			break;

@@ -67,7 +67,9 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string
 	if (EP_UNLIKELY(ShouldWarn(string_id_1))) {
 		WarnGet(string_id_1);
 	}
+	if (string_id_0 <= 0 && string_id_1 <= 0) { return GetData(); }
 
+	// maniacs just ignores if only one of the params is <= 0
 	if (string_id_0 <= 0) {	string_id_0 = 1; }
 	if (string_id_1 <= 0) {	string_id_1 = 1; }
 
