@@ -4720,7 +4720,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		switch (fn)
 		{
 		case 0: //String <fn(string text, int min_size)>
-			result = Main_Data::game_strings->GetWithMode((Game_Strings::Str_t)com.string, args[0], modes[0]);
+			result = Main_Data::game_strings->GetWithMode(static_cast<Game_Strings::Str_t>(com.string), args[0], modes[0]);
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
 			// min_size
@@ -4730,7 +4730,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			args[0] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
-			result = (Game_Strings::Str_t)std::to_string(args[0]);
+			result = static_cast<Game_Strings::Str_t>(std::to_string(args[0]));
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
@@ -4746,17 +4746,17 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 					result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name;
 				}
 				break;
-			case 1: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->name; break;  //.skill[a].name
-			case 2: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->name; break;  //.item[a].name
-			case 3: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::enemies, args[1])->name; break;  //.enemy[a].name
-			case 4: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::troops, args[1])->name; break;  //.troop[a].name
-			case 5: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::terrains, args[1])->name; break;  //.terrain[a].name
-			case 6: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::attributes, args[1])->name; break;  //.element[a].name
-			case 7: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::states, args[1])->name; break;  //.state[a].name
-			case 8: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::animations, args[1])->name; break;  //.anim[a].name
-			case 9: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::chipsets, args[1])->name; break;  //.tileset[a].name
-			case 10: result = (Game_Strings::Str_t)Main_Data::game_switches->GetName(args[1]); break;  //.s[a].name
-			case 11: result = (Game_Strings::Str_t)Main_Data::game_variables->GetName(args[1]); break;  //.v[a].name
+			case 1:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->name); break;  //.skill[a].name
+			case 2:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->name); break;  //.item[a].name
+			case 3:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::enemies, args[1])->name); break;  //.enemy[a].name
+			case 4:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::troops, args[1])->name); break;  //.troop[a].name
+			case 5:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::terrains, args[1])->name); break;  //.terrain[a].name
+			case 6:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::attributes, args[1])->name); break;  //.element[a].name
+			case 7:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::states, args[1])->name); break;  //.state[a].name
+			case 8:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::animations, args[1])->name); break;  //.anim[a].name
+			case 9:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::chipsets, args[1])->name); break;  //.tileset[a].name
+			case 10: result = static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(args[1])); break;  //.s[a].name
+			case 11: result = static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(args[1])); break;  //.v[a].name
 			case 12: break;  //.t[a].name -- not sure how to get this for now
 			case 13: //.cev[a].name
 				// assuming the vector of common events here is ordered by common event ID
@@ -4764,11 +4764,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 					result = (Game_Strings::Str_t)Game_Map::GetCommonEvents()[args[1]-1].GetName();
 				}
 				break;  
-			case 14: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::classes, args[1])->name; break;  //.class[a].name
-			case 15: result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, args[1])->name; break;  //.anim2[a].name
-			case 16: result = (Game_Strings::Str_t)Game_Map::GetMapName(args[1]); break;  //.map[a].name
-			case 17: result = (Game_Strings::Str_t)Game_Map::GetEvent(args[1])->GetName(); break;  //.mev[a].name
-			case 18: result = (Game_Strings::Str_t)Main_Data::game_party->GetActor(args[1])->GetName(); break;  //.member[a].name
+			case 14: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::classes, args[1])->name); break;  //.class[a].name
+			case 15: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, args[1])->name); break;  //.anim2[a].name
+			case 16: result = static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(args[1])); break;  //.map[a].name
+			case 17: result = static_cast<Game_Strings::Str_t>(Game_Map::GetEvent(args[1])->GetName()); break;  //.mev[a].name
+			case 18: result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetName()); break;  //.member[a].name
 			}
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
@@ -4778,7 +4778,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string op_string;
 			for (int i = 0; i < 3; i++) {
-				op_string += (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[i], modes[i], &pos);
+				op_string += static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[i], modes[i], &pos));
 			}
 			result = (Game_Strings::Str_t)op_string;
 			break;
@@ -4789,8 +4789,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			std::string base, insert;
 
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
-			insert = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+			base = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
+			insert = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
 
 			result = (Game_Strings::Str_t)base.insert(args[1], insert);
 			break;
@@ -4800,9 +4800,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
-			search = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos);
-			replacement = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+			base =        static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
+			search =      static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
+			replacement = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
 
 			std::size_t index = base.find(search);
 			while (index != std::string::npos) {
@@ -4810,13 +4810,13 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 				index = base.find(search, index + replacement.length());
 			}
 
-			result = (Game_Strings::Str_t)base;
+			result = static_cast<Game_Strings::Str_t>(base);
 			break;
 		}
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
-			result = (Game_Strings::Str_t)((std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]);
+			result = static_cast<Game_Strings::Str_t>(static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]));
 			break;
 		case 10: //Join Variables (join) <fn(string delimiter, int var_id, int size)>
 		{
@@ -4831,7 +4831,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 				if (--args[2] > 0) op_string += delimiter;
 			}
 
-			result = (Game_Strings::Str_t)op_string;
+			result = static_cast<Game_Strings::Str_t>(op_string);
 			break;
 		}
 		case 12: //File (file) <fn(string filename, int encode)>
@@ -4839,21 +4839,21 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
-			result = (Game_Strings::Str_t)((std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).erase(args[1], args[2]);
+			result = static_cast<Game_Strings::Str_t>(static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).erase(args[1], args[2]));
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
 		{
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos);
-			search = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos);
-			replacement = (std::string)Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos);
+			base = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
+			search = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
+			replacement = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
 
 			std::regex rexp(search);
 
-			if (first_flag) result = (Game_Strings::Str_t)std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only); 
-			else result = (Game_Strings::Str_t)std::regex_replace(base, rexp, replacement);
+			if (first_flag) result = static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only));
+			else result = static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement));
 			break;
 		}
 		default:

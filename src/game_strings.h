@@ -103,7 +103,7 @@ inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int a
 	Str_t ret;
 	switch (mode) {
 	case 0:
-		ret = (Str_t)((std::string)str_data).substr(*pos, arg);
+		ret = static_cast<Str_t>(static_cast<std::string>(str_data).substr(*pos, arg));
 		*pos += arg;
 		break;
 	case 1: // direct string reference
