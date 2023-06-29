@@ -4671,7 +4671,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	int string_mode = com.parameters[0] & 15;
 	int string_id_0 = com.parameters[1];
 	int string_id_1 = com.parameters[2]; //for ranges
-	Output::Debug("string_mode: {:b}, id1: {}, id2: {}", string_mode, string_id_0, string_id_1);
+	// Output::Debug("string_mode: {:b}, id1: {}, id2: {}", string_mode, string_id_0, string_id_1);
 
 	int is_range = string_mode & 1;
 
@@ -4708,11 +4708,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 
 	Game_Strings::Str_t result = "";
 
-	Output::Debug("com.string: {}", com.string);
-	Output::Debug("op: {}, fn: {}", op, fn);
-	Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
-	Output::Debug("modes[]: {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
-	Output::Debug("flags: {}", flags);
+	// Output::Debug("com.string: {}", com.string);
+	// Output::Debug("op: {}, fn: {}", op, fn);
+	// Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
+	// Output::Debug("modes[]: {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
+	// Output::Debug("flags: {}", flags);
 
 	switch (op)
 	{
@@ -4790,8 +4790,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			std::string base, insert;
 
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			base = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
-			insert = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
+			base =    static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
+			insert =  static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
 
 			result = (Game_Strings::Str_t)base.insert(args[1], insert);
 			break;
@@ -4847,14 +4847,14 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
-			search = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
+			base =        static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
+			search =      static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
 			replacement = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
 
 			std::regex rexp(search);
 
 			if (first_flag) result = static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only));
-			else result = static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement));
+			else result =            static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement));
 			break;
 		}
 		default:
@@ -4882,7 +4882,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, search, op, args);
-		else Main_Data::game_strings->InStr(string_id_0, static_cast<std::string>(search), args[1], args[2]);
+		else          Main_Data::game_strings->InStr(string_id_0, static_cast<std::string>(search), args[1], args[2]);
 		break;
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)>
@@ -4892,28 +4892,37 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, delimiter, op, args);
-		else Main_Data::game_strings->Split(string_id_0, static_cast<std::string>(delimiter), args[1], args[2]);
+		else          Main_Data::game_strings->Split(string_id_0, static_cast<std::string>(delimiter), args[1], args[2]);
 		break;
 	}
 	case 7: //toFile <fn(string filename, int encode)>
 		break;
 	case 8: //popLine <fn(int output_str_id)>
-	{
 		// a range parameter with popLine doesn't affect multiple strings;
 		// it instead alters the behavior.
 		// given a range t[a..b], it will pop the first (b-a)+1 lines,
 		// and store the last popped line into the output string.
 		args[1] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
-		if (is_range)
-			Main_Data::game_strings->PopLine(string_id_0, string_id_1 - string_id_0, args[0]);
-		else
-			Main_Data::game_strings->PopLine(string_id_0, 0, args[0]);
+
+		if (is_range) Main_Data::game_strings->PopLine(string_id_0, string_id_1 - string_id_0, args[0]);
+		else          Main_Data::game_strings->PopLine(string_id_0, 0, args[0]);
+		break;
+	case 9: //exInStr <fn(string text, int var_id, int begin)>
+	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
+	{
+		std::string expr = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
+		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // output var
+		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]); // beginning pos
+
+		if (is_range) {
+			Main_Data::game_strings->RangeOp(string_id_0, string_id_1, static_cast<Game_Strings::Str_t>(expr), op, args);
+		}
+		else {
+			if (op == 9) Main_Data::game_strings->ExMatch(string_id_0, expr, args[1], args[2]);
+			else         Main_Data::game_strings->ExMatch(string_id_0, expr, args[1], args[2], args[3]);
+		}
 		break;
 	}
-	case 9: //exInStr <fn(string text, int var_id, int begin)>
-		break;
-	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
-		break;
 	default:
 		Output::Warning("Unknown or unimplemented string operation {}", op);
 		break;

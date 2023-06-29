@@ -52,6 +52,7 @@ public:
 	int InStr(int string_id, std::string search, int var_id, int begin = 0);
 	int Split(int string_id, std::string delimiter, int string_out_id, int var_id);
 	Str_t PopLine(int string_id, int offset, int string_out_id);
+	Str_t ExMatch(int string_id, std::string expr, int var_id, int begin, int string_out_id = -1);
 
 	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
