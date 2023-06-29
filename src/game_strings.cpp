@@ -29,30 +29,12 @@ void Game_Strings::WarnGet(int id) const {
 }
 
 Game_Strings::Str_t Game_Strings::Asg(int string_id, Str_t string) {
-	if (EP_UNLIKELY(ShouldWarn(string_id))) {
-		WarnGet(string_id);
-	}
-	if (string_id <= 0) {
-		return "";
-	}
-	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id, "");
-	}
-	auto& s = _strings[string_id - 1];
-	s = string;
-	return s;
+	return Set(string, string_id);
 }
 
 Game_Strings::Str_t Game_Strings::Cat(int string_id, Str_t string) {
-	if (EP_UNLIKELY(ShouldWarn(string_id))) {
-		WarnGet(string_id);
-	}
-	if (string_id <= 0) {
-		return "";
-	}
-	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id, "");
-	}
+	if (!ResizeWithId(string_id)) return "";
+
 	auto& s = _strings[string_id - 1];
 	std::string op_string = (std::string)s;
 	op_string.append((std::string)string);
@@ -61,31 +43,15 @@ Game_Strings::Str_t Game_Strings::Cat(int string_id, Str_t string) {
 }
 
 int Game_Strings::ToNum(int string_id, int var_id) {
-	if (EP_UNLIKELY(ShouldWarn(string_id))) {
-		WarnGet(string_id);
-	}
-	if (string_id <= 0) {
-		return -1;
-	}
-	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id, "");
-	}
+	if (!ResizeWithId(string_id)) return -1;
 
-	int num = std::stoi(static_cast<std::string>(_strings[string_id]));
+	int num = std::stoi(static_cast<std::string>(_strings[string_id-1]));
 	Main_Data::game_variables->Set(var_id, num);
 	return num;
 }
 
 int Game_Strings::GetLen(int string_id, int var_id) {
-	if (EP_UNLIKELY(ShouldWarn(string_id))) {
-		WarnGet(string_id);
-	}
-	if (string_id <= 0) {
-		return -1;
-	}
-	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id, "");
-	}
+	if (!ResizeWithId(string_id)) return -1;
 
 	int len = static_cast<std::string>(_strings[string_id-1]).length();
 	Main_Data::game_variables->Set(var_id, len);
@@ -93,18 +59,32 @@ int Game_Strings::GetLen(int string_id, int var_id) {
 }
 
 int Game_Strings::InStr(int string_id, std::string search, int var_id, int begin) {
-	if (EP_UNLIKELY(ShouldWarn(string_id))) {
-		WarnGet(string_id);
-	}
-	if (string_id <= 0) {
-		return -1;
-	}
-	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id, "");
-	}
+	if (!ResizeWithId(string_id)) return -1;
 
 	int index = static_cast<std::string>(_strings[string_id - 1]).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
+}
+
+int Game_Strings::Split(int string_id, std::string delimiter, int string_out_id, int var_id) {
+	if (!ResizeWithId(string_id)) return -1;
+
+	// always returns at least 1
+	int splits = 1;
+	size_t index = 0;
+	std::string str = static_cast<std::string>(_strings[string_id - 1]);
+	std::string token;
+	
+	while (index = str.find(delimiter) != std::string::npos) {
+		token = str.substr(0, index);
+		Set(static_cast<Game_Strings::Str_t>(token), string_out_id++);
+		splits++;
+		str.erase(0, index + delimiter.length());
+	}
+
+	// set the remaining string
+	Set(static_cast<Game_Strings::Str_t>(str), string_out_id);
+	Main_Data::game_variables->Set(var_id, splits);
+	return splits;
 }
 
 const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[]) {
@@ -138,6 +118,7 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string
 		case 2: ToNum(i, args[0] + (i - string_id_0)); break;
 		case 3: GetLen(i, args[0] + (i - string_id_0)); break;
 		case 4: InStr(i, static_cast<std::string>(string), args[1], args[2]); break;
+		case 5: i += Split(i, static_cast<std::string>(string), args[1], args[2]); break;
 		}
 	}
 	return GetData();

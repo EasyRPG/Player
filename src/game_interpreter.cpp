@@ -4877,16 +4877,24 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)>
 	{
-		std::string search = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
+		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // not sure this is necessary but better safe
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
-		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, static_cast<Game_Strings::Str_t>(search), op, args);
-		else Main_Data::game_strings->InStr(string_id_0, search, args[1], args[2]);
+		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, search, op, args);
+		else Main_Data::game_strings->InStr(string_id_0, static_cast<std::string>(search), args[1], args[2]);
 		break;
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)>
+	{
+		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+		
+		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, delimiter, op, args);
+		else Main_Data::game_strings->Split(string_id_0, static_cast<std::string>(delimiter), args[1], args[2]);
 		break;
+	}
 	case 7: //toFile <fn(string filename, int encode)>
 		break;
 	case 8: //popLine <fn(int str_id)>

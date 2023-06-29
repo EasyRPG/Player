@@ -50,11 +50,14 @@ public:
 	int ToNum(int string_id, int var_id);
 	int GetLen(int string_id, int var_id);
 	int InStr(int string_id, std::string search, int var_id, int begin = 0);
+	int Split(int string_id, std::string delimiter, int string_out_id, int var_id);
 
 	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
 	Str_t PrependMin(Str_t string, int min_size, char c);
 private:
+	Str_t Set(Str_t string, int string_id);
+	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
 
@@ -62,6 +65,14 @@ private:
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
 };
+
+inline Game_Strings::Str_t Game_Strings::Set(Str_t string, int string_id) {
+	if (!ResizeWithId(string_id)) return "";
+
+	auto& s = _strings[string_id - 1];
+	s = string;
+	return s;
+}
 
 inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
@@ -83,6 +94,19 @@ inline Game_Strings::Str_t Game_Strings::Get(int id) const {
 		return "";
 	}
 	return _strings[id - 1];
+}
+
+inline bool Game_Strings::ResizeWithId(int id) {
+	if (EP_UNLIKELY(ShouldWarn(id))) {
+		WarnGet(id);
+	}
+	if (id <= 0) {
+		return false;
+	}
+	if (EP_UNLIKELY(id > static_cast<int>(_strings.size()))) {
+		_strings.resize(id, "");
+	}
+	return true;
 }
 
 inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
