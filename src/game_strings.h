@@ -51,12 +51,13 @@ public:
 	int GetLen(int string_id, int var_id);
 	int InStr(int string_id, std::string search, int var_id, int begin = 0);
 	int Split(int string_id, std::string delimiter, int string_out_id, int var_id);
+	Str_t PopLine(int string_id, int offset, int string_out_id);
 
 	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
 	Str_t PrependMin(Str_t string, int min_size, char c);
 private:
-	Str_t Set(Str_t string, int string_id);
+	Str_t Set(int string_id, Str_t string);
 	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
@@ -66,7 +67,7 @@ private:
 	mutable int _warnings = max_warnings;
 };
 
-inline Game_Strings::Str_t Game_Strings::Set(Str_t string, int string_id) {
+inline Game_Strings::Str_t Game_Strings::Set(int string_id, Str_t string) {
 	if (!ResizeWithId(string_id)) return "";
 
 	auto& s = _strings[string_id - 1];

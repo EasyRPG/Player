@@ -4897,8 +4897,19 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	case 7: //toFile <fn(string filename, int encode)>
 		break;
-	case 8: //popLine <fn(int str_id)>
+	case 8: //popLine <fn(int output_str_id)>
+	{
+		// a range parameter with popLine doesn't affect multiple strings;
+		// it instead alters the behavior.
+		// given a range t[a..b], it will pop the first (b-a)+1 lines,
+		// and store the last popped line into the output string.
+		args[1] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
+		if (is_range)
+			Main_Data::game_strings->PopLine(string_id_0, string_id_1 - string_id_0, args[0]);
+		else
+			Main_Data::game_strings->PopLine(string_id_0, 0, args[0]);
 		break;
+	}
 	case 9: //exInStr <fn(string text, int var_id, int begin)>
 		break;
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7

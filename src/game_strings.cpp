@@ -29,23 +29,23 @@ void Game_Strings::WarnGet(int id) const {
 }
 
 Game_Strings::Str_t Game_Strings::Asg(int string_id, Str_t string) {
-	return Set(string, string_id);
+	return Set(string_id, string);
 }
 
 Game_Strings::Str_t Game_Strings::Cat(int string_id, Str_t string) {
 	if (!ResizeWithId(string_id)) return "";
 
-	auto& s = _strings[string_id - 1];
-	std::string op_string = (std::string)s;
-	op_string.append((std::string)string);
-	s = (Str_t)op_string;
+	Str_t s = Get(string_id);
+	std::string op_string = static_cast<std::string>(s);
+	op_string.append(static_cast<std::string>(string));
+	Set(string_id, static_cast<Str_t>(op_string));
 	return s;
 }
 
 int Game_Strings::ToNum(int string_id, int var_id) {
 	if (!ResizeWithId(string_id)) return -1;
 
-	int num = std::stoi(static_cast<std::string>(_strings[string_id-1]));
+	int num = std::stoi(static_cast<std::string>(Get(string_id)));
 	Main_Data::game_variables->Set(var_id, num);
 	return num;
 }
@@ -53,7 +53,7 @@ int Game_Strings::ToNum(int string_id, int var_id) {
 int Game_Strings::GetLen(int string_id, int var_id) {
 	if (!ResizeWithId(string_id)) return -1;
 
-	int len = static_cast<std::string>(_strings[string_id-1]).length();
+	int len = static_cast<std::string>(Get(string_id)).length();
 	Main_Data::game_variables->Set(var_id, len);
 	return len;
 }
@@ -61,7 +61,7 @@ int Game_Strings::GetLen(int string_id, int var_id) {
 int Game_Strings::InStr(int string_id, std::string search, int var_id, int begin) {
 	if (!ResizeWithId(string_id)) return -1;
 
-	int index = static_cast<std::string>(_strings[string_id - 1]).find(search, begin);
+	int index = static_cast<std::string>(Get(string_id)).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
 }
 
@@ -71,20 +71,37 @@ int Game_Strings::Split(int string_id, std::string delimiter, int string_out_id,
 	// always returns at least 1
 	int splits = 1;
 	size_t index = 0;
-	std::string str = static_cast<std::string>(_strings[string_id - 1]);
+	std::string str = static_cast<std::string>(Get(string_id));
 	std::string token;
 	
 	while (index = str.find(delimiter) != std::string::npos) {
 		token = str.substr(0, index);
-		Set(static_cast<Game_Strings::Str_t>(token), string_out_id++);
+		Set(string_out_id++, static_cast<Str_t>(token));
 		splits++;
 		str.erase(0, index + delimiter.length());
 	}
 
 	// set the remaining string
-	Set(static_cast<Game_Strings::Str_t>(str), string_out_id);
+	Set(string_out_id, static_cast<Str_t>(str));
 	Main_Data::game_variables->Set(var_id, splits);
 	return splits;
+}
+
+Game_Strings::Str_t Game_Strings::PopLine(int string_id, int offset, int string_out_id) {
+	if (!ResizeWithId(string_id)) return "";
+
+	int index;
+	std::string result;
+	std::string str = static_cast<std::string>(Get(string_id));
+
+	std::stringstream ss(str);
+
+	while (offset >= 0 && std::getline(ss, result)) { offset--; }
+
+	offset = ss.rdbuf()->in_avail();
+
+	Set(string_id, static_cast<Str_t>(ss.str().substr(str.length() - offset)));
+	return Set(string_out_id, static_cast<Str_t>(result));
 }
 
 const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[]) {
@@ -119,6 +136,7 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string
 		case 3: GetLen(i, args[0] + (i - string_id_0)); break;
 		case 4: InStr(i, static_cast<std::string>(string), args[1], args[2]); break;
 		case 5: i += Split(i, static_cast<std::string>(string), args[1], args[2]); break;
+		case 8: break; // range case not applicable for popLine; see case in game_interpreter.cpp
 		}
 	}
 	return GetData();
