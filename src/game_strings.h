@@ -47,8 +47,11 @@ public:
 
 	Str_t Asg(int string_id, Str_t string);
 	Str_t Cat(int string_id, Str_t string);
+	int ToNum(int string_id, int var_id);
+	int GetLen(int string_id, int var_id);
+	int InStr(int string_id, std::string search, int var_id, int begin = 0);
 
-	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op);
+	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
 	Str_t PrependMin(Str_t string, int min_size, char c);
 private:

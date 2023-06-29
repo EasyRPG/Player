@@ -60,7 +60,54 @@ Game_Strings::Str_t Game_Strings::Cat(int string_id, Str_t string) {
 	return s;
 }
 
-const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string_id_1, Str_t string, int op) {
+int Game_Strings::ToNum(int string_id, int var_id) {
+	if (EP_UNLIKELY(ShouldWarn(string_id))) {
+		WarnGet(string_id);
+	}
+	if (string_id <= 0) {
+		return -1;
+	}
+	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
+		_strings.resize(string_id, "");
+	}
+
+	int num = std::stoi(static_cast<std::string>(_strings[string_id]));
+	Main_Data::game_variables->Set(var_id, num);
+	return num;
+}
+
+int Game_Strings::GetLen(int string_id, int var_id) {
+	if (EP_UNLIKELY(ShouldWarn(string_id))) {
+		WarnGet(string_id);
+	}
+	if (string_id <= 0) {
+		return -1;
+	}
+	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
+		_strings.resize(string_id, "");
+	}
+
+	int len = static_cast<std::string>(_strings[string_id-1]).length();
+	Main_Data::game_variables->Set(var_id, len);
+	return len;
+}
+
+int Game_Strings::InStr(int string_id, std::string search, int var_id, int begin) {
+	if (EP_UNLIKELY(ShouldWarn(string_id))) {
+		WarnGet(string_id);
+	}
+	if (string_id <= 0) {
+		return -1;
+	}
+	if (EP_UNLIKELY(string_id > static_cast<int>(_strings.size()))) {
+		_strings.resize(string_id, "");
+	}
+
+	int index = static_cast<std::string>(_strings[string_id - 1]).find(search, begin);
+	Main_Data::game_variables->Set(var_id, index);
+}
+
+const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[]) {
 	if (EP_UNLIKELY(ShouldWarn(string_id_0))) {
 		WarnGet(string_id_0);
 	}
@@ -88,6 +135,9 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(int string_id_0, int string
 		switch (op) {
 		case 0: Asg(i, string); break;
 		case 1: Cat(i, string); break;
+		case 2: ToNum(i, args[0] + (i - string_id_0)); break;
+		case 3: GetLen(i, args[0] + (i - string_id_0)); break;
+		case 4: InStr(i, static_cast<std::string>(string), args[1], args[2]); break;
 		}
 	}
 	return GetData();
