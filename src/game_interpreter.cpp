@@ -4671,8 +4671,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	int string_mode = com.parameters[0] & 15;
 	int string_id_0 = com.parameters[1];
 	int string_id_1 = com.parameters[2]; //for ranges
+	Output::Debug("string_mode: {:b}, id1: {}, id2: {}", string_mode, string_id_0, string_id_1);
 
-	int is_range    = string_mode & 1;
+	int is_range = string_mode & 1;
 
 	if (string_mode >= 2) {
 		string_id_0 = Main_Data::game_variables->Get(string_id_0);
@@ -4874,7 +4875,19 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		Output::Debug("t[{}]: {}", string_id_0, Main_Data::game_strings->Get(string_id_0));
 		break;
 	case 2: //toNum <fn(int var_id)>
+	{
+		if (is_range) {
+			for (int i = string_id_0; i <= string_id_1; i++) {
+				int num = std::stoi(static_cast<std::string>(Main_Data::game_strings->Get(i)));
+				Main_Data::game_variables->Set(args[0] + (i - string_id_0), num);
+			}
+		}
+		else {
+			int num = std::stoi(static_cast<std::string>(Main_Data::game_strings->Get(string_id_0)));
+			Main_Data::game_variables->Set(args[0], num);
+		}
 		break;
+	}
 	case 3: //getLen <fn(int var_id)>
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)>
