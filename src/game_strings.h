@@ -16,14 +16,16 @@
  */
 
  // Headers
-#include <lcf/data.h>
-#include "compiler.h"
-#include "string_view.h"
 #include <cstdint>
 #include <string>
-#include "output.h"
-#include "main_data.h"
+#include <lcf/data.h>
+#include "compiler.h"
 #include "game_variables.h"
+#include "main_data.h"
+#include "output.h"
+#include "pending_message.h"
+#include "player.h"
+#include "string_view.h"
 
 /**
  * Game_Strings class.
@@ -35,6 +37,10 @@ public:
 
 	static constexpr int max_warnings = 10;
 
+	struct Str_Params {
+		int string_id, hex, extract;
+	};
+
 	Game_Strings();
 
 	void SetData(Strings_t s);
@@ -45,34 +51,39 @@ public:
 	Str_t GetWithMode(Str_t str_data, int mode, int arg) const;
 	Str_t GetWithModeAndPos(Str_t str_data, int mode, int arg, int* pos);
 
-	Str_t Asg(int string_id, Str_t string);
-	Str_t Cat(int string_id, Str_t string);
-	int ToNum(int string_id, int var_id);
-	int GetLen(int string_id, int var_id);
-	int InStr(int string_id, std::string search, int var_id, int begin = 0);
-	int Split(int string_id, std::string delimiter, int string_out_id, int var_id);
-	Str_t PopLine(int string_id, int offset, int string_out_id);
-	Str_t ExMatch(int string_id, std::string expr, int var_id, int begin, int string_out_id = -1);
+	Str_t Asg(Str_Params params, Str_t string);
+	Str_t Cat(Str_Params params, Str_t string);
+	int ToNum(Str_Params params, int var_id);
+	int GetLen(Str_Params params, int var_id);
+	int InStr(Str_Params params, std::string search, int var_id, int begin = 0);
+	int Split(Str_Params params, std::string delimiter, int string_out_id, int var_id);
+	Str_t PopLine(Str_Params params, int offset, int string_out_id);
+	Str_t ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);
 
-	const Strings_t& RangeOp(int string_id_0, int string_id_1, Str_t string, int op, int args[] = nullptr);
+	const Strings_t& RangeOp(Str_Params params, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
 	Str_t PrependMin(Str_t string, int min_size, char c);
+
 private:
-	Str_t Set(int string_id, Str_t string);
+	Str_t Set(Str_Params params, Str_t string);
 	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
+	Str_t Extract(Str_t string);
 
 private:
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
 };
 
-inline Game_Strings::Str_t Game_Strings::Set(int string_id, Str_t string) {
-	if (!ResizeWithId(string_id)) return "";
 
-	auto& s = _strings[string_id - 1];
+inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
+	if (!ResizeWithId(params.string_id)) return "";
+
+	auto& s = _strings[params.string_id - 1];
 	s = string;
+	if (params.extract)
+		s = Extract(s);
 	return s;
 }
 

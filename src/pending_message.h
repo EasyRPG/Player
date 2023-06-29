@@ -67,13 +67,10 @@ class PendingMessage {
 
 		void SetIsEventMessage(bool value) { is_event_message = value; }
 		bool IsEventMessage() const { return is_event_message; }
+		static std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn, bool maniacs_parsing = false);
 
 	private:
 		int PushLineImpl(std::string msg, CommandInserter cmd_fn);
-
-		std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn);
-
-	private:
 		ChoiceContinuation choice_continuation;
 		std::vector<std::string> texts;
 		int choice_start = -1;

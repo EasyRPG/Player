@@ -4671,7 +4671,6 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	int string_mode = com.parameters[0] & 15;
 	int string_id_0 = com.parameters[1];
 	int string_id_1 = com.parameters[2]; //for ranges
-	// Output::Debug("string_mode: {:b}, id1: {}, id2: {}", string_mode, string_id_0, string_id_1);
 
 	int is_range = string_mode & 1;
 
@@ -4686,9 +4685,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	int fn    = (com.parameters[3] >>  8) & 255;
 	int flags = (com.parameters[3] >> 16) & 255;
 
+	int hex_flag     = (flags >> 1) & 1;
+	int extract_flag = (flags >> 2) & 1;
 	int first_flag = (flags >> 3) & 1;
-	int hex_flag     = (flags >> 17) & 1;
-	int extract_flag = (flags >> 18) & 1;
 
 	int args[] = {
 		com.parameters[4],
@@ -4707,12 +4706,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	};
 
 	Game_Strings::Str_t result = "";
-
-	// Output::Debug("com.string: {}", com.string);
-	// Output::Debug("op: {}, fn: {}", op, fn);
-	// Output::Debug("args[]: {} {} {} {}", args[0], args[1], args[2], args[3]);
-	// Output::Debug("modes[]: {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
-	// Output::Debug("flags: {}", flags);
+	Game_Strings::Str_Params str_params = {
+		string_id_0,
+		hex_flag,
+		extract_flag,
+	};
 
 	switch (op)
 	{
@@ -4861,18 +4859,18 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			Output::Warning("Unknown or unimplemented string sub-operation {}", op);
 			break;
 		}
-		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, result, op);
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, result, op);
 		else {
-			if (op == 0) Main_Data::game_strings->Asg(string_id_0, result);
-			if (op == 1) Main_Data::game_strings->Cat(string_id_0, result);
+			if (op == 0) Main_Data::game_strings->Asg(str_params, result);
+			if (op == 1) Main_Data::game_strings->Cat(str_params, result);
 		}
 		break;
 	case 2: //toNum <fn(int var_id)>
 	case 3: //getLen <fn(int var_id)>
-		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, result, op, args);
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, result, op, args);
 		else {
-			if (op == 2) Main_Data::game_strings->ToNum(string_id_0, args[0]);
-			if (op == 3) Main_Data::game_strings->GetLen(string_id_0, args[0]);
+			if (op == 2) Main_Data::game_strings->ToNum(str_params, args[0]);
+			if (op == 3) Main_Data::game_strings->GetLen(str_params, args[0]);
 		}
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)>
@@ -4881,8 +4879,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // not sure this is necessary but better safe
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
-		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, search, op, args);
-		else          Main_Data::game_strings->InStr(string_id_0, static_cast<std::string>(search), args[1], args[2]);
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, search, op, args);
+		else          Main_Data::game_strings->InStr(str_params, static_cast<std::string>(search), args[1], args[2]);
 		break;
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)>
@@ -4891,8 +4889,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
-		if (is_range) Main_Data::game_strings->RangeOp(string_id_0, string_id_1, delimiter, op, args);
-		else          Main_Data::game_strings->Split(string_id_0, static_cast<std::string>(delimiter), args[1], args[2]);
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, delimiter, op, args);
+		else          Main_Data::game_strings->Split(str_params, static_cast<std::string>(delimiter), args[1], args[2]);
 		break;
 	}
 	case 7: //toFile <fn(string filename, int encode)>
@@ -4904,8 +4902,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		// and store the last popped line into the output string.
 		args[1] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
 
-		if (is_range) Main_Data::game_strings->PopLine(string_id_0, string_id_1 - string_id_0, args[0]);
-		else          Main_Data::game_strings->PopLine(string_id_0, 0, args[0]);
+		if (is_range) Main_Data::game_strings->PopLine(str_params, string_id_1 - string_id_0, args[0]);
+		else          Main_Data::game_strings->PopLine(str_params, 0, args[0]);
 		break;
 	case 9: //exInStr <fn(string text, int var_id, int begin)>
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
@@ -4915,11 +4913,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]); // beginning pos
 
 		if (is_range) {
-			Main_Data::game_strings->RangeOp(string_id_0, string_id_1, static_cast<Game_Strings::Str_t>(expr), op, args);
+			Main_Data::game_strings->RangeOp(str_params, string_id_1, static_cast<Game_Strings::Str_t>(expr), op, args);
 		}
 		else {
-			if (op == 9) Main_Data::game_strings->ExMatch(string_id_0, expr, args[1], args[2]);
-			else         Main_Data::game_strings->ExMatch(string_id_0, expr, args[1], args[2], args[3]);
+			if (op == 9) Main_Data::game_strings->ExMatch(str_params, expr, args[1], args[2]);
+			else         Main_Data::game_strings->ExMatch(str_params, expr, args[1], args[2], args[3]);
 		}
 		break;
 	}

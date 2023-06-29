@@ -20,6 +20,7 @@
 #include "game_strings.h"
 #include "game_actors.h"
 #include "game_message.h"
+#include "game_switches.h"
 #include <lcf/data.h>
 #include "output.h"
 #include "utils.h"
@@ -87,7 +88,8 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
 
-std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn) {
+
+std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn, bool maniacs_parsing) {
 	if (input.empty()) {
 		return input;
 	}
@@ -133,6 +135,17 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			Game_Strings::Str_t string = Main_Data::game_strings->Get(value);
 			output.append((std::string)string);
 
+			start_copy = iter;
+		} else if (maniacs_parsing && (ch == 'S' || ch == 's')) {
+			// parsing a switch within an extracted string var command will parse \s[N] as a switch (ON/OFF)
+			auto parse_ret = Game_Message::ParseSpeed(iter, end, escape_char, true);
+			iter = parse_ret.next;
+			int value = parse_ret.value;
+
+			bool sw = Main_Data::game_switches->Get(value);
+			if (sw) output.append("ON");
+			else output.append("OFF");
+			
 			start_copy = iter;
 		}
 	}
