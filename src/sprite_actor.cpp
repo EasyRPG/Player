@@ -126,8 +126,7 @@ void Sprite_Actor::Update() {
 		animation->SetVisible(IsVisible());
 	}
 
-	const bool flip = battler->IsDirectionFlipped();
-	SetFlipX(flip);
+	SetFlipX(battler->IsDirectionFlipped());
 }
 
 void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id) {
@@ -268,7 +267,7 @@ void Sprite_Actor::DoIdleAnimation() {
 
 void Sprite_Actor::OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index) {
 	SetBitmap(Cache::Battlecharset(result->file));
-	SetSrcRect(Rect((battler->IsDirectionFlipped() ? 96 : 0), battler_index * 48, 48, 48));
+	SetSrcRect(Rect(0, battler_index * 48, 48, 48));
 }
 
 void Sprite_Actor::Draw(Bitmap& dst) {
