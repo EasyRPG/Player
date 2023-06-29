@@ -66,6 +66,7 @@
 #include "baseui.h"
 #include "algo.h"
 #include "rand.h"
+#include <regex>
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1
@@ -821,6 +822,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacSetGameOption(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(99999):
+			return InjectCommand(com);
 		default:
 			return true;
 	}
@@ -4640,6 +4643,97 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	}
 
 	Output::Warning("Maniac Patch: Command CallCommand not supported");
+	return true;
+}
+
+static std::string comToString(lcf::rpg::EventCommand const& com) {
+	std::ostringstream oss;
+	oss << "@" << com.code << "(\"" << com.string << "\", [";
+	for (size_t i = 0; i < com.parameters.size(); ++i) {
+		oss << com.parameters[i];
+		if (i != com.parameters.size() - 1) {
+			oss << ",";
+		}
+	}
+	oss << "], " << com.indent << ")";
+	return oss.str();
+}
+
+static lcf::rpg::EventCommand stringToCom(const std::string& input) {
+	lcf::rpg::EventCommand com;
+
+	std::string temp = input;
+
+	// Extracting code
+	std::regex codeRegex("@(\\d+)\\s*\\(");
+	std::smatch codeMatch;
+	if (std::regex_search(temp, codeMatch, codeRegex)) {
+		com.code = std::stoi(codeMatch[1].str());
+	}
+
+	// Extracting string
+	std::regex stringRegex("\"((?:\\\\\"|[^\"])*)\"");
+	std::smatch stringMatch;
+	if (std::regex_search(temp, stringMatch, stringRegex)) {
+		std::string stringStr = stringMatch[1].str();
+
+		// Replace escaped quotes with regular quotes
+		std::string::size_type pos = stringStr.find("\\\"");
+		while (pos != std::string::npos) {
+			stringStr.replace(pos, 2, "\"");
+			pos = stringStr.find("\\\"", pos + 1);
+		}
+
+		com.string = lcf::DBString(stringStr.c_str());
+	}
+
+	// Extracting parameters
+	std::regex paramRegex("\\[(.*?)\\]");
+	std::smatch paramMatch;
+	if (std::regex_search(temp, paramMatch, paramRegex)) {
+		std::string paramStr = paramMatch[1].str();
+		std::istringstream iss(paramStr);
+		std::string param;
+		std::vector<int32_t> params;
+		while (std::getline(iss, param, ',')) {
+			params.push_back(static_cast<int32_t>(std::stoi(param)));
+		}
+		com.parameters = lcf::DBArray<int32_t>(params.begin(), params.end());
+	}
+
+	// Extracting indent
+	std::regex indentRegex("\\](\\d+)\\)");
+	std::smatch indentMatch;
+	if (std::regex_search(temp, indentMatch, indentRegex)) {
+		com.indent = std::stoi(indentMatch[1].str());
+	}
+	else {
+		com.indent = 0; // Default value for indent when missing
+	}
+
+	return com;
+}
+
+bool Game_Interpreter::InjectCommand(lcf::rpg::EventCommand const& com) {
+	std::string entry = ToString(com.string);
+
+	auto* frame = GetFramePtr();
+
+	// Split the entry string into lines
+	std::istringstream iss(entry);
+	std::string line;
+	while (std::getline(iss, line, '\n')) {
+		// Remove carriage return ('\r') if present
+		if (!line.empty() && line.back() == '\r') {
+			line.pop_back();
+		}
+
+		// Perform tasks on each line
+		lcf::rpg::EventCommand result = stringToCom(line);
+		frame->commands.push_back(result);
+		Output::Debug("Injecting: {}", comToString(result));
+	}
+
 	return true;
 }
 
