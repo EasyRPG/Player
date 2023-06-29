@@ -474,6 +474,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 	src/multiplayer/game_multiplayer.cpp
 	src/multiplayer/chatname.cpp
 	src/multiplayer/chatname.h
+	src/multiplayer/chatui.cpp
+	src/multiplayer/chatui.h
 	src/multiplayer/playerother.cpp
 	src/multiplayer/playerother.h
 )

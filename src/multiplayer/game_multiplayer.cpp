@@ -31,12 +31,16 @@
 #include "../battle_animation.h"
 #include "../player.h"
 #include "../cache.h"
+#include "chatui.h"
 #include "chatname.h"
 #include "game_playerother.h"
 #include "playerother.h"
 #include "messages.h"
 
 #include "server.h"
+
+#include <thread>
+#include <chrono>
 
 static Game_Multiplayer _instance;
 
@@ -46,6 +50,11 @@ Game_Multiplayer& Game_Multiplayer::Instance() {
 
 Game_Multiplayer::Game_Multiplayer() {
 	Server server;
+	std::thread t([this]() {
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		Multiplayer::ChatUi::Refresh();
+	});
+	t.detach();
 	InitConnection();
 }
 
