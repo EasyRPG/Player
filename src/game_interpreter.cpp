@@ -4712,6 +4712,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		extract_flag,
 	};
 
+	Output::Debug("com.string: {}", com.string);
 	Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
 	Output::Debug("op {} fn {} flags {}", op, fn, flags);
 	Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
@@ -4864,7 +4865,20 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		}
 		case 12: //File (file) <fn(string filename, int encode)>
+		{
+			// maniacs does not like a file extension
+			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+			// args[1] is the encoding... 0 for sjis, 1 for utf8
+
+			Filesystem_Stream::InputStream is = FileFinder::OpenText(StringView(filename));
+			if (is.good()) {
+				std::stringstream buffer;
+				buffer << is.rdbuf();
+				result = static_cast<Game_Strings::Str_t>(buffer.str());
+			}
+			is.Close();
 			break;
+		}
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
@@ -4924,6 +4938,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	}
 	case 7: //toFile <fn(string filename, int encode)>
+
 		break;
 	case 8: //popLine <fn(int output_str_id)>
 		// a range parameter with popLine doesn't affect multiple strings;
