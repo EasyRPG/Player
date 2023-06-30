@@ -594,7 +594,9 @@ public:
 		DrawableMgr::Register(this);
 
 		back_panel.SetZ(Priority::Priority_Maximum-1);
-		d_type.SetVisible(false);
+		back_panel.SetOpacity(240);
+
+		SetFocus(false);
 	}
 
 	void Draw(Bitmap& dst) { }
@@ -645,7 +647,11 @@ public:
 	}
 
 	void SetFocus(bool focused) {
+		this->SetVisible(focused);
+		d_status.SetVisible(focused);
+		d_log.SetVisible(focused);
 		d_type.SetVisible(focused);
+		back_panel.SetVisible(focused);
 		UpdateTypePanel();
 		d_log.ShowScrollBar(focused);
 		if(focused) {
@@ -727,34 +733,33 @@ void Initialize() {
 
 void SetFocus(bool focused) {
 	chat_focused = focused;
-	//Input::set_game_focus(!focused);
+	Input::SetGameFocus(!focused);
 	chat_box->SetFocus(focused);
 }
 
-//void InputsFocusUnfocus() {
-//	if(Input::IsTriggered(Input::InputButton::CHAT_FOCUS)) {
-//		SetFocus(true);
-//	} else if(Input::IsExternalTriggered(Input::InputButton::CHAT_UNFOCUS)) {
-//		SetFocus(false);
-//	}
-//}
-//
-//void InputsLog() {
-//	if(Input::IsExternalPressed(Input::InputButton::CHAT_UP)) {
-//		chat_box->ScrollUp();
-//	}
-//	if(Input::IsExternalPressed(Input::InputButton::CHAT_DOWN)) {
-//		chat_box->ScrollDown();
-//	}
-//	if(Input::IsExternalTriggered(Input::InputButton::CHAT_TOGGLE_GLOBAL)) {
-//		chat_box->ToggleVisibilityFlag(CV_GLOBAL);
-//	}
-//}
-//
-//void ProcessInputs() {
-//	InputsFocusUnfocus();
-//	InputsLog();
-//}
+void InputsFocusUnfocus() {
+	if(Input::IsTriggered(Input::InputButton::KEY_TAB)) {
+		SetFocus(true);
+	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_TAB)) {
+		SetFocus(false);
+	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_ESCAPE)) {
+		SetFocus(false);
+	}
+}
+
+void InputsLog() {
+	if(Input::IsExternalPressed(Input::InputButton::KEY_UP)) {
+		chat_box->ScrollUp();
+	}
+	if(Input::IsExternalPressed(Input::InputButton::KEY_DOWN)) {
+		chat_box->ScrollDown();
+	}
+}
+
+void ProcessInputs() {
+	InputsFocusUnfocus();
+	InputsLog();
+}
 
 /**
  * External access
@@ -793,7 +798,7 @@ void ChatUi::Refresh() {
 void ChatUi::Update() {
 	if(chat_box == nullptr)
 		return;
-	//ProcessInputs();
+	ProcessInputs();
 }
 
 void ChatUi::GotMessage(std::string name, std::string trip, std::string msg, std::string src) {

@@ -85,6 +85,18 @@ namespace Input {
 		FAST_FORWARD_PLUS,
 		TOGGLE_FULLSCREEN,
 		TOGGLE_ZOOM,
+		// extra keys!
+		KEY_UP,
+		KEY_DOWN,
+		KEY_LEFT,
+		KEY_RIGHT,
+		KEY_BACKSPACE,
+		KEY_RETURN,
+		KEY_TAB,
+		KEY_C,
+		KEY_V,
+		KEY_CTRL,
+		KEY_ESCAPE,
 		BUTTON_COUNT
 	};
 
@@ -131,6 +143,18 @@ namespace Input {
 		"FAST_FORWARD_PLUS",
 		"TOGGLE_FULLSCREEN",
 		"TOGGLE_ZOOM",
+		// extra keys!
+		"KEY_UP",
+		"KEY_DOWN",
+		"KEY_LEFT",
+		"KEY_RIGHT",
+		"KEY_BACKSPACE",
+		"KEY_RETURN",
+		"KEY_TAB",
+		"KEY_C",
+		"KEY_V",
+		"KEY_CTRL",
+		"KEY_ESCAPE",
 		"BUTTON_COUNT");
 
 	constexpr auto kButtonHelp = lcf::makeEnumTags<InputButton>(
@@ -178,7 +202,20 @@ namespace Input {
 		"Fast forward the game even more (x10)",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
-		"Total Button Count");
+		"Total Button Count",
+		// extra keys!
+		"KEY_UP",
+		"KEY_DOWN",
+		"KEY_LEFT",
+		"KEY_RIGHT",
+		"KEY_BACKSPACE",
+		"KEY_RETURN",
+		"KEY_TAB",
+		"KEY_C",
+		"KEY_V",
+		"KEY_CTRL",
+		"KEY_ESCAPE",
+		"BUTTON_COUNT");
 
 	/**
 	 * Return true if the given button is a system button.

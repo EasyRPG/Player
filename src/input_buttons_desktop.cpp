@@ -101,6 +101,19 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{RESET, Keys::F12},
 		{FAST_FORWARD, Keys::F},
 		{FAST_FORWARD_PLUS, Keys::G},
+		// extra keys!
+		{KEY_UP, Keys::UP},
+		{KEY_DOWN, Keys::DOWN},
+		{KEY_LEFT, Keys::LEFT},
+		{KEY_RIGHT, Keys::RIGHT},
+		{KEY_BACKSPACE, Keys::BACKSPACE},
+		{KEY_RETURN, Keys::RETURN},
+		{KEY_TAB, Keys::TAB},
+		{KEY_C, Keys::C},
+		{KEY_V, Keys::V},
+		{KEY_CTRL, Keys::LCTRL},
+		{KEY_CTRL, Keys::RCTRL},
+		{KEY_ESCAPE, Keys::ESCAPE},
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 		{MOUSE_LEFT, Keys::MOUSE_LEFT},

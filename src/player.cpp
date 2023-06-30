@@ -82,6 +82,7 @@
 #include "baseui.h"
 #include "game_clock.h"
 #include "message_overlay.h"
+#include "multiplayer/chatui.h"
 
 #ifdef __ANDROID__
 #include "platform/android/android.h"
@@ -338,6 +339,7 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+	CUI().Update();
 
 	// Game events can query full screen status and change their behavior, so this needs to
 	// be a game key and not a system key.

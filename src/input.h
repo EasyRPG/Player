@@ -325,6 +325,16 @@ namespace Input {
 	/** All cardinal directions state. */
 	extern int dir8;
 
+	int GetDir4();
+	int GetDir8();
+	extern bool game_focused;
+	bool IsGameFocused();
+	void SetGameFocus(bool focused);
+	bool IsExternalPressed(InputButton button);
+	bool IsExternalTriggered(InputButton button);
+	bool IsExternalRepeated(InputButton button);
+	bool IsExternalReleased(InputButton button);
+
 	bool IsWaitingInput();
 	void WaitInput(bool val);
 }

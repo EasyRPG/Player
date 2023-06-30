@@ -307,7 +307,7 @@ void Game_Player::UpdateNextMovementAction() {
 	}
 
 	int move_dir = -1;
-	switch (Input::dir4) {
+	switch (Input::GetDir4()) {
 		case 2:
 			move_dir = Down;
 			break;
