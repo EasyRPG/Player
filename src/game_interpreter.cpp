@@ -4712,6 +4712,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		extract_flag,
 	};
 
+	Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
+	Output::Debug("op {} fn {} flags {}", op, fn, flags);
+	Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
+	Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
+	Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
+
 	switch (op)
 	{
 	case 0: //asg <fn(string text)>
@@ -4738,12 +4744,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			switch (args[0])
 			{
 			case 0:  //.actor[a].name
-				if (args[2]) {
-					result = (Game_Strings::Str_t)Main_Data::game_actors->GetActor(args[1])->GetName();
-				}
-				else {
-					result = (Game_Strings::Str_t)lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name;
-				}
+				if (args[2]) result = static_cast<Game_Strings::Str_t>(Main_Data::game_actors->GetActor(args[1])->GetName());
+				else         result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name);
 				break;
 			case 1:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->name); break;  //.skill[a].name
 			case 2:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->name); break;  //.item[a].name
@@ -4767,10 +4769,38 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			case 15: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, args[1])->name); break;  //.anim2[a].name
 			case 16: result = static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(args[1])); break;  //.map[a].name
 			case 17: result = static_cast<Game_Strings::Str_t>(Game_Map::GetEvent(args[1])->GetName()); break;  //.mev[a].name
-			case 18: result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetName()); break;  //.member[a].name
+			case 18: //.member[a].name
+				if (args[2]) {
+					result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetName());
+				}
+				else {
+					args[1] = Main_Data::game_party->GetActor(args[1])->GetId();
+					result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name);
+				}
+				break;
 			}
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+
+			switch (args[0])
+			{
+			case 0:  //.actor[a].desc
+				if (args[2]) result = static_cast<Game_Strings::Str_t>(Main_Data::game_actors->GetActor(args[1])->GetTitle());
+				else         result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->title);
+				break;
+			case 1: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->description); break; //.skill[a].desc
+			case 2: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->description); break; //.item[a].desc
+			case 18: //.member[a].desc
+				if (args[2]) {
+					result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetTitle());
+				}
+				else {
+					args[1] = Main_Data::game_party->GetActor(args[1])->GetId();
+					result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->title);
+				}
+				break;
+			}
 			break;
 		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
 		{
