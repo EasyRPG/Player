@@ -39,9 +39,6 @@
 
 #include "server.h"
 
-#include <thread>
-#include <chrono>
-
 static Game_Multiplayer _instance;
 
 Game_Multiplayer& Game_Multiplayer::Instance() {
@@ -50,11 +47,6 @@ Game_Multiplayer& Game_Multiplayer::Instance() {
 
 Game_Multiplayer::Game_Multiplayer() {
 	Server server;
-	std::thread t([this]() {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		Multiplayer::ChatUi::Refresh();
-	});
-	t.detach();
 	InitConnection();
 }
 
@@ -484,6 +476,8 @@ void SetSessionToken(const char* t) {
 }
 
 void Game_Multiplayer::Connect(int map_id, bool room_switch) {
+	CUI().SetStatusRoom(map_id);
+
 	Output::Debug("MP: connecting to id={}", map_id);
 	room_id = map_id;
 	if (!session_active) {
@@ -517,6 +511,7 @@ void Game_Multiplayer::Initialize() {
 	if (Main_Data::game_pictures) {
 		Main_Data::game_pictures->EraseAllMultiplayer();
 	}
+	CUI().Refresh();
 }
 
 void Game_Multiplayer::Quit() {

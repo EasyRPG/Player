@@ -760,21 +760,43 @@ void SetFocus(bool focused) {
  * External access
  */
 
-void Multiplayer::ChatUi::Refresh() {
+static ChatUi _instance;
+
+ChatUi& ChatUi::Instance() {
+	return _instance;
+}
+
+bool init_wait_scene = false;
+
+void ChatUi::Refresh() {
 	if(chat_box == nullptr) {
-		Initialize();
+		if (init_wait_scene)
+			return;
+		init_wait_scene = true;
+		std::thread thread([]() {
+			while(true) {
+				auto scene_title = Scene::Find(Scene::SceneType::Title);
+				auto scene_map = Scene::Find(Scene::SceneType::Map);
+				if(scene_title != nullptr || scene_map != nullptr) {
+					Initialize();
+					break;
+				}
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			}
+		});
+		thread.detach();
 	} else {
 		chat_box->RefreshTheme();
 	}
 }
 
-void Multiplayer::ChatUi::Update() {
+void ChatUi::Update() {
 	if(chat_box == nullptr)
 		return;
 	//ProcessInputs();
 }
 
-void Multiplayer::ChatUi::GotMessage(std::string name, std::string trip, std::string msg, std::string src) {
+void ChatUi::GotMessage(std::string name, std::string trip, std::string msg, std::string src) {
 	if(chat_box == nullptr)
 		return;
 	AddLogEntry(
@@ -785,7 +807,7 @@ void Multiplayer::ChatUi::GotMessage(std::string name, std::string trip, std::st
 	);
 }
 
-void Multiplayer::ChatUi::GotInfo(std::string msg) {
+void ChatUi::GotInfo(std::string msg) {
 	if(chat_box == nullptr)
 		return;
 	// remove leading spaces. TO-DO: fix leading spaces being sent by server on info messages.
@@ -794,13 +816,13 @@ void Multiplayer::ChatUi::GotInfo(std::string msg) {
 	AddLogEntry("", trim, "", CV_LOCAL);
 }
 
-void Multiplayer::ChatUi::SetStatusConnection(bool status) {
+void ChatUi::SetStatusConnection(bool status) {
 	if(chat_box == nullptr)
 		return;
 	chat_box->SetStatusConnection(status);
 }
 
-void Multiplayer::ChatUi::SetStatusRoom(unsigned int room_id) {
+void ChatUi::SetStatusRoom(unsigned int room_id) {
 	if(chat_box == nullptr)
 		return;
 	chat_box->SetStatusRoom(room_id);

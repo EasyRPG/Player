@@ -3,8 +3,10 @@
 
 #include <string>
 
-namespace Multiplayer {
-namespace ChatUi {
+class ChatUi {
+public:
+	static ChatUi& Instance();
+
 	void Refresh(); // initializes chat or refreshes its theme
 	void Update(); // called once per logical frame
 
@@ -12,7 +14,8 @@ namespace ChatUi {
 	void GotInfo(std::string msg);
 	void SetStatusConnection(bool status);
 	void SetStatusRoom(unsigned int room_id);
-}
-}
+};
+
+inline ChatUi& CUI() { return ChatUi::Instance(); }
 
 #endif
