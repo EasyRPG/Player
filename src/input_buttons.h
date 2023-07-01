@@ -97,6 +97,8 @@ namespace Input {
 		KEY_V,
 		KEY_CTRL,
 		KEY_ESCAPE,
+		KEY_F9,
+		KEY_F10,
 		BUTTON_COUNT
 	};
 
@@ -155,6 +157,8 @@ namespace Input {
 		"KEY_V",
 		"KEY_CTRL",
 		"KEY_ESCAPE",
+		"KEY_F9",
+		"KEY_F10",
 		"BUTTON_COUNT");
 
 	constexpr auto kButtonHelp = lcf::makeEnumTags<InputButton>(
@@ -215,6 +219,8 @@ namespace Input {
 		"KEY_V",
 		"KEY_CTRL",
 		"KEY_ESCAPE",
+		"KEY_F9",
+		"KEY_F10",
 		"BUTTON_COUNT");
 
 	/**

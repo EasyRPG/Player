@@ -114,6 +114,8 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{KEY_CTRL, Keys::LCTRL},
 		{KEY_CTRL, Keys::RCTRL},
 		{KEY_ESCAPE, Keys::ESCAPE},
+		{KEY_F9, Keys::F9},
+		{KEY_F10, Keys::F10},
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 		{MOUSE_LEFT, Keys::MOUSE_LEFT},

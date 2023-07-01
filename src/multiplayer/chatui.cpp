@@ -742,9 +742,9 @@ void SetFocus(bool focused) {
 }
 
 void InputsFocusUnfocus() {
-	if(Input::IsTriggered(Input::InputButton::KEY_TAB)) {
+	if(Input::IsTriggered(Input::InputButton::KEY_F10)) {
 		SetFocus(true);
-	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_TAB) ||
+	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_F10) ||
 			Input::IsExternalTriggered(Input::InputButton::KEY_ESCAPE)) {
 		SetFocus(false);
 	}
@@ -859,7 +859,7 @@ bool init_wait_scene = false;
 
 void ChatUi::Refresh() {
 	if(chat_box == nullptr) {
-		if (init_wait_scene)
+		if (Player::debug_flag || init_wait_scene)
 			return;
 		init_wait_scene = true;
 		std::thread thread([]() {
