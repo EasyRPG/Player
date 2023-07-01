@@ -202,8 +202,10 @@ EM_ASM({
 
 #endif
 
-	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
-		Graphics::GetMessageOverlay().AddMessage(msg, c);
+	if (Player::debug_flag) {
+		if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
+			Graphics::GetMessageOverlay().AddMessage(msg, c);
+		}
 	}
 }
 
