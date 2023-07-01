@@ -89,6 +89,19 @@ public:
 	BitmapRef CaptureScreen();
 
 	/**
+	 * Clipboard text content.
+	 */
+	virtual std::string GetClipboardText() { return ""; };
+	virtual void SetClipboardText(std::string text) {};
+
+	/**
+	 * IME support.
+	 */
+	virtual void SetTextInputRect(int x, int y, int w = 0, int h = 0) {};
+	virtual void StartTextInput() {};
+	virtual void StopTextInput() {};
+
+	/**
 	 * Sets display title.
 	 *
 	 * @param title title string.
@@ -187,6 +200,8 @@ public:
 	 */
 	KeyStatus& GetKeyStates();
 
+	std::string FetchTextInputBuffer();
+
 	/** @return true if the display manages the framerate */
 	bool IsFrameRateSynchronized() const;
 
@@ -273,6 +288,9 @@ protected:
 
 	KeyStatus keys;
 
+	/** TEXTINPUT text */
+	std::string text_input_buffer;
+
 	/** Surface used for zoom. */
 	BitmapRef main_surface;
 
@@ -329,6 +347,12 @@ inline void BaseUi::SetIsFullscreen(bool fs) {
 
 inline BaseUi::KeyStatus& BaseUi::GetKeyStates() {
 	return keys;
+}
+
+inline std::string BaseUi::FetchTextInputBuffer() {
+	std::string val = text_input_buffer;
+	text_input_buffer = ""; // reset buffer when fetching
+	return val;
 }
 
 inline BitmapRef const& BaseUi::GetDisplaySurface() const {

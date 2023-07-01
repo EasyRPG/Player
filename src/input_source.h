@@ -118,6 +118,10 @@ namespace Input {
 			return keystates;
 		}
 
+		const std::string& GetTextInput() const {
+			return text_input;
+		}
+
 		ButtonMappingArray& GetButtonMappings() { return cfg.buttons; }
 		const ButtonMappingArray& GetButtonMappings() const { return cfg.buttons; }
 
@@ -148,6 +152,7 @@ namespace Input {
 		std::unique_ptr<Filesystem_Stream::OutputStream> record_log;
 
 		KeyStatus keystates;
+		std::string text_input;
 		KeyStatus keymask;
 		Point mouse_pos;
 		AnalogInput analog_input;

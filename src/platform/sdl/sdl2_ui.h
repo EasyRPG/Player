@@ -63,6 +63,11 @@ public:
 	void ToggleFullscreen() override;
 	void ToggleZoom() override;
 	void UpdateDisplay() override;
+	std::string GetClipboardText() override;
+	void SetClipboardText(std::string text) override;
+	void SetTextInputRect(int x, int y, int w = 0, int h = 0) override;
+	void StartTextInput() override;
+	void StopTextInput() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
 	void ProcessEvents() override;
@@ -99,6 +104,7 @@ private:
 	void ProcessWindowEvent(SDL_Event &evnt);
 	void ProcessKeyDownEvent(SDL_Event &evnt);
 	void ProcessKeyUpEvent(SDL_Event &evnt);
+	void ProcessTextInputEvent(SDL_Event &evnt);
 	void ProcessMouseMotionEvent(SDL_Event &evnt);
 	void ProcessMouseButtonEvent(SDL_Event &evnt);
 	void ProcessMouseWheelEvent(SDL_Event &evnt);

@@ -55,6 +55,8 @@ namespace Input {
 
 	bool game_focused = true;
 	Input::KeyStatus raw_disabled;
+	std::string text_input;
+	std::string text_input_disabled;
 
 	bool wait_input = false;
 }
@@ -128,6 +130,8 @@ void Input::Update() {
 		bool pressed = pressed_buttons[i];
 		UpdateButton(i, pressed);
 	}
+
+	text_input = source->GetTextInput();
 
 	auto& directions = source->GetDirectionMappings();
 
@@ -205,6 +209,8 @@ void Input::ResetKeys() {
 	}
 	dir4 = Direction::NONE;
 	dir8 = Direction::NONE;
+
+	text_input = "";
 
 	// TODO: we want Input to be agnostic to where the button
 	// presses are coming from, and if there's a UI at all.
@@ -428,6 +434,11 @@ bool Input::IsExternalReleased(InputButton button) {
 	if(IsGameFocused()) return false;
 	WaitInput(false);
 	return released[button];
+}
+
+std::string& Input::GetExternalTextInput() {
+	if(IsGameFocused()) return text_input_disabled;
+	return text_input;
 }
 
 Point Input::GetMousePosition() {

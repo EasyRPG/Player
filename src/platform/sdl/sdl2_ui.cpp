@@ -634,6 +634,34 @@ void Sdl2Ui::UpdateDisplay() {
 	SDL_RenderPresent(sdl_renderer);
 }
 
+std::string Sdl2Ui::GetClipboardText() {
+	char* c_str = SDL_GetClipboardText();
+	std::string str(c_str);
+	SDL_free(c_str);
+	return str;
+}
+
+void Sdl2Ui::SetClipboardText(std::string text) {
+	SDL_SetClipboardText(text.c_str());
+}
+
+void Sdl2Ui::SetTextInputRect(int x, int y, int w, int h) {
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = w;
+	rect.h = h;
+	SDL_SetTextInputRect(&rect);
+}
+
+void Sdl2Ui::StartTextInput() {
+	SDL_StartTextInput();
+}
+
+void Sdl2Ui::StopTextInput() {
+	SDL_StopTextInput();
+}
+
 void Sdl2Ui::SetTitle(const std::string &title) {
 	SDL_SetWindowTitle(sdl_window, title.c_str());
 }
@@ -666,6 +694,10 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 
 		case SDL_KEYUP:
 			ProcessKeyUpEvent(evnt);
+			return;
+
+		case SDL_TEXTINPUT:
+			ProcessTextInputEvent(evnt);
 			return;
 
 		case SDL_MOUSEMOTION:
@@ -786,6 +818,10 @@ void Sdl2Ui::ProcessKeyUpEvent(SDL_Event &evnt) {
 	/* unused */
 	(void) evnt;
 #endif
+}
+
+void Sdl2Ui::ProcessTextInputEvent(SDL_Event &evnt) {
+	text_input_buffer += evnt.text.text;
 }
 
 void Sdl2Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {

@@ -334,6 +334,7 @@ namespace Input {
 	bool IsExternalTriggered(InputButton button);
 	bool IsExternalRepeated(InputButton button);
 	bool IsExternalReleased(InputButton button);
+	std::string& GetExternalTextInput();
 
 	bool IsWaitingInput();
 	void WaitInput(bool val);

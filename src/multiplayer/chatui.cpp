@@ -14,6 +14,7 @@
 #include "../utils.h"
 #include "../player.h"
 #include "../compiler.h"
+#include "../baseui.h"
 
 class DrawableOnlineStatus : public Drawable {
 	Rect bounds;
@@ -522,6 +523,10 @@ public:
 		Text::Draw(*type_text, 0, 0, *Font::Default(), *Cache::SystemOrBlack(), 0, Utils::EncodeUTF(text));
 	}
 
+	const int GetCaretRelativeOffset() {
+		return type_char_offsets[caret_index_head]-scroll;
+	}
+
 	void SeekCaret(unsigned int seek_tail, unsigned int seek_head) {
 		caret_index_tail = seek_tail;
 		caret_index_head = seek_head;
@@ -560,8 +565,8 @@ class DrawableChatUi : public Drawable {
 	const unsigned int panel_frame_right = 6; // on right side (including border)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
 	const unsigned int type_height = 19; // height of type box
-	const unsigned int chat_width = SCREEN_TARGET_WIDTH*0.725;
-	const unsigned int chat_left = SCREEN_TARGET_WIDTH-chat_width;
+	const unsigned int chat_width = Player::screen_width*0.725;
+	const unsigned int chat_left = Player::screen_width-chat_width;
 
 	DrawableOnlineStatus d_status;
 	DrawableChatLog d_log;
@@ -582,10 +587,10 @@ class DrawableChatUi : public Drawable {
 public:
 	DrawableChatUi()
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
-		back_panel(chat_left, 0, chat_width, SCREEN_TARGET_HEIGHT, Drawable::Flags::Global),
+		back_panel(chat_left, 0, chat_width, Player::screen_height, Drawable::Flags::Global),
 		d_log(chat_left+panel_frame_left, status_height,
-			chat_width-panel_frame_right, SCREEN_TARGET_HEIGHT-status_height),
-		d_type(chat_left+panel_frame_left, SCREEN_TARGET_HEIGHT-type_height-panel_frame_left,
+			chat_width-panel_frame_right, Player::screen_height-status_height),
+		d_type(chat_left+panel_frame_left, Player::screen_height-type_height-panel_frame_left,
 			chat_width-panel_frame_right, type_height),
 		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height)
 	{
@@ -631,6 +636,16 @@ public:
 		d_type.SeekCaret(caret_seek_tail, caret_seek_head);
 	}
 
+	void UpdateTypeTextInputRect() {
+		const auto form_rect = d_type.GetFormBounds();
+		Rect metrics = DisplayUi->GetWindowMetrics();
+		int scale_factor_width = metrics.width/Player::screen_width;
+		int scale_factor_height = metrics.height/Player::screen_height;
+		DisplayUi->SetTextInputRect(form_rect.x*scale_factor_width +
+				d_type.GetCaretRelativeOffset()*scale_factor_width,
+			form_rect.y*scale_factor_height+(form_rect.height-6)*scale_factor_height);
+	}
+
 	void ShowTypeLabel(std::string label) {
 		d_type.SetLabel(label);
 		UpdateTypePanel();
@@ -653,10 +668,13 @@ public:
 		UpdateTypePanel();
 		d_log.ShowScrollBar(focused);
 		if(focused) {
-			d_log.SetHeight(SCREEN_TARGET_HEIGHT-status_height-type_height-panel_frame_right);
+			d_log.SetHeight(Player::screen_height-status_height-type_height-panel_frame_right);
+			DisplayUi->StartTextInput();
+			UpdateTypeTextInputRect();
 		} else {
-			d_log.SetHeight(SCREEN_TARGET_HEIGHT-status_height);
+			d_log.SetHeight(Player::screen_height-status_height);
 			d_log.SetScroll(0);
+			DisplayUi->StopTextInput();
 		}
 	}
 
@@ -665,11 +683,12 @@ public:
 	}
 };
 
-bool chat_focused = false;
-
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
 const unsigned int MAXMESSAGES = 500;
 
+std::u32string type_text;
+unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
+unsigned int type_caret_index_head = 0; // moves when SHIFT-selecting text
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
 
@@ -680,9 +699,6 @@ void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) 
 		chat_box->RemoveLogEntry(chat_log.front().get());
 		chat_log.erase(chat_log.begin());
 	}
-}
-
-void ProcessAndSendMessage(std::string utf8text) {
 }
 
 void Initialize() {
@@ -710,7 +726,6 @@ void Initialize() {
 }
 
 void SetFocus(bool focused) {
-	chat_focused = focused;
 	Input::SetGameFocus(!focused);
 	chat_box->SetFocus(focused);
 }
@@ -718,9 +733,8 @@ void SetFocus(bool focused) {
 void InputsFocusUnfocus() {
 	if(Input::IsTriggered(Input::InputButton::KEY_TAB)) {
 		SetFocus(true);
-	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_TAB)) {
-		SetFocus(false);
-	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_ESCAPE)) {
+	} else if(Input::IsExternalTriggered(Input::InputButton::KEY_TAB) ||
+			Input::IsExternalTriggered(Input::InputButton::KEY_ESCAPE)) {
 		SetFocus(false);
 	}
 }
@@ -734,9 +748,85 @@ void InputsLog() {
 	}
 }
 
+void InputsTyping() {
+	// input and paste
+	std::string input_text = Input::GetExternalTextInput();
+	if(Input::IsExternalTriggered(Input::InputButton::KEY_V) && Input::IsExternalPressed(Input::InputButton::KEY_CTRL))
+		input_text = DisplayUi->GetClipboardText();
+	if(input_text.size() > 0) {
+		unsigned int caret_start = std::min<unsigned int>(type_caret_index_tail, type_caret_index_head);
+		unsigned int caret_end = std::max<unsigned int>(type_caret_index_tail, type_caret_index_head);
+		// erase selection
+		type_text.erase(caret_start, caret_end-caret_start);
+		std::u32string input_u32 = Utils::DecodeUTF32(input_text);
+		std::u32string fits = input_u32.substr(0, MAXCHARSINPUT_MESSAGE-type_text.size());
+		type_text.insert(caret_start, fits);
+		type_caret_index_tail = type_caret_index_head = caret_start+fits.size();
+	}
+
+	// erase
+	if(Input::IsExternalRepeated(Input::InputButton::KEY_BACKSPACE)) {
+		unsigned int caret_start = std::min<unsigned int>(type_caret_index_tail, type_caret_index_head);
+		unsigned int caret_end = std::max<unsigned int>(type_caret_index_tail, type_caret_index_head);
+		auto len = std::max<unsigned int>(1, caret_end-caret_start);
+		type_caret_index_tail = type_caret_index_head =
+			caret_start == caret_end ? std::max<int>(0, caret_start-1) : caret_start;
+		type_text.erase(type_caret_index_tail, len);
+	}
+
+	// copy
+	if(Input::IsExternalTriggered(Input::InputButton::KEY_C) && Input::IsExternalPressed(Input::InputButton::KEY_CTRL)) {
+		if(type_caret_index_tail != type_caret_index_head) {
+			unsigned int caret_start = std::min<unsigned int>(type_caret_index_tail, type_caret_index_head);
+			unsigned int caret_end = std::max<unsigned int>(type_caret_index_tail, type_caret_index_head);
+			std::u32string selected = type_text.substr(caret_start, caret_end-caret_start);
+			DisplayUi->SetClipboardText(Utils::EncodeUTF(selected));
+		}
+	}
+
+	// move caret
+	if(Input::IsExternalRepeated(Input::InputButton::KEY_LEFT)) {
+		if(Input::IsExternalPressed(Input::InputButton::SHIFT)) {
+			if(type_caret_index_head > 0) type_caret_index_head--;
+		} else {
+			if(type_caret_index_tail == type_caret_index_head) {
+				if(type_caret_index_head > 0) type_caret_index_head--;
+			} else {
+				type_caret_index_head = std::min<unsigned int>(type_caret_index_tail, type_caret_index_head);
+			}
+			type_caret_index_tail = type_caret_index_head;
+		}
+	}
+	if(Input::IsExternalRepeated(Input::InputButton::KEY_RIGHT)) {
+		if(Input::IsExternalPressed(Input::InputButton::SHIFT)) {
+			if(type_caret_index_head < type_text.size()) type_caret_index_head++;
+		} else {
+			if(type_caret_index_tail == type_caret_index_head) {
+				if(type_caret_index_head < type_text.size()) type_caret_index_head++;
+			} else {
+				type_caret_index_head = std::max<unsigned int>(type_caret_index_tail, type_caret_index_head);
+			}
+			type_caret_index_tail = type_caret_index_head;
+		}
+	}
+
+	// send
+	if(Input::IsExternalTriggered(Input::InputButton::KEY_RETURN)) {
+		Output::Debug(Utils::EncodeUTF(type_text).c_str());
+		// reset typebox
+		type_text.clear();
+		type_caret_index_tail = type_caret_index_head = 0;
+	}
+
+	// update type box
+	chat_box->UpdateTypeText(type_text, type_caret_index_tail, type_caret_index_head);
+	chat_box->UpdateTypeTextInputRect();
+}
+
 void ProcessInputs() {
 	InputsFocusUnfocus();
 	InputsLog();
+	InputsTyping();
 }
 
 /**

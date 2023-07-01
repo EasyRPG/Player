@@ -71,6 +71,13 @@ void Input::UiSource::DoUpdate(bool system_only) {
 	Record();
 
 	mouse_pos = DisplayUi->GetMousePosition();
+
+	if(!system_only) { // only on logical frames, to ensure buffer gets consumed by the chatbox
+		// if buffer is fetched on physical frames,
+		// chatbox (which only polls input on logical frames) may not be able to consume it
+		// before it's discarded for the next fetch
+		text_input = DisplayUi->FetchTextInputBuffer();
+	}
 }
 
 void Input::UiSource::Update() {
