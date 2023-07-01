@@ -86,6 +86,7 @@ namespace Input {
 		TOGGLE_FULLSCREEN,
 		TOGGLE_ZOOM,
 		// extra keys!
+		TOGGLE_MUTE,
 		KEY_UP,
 		KEY_DOWN,
 		KEY_LEFT,
@@ -146,6 +147,7 @@ namespace Input {
 		"TOGGLE_FULLSCREEN",
 		"TOGGLE_ZOOM",
 		// extra keys!
+		"TOGGLE_MUTE",
 		"KEY_UP",
 		"KEY_DOWN",
 		"KEY_LEFT",
@@ -208,6 +210,7 @@ namespace Input {
 		"Toggle Window Zoom level",
 		"Total Button Count",
 		// extra keys!
+		"TOGGLE_MUTE",
 		"KEY_UP",
 		"KEY_DOWN",
 		"KEY_LEFT",
@@ -234,6 +237,7 @@ namespace Input {
 			case TAKE_SCREENSHOT:
 			case SHOW_LOG:
 			case TOGGLE_ZOOM:
+			case TOGGLE_MUTE:
 			case FAST_FORWARD:
 			case FAST_FORWARD_PLUS:
 				return true;

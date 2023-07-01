@@ -102,6 +102,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{FAST_FORWARD, Keys::F},
 		{FAST_FORWARD_PLUS, Keys::G},
 		// extra keys!
+		{TOGGLE_MUTE, Keys::M},
 		{KEY_UP, Keys::UP},
 		{KEY_DOWN, Keys::DOWN},
 		{KEY_LEFT, Keys::LEFT},

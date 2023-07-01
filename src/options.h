@@ -62,7 +62,7 @@
  * Pause the audio process when the player window
  * looses its focus.
  */
-#define PAUSE_AUDIO_WHEN_FOCUS_LOST 1
+#define PAUSE_AUDIO_WHEN_FOCUS_LOST 0
 
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"

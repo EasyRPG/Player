@@ -132,6 +132,9 @@ namespace Player {
 	std::string replay_input_path;
 	std::string record_input_path;
 	std::string command_line;
+	bool toggle_mute_flag = false;
+	int volume_se = 0;
+	int volume_bgm = 0;
 	int speed_modifier = 3;
 	int speed_modifier_plus = 10;
 	int rng_seed = -1;
@@ -277,12 +280,16 @@ void Player::MainLoop() {
 }
 
 void Player::Pause() {
+#if PAUSE_AUDIO_WHEN_FOCUS_LOST
 	Audio().BGM_Pause();
+#endif
 }
 
 void Player::Resume() {
 	Input::ResetKeys();
+#if PAUSE_AUDIO_WHEN_FOCUS_LOST
 	Audio().BGM_Resume();
+#endif
 	Game_Clock::ResetFrame(Game_Clock::now());
 }
 
@@ -299,6 +306,9 @@ void Player::UpdateInput() {
 	}
 	if (Input::IsSystemTriggered(Input::TOGGLE_ZOOM)) {
 		DisplayUi->ToggleZoom();
+	}
+	if (Input::IsSystemTriggered(Input::TOGGLE_MUTE)) {
+		Audio().ToggleMute();
 	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
