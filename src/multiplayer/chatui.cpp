@@ -435,8 +435,7 @@ class DrawableTypeBox : public Drawable {
 	//design parameters
 	// amount that is visible outside the padded bounds (so text can be seen beyond a left or rightmost placed caret)
 	const unsigned int type_bleed = 0;
-	const unsigned int type_border_horz = 3;
-	const unsigned int type_padding_horz = 6; // padding between type box edges and content (left)
+	const unsigned int type_padding_horz = 12; // padding between type box edges and content (left)
 	const unsigned int type_padding_vert = 3; // padding between type box edges and content (top)
 	const unsigned int label_padding_horz = 6; // left margin between label text and bounds
 	const unsigned int label_padding_vert = 3; // top margin between label text and bounds
@@ -475,7 +474,7 @@ public:
 
 	void Draw(Bitmap& dst) {
 		const unsigned int label_pad = get_label_margin();
-		const unsigned int type_visible_width = bounds.width-type_padding_horz*2-type_border_horz-label_pad;
+		const unsigned int type_visible_width = bounds.width-type_padding_horz*2-label_pad;
 		auto rect = type_text->GetRect();
 		// crop type text to stay within padding
 		Rect cutoff_rect = Rect(scroll-type_bleed, rect.y,
@@ -565,6 +564,7 @@ class DrawableChatUi : public Drawable {
 	const unsigned int panel_frame_right = 6; // on right side (including border)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
 	const unsigned int type_height = 19; // height of type box
+	const unsigned int type_border_offset = 8; // width of type border offset
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
 
@@ -575,11 +575,12 @@ class DrawableChatUi : public Drawable {
 
 	void UpdateTypePanel() {
 		if(d_type.IsVisible()) {
-			// SetCursorRect already has a padding relative to the back_panel, so we fix it
+			// SetCursorRect for some reason already has a padding of 8px relative to the window, so we fix it
+			const unsigned int f = -8;
 			const auto form_rect = d_type.GetFormBounds();
 			back_panel.SetCursorRect(
-				Rect(form_rect.x-12-chat_left, form_rect.y-8,
-					form_rect.width, form_rect.height));
+				Rect((f-type_border_offset)+form_rect.x-chat_left, f+form_rect.y,
+					form_rect.width+type_border_offset, form_rect.height));
 		} else {
 			back_panel.SetCursorRect(Rect(0, 0, 0, 0));
 		}
@@ -591,7 +592,7 @@ public:
 		d_log(chat_left+panel_frame_left, status_height,
 			chat_width-panel_frame_right, Player::screen_height-status_height),
 		d_type(chat_left+panel_frame_left, Player::screen_height-type_height-panel_frame_left,
-			chat_width-panel_frame_right, type_height),
+			chat_width-panel_frame_right-type_border_offset, type_height),
 		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height)
 	{
 		DrawableMgr::Register(this);
