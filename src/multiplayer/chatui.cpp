@@ -545,6 +545,12 @@ public:
 		}
 	}
 
+	void MoveScrollToRight() {
+		const unsigned int caret_offset = type_char_offsets[caret_index_head];
+		const int relative_offset = caret_offset-scroll;
+		scroll = scroll-(caret_offset-relative_offset);
+	}
+
 	void SetLabel(std::string l) {
 		auto l_rect = Text::GetSize(*Font::Default(), l);
 		label = Bitmap::Create(l_rect.width+1, l_rect.height+1, true);
@@ -635,6 +641,10 @@ public:
 
 	void UpdateTypeCaret(unsigned int caret_seek_tail, unsigned int caret_seek_head) {
 		d_type.SeekCaret(caret_seek_tail, caret_seek_head);
+	}
+
+	void UpdateTypeScroll() {
+		d_type.MoveScrollToRight();
 	}
 
 	void UpdateTypeTextInputRect() {
@@ -770,9 +780,14 @@ void InputsTyping() {
 		unsigned int caret_start = std::min<unsigned int>(type_caret_index_tail, type_caret_index_head);
 		unsigned int caret_end = std::max<unsigned int>(type_caret_index_tail, type_caret_index_head);
 		auto len = std::max<unsigned int>(1, caret_end-caret_start);
-		type_caret_index_tail = type_caret_index_head =
-			caret_start == caret_end ? std::max<int>(0, caret_start-1) : caret_start;
+		if (caret_start == caret_end) {
+			if (caret_start == 0)
+				return;
+			type_caret_index_tail = type_caret_index_head = std::max<int>(0, caret_start-1);
+		} else
+			type_caret_index_tail = type_caret_index_head = caret_start;
 		type_text.erase(type_caret_index_tail, len);
+		chat_box->UpdateTypeScroll();
 	}
 
 	// copy
