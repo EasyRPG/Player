@@ -476,6 +476,7 @@ void SetSessionToken(const char* t) {
 }
 
 void Game_Multiplayer::Connect(int map_id, bool room_switch) {
+	CUI().Refresh();
 	CUI().SetStatusRoom(map_id);
 
 	Output::Debug("MP: connecting to id={}", map_id);
@@ -511,10 +512,10 @@ void Game_Multiplayer::Initialize() {
 	if (Main_Data::game_pictures) {
 		Main_Data::game_pictures->EraseAllMultiplayer();
 	}
-	CUI().Refresh();
 }
 
 void Game_Multiplayer::Quit() {
+	CUI().Refresh();
 	connection.Close();
 	Initialize();
 }

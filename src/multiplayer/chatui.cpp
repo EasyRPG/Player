@@ -19,7 +19,7 @@ class DrawableOnlineStatus : public Drawable {
 	Rect bounds;
 
 	//design parameters
-	const unsigned int padding_horz = 8; // padding between box edges and content (left)
+	const unsigned int padding_horz = 4; // padding between box edges and content (left)
 	const unsigned int padding_vert = 6; // padding between box edges and content (top)
 
 	BitmapRef conn_status;
@@ -96,9 +96,9 @@ class DrawableChatLog : public Drawable {
 
 	Rect bounds;
 	//design parameters
-	const unsigned int message_margin = 3; // horizontal margin between panel edges and content
-	const unsigned int scroll_frame = 4; // width of scroll bar's visual frame (on right side)
-	const unsigned int scroll_bleed = 16; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
+	const unsigned int message_margin = 2; // horizontal margin between panel edges and content
+	const unsigned int scroll_frame = 8; // width of scroll bar's visual frame (on right side)
+	const unsigned int scroll_bleed = 2; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
 
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	std::vector<DrawableChatEntry> messages;
@@ -433,12 +433,13 @@ class DrawableTypeBox : public Drawable {
 	Rect bounds;
 	//design parameters
 	// amount that is visible outside the padded bounds (so text can be seen beyond a left or rightmost placed caret)
-	const unsigned int type_bleed = 3;
-	const unsigned int type_padding_horz = 9; // padding between type box edges and content (left)
-	const unsigned int type_padding_vert = 6; // padding between type box edges and content (top)
-	const unsigned int label_padding_horz = 8; // left margin between label text and bounds
-	const unsigned int label_padding_vert = 6; // top margin between label text and bounds
-	const unsigned int label_margin = 40; // left margin for type box to make space for the label
+	const unsigned int type_bleed = 0;
+	const unsigned int type_border_horz = 3;
+	const unsigned int type_padding_horz = 6; // padding between type box edges and content (left)
+	const unsigned int type_padding_vert = 3; // padding between type box edges and content (top)
+	const unsigned int label_padding_horz = 6; // left margin between label text and bounds
+	const unsigned int label_padding_vert = 3; // top margin between label text and bounds
+	const unsigned int label_margin = 35; // left margin for type box to make space for the label
 
 	BitmapRef type_text;
 	BitmapRef label;
@@ -473,7 +474,7 @@ public:
 
 	void Draw(Bitmap& dst) {
 		const unsigned int label_pad = get_label_margin();
-		const unsigned int type_visible_width = bounds.width-type_padding_horz*2-label_pad;
+		const unsigned int type_visible_width = bounds.width-type_padding_horz*2-type_border_horz-label_pad;
 		auto rect = type_text->GetRect();
 		// crop type text to stay within padding
 		Rect cutoff_rect = Rect(scroll-type_bleed, rect.y,
@@ -541,26 +542,26 @@ public:
 	}
 
 	void SetLabel(std::string l) {
-		std::string prompt = (l!="")?l+":":"";
-		auto l_rect = Text::GetSize(*Font::Default(), prompt);
+		auto l_rect = Text::GetSize(*Font::Default(), l);
 		label = Bitmap::Create(l_rect.width+1, l_rect.height+1, true);
-		Text::Draw(*label, 0, 0, *Font::Default(), *Cache::SystemOrBlack(), 1, prompt);
+		Text::Draw(*label, 0, 0, *Font::Default(), *Cache::SystemOrBlack(), 1, l);
 	}
 
 	Rect GetFormBounds() {
 		const unsigned int label_pad = get_label_margin();
-		return Rect(bounds.x+label_pad, bounds.y, bounds.width-label_pad, bounds.height);
+		return Rect(bounds.x+label_pad+type_padding_horz, bounds.y,
+			bounds.width-label_pad-type_padding_horz, bounds.height);
 	}
 };
 
 class DrawableChatUi : public Drawable {
 	//design parameters
-	const unsigned int panel_bleed = 16; // how much to stretch top, bottom and right edges of panel offscreen (so only left frame shows)
-	const unsigned int panel_frame = 4; // width of panel's visual frame (on left side)
-	const unsigned int status_height = 24; // height of status region on top of chatlog
-	const unsigned int type_height = 24; // height of type box
-	const unsigned int fullscreen_icon_margin = 10; // right margin for status text to make space for fullscreen toggle icon
-	const unsigned int chat_width = 160;
+	const unsigned int panel_frame_left = 4; // width of panel's visual frame (on left side)
+	const unsigned int panel_frame_right = 6; // on right side (including border)
+	const unsigned int status_height = 19; // height of status region on top of chatlog
+	const unsigned int type_height = 19; // height of type box
+	const unsigned int chat_width = SCREEN_TARGET_WIDTH*0.725;
+	const unsigned int chat_left = SCREEN_TARGET_WIDTH-chat_width;
 
 	DrawableOnlineStatus d_status;
 	DrawableChatLog d_log;
@@ -569,11 +570,10 @@ class DrawableChatUi : public Drawable {
 
 	void UpdateTypePanel() {
 		if(d_type.IsVisible()) {
-			// SetCursorRect for some reason already has a padding of 8px relative to the window, so we fix it
-			const unsigned int f = -8;
+			// SetCursorRect already has a padding relative to the back_panel, so we fix it
 			const auto form_rect = d_type.GetFormBounds();
 			back_panel.SetCursorRect(
-				Rect(f+form_rect.x, f+form_rect.y+panel_bleed,
+				Rect(form_rect.x-12-chat_left, form_rect.y-8,
 					form_rect.width, form_rect.height));
 		} else {
 			back_panel.SetCursorRect(Rect(0, 0, 0, 0));
@@ -582,14 +582,12 @@ class DrawableChatUi : public Drawable {
 public:
 	DrawableChatUi()
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
-		// stretch 16px at right, top and bottom sides so the edge frame only shows on left
-		back_panel(0, -panel_bleed, chat_width+panel_bleed,
-			SCREEN_TARGET_HEIGHT+panel_bleed*2, Drawable::Flags::Global),
-		d_log(0+panel_frame, status_height, chat_width-panel_frame,
-			SCREEN_TARGET_HEIGHT-status_height),
-		d_type(0+panel_frame,
-			SCREEN_TARGET_HEIGHT-type_height, chat_width-panel_frame, type_height),
-		d_status(0+panel_frame, 0, chat_width-panel_frame-fullscreen_icon_margin, status_height)
+		back_panel(chat_left, 0, chat_width, SCREEN_TARGET_HEIGHT, Drawable::Flags::Global),
+		d_log(chat_left+panel_frame_left, status_height,
+			chat_width-panel_frame_right, SCREEN_TARGET_HEIGHT-status_height),
+		d_type(chat_left+panel_frame_left, SCREEN_TARGET_HEIGHT-type_height-panel_frame_left,
+			chat_width-panel_frame_right, type_height),
+		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height)
 	{
 		DrawableMgr::Register(this);
 
@@ -655,7 +653,7 @@ public:
 		UpdateTypePanel();
 		d_log.ShowScrollBar(focused);
 		if(focused) {
-			d_log.SetHeight(SCREEN_TARGET_HEIGHT-status_height-type_height);
+			d_log.SetHeight(SCREEN_TARGET_HEIGHT-status_height-type_height-panel_frame_right);
 		} else {
 			d_log.SetHeight(SCREEN_TARGET_HEIGHT-status_height);
 			d_log.SetScroll(0);
@@ -669,14 +667,9 @@ public:
 
 bool chat_focused = false;
 
-const unsigned int MAXCHARSINPUT_NAME = 8;
-const unsigned int MAXCHARSINPUT_TRIPCODE = 256;
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
+const unsigned int MAXMESSAGES = 500;
 
-const unsigned int MAXMESSAGES = 100;
-
-std::string cache_name = ""; // name and tripcode are input in separate steps. Save it to send them together.
-std::u32string preload_trip; // saved tripcode preference to load into trip type box once name has been sent.
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
 
@@ -689,26 +682,11 @@ void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) 
 	}
 }
 
-void SetTypeText(std::u32string text) {
-}
-
-void SetTypeMaxChars(unsigned int c) {
-}
-
 void ProcessAndSendMessage(std::string utf8text) {
 }
 
 void Initialize() {
 	chat_box = std::make_unique<DrawableChatUi>();
-	chat_box->ShowTypeLabel("Name");
-
-	// load saved user profile preferences from JS side (name)
-	std::string cfg_name_str = "Test";
-	SetTypeText(Utils::DecodeUTF32(cfg_name_str));
-	SetTypeMaxChars(MAXCHARSINPUT_NAME);
-	// load saved user profile preferences from JS side (trip)
-	std::string cfg_trip_str = "Trip";
-	preload_trip = Utils::DecodeUTF32(cfg_trip_str);
 
 	AddLogEntry("", "!! • IME input now supported!", "", CV_LOCAL);
 	AddLogEntry("", "!!   (for Japanese, etc.)", "", CV_LOCAL);
