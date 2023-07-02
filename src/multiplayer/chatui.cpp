@@ -19,7 +19,7 @@
 class DrawableOnlineStatus : public Drawable {
 	Rect bounds;
 
-	//design parameters
+	// design parameters
 	const unsigned int padding_horz = 4; // padding between box edges and content (left)
 	const unsigned int padding_vert = 6; // padding between box edges and content (top)
 
@@ -32,7 +32,7 @@ public:
 	{
 		DrawableMgr::Register(this);
 
-		//initialize
+		// initialize
 		SetConnectionStatus(false);
 		SetRoomStatus(0);
 	}
@@ -96,13 +96,13 @@ class DrawableChatLog : public Drawable {
 	};
 
 	Rect bounds;
-	//design parameters
+	// design parameters
 	const unsigned int message_margin = 2; // horizontal margin between panel edges and content
 	const unsigned int scroll_frame = 8; // width of scroll bar's visual frame (on right side)
 	const unsigned int scroll_bleed = 2; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
 
-	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	std::vector<DrawableChatEntry> messages;
+	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	int scroll_position = 0;
 	unsigned int scroll_content_height = 0; // total height of scrollable message log
 	unsigned short visibility_flags = CV_LOCAL | CV_GLOBAL;
@@ -301,7 +301,7 @@ public:
 		unsigned int n_messages = messages.size();
 		for(int i = n_messages-1; i >= 0; i--) {
 			DrawableChatEntry& dmsg = messages[i];
-			//skip drawing hidden messages
+			// skip drawing hidden messages
 			if(!MessageVisible(dmsg, visibility_flags))
 				continue;
 			auto rect = dmsg.render_graphic->GetRect();
@@ -317,7 +317,7 @@ public:
 			// rebuild message graphic if needed
 			if(messages[i].dirty)
 				BuildMessageGraphic(dmsg);
-			//draw
+			// draw
 			dst.Blit(bounds.x+message_margin, bounds.y+bounds.height-next_height+top_offscreen,
 				*(dmsg.render_graphic), cutoff_rect, Opacity::Opaque());
 			// stop drawing offscreen messages (top offscreen)
@@ -432,17 +432,17 @@ public:
 
 class DrawableTypeBox : public Drawable {
 	Rect bounds;
-	//design parameters
+	// design parameters
+	const unsigned int label_padding_horz = 6; // left margin between label text and bounds
+	const unsigned int label_padding_vert = 3; // top margin between label text and bounds
+	const unsigned int label_margin = 35; // left margin for type box to make space for the label
 	// amount that is visible outside the padded bounds (so text can be seen beyond a left or rightmost placed caret)
 	const unsigned int type_bleed = 0;
 	const unsigned int type_padding_horz = 12; // padding between type box edges and content (left)
 	const unsigned int type_padding_vert = 3; // padding between type box edges and content (top)
-	const unsigned int label_padding_horz = 6; // left margin between label text and bounds
-	const unsigned int label_padding_vert = 3; // top margin between label text and bounds
-	const unsigned int label_margin = 35; // left margin for type box to make space for the label
 
-	BitmapRef type_text;
 	BitmapRef label;
+	BitmapRef type_text;
 	BitmapRef caret;
 	unsigned int caret_index_tail = 0;
 	unsigned int caret_index_head = 0;
@@ -467,7 +467,7 @@ public:
 		caret = Bitmap::Create(c_rect.width+1-caret_left_kerning, c_rect.height+1, true);
 		Text::Draw(*caret, -caret_left_kerning, 0, *Font::Default(), *Cache::SystemOrBlack(), 0, caret_char);
 
-		//initialize
+		// initialize
 		UpdateTypeText(std::u32string());
 		SetLabel("");
 	}
@@ -480,15 +480,15 @@ public:
 		Rect cutoff_rect = Rect(scroll-type_bleed, rect.y,
 			std::min<int>(type_visible_width, rect.width-scroll)+type_bleed*2, rect.height);
 
+		// draw label
+		dst.Blit(bounds.x+label_padding_horz, bounds.y+label_padding_vert,
+			*label, label->GetRect(), Opacity::Opaque());
 		// draw contents
 		dst.Blit(bounds.x+label_pad+type_padding_horz-type_bleed, bounds.y+type_padding_vert,
 			*type_text, cutoff_rect, Opacity::Opaque());
 		// draw caret
 		dst.Blit(bounds.x+label_pad+type_padding_horz+type_char_offsets[caret_index_head]-scroll,
 			bounds.y+type_padding_vert, *caret, caret->GetRect(), Opacity::Opaque());
-		// draw label
-		dst.Blit(bounds.x+label_padding_horz, bounds.y+label_padding_vert,
-			*label, label->GetRect(), Opacity::Opaque());
 		// draw selection
 		const unsigned int caret_start = std::min<unsigned int>(caret_index_tail, caret_index_head);
 		const unsigned int caret_end = std::max<unsigned int>(caret_index_tail, caret_index_head);
@@ -565,19 +565,19 @@ public:
 };
 
 class DrawableChatUi : public Drawable {
-	//design parameters
+	// design parameters
+	const unsigned int chat_width = Player::screen_width*0.725;
+	const unsigned int chat_left = Player::screen_width-chat_width;
 	const unsigned int panel_frame_left = 4; // width of panel's visual frame (on left side)
 	const unsigned int panel_frame_right = 6; // on right side (including border)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
 	const unsigned int type_height = 19; // height of type box
 	const unsigned int type_border_offset = 8; // width of type border offset
-	const unsigned int chat_width = Player::screen_width*0.725;
-	const unsigned int chat_left = Player::screen_width-chat_width;
 
+	Window_Base back_panel; // background pane
 	DrawableOnlineStatus d_status;
 	DrawableChatLog d_log;
 	DrawableTypeBox d_type;
-	Window_Base back_panel; // background pane
 
 	void UpdateTypePanel() {
 		if(d_type.IsVisible()) {
@@ -595,11 +595,11 @@ public:
 	DrawableChatUi()
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
 		back_panel(chat_left, 0, chat_width, Player::screen_height, Drawable::Flags::Global),
+		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height),
 		d_log(chat_left+panel_frame_left, status_height,
 			chat_width-panel_frame_right, Player::screen_height-status_height),
 		d_type(chat_left+panel_frame_left, Player::screen_height-type_height-panel_frame_left,
-			chat_width-panel_frame_right-type_border_offset, type_height),
-		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height)
+			chat_width-panel_frame_right-type_border_offset, type_height)
 	{
 		DrawableMgr::Register(this);
 
@@ -629,9 +629,9 @@ public:
 
 	void RefreshTheme() {
 		back_panel.SetWindowskin(Cache::SystemOrBlack());
+		d_status.RefreshTheme();
 		d_log.RefreshTheme();
 		d_type.RefreshTheme();
-		d_status.RefreshTheme();
 	}
 
 	void UpdateTypeText(std::u32string text, unsigned int caret_seek_tail, unsigned int caret_seek_head) {
@@ -672,10 +672,10 @@ public:
 
 	void SetFocus(bool focused) {
 		this->SetVisible(focused);
+		back_panel.SetVisible(focused);
 		d_status.SetVisible(focused);
 		d_log.SetVisible(focused);
 		d_type.SetVisible(focused);
-		back_panel.SetVisible(focused);
 		UpdateTypePanel();
 		d_log.ShowScrollBar(focused);
 		if(focused) {
