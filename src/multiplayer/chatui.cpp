@@ -101,6 +101,8 @@ class DrawableChatLog : public Drawable {
 	const unsigned int scroll_frame = 8; // width of scroll bar's visual frame (on right side)
 	const unsigned int scroll_bleed = 2; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
 
+	bool minimized_log_flag = false;
+	float counter = 0;
 	std::vector<DrawableChatEntry> messages;
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	int scroll_position = 0;
@@ -221,6 +223,13 @@ class DrawableChatLog : public Drawable {
 			glyphs_next.clear();
 			width_current = width_next;
 			width_next = 0;
+			if (minimized_log_flag && glyphs_current.size() > 0) {
+				// use the '>' as the truncated signs
+				auto& last_glyph = lines.front().first.back();
+				last_glyph.data.ch = '>';
+				last_glyph.color = 1;
+				break;
+			}
 		} while(glyphs_current.size() > 0);
 
 		// once all lines have been saved
@@ -290,6 +299,10 @@ public:
 		current_theme = Cache::SystemOrBlack();
 	}
 
+	void SetMinimized(bool minimized) {
+		minimized_log_flag = minimized;
+	}
+
 	void SetHeight(unsigned int h) {
 		bounds.height = h;
 		RefreshScroll();
@@ -323,6 +336,16 @@ public:
 			// stop drawing offscreen messages (top offscreen)
 			if(next_height > bounds.height)
 				break;
+		}
+
+		// automatically remove messages in the notification
+		if (minimized_log_flag && messages.size() > 0) {
+			++counter;
+			// the delay is 30 seconds
+			if (Game_Clock::GetFPS() > 0.0f && counter > Game_Clock::GetFPS()*30.0f) {
+				counter = 0.0f;
+				RemoveFirstChatEntry();
+			}
 		}
 	};
 
@@ -365,6 +388,16 @@ public:
 				break;
 			}
 		}
+	}
+
+	void RemoveFirstChatEntry() {
+		if (messages.size() > 0) {
+			RemoveChatEntry(messages.front().message_data);
+		}
+	}
+
+	size_t GetSize() {
+		return messages.size();
 	}
 
 	void SetScroll(int s) {
@@ -568,11 +601,15 @@ class DrawableChatUi : public Drawable {
 	// design parameters
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
+	const unsigned int minimized_log_height = Player::screen_height*0.275;
 	const unsigned int panel_frame_left = 4; // width of panel's visual frame (on left side)
 	const unsigned int panel_frame_right = 6; // on right side (including border)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
 	const unsigned int type_height = 19; // height of type box
 	const unsigned int type_border_offset = 8; // width of type border offset
+
+	DrawableChatLog d_minimized_log; // notifications
+	bool minimized_log_shown = true;
 
 	Window_Base back_panel; // background pane
 	DrawableOnlineStatus d_status;
@@ -594,6 +631,8 @@ class DrawableChatUi : public Drawable {
 public:
 	DrawableChatUi()
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
+		d_minimized_log(0, Player::screen_height-minimized_log_height,
+			Player::screen_width, minimized_log_height),
 		back_panel(chat_left, 0, chat_width, Player::screen_height, Drawable::Flags::Global),
 		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height),
 		d_log(chat_left+panel_frame_left, status_height,
@@ -606,6 +645,8 @@ public:
 		back_panel.SetZ(Priority::Priority_Maximum-1);
 		back_panel.SetOpacity(240);
 
+		d_minimized_log.SetMinimized(true);
+
 		SetFocus(false);
 	}
 
@@ -613,6 +654,13 @@ public:
 
 	void AddLogEntry(ChatEntry* msg) {
 		d_log.AddChatEntry(msg);
+	}
+
+	void AddLogEntryUnread(ChatEntry* msg) {
+		AddLogEntry(msg);
+		if (d_minimized_log.GetSize() > 2)
+			d_minimized_log.RemoveFirstChatEntry();
+		d_minimized_log.AddChatEntry(msg);
 	}
 
 	void RemoveLogEntry(ChatEntry* msg) {
@@ -628,6 +676,7 @@ public:
 	}
 
 	void RefreshTheme() {
+		d_minimized_log.RefreshTheme();
 		back_panel.SetWindowskin(Cache::SystemOrBlack());
 		d_status.RefreshTheme();
 		d_log.RefreshTheme();
@@ -671,6 +720,8 @@ public:
 	}
 
 	void SetFocus(bool focused) {
+		if (minimized_log_shown)
+			d_minimized_log.SetVisible(!focused);
 		this->SetVisible(focused);
 		back_panel.SetVisible(focused);
 		d_status.SetVisible(focused);
@@ -690,7 +741,13 @@ public:
 	}
 
 	void ToggleVisibilityFlag(VisibilityType v) {
+		d_minimized_log.ToggleVisibilityFlag(v);
 		d_log.ToggleVisibilityFlag(v);
+	}
+
+	void ToggleMinimizedLog() {
+		minimized_log_shown = !minimized_log_shown;
+		d_minimized_log.SetVisible(minimized_log_shown);
 	}
 };
 
@@ -703,13 +760,21 @@ unsigned int type_caret_index_head = 0; // moves when SHIFT-selecting text
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
 
-void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) {
+void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v, bool unread = false) {
 	chat_log.push_back(std::make_unique<ChatEntry>(a, b, c, v));
-	chat_box->AddLogEntry(chat_log.back().get());
+	if (unread)
+		chat_box->AddLogEntryUnread(chat_log.back().get());
+	else
+		chat_box->AddLogEntry(chat_log.back().get());
 	if(chat_log.size() > MAXMESSAGES) {
 		chat_box->RemoveLogEntry(chat_log.front().get());
 		chat_log.erase(chat_log.begin());
 	}
+}
+
+template<typename... Args>
+void AddLogEntryUnread(Args... args) {
+	AddLogEntry(args..., true);
 }
 
 void Initialize() {
@@ -756,6 +821,9 @@ void InputsLog() {
 	}
 	if(Input::IsExternalPressed(Input::InputButton::KEY_DOWN)) {
 		chat_box->ScrollDown();
+	}
+	if(Input::IsTriggered(Input::InputButton::KEY_F9)) {
+		chat_box->ToggleMinimizedLog();
 	}
 }
 
