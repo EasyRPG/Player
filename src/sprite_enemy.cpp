@@ -26,11 +26,15 @@
 #include "player.h"
 #include <lcf/reader_util.h>
 #include "output.h"
+#include "feature.h"
 
 Sprite_Enemy::Sprite_Enemy(Game_Enemy* enemy)
 	: Sprite_Battler(enemy, enemy->GetTroopMemberId())
 {
 	CreateSprite();
+	if (Feature::HasFixedEnemyFacingDirection()) {
+		fixed_facing = static_cast<FixedFacing>(lcf::Data::battlecommands.easyrpg_fixed_enemy_facing_direction);
+	}
 }
 
 Sprite_Enemy::~Sprite_Enemy() {
@@ -119,7 +123,11 @@ void Sprite_Enemy::Draw(Bitmap& dst) {
 	SetX(enemy->GetDisplayX());
 	SetY(enemy->GetDisplayY());
 	SetFlashEffect(enemy->GetFlashColor());
-	SetFlipX(enemy->IsDirectionFlipped());
+	if (fixed_facing != Disabled) {
+		SetFixedFlipX();
+	} else {
+		SetFlipX(enemy->IsDirectionFlipped());
+	}
 
 	Sprite_Battler::Draw(dst);
 }

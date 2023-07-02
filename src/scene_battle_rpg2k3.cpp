@@ -1744,6 +1744,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 			auto* sprite = actor->GetActorBattleSprite();
 			if (actor->Exists() && sprite) {
 				sprite->SetNormalAttacking(false);
+				sprite->ResetFixedFacingDirection();
 				auto* weapon = actor->GetWeaponSprite();
 				if (weapon) {
 					weapon->StopAttack();

@@ -28,11 +28,15 @@
 #include "player.h"
 #include <lcf/reader_util.h>
 #include "output.h"
+#include "feature.h"
 
 Sprite_Actor::Sprite_Actor(Game_Actor* actor)
 	: Sprite_Battler(actor, actor->GetId())
 {
 	CreateSprite();
+	if (Feature::HasFixedActorFacingDirection()) {
+		fixed_facing = static_cast<FixedFacing>(lcf::Data::battlecommands.easyrpg_fixed_actor_facing_direction);
+	}
 }
 
 Sprite_Actor::~Sprite_Actor() {
@@ -60,7 +64,7 @@ void Sprite_Actor::Update() {
 
 			if (animation) {
 				// Is a battle animation
-				animation->SetInvert(battler->IsDirectionFlipped());
+				animation->SetInvert(battler->IsSpriteDirectionFlipped());
 				animation->Update();
 
 				if (animation->IsDone()) {
@@ -284,6 +288,7 @@ void Sprite_Actor::Draw(Bitmap& dst) {
 	int steps = static_cast<int>(256 / images.size());
 	int opacity = steps;
 	for (auto it = images.crbegin(); it != images.crend(); ++it) {
+		Sprite_Battler::SetFixedFlipX();
 		Sprite_Battler::SetX(it->x);
 		Sprite_Battler::SetY(it->y);
 		Sprite_Battler::SetOpacity(std::min(opacity, 255));

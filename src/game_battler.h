@@ -170,7 +170,7 @@ public:
 
 	/**
 	 * Gets the base attribute rate when actor is damaged, without battle attribute shifts.
-	 * 
+	 *
 	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
@@ -178,7 +178,7 @@ public:
 
 	/**
 	 * Gets the attribute rate when actor is damaged.
-	 * 
+	 *
 	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
@@ -430,6 +430,9 @@ public:
 
 	/** @return whether the battler is facing the opposite it's normal direction */
 	bool IsDirectionFlipped() const;
+
+	/** @return whether the battler's sprite should be facing the opposite it's normal direction */
+	bool IsSpriteDirectionFlipped() const;
 
 	/**
 	 * Set whether the battler is facing the opposite it's normal direction
@@ -1155,4 +1158,14 @@ inline int Game_Battler::CalculateWeaponSpCost(Weapon) const {
 	return 0;
 }
 
+inline bool Game_Battler::IsSpriteDirectionFlipped() const {
+	switch (GetBattleSprite()->GetFixedFacing()) {
+		case Sprite_Battler::AlwaysFlipped:
+			return true;
+		case Sprite_Battler::NeverFlipped:
+			return false;
+		default:
+			return IsDirectionFlipped();
+	}
+}
 #endif
