@@ -268,9 +268,12 @@ class DrawableChatLog : public Drawable {
 		// position scrollbar
 		const float ratio = bounds.height/float(scroll_content_height);
 		const unsigned int bar_height = bounds.height*ratio;
+		// clamp the scroll_box minimum height
+		const unsigned int bar_height_safe = std::max<unsigned int>(bar_height, 16);
 		const unsigned int bar_y = scroll_position*ratio;
-		scroll_box.SetHeight(bar_height);
-		scroll_box.SetY(bounds.y+bounds.height-bar_y-bar_height);
+		unsigned int bar_offset_safe = (bar_height_safe-bar_height)*(1.0f-float(bar_y)/bounds.height);
+		scroll_box.SetHeight(bar_height_safe);
+		scroll_box.SetY(bounds.y+bounds.height-bar_y-bar_height-bar_offset_safe);
 	}
 
 	// called when:
@@ -605,6 +608,7 @@ class DrawableChatUi : public Drawable {
 	const unsigned int panel_frame_left = 4; // width of panel's visual frame (on left side)
 	const unsigned int panel_frame_right = 6; // on right side (including border)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
+	const unsigned int log_scroll_delta = (Player::screen_height-status_height)/16;
 	const unsigned int type_height = 19; // height of type box
 	const unsigned int type_border_offset = 8; // width of type border offset
 
@@ -712,11 +716,11 @@ public:
 	}
 
 	void ScrollUp() {
-		d_log.Scroll(+4);
+		d_log.Scroll(+log_scroll_delta);
 	}
 
 	void ScrollDown() {
-		d_log.Scroll(-4);
+		d_log.Scroll(-log_scroll_delta);
 	}
 
 	void SetFocus(bool focused) {
