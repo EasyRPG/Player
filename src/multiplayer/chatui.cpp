@@ -605,8 +605,8 @@ class DrawableChatUi : public Drawable {
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
 	const unsigned int minimized_log_height = Player::screen_height*0.275;
-	const unsigned int panel_frame_left = 4; // width of panel's visual frame (on left side)
-	const unsigned int panel_frame_right = 6; // on right side (including border)
+	const unsigned int panel_frame_left_top = 4; // width of panel's visual frame (border width is missing)
+	const unsigned int panel_frame_right_bottom = 6; // on right and bottom side (including border width)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
 	const unsigned int log_scroll_delta = (Player::screen_height-status_height)/16;
 	const unsigned int type_height = 19; // height of type box
@@ -638,11 +638,11 @@ public:
 		d_minimized_log(0, Player::screen_height-minimized_log_height,
 			Player::screen_width, minimized_log_height),
 		back_panel(chat_left, 0, chat_width, Player::screen_height, Drawable::Flags::Global),
-		d_status(chat_left+panel_frame_left, 0, chat_width-panel_frame_right, status_height),
-		d_log(chat_left+panel_frame_left, status_height,
-			chat_width-panel_frame_right, Player::screen_height-status_height),
-		d_type(chat_left+panel_frame_left, Player::screen_height-type_height-panel_frame_left,
-			chat_width-panel_frame_right-type_border_offset, type_height)
+		d_status(chat_left+panel_frame_left_top, 0, chat_width-panel_frame_right_bottom, status_height),
+		d_log(chat_left+panel_frame_left_top, status_height,
+			chat_width-panel_frame_right_bottom, Player::screen_height-status_height),
+		d_type(chat_left+panel_frame_left_top, Player::screen_height-type_height-panel_frame_left_top,
+			chat_width-panel_frame_right_bottom-type_border_offset, type_height)
 	{
 		DrawableMgr::Register(this);
 
@@ -734,11 +734,11 @@ public:
 		UpdateTypePanel();
 		d_log.ShowScrollBar(focused);
 		if(focused) {
-			d_log.SetHeight(Player::screen_height-status_height-type_height-panel_frame_right);
+			d_log.SetHeight(Player::screen_height-status_height-type_height-panel_frame_right_bottom);
 			DisplayUi->StartTextInput();
 			UpdateTypeTextInputRect();
 		} else {
-			d_log.SetHeight(Player::screen_height-status_height);
+			d_log.SetHeight(Player::screen_height-status_height-panel_frame_right_bottom);
 			d_log.SetScroll(0);
 			DisplayUi->StopTextInput();
 		}
