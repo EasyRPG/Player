@@ -64,7 +64,10 @@ namespace Input {
 bool Input::IsGameFocused() { return game_focused; }
 void Input::SetGameFocus(bool focused) {
 	game_focused = focused;
-	ResetKeys(); // prevent external inputs from being readable by game on the frame focus is switched (and vice versa)
+	// prevent external inputs from being readable by game on the frame focus is switched (and vice versa)
+	if (game_focused) {
+		ResetKeys();
+	}
 }
 
 bool Input::IsWaitingInput() { return wait_input; }
