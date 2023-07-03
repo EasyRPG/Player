@@ -331,6 +331,7 @@ protected:
 
 	bool CheckOperator(int val, int val2, int op) const;
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op) const;
+	bool ManiacCheckString(std::string str_l, std::string str_r, int op, bool ignore_case) const;
 
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;

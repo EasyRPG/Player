@@ -3603,6 +3603,24 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			result = CheckOperator(value1, value2, com.parameters[4]);
 		}
 		break;
+	case 15:
+		//Maniac: string comparison
+		if (Player::IsPatchManiac()) {
+			int modes[] = {
+				(com.parameters[1]     ) & 15, //str_l mode: 0 = direct, 1 = indirect
+				(com.parameters[1] >> 4) & 15, //str_r mode: 0 = literal, 1 = direct, 2 = indirect
+			};
+
+			int op = com.parameters[4] & 3;
+			int ignoreCase = com.parameters[4] >> 8 & 1;
+
+			//Output::Debug("conditional string {}", com.string);
+			//Output::Debug("params {} {} {} {} {}", com.parameters[0], com.parameters[1], com.parameters[2], com.parameters[3], com.parameters[4]);
+			std::string str_l = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[2], modes[0]+1));
+			std::string str_r = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[3], modes[1]));
+			result = ManiacCheckString(str_l, str_r, op, ignoreCase);
+		}
+		break;
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
@@ -4702,6 +4720,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		(com.parameters[0] >>  4) & 15,
 		(com.parameters[0] >>  8) & 15,
 		(com.parameters[0] >> 12) & 15,
+
 		(com.parameters[0] >> 16) & 15
 	};
 
@@ -4712,12 +4731,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		extract_flag,
 	};
 
-	Output::Debug("com.string: {}", com.string);
-	Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
-	Output::Debug("op {} fn {} flags {}", op, fn, flags);
-	Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
-	Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
-	Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
+	//Output::Debug("com.string: {}", com.string);
+	//Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
+	//Output::Debug("op {} fn {} flags {}", op, fn, flags);
+	//Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
+	//Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
+	//Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
 
 	switch (op)
 	{
@@ -5030,5 +5049,26 @@ bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int 
 			return CheckOperator(val, val2, op);
 		default:
 			return false;
+	}
+}
+
+bool Game_Interpreter::ManiacCheckString(std::string str_l, std::string str_r, int op, bool ignore_case) const {
+	std::regex specialChars { R"([-[\]{}()*+?.,\^$|#\s])" };
+	std::string sanitized_r = std::regex_replace(str_r, specialChars, R"(\$&)");
+	if (op > 1) { sanitized_r = ".*" + sanitized_r + ".*"; }
+
+	std::regex search;
+	if (ignore_case) { search = std::regex(sanitized_r, std::regex_constants::icase); }
+	else { search = std::regex(sanitized_r); }
+
+	switch (op) {
+	case 0: // eq
+	case 2: // contains (l contains r)
+		return std::regex_match(str_l, search);
+	case 1: // neq
+	case 3: // notContains (l does not contain r)
+		return !std::regex_match(str_l, search);
+	default:
+		return false;
 	}
 }
