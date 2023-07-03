@@ -383,6 +383,16 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 	return is;
 }
 
+Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
+	auto is = open_generic(dir, name, args);
+	if (!is) { is = FileFinder::Save().OpenFile(args); }
+	if (!is) {
+		Output::Debug("Unable to find in either Game or Save: {}/{}", dir, name);
+	}
+
+	return is;	
+}
+
 Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return open_generic(dir, name, args);

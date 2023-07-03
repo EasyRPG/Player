@@ -92,6 +92,25 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 	return splits;
 }
 
+Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
+	std::string str = static_cast<std::string>(Get(params.string_id));
+
+	// this sucks but it is what maniacs does
+	filename = "Text/" + filename + ".txt";
+
+	auto txt_out = FileFinder::Game().OpenOutputStream(filename);
+	if (!txt_out) { txt_out = FileFinder::Save().OpenOutputStream(filename); }
+	if (!txt_out) {
+		Output::Warning("Maniac String Op toFile failed!");
+		return "";
+	}
+
+	txt_out << str;
+	txt_out.Close();
+
+	return static_cast<Game_Strings::Str_t>(str);
+}
+
 Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
 	if (!ResizeWithId(params.string_id)) return "";
 

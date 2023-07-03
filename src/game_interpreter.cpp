@@ -822,7 +822,7 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacChangePictureId(com);
 		case Cmd::Maniac_SetGameOption:
 			return CommandManiacSetGameOption(com);
-		case 3020: //Cmd::Maniac_ControlStrings
+		case Cmd::Maniac_ControlStrings:
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
@@ -4938,8 +4938,13 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	}
 	case 7: //toFile <fn(string filename, int encode)>
+	{
+		std::string filename = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
+		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
+		Main_Data::game_strings->ToFile(str_params, filename, args[1]);
 		break;
+	}
 	case 8: //popLine <fn(int output_str_id)>
 		// a range parameter with popLine doesn't affect multiple strings;
 		// it instead alters the behavior.

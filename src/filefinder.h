@@ -154,13 +154,24 @@ namespace FileFinder {
 	Filesystem_Stream::InputStream OpenFont(StringView name);
 
 	/**
-	 * Finds a textt file and opens a file handle to it.
+	 * Finds a text file and opens a file handle to it.
 	 * Searches through the Text folder of the current RPG Maker game.
+	 * Will also search through the directory save files are written to as a fallback,
+	 * as it needs to account for files written by the game as well.
 	 *
 	 * @param name the text path and name.
 	 * @return read handle on success or invalid handle if not found
 	 */
 	Filesystem_Stream::InputStream OpenText(StringView name);
+
+	/**
+	* Writes data to a txt file.
+	* If the file exists, it will be overwritten.
+	*
+	* @param name the text file path and name
+	* @param data the content of the text file to be written
+	*/
+	void WriteText(StringView name, StringView data);
 
 	/**
 	 * Appends name to directory.
