@@ -31,7 +31,13 @@
 #elif defined(__vita__)
 #  include <psp2/kernel/processmgr.h>
 #endif
-#include "external/rang.hpp"
+
+// Use system rang header if available
+#if __has_include(<rang.hpp>)
+#  include <rang.hpp>
+#else
+#  include "external/rang.hpp"
+#endif
 
 #include "output.h"
 #include "graphics.h"

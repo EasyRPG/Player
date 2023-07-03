@@ -627,9 +627,16 @@ Rect Font::GetSize(char32_t glyph) const {
 	}
 
 	Rect size = vGetSize(glyph);
-	size.x += current_style.letter_spacing;
+	size.width += current_style.letter_spacing;
+	size.height = current_style.size;
 
 	return size;
+}
+
+Rect Font::GetSize(const ShapeRet& shape_ret) const {
+	int width = shape_ret.advance.x + current_style.letter_spacing;
+	int height = current_style.size;
+	return {0, 0, width, height};
 }
 
 Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, char32_t glyph) const {

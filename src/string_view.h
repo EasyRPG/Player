@@ -39,7 +39,7 @@ using lcf::ToStringView;
 // FIXME: liblcf doesn't depend on fmt, so we need to add this here to enable fmtlib support for our StringView.
 #if FMT_VERSION >= EP_FMT_MODERN_VERSION
 template<>
-struct fmt::formatter<lcf::StringView> : fmt::formatter<fmt::string_view> {
+struct fmt::formatter<lcf::StringView> : formatter<string_view> {
 	auto format(const lcf::StringView& s, format_context& ctx) const -> decltype(ctx.out());
 };
 

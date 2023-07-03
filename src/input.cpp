@@ -209,6 +209,26 @@ void Input::ResetTriggerKeys() {
 	triggered.reset();
 }
 
+void Input::ResetNonSystemKeys() {
+	auto buttons = source->GetButtonMappings();
+	auto& key_states = DisplayUi->GetKeyStates();
+
+	for (auto& bm: buttons) {
+		if (IsSystemButton(bm.first)) {
+			continue;
+		}
+
+		triggered[bm.first] = false;
+		repeated[bm.first] = false;
+		released[bm.first] = false;
+		press_time[bm.first] = 0;
+		key_states[bm.second] = false;
+	}
+
+	dir4 = Direction::NONE;
+	dir8 = Direction::NONE;
+}
+
 void Input::ResetDefaultMapping(Input::InputButton button) {
 	auto def_mappings = GetDefaultButtonMappings();
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();

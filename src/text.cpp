@@ -213,7 +213,9 @@ Rect Text::GetSize(const Font& font, StringView text) {
 					text32.clear();
 
 					for (const auto& ch: shape_ret) {
-						rect.width += ch.advance.x;
+						Rect size = font.GetSize(ch);
+						rect.width += ch.offset.x + size.width;
+						rect.height = std::max(rect.height, size.height);
 					}
 				}
 
@@ -230,8 +232,9 @@ Rect Text::GetSize(const Font& font, StringView text) {
 			auto shape_ret = font.Shape(text32);
 
 			for (const auto& ch: shape_ret) {
-				rect.width += ch.offset.x + ch.advance.x;
-				rect.height = std::max(rect.height, ch.offset.y);
+				Rect size = font.GetSize(ch);
+				rect.width += ch.offset.x + size.width;
+				rect.height = std::max(rect.height, size.height);
 			}
 		}
 	} else {

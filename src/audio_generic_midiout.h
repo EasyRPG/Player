@@ -62,8 +62,6 @@ private:
 	std::thread midi_thread;
 	bool thread_started = false;
 	std::atomic_bool stop_thread;
-
-	int midi_output_stuck = 0;
 };
 
 #else
