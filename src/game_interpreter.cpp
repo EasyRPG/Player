@@ -4731,12 +4731,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		extract_flag,
 	};
 
-	//Output::Debug("com.string: {}", com.string);
-	//Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
-	//Output::Debug("op {} fn {} flags {}", op, fn, flags);
-	//Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
-	//Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
-	//Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
+	Output::Debug("com.string: {}", com.string);
+	Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
+	Output::Debug("op {} fn {} flags {}", op, fn, flags);
+	Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
+	Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
+	Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
 
 	switch (op)
 	{
@@ -4928,7 +4928,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			if (op == 1) Main_Data::game_strings->Cat(str_params, result);
 		}
 		break;
-	case 2: //toNum <fn(int var_id)>
+	case 2: //toNum <fn(int var_id)> takes hex
 	case 3: //getLen <fn(int var_id)>
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, result, op, args);
 		else {
@@ -4936,7 +4936,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			if (op == 3) Main_Data::game_strings->GetLen(str_params, args[0]);
 		}
 		break;
-	case 4: //inStr <fn(string text, int var_id, int begin)>
+	case 4: //inStr <fn(string text, int var_id, int begin)> takes hex??????
 	{
 		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // not sure this is necessary but better safe
@@ -4946,7 +4946,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		else          Main_Data::game_strings->InStr(str_params, static_cast<std::string>(search), args[1], args[2]);
 		break;
 	}
-	case 5: //split <fn(string text, int str_id, int var_id)>
+	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
 	{
 		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
@@ -4956,7 +4956,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		else          Main_Data::game_strings->Split(str_params, static_cast<std::string>(delimiter), args[1], args[2]);
 		break;
 	}
-	case 7: //toFile <fn(string filename, int encode)>
+	case 7: //toFile <fn(string filename, int encode)>  takes hex
 	{
 		std::string filename = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
@@ -4964,7 +4964,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		Main_Data::game_strings->ToFile(str_params, filename, args[1]);
 		break;
 	}
-	case 8: //popLine <fn(int output_str_id)>
+	case 8: //popLine <fn(int output_str_id)> takes hex
 		// a range parameter with popLine doesn't affect multiple strings;
 		// it instead alters the behavior.
 		// given a range t[a..b], it will pop the first (b-a)+1 lines,
@@ -4974,9 +4974,10 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		if (is_range) Main_Data::game_strings->PopLine(str_params, string_id_1 - string_id_0, args[0]);
 		else          Main_Data::game_strings->PopLine(str_params, 0, args[0]);
 		break;
-	case 9: //exInStr <fn(string text, int var_id, int begin)>
+	case 9: //exInStr <fn(string text, int var_id, int begin)>  
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
 	{
+		// takes hex
 		std::string expr = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // output var
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]); // beginning pos

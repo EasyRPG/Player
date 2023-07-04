@@ -45,8 +45,14 @@ Game_Strings::Str_t Game_Strings::Cat(Str_Params params, Str_t string) {
 
 int Game_Strings::ToNum(Str_Params params, int var_id) {
 	if (!ResizeWithId(params.string_id)) return -1;
+	std::string str = static_cast<std::string>(Get(params.string_id));
 
-	int num = std::stoi(static_cast<std::string>(Get(params.string_id)));
+	int num;
+	if (params.hex)
+		num = std::stoi(str, 0, 16);
+	else
+		num = std::stoi(str);
+
 	Main_Data::game_variables->Set(var_id, num);
 	return num;
 }
@@ -61,6 +67,14 @@ int Game_Strings::GetLen(Str_Params params, int var_id) {
 
 int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin) {
 	if (!ResizeWithId(params.string_id)) return -1;
+
+	if (params.extract) {
+		search = static_cast<std::string>(Extract(static_cast<Str_t>(search), params.hex));
+	}
+
+	std::string str = static_cast<std::string>(Get(params.string_id));
+
+	Output::Debug("Searching for {} in {}", search, str);
 
 	int index = static_cast<std::string>(Get(params.string_id)).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
@@ -199,6 +213,3 @@ Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size, char c)
 	return string;
 }
 
-inline Game_Strings::Str_t Game_Strings::Extract(Str_t string) {
-	return static_cast<Str_t>(PendingMessage::ApplyTextInsertingCommands(static_cast<std::string>(string), Player::escape_char, true));
-}

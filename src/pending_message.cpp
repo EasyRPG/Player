@@ -88,8 +88,8 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
 
+std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn) {
 
-std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn, bool maniacs_parsing) {
 	if (input.empty()) {
 		return input;
 	}
@@ -127,27 +127,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 		if (fn_res) {
 			output.append(*fn_res);
 			start_copy = iter;
-		} else if (ch == 'T' || ch == 't') {
-			auto parse_ret = Game_Message::ParseString(iter, end, escape_char, true);
-			iter = parse_ret.next;
-			int value = parse_ret.value;
-
-			Game_Strings::Str_t string = Main_Data::game_strings->Get(value);
-			output.append((std::string)string);
-
-			start_copy = iter;
-		} else if (maniacs_parsing && (ch == 'S' || ch == 's')) {
-			// parsing a switch within an extracted string var command will parse \s[N] as a switch (ON/OFF)
-			auto parse_ret = Game_Message::ParseSpeed(iter, end, escape_char, true);
-			iter = parse_ret.next;
-			int value = parse_ret.value;
-
-			bool sw = Main_Data::game_switches->Get(value);
-			if (sw) output.append("ON");
-			else output.append("OFF");
-			
-			start_copy = iter;
-		}
+		} 
 	}
 
 	if (start_copy == input.data()) {
@@ -183,4 +163,52 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 	}
 
 	return std::nullopt;
+};
+
+std::optional<std::string> PendingMessage::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	 if (ch == 'T' || ch == 't') {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		Game_Strings::Str_t string = Main_Data::game_strings->Get(value);
+		return (std::string)string;
+	} else if (ch == 'S' || ch == 's') {
+		// parsing a switch within an extracted string var command will parse \s[N] as a switch (ON/OFF)
+		auto parse_ret = Game_Message::ParseSpeed(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		bool sw = Main_Data::game_switches->Get(value);
+		if (sw) {
+			return "ON";
+		}
+		else {
+			return "OFF";
+		}
+	}
+
+	return DefaultCommandInserter(ch, iter, end, escape_char);
+};
+
+std::optional<std::string> PendingMessage::ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	if (ch == 'V' || ch == 'v') {
+		auto parse_ret = Game_Message::ParseVariable(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		int variable_value = Main_Data::game_variables->Get(value);
+		std::ostringstream ss;
+		ss << std::hex << variable_value;
+		return ss.str();
+	}
+
+	return ManiacsCommandInserter(ch, iter, end, escape_char);
+};
+
+PendingMessage::CommandInserter PendingMessage::BuildManiacsCommandInserter(bool hex_nums) {
+	if (hex_nums) {
+		return PendingMessage::ManiacsCommandInserterHex;
+	}
+	return PendingMessage::ManiacsCommandInserter;
 };

@@ -70,7 +70,7 @@ private:
 	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
-	Str_t Extract(Str_t string);
+	Str_t Extract(Str_t string, bool as_hex);
 
 private:
 	Strings_t _strings;
@@ -84,7 +84,7 @@ inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
 	auto& s = _strings[params.string_id - 1];
 	s = string;
 	if (params.extract)
-		s = Extract(s);
+		s = Extract(s, params.hex);
 	return s;
 }
 
@@ -155,4 +155,9 @@ inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int a
 		break;
 	}
 	return ret;
+}
+
+inline Game_Strings::Str_t Game_Strings::Extract(Str_t string, bool as_hex) {
+	PendingMessage::CommandInserter cmd_fn = PendingMessage::BuildManiacsCommandInserter(as_hex);
+	return static_cast<Str_t>(PendingMessage::ApplyTextInsertingCommands(static_cast<std::string>(string), Player::escape_char, cmd_fn));
 }

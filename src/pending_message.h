@@ -30,6 +30,9 @@ class PendingMessage {
 		using ChoiceContinuation = std::function<AsyncOp(int)>;
 		using CommandInserter = std::function<std::optional<std::string>(char,const char**,const char*,uint32_t)>;
 		static std::optional<std::string> DefaultCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
+		static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
+		static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);
+		static CommandInserter BuildManiacsCommandInserter(bool hex_nums);
 
 		int PushLine(std::string msg, CommandInserter cmd_fn = DefaultCommandInserter);
 		int PushChoice(std::string msg, bool enabled = true, CommandInserter cmd_fn = DefaultCommandInserter);
@@ -67,7 +70,7 @@ class PendingMessage {
 
 		void SetIsEventMessage(bool value) { is_event_message = value; }
 		bool IsEventMessage() const { return is_event_message; }
-		static std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn, bool maniacs_parsing = false);
+		static std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn);
 
 	private:
 		int PushLineImpl(std::string msg, CommandInserter cmd_fn);
