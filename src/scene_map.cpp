@@ -96,6 +96,11 @@ void Scene_Map::Start() {
 	Start2(MapUpdateAsyncContext());
 }
 
+void Scene_Map::StartFromSave(int from_save_id) {
+	this->from_save_id = from_save_id;
+	Start();
+}
+
 void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	PreUpdate(actx);
 

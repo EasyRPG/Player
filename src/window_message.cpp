@@ -270,7 +270,7 @@ void Window_Message::InsertNewPage() {
 		y = Player::menu_offset_y;
 	}
 	else if (Game_Message::GetRealPosition() == 1) {
-		y = (Player::screen_height / (float)2) - (MESSAGE_BOX_HEIGHT / (float)2);
+		y = static_cast<int>((Player::screen_height - MESSAGE_BOX_HEIGHT) / 2.f);
 	}
 	else if (Game_Message::GetRealPosition() == 2) {
 		y = Player::screen_height - Player::menu_offset_y - MESSAGE_BOX_HEIGHT ;

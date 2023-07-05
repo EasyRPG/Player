@@ -850,9 +850,9 @@ bool Player::ChangeResolution(int width, int height) {
 
 	Player::screen_width = width;
 	Player::screen_height = height;
-	Player::menu_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
-	Player::menu_offset_y = (Player::screen_height - MENU_HEIGHT) / 2;
-	Player::message_box_offset_x = (Player::screen_width - MENU_WIDTH) / 2;
+	Player::menu_offset_x = std::max<int>((Player::screen_width - MENU_WIDTH) / 2, 0);
+	Player::menu_offset_y = std::max<int>((Player::screen_height - MENU_HEIGHT) / 2, 0);
+	Player::message_box_offset_x = std::max<int>((Player::screen_width - MENU_WIDTH) / 2, 0);
 
 	Graphics::GetMessageOverlay().OnResolutionChange();
 
@@ -1182,7 +1182,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	} else {
 		// Increment frame counter for consistency with a normal savegame load
 		IncFrame();
-		Scene::instance->Start();
+		static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
 	}
 }
 
