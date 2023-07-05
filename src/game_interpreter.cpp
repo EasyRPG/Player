@@ -3614,8 +3614,6 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			int op = com.parameters[4] & 3;
 			int ignoreCase = com.parameters[4] >> 8 & 1;
 
-			//Output::Debug("conditional string {}", com.string);
-			//Output::Debug("params {} {} {} {} {}", com.parameters[0], com.parameters[1], com.parameters[2], com.parameters[3], com.parameters[4]);
 			std::string str_l = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[2], modes[0]+1));
 			std::string str_r = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[3], modes[1]));
 			result = ManiacCheckString(str_l, str_r, op, ignoreCase);
@@ -4730,13 +4728,6 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		hex_flag,
 		extract_flag,
 	};
-
-	Output::Debug("com.string: {}", com.string);
-	Output::Debug("string_mode {} string_id_0 {}", string_mode, string_id_0);
-	Output::Debug("op {} fn {} flags {}", op, fn, flags);
-	Output::Debug("hex {} extractt {} first {}", hex_flag, extract_flag, first_flag);
-	Output::Debug("args {} {} {} {}", args[0], args[1], args[2], args[3]);
-	Output::Debug("modes {} {} {} {}", modes[0], modes[1], modes[2], modes[3]);
 
 	switch (op)
 	{

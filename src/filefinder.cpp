@@ -68,7 +68,7 @@ namespace {
 	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
-	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv");
+	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ".svg", ".xml", ".json", ".yml", ".yaml");
 }
 
 FilesystemView FileFinder::Game() {
