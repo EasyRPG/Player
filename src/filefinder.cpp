@@ -415,7 +415,7 @@ Filesystem_Stream::InputStream FileFinder::OpenFont(StringView name) {
 
 Filesystem_Stream::InputStream FileFinder::OpenText(StringView name) {
 	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, false };
-	return open_generic("Text", name, args);
+	return open_generic_with_fallback("Text", name, args);
 }
 
 bool FileFinder::IsMajorUpdatedTree() {
