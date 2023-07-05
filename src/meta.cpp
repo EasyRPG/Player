@@ -209,17 +209,17 @@ std::string Meta::GetLdbAlias() const {
 }
 
 std::string Meta::GetLmtAlias() const {
-        if (!Empty()) {
-                return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMT_ALIAS, "");
-        }
-        return "";
+	if (!Empty()) {
+		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMT_ALIAS, "");
+	}
+	return "";
 }
 
 std::string Meta::GetLmuAlias() const {
-        if (!Empty()) {
-                return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMU_ALIAS, "");
-        }
-        return "";
+	if (!Empty()) {
+		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMU_ALIAS, "");
+	}
+	return "";
 }
 
 
