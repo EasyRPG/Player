@@ -64,8 +64,7 @@ void Sprite_Weapon::Update() {
 
 	SetSrcRect(Rect(frame * 64, battler_animation_weapon->weapon_index * 64, 64, 64));
 
-	const bool flip = battler->IsDirectionFlipped();
-	SetFlipX(flip);
+	SetFlipX(battler->IsDirectionFlipped());
 }
 
 void Sprite_Weapon::SetWeaponAnimation(int nweapon_animation_id) {
@@ -125,9 +124,8 @@ void Sprite_Weapon::CreateSprite() {
 
 void Sprite_Weapon::OnBattleWeaponReady(FileRequestResult* result, int32_t weapon_index) {
 	SetBitmap(Cache::Battleweapon(result->file));
-	const bool flip = battler->IsDirectionFlipped();
-	SetFlipX(flip);
-	SetSrcRect(Rect((flip ? 128 : 0), weapon_index * 64, 64, 64));
+	SetFlipX(battler->IsDirectionFlipped());
+	SetSrcRect(Rect(0, weapon_index * 64, 64, 64));
 }
 
 void Sprite_Weapon::Draw(Bitmap& dst) {
