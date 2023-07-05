@@ -3,7 +3,19 @@
 
 using namespace Multiplayer;
 
-void Connection::SendPacket(const C2SPacket& p) {
+void Connection::ParseAddress(std::string address, std::string& host, uint16_t& port) {
+	std::string delimiter = ":";
+	size_t pos = 0;
+	pos = address.find(delimiter);
+	if (pos == std::string::npos) {
+		std::terminate();
+	}
+	host = address.substr(0, pos);
+	address.erase(0, pos + delimiter.length());
+	port = std::stoi(address);
+}
+
+void Connection::SendPacket(const EncodedPacket& p) {
 	Send(p.ToBytes());
 }
 
@@ -25,7 +37,7 @@ void Connection::Dispatch(std::string_view name, ParameterList args) {
 	if (it != handlers.end()) {
 		std::invoke(it->second, args);
 	} else {
-		Output::Debug("Unregistered packet received");
+		Output::Debug("Connection: Unregistered packet received");
 	}
 }
 

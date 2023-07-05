@@ -17,12 +17,11 @@ public:
 protected:
 };
 
-class C2SPacket : public Packet {
+class EncodedPacket : public Packet {
 public:
-	virtual ~C2SPacket() = default;
 	virtual std::string ToBytes() const = 0;
 
-	C2SPacket(std::string _name) : m_name(std::move(_name)) {}
+	EncodedPacket(std::string _name) : m_name(std::move(_name)) {}
 	std::string_view GetName() const { return m_name; }
 
 	static std::string Sanitize(std::string_view param);
@@ -57,9 +56,9 @@ protected:
 	std::string m_name;
 };
 
-class S2CPacket : public Packet {
+class DecodedPacket : public Packet {
 public:
-	virtual ~S2CPacket() = default;
+	virtual ~DecodedPacket() = default;
 
 	template<typename T>
 	static T Decode(std::string_view s);

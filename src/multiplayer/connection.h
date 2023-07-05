@@ -16,6 +16,8 @@ namespace Multiplayer {
 
 class Connection {
 public:
+	static void ParseAddress(std::string address, std::string& host, uint16_t& port);
+
 	Connection() : connected(false) {}
 	Connection(const Connection&) = delete;
 	Connection(Connection&&) = default;
@@ -24,24 +26,24 @@ public:
 
 	using ParameterList = std::vector<std::string_view>;
 
-	void SendPacket(const C2SPacket& p);
+	void SendPacket(const EncodedPacket& p);
 	template<typename T, typename... Args>
 	void SendPacketAsync(Args... args) {
 		m_queue.emplace(new T(args...));
 	}
 
-	virtual void Open(std::string_view uri) = 0;
+	virtual void Open() = 0;
 	virtual void Close();
 
 	virtual void Send(std::string_view data) = 0;
 	virtual void FlushQueue();
 
 	template<typename M, typename = std::enable_if_t<std::conjunction_v<
-		std::is_convertible<M, S2CPacket>,
+		std::is_convertible<M, DecodedPacket>,
 		std::is_constructible<M, const ParameterList&>
 	>>>
-	void RegisterHandler(std::string_view name, std::function<void (M&)> h) {
-		handlers.emplace(name, [this, h, name] (const ParameterList& args) {
+	void RegisterHandler(std::function<void (M&)> h) {
+		handlers.emplace(M::packet_type, [this, h](const ParameterList& args) {
 			M pack {args};
 			std::invoke(h, pack);
 		});
@@ -69,7 +71,7 @@ public:
 
 protected:
 	bool connected;
-	std::queue<std::unique_ptr<C2SPacket>> m_queue;
+	std::queue<std::unique_ptr<EncodedPacket>> m_queue;
 
 	void SetConnected(bool v) { connected = v; }
 	void DispatchSystem(SystemMessage m);

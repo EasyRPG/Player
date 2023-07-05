@@ -1,134 +1,146 @@
+#include <thread>
 #include "client.h"
+#include "../output.h"
 #include "sockpp/tcp_connector.h"
-#include "sockpp/version.h"
 
-//struct Client::IMPL {
-//	EMSCRIPTEN_WEBSOCKET_T socket;
-//	uint32_t msg_count;
-//	bool closed;
-//
-//	static EM_BOOL onopen(int eventType, const EmscriptenWebSocketOpenEvent *event, void *userData) {
-//		auto _this = static_cast<Client*>(userData);
-//		_this->SetConnected(true);
-//		_this->DispatchSystem(SystemMessage::OPEN);
-//		return EM_TRUE;
-//	}
-//	static EM_BOOL onclose(int eventType, const EmscriptenWebSocketCloseEvent *event, void *userData) {
-//		auto _this = static_cast<Client*>(userData);
-//		_this->SetConnected(false);
-//		_this->DispatchSystem(
-//			event->code == 1028 ?
-//			SystemMessage::EXIT :
-//			SystemMessage::CLOSE
-//		);
-//		return EM_TRUE;
-//	}
-//	static EM_BOOL onmessage(int eventType, const EmscriptenWebSocketMessageEvent *event, void *userData) {
-//		auto _this = static_cast<Client*>(userData);
-//		// IMPORTANT!! numBytes is always one byte larger than the actual length
-//		// so the actual length is numBytes - 1
-//
-//		// NOTE: that extra byte is just in text mode, and it does not exist in binary mode
-//		if (event->isText) {
-//			std::terminate();
-//		}
-//		std::string_view cstr(reinterpret_cast<const char*>(event->data), event->numBytes);
-//		std::vector<std::string_view> mstrs = Split(cstr, Multiplayer::Packet::MSG_DELIM);
-//		for (auto& mstr : mstrs) {
-//			auto p = mstr.find(Multiplayer::Packet::PARAM_DELIM);
-//			if (p == mstr.npos) {
-//				/*
-//				Usually npos is the maximum value of size_t.
-//				Adding to it is undefined behavior.
-//				If it returns end iterator instead of npos, the if statement is
-//				duplicated code because the statement in else clause will handle it.
-//				*/
-//				_this->Dispatch(mstr);
-//			} else {
-//				auto namestr = mstr.substr(0, p);
-//				auto argstr = mstr.substr(p + Multiplayer::Packet::PARAM_DELIM.size());
-//				_this->Dispatch(namestr, Split(argstr));
-//			}
-//		}
-//		return EM_TRUE;
-//	}
-//
-//	static void set_callbacks(int socket, void* userData) {
-//		emscripten_websocket_set_onopen_callback(socket, userData, onopen);
-//		emscripten_websocket_set_onclose_callback(socket, userData, onclose);
-//		emscripten_websocket_set_onmessage_callback(socket, userData, onmessage);
-//	}
-//};
+/**
+ * use the IMPL to avoid to change the header file
+ * - add custom members to the ClientConnection
+ */
+struct ClientConnection::IMPL {
+	ClientConnection* connection;
 
-const size_t Client::MAX_QUEUE_SIZE{ 4088 };
+	sockpp::tcp_connector connector;
+	std::string addr_host;
+	in_port_t addr_port;
 
+	void HandleOpen() {
+		connection->SetConnected(true);
+		connection->DispatchSystem(SystemMessage::OPEN);
+	}
 
+	void HandleClose() {
+		connection->SetConnected(false);
+		connection->DispatchSystem(SystemMessage::CLOSE);
+	}
 
-Client::Client() {
+	void HandleMessage(const char* data, const ssize_t& num_bytes) {
+		std::string_view cstr(reinterpret_cast<const char*>(data), num_bytes);
+		std::vector<std::string_view> mstrs = Split(cstr, Multiplayer::Packet::MSG_DELIM);
+		for (auto& mstr : mstrs) {
+			auto p = mstr.find(Multiplayer::Packet::PARAM_DELIM);
+			if (p == mstr.npos) {
+				/*
+				Usually npos is the maximum value of size_t.
+				Adding to it is undefined behavior.
+				If it returns end iterator instead of npos, the if statement is
+				duplicated code because the statement in else clause will handle it.
+				*/
+				connection->Dispatch(mstr);
+			} else {
+				auto namestr = mstr.substr(0, p);
+				auto argstr = mstr.substr(p + Multiplayer::Packet::PARAM_DELIM.size());
+				connection->Dispatch(namestr, Split(argstr));
+			}
+		}
+	}
+};
+
+const size_t ClientConnection::MAX_QUEUE_SIZE{ 4096 };
+
+ClientConnection::ClientConnection() : impl(new IMPL) {
+	impl->connection = this;
+	// This is primarily required for Win32, to startup the WinSock DLL.
+	// On Unix-style platforms it disables SIGPIPE signals.
+	sockpp::initialize();
 }
-
-Client::Client(Client&& o)
-	: Connection(std::move(o)) {
-	//IMPL::set_callbacks(impl->socket, this);
-}
-Client& Client::operator=(Client&& o) {
+// ->> unused code
+ClientConnection::ClientConnection(ClientConnection&& o)
+	: Connection(std::move(o)), impl(std::move(o.impl)) {}
+ClientConnection& ClientConnection::operator=(ClientConnection&& o) {
 	Connection::operator=(std::move(o));
 	if (this != &o) {
 		Close();
-		//impl = std::move(o.impl);
-		//IMPL::set_callbacks(impl->socket, this);
+		impl = std::move(o.impl);
 	}
 	return *this;
 }
-
-Client::~Client() {
-	//if (impl)
-	//	Close();
+// <<-
+ClientConnection::~ClientConnection() {
+	Close();
 }
 
-void Client::Open(std::string_view uri) {
-	//if (!impl->closed) {
-	//	Close();
-	//}
-
-	//std::string s {uri};
-	//EmscriptenWebSocketCreateAttributes ws_attrs = {
-	//	s.data(),
-	//	"binary",
-	//	EM_TRUE,
-	//};
-	//impl->socket = emscripten_websocket_new(&ws_attrs);
-	//impl->closed = false;
-	//IMPL::set_callbacks(impl->socket, this);
+void ClientConnection::SetAddress(std::string_view address) {
+	ParseAddress(address.data(), impl->addr_host, impl->addr_port);
 }
 
-void Client::Close() {
-	Multiplayer::Connection::Close();
-	//if (impl->closed)
-	//	return;
-	//impl->closed = true;
-	// strange bug:
-	// calling with (impl->socket, 1005, "any reason") raises exceptions
-	// might be an emscripten bug
+void ClientConnection::Open() {
+	if (IsConnected())
+		return;
 
-	//emscripten_websocket_close(impl->socket, 0, nullptr);
-	//emscripten_websocket_delete(impl->socket);
+	impl->connector = sockpp::tcp_connector({impl->addr_host, impl->addr_port}, std::chrono::seconds(6));
+	if (!impl->connector) {
+		impl->HandleClose();
+		Output::Warning("MP: Error connecting to server: {}", impl->connector.last_error_str());
+		return;
+	}
+
+	impl->HandleOpen();
+	Output::Debug("MP: Created a connection from: {}", impl->connector.address().to_string());
+
+	std::thread([this](sockpp::tcp_socket socket) {
+		if (!socket.read_timeout(std::chrono::seconds(6))) {
+			Output::Warning("MP: Failed to set the timeout on read sock stream: {}",
+				socket.last_error_str());
+		}
+
+		char buf[MAX_QUEUE_SIZE];
+		ssize_t n;
+		bool close = false;
+
+		while (true) {
+			n = socket.read(buf, sizeof(buf));
+			if (n > 0) {
+				impl->HandleMessage(buf, n);
+			} else if (n == 0) {
+				break;
+			} else {
+				Output::Warning("MP: Read error [{}]: {}",
+					socket.last_error(), socket.last_error_str());
+				close = true;
+				break;
+			}
+		}
+
+		socket.shutdown();
+		impl->HandleClose();
+	}, std::move(impl->connector.clone())).detach();
 }
 
-void Client::Send(std::string_view data) {
+void ClientConnection::Close() {
 	if (!IsConnected())
 		return;
-	unsigned short ready;
-	//emscripten_websocket_get_ready_state(impl->socket, &ready);
-	//if (ready == 1) { // OPEN
-	//	++impl->msg_count;
-	//	auto sendmsg = calculate_header(GetKey(), impl->msg_count, data);
-	//	sendmsg += data;
-	//	emscripten_websocket_send_binary(impl->socket, sendmsg.data(), sendmsg.size());
-	//}
+	// null pointer checks required on thread if keepping the read() block after SHUT_WR
+	impl->connector.shutdown();
+	Connection::Close(); // empty the queue
 }
 
-void Client::FlushQueue() {
+void ClientConnection::Send(std::string_view data) {
+	if (!IsConnected())
+		return;
+	if (impl->connector.write(data.data(), data.size()) != data.size()) {
+		if (impl->connector.last_error() == EPIPE) {
+			Output::Debug("MP: It appears that the socket was closed.");
+		} else {
+			Output::Debug("MP: Error writing to the TCP stream [{}]: {}",
+				impl->connector.last_error(), impl->connector.last_error_str());
+		}
+		impl->connector.shutdown();
+		impl->HandleClose();
+	}
+}
+
+void ClientConnection::FlushQueue() {
 	auto namecmp = [] (std::string_view v, bool include) {
 		return (v != "sr") == include;
 	};

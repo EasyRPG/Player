@@ -17,6 +17,8 @@ public:
 
 	Game_Multiplayer();
 
+	void Activate();
+	void Deactivate();
 	void Connect(int map_id, bool room_switch = false);
 	void Initialize();
 	void Quit();
@@ -53,13 +55,12 @@ public:
 		int moving_queue_limit{ 4 };
 	} settings;
 
-	Client connection;
-	bool session_active{ false }; // if true, it will automatically reconnect when disconnected
-	bool session_connected{ false };
+	ClientConnection connection;
+	std::string_view server_address{ "localhost:6000" };
+	bool connect_wait{ false };
+	bool active{ false }; // if true, it will automatically reconnect when disconnected
 	bool switching_room{ true }; // when client enters new room, but not synced to server
 	bool switched_room{ false }; // determines whether new connected players should fade in
-	int host_id{-1};
-	std::string session_token; // non-null if the user has an ynoproject account logged in
 	int room_id{-1};
 	int frame_index{-1};
 

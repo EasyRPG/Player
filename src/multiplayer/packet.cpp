@@ -9,10 +9,14 @@ constexpr std::string_view keywords[] = {
 	Packet::MSG_DELIM,
 };
 
+/**
+ * Encode
+ */
+
 // guess 50%: this function will perform a parse of data with DELIMs
 // and the copied data is unchanged
 constexpr size_t k_size = sizeof(keywords) / sizeof(std::string_view);
-std::string C2SPacket::Sanitize(std::string_view param) {
+std::string EncodedPacket::Sanitize(std::string_view param) {
 	std::string r;
 	r.reserve(param.size());
 	std::bitset<k_size> searching_marks;
@@ -69,8 +73,12 @@ std::string C2SPacket::Sanitize(std::string_view param) {
 	return r;
 }
 
+/**
+ * Decode
+ */
+
 template<>
-int S2CPacket::Decode(std::string_view s) {
+int DecodedPacket::Decode(std::string_view s) {
 	int r;
 	auto e = std::from_chars(s.data(), s.data() + s.size(), r);
 	if (e.ec != std::errc())
@@ -79,7 +87,7 @@ int S2CPacket::Decode(std::string_view s) {
 }
 
 template<>
-bool S2CPacket::Decode(std::string_view s) {
+bool DecodedPacket::Decode(std::string_view s) {
 	if (s == "1")
 		return true;
 	if (s == "0")
