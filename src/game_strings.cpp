@@ -109,6 +109,10 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
 	std::string str = static_cast<std::string>(Get(params.string_id));
 
+	if (params.extract) {
+		filename = static_cast<std::string>(Extract(static_cast<Str_t>(filename), params.hex));
+	}
+
 	// this sucks but it is what maniacs does
 	filename = "Text/" + filename + ".txt";
 
@@ -147,6 +151,10 @@ Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, i
 	int var_result;
 	Str_t str_result;
 	std::smatch match;
+
+	if (params.extract) {
+		expr = static_cast<std::string>(Extract(static_cast<Str_t>(expr), params.hex));
+	}
 
 	std::string base = static_cast<std::string>(Get(params.string_id)).erase(0, begin);
 	std::regex r(expr);
