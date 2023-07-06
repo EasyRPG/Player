@@ -4293,8 +4293,20 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	text.font_size = font_px;
 
-	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
-		return ch == '\x01';
+	// maniacs stores string parsing modes in the delimiters
+	// x01 -> literal string
+	// x02 -> direct reference
+	// x03 -> indirect reference
+	// for the displayed string, the id argument is in com.parameters[22]
+	// here we are capturing all the delimiters, but currently only need to support reading the first one
+	int i = 0;
+	int delims[3] = {};
+	auto components = Utils::Tokenize(com.string, [p = &delims, &i](char32_t ch) {
+		if (ch == '\x01' || ch == '\x02' || ch == '\x03') {
+			(*p)[i++] = static_cast<int>(ch);
+			return true;
+		}
+		return false;
 	});
 
 	if (components.size() < 4) {
@@ -4302,7 +4314,11 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	text.text = components[1];
+	text.text = static_cast<std::string>(Main_Data::game_strings->GetWithMode(
+		static_cast<Game_Strings::Str_t>(components[1]),
+		com.parameters[22],
+		delims[0]-1
+	));
 	params.system_name = components[2];
 	text.font_name = components[3];
 
