@@ -84,15 +84,16 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out_id, int var_id) {
 	if (!ResizeWithId(params.string_id)) return -1;
 
+	size_t index;
+	std::string token;
+
 	// always returns at least 1
 	int splits = 1;
-	size_t index = 0;
 	std::string str = static_cast<std::string>(Get(params.string_id));
-	std::string token;
 
 	params.string_id = string_out_id;
 
-	while (index = str.find(delimiter) != std::string::npos) {
+	for (index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
 		token = str.substr(0, index);
 		Set(params, static_cast<Str_t>(token));
 		params.string_id++;
