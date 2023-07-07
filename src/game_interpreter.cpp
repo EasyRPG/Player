@@ -4874,16 +4874,24 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 			result = static_cast<Game_Strings::Str_t>(static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]));
 			break;
-		case 10: //Join Variables (join) <fn(string delimiter, int var_id, int size)>
+		case 10: //Join (join) <fn(string delimiter, int id, int size)>
 		{
 			std::string op_string = "";
 			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
-			// mode of arg[1] is weird, seems offset by +2, not sure what the intent is
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1] - 2);
+			Output::Debug("args {} {} {}", args[0], args[1], args[2]);
+			Output::Debug("modes {} {} {}", modes[0], modes[1], modes[2]);
+			// args[1] & mode[1] relates to starting ID for strings to join
+			// mode 0 = id literal, 1 = direct var, 2 = var literal, 3 = direct var
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1] % 2);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 
 			while (args[2] > 0) {
-				op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
+				if (modes[1] < 2) {
+					op_string += static_cast<std::string>(Main_Data::game_strings->Get(args[1]++));
+				} else {
+					op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
+				}
+				
 				if (--args[2] > 0) op_string += delimiter;
 			}
 
