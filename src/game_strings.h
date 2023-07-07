@@ -64,13 +64,13 @@ public:
 	const Strings_t& RangeOp(Str_Params params, int string_id_1, Str_t string, int op, int args[] = nullptr);
 
 	Str_t PrependMin(Str_t string, int min_size, char c);
+	Str_t Extract(Str_t string, bool as_hex);
 
 private:
 	Str_t Set(Str_Params params, Str_t string);
 	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
-	Str_t Extract(Str_t string, bool as_hex);
 
 private:
 	Strings_t _strings;

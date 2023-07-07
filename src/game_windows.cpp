@@ -17,6 +17,7 @@
 
 #include "game_windows.h"
 #include "game_message.h"
+#include "game_strings.h"
 #include "main_data.h"
 #include "compiler.h"
 #include "text.h"
@@ -203,7 +204,8 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 		fonts.emplace_back(font);
 
-		std::stringstream ss(ToString(text.text));
+		std::string extracted_text = ToString(Main_Data::game_strings->Extract(text.text, false));
+		std::stringstream ss(extracted_text);
 		std::string out;
 		PendingMessage pm;
 		while (Utils::ReadLine(ss, out)) {
