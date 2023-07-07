@@ -22,6 +22,7 @@
 #include "game_player.h"
 #include "game_switches.h"
 #include "game_system.h"
+#include "multiplayer/game_multiplayer.h"
 #include "input.h"
 #include "main_data.h"
 #include "game_message.h"
@@ -40,6 +41,28 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 }
 
 Game_Character::~Game_Character() {
+}
+
+void Game_Character::SetFacing(int new_facing) {
+	if (GetType() == Player && new_facing != data()->facing && !IsMoving()) {
+		GMI().MainPlayerFacingChanged(new_facing);
+	}
+	data()->facing = new_facing;
+}
+
+void Game_Character::SetMoveSpeed(int speed) {
+	if (GetType() == Player && data()->move_speed != speed) {
+		GMI().MainPlayerChangedMoveSpeed(speed);
+	}
+	data()->move_speed = speed;
+}
+
+void Game_Character::SetSpriteGraphic(std::string sprite_name, int index) {
+	if (GetType() == Player) {
+		GMI().MainPlayerChangedSpriteGraphic(sprite_name, index);
+	}
+	data()->sprite_name = std::move(sprite_name);
+	data()->sprite_id = index;
 }
 
 void Game_Character::SanitizeData(StringView name) {

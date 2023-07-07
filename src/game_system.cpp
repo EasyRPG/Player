@@ -19,6 +19,7 @@
 #include <fstream>
 #include <functional>
 #include "game_system.h"
+#include "multiplayer/game_multiplayer.h"
 #include "async_handler.h"
 #include "game_battle.h"
 #include "audio.h"

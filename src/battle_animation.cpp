@@ -22,6 +22,7 @@
 #include "game_system.h"
 #include "game_screen.h"
 #include "game_map.h"
+#include "multiplayer/game_multiplayer.h"
 #include "main_data.h"
 #include "filefinder.h"
 #include "cache.h"

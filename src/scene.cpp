@@ -28,6 +28,7 @@
 #include "game_actors.h"
 #include "game_interpreter.h"
 #include "game_system.h"
+#include "multiplayer/game_multiplayer.h"
 #include "main_data.h"
 #include "scene_settings.h"
 

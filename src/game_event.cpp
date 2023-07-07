@@ -27,6 +27,7 @@
 #include "game_variables.h"
 #include "game_system.h"
 #include "game_interpreter_map.h"
+#include "multiplayer/game_multiplayer.h"
 #include "main_data.h"
 #include "player.h"
 #include "utils.h"
