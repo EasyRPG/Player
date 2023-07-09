@@ -43,6 +43,7 @@ public:
 	}
 
 	void Send(std::string_view data) {
+		Output::Debug("send {}", data.size());
 		if (socket.write(data.data(), data.size()) != data.size()) {
 			if (socket.last_error() == EPIPE) {
 				Output::Debug("Server: It appears that the socket was closed.");
@@ -79,7 +80,7 @@ using namespace Messages;
 struct ServerMain::MessageEntry {
 	int excluded_client_id;
 	int visibility;
-	std::unique_ptr<EncodedPacket> packet;
+	std::unique_ptr<Packet> packet;
 };
 
 class ServerSideClient {
@@ -89,9 +90,10 @@ class ServerSideClient {
 	ServerConnection connection;
 
 	void InitConnection() {
-		connection.RegisterHandler<HeartbeatDecodedPacket>([this](HeartbeatDecodedPacket p) {
-			connection.SendPacket(HeartbeatEncodedPacket());
-			server->SendAll<RoomEncodedPacket>(id, 1, 123);
+		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {
+			Output::Debug("---");
+			connection.SendPacket(p);
+			//server->SendAll<RoomPacket>(id, 1, 123);
 		});
 	}
 

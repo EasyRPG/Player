@@ -142,7 +142,7 @@ void ClientConnection::Send(std::string_view data) {
 
 void ClientConnection::FlushQueue() {
 	auto namecmp = [] (std::string_view v, bool include) {
-		return (v != "sr") == include;
+		return (v != "room") == include;
 	};
 
 	bool include = false;

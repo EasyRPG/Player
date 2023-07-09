@@ -4,19 +4,22 @@
 
 using namespace Multiplayer;
 
-constexpr std::string_view keywords[] = {
-	Packet::PARAM_DELIM,
-	Packet::MSG_DELIM,
-};
-
 /**
  * Encode
  */
 
+std::string Packet::ToBytes() const {
+	return Build();
+}
+
 // guess 50%: this function will perform a parse of data with DELIMs
 // and the copied data is unchanged
+constexpr std::string_view keywords[] = {
+	Packet::PARAM_DELIM,
+	Packet::MSG_DELIM,
+};
 constexpr size_t k_size = sizeof(keywords) / sizeof(std::string_view);
-std::string EncodedPacket::Sanitize(std::string_view param) {
+std::string Packet::Sanitize(std::string_view param) {
 	std::string r;
 	r.reserve(param.size());
 	std::bitset<k_size> searching_marks;
@@ -78,7 +81,7 @@ std::string EncodedPacket::Sanitize(std::string_view param) {
  */
 
 template<>
-int DecodedPacket::Decode(std::string_view s) {
+int Packet::Decode(std::string_view s) {
 	int r;
 	auto e = std::from_chars(s.data(), s.data() + s.size(), r);
 	if (e.ec != std::errc())
@@ -87,7 +90,7 @@ int DecodedPacket::Decode(std::string_view s) {
 }
 
 template<>
-bool DecodedPacket::Decode(std::string_view s) {
+bool Packet::Decode(std::string_view s) {
 	if (s == "1")
 		return true;
 	if (s == "0")

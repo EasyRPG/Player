@@ -15,7 +15,7 @@ void Connection::ParseAddress(std::string address, std::string& host, uint16_t& 
 	port = std::stoi(address);
 }
 
-void Connection::SendPacket(const EncodedPacket& p) {
+void Connection::SendPacket(const Packet& p) {
 	Send(p.ToBytes());
 }
 

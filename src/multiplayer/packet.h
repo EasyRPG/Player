@@ -12,17 +12,11 @@ public:
 	constexpr static std::string_view PARAM_DELIM = "\uFFFF";
 	constexpr static std::string_view MSG_DELIM = "\uFFFE";
 
-	Packet() {}
 	virtual ~Packet() = default;
-protected:
-};
+	virtual std::string ToBytes() const;
 
-class EncodedPacket : public Packet {
-public:
-	virtual std::string ToBytes() const = 0;
-
-	EncodedPacket(std::string _name) : m_name(std::move(_name)) {}
-	std::string_view GetName() const { return m_name; }
+	Packet(const std::string_view& _packet_name) : packet_name(_packet_name) {}
+	std::string_view GetName() const { return packet_name; }
 
 	static std::string Sanitize(std::string_view param);
 
@@ -33,9 +27,9 @@ public:
 
 	template<typename... Args>
 	std::string Build(Args... args) const {
-		std::string prev {m_name};
-		AppendPartial(prev, args...);
-		return prev;
+		std::string r {packet_name};
+		AppendPartial(r, args...);
+		return r;
 	}
 
 	static void AppendPartial(std::string& s) {}
@@ -52,17 +46,12 @@ public:
 		s += ToString(t);
 		AppendPartial(s, args...);
 	}
-protected:
-	std::string m_name;
-};
-
-class DecodedPacket : public Packet {
-public:
-	virtual ~DecodedPacket() = default;
 
 	template<typename T>
 	static T Decode(std::string_view s);
 
+protected:
+	std::string packet_name{ "" };
 };
 
 }

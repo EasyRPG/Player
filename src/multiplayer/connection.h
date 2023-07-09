@@ -26,7 +26,7 @@ public:
 
 	using ParameterList = std::vector<std::string_view>;
 
-	void SendPacket(const EncodedPacket& p);
+	void SendPacket(const Packet& p);
 	template<typename T, typename... Args>
 	void SendPacketAsync(Args... args) {
 		m_queue.emplace(new T(args...));
@@ -39,11 +39,11 @@ public:
 	virtual void FlushQueue();
 
 	template<typename M, typename = std::enable_if_t<std::conjunction_v<
-		std::is_convertible<M, DecodedPacket>,
+		std::is_convertible<M, Packet>,
 		std::is_constructible<M, const ParameterList&>
 	>>>
 	void RegisterHandler(std::function<void (M&)> h) {
-		handlers.emplace(M::packet_type, [this, h](const ParameterList& args) {
+		handlers.emplace(M::packet_name, [this, h](const ParameterList& args) {
 			M pack {args};
 			std::invoke(h, pack);
 		});
@@ -71,7 +71,7 @@ public:
 
 protected:
 	bool connected;
-	std::queue<std::unique_ptr<EncodedPacket>> m_queue;
+	std::queue<std::unique_ptr<Packet>> m_queue;
 
 	void SetConnected(bool v) { connected = v; }
 	void DispatchSystem(SystemMessage m);

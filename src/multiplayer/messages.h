@@ -8,41 +8,31 @@
 #include "../game_pictures.h"
 
 namespace Messages {
-	using EncodedPacket = Multiplayer::EncodedPacket;
-	using DecodedPacket = Multiplayer::DecodedPacket;
+	using Packet = Multiplayer::Packet;
 	using ParameterList = Multiplayer::Connection::ParameterList;
 
 	/**
 	 * Heartbeat
 	 */
 
-	class HeartbeatEncodedPacket : public EncodedPacket {
+	class HeartbeatPacket : public Packet {
 	public:
-		HeartbeatEncodedPacket(): EncodedPacket("hb") {}
-		std::string ToBytes() const override { return Build(); }
-	};
-	class HeartbeatDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "hb" };
-		HeartbeatDecodedPacket(const ParameterList& v) {}
+		constexpr static std::string_view packet_name{ "hb" };
+		HeartbeatPacket() : Packet(packet_name) {}
+		HeartbeatPacket(const ParameterList& v) : Packet(packet_name) {}
 	};
 
 	/**
 	 * Room
 	 */
 
-	class RoomEncodedPacket : public EncodedPacket {
+	class RoomPacket : public Packet {
 	public:
-		RoomEncodedPacket(int _room_id): EncodedPacket("room"), room_id(_room_id) {}
+		constexpr static std::string_view packet_name{ "room" };
+		RoomPacket(int _room_id) : Packet(packet_name), room_id(_room_id) {}
 		std::string ToBytes() const override { return Build(room_id); }
-	protected:
-		int room_id;
-	};
-	class RoomDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "room" };
-		RoomDecodedPacket(const ParameterList& v)
-			: room_id(Decode<int>(v.at(0))) {}
+		RoomPacket(const ParameterList& v)
+			: Packet(packet_name), room_id(Decode<int>(v.at(0))) {}
 		int room_id;
 	};
 
@@ -50,172 +40,131 @@ namespace Messages {
 	 * Base Class: Player
 	 */
 
-	class PlayerEncodedPacket : public EncodedPacket {
+	class PlayerPacket : public Packet {
 	public:
-		PlayerEncodedPacket(std::string _name) // C2S
-			: EncodedPacket(std::move(_name)) {}
-		PlayerEncodedPacket(std::string _name, int _id) // S2C
-			: EncodedPacket(std::move(_name)), id(_id) {}
+		PlayerPacket(std::string_view _packet_name) // C2S
+			: Packet(std::move(_packet_name)) {}
+		PlayerPacket(std::string_view _packet_name, int _id) // S2C
+			: Packet(std::move(_packet_name)), id(_id) {}
 		void Append(std::string& s) const { AppendPartial(s, id); }
-	protected:
+		PlayerPacket(std::string_view _packet_name, std::string_view _id)
+			: Packet(std::move(_packet_name)), id(Decode<int>(_id)) {}
 		int id{0};
-	};
-	class PlayerDecodedPacket : public DecodedPacket {
-	public:
-		PlayerDecodedPacket(std::string_view _id) : id(Decode<int>(_id)) {}
-		const int id;
 	};
 
 	/**
 	 * Connect
 	 */
 
-	class ConnectEncodedPacket : public PlayerEncodedPacket {
+	class ConnectPacket : public PlayerPacket {
 	public:
-		ConnectEncodedPacket(int _id)
-			: PlayerEncodedPacket("c", _id) {}
+		constexpr static std::string_view packet_name{ "c" };
+		ConnectPacket(int _id) : PlayerPacket(packet_name, _id) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			return r;
 		}
-	};
-	class ConnectDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "c" };
-		ConnectDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)) {}
+		ConnectPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)) {}
 	};
 
 	/**
 	 * Disconnect
 	 */
 
-	class DisconnectEncodedPacket : public PlayerEncodedPacket {
+	class DisconnectPacket : public PlayerPacket {
 	public:
-		DisconnectEncodedPacket(int _id)
-			: PlayerEncodedPacket("d", _id) {}
+		constexpr static std::string_view packet_name{ "d" };
+		DisconnectPacket(int _id) : PlayerPacket(packet_name, _id) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			return r;
 		}
-	};
-	class DisconnectDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "d" };
-		DisconnectDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)) {}
+		DisconnectPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)) {}
 	};
 
 	/**
 	 * Nametag
 	 */
 
-	class NametagEncodedPacket : public PlayerEncodedPacket {
+	class NametagPacket : public PlayerPacket {
 	public:
-		NametagEncodedPacket(int _id, std::string _name)
-			: PlayerEncodedPacket("ntag", _id), name(std::move(_name)) {}
+		constexpr static std::string_view packet_name{ "ntag" };
+		NametagPacket(int _id, std::string _name)
+			: PlayerPacket(packet_name, _id), name(std::move(_name)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, name);
 			return r;
 		}
-	protected:
-		std::string name;
-	};
-	class NametagDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "ntag" };
-		NametagDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
+		NametagPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
 			name(v.at(1)) {}
-		const std::string name;
+		std::string name;
 	};
 
 	/**
 	 * Chat
 	 */
 
-	class ChatEncodedPacket : public PlayerEncodedPacket {
+	class ChatPacket : public PlayerPacket {
 	public:
-		ChatEncodedPacket(int _v, std::string _m) // C2S
-			: PlayerEncodedPacket("say"), visibility(_v), msg(std::move(_m)) {}
-		ChatEncodedPacket(int _id, int _v, std::string _m) // S2C
-			: PlayerEncodedPacket("say", _id), visibility(_v), msg(std::move(_m)) {}
+		constexpr static std::string_view packet_name{ "say" };
+		ChatPacket(int _v, std::string _m) // C2S
+			: PlayerPacket(packet_name), visibility(_v), msg(std::move(_m)) {}
+		ChatPacket(int _id, int _v, std::string _m) // S2C
+			: PlayerPacket(packet_name, _id), visibility(_v), msg(std::move(_m)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, visibility, msg);
 			return r;
 		};
-	protected:
+		ChatPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
+			visibility(Decode<int>(v.at(1))), msg(v.at(2)) {}
 		int visibility;
 		std::string msg;
-	};
-	class ChatDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "say" };
-		ChatDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
-			visibility(Decode<int>(v.at(1))), msg(v.at(2)) {}
-		const int visibility;
-		const std::string msg;
 	};
 
 	/**
 	 * Move
 	 */
 
-	class MainPlayerPosEncodedPacket : public EncodedPacket {
+	class MovePacket : public PlayerPacket {
 	public:
-		MainPlayerPosEncodedPacket(int _x, int _y)
-			: EncodedPacket("m"), x(_x), y(_y) {}
-		std::string ToBytes() const override { return Build(x, y); }
-	protected:
-		int x, y;
-	};
-	class MainPlayerPosDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "m" };
-		MainPlayerPosDecodedPacket(const ParameterList& v)
-			: x(Decode<int>(v.at(0))), y(Decode<int>(v.at(1))) {}
-		const int x, y;
-	};
-
-	class MoveEncodedPacket : public PlayerEncodedPacket {
-	public:
-		MoveEncodedPacket(int _id, int _x, int _y)
-			: PlayerEncodedPacket("m", _id), x(_x), y(_y) {}
+		constexpr static std::string_view packet_name{ "m" };
+		MovePacket(int _x, int _y)
+			: PlayerPacket(packet_name), x(_x), y(_y) {}
+		MovePacket(int _id, int _x, int _y)
+			: PlayerPacket(packet_name, _id), x(_x), y(_y) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, x, y);
 			return r;
 		};
-	protected:
-		int x, y;
-	};
-	class MoveDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "m" };
-		MoveDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
+		MovePacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
 			x(Decode<int>(v.at(1))), y(Decode<int>(v.at(2))) {}
-		const int x, y;
+		int x, y;
 	};
 
 	/**
 	 * Teleport
 	 */
 
-	class TeleportEncodedPacket : public EncodedPacket {
+	class TeleportPacket : public Packet {
 	public:
-		TeleportEncodedPacket(int _x, int _y)
-			: EncodedPacket("tp"), x(_x), y(_y) {}
+		constexpr static std::string_view packet_name{ "tp" };
+		TeleportPacket(int _x, int _y) : Packet(packet_name), x(_x), y(_y) {}
 		std::string ToBytes() const override { return Build(x, y); }
-	protected:
+		TeleportPacket(const ParameterList& v)
+			: Packet(packet_name), x(Decode<int>(v.at(0))), y(Decode<int>(v.at(1))) {}
 		int x, y;
 	};
 
@@ -223,282 +172,221 @@ namespace Messages {
 	 * Jump
 	 */
 
-	class JumpEncodedPacket : public PlayerEncodedPacket {
+	class JumpPacket : public PlayerPacket {
 	public:
-		JumpEncodedPacket(int _x, int _y) // C2S
-			: PlayerEncodedPacket("jmp"), x(_x), y(_y) {}
-		JumpEncodedPacket(int _id, int _x, int _y) // S2C
-			: PlayerEncodedPacket("jmp", _id), x(_x), y(_y) {}
+		constexpr static std::string_view packet_name{ "jmp" };
+		JumpPacket(int _x, int _y) // C2S
+			: PlayerPacket(packet_name), x(_x), y(_y) {}
+		JumpPacket(int _id, int _x, int _y) // S2C
+			: PlayerPacket(packet_name,  _id), x(_x), y(_y) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, x, y);
 			return r;
 		};
-	protected:
-		int x, y;
-	};
-	class JumpDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "jmp" };
-		JumpDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
+		JumpPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
 			x(Decode<int>(v.at(1))), y(Decode<int>(v.at(2))) {}
-		const int x, y;
+		int x, y;
 	};
 
 	/**
 	 * Facing
 	 */
 
-	class FacingEncodedPacket : public PlayerEncodedPacket {
+	class FacingPacket : public PlayerPacket {
 	public:
-		FacingEncodedPacket(int _d) // C2S
-			: PlayerEncodedPacket("f"), d(_d) {}
-		FacingEncodedPacket(int _id, int _d) // S2C
-			: PlayerEncodedPacket("f", _id), d(_d) {}
+		constexpr static std::string_view packet_name{ "f" };
+		FacingPacket(int _facing) // C2S
+			: PlayerPacket(packet_name), facing(_facing) {}
+		FacingPacket(int _id, int _facing) // S2C
+			: PlayerPacket(packet_name, _id), facing(_facing) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
-			AppendPartial(r, d);
+			PlayerPacket::Append(r);
+			AppendPartial(r, facing);
 			return r;
 		};
-	protected:
-		int d;
-	};
-	class FacingDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "f" };
-		FacingDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), facing(Decode<int>(v.at(1))) {}
-		const int facing;
+		FacingPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), facing(Decode<int>(v.at(1))) {}
+		int facing;
 	};
 
 	/**
 	 * Speed
 	 */
 
-	class SpeedEncodedPacket : public PlayerEncodedPacket {
+	class SpeedPacket : public PlayerPacket {
 	public:
-		SpeedEncodedPacket(int _spd) // C2S
-			: PlayerEncodedPacket("spd"), spd(_spd) {}
-		SpeedEncodedPacket(int _id, int _spd) // S2C
-			: PlayerEncodedPacket("spd", _id), spd(_spd) {}
+		constexpr static std::string_view packet_name{ "spd" };
+		SpeedPacket(int _speed) // C2S
+			: PlayerPacket(packet_name), speed(_speed) {}
+		SpeedPacket(int _id, int _speed) // S2C
+			: PlayerPacket(packet_name, _id), speed(_speed) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
-			AppendPartial(r, spd);
+			PlayerPacket::Append(r);
+			AppendPartial(r, speed);
 			return r;
 		};
-	protected:
-		int spd;
-	};
-	class SpeedDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "spd" };
-		SpeedDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), speed(Decode<int>(v.at(1))) {}
-		const int speed;
+		SpeedPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), speed(Decode<int>(v.at(1))) {}
+		int speed;
 	};
 
 	/**
 	 * Sprite
 	 */
 
-	class SpriteEncodedPacket : public PlayerEncodedPacket {
+	class SpritePacket : public PlayerPacket {
 	public:
-		SpriteEncodedPacket(std::string _n, int _i) // C2S
-			: PlayerEncodedPacket("spr"), name(_n), index(_i) {}
-		SpriteEncodedPacket(int _id, std::string _n, int _i) // S2C
-			: PlayerEncodedPacket("spr", _id), name(_n), index(_i) {}
+		constexpr static std::string_view packet_name{ "spr" };
+		SpritePacket(std::string _n, int _i) // C2S
+			: PlayerPacket(packet_name), name(_n), index(_i) {}
+		SpritePacket(int _id, std::string _n, int _i) // S2C
+			: PlayerPacket(packet_name, _id), name(_n), index(_i) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, name, index);
 			return r;
 		};
-	protected:
+		SpritePacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
+			name(v.at(1)), index(Decode<int>(v.at(2))) {}
 		std::string name;
 		int index;
-	};
-	class SpriteDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "spr" };
-		SpriteDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
-			name(v.at(1)), index(Decode<int>(v.at(2))) {}
-		const std::string name;
-		const int index;
 	};
 
 	/**
 	 * Base Class: Flash
 	 */
 
-	class FlashEncodedPacket : public PlayerEncodedPacket {
+	class FlashPacket : public PlayerPacket {
 	public:
-		FlashEncodedPacket(int _r, int _g, int _b, int _p, int _f) // C2S
-			: PlayerEncodedPacket("fl"), r(_r), g(_g), b(_b), p(_p), f(_f) {}
-		FlashEncodedPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
-			: PlayerEncodedPacket("fl", _id), r(_r), g(_g), b(_b), p(_p), f(_f) {}
+		constexpr static std::string_view packet_name{ "fl" };
+		FlashPacket(int _r, int _g, int _b, int _p, int _f) // C2S
+			: PlayerPacket(packet_name), r(_r), g(_g), b(_b), p(_p), f(_f) {}
+		FlashPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
+			: PlayerPacket(packet_name, _id), r(_r), g(_g), b(_b), p(_p), f(_f) {}
+		// custom packet_name
+		FlashPacket(std::string_view _packet_name, int _r, int _g, int _b, int _p, int _f) // C2S
+			: PlayerPacket(std::move(_packet_name)), r(_r), g(_g), b(_b), p(_p), f(_f) {}
+		FlashPacket(std::string_view _packet_name, int _id, int _r, int _g, int _b, int _p, int _f) // S2C
+			: PlayerPacket(std::move(_packet_name), _id), r(_r), g(_g), b(_b), p(_p), f(_f) {}
 		std::string ToBytes() const override {
 			std::string res {GetName()};
-			PlayerEncodedPacket::Append(res);
+			PlayerPacket::Append(res);
 			AppendPartial(res, r, g, b, p, f);
 			return res;
 		};
-	protected:
-		int r;
-		int g;
-		int b;
-		int p;
-		int f;
-	};
-	class FlashDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "fl" };
-		FlashDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
-			r(Decode<int>(v.at(1))),
-			g(Decode<int>(v.at(2))),
-			b(Decode<int>(v.at(3))),
-			p(Decode<int>(v.at(4))),
-			f(Decode<int>(v.at(5))) {}
-		const int r;
-		const int g;
-		const int b;
-		const int p;
-		const int f;
+		FlashPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
+			r(Decode<int>(v.at(1))), g(Decode<int>(v.at(2))), b(Decode<int>(v.at(3))),
+			p(Decode<int>(v.at(4))), f(Decode<int>(v.at(5))) {}
+		// custom packet_name
+		FlashPacket(std::string_view _packet_name, const ParameterList& v)
+			: PlayerPacket(std::move(_packet_name), v.at(0)),
+			r(Decode<int>(v.at(1))), g(Decode<int>(v.at(2))), b(Decode<int>(v.at(3))),
+			p(Decode<int>(v.at(4))), f(Decode<int>(v.at(5))) {}
+		int r, g, b, p, f;
 	};
 
 	/**
 	 * Repeating Flash
 	 */
 
-	class RepeatingFlashEncodedPacket : public PlayerEncodedPacket {
+	class RepeatingFlashPacket : public FlashPacket {
 	public:
-		RepeatingFlashEncodedPacket(int _r, int _g, int _b, int _p, int _f) // C2S
-			: PlayerEncodedPacket("rfl"), r(_r), g(_g), b(_b), p(_p), f(_f) {}
-		RepeatingFlashEncodedPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
-			: PlayerEncodedPacket("rfl", _id), r(_r), g(_g), b(_b), p(_p), f(_f) {}
-		std::string ToBytes() const override {
-			std::string res {GetName()};
-			PlayerEncodedPacket::Append(res);
-			AppendPartial(res, r, g, b, p, f);
-			return res;
-		};
-	protected:
-		int r;
-		int g;
-		int b;
-		int p;
-		int f;
-	};
-	class RepeatingFlashDecodedPacket : public FlashDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "rfl" };
-		RepeatingFlashDecodedPacket(const ParameterList& v)
-			: FlashDecodedPacket(v) {}
+		constexpr static std::string_view packet_name{ "rfl" };
+		RepeatingFlashPacket(int _r, int _g, int _b, int _p, int _f) // C2S
+			: FlashPacket(packet_name, _r, _g, _b, _p, _f) {}
+		RepeatingFlashPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
+			: FlashPacket(packet_name, _id, _r, _g, _b, _p, _f) {}
+		RepeatingFlashPacket(const ParameterList& v) : FlashPacket(packet_name, v) {}
 	};
 
 	/**
 	 * Remove Repeating Flash
 	 */
 
-	class RemoveRepeatingFlashEncodedPacket : public PlayerEncodedPacket {
+	class RemoveRepeatingFlashPacket : public PlayerPacket {
 	public:
-		RemoveRepeatingFlashEncodedPacket() : PlayerEncodedPacket("rrfl") {} // C2S
-		RemoveRepeatingFlashEncodedPacket(int _id) : PlayerEncodedPacket("rrfl", _id) {} // S2C
+		constexpr static std::string_view packet_name{ "rrfl" };
+		RemoveRepeatingFlashPacket() : PlayerPacket(packet_name) {} // C2S
+		RemoveRepeatingFlashPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			return r;
 		};
-	};
-	class RemoveRepeatingFlashDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "rrfl" };
-		RemoveRepeatingFlashDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)) {}
+		RemoveRepeatingFlashPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)) {}
 	};
 
 	/**
 	 * Hidden
 	 */
 
-	class HiddenEncodedPacket : public PlayerEncodedPacket {
+	class HiddenPacket : public PlayerPacket {
 	public:
-		HiddenEncodedPacket(int _hidden_bin) // C2S
-			: PlayerEncodedPacket("h"), hidden_bin(_hidden_bin) {}
-		HiddenEncodedPacket(int _id, int _hidden_bin) // S2C
-			: PlayerEncodedPacket("h", _id), hidden_bin(_hidden_bin) {}
+		constexpr static std::string_view packet_name{ "h" };
+		HiddenPacket(int _hidden_bin) // C2S
+			: PlayerPacket(packet_name), hidden_bin(_hidden_bin) {}
+		HiddenPacket(int _id, int _hidden_bin) // S2C
+			: PlayerPacket(packet_name, _id), hidden_bin(_hidden_bin) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, hidden_bin);
 			return r;
 		};
-	protected:
-		int hidden_bin;
-	};
-	class HiddenDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "h" };
-		HiddenDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)),
+		HiddenPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)),
 			hidden_bin(Decode<int>(v.at(1))) {}
-		const int hidden_bin;
+		int hidden_bin;
 	};
 
 	/**
 	 * System Graphic
 	 */
 
-	class SysNameEncodedPacket : public PlayerEncodedPacket {
+	class SystemPacket : public PlayerPacket {
 	public:
-		SysNameEncodedPacket(std::string _s) // C2S
-			: PlayerEncodedPacket("sys"), s(std::move(_s)) {}
-		SysNameEncodedPacket(int _id, std::string _s) // S2C
-			: PlayerEncodedPacket("sys", _id), s(std::move(_s)) {}
+		constexpr static std::string_view packet_name{ "sys" };
+		SystemPacket(std::string _name) // C2S
+			: PlayerPacket(packet_name), name(std::move(_name)) {}
+		SystemPacket(int _id, std::string _name) // S2C
+			: PlayerPacket(packet_name, _id), name(std::move(_name)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
-			AppendPartial(r, s);
+			PlayerPacket::Append(r);
+			AppendPartial(r, name);
 			return r;
 		};
-	protected:
-		std::string s;
-	};
-	class SystemDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "sys" };
-		SystemDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), name(v.at(1)) {}
-		const std::string name;
+		SystemPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), name(v.at(1)) {}
+		std::string name;
 	};
 
 	/**
 	 * Sound Effect
 	 */
 
-	class SEEncodedPacket : public PlayerEncodedPacket {
+	class SEPacket : public PlayerPacket {
 	public:
-		SEEncodedPacket(lcf::rpg::Sound _d) // C2S
-			: PlayerEncodedPacket("se"), snd(std::move(_d)) {}
-		SEEncodedPacket(int _id, lcf::rpg::Sound _d) // S2C
-			: PlayerEncodedPacket("se", _id), snd(std::move(_d)) {}
+		constexpr static std::string_view packet_name{ "se" };
+		SEPacket(lcf::rpg::Sound _d) // C2S
+			: PlayerPacket(packet_name), snd(std::move(_d)) {}
+		SEPacket(int _id, lcf::rpg::Sound _d) // S2C
+			: PlayerPacket(packet_name, _id), snd(std::move(_d)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, snd.name, snd.volume, snd.tempo, snd.balance);
 			return r;
 		};
-	protected:
-		lcf::rpg::Sound snd;
-	};
-	class SEDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "se" };
 		static lcf::rpg::Sound BuildSound(const ParameterList& v) {
 			lcf::rpg::Sound s;
 			s.name = v.at(1);
@@ -507,41 +395,33 @@ namespace Messages {
 			s.balance = Decode<int>(v.at(4));
 			return s;
 		}
-		SEDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), snd(BuildSound(v)) {}
-		const lcf::rpg::Sound snd;
+		SEPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), snd(BuildSound(v)) {}
+		lcf::rpg::Sound snd;
 	};
 
 	/**
 	 * Base Class: Picture
 	 */
 
-	class PictureEncodedPacket : public PlayerEncodedPacket {
+	class PicturePacket : public PlayerPacket {
 	public:
-		PictureEncodedPacket(std::string _name, int _pic_id, Game_Pictures::Params& _p, // C2S
+		PicturePacket(std::string_view _packet_name, int _pic_id, Game_Pictures::Params& _p, // C2S
 				int _mx, int _my, int _panx, int _pany)
-			: PlayerEncodedPacket(std::move(_name)), pic_id(_pic_id), p(_p),
+			: PlayerPacket(std::move(_packet_name)), pic_id(_pic_id), params(_p),
 			map_x(_mx), map_y(_my), pan_x(_panx), pan_y(_pany) {}
-		PictureEncodedPacket(std::string _name, int _id, int _pic_id, Game_Pictures::Params& _p, // S2C
+		PicturePacket(std::string_view _packet_name, int _id, int _pic_id, Game_Pictures::Params& _p, // S2C
 				int _mx, int _my, int _panx, int _pany)
-			: PlayerEncodedPacket(std::move(_name), _id), pic_id(_pic_id), p(_p),
+			: PlayerPacket(std::move(_packet_name), _id), pic_id(_pic_id), params(_p),
 			map_x(_mx), map_y(_my), pan_x(_panx), pan_y(_pany) {}
 		void Append(std::string& s) const {
-			PlayerEncodedPacket::Append(s);
-			AppendPartial(s, pic_id, p.position_x, p.position_y,
+			PlayerPacket::Append(s);
+			AppendPartial(s, pic_id, params.position_x, params.position_y,
 					map_x, map_y, pan_x, pan_y,
-					p.magnify, p.top_trans, p.bottom_trans,
-					p.red, p.green, p.blue, p.saturation,
-					p.effect_mode, p.effect_power);
+					params.magnify, params.top_trans, params.bottom_trans,
+					params.red, params.green, params.blue, params.saturation,
+					params.effect_mode, params.effect_power);
 		}
-	protected:
-		int pic_id;
-		Game_Pictures::Params& p;
-		int map_x, map_y;
-		int pan_x, pan_y;
-	};
-	class PictureDecodedPacket : public PlayerDecodedPacket {
-	public:
 		static void BuildParams(Game_Pictures::Params& p, const ParameterList& v) {
 			p.position_x = Decode<int>(v.at(2));
 			p.position_y = Decode<int>(v.at(3));
@@ -555,13 +435,13 @@ namespace Messages {
 			p.effect_mode = Decode<int>(v.at(15));
 			p.effect_power = Decode<int>(v.at(16));
 		}
-		PictureDecodedPacket(Game_Pictures::Params& _params, const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), params(_params),
+		PicturePacket(std::string_view _packet_name, Game_Pictures::Params& _params, const ParameterList& v)
+			: PlayerPacket(std::move(_packet_name), v.at(0)), params(_params),
 			pic_id(Decode<int>(v.at(1))),
 			map_x(Decode<int>(v.at(4))), map_y(Decode<int>(v.at(5))),
 			pan_x(Decode<int>(v.at(6))), pan_y(Decode<int>(v.at(7))) {}
+		int pic_id;
 		Game_Pictures::Params& params;
-		const int pic_id;
 		int map_x, map_y;
 		int pan_x, pan_y;
 	};
@@ -570,36 +450,31 @@ namespace Messages {
 	 * Show Picture
 	 */
 
-	class ShowPictureEncodedPacket : public PictureEncodedPacket {
+	class ShowPicturePacket : public PicturePacket {
 	public:
-		ShowPictureEncodedPacket(int _pid, Game_Pictures::ShowParams _p, // C2S
+		constexpr static std::string_view packet_name{ "ap" };
+		ShowPicturePacket(int _pid, Game_Pictures::ShowParams _p, // C2S
 				int _mx, int _my, int _px, int _py)
-			: PictureEncodedPacket("ap", _pid, p_show, _mx, _my, _px, _py), p_show(std::move(_p)) {}
-		ShowPictureEncodedPacket(int _id, int _pid, Game_Pictures::ShowParams _p, // S2C
+			: PicturePacket(packet_name, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
+		ShowPicturePacket(int _id, int _pid, Game_Pictures::ShowParams _p, // S2C
 				int _mx, int _my, int _px, int _py)
-			: PictureEncodedPacket("ap", _id, _pid, p_show, _mx, _my, _px, _py), p_show(std::move(_p)) {}
+			: PicturePacket(packet_name, _id, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PictureEncodedPacket::Append(r);
-			AppendPartial(r, p_show.name, p_show.use_transparent_color, p_show.fixed_to_map);
+			PicturePacket::Append(r);
+			AppendPartial(r, params.name, params.use_transparent_color, params.fixed_to_map);
 			return r;
 		}
-	protected:
-		Game_Pictures::ShowParams p_show;
-	};
-	class ShowPictureDecodedPacket : public PictureDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "ap" };
 		Game_Pictures::ShowParams BuildParams(const ParameterList& v) const {
 			Game_Pictures::ShowParams p;
-			PictureDecodedPacket::BuildParams(p, v);
+			PicturePacket::BuildParams(p, v);
 			p.name = v.at(17);
 			p.use_transparent_color = Decode<bool>(v.at(18));
 			p.fixed_to_map = Decode<bool>(v.at(19));
 			return p;
 		}
-		ShowPictureDecodedPacket(const ParameterList& v)
-			: PictureDecodedPacket(params, v), params(BuildParams(v)) {}
+		ShowPicturePacket(const ParameterList& v)
+			: PicturePacket(packet_name, params, v), params(BuildParams(v)) {}
 		Game_Pictures::ShowParams params;
 	};
 
@@ -607,34 +482,29 @@ namespace Messages {
 	 * Move Picture
 	 */
 
-	class MovePictureEncodedPacket : public PictureEncodedPacket {
+	class MovePicturePacket : public PicturePacket {
 	public:
-		MovePictureEncodedPacket(int _pid, Game_Pictures::MoveParams _p, // C2S
+		constexpr static std::string_view packet_name{ "mp" };
+		MovePicturePacket(int _pid, Game_Pictures::MoveParams _p, // C2S
 				int _mx, int _my, int _px, int _py)
-			: PictureEncodedPacket("mp", _pid, p_move, _mx, _my, _px, _py), p_move(std::move(_p)) {}
-		MovePictureEncodedPacket(int _id, int _pid, Game_Pictures::MoveParams _p, // S2C
+			: PicturePacket(packet_name, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
+		MovePicturePacket(int _id, int _pid, Game_Pictures::MoveParams _p, // S2C
 				int _mx, int _my, int _px, int _py)
-			: PictureEncodedPacket("mp", _id, _pid, p_move, _mx, _my, _px, _py), p_move(std::move(_p)) {}
+			: PicturePacket(packet_name, _id, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PictureEncodedPacket::Append(r);
-			AppendPartial(r, p_move.duration);
+			PicturePacket::Append(r);
+			AppendPartial(r, params.duration);
 			return r;
 		}
-	protected:
-		Game_Pictures::MoveParams p_move;
-	};
-	class MovePictureDecodedPacket : public PictureDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "mp" };
 		Game_Pictures::MoveParams BuildParams(const ParameterList& v) const {
 			Game_Pictures::MoveParams p;
-			PictureDecodedPacket::BuildParams(p, v);
+			PicturePacket::BuildParams(p, v);
 			p.duration = Decode<int>(v.at(17));
 			return p;
 		}
-		MovePictureDecodedPacket(const ParameterList& v)
-			: PictureDecodedPacket(params, v), params(BuildParams(v)) {}
+		MovePicturePacket(const ParameterList& v)
+			: PicturePacket(packet_name, params, v), params(BuildParams(v)) {}
 		Game_Pictures::MoveParams params;
 	};
 
@@ -642,52 +512,42 @@ namespace Messages {
 	 * Erase Picture
 	 */
 
-	class ErasePictureEncodedPacket : public PlayerEncodedPacket {
+	class ErasePicturePacket : public PlayerPacket {
 	public:
-		ErasePictureEncodedPacket(int _pid) : PlayerEncodedPacket("rp"), pic_id(_pid) {} // C2S
-		ErasePictureEncodedPacket(int _id, int _pid) : PlayerEncodedPacket("rp", _id), pic_id(_pid) {} // S2C
+		constexpr static std::string_view packet_name{ "rp" };
+		ErasePicturePacket(int _pid) : PlayerPacket(packet_name), pic_id(_pid) {} // C2S
+		ErasePicturePacket(int _id, int _pid) : PlayerPacket(packet_name, _id), pic_id(_pid) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, pic_id);
 			return r;
 		}
-	protected:
+		ErasePicturePacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), pic_id(Decode<int>(v.at(1))) {}
 		int pic_id;
-	};
-	class ErasePictureDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "rp" };
-		ErasePictureDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), pic_id(Decode<int>(v.at(1))) {}
-		const int pic_id;
 	};
 
 	/**
 	 * Show Player Battle Animation
 	 */
 
-	class ShowPlayerBattleAnimEncodedPacket : public PlayerEncodedPacket {
+	class ShowPlayerBattleAnimPacket : public PlayerPacket {
 	public:
-		ShowPlayerBattleAnimEncodedPacket(int _anim_id) // C2S
-			: PlayerEncodedPacket("ba"), anim_id(_anim_id) {}
-		ShowPlayerBattleAnimEncodedPacket(int _id, int _anim_id) // S2C
-			: PlayerEncodedPacket("ba", _id), anim_id(_anim_id) {}
+		constexpr static std::string_view packet_name{ "ba" };
+		ShowPlayerBattleAnimPacket(int _anim_id) // C2S
+			: PlayerPacket(packet_name), anim_id(_anim_id) {}
+		ShowPlayerBattleAnimPacket(int _id, int _anim_id) // S2C
+			: PlayerPacket(packet_name, _id), anim_id(_anim_id) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
-			PlayerEncodedPacket::Append(r);
+			PlayerPacket::Append(r);
 			AppendPartial(r, anim_id);
 			return r;
 		}
-	protected:
+		ShowPlayerBattleAnimPacket(const ParameterList& v)
+			: PlayerPacket(packet_name, v.at(0)), anim_id(Decode<int>(v.at(1))) {}
 		int anim_id;
-	};
-	class ShowPlayerBattleAnimDecodedPacket : public PlayerDecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "ba" };
-		ShowPlayerBattleAnimDecodedPacket(const ParameterList& v)
-			: PlayerDecodedPacket(v.at(0)), anim_id(Decode<int>(v.at(1))) {}
-		const int anim_id;
 	};
 
 	// ->> unused code
@@ -696,77 +556,60 @@ namespace Messages {
 	 * Sync Switch
 	 */
 
-	class SyncSwitchEncodedPacket : public EncodedPacket {
+	class SyncSwitchPacket : public Packet {
 	public:
-		SyncSwitchEncodedPacket(int _switch_id, int _value_bin) : EncodedPacket("ss"),
-			switch_id(_switch_id), value_bin(_value_bin) {}
-		std::string ToBytes() const override { return Build(switch_id, value_bin); }
-	protected:
+		constexpr static std::string_view packet_name{ "ss" };
+		SyncSwitchPacket(int _switch_id, int _sync_type)
+			: Packet(packet_name), switch_id(_switch_id), sync_type(_sync_type) {}
+		std::string ToBytes() const override { return Build(switch_id, sync_type); }
+		SyncSwitchPacket(const ParameterList& v)
+			: Packet(packet_name), switch_id(Decode<int>(v.at(0))), sync_type(Decode<int>(v.at(1))) {}
 		int switch_id;
-		int value_bin;
-	};
-	class SyncSwitchDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "ss" };
-		SyncSwitchDecodedPacket(const ParameterList& v)
-			: switch_id(Decode<int>(v.at(0))), sync_type(Decode<int>(v.at(1))) {}
-		const int switch_id;
-		const int sync_type;
+		int sync_type;
 	};
 
 	/**
 	 * Sync Variable
 	 */
 
-	class SyncVariableEncodedPacket : public EncodedPacket {
+	class SyncVariablePacket : public Packet {
 	public:
-		SyncVariableEncodedPacket(int _var_id, int _value) : EncodedPacket("sv"),
-			var_id(_var_id), value(_value) {}
-		std::string ToBytes() const override { return Build(var_id, value); }
-	protected:
+		constexpr static std::string_view packet_name{ "sv" };
+		SyncVariablePacket(int _var_id, int _value) : Packet(packet_name),
+			var_id(_var_id), sync_type(_value) {}
+		std::string ToBytes() const override { return Build(var_id, sync_type); }
+		SyncVariablePacket(const ParameterList& v)
+			: Packet(packet_name), var_id(Decode<int>(v.at(0))), sync_type(Decode<int>(v.at(1))) {}
 		int var_id;
-		int value;
-	};
-	class SyncVariableDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "sv" };
-		SyncVariableDecodedPacket(const ParameterList& v)
-			: var_id(Decode<int>(v.at(0))), sync_type(Decode<int>(v.at(1))) {}
-		const int var_id;
-		const int sync_type;
+		int sync_type;
 	};
 
 	/**
 	 * Sync Event
 	 */
 
-	class SyncEventEncodedPacket : public EncodedPacket {
+	class SyncEventPacket : public Packet {
 	public:
-		SyncEventEncodedPacket(int _event_id, int _action_bin) : EncodedPacket("sev"),
-			event_id(_event_id), action_bin(_action_bin) {}
-		std::string ToBytes() const override { return Build(event_id, action_bin); }
-	protected:
+		constexpr static std::string_view packet_name{ "sev" };
+		SyncEventPacket(int _event_id, int _trigger_type) : Packet(packet_name),
+			event_id(_event_id), trigger_type(_trigger_type) {}
+		std::string ToBytes() const override { return Build(event_id, trigger_type); }
+		SyncEventPacket(const ParameterList& v)
+			: Packet(packet_name),
+			event_id(Decode<int>(v.at(0))), trigger_type(Decode<int>(v.at(1))) {}
 		int event_id;
-		int action_bin;
-	};
-	class SyncEventDecodedPacket : public DecodedPacket {
-	public:
-		constexpr static std::string_view packet_type{ "sev" };
-		SyncEventDecodedPacket(const ParameterList& v)
-			: event_id(Decode<int>(v.at(0))), trigger_type(Decode<int>(v.at(1))) {}
-		const int event_id;
-		const int trigger_type;
+		int trigger_type;
 	};
 
 	/**
 	 * Sync Picture
 	 */
 
-	class SyncPictureDecodedPacket : public DecodedPacket {
+	class SyncPicturePacket : public Packet {
 	public:
-		constexpr static std::string_view packet_type{ "sp" };
-		SyncPictureDecodedPacket(const ParameterList& v)
-			: picture_name(v.at(0)) {}
+		constexpr static std::string_view packet_name{ "sp" };
+		SyncPicturePacket(const ParameterList& v)
+			: Packet(packet_name), picture_name(v.at(0)) {}
 		std::string picture_name;
 	};
 
@@ -774,10 +617,10 @@ namespace Messages {
 	 * Sync NameList
 	 */
 
-	class NameListSyncDecodedPacket : public DecodedPacket {
+	class NameListSyncPacket : public Packet {
 	public:
-		constexpr static std::string_view packet_type{ "pns" };
-		NameListSyncDecodedPacket(const ParameterList& v) {
+		constexpr static std::string_view packet_name{ "pns" };
+		NameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
 			auto it = v.begin();
 			type = Decode<int>(*it);
 			++it;
@@ -791,10 +634,10 @@ namespace Messages {
 	 * Sync Battle Animation Id List
 	 */
 
-	class BattleAnimIdListSyncDecodedPacket : public DecodedPacket {
+	class BattleAnimIdListSyncPacket : public Packet {
 	public:
-		constexpr static std::string_view packet_type{ "bas" };
-		BattleAnimIdListSyncDecodedPacket(const ParameterList& v) {
+		constexpr static std::string_view packet_name{ "bas" };
+		BattleAnimIdListSyncPacket(const ParameterList& v) : Packet(packet_name) {
 			std::transform(v.begin(), v.end(), std::back_inserter(ids),
 				[&](std::string_view s) {
 					return Decode<int>(s);
