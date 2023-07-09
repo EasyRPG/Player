@@ -16,6 +16,8 @@ namespace Multiplayer {
 
 class Connection {
 public:
+	static const size_t MAX_QUEUE_SIZE{ 4096 };
+
 	static void ParseAddress(std::string address, std::string& host, uint16_t& port);
 
 	Connection() : connected(false) {}
@@ -58,6 +60,7 @@ public:
 	using SystemMessageHandler = std::function<void (Connection&)>;
 	void RegisterSystemHandler(SystemMessage m, SystemMessageHandler h);
 
+	void DispatchMessages(const std::string_view data);
 	void Dispatch(std::string_view name, ParameterList args = ParameterList());
 
 	bool IsConnected() const { return connected; }

@@ -47,7 +47,7 @@ Game_Multiplayer& Game_Multiplayer::Instance() {
 }
 
 Game_Multiplayer::Game_Multiplayer() {
-	Server().SetBindAddress("localhost:6000");
+	Server().SetBindAddress("localhost:6500");
 	Server().Start();
 	InitConnection();
 }
@@ -408,9 +408,7 @@ void Game_Multiplayer::InitConnection() {
 	});
 
 	// Heartbeat
-	connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {
-		Output::Debug("ok");
-	});
+	connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {});
 	std::thread([this]() {
 		while (true) {
 			std::this_thread::sleep_for(std::chrono::seconds(3));

@@ -1,73 +1,33 @@
 #include "server.h"
 #include <thread>
 #include "../output.h"
-
-const size_t MAX_QUEUE_SIZE{ 4096 };
+#include "tcp_socket.h"
 
 class ServerConnection : public Multiplayer::Connection {
-	sockpp::tcp_socket socket;
+	TCPSocket tcp_socket{ "Server", MAX_QUEUE_SIZE };
+
+protected:
+	void HandleData(const char* data, const ssize_t& num_bytes) {
+		std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
+		DispatchMessages(std::move(_data));
+	}
 
 public:
-	ServerConnection(sockpp::tcp_socket& socket)
-		: socket(std::move(socket)) {}
+	ServerConnection(sockpp::tcp_socket& _socket) {
+		tcp_socket.socket = std::move(_socket);
+	}
 
 	void Open() {
-		std::thread([this]() {
-			char buf[MAX_QUEUE_SIZE];
-			ssize_t n;
-			bool close = false;
-
-			if (!socket.read_timeout(std::chrono::seconds(6))) {
-				Output::Warning("Server: Failed to set the timeout on socket stream: {}",
-					socket.last_error_str());
-			}
-
-			while (true) {
-				n = socket.read(buf, sizeof(buf));
-				if (n > 0) {
-					HandleMessage(buf, n);
-				} else if (n == 0) {
-					break;
-				} else {
-					Output::Debug("Server: Read operation timed out");
-					close = true;
-					break;
-				}
-			}
-
-			Output::Debug("Server: Connection closed from: {}", socket.peer_address().to_string());
-
-			if (close)
-				socket.close();
-		}).detach();
+		tcp_socket.OnData = [this](auto p1, auto& p2) { HandleData(p1, p2); };
+		tcp_socket.OnOpen = [this]() { };
+		tcp_socket.OnClose = [this]() { };
+		tcp_socket.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
+		tcp_socket.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
+		tcp_socket.CreateConnectionThread();
 	}
 
 	void Send(std::string_view data) {
-		Output::Debug("send {}", data.size());
-		if (socket.write(data.data(), data.size()) != data.size()) {
-			if (socket.last_error() == EPIPE) {
-				Output::Debug("Server: It appears that the socket was closed.");
-			} else {
-				Output::Debug("Server: Error writing to the TCP stream [{}]: {}",
-					socket.last_error(), socket.last_error_str());
-			}
-		}
-	}
-
-protected:
-	void HandleMessage(const char* data, const ssize_t& num_bytes) {
-		std::string_view cstr(reinterpret_cast<const char*>(data), num_bytes);
-		std::vector<std::string_view> mstrs = Split(cstr, Multiplayer::Packet::MSG_DELIM);
-		for (auto& mstr : mstrs) {
-			auto p = mstr.find(Multiplayer::Packet::PARAM_DELIM);
-			if (p == mstr.npos) {
-				Dispatch(mstr);
-			} else {
-				auto namestr = mstr.substr(0, p);
-				auto argstr = mstr.substr(p + Multiplayer::Packet::PARAM_DELIM.size());
-				Dispatch(namestr, Split(argstr));
-			}
-		}
+		tcp_socket.Send(data);
 	}
 };
 
@@ -91,9 +51,10 @@ class ServerSideClient {
 
 	void InitConnection() {
 		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {
-			Output::Debug("---");
 			connection.SendPacket(p);
 			//server->SendAll<RoomPacket>(id, 1, 123);
+		});
+		connection.RegisterHandler<MovePacket>([this](MovePacket p) {
 		});
 	}
 
@@ -101,9 +62,10 @@ class ServerSideClient {
 	void SendAll(int visibility, Args... args) {
 		server->SendAll<T>(id, visibility, args...);
 	}
+
 public:
-	ServerSideClient(ServerMain* _server, int _id, sockpp::tcp_socket& socket)
-			: server(_server), id(_id), connection(ServerConnection(socket)) {
+	ServerSideClient(ServerMain* _server, int _id, sockpp::tcp_socket& _socket)
+			: server(_server), id(_id), connection(ServerConnection(_socket)) {
 		InitConnection();
 		connection.Open();
 	}
@@ -138,22 +100,17 @@ void ServerMain::Start() {
 	running = true;
 
 	std::thread([this]() {
-		sockpp::tcp_acceptor acceptor(sockpp::inet_address(addr_host, addr_port), MAX_QUEUE_SIZE);
+		sockpp::tcp_acceptor acceptor(sockpp::inet_address(addr_host, addr_port),
+				Multiplayer::Connection::MAX_QUEUE_SIZE);
 		if (!acceptor) {
 			running = false;
 			Output::Warning("Server: Failed to create the acceptor to {}:{}: {}",
 				addr_host, addr_port, acceptor.last_error_str());
 			return;
 		}
-
 		Output::Debug("Server: Awaiting connections on {}:{}...", addr_host, addr_port);
 		while (true) {
-			sockpp::inet_address peer;
-
-			// Accept a new client connection
-			sockpp::tcp_socket socket = acceptor.accept(&peer);
-			Output::Debug("Server: Received a connection request from: {}", peer.to_string());
-
+			sockpp::tcp_socket socket = acceptor.accept();
 			if (!socket) {
 				Output::Warning("Server: Failed to get the incoming connection: ",
 					acceptor.last_error_str());
@@ -163,7 +120,6 @@ void ServerMain::Start() {
 				++client_id;
 			}
 		}
-
 		running = false;
 	}).detach();
 }

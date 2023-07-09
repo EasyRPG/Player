@@ -32,6 +32,27 @@ void Connection::FlushQueue() {
 	}
 }
 
+void Connection::DispatchMessages(const std::string_view data) {
+	std::vector<std::string_view> mstrs = Split(data, Packet::MSG_DELIM);
+	for (auto& mstr : mstrs) {
+		auto p = mstr.find(Multiplayer::Packet::PARAM_DELIM);
+		if (p == mstr.npos) {
+			/**
+			 * Usually npos is the maximum value of size_t.
+			 * Adding PARAM_DELIM.size() to it is undefined behavior.
+			 * If it returns end iterator instead of npos, the if statement is
+			 * duplicated code because the statement in else clause will handle it.
+			 */
+			// the message has no parameter list
+			Dispatch(mstr);
+		} else {
+			auto namestr = mstr.substr(0, p);
+			auto argstr = mstr.substr(p + Packet::PARAM_DELIM.size());
+			Dispatch(namestr, Split(argstr));
+		}
+	}
+}
+
 void Connection::Dispatch(std::string_view name, ParameterList args) {
 	auto it = handlers.find(std::string(name));
 	if (it != handlers.end()) {

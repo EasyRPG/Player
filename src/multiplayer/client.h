@@ -5,8 +5,6 @@
 
 class ClientConnection : public Multiplayer::Connection {
 public:
-	const static size_t MAX_QUEUE_SIZE;
-
 	void SetAddress(std::string_view address);
 
 	ClientConnection();

@@ -466,6 +466,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 	src/multiplayer/client.h
 	src/multiplayer/server.cpp
 	src/multiplayer/server.h
+	src/multiplayer/tcp_socket.cpp
+	src/multiplayer/tcp_socket.h
 	src/multiplayer/game_multiplayer.h
 	src/multiplayer/game_playerother.h
 	src/multiplayer/messages.h

@@ -56,7 +56,7 @@ public:
 	} settings;
 
 	ClientConnection connection;
-	std::string_view server_address{ "localhost:6000" };
+	std::string_view server_address{ "localhost:6500" };
 	bool connect_wait{ false };
 	bool active{ false }; // if true, it will automatically reconnect when disconnected
 	bool switching_room{ true }; // when client enters new room, but not synced to server
