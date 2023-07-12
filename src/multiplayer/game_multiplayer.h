@@ -7,7 +7,7 @@
 #include "../game_pictures.h"
 #include "../tone.h"
 #include <lcf/rpg/sound.h>
-#include "client.h"
+#include "client_connection.h"
 
 class PlayerOther;
 

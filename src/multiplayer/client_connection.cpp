@@ -1,5 +1,5 @@
 #include <thread>
-#include "client.h"
+#include "client_connection.h"
 #include "../output.h"
 #include "sockpp/tcp_connector.h"
 #include "tcp_socket.h"

@@ -462,8 +462,8 @@ add_library(${PROJECT_NAME} OBJECT
 target_sources(${PROJECT_NAME} PRIVATE
 	src/multiplayer/connection.cpp
 	src/multiplayer/connection.h
-	src/multiplayer/client.cpp
-	src/multiplayer/client.h
+	src/multiplayer/client_connection.cpp
+	src/multiplayer/client_connection.h
 	src/multiplayer/server.cpp
 	src/multiplayer/server.h
 	src/multiplayer/tcp_socket.cpp

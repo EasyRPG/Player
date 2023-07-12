@@ -1,5 +1,5 @@
-#ifndef EP_CLIENT_H
-#define EP_CLIENT_H
+#ifndef EP_CLIENTCONNECTION_H
+#define EP_CLIENTCONNECTION_H
 
 #include "connection.h"
 
