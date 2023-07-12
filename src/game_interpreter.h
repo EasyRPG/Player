@@ -336,6 +336,15 @@ protected:
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
+
+	std::string ManiacGetLcfDataName(int data_type, int id, bool is_dynamic) const;
+	std::string ManiacGetLcfDataDescription(int data_type, int id, bool is_dynamic) const;
+
+private:
+	template<typename T> std::string ManiacGetNameSafely(std::vector<T>, int id) const;
+	template<typename T> std::string ManiacGetDescriptionSafely(std::vector<T>, int id) const;
+	template<> std::string ManiacGetDescriptionSafely<lcf::rpg::Actor>(std::vector<lcf::rpg::Actor>, int id) const;
+
 };
 
 inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {

@@ -37,15 +37,15 @@ Game_Strings::Str_t Game_Strings::Cat(Str_Params params, Str_t string) {
 	if (!ResizeWithId(params.string_id)) return "";
 
 	Str_t s = Get(params.string_id);
-	std::string op_string = static_cast<std::string>(s);
-	op_string.append(static_cast<std::string>(string));
-	Set(params, static_cast<Str_t>(op_string));
+	std::string op_string = s;
+	op_string.append(string);
+	Set(params, op_string);
 	return s;
 }
 
 int Game_Strings::ToNum(Str_Params params, int var_id) {
 	if (!ResizeWithId(params.string_id)) return -1;
-	std::string str = static_cast<std::string>(Get(params.string_id));
+	std::string str = Get(params.string_id);
 
 	int num;
 	if (params.hex)
@@ -60,7 +60,7 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 int Game_Strings::GetLen(Str_Params params, int var_id) {
 	if (!ResizeWithId(params.string_id)) return -1;
 
-	int len = static_cast<std::string>(Get(params.string_id)).length();
+	int len = Get(params.string_id).length();
 	Main_Data::game_variables->Set(var_id, len);
 	return len;
 }
@@ -69,14 +69,14 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 	if (!ResizeWithId(params.string_id)) return -1;
 
 	if (params.extract) {
-		search = static_cast<std::string>(Extract(static_cast<Str_t>(search), params.hex));
+		search = Extract(search, params.hex);
 	}
 
-	std::string str = static_cast<std::string>(Get(params.string_id));
+	std::string str = Get(params.string_id);
 
 	Output::Debug("Searching for {} in {}", search, str);
 
-	int index = static_cast<std::string>(Get(params.string_id)).find(search, begin);
+	int index = Get(params.string_id).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
 	return index;
 }
@@ -89,29 +89,29 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 
 	// always returns at least 1
 	int splits = 1;
-	std::string str = static_cast<std::string>(Get(params.string_id));
+	std::string str = Get(params.string_id);
 
 	params.string_id = string_out_id;
 
 	for (index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
 		token = str.substr(0, index);
-		Set(params, static_cast<Str_t>(token));
+		Set(params, token);
 		params.string_id++;
 		splits++;
 		str.erase(0, index + delimiter.length());
 	}
 
 	// set the remaining string
-	Set(params, static_cast<Str_t>(str));
+	Set(params, str);
 	Main_Data::game_variables->Set(var_id, splits);
 	return splits;
 }
 
 Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
-	std::string str = static_cast<std::string>(Get(params.string_id));
+	std::string str = Get(params.string_id);
 
 	if (params.extract) {
-		filename = static_cast<std::string>(Extract(static_cast<Str_t>(filename), params.hex));
+		filename = Extract(filename, params.hex);
 	}
 
 	// this sucks but it is what maniacs does
@@ -127,7 +127,7 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 	txt_out << str;
 	txt_out.Close();
 
-	return static_cast<Game_Strings::Str_t>(str);
+	return str;
 }
 
 Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
@@ -135,7 +135,7 @@ Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int str
 
 	int index;
 	std::string result;
-	std::string str = static_cast<std::string>(Get(params.string_id));
+	std::string str = Get(params.string_id);
 
 	std::stringstream ss(str);
 
@@ -143,9 +143,9 @@ Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int str
 
 	offset = ss.rdbuf()->in_avail();
 
-	Set(params, static_cast<Str_t>(ss.str().substr(str.length() - offset)));
+	Set(params, ss.str().substr(str.length() - offset));
 	params.string_id = string_out_id;
-	return Set(params, static_cast<Str_t>(result));
+	return Set(params, result);
 }
 
 Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id) {
@@ -154,10 +154,10 @@ Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, i
 	std::smatch match;
 
 	if (params.extract) {
-		expr = static_cast<std::string>(Extract(static_cast<Str_t>(expr), params.hex));
+		expr = Extract(expr, params.hex);
 	}
 
-	std::string base = static_cast<std::string>(Get(params.string_id)).erase(0, begin);
+	std::string base = Get(params.string_id).erase(0, begin);
 	std::regex r(expr);
 
 	std::regex_search(base, match, r);
@@ -165,7 +165,7 @@ Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, i
 	var_result = match.position() + begin;
 	Main_Data::game_variables->Set(var_id, var_result);
 
-	str_result = static_cast<Str_t>(match.str());
+	str_result = match.str();
 	if (string_out_id > 0) {
 		params.string_id = string_out_id;
 		Set(params, str_result);
@@ -203,11 +203,11 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 		case 1:  Cat(params, string); break;
 		case 2:  ToNum(params, args[0] + (params.string_id - start)); break;
 		case 3:  GetLen(params, args[0] + (params.string_id - start)); break;
-		case 4:  InStr(params, static_cast<std::string>(string), args[1], args[2]); break;
-		case 5:  params.string_id += Split(params, static_cast<std::string>(string), args[1], args[2]); break;
+		case 4:  InStr(params, string, args[1], args[2]); break;
+		case 5:  params.string_id += Split(params, string, args[1], args[2]); break;
 		case 8:  break; // range case not applicable for popLine; see case in game_interpreter.cpp
-		case 9:  ExMatch(params, static_cast<std::string>(string), args[1] + (params.string_id - start), args[2]); break;
-		case 10: ExMatch(params, static_cast<std::string>(string), args[1] + (params.string_id - start), args[2], args[3]); break;
+		case 9:  ExMatch(params, string, args[1] + (params.string_id - start), args[2]); break;
+		case 10: ExMatch(params, string, args[1] + (params.string_id - start), args[2], args[3]); break;
 		}
 	}
 	return GetData();
@@ -217,7 +217,7 @@ Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size, char c)
 	if (string.size() < min_size) {
 		int s = min_size - string.size();
 		std::string res = std::string(s, c) + (std::string)string;
-		return (Str_t)res;
+		return res;
 	}
 	return string;
 }

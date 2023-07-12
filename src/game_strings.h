@@ -32,7 +32,7 @@
  */
 class Game_Strings {
 public:
-	using Str_t = lcf::DBString;
+	using Str_t = std::string;
 	using Strings_t = std::vector<Str_t>;
 
 	static constexpr int max_warnings = 10;
@@ -44,7 +44,9 @@ public:
 	Game_Strings();
 
 	void SetData(Strings_t s);
+	void SetData(std::vector<lcf::DBString> s);
 	const Strings_t& GetData() const;
+	std::vector<lcf::DBString> GetLcfData();
 
 	Str_t Get(int id) const;
 	Str_t GetIndirect(int id) const;
@@ -92,8 +94,16 @@ inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
 }
 
+inline void Game_Strings::SetData(std::vector<lcf::DBString> s) {
+	_strings = std::vector<Str_t>(s.begin(), s.end());
+}
+
 inline const Game_Strings::Strings_t& Game_Strings::GetData() const {
 	return _strings;
+}
+
+inline std::vector<lcf::DBString> Game_Strings::GetLcfData() {
+	return std::vector<lcf::DBString>(_strings.begin(), _strings.end());
 }
 
 inline bool Game_Strings::ShouldWarn(int id) const {
@@ -144,7 +154,7 @@ inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int a
 	Str_t ret;
 	switch (mode) {
 	case 0:
-		ret = static_cast<Str_t>(static_cast<std::string>(str_data).substr(*pos, arg));
+		ret = str_data.substr(*pos, arg);
 		*pos += arg;
 		break;
 	case 1: // direct string reference

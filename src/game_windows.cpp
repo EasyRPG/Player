@@ -204,7 +204,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 		fonts.emplace_back(font);
 
-		std::string extracted_text = ToString(Main_Data::game_strings->Extract(text.text, false));
+		std::string extracted_text = Main_Data::game_strings->Extract(ToString(text.text), false);
 		std::stringstream ss(extracted_text);
 		std::string out;
 		PendingMessage pm;

@@ -138,7 +138,7 @@ bool Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	save.system = Main_Data::game_system->GetSaveData();
 	save.system.switches = Main_Data::game_switches->GetData();
 	save.system.variables = Main_Data::game_variables->GetData();
-	save.system.maniac_strings = Main_Data::game_strings->GetData();
+	save.system.maniac_strings = Main_Data::game_strings->GetLcfData();
 	save.inventory = Main_Data::game_party->GetSaveData();
 	save.actors = Main_Data::game_actors->GetSaveData();
 	save.screen = Main_Data::game_screen->GetSaveData();

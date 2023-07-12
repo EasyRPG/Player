@@ -3614,8 +3614,9 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			int op = com.parameters[4] & 3;
 			int ignoreCase = com.parameters[4] >> 8 & 1;
 
-			std::string str_l = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[2], modes[0]+1));
-			std::string str_r = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, com.parameters[3], modes[1]));
+			std::string str_param = static_cast<std::string>(com.string);
+			std::string str_l = Main_Data::game_strings->GetWithMode(str_param, com.parameters[2], modes[0]+1);
+			std::string str_r = Main_Data::game_strings->GetWithMode(str_param, com.parameters[3], modes[1]);
 			result = ManiacCheckString(str_l, str_r, op, ignoreCase);
 		}
 		break;
@@ -4738,6 +4739,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		(com.parameters[0] >> 16) & 15
 	};
 
+	Game_Strings::Str_t str_param = static_cast<Game_Strings::Str_t>(com.string);
 	Game_Strings::Str_t result = "";
 	Game_Strings::Str_Params str_params = {
 		string_id_0,
@@ -4752,7 +4754,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		switch (fn)
 		{
 		case 0: //String <fn(string text, int min_size)>
-			result = Main_Data::game_strings->GetWithMode(static_cast<Game_Strings::Str_t>(com.string), args[0], modes[0]);
+			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
 			// min_size
@@ -4762,79 +4764,23 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			args[0] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
-			result = static_cast<Game_Strings::Str_t>(std::to_string(args[0]));
+			result = std::to_string(args[0]);
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-
-			switch (args[0])
-			{
-			case 0:  //.actor[a].name
-				if (args[2]) result = static_cast<Game_Strings::Str_t>(Main_Data::game_actors->GetActor(args[1])->GetName());
-				else         result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name);
-				break;
-			case 1:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->name); break;  //.skill[a].name
-			case 2:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->name); break;  //.item[a].name
-			case 3:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::enemies, args[1])->name); break;  //.enemy[a].name
-			case 4:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::troops, args[1])->name); break;  //.troop[a].name
-			case 5:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::terrains, args[1])->name); break;  //.terrain[a].name
-			case 6:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::attributes, args[1])->name); break;  //.element[a].name
-			case 7:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::states, args[1])->name); break;  //.state[a].name
-			case 8:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::animations, args[1])->name); break;  //.anim[a].name
-			case 9:	 result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::chipsets, args[1])->name); break;  //.tileset[a].name
-			case 10: result = static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(args[1])); break;  //.s[a].name
-			case 11: result = static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(args[1])); break;  //.v[a].name
-			case 12: break;  //.t[a].name -- not sure how to get this for now
-			case 13: //.cev[a].name
-				// assuming the vector of common events here is ordered by common event ID
-				if (Game_Map::GetCommonEvents().size() >= args[1]) {
-					result = (Game_Strings::Str_t)Game_Map::GetCommonEvents()[args[1]-1].GetName();
-				}
-				break;  
-			case 14: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::classes, args[1])->name); break;  //.class[a].name
-			case 15: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::battleranimations, args[1])->name); break;  //.anim2[a].name
-			case 16: result = static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(args[1])); break;  //.map[a].name
-			case 17: result = static_cast<Game_Strings::Str_t>(Game_Map::GetEvent(args[1])->GetName()); break;  //.mev[a].name
-			case 18: //.member[a].name
-				if (args[2]) {
-					result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetName());
-				}
-				else {
-					args[1] = Main_Data::game_party->GetActor(args[1])->GetId();
-					result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->name);
-				}
-				break;
-			}
+			result = ManiacGetLcfDataName(args[0], args[1], (bool)args[2]);
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-
-			switch (args[0])
-			{
-			case 0:  //.actor[a].desc
-				if (args[2]) result = static_cast<Game_Strings::Str_t>(Main_Data::game_actors->GetActor(args[1])->GetTitle());
-				else         result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->title);
-				break;
-			case 1: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::skills, args[1])->description); break; //.skill[a].desc
-			case 2: result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::items, args[1])->description); break; //.item[a].desc
-			case 18: //.member[a].desc
-				if (args[2]) {
-					result = static_cast<Game_Strings::Str_t>(Main_Data::game_party->GetActor(args[1])->GetTitle());
-				}
-				else {
-					args[1] = Main_Data::game_party->GetActor(args[1])->GetId();
-					result = static_cast<Game_Strings::Str_t>(lcf::ReaderUtil::GetElement(lcf::Data::actors, args[1])->title);
-				}
-				break;
-			}
+			result = ManiacGetLcfDataDescription(args[0], args[1], (bool)args[2]);
 			break;
 		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
 		{
 			int pos = 0;
 			std::string op_string;
 			for (int i = 0; i < 3; i++) {
-				op_string += static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[i], modes[i], &pos));
+				op_string += Main_Data::game_strings->GetWithModeAndPos(str_param, args[i], modes[i], &pos);
 			}
 			result = (Game_Strings::Str_t)op_string;
 			break;
@@ -4845,8 +4791,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			std::string base, insert;
 
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			base =    static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
-			insert =  static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
+			base =    Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			insert =  Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
 
 			result = (Game_Strings::Str_t)base.insert(args[1], insert);
 			break;
@@ -4856,9 +4802,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base =        static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
-			search =      static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
-			replacement = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
+			base =        Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			search =      Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
 
 			std::size_t index = base.find(search);
 			while (index != std::string::npos) {
@@ -4872,12 +4818,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
-			result = static_cast<Game_Strings::Str_t>(static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).substr(args[1], args[2]));
+			result =  Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).substr(args[1], args[2]);
 			break;
 		case 10: //Join (join) <fn(string delimiter, int id, int size)>
 		{
 			std::string op_string = "";
-			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 			Output::Debug("args {} {} {}", args[0], args[1], args[2]);
 			Output::Debug("modes {} {} {}", modes[0], modes[1], modes[2]);
 			// args[1] & mode[1] relates to starting ID for strings to join
@@ -4887,7 +4833,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 
 			while (args[2] > 0) {
 				if (modes[1] < 2) {
-					op_string += static_cast<std::string>(Main_Data::game_strings->Get(args[1]++));
+					op_string += Main_Data::game_strings->Get(args[1]++);
 				} else {
 					op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
 				}
@@ -4895,20 +4841,20 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 				if (--args[2] > 0) op_string += delimiter;
 			}
 
-			result = static_cast<Game_Strings::Str_t>(op_string);
+			result = op_string;
 			break;
 		}
 		case 12: //File (file) <fn(string filename, int encode)>
 		{
 			// maniacs does not like a file extension
-			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 			// args[1] is the encoding... 0 for sjis, 1 for utf8
 
 			Filesystem_Stream::InputStream is = FileFinder::OpenText(StringView(filename));
 			if (is.good()) {
 				std::stringstream buffer;
 				buffer << is.rdbuf();
-				result = static_cast<Game_Strings::Str_t>(buffer.str());
+				result = buffer.str();
 			}
 			is.Close();
 			break;
@@ -4916,21 +4862,21 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
-			result = static_cast<Game_Strings::Str_t>(static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0])).erase(args[1], args[2]));
+			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).erase(args[1], args[2]);
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
 		{
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base =        static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[0], modes[0], &pos));
-			search =      static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[1], modes[1], &pos));
-			replacement = static_cast<std::string>(Main_Data::game_strings->GetWithModeAndPos(com.string, args[2], modes[2], &pos));
+			base =        Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			search =      Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
 
 			std::regex rexp(search);
 
-			if (first_flag) result = static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only));
-			else result =            static_cast<Game_Strings::Str_t>(std::regex_replace(base, rexp, replacement));
+			if (first_flag) result = std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only);
+			else result =            std::regex_replace(base, rexp, replacement);
 			break;
 		}
 		default:
@@ -4953,27 +4899,27 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)> takes hex??????
 	{
-		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // not sure this is necessary but better safe
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, search, op, args);
-		else          Main_Data::game_strings->InStr(str_params, static_cast<std::string>(search), args[1], args[2]);
+		else          Main_Data::game_strings->InStr(str_params, search, args[1], args[2]);
 		break;
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
 	{
-		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]);
+		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, delimiter, op, args);
-		else          Main_Data::game_strings->Split(str_params, static_cast<std::string>(delimiter), args[1], args[2]);
+		else          Main_Data::game_strings->Split(str_params, delimiter, args[1], args[2]);
 		break;
 	}
 	case 7: //toFile <fn(string filename, int encode)>  takes hex
 	{
-		std::string filename = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
+		std::string filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 
 		Main_Data::game_strings->ToFile(str_params, filename, args[1]);
@@ -4993,12 +4939,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
 	{
 		// takes hex
-		std::string expr = static_cast<std::string>(Main_Data::game_strings->GetWithMode(com.string, args[0], modes[0]));
+		std::string expr = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // output var
 		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]); // beginning pos
 
 		if (is_range) {
-			Main_Data::game_strings->RangeOp(str_params, string_id_1, static_cast<Game_Strings::Str_t>(expr), op, args);
+			Main_Data::game_strings->RangeOp(str_params, string_id_1, expr, op, args);
 		}
 		else {
 			if (op == 9) Main_Data::game_strings->ExMatch(str_params, expr, args[1], args[2]);
@@ -5087,4 +5033,136 @@ bool Game_Interpreter::ManiacCheckString(std::string str_l, std::string str_r, i
 	default:
 		return false;
 	}
+}
+
+Game_Strings::Str_t Game_Interpreter::ManiacGetLcfDataName(int data_type, int id, bool is_dynamic) const {
+	switch (data_type)
+		{
+		case 0:  //.actor[a].name
+			if (is_dynamic) {
+				auto actor = Main_Data::game_actors->GetActor(id);
+				if (actor != nullptr) {
+					return static_cast<Game_Strings::Str_t>(actor->GetName());
+				}
+			} else {
+				return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+			}
+			break;
+		case 1:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Skill>(lcf::Data::skills, id);   //.skill[a].name
+		case 2:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Item>(lcf::Data::items, id);   //.item[a].name
+		case 3:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Enemy>(lcf::Data::enemies, id);   //.enemy[a].name
+		case 4:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Troop>(lcf::Data::troops, id);   //.troop[a].name
+		case 5:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Terrain>(lcf::Data::terrains, id);   //.terrain[a].name
+		case 6:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Attribute>(lcf::Data::attributes, id);   //.element[a].name
+		case 7:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::State>(lcf::Data::states, id);   //.state[a].name
+		case 8:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Animation>(lcf::Data::animations, id);   //.anim[a].name
+		case 9:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Chipset>(lcf::Data::chipsets, id);   //.tileset[a].name
+		case 10: return static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(id));   //.s[a].name
+		case 11: return static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(id));   //.v[a].name
+		case 12: break;  //.t[a].name -- not sure how to get this for now
+		case 13: //.cev[a].name
+		{
+			// assuming the vector of common events here is ordered by common event ID
+			if (Game_Map::GetCommonEvents().size() >= id) {
+				return (Game_Strings::Str_t)Game_Map::GetCommonEvents()[id - 1].GetName();
+			}
+			break;
+		}
+		case 14: return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Class>(lcf::Data::classes, id);   //.class[a].name
+		case 15: return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::BattlerAnimation>(lcf::Data::battleranimations, id);   //.anim2[a].name
+		case 16: return static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(id));   //.map[a].name
+		case 17:   //.mev[a].name
+		{
+			auto map = Game_Map::GetEvent(id);
+			if (map != nullptr) {
+				return static_cast<Game_Strings::Str_t>(map->GetName());
+			}
+			break;
+		}
+		case 18: //.member[a].name
+		{
+			auto actor = Main_Data::game_party->GetActor(id);
+			if (actor != nullptr) {
+				if (is_dynamic) {
+					return static_cast<Game_Strings::Str_t>(actor->GetName());
+				}
+				else {
+					id = actor->GetId();
+					return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+				}
+			}
+			break;
+		}
+	}
+
+	Output::Warning("Unable to read name: {} {}", data_type, id);
+	return "";
+}
+
+Game_Strings::Str_t Game_Interpreter::ManiacGetLcfDataDescription(int data_type, int id, bool is_dynamic) const {
+	switch (data_type)
+	{
+		case 0:  //.actor[a].desc
+			if (is_dynamic) {
+				auto actor = Main_Data::game_actors->GetActor(id);
+				if (actor != nullptr) {
+					return static_cast<Game_Strings::Str_t>(actor->GetTitle());
+				}
+			} else {
+				return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+			}
+			break;
+		case 1: return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Skill>(lcf::Data::skills, id); //.skill[a].desc
+		case 2: return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Item>(lcf::Data::items, id); //.item[a].desc
+		case 18: //.member[a].desc
+		{
+			auto actor = Main_Data::game_party->GetActor(id);
+			if (actor != nullptr) {
+				if (is_dynamic) {
+					return static_cast<Game_Strings::Str_t>(actor->GetTitle());
+				}
+				else {
+					id = actor->GetId();
+					return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+				}
+			}
+			break;
+		}
+	}
+
+	Output::Warning("Unable to read description: {} {}", data_type, id);
+	return "";
+}
+
+template <typename T>
+Game_Strings::Str_t Game_Interpreter::ManiacGetNameSafely(std::vector<T> vec, int id) const {
+	T* data = lcf::ReaderUtil::GetElement(vec, id);
+	if (data != nullptr) {
+		return static_cast<Game_Strings::Str_t>(data->name);
+	}
+
+	Output::Warning("Unable to read name: {}", id);
+	return "";
+}
+
+template <typename T>
+Game_Strings::Str_t Game_Interpreter::ManiacGetDescriptionSafely(std::vector<T> vec, int id) const {
+	T* data = lcf::ReaderUtil::GetElement(vec, id);
+	if (data != nullptr) {
+		return static_cast<Game_Strings::Str_t>(data->description);
+	}
+
+	Output::Warning("Unable to read description: {}", id);
+	return "";
+}
+
+template <>
+Game_Strings::Str_t Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(std::vector<lcf::rpg::Actor> vec, int id) const {
+	lcf::rpg::Actor* data = lcf::ReaderUtil::GetElement(vec, id);
+	if (data != nullptr) {
+		return static_cast<Game_Strings::Str_t>(data->title);
+	}
+
+	Output::Warning("Unable to read description: {}", id);
+	return "";
 }
