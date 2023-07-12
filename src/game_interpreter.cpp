@@ -4300,10 +4300,10 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	// for the displayed string, the id argument is in com.parameters[22]
 	// here we are capturing all the delimiters, but currently only need to support reading the first one
 	int i = 0;
-	int delims[3] = {};
+	std::vector<int> delims;
 	auto components = Utils::Tokenize(com.string, [p = &delims, &i](char32_t ch) {
 		if (ch == '\x01' || ch == '\x02' || ch == '\x03') {
-			(*p)[i++] = static_cast<int>(ch);
+			p->push_back(static_cast<int>(ch));
 			return true;
 		}
 		return false;
