@@ -29,12 +29,14 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "feature.h"
+#include "game_battle.h"
 
 Sprite_Actor::Sprite_Actor(Game_Actor* actor)
 	: Sprite_Battler(actor, actor->GetId())
 {
 	CreateSprite();
-	if (Feature::HasFixedActorFacingDirection()) {
+	auto condition = Game_Battle::GetBattleCondition();
+	if ((condition == lcf::rpg::System::BattleCondition_none || condition == lcf::rpg::System::BattleCondition_initiative) && Feature::HasFixedActorFacingDirection()) {
 		fixed_facing = static_cast<FixedFacing>(lcf::Data::battlecommands.easyrpg_fixed_actor_facing_direction);
 	}
 }
