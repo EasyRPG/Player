@@ -33,12 +33,18 @@ public:
 	void SendPacketAsync(Args... args) {
 		m_queue.emplace(new T(args...));
 	}
+	template<typename T>
+	void SendPacketAsync(const T& _p) {
+		auto p = new T;
+		*p = _p;
+		m_queue.emplace(p);
+	}
 
 	virtual void Open() = 0;
 	virtual void Close();
 
 	virtual void Send(std::string_view data) = 0;
-	virtual void FlushQueue();
+	virtual void FlushQueue() {};
 
 	template<typename M, typename = std::enable_if_t<std::conjunction_v<
 		std::is_convertible<M, Packet>,
@@ -55,6 +61,7 @@ public:
 		OPEN,
 		CLOSE,
 		EXIT, // the server sends exit message
+		EOM, // end of message to flush packets
 		_PLACEHOLDER,
 	};
 	using SystemMessageHandler = std::function<void (Connection&)>;

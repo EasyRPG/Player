@@ -48,7 +48,6 @@ Game_Multiplayer& Game_Multiplayer::Instance() {
 
 Game_Multiplayer::Game_Multiplayer() {
 	Server().SetBindAddress("localhost:6500");
-	Server().Start();
 	InitConnection();
 }
 
@@ -431,7 +430,6 @@ void Game_Multiplayer::Deactivate() {
 }
 
 void Game_Multiplayer::Connect(int map_id, bool room_switch) {
-	active = true;
 	CUI().Refresh();
 	CUI().SetStatusRoom(map_id);
 	Output::Debug("MP: connecting to id={}", map_id);

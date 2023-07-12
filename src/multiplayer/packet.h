@@ -12,6 +12,7 @@ public:
 	constexpr static std::string_view PARAM_DELIM = "\uFFFF";
 	constexpr static std::string_view MSG_DELIM = "\uFFFE";
 
+	Packet() {}
 	virtual ~Packet() = default;
 	virtual std::string ToBytes() const;
 

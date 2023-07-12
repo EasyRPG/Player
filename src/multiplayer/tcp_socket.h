@@ -23,5 +23,5 @@ struct TCPSocket {
 	std::function<void(std::string)> OnLogWarning;
 
 	void Send(std::string_view& data);
-	void CreateConnectionThread();
+	void CreateConnectionThread(const size_t read_timeout_seconds = 6);
 };

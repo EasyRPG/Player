@@ -19,8 +19,8 @@ void TCPSocket::Send(std::string_view& data) {
 	}
 }
 
-void TCPSocket::CreateConnectionThread() {
-	std::thread([this]() {
+void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
+	std::thread([this, read_timeout_seconds]() {
 		OnOpen();
 		OnLogDebug(LABEL + ": Created a connection from: "
 			+ socket.peer_address().to_string());
@@ -29,7 +29,8 @@ void TCPSocket::CreateConnectionThread() {
 		ssize_t buf_used;
 		bool close = false;
 
-		if (!socket.read_timeout(std::chrono::seconds(6))) {
+		if (read_timeout_seconds > 0 &&
+				!socket.read_timeout(std::chrono::seconds(read_timeout_seconds))) {
 			OnLogWarning(LABEL + ": Failed to set the timeout on socket stream: "
 				+ socket.last_error_str());
 		}

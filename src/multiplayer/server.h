@@ -4,6 +4,7 @@
 #include <memory>
 #include <map>
 #include <queue>
+#include <condition_variable>
 #include <mutex>
 #include "messages.h"
 #include "sockpp/tcp_acceptor.h"
@@ -11,7 +12,7 @@
 class ServerSideClient;
 
 class ServerMain {
-	struct MessageEntry;
+	struct DataEntry;
 
 	bool running = false;
 	int client_id = 10;
@@ -20,16 +21,18 @@ class ServerMain {
 	std::string addr_host;
 	in_port_t addr_port;
 
-	std::queue<std::unique_ptr<MessageEntry>> m_sendall_queue;
-	std::mutex m_sendall_queue_mutex;
+	std::queue<std::unique_ptr<DataEntry>> m_data_queue;
+	std::condition_variable m_data_queue_cv;
+	std::mutex m_data_queue_mutex;
 
 public:
 	ServerMain();
 	void SetBindAddress(std::string address);
 	void Start();
 
-	template<typename T, typename... Args>
-	void SendAll(int _excluded_client_id, int _visibility, Args... args);
+	void DeleteClient(const int& id);
+	void SendTo(const int& from_client_id, const int& to_client_id,
+		const Messages::VisibilityType& visibility, const std::string& data);
 };
 
 ServerMain& Server();

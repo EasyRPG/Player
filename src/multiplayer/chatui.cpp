@@ -15,6 +15,8 @@
 #include "../player.h"
 #include "../compiler.h"
 #include "../baseui.h"
+#include "game_multiplayer.h"
+#include "server.h"
 
 class DrawableOnlineStatus : public Drawable {
 	Rect bounds;
@@ -900,7 +902,13 @@ void InputsTyping() {
 
 	// send
 	if(Input::IsExternalTriggered(Input::InputButton::KEY_RETURN)) {
-		Output::Debug(Utils::EncodeUTF(type_text).c_str());
+		std::string_view text = Utils::EncodeUTF(type_text);
+		if (text == "/1") {
+			Server().Start();
+		}
+		if (text == "/2") {
+			GMI().Activate();
+		}
 		// reset typebox
 		type_text.clear();
 		type_caret_index_tail = type_caret_index_head = 0;

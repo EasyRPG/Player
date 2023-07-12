@@ -8,6 +8,11 @@
 #include "../game_pictures.h"
 
 namespace Messages {
+	enum VisibilityType : int {
+		CV_LOCAL = 1,
+		CV_GLOBAL = 2
+	};
+
 	using Packet = Multiplayer::Packet;
 	using ParameterList = Multiplayer::Connection::ParameterList;
 
@@ -29,6 +34,7 @@ namespace Messages {
 	class RoomPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "room" };
+		RoomPacket() {}
 		RoomPacket(int _room_id) : Packet(packet_name), room_id(_room_id) {}
 		std::string ToBytes() const override { return Build(room_id); }
 		RoomPacket(const ParameterList& v)
@@ -59,7 +65,7 @@ namespace Messages {
 	class ConnectPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "c" };
-		ConnectPacket(int _id) : PlayerPacket(packet_name, _id) {}
+		ConnectPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
@@ -76,7 +82,7 @@ namespace Messages {
 	class DisconnectPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "d" };
-		DisconnectPacket(int _id) : PlayerPacket(packet_name, _id) {}
+		DisconnectPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
@@ -93,6 +99,7 @@ namespace Messages {
 	class NametagPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "ntag" };
+		NametagPacket() : PlayerPacket(packet_name) {}
 		NametagPacket(int _id, std::string _name)
 			: PlayerPacket(packet_name, _id), name(std::move(_name)) {}
 		std::string ToBytes() const override {
@@ -114,6 +121,7 @@ namespace Messages {
 	class ChatPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "say" };
+		ChatPacket() : PlayerPacket(packet_name) {}
 		ChatPacket(int _v, std::string _m) // C2S
 			: PlayerPacket(packet_name), visibility(_v), msg(std::move(_m)) {}
 		ChatPacket(int _id, int _v, std::string _m) // S2C
@@ -138,6 +146,7 @@ namespace Messages {
 	class MovePacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "m" };
+		MovePacket() : PlayerPacket(packet_name) {}
 		MovePacket(int _x, int _y)
 			: PlayerPacket(packet_name), x(_x), y(_y) {}
 		MovePacket(int _id, int _x, int _y)
@@ -161,6 +170,7 @@ namespace Messages {
 	class TeleportPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "tp" };
+		TeleportPacket() : Packet(packet_name) {}
 		TeleportPacket(int _x, int _y) : Packet(packet_name), x(_x), y(_y) {}
 		std::string ToBytes() const override { return Build(x, y); }
 		TeleportPacket(const ParameterList& v)
@@ -175,6 +185,7 @@ namespace Messages {
 	class JumpPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "jmp" };
+		JumpPacket() : PlayerPacket(packet_name) {}
 		JumpPacket(int _x, int _y) // C2S
 			: PlayerPacket(packet_name), x(_x), y(_y) {}
 		JumpPacket(int _id, int _x, int _y) // S2C
@@ -198,6 +209,7 @@ namespace Messages {
 	class FacingPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "f" };
+		FacingPacket() : PlayerPacket(packet_name) {}
 		FacingPacket(int _facing) // C2S
 			: PlayerPacket(packet_name), facing(_facing) {}
 		FacingPacket(int _id, int _facing) // S2C
@@ -220,6 +232,7 @@ namespace Messages {
 	class SpeedPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "spd" };
+		SpeedPacket() : PlayerPacket(packet_name) {}
 		SpeedPacket(int _speed) // C2S
 			: PlayerPacket(packet_name), speed(_speed) {}
 		SpeedPacket(int _id, int _speed) // S2C
@@ -242,6 +255,7 @@ namespace Messages {
 	class SpritePacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "spr" };
+		SpritePacket() : PlayerPacket(packet_name) {}
 		SpritePacket(std::string _n, int _i) // C2S
 			: PlayerPacket(packet_name), name(_n), index(_i) {}
 		SpritePacket(int _id, std::string _n, int _i) // S2C
@@ -266,11 +280,13 @@ namespace Messages {
 	class FlashPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "fl" };
+		FlashPacket() : PlayerPacket(packet_name) {}
 		FlashPacket(int _r, int _g, int _b, int _p, int _f) // C2S
 			: PlayerPacket(packet_name), r(_r), g(_g), b(_b), p(_p), f(_f) {}
 		FlashPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
 			: PlayerPacket(packet_name, _id), r(_r), g(_g), b(_b), p(_p), f(_f) {}
 		// custom packet_name
+		FlashPacket(std::string_view _packet_name) : PlayerPacket(_packet_name) {}
 		FlashPacket(std::string_view _packet_name, int _r, int _g, int _b, int _p, int _f) // C2S
 			: PlayerPacket(std::move(_packet_name)), r(_r), g(_g), b(_b), p(_p), f(_f) {}
 		FlashPacket(std::string_view _packet_name, int _id, int _r, int _g, int _b, int _p, int _f) // S2C
@@ -300,6 +316,7 @@ namespace Messages {
 	class RepeatingFlashPacket : public FlashPacket {
 	public:
 		constexpr static std::string_view packet_name{ "rfl" };
+		RepeatingFlashPacket() : FlashPacket(packet_name) {}
 		RepeatingFlashPacket(int _r, int _g, int _b, int _p, int _f) // C2S
 			: FlashPacket(packet_name, _r, _g, _b, _p, _f) {}
 		RepeatingFlashPacket(int _id, int _r, int _g, int _b, int _p, int _f) // S2C
@@ -332,6 +349,7 @@ namespace Messages {
 	class HiddenPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "h" };
+		HiddenPacket() : PlayerPacket(packet_name) {}
 		HiddenPacket(int _hidden_bin) // C2S
 			: PlayerPacket(packet_name), hidden_bin(_hidden_bin) {}
 		HiddenPacket(int _id, int _hidden_bin) // S2C
@@ -355,6 +373,7 @@ namespace Messages {
 	class SystemPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "sys" };
+		SystemPacket() : PlayerPacket(packet_name) {}
 		SystemPacket(std::string _name) // C2S
 			: PlayerPacket(packet_name), name(std::move(_name)) {}
 		SystemPacket(int _id, std::string _name) // S2C
@@ -377,6 +396,7 @@ namespace Messages {
 	class SEPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "se" };
+		SEPacket() : PlayerPacket(packet_name) {}
 		SEPacket(lcf::rpg::Sound _d) // C2S
 			: PlayerPacket(packet_name), snd(std::move(_d)) {}
 		SEPacket(int _id, lcf::rpg::Sound _d) // S2C
@@ -440,6 +460,13 @@ namespace Messages {
 			pic_id(Decode<int>(v.at(1))),
 			map_x(Decode<int>(v.at(4))), map_y(Decode<int>(v.at(5))),
 			pan_x(Decode<int>(v.at(6))), pan_y(Decode<int>(v.at(7))) {}
+		// skip Game_Pictures::Params&
+		PicturePacket& operator=(const PicturePacket& o) {
+			pic_id = o.pic_id;
+			map_x = o.map_x; map_y = o.map_y;
+			pan_x = o.pan_x; pan_y = o.pan_y;
+			return *this;
+		}
 		int pic_id;
 		Game_Pictures::Params& params;
 		int map_x, map_y;
@@ -453,6 +480,7 @@ namespace Messages {
 	class ShowPicturePacket : public PicturePacket {
 	public:
 		constexpr static std::string_view packet_name{ "ap" };
+		ShowPicturePacket() : PicturePacket(packet_name, 0, params, 0, 0, 0, 0) {}
 		ShowPicturePacket(int _pid, Game_Pictures::ShowParams _p, // C2S
 				int _mx, int _my, int _px, int _py)
 			: PicturePacket(packet_name, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
@@ -485,6 +513,7 @@ namespace Messages {
 	class MovePicturePacket : public PicturePacket {
 	public:
 		constexpr static std::string_view packet_name{ "mp" };
+		MovePicturePacket() : PicturePacket(packet_name, 0, params, 0, 0, 0, 0) {}
 		MovePicturePacket(int _pid, Game_Pictures::MoveParams _p, // C2S
 				int _mx, int _my, int _px, int _py)
 			: PicturePacket(packet_name, _pid, params, _mx, _my, _px, _py), params(std::move(_p)) {}
@@ -515,6 +544,7 @@ namespace Messages {
 	class ErasePicturePacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "rp" };
+		ErasePicturePacket() : PlayerPacket(packet_name) {}
 		ErasePicturePacket(int _pid) : PlayerPacket(packet_name), pic_id(_pid) {} // C2S
 		ErasePicturePacket(int _id, int _pid) : PlayerPacket(packet_name, _id), pic_id(_pid) {} // S2C
 		std::string ToBytes() const override {
@@ -535,6 +565,7 @@ namespace Messages {
 	class ShowPlayerBattleAnimPacket : public PlayerPacket {
 	public:
 		constexpr static std::string_view packet_name{ "ba" };
+		ShowPlayerBattleAnimPacket() : PlayerPacket(packet_name) {}
 		ShowPlayerBattleAnimPacket(int _anim_id) // C2S
 			: PlayerPacket(packet_name), anim_id(_anim_id) {}
 		ShowPlayerBattleAnimPacket(int _id, int _anim_id) // S2C
@@ -559,6 +590,7 @@ namespace Messages {
 	class SyncSwitchPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "ss" };
+		SyncSwitchPacket() : Packet(packet_name) {}
 		SyncSwitchPacket(int _switch_id, int _sync_type)
 			: Packet(packet_name), switch_id(_switch_id), sync_type(_sync_type) {}
 		std::string ToBytes() const override { return Build(switch_id, sync_type); }
@@ -575,6 +607,7 @@ namespace Messages {
 	class SyncVariablePacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "sv" };
+		SyncVariablePacket() : Packet(packet_name) {}
 		SyncVariablePacket(int _var_id, int _value) : Packet(packet_name),
 			var_id(_var_id), sync_type(_value) {}
 		std::string ToBytes() const override { return Build(var_id, sync_type); }
@@ -591,6 +624,7 @@ namespace Messages {
 	class SyncEventPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "sev" };
+		SyncEventPacket() : Packet(packet_name) {}
 		SyncEventPacket(int _event_id, int _trigger_type) : Packet(packet_name),
 			event_id(_event_id), trigger_type(_trigger_type) {}
 		std::string ToBytes() const override { return Build(event_id, trigger_type); }
@@ -608,6 +642,7 @@ namespace Messages {
 	class SyncPicturePacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "sp" };
+		SyncPicturePacket() : Packet(packet_name) {}
 		SyncPicturePacket(const ParameterList& v)
 			: Packet(packet_name), picture_name(v.at(0)) {}
 		std::string picture_name;
@@ -620,6 +655,7 @@ namespace Messages {
 	class NameListSyncPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "pns" };
+		NameListSyncPacket() : Packet(packet_name) {}
 		NameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
 			auto it = v.begin();
 			type = Decode<int>(*it);
@@ -637,6 +673,7 @@ namespace Messages {
 	class BattleAnimIdListSyncPacket : public Packet {
 	public:
 		constexpr static std::string_view packet_name{ "bas" };
+		BattleAnimIdListSyncPacket() : Packet(packet_name) {}
 		BattleAnimIdListSyncPacket(const ParameterList& v) : Packet(packet_name) {
 			std::transform(v.begin(), v.end(), std::back_inserter(ids),
 				[&](std::string_view s) {

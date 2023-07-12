@@ -24,14 +24,6 @@ void Connection::Close() {
 	SetConnected(false);
 }
 
-void Connection::FlushQueue() {
-	while (!m_queue.empty()) {
-		auto& e = m_queue.front();
-		Send(e->ToBytes());
-		m_queue.pop();
-	}
-}
-
 void Connection::DispatchMessages(const std::string_view data) {
 	std::vector<std::string_view> mstrs = Split(data, Packet::MSG_DELIM);
 	for (auto& mstr : mstrs) {
@@ -58,7 +50,7 @@ void Connection::Dispatch(std::string_view name, ParameterList args) {
 	if (it != handlers.end()) {
 		std::invoke(it->second, args);
 	} else {
-		Output::Debug("Connection: Unregistered packet received");
+		Output::Debug("Connection: Unregistered packet received: {}", name);
 	}
 }
 
