@@ -36,7 +36,6 @@
 #include "game_targets.h"
 #include "game_switches.h"
 #include "game_variables.h"
-#include "game_strings.h"
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_system.h"
@@ -4769,11 +4768,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			result = ManiacGetLcfDataName(args[0], args[1], (bool)args[2]);
+			result = ManiacPatch::GetLcfName(args[0], args[1], (bool)args[2]);
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			result = ManiacGetLcfDataDescription(args[0], args[1], (bool)args[2]);
+			result = ManiacPatch::GetLcfDescription(args[0], args[1], (bool)args[2]);
 			break;
 		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
 		{
@@ -5035,134 +5034,4 @@ bool Game_Interpreter::ManiacCheckString(std::string str_l, std::string str_r, i
 	}
 }
 
-Game_Strings::Str_t Game_Interpreter::ManiacGetLcfDataName(int data_type, int id, bool is_dynamic) const {
-	switch (data_type)
-		{
-		case 0:  //.actor[a].name
-			if (is_dynamic) {
-				auto actor = Main_Data::game_actors->GetActor(id);
-				if (actor != nullptr) {
-					return static_cast<Game_Strings::Str_t>(actor->GetName());
-				}
-			} else {
-				return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
-			}
-			break;
-		case 1:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Skill>(lcf::Data::skills, id);   //.skill[a].name
-		case 2:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Item>(lcf::Data::items, id);   //.item[a].name
-		case 3:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Enemy>(lcf::Data::enemies, id);   //.enemy[a].name
-		case 4:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Troop>(lcf::Data::troops, id);   //.troop[a].name
-		case 5:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Terrain>(lcf::Data::terrains, id);   //.terrain[a].name
-		case 6:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Attribute>(lcf::Data::attributes, id);   //.element[a].name
-		case 7:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::State>(lcf::Data::states, id);   //.state[a].name
-		case 8:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Animation>(lcf::Data::animations, id);   //.anim[a].name
-		case 9:	 return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Chipset>(lcf::Data::chipsets, id);   //.tileset[a].name
-		case 10: return static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(id));   //.s[a].name
-		case 11: return static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(id));   //.v[a].name
-		case 12: break;  //.t[a].name -- not sure how to get this for now
-		case 13: //.cev[a].name
-		{
-			// assuming the vector of common events here is ordered by common event ID
-			if (Game_Map::GetCommonEvents().size() >= id) {
-				return (Game_Strings::Str_t)Game_Map::GetCommonEvents()[id - 1].GetName();
-			}
-			break;
-		}
-		case 14: return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Class>(lcf::Data::classes, id);   //.class[a].name
-		case 15: return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::BattlerAnimation>(lcf::Data::battleranimations, id);   //.anim2[a].name
-		case 16: return static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(id));   //.map[a].name
-		case 17:   //.mev[a].name
-		{
-			auto map = Game_Map::GetEvent(id);
-			if (map != nullptr) {
-				return static_cast<Game_Strings::Str_t>(map->GetName());
-			}
-			break;
-		}
-		case 18: //.member[a].name
-		{
-			auto actor = Main_Data::game_party->GetActor(id);
-			if (actor != nullptr) {
-				if (is_dynamic) {
-					return static_cast<Game_Strings::Str_t>(actor->GetName());
-				}
-				else {
-					id = actor->GetId();
-					return Game_Interpreter::ManiacGetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
-				}
-			}
-			break;
-		}
-	}
 
-	Output::Warning("Unable to read name: {} {}", data_type, id);
-	return "";
-}
-
-Game_Strings::Str_t Game_Interpreter::ManiacGetLcfDataDescription(int data_type, int id, bool is_dynamic) const {
-	switch (data_type)
-	{
-		case 0:  //.actor[a].desc
-			if (is_dynamic) {
-				auto actor = Main_Data::game_actors->GetActor(id);
-				if (actor != nullptr) {
-					return static_cast<Game_Strings::Str_t>(actor->GetTitle());
-				}
-			} else {
-				return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
-			}
-			break;
-		case 1: return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Skill>(lcf::Data::skills, id); //.skill[a].desc
-		case 2: return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Item>(lcf::Data::items, id); //.item[a].desc
-		case 18: //.member[a].desc
-		{
-			auto actor = Main_Data::game_party->GetActor(id);
-			if (actor != nullptr) {
-				if (is_dynamic) {
-					return static_cast<Game_Strings::Str_t>(actor->GetTitle());
-				}
-				else {
-					id = actor->GetId();
-					return Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
-				}
-			}
-			break;
-		}
-	}
-
-	Output::Warning("Unable to read description: {} {}", data_type, id);
-	return "";
-}
-
-template <typename T>
-Game_Strings::Str_t Game_Interpreter::ManiacGetNameSafely(std::vector<T> vec, int id) const {
-	T* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->name);
-	}
-
-	Output::Warning("Unable to read name: {}", id);
-	return "";
-}
-
-template <typename T>
-Game_Strings::Str_t Game_Interpreter::ManiacGetDescriptionSafely(std::vector<T> vec, int id) const {
-	T* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->description);
-	}
-
-	Output::Warning("Unable to read description: {}", id);
-	return "";
-}
-
-template <>
-Game_Strings::Str_t Game_Interpreter::ManiacGetDescriptionSafely<lcf::rpg::Actor>(std::vector<lcf::rpg::Actor> vec, int id) const {
-	lcf::rpg::Actor* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->title);
-	}
-
-	Output::Warning("Unable to read description: {}", id);
-	return "";
-}
