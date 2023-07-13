@@ -3616,7 +3616,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			std::string str_param = static_cast<std::string>(com.string);
 			std::string str_l = Main_Data::game_strings->GetWithMode(str_param, com.parameters[2], modes[0]+1);
 			std::string str_r = Main_Data::game_strings->GetWithMode(str_param, com.parameters[3], modes[1]);
-			result = ManiacCheckString(str_l, str_r, op, ignoreCase);
+			result = ManiacPatch::CheckString(str_l, str_r, op, ignoreCase);
 		}
 		break;
 	default:
@@ -4766,6 +4766,19 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			result = std::to_string(args[0]);
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
 			break;
+		case 2: //Switch <fn(int number, int min_size)>
+		{
+			if (modes[0] == 1) args[0] = Main_Data::game_variables->Get(args[0]);
+			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+
+			if (Main_Data::game_switches->Get(args[0])) {
+				result = "ON";
+			} else {
+				result = "OFF";
+			}
+			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
+			break;
+		}
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
 			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
 			result = ManiacPatch::GetLcfName(args[0], args[1], (bool)args[2]);
@@ -5012,26 +5025,3 @@ bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int 
 			return false;
 	}
 }
-
-bool Game_Interpreter::ManiacCheckString(std::string str_l, std::string str_r, int op, bool ignore_case) const {
-	std::regex specialChars { R"([-[\]{}()*+?.,\^$|#\s])" };
-	std::string sanitized_r = std::regex_replace(str_r, specialChars, R"(\$&)");
-	if (op > 1) { sanitized_r = ".*" + sanitized_r + ".*"; }
-
-	std::regex search;
-	if (ignore_case) { search = std::regex(sanitized_r, std::regex_constants::icase); }
-	else { search = std::regex(sanitized_r); }
-
-	switch (op) {
-	case 0: // eq
-	case 2: // contains (l contains r)
-		return std::regex_match(str_l, search);
-	case 1: // neq
-	case 3: // notContains (l does not contain r)
-		return !std::regex_match(str_l, search);
-	default:
-		return false;
-	}
-}
-
-
