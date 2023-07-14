@@ -13,7 +13,7 @@ struct TCPSocket {
 	TCPSocket(const std::string _label, const size_t _queue)
 		: LABEL(std::move(_label)), MAX_QUEUE_SIZE(_queue) {}
 
-	sockpp::tcp_socket socket;
+	void InitSocket(const sockpp::tcp_socket& socket);
 
 	std::function<void(const char*, const size_t&)> OnData;
 	std::function<void()> OnOpen;
@@ -28,4 +28,7 @@ struct TCPSocket {
 
 private:
 	bool close_silently = false;
+
+	sockpp::tcp_socket read_socket;
+	sockpp::tcp_socket write_socket;
 };

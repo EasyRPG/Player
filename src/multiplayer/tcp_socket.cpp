@@ -2,19 +2,24 @@
 #include <thread>
 #include <iostream>
 
+void TCPSocket::InitSocket(const sockpp::tcp_socket& socket) {
+	read_socket = std::move(socket.clone());
+	write_socket = std::move(socket.clone());
+}
+
 void TCPSocket::Send(std::string_view& data) {
 	const uint16_t data_size = data.size();
 	const uint16_t final_size = HEAD_SIZE+data_size;
 	char buf[final_size];
 	std::memcpy(buf, &data_size, HEAD_SIZE);
 	std::memcpy(buf+HEAD_SIZE, data.data(), data_size);
-	if (socket.write(buf, final_size) != final_size) {
-		if (socket.last_error() == EPIPE) {
-			OnLogDebug(LABEL + ": It appears that the socket was closed.");
+	if (write_socket.write(buf, final_size) != final_size) {
+		if (write_socket.last_error() == EPIPE) {
+			OnLogDebug(LABEL + ": It appears that the write_socket was closed.");
 		} else {
 			OnLogDebug(LABEL + ": Error writing to the TCP stream "
-				+ std::string("[") + std::to_string(socket.last_error()) + std::string("]: ")
-				+ socket.last_error_str());
+				+ std::string("[") + std::to_string(write_socket.last_error()) + std::string("]: ")
+				+ write_socket.last_error_str());
 		}
 	}
 }
@@ -23,16 +28,16 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 	std::thread([this, read_timeout_seconds]() {
 		OnOpen();
 		OnLogDebug(LABEL + ": Created a connection from: "
-			+ socket.peer_address().to_string());
+			+ read_socket.peer_address().to_string());
 
 		char buf[MAX_QUEUE_SIZE];
 		ssize_t buf_used;
 		bool close = false;
 
 		if (read_timeout_seconds > 0 &&
-				!socket.read_timeout(std::chrono::seconds(read_timeout_seconds))) {
-			OnLogWarning(LABEL + ": Failed to set the timeout on socket stream: "
-				+ socket.last_error_str());
+				!read_socket.read_timeout(std::chrono::seconds(read_timeout_seconds))) {
+			OnLogWarning(LABEL + ": Failed to set the timeout on read_socket stream: "
+				+ read_socket.last_error_str());
 		}
 
 		bool got_head = false;
@@ -42,7 +47,7 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 		uint16_t tmp_buf_used = 0;
 
 		while (true) {
-			buf_used = socket.read(buf, sizeof(buf));
+			buf_used = read_socket.read(buf, sizeof(buf));
 			if (buf_used > 0) {
 				// desegment
 				while (begin < buf_used) {
@@ -122,8 +127,8 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 				break;
 			} else {
 				OnLogDebug(LABEL + ": Read error "
-					+ std::string("[") + std::to_string(socket.last_error()) + std::string("]: ")
-					+ socket.last_error_str());
+					+ std::string("[") + std::to_string(read_socket.last_error()) + std::string("]: ")
+					+ read_socket.last_error_str());
 				close = true;
 				break;
 			}
@@ -133,16 +138,16 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 			return;
 
 		OnLogDebug(LABEL + ": Connection closed from: "
-			+ socket.peer_address().to_string());
+			+ read_socket.peer_address().to_string());
 		if (close)
-			socket.close();
+			read_socket.close();
 		OnClose();
 	}).detach();
 }
 
 void TCPSocket::Close() {
 	close_silently = true;
-	socket.close();
+	read_socket.shutdown();
 }
 
 /* gdb --command=~/gdb

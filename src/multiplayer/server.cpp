@@ -31,7 +31,7 @@ protected:
 public:
 	ServerConnection(int &_id, ServerMain* _server, sockpp::tcp_socket& _socket)
 			: id(_id), server(_server) {
-		tcp_socket.socket = std::move(_socket);
+		tcp_socket.InitSocket(_socket);
 	}
 
 	void Open() override {

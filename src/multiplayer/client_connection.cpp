@@ -68,7 +68,7 @@ void ClientConnection::Open() {
 		Output::Warning("MP: Error connecting to server: {}", impl->connector.last_error_str());
 		return;
 	}
-	impl->tcp_socket.socket = std::move(impl->connector.clone());
+	impl->tcp_socket.InitSocket(impl->connector.clone());
 	impl->tcp_socket.OnData = [this](auto p1, auto& p2) { impl->HandleData(p1, p2); };
 	impl->tcp_socket.OnOpen = [this]() { impl->HandleOpen(); };
 	impl->tcp_socket.OnClose = [this]() { impl->HandleClose(); };
