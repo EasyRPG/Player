@@ -67,10 +67,7 @@ public:
 	}
 };
 
-enum VisibilityType {
-	CV_LOCAL = 1,
-	CV_GLOBAL = 2
-};
+using VisibilityType = Messages::VisibilityType;
 
 struct ChatEntry {
 	std::string color_a;
@@ -109,7 +106,7 @@ class DrawableChatLog : public Drawable {
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	int scroll_position = 0;
 	unsigned int scroll_content_height = 0; // total height of scrollable message log
-	unsigned short visibility_flags = CV_LOCAL | CV_GLOBAL;
+	unsigned short visibility_flags = Messages::CV_LOCAL | Messages::CV_GLOBAL;
 	BitmapRef current_theme; // system graphic for the current theme
 
 	void BuildMessageGraphic(DrawableChatEntry& msg) {
@@ -786,25 +783,25 @@ void AddLogEntryUnread(Args... args) {
 void Initialize() {
 	chat_box = std::make_unique<DrawableChatUi>();
 
-	AddLogEntry("", "!! • IME input now supported!", "", CV_LOCAL);
-	AddLogEntry("", "!!   (for Japanese, etc.)", "", CV_LOCAL);
-	AddLogEntry("", "!! • You can now copy and", "", CV_LOCAL);
-	AddLogEntry("", "!!   paste from type box.", "", CV_LOCAL);
-	AddLogEntry("", "!! • SHIFT+[←, →] to select text.", "", CV_LOCAL);
-	AddLogEntry("", "", "―――", CV_LOCAL);
+	AddLogEntry("", "!! • IME input now supported!", "", Messages::CV_LOCAL);
+	AddLogEntry("", "!!   (for Japanese, etc.)", "", Messages::CV_LOCAL);
+	AddLogEntry("", "!! • You can now copy and", "", Messages::CV_LOCAL);
+	AddLogEntry("", "!!   paste from type box.", "", Messages::CV_LOCAL);
+	AddLogEntry("", "!! • SHIFT+[←, →] to select text.", "", Messages::CV_LOCAL);
+	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
 
-	AddLogEntry("[TAB]: ", "focus/unfocus.", "", CV_LOCAL);
-	AddLogEntry("[↑, ↓]: ", "scroll.", "", CV_LOCAL);
-	AddLogEntry("[F8]: ", "hide/show global chat.", "", CV_LOCAL);
-	AddLogEntry("", "", "―――", CV_LOCAL);
-	AddLogEntry("• Type /help to list commands.", "", "", CV_LOCAL);
-	AddLogEntry("• Use '!' at the beginning of", "", "", CV_LOCAL);
-	AddLogEntry("  message for global chat.", "", "", CV_LOCAL);
-	AddLogEntry("", "", "―――", CV_LOCAL);
-	AddLogEntry("• Set a nickname", "", "", CV_LOCAL);
-	AddLogEntry("  for chat.", "", "", CV_LOCAL);
-	AddLogEntry("• Max 8 characters.", "", "", CV_LOCAL);
-	AddLogEntry("• Alphanumeric only.", "", "", CV_LOCAL);
+	AddLogEntry("[TAB]: ", "focus/unfocus.", "", Messages::CV_LOCAL);
+	AddLogEntry("[↑, ↓]: ", "scroll.", "", Messages::CV_LOCAL);
+	AddLogEntry("[F8]: ", "hide/show global chat.", "", Messages::CV_LOCAL);
+	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
+	AddLogEntry("• Type /help to list commands.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("• Use '!' at the beginning of", "", "", Messages::CV_LOCAL);
+	AddLogEntry("  message for global chat.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
+	AddLogEntry("• Set a nickname", "", "", Messages::CV_LOCAL);
+	AddLogEntry("  for chat.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("• Max 8 characters.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("• Alphanumeric only.", "", "", Messages::CV_LOCAL);
 }
 
 void SetFocus(bool focused) {
@@ -975,7 +972,7 @@ void ChatUi::GotMessage(std::string name, std::string trip, std::string msg, std
 		(src=="G"?"G← ":"")+name,
 		"•"+trip+":\n",
 		"\u00A0"+msg,
-		src=="G"?CV_GLOBAL:CV_LOCAL
+		src=="G"?Messages::CV_GLOBAL:Messages::CV_LOCAL
 	);
 }
 
@@ -985,7 +982,7 @@ void ChatUi::GotInfo(std::string msg) {
 	// remove leading spaces. TO-DO: fix leading spaces being sent by server on info messages.
 	auto leading_spaces = msg.find_first_not_of(' ');
 	auto trim = msg.substr(leading_spaces != std::string::npos ? leading_spaces : 0);
-	AddLogEntry("", trim, "", CV_LOCAL);
+	AddLogEntry("", trim, "", Messages::CV_LOCAL);
 }
 
 void ChatUi::SetStatusConnection(bool status) {
