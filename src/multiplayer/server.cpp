@@ -43,6 +43,10 @@ public:
 		tcp_socket.CreateConnectionThread();
 	}
 
+	void Close() override {
+		tcp_socket.Close();
+	}
+
 	void Send(std::string_view data) override {
 		tcp_socket.Send(data); // send to self
 	}
@@ -195,6 +199,10 @@ public:
 		connection.Open();
 	}
 
+	void Close() {
+		connection.Close();
+	}
+
 	void Send(std::string_view data) {
 		connection.Send(data);
 	}
@@ -243,6 +251,11 @@ void ServerMain::Start() {
 			std::unique_lock<std::mutex> lock(m_data_queue_mutex);
 			m_data_queue_cv.wait(lock, [this]{ return !m_data_queue.empty(); });
 			auto& data_entry = m_data_queue.front();
+			// stop the thread
+			if (data_entry->from_client_id == 0 &&
+					data_entry->visibility == Messages::CV_NULL) {
+				break;
+			}
 			// check if the client is online
 			const auto& from_client_it = clients.find(data_entry->from_client_id);
 			if (from_client_it != clients.end()) {
@@ -271,10 +284,10 @@ void ServerMain::Start() {
 	}).detach();
 
 	std::thread([this]() {
-		sockpp::tcp_acceptor acceptor(sockpp::inet_address(addr_host, addr_port),
+		acceptor = sockpp::tcp_acceptor(sockpp::inet_address(addr_host, addr_port),
 				Multiplayer::Connection::MAX_QUEUE_SIZE);
 		if (!acceptor) {
-			running = false;
+			Stop();
 			Output::Warning("Server: Failed to create the acceptor to {}:{}: {}",
 				addr_host, addr_port, acceptor.last_error_str());
 			return;
@@ -283,6 +296,10 @@ void ServerMain::Start() {
 		while (true) {
 			sockpp::tcp_socket socket = acceptor.accept();
 			if (!socket) {
+				// Stop() executed
+				if (!running) {
+					break;
+				}
 				Output::Warning("Server: Failed to get the incoming connection: ",
 					acceptor.last_error_str());
 			} else {
@@ -291,8 +308,18 @@ void ServerMain::Start() {
 				client->Open();
 			}
 		}
-		running = false;
 	}).detach();
+}
+
+void ServerMain::Stop() {
+	if (running) {
+		SendTo(0, 0, Messages::CV_NULL, ""); // stop message queue loop
+		for (const auto& it : clients) {
+			it.second->Close();
+		}
+		running = false;
+		acceptor.shutdown();
+	}
 }
 
 static ServerMain _instance;

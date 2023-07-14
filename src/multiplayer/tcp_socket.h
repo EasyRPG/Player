@@ -24,4 +24,8 @@ struct TCPSocket {
 
 	void Send(std::string_view& data);
 	void CreateConnectionThread(const size_t read_timeout_seconds = 6);
+	void Close();
+
+private:
+	bool close_silently = false;
 };

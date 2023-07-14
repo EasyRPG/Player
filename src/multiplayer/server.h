@@ -18,6 +18,7 @@ class ServerMain {
 	int client_id = 10;
 	std::map<int, std::unique_ptr<ServerSideClient>> clients;
 
+	sockpp::tcp_acceptor acceptor;
 	std::string addr_host;
 	in_port_t addr_port;
 
@@ -29,6 +30,7 @@ public:
 	ServerMain();
 	void SetBindAddress(std::string address);
 	void Start();
+	void Stop();
 
 	void DeleteClient(const int& id);
 	void SendTo(const int& from_client_id, const int& to_client_id,

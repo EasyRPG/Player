@@ -17,10 +17,11 @@ public:
 
 	Game_Multiplayer();
 
-	void Activate();
-	void Deactivate();
-	void Connect(int map_id, bool room_switch = false);
-	void Initialize();
+	void Connect();
+	void Disconnect();
+	void SwitchRoom(int map_id, bool room_switch = false);
+	void Reset();
+	void MapQuit();
 	void Quit();
 	void Update();
 	void SendBasicData();
@@ -57,7 +58,7 @@ public:
 
 	ClientConnection connection;
 	std::string_view server_address{ "localhost:6500" };
-	bool connect_wait{ false };
+	bool reconnect_wait{ false };
 	bool active{ false }; // if true, it will automatically reconnect when disconnected
 	bool switching_room{ true }; // when client enters new room, but not synced to server
 	bool switched_room{ false }; // determines whether new connected players should fade in

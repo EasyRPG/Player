@@ -122,28 +122,27 @@ void Game_Multiplayer::InitConnection() {
 
 	connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
 		if (active) {
-			Output::Debug("MP: Server is closed");
-			if (connect_wait) return;
-			connect_wait = true;
+			Output::Debug("MP: connection is closed");
+			if (reconnect_wait) return;
+			reconnect_wait = true;
 			std::thread([this]() {
 				std::this_thread::sleep_for(std::chrono::seconds(3));
-				connect_wait = false;
-				Output::Info("MP: Reconnecting: ID={}", room_id);
-				Connect(room_id);
+				reconnect_wait = false;
+				if (active) {
+					Output::Info("MP: reconnecting: ID={}", room_id);
+					Connect();
+				}
 			}).detach();
-		} else {
-			Quit();
 		}
 	});
 	connection.RegisterSystemHandler(SystemMessage::EXIT, [this](Connection& _) {
 		Output::Info("MP: server shutdown");
-		active = false;
-		Quit();
+		Disconnect();
 	});
 
 	connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
 		if (p.room_id != room_id) {
-			Connect(room_id); // wrong room, reconnect
+			SwitchRoom(room_id); // wrong room, resend
 			return;
 		}
 		// server syned. accept other players spawn
@@ -418,42 +417,43 @@ void Game_Multiplayer::InitConnection() {
 	}).detach();
 }
 
-void Game_Multiplayer::Activate() {
+void Game_Multiplayer::Connect() {
 	active = true;
+	connection.SetAddress(server_address);
+	connection.Open();
 	if (room_id != -1)
-		Connect(room_id);
+		SwitchRoom(room_id);
 }
 
-void Game_Multiplayer::Deactivate() {
+void Game_Multiplayer::Disconnect() {
 	active = false;
+	CUI().Refresh();
+	Reset();
 	connection.Close();
 }
 
-void Game_Multiplayer::Connect(int map_id, bool room_switch) {
+void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
 	CUI().Refresh();
 	CUI().SetStatusRoom(map_id);
-	Output::Debug("MP: connecting to id={}", map_id);
+	Output::Debug("MP: room_id=map_id={}", map_id);
 	room_id = map_id;
 	if (!active) {
-		Output::Debug("MP: active == false, refusing to connect");
+		Output::Debug("MP: active == false, skip");
 		return;
 	}
 	switching_room = true;
 	if (room_switch) {
 		switched_room = false;
 	}
-	Initialize();
+	Reset();
 	dc_players.clear();
 	if (connection.IsConnected()) {
 		connection.SendPacketAsync<RoomPacket>(room_id);
 		SendBasicData();
-	} else {
-		connection.SetAddress(server_address);
-		connection.Open();
 	}
 }
 
-void Game_Multiplayer::Initialize() {
+void Game_Multiplayer::Reset() {
 	players.clear();
 	sync_switches.clear();
 	sync_vars.clear();
@@ -466,10 +466,13 @@ void Game_Multiplayer::Initialize() {
 	}
 }
 
-void Game_Multiplayer::Quit() {
+void Game_Multiplayer::MapQuit() {
 	CUI().Refresh();
-	connection.Close();
-	Initialize();
+	Reset();
+}
+
+void Game_Multiplayer::Quit() {
+	Disconnect();
 }
 
 void Game_Multiplayer::SendBasicData() {

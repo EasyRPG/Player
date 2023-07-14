@@ -9,6 +9,7 @@
 
 namespace Messages {
 	enum VisibilityType : int {
+		CV_NULL = 0,
 		CV_LOCAL = 1,
 		CV_GLOBAL = 2
 	};

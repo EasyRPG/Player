@@ -370,7 +370,7 @@ bool Scene::ReturnToTitleScene() {
 		return false;
 	}
 
-	GMI().Quit();
+	GMI().MapQuit();
 
 	title_scene->SetDelayFrames(Scene::kReturnTitleDelayFrames);
 	Scene::PopUntil(Scene::Title);

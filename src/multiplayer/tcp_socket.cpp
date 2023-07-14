@@ -129,12 +129,20 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 			}
 		}
 
+		if (close_silently)
+			return;
+
 		OnLogDebug(LABEL + ": Connection closed from: "
 			+ socket.peer_address().to_string());
 		if (close)
 			socket.close();
 		OnClose();
 	}).detach();
+}
+
+void TCPSocket::Close() {
+	close_silently = true;
+	socket.close();
 }
 
 /* gdb --command=~/gdb

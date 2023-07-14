@@ -80,8 +80,7 @@ void ClientConnection::Open() {
 void ClientConnection::Close() {
 	if (!IsConnected())
 		return;
-	// null pointer checks required on thread if keepping the read() block after SHUT_WR
-	impl->connector.shutdown();
+	impl->tcp_socket.Close();
 	Connection::Close(); // empty the queue
 }
 

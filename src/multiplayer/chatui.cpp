@@ -907,7 +907,10 @@ void InputsTyping() {
 			Server().Start();
 		}
 		if (text == "/2") {
-			GMI().Activate();
+			GMI().Connect();
+		}
+		if (text == "/3") {
+			GMI().Disconnect();
 		}
 		// reset typebox
 		type_text.clear();
