@@ -12,7 +12,7 @@
 class ServerSideClient;
 
 class ServerMain {
-	struct DataEntry;
+	struct MessageDataEntry;
 
 	bool running = false;
 	int client_id = 10;
@@ -22,9 +22,9 @@ class ServerMain {
 	std::string addr_host;
 	in_port_t addr_port;
 
-	std::queue<std::unique_ptr<DataEntry>> m_data_queue;
-	std::condition_variable m_data_queue_cv;
-	std::mutex m_data_queue_mutex;
+	std::queue<std::unique_ptr<MessageDataEntry>> m_message_data_queue;
+	std::mutex m_message_data_queue_mutex;
+	std::condition_variable m_message_data_queue_cv;
 
 public:
 	ServerMain();

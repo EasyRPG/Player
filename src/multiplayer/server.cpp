@@ -78,7 +78,7 @@ public:
  * Clients
  */
 
-struct ServerMain::DataEntry {
+struct ServerMain::MessageDataEntry {
 	int from_client_id;
 	int to_client_id;
 	VisibilityType visibility;
@@ -226,11 +226,11 @@ void ServerMain::DeleteClient(const int& id) {
 
 void ServerMain::SendTo(const int& from_client_id, const int& to_client_id,
 		const VisibilityType& visibility, const std::string& data) {
-	auto data_entry = new DataEntry{ from_client_id, to_client_id, visibility, data };
+	auto data_entry = new MessageDataEntry{ from_client_id, to_client_id, visibility, data };
 	{
-		std::lock_guard lock(m_data_queue_mutex);
-		m_data_queue.emplace(data_entry);
-		m_data_queue_cv.notify_one();
+		std::lock_guard lock(m_message_data_queue_mutex);
+		m_message_data_queue.emplace(data_entry);
+		m_message_data_queue_cv.notify_one();
 	}
 }
 
@@ -248,9 +248,10 @@ void ServerMain::Start() {
 
 	std::thread([this]() {
 		while (true) {
-			std::unique_lock<std::mutex> lock(m_data_queue_mutex);
-			m_data_queue_cv.wait(lock, [this]{ return !m_data_queue.empty(); });
-			auto& data_entry = m_data_queue.front();
+			std::unique_lock<std::mutex> lock(m_message_data_queue_mutex);
+			m_message_data_queue_cv.wait(lock, [this] {
+					return !m_message_data_queue.empty(); });
+			auto& data_entry = m_message_data_queue.front();
 			// stop the thread
 			if (data_entry->from_client_id == 0 &&
 					data_entry->visibility == Messages::CV_NULL) {
@@ -279,7 +280,7 @@ void ServerMain::Start() {
 					}
 				}
 			}
-			m_data_queue.pop();
+			m_message_data_queue.pop();
 		}
 	}).detach();
 
