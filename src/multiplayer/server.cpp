@@ -222,15 +222,26 @@ public:
  * Server
  */
 
+void ServerMain::ForEachClient(const std::function<void(ServerSideClient&)>& callback) {
+	if (!running) return;
+	std::lock_guard lock(m_mutex);
+	for (const auto& it : clients) {
+		callback(*it.second);
+	}
+}
+
 void ServerMain::DeleteClient(const int& id) {
+	if (!running) return;
+	std::lock_guard lock(m_mutex);
 	clients.erase(id);
 }
 
 void ServerMain::SendTo(const int& from_client_id, const int& to_client_id,
 		const VisibilityType& visibility, const std::string& data) {
+	if (!running) return;
 	auto data_entry = new MessageDataEntry{ from_client_id, to_client_id, visibility, data };
 	{
-		std::lock_guard lock(m_message_data_queue_mutex);
+		std::lock_guard lock(m_mutex);
 		m_message_data_queue.emplace(data_entry);
 		m_message_data_queue_cv.notify_one();
 	}
@@ -249,8 +260,8 @@ void ServerMain::Start() {
 	running = true;
 
 	std::thread([this]() {
-		while (true) {
-			std::unique_lock<std::mutex> lock(m_message_data_queue_mutex);
+		while (running) {
+			std::unique_lock<std::mutex> lock(m_mutex);
 			m_message_data_queue_cv.wait(lock, [this] {
 					return !m_message_data_queue.empty(); });
 			auto& data_entry = m_message_data_queue.front();
@@ -315,14 +326,16 @@ void ServerMain::Start() {
 }
 
 void ServerMain::Stop() {
-	if (running) {
-		SendTo(0, 0, Messages::CV_NULL, ""); // stop message queue loop
-		for (const auto& it : clients) {
-			it.second->Close();
-		}
-		running = false;
-		acceptor.shutdown();
+	if (!running) return;
+	std::lock_guard lock(m_mutex);
+	running = false;
+	for (const auto& it : clients) {
+		it.second->Close();
 	}
+	acceptor.shutdown();
+	// stop message queue loop
+	m_message_data_queue.emplace(new MessageDataEntry{ 0, 0, Messages::CV_NULL, "" });
+	m_message_data_queue_cv.notify_one();
 }
 
 static ServerMain _instance;

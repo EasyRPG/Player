@@ -23,8 +23,9 @@ class ServerMain {
 	in_port_t addr_port;
 
 	std::queue<std::unique_ptr<MessageDataEntry>> m_message_data_queue;
-	std::mutex m_message_data_queue_mutex;
 	std::condition_variable m_message_data_queue_cv;
+
+	std::mutex m_mutex;
 
 public:
 	ServerMain();
@@ -32,6 +33,7 @@ public:
 	void Start();
 	void Stop();
 
+	void ForEachClient(const std::function<void(ServerSideClient&)>& callback);
 	void DeleteClient(const int& id);
 	void SendTo(const int& from_client_id, const int& to_client_id,
 		const Messages::VisibilityType& visibility, const std::string& data);
