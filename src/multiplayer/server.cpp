@@ -9,6 +9,7 @@ class ServerConnection : public Multiplayer::Connection {
 	int& id;
 	ServerMain* server;
 	TCPSocket tcp_socket{ "Server", MAX_QUEUE_SIZE };
+	std::mutex m_send_mutex;
 
 protected:
 	void HandleData(const char* data, const ssize_t& num_bytes) {
@@ -48,6 +49,7 @@ public:
 	}
 
 	void Send(std::string_view data) override {
+		std::lock_guard lock(m_send_mutex);
 		tcp_socket.Send(data); // send to self
 	}
 
