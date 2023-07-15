@@ -122,6 +122,7 @@ void Game_Multiplayer::InitConnection() {
 
 	connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
 		CUI().SetStatusConnection(true);
+		SendBasicData();
 	});
 	connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
 		CUI().SetStatusConnection(false);
@@ -144,14 +145,7 @@ void Game_Multiplayer::InitConnection() {
 		Disconnect();
 	});
 
-	connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
-		if (p.room_id != room_id) {
-			SwitchRoom(room_id); // wrong room, resend
-			return;
-		}
-		// server syned. accept other players spawn
-		switching_room = false;
-	});
+	// ->> unused code
 	connection.RegisterHandler<SyncSwitchPacket>([this](SyncSwitchPacket p) {
 		int value_bin = (int) Main_Data::game_switches->GetInt(p.switch_id);
 		if (p.sync_type != 1) {
@@ -192,7 +186,8 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterHandler<SyncPicturePacket>([this](SyncPicturePacket p) {
 		sync_picture_names.push_back(p.picture_name);
 	});
-	connection.RegisterHandler<NameListSyncPacket>([this](NameListSyncPacket p) {
+	// <<-
+	connection.RegisterHandler<PictureNameListSyncPacket>([this](PictureNameListSyncPacket p) {
 		std::vector<std::string>* list;
 		switch (p.type) {
 		case 0:
@@ -209,14 +204,22 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterHandler<BattleAnimIdListSyncPacket>([this](BattleAnimIdListSyncPacket p) {
 		sync_battle_anim_ids.assign(p.ids.begin(), p.ids.end());
 	});
-	connection.RegisterHandler<ConnectPacket>([this](ConnectPacket p) {
+	connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
+		if (p.room_id != room_id) {
+			SwitchRoom(room_id); // wrong room, resend
+			return;
+		}
+		// server syned. accept other players spawn
+		switching_room = false;
+	});
+	connection.RegisterHandler<JoinPacket>([this](JoinPacket p) {
 		// I am entering a new room and don't care about players in the old(server side) room
 		if (switching_room)
 			return;
 		if (players.find(p.id) == players.end())
 			SpawnOtherPlayer(p.id);
 	});
-	connection.RegisterHandler<DisconnectPacket>([this](DisconnectPacket p) {
+	connection.RegisterHandler<LeavePacket>([this](LeavePacket p) {
 		auto it = players.find(p.id);
 		if (it == players.end()) return;
 		auto& player = it->second;
@@ -454,10 +457,8 @@ void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
 	}
 	Reset();
 	dc_players.clear();
-	if (connection.IsConnected()) {
-		connection.SendPacketAsync<RoomPacket>(room_id);
+	if (connection.IsConnected())
 		SendBasicData();
-	}
 }
 
 void Game_Multiplayer::Reset() {
@@ -494,6 +495,7 @@ void Game_Multiplayer::SendBasicData() {
 	connection.SendPacketAsync<HiddenPacket>(player->IsSpriteHidden());
 	auto sysn = Main_Data::game_system->GetSystemName();
 	connection.SendPacketAsync<SystemPacket>(ToString(sysn));
+	connection.SendPacketAsync<RoomPacket>(room_id);
 }
 
 void Game_Multiplayer::MainPlayerMoved(int dir) {

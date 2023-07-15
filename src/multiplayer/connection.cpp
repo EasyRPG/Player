@@ -1,5 +1,4 @@
 #include "connection.h"
-#include "../output.h"
 
 using namespace Multiplayer;
 
@@ -8,7 +7,8 @@ void Connection::ParseAddress(std::string address, std::string& host, uint16_t& 
 	size_t pos = 0;
 	pos = address.find(delimiter);
 	if (pos == std::string::npos) {
-		std::terminate();
+		host = address;
+		return;
 	}
 	host = address.substr(0, pos);
 	address.erase(0, pos + delimiter.length());
@@ -50,7 +50,7 @@ void Connection::Dispatch(std::string_view name, ParameterList args) {
 }
 
 Connection::ParameterList Connection::Split(std::string_view src,
-	std::string_view delim) {
+		std::string_view delim) {
 	std::vector<std::string_view> r;
 	size_t p{}, p2{};
 	while ((p = src.find(delim, p)) != src.npos) {

@@ -11,6 +11,7 @@
 #include <string>
 
 #include "packet.h"
+#include "../output.h"
 
 namespace Multiplayer {
 
@@ -40,8 +41,16 @@ public:
 	>>>
 	void RegisterHandler(std::function<void (M&)> h) {
 		handlers.emplace(M::packet_name, [this, h](const ParameterList& args) {
-			M pack {args};
-			std::invoke(h, pack);
+			std::unique_ptr<M> pack;
+			bool invoke = true;
+			try {
+				pack.reset(new M(args));
+			} catch (const std::exception& e) {
+				invoke = false;
+				Output::Debug("Connection: RegisterHandler exception: {}", e.what());
+			}
+			if (invoke)
+				std::invoke(h, *pack);
 		});
 	}
 

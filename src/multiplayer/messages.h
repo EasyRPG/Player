@@ -60,36 +60,38 @@ namespace Messages {
 	};
 
 	/**
-	 * Connect
+	 * Join
 	 */
 
-	class ConnectPacket : public PlayerPacket {
+	class JoinPacket : public PlayerPacket {
 	public:
-		constexpr static std::string_view packet_name{ "c" };
-		ConnectPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
+		constexpr static std::string_view packet_name{ "j" };
+		JoinPacket() : PlayerPacket(packet_name) {}
+		JoinPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
 			return r;
 		}
-		ConnectPacket(const ParameterList& v)
+		JoinPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)) {}
 	};
 
 	/**
-	 * Disconnect
+	 * Leave
 	 */
 
-	class DisconnectPacket : public PlayerPacket {
+	class LeavePacket : public PlayerPacket {
 	public:
-		constexpr static std::string_view packet_name{ "d" };
-		DisconnectPacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
+		constexpr static std::string_view packet_name{ "l" };
+		LeavePacket() : PlayerPacket(packet_name) {}
+		LeavePacket(int _id) : PlayerPacket(packet_name, _id) {} // S2C
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
 			return r;
 		}
-		DisconnectPacket(const ParameterList& v)
+		LeavePacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)) {}
 	};
 
@@ -223,7 +225,7 @@ namespace Messages {
 		};
 		FacingPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)), facing(Decode<int>(v.at(1))) {}
-		int facing;
+		int facing{0};
 	};
 
 	/**
@@ -246,7 +248,7 @@ namespace Messages {
 		};
 		SpeedPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)), speed(Decode<int>(v.at(1))) {}
-		int speed;
+		int speed{0};
 	};
 
 	/**
@@ -271,7 +273,7 @@ namespace Messages {
 			: PlayerPacket(packet_name, v.at(0)),
 			name(v.at(1)), index(Decode<int>(v.at(2))) {}
 		std::string name;
-		int index;
+		int index{-1};
 	};
 
 	/**
@@ -364,7 +366,7 @@ namespace Messages {
 		HiddenPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)),
 			hidden_bin(Decode<int>(v.at(1))) {}
-		int hidden_bin;
+		int hidden_bin{0};
 	};
 
 	/**
@@ -387,7 +389,7 @@ namespace Messages {
 		};
 		SystemPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)), name(v.at(1)) {}
-		std::string name;
+		std::string name{""};
 	};
 
 	/**
@@ -463,6 +465,7 @@ namespace Messages {
 			pan_x(Decode<int>(v.at(6))), pan_y(Decode<int>(v.at(7))) {}
 		// skip Game_Pictures::Params&
 		PicturePacket& operator=(const PicturePacket& o) {
+			id = o.id;
 			pic_id = o.pic_id;
 			map_x = o.map_x; map_y = o.map_y;
 			pan_x = o.pan_x; pan_y = o.pan_y;
@@ -582,6 +585,41 @@ namespace Messages {
 		int anim_id;
 	};
 
+	/**
+	 * Allowed Picture Names
+	 */
+
+	class PictureNameListSyncPacket : public Packet {
+	public:
+		constexpr static std::string_view packet_name{ "pns" };
+		PictureNameListSyncPacket() : Packet(packet_name) {}
+		PictureNameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
+			auto it = v.begin();
+			type = Decode<int>(*it);
+			++it;
+			names.assign(it, v.end());
+		}
+		int type;
+		std::vector<std::string> names;
+	};
+
+	/**
+	 * Allowed Battle Animation Ids
+	 */
+
+	class BattleAnimIdListSyncPacket : public Packet {
+	public:
+		constexpr static std::string_view packet_name{ "bas" };
+		BattleAnimIdListSyncPacket() : Packet(packet_name) {}
+		BattleAnimIdListSyncPacket(const ParameterList& v) : Packet(packet_name) {
+			std::transform(v.begin(), v.end(), std::back_inserter(ids),
+				[&](std::string_view s) {
+					return Decode<int>(s);
+				});
+		}
+		std::vector<int> ids;
+	};
+
 	// ->> unused code
 
 	/**
@@ -647,41 +685,6 @@ namespace Messages {
 		SyncPicturePacket(const ParameterList& v)
 			: Packet(packet_name), picture_name(v.at(0)) {}
 		std::string picture_name;
-	};
-
-	/**
-	 * Sync NameList
-	 */
-
-	class NameListSyncPacket : public Packet {
-	public:
-		constexpr static std::string_view packet_name{ "pns" };
-		NameListSyncPacket() : Packet(packet_name) {}
-		NameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
-			auto it = v.begin();
-			type = Decode<int>(*it);
-			++it;
-			names.assign(it, v.end());
-		}
-		int type;
-		std::vector<std::string> names;
-	};
-
-	/**
-	 * Sync Battle Animation Id List
-	 */
-
-	class BattleAnimIdListSyncPacket : public Packet {
-	public:
-		constexpr static std::string_view packet_name{ "bas" };
-		BattleAnimIdListSyncPacket() : Packet(packet_name) {}
-		BattleAnimIdListSyncPacket(const ParameterList& v) : Packet(packet_name) {
-			std::transform(v.begin(), v.end(), std::back_inserter(ids),
-				[&](std::string_view s) {
-					return Decode<int>(s);
-				});
-		}
-		std::vector<int> ids;
 	};
 
 	// <<-

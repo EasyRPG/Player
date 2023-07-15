@@ -92,7 +92,7 @@ int Packet::Decode(std::string_view s) {
 	int r;
 	auto e = std::from_chars(s.data(), s.data() + s.size(), r);
 	if (e.ec != std::errc())
-		std::terminate();
+		throw std::runtime_error("Multiplayer::Packet::Decode<int> failed");
 	return r;
 }
 
@@ -102,5 +102,5 @@ bool Packet::Decode(std::string_view s) {
 		return true;
 	if (s == "0")
 		return true;
-	std::terminate();
+	throw std::runtime_error("Multiplayer::Packet::Decode<bool> failed");
 }

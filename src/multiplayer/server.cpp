@@ -11,7 +11,10 @@ class ServerConnection : public Connection {
 	ServerMain* server;
 	TCPSocket tcp_socket{ "Server", MAX_QUEUE_SIZE };
 	std::mutex m_send_mutex;
-	std::queue<std::unique_ptr<Packet>> m_queue;
+
+	std::queue<std::unique_ptr<Packet>> m_self_queue;
+	std::queue<std::unique_ptr<Packet>> m_local_queue;
+	std::queue<std::unique_ptr<Packet>> m_global_queue;
 
 protected:
 	void HandleData(const char* data, const ssize_t& num_bytes) {
@@ -55,33 +58,59 @@ public:
 		tcp_socket.Send(data); // send to self
 	}
 
-	void SendLocal(const std::string& data) {
-		server->SendTo(id, 0, CV_LOCAL, data);
+	template<typename T>
+	void SendPacketAsync(std::queue<std::unique_ptr<Packet>>& queue,
+			const T& _p) {
+		auto p = new T;
+		*p = _p;
+		queue.emplace(p);
 	}
 
 	template<typename T>
-	void SendPacketAsync(const T& _p) {
-		auto p = new T;
-		*p = _p;
-		m_queue.emplace(p);
+	void SendSelfPacketAsync(const T& p) {
+		SendPacketAsync(m_self_queue, p);
 	}
 
-	void FlushQueue() {
+	template<typename T>
+	void SendLocalPacketAsync(const T& p) {
+		SendPacketAsync(m_local_queue, p);
+	}
+
+	template<typename T>
+	void SendGlobalPacketAsync(const T& p) {
+		SendPacketAsync(m_global_queue, p);
+	}
+
+	void FlushQueue(std::queue<std::unique_ptr<Packet>>& queue,
+			const VisibilityType& visibility, bool self = false) {
 		std::string bulk;
-		while (!m_queue.empty()) {
-			auto& e = m_queue.front();
+		while (!queue.empty()) {
+			auto& e = queue.front();
 			auto data = e->ToBytes();
 			if (bulk.size() + data.size() > MAX_QUEUE_SIZE) {
-				SendLocal(bulk);
+				if (self)
+					Send(bulk);
+				else
+					server->SendTo(id, 0, visibility, bulk);
 				bulk.clear();
 			}
 			if (!bulk.empty())
 				bulk += Packet::MSG_DELIM;
 			bulk += data;
-			m_queue.pop();
+			queue.pop();
 		}
-		if (!bulk.empty())
-			SendLocal(bulk);
+		if (!bulk.empty()) {
+			if (self)
+				Send(bulk);
+			else
+				server->SendTo(id, 0, visibility, bulk);
+		}
+	}
+
+	void FlushQueue() {
+		FlushQueue(m_global_queue, CV_GLOBAL);
+		FlushQueue(m_local_queue, CV_LOCAL);
+		FlushQueue(m_self_queue, CV_NULL, true);
 	}
 };
 
@@ -97,105 +126,185 @@ struct ServerMain::MessageDataEntry {
 };
 
 class ServerSideClient {
+	struct LastState {
+		MovePacket move;
+		FacingPacket facing;
+		SpeedPacket speed;
+		SpritePacket sprite;
+		RepeatingFlashPacket repeating_flash;
+		HiddenPacket hidden;
+		SystemPacket system;
+		ShowPicturePacket picture;
+
+		bool has_repeating_flash{ false };
+		bool has_picture{ false };
+	};
+
 	ServerMain* server;
 
 	int id{0};
-	int room_id{0};
 	ServerConnection connection;
+
+	int room_id{0};
+	std::string name{""};
+	LastState last;
+
+	void SendSelfRoomInfoAsync() {
+		server->ForEachClient([this](ServerSideClient& other) {
+			if (other.id == id || other.room_id != room_id)
+				return;
+			SendSelfAsync(JoinPacket(other.id));
+			SendSelfAsync(other.last.move);
+			if (other.last.facing.facing != 0)
+				SendSelfAsync(other.last.facing);
+			if (other.last.speed.speed != 0)
+				SendSelfAsync(other.last.speed);
+			if (name != "")
+				SendSelfAsync(NametagPacket(other.id, name));
+			if (other.last.sprite.index != -1)
+				SendSelfAsync(other.last.sprite);
+			if (other.last.has_repeating_flash)
+				SendSelfAsync(other.last.repeating_flash);
+			if (other.last.hidden.hidden_bin == 1)
+				SendSelfAsync(other.last.hidden);
+			if (other.last.system.name != "")
+				SendSelfAsync(other.last.system);
+			if (other.last.has_picture)
+				SendSelfAsync(other.last.picture);
+		});
+	}
 
 	void InitConnection() {
 		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket& p) {
-			SendBack(p);
+			SendSelfAsync(p);
 		});
 
 		using SystemMessage = Connection::SystemMessage;
 
 		connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
-			SendGlobal(ConnectPacket(id));
 		});
 		connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
-			SendGlobal(DisconnectPacket(id));
+			SendGlobal(LeavePacket(id));
 		});
 
 		connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
+			SendGlobalAsync(LeavePacket(id));
 			room_id = p.room_id;
-			SendLocalAsync(p);
-		});
-		connection.RegisterHandler<NametagPacket>([this](NametagPacket p) {
-			SendLocalAsync(p);
+			SendSelfAsync(p);
+			SendSelfRoomInfoAsync();
+			SendLocalAsync(JoinPacket(id));
+			SendLocalAsync(last.move);
+			if (name != "")
+				SendLocalAsync(NametagPacket(id, name));
 		});
 		connection.RegisterHandler<ChatPacket>([this](ChatPacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket p) {
-			SendLocalAsync(p);
+			last.move.x = p.x;
+			last.move.y = p.y;
 		});
 		connection.RegisterHandler<MovePacket>([this](MovePacket p) {
+			p.id = id;
+			last.move = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<JumpPacket>([this](JumpPacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<FacingPacket>([this](FacingPacket p) {
+			p.id = id;
+			last.facing = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<SpeedPacket>([this](SpeedPacket p) {
+			p.id = id;
+			last.speed = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<SpritePacket>([this](SpritePacket p) {
+			p.id = id;
+			last.sprite = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<FlashPacket>([this](FlashPacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<RepeatingFlashPacket>([this](RepeatingFlashPacket p) {
+			p.id = id;
+			last.repeating_flash = p;
+			last.has_repeating_flash = true;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<RemoveRepeatingFlashPacket>([this](RemoveRepeatingFlashPacket p) {
+			p.id = id;
+			last.has_repeating_flash = false;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<HiddenPacket>([this](HiddenPacket p) {
+			p.id = id;
+			last.hidden = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<SystemPacket>([this](SystemPacket p) {
+			p.id = id;
+			last.system = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<SEPacket>([this](SEPacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<ShowPicturePacket>([this](ShowPicturePacket p) {
+			p.id = id;
+			last.picture = p;
+			last.has_picture = true;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<MovePicturePacket>([this](MovePicturePacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket p) {
+			p.id = id;
+			last.has_picture = false;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket p) {
+			p.id = id;
 			SendLocalAsync(p);
 		});
 
 		connection.RegisterSystemHandler(SystemMessage::EOM, [this](Connection& _) {
-			FlushLocalQueue();
+			FlushQueue();
 		});
 	}
 
-	void SendBack(const Packet& p) {
-		connection.SendPacket(p);
+	template<typename T>
+	void SendSelfAsync(const T& p) {
+		connection.SendSelfPacketAsync(p);
 	}
 
 	template<typename T>
 	void SendLocalAsync(const T& p) {
-		connection.SendPacketAsync(p);
+		connection.SendLocalPacketAsync(p);
 	}
 
-	void SendGlobal(const Packet& p) {
-		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes());
+	template<typename T>
+	void SendGlobalAsync(const T& p) {
+		connection.SendGlobalPacketAsync(p);
 	}
 
-	void FlushLocalQueue() {
+	void FlushQueue() {
 		connection.FlushQueue();
+	}
+
+	template<typename T>
+	void SendGlobal(const T& p) {
+		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes());
 	}
 
 public:
@@ -279,25 +388,26 @@ void ServerMain::Start() {
 				break;
 			}
 			// check if the client is online
+			ServerSideClient* from_client = nullptr;
 			const auto& from_client_it = clients.find(data_entry->from_client_id);
 			if (from_client_it != clients.end()) {
-				auto& from_client = from_client_it->second;
-				// send to global and local
-				if (data_entry->to_client_id == 0) {
-					// enter on every client
-					for (const auto& it : clients) {
-						auto& to_client = it.second;
-						// exclude self
-						if (data_entry->from_client_id == to_client->GetId())
-							continue;
-						// send to local
-						if (data_entry->visibility == Messages::CV_LOCAL &&
-								from_client->GetRoomId() == to_client->GetRoomId()) {
-							to_client->Send(data_entry->data);
-						// send to global
-						} else if (data_entry->visibility == Messages::CV_GLOBAL) {
-							to_client->Send(data_entry->data);
-						}
+				from_client = from_client_it->second.get();
+			}
+			// send to global and local
+			if (data_entry->to_client_id == 0) {
+				// enter on every client
+				for (const auto& it : clients) {
+					auto& to_client = it.second;
+					// exclude self
+					if (data_entry->from_client_id == to_client->GetId())
+						continue;
+					// send to local
+					if (data_entry->visibility == Messages::CV_LOCAL &&
+							from_client && from_client->GetRoomId() == to_client->GetRoomId()) {
+						to_client->Send(data_entry->data);
+					// send to global
+					} else if (data_entry->visibility == Messages::CV_GLOBAL) {
+						to_client->Send(data_entry->data);
 					}
 				}
 			}
