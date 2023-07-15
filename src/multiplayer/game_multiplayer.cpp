@@ -655,7 +655,9 @@ void Game_Multiplayer::ApplyPlayerBattleAnimUpdates() {
 void Game_Multiplayer::ApplyFlash(int r, int g, int b, int power, int frames) {
 	for (auto& p : players) {
 		p.second.ch->Flash(r, g, b, power, frames);
-		p.second.chat_name->SetFlashFramesLeft(frames);
+		auto chat_name = p.second.chat_name.get();
+		if (chat_name)
+			chat_name->SetFlashFramesLeft(frames);
 	}
 }
 
@@ -664,7 +666,9 @@ void Game_Multiplayer::ApplyRepeatingFlashes() {
 		if (players.find(rf.first) != players.end()) {
 			std::array<int, 5> flash_array = rf.second;
 			players[rf.first].ch->Flash(flash_array[0], flash_array[1], flash_array[2], flash_array[3], flash_array[4]);
-			players[rf.first].chat_name->SetFlashFramesLeft(flash_array[4]);
+			auto chat_name = players[rf.first].chat_name.get();
+			if (chat_name)
+				chat_name->SetFlashFramesLeft(flash_array[4]);
 		}
 	}
 }
@@ -672,7 +676,9 @@ void Game_Multiplayer::ApplyRepeatingFlashes() {
 void Game_Multiplayer::ApplyTone(Tone tone) {
 	for (auto& p : players) {
 		p.second.sprite->SetTone(tone);
-		p.second.chat_name->SetEffectsDirty();
+		auto chat_name = p.second.chat_name.get();
+		if (chat_name)
+			chat_name->SetEffectsDirty();
 	}
 }
 
@@ -777,7 +783,9 @@ void Game_Multiplayer::Update() {
 						}
 					}
 				}
-				p.second.chat_name->SetTransparent(overlap);
+				auto chat_name = p.second.chat_name.get();
+				if (chat_name)
+					chat_name->SetTransparent(overlap);
 			}
 		}
 
