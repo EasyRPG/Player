@@ -1,52 +1,19 @@
 #include <thread>
 #include "client_connection.h"
 #include "../output.h"
-#include "sockpp/tcp_connector.h"
-#include "tcp_socket.h"
 
-/**
- * use the IMPL to avoid to change the header file
- * - add custom members to the ClientConnection
- */
-struct ClientConnection::IMPL {
-	ClientConnection* connection;
-
-	sockpp::tcp_connector connector;
-	std::string addr_host;
-	in_port_t addr_port;
-
-	TCPSocket tcp_socket{ "Client", MAX_QUEUE_SIZE };
-
-	void HandleOpen() {
-		connection->SetConnected(true);
-		connection->DispatchSystem(SystemMessage::OPEN);
-	}
-
-	void HandleClose() {
-		connection->SetConnected(false);
-		connection->DispatchSystem(SystemMessage::CLOSE);
-	}
-
-	void HandleData(const char* data, const size_t& num_bytes) {
-		std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
-		connection->DispatchMessages(std::move(_data));
-	}
-};
-
-ClientConnection::ClientConnection() : impl(new IMPL) {
-	impl->connection = this;
+ClientConnection::ClientConnection() {
 	// This is primarily required for Win32, to startup the WinSock DLL.
 	// On Unix-style platforms it disables SIGPIPE signals.
 	sockpp::initialize();
 }
 // ->> unused code
 ClientConnection::ClientConnection(ClientConnection&& o)
-	: Connection(std::move(o)), impl(std::move(o.impl)) {}
+	: Connection(std::move(o)) {}
 ClientConnection& ClientConnection::operator=(ClientConnection&& o) {
 	Connection::operator=(std::move(o));
 	if (this != &o) {
 		Close();
-		impl = std::move(o.impl);
 	}
 	return *this;
 }
@@ -56,38 +23,80 @@ ClientConnection::~ClientConnection() {
 }
 
 void ClientConnection::SetAddress(std::string_view address) {
-	ParseAddress(address.data(), impl->addr_host, impl->addr_port);
+	ParseAddress(address.data(), addr_host, addr_port);
+}
+
+void ClientConnection::HandleOpen() {
+	connecting = false;
+	connected = true;
+	std::lock_guard lock(m_receive_mutex);
+	if (m_system_queue.empty())
+		m_system_queue.push(SystemMessage::OPEN);
+}
+
+void ClientConnection::HandleClose() {
+	connecting = false;
+	connected = false;
+	std::lock_guard lock(m_receive_mutex);
+	if (m_system_queue.empty())
+		m_system_queue.push(SystemMessage::CLOSE);
+}
+
+void ClientConnection::HandleData(const char* data, const size_t& num_bytes) {
+	std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
+	std::lock_guard lock(m_receive_mutex);
+	if (m_data_queue.size() > 100) {
+		m_data_queue.pop();
+	}
+	m_data_queue.push(std::move(std::string(_data)));
 }
 
 void ClientConnection::Open() {
-	if (IsConnected())
+	if (connected || connecting)
 		return;
-	impl->connector = sockpp::tcp_connector({impl->addr_host, impl->addr_port}, std::chrono::seconds(6));
-	if (!impl->connector) {
-		impl->HandleClose();
-		Output::Warning("MP: Error connecting to server: {}", impl->connector.last_error_str());
-		return;
-	}
-	impl->tcp_socket.InitSocket(impl->connector.clone());
-	impl->tcp_socket.OnData = [this](auto p1, auto& p2) { impl->HandleData(p1, p2); };
-	impl->tcp_socket.OnOpen = [this]() { impl->HandleOpen(); };
-	impl->tcp_socket.OnClose = [this]() { impl->HandleClose(); };
-	impl->tcp_socket.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
-	impl->tcp_socket.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
-	impl->tcp_socket.CreateConnectionThread();
+	connecting = true;
+	std::thread([this]() {
+		connector = sockpp::tcp_connector({addr_host, addr_port}, std::chrono::seconds(6));
+		if (!connector) {
+			HandleClose();
+			Output::Warning("MP: Error connecting to server: {}", connector.last_error_str());
+			return;
+		}
+		tcp_socket.InitSocket(connector.clone());
+		tcp_socket.OnData = [this](auto p1, auto& p2) { HandleData(p1, p2); };
+		tcp_socket.OnOpen = [this]() { HandleOpen(); };
+		tcp_socket.OnClose = [this]() { HandleClose(); };
+		tcp_socket.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
+		tcp_socket.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
+		tcp_socket.CreateConnectionThread();
+	}).detach();
 }
 
 void ClientConnection::Close() {
-	if (!IsConnected())
+	connecting = false;
+	if (!connected)
 		return;
-	impl->tcp_socket.Close();
-	Connection::Close(); // empty the queue
+	tcp_socket.Close();
+	m_queue = decltype(m_queue){};
+	connected = false;
 }
 
 void ClientConnection::Send(std::string_view data) {
-	if (!IsConnected())
+	if (!connected)
 		return;
-	impl->tcp_socket.Send(data);
+	tcp_socket.Send(data);
+}
+
+void ClientConnection::Receive() {
+	std::lock_guard lock(m_receive_mutex);
+	while (!m_system_queue.empty()) {
+		DispatchSystem(m_system_queue.front());
+		m_system_queue.pop();
+	}
+	while (!m_data_queue.empty()) {
+		DispatchMessages(m_data_queue.front());
+		m_data_queue.pop();
+	}
 }
 
 void ClientConnection::FlushQueue() {
@@ -116,7 +125,7 @@ void ClientConnection::FlushQueue() {
 				bulk.clear();
 			}
 			if (!bulk.empty())
-				bulk += Multiplayer::Packet::MSG_DELIM;
+				bulk += Packet::MSG_DELIM;
 			bulk += data;
 			m_queue.pop();
 		}

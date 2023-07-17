@@ -49,9 +49,12 @@ public:
 
 	void RefreshTheme() { }
 
-	void SetConnectionStatus(bool status) {
+	void SetConnectionStatus(bool status, bool connecting = false) {
 		std::string conn_label = "";
-		conn_label = status ? "Connected" : "Disconnected";
+		if (connecting)
+			conn_label = "Connecting";
+		else
+			conn_label = status ? "Connected" : "Disconnected";
 
 		auto c_rect = Text::GetSize(*Font::Default(), conn_label);
 		conn_status = Bitmap::Create(c_rect.width+1, c_rect.height+1, true);
@@ -670,8 +673,8 @@ public:
 		d_log.RemoveChatEntry(msg);
 	}
 
-	void SetStatusConnection(bool conn) {
-		d_status.SetConnectionStatus(conn);
+	void SetStatusConnection(bool conn, bool connecting) {
+		d_status.SetConnectionStatus(conn, connecting);
 	}
 
 	void SetStatusRoom(unsigned int room_id) {
@@ -985,10 +988,10 @@ void ChatUi::GotInfo(std::string msg) {
 	AddLogEntry("", trim, "", Messages::CV_LOCAL);
 }
 
-void ChatUi::SetStatusConnection(bool status) {
+void ChatUi::SetStatusConnection(bool status, bool connecting) {
 	if(chat_box == nullptr)
 		return;
-	chat_box->SetStatusConnection(status);
+	chat_box->SetStatusConnection(status, connecting);
 }
 
 void ChatUi::SetStatusRoom(unsigned int room_id) {

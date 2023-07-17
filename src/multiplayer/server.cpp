@@ -3,28 +3,30 @@
 #include "../output.h"
 #include "tcp_socket.h"
 
+using namespace Multiplayer;
 using namespace Messages;
 
-class ServerConnection : public Multiplayer::Connection {
+class ServerConnection : public Connection {
 	int& id;
 	ServerMain* server;
 	TCPSocket tcp_socket{ "Server", MAX_QUEUE_SIZE };
 	std::mutex m_send_mutex;
+	std::queue<std::unique_ptr<Packet>> m_queue;
 
 protected:
 	void HandleData(const char* data, const ssize_t& num_bytes) {
+		if (num_bytes > MAX_QUEUE_SIZE)
+			return;
 		std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
 		DispatchMessages(std::move(_data));
 		DispatchSystem(SystemMessage::EOM);
 	}
 
 	void HandleOpen() {
-		SetConnected(true);
 		DispatchSystem(SystemMessage::OPEN);
 	}
 
 	void HandleClose() {
-		SetConnected(false);
 		DispatchSystem(SystemMessage::CLOSE);
 		server->DeleteClient(id);
 	}
@@ -57,7 +59,14 @@ public:
 		server->SendTo(id, 0, CV_LOCAL, data);
 	}
 
-	void FlushQueue() override {
+	template<typename T>
+	void SendPacketAsync(const T& _p) {
+		auto p = new T;
+		*p = _p;
+		m_queue.emplace(p);
+	}
+
+	void FlushQueue() {
 		std::string bulk;
 		while (!m_queue.empty()) {
 			auto& e = m_queue.front();
@@ -67,7 +76,7 @@ public:
 				bulk.clear();
 			}
 			if (!bulk.empty())
-				bulk += Multiplayer::Packet::MSG_DELIM;
+				bulk += Packet::MSG_DELIM;
 			bulk += data;
 			m_queue.pop();
 		}
@@ -99,7 +108,6 @@ class ServerSideClient {
 			SendBack(p);
 		});
 
-		using Connection = Multiplayer::Connection;
 		using SystemMessage = Connection::SystemMessage;
 
 		connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
@@ -252,7 +260,7 @@ ServerMain::ServerMain() {
 }
 
 void ServerMain::SetBindAddress(std::string address) {
-	Multiplayer::Connection::ParseAddress(address, addr_host, addr_port);
+	Connection::ParseAddress(address, addr_host, addr_port);
 }
 
 void ServerMain::Start() {
@@ -299,7 +307,7 @@ void ServerMain::Start() {
 
 	std::thread([this]() {
 		acceptor = sockpp::tcp_acceptor(sockpp::inet_address(addr_host, addr_port),
-				Multiplayer::Connection::MAX_QUEUE_SIZE);
+				Connection::MAX_QUEUE_SIZE);
 		if (!acceptor) {
 			Stop();
 			Output::Warning("Server: Failed to create the acceptor to {}:{}: {}",

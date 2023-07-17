@@ -19,11 +19,6 @@ void Connection::SendPacket(const Packet& p) {
 	Send(p.ToBytes());
 }
 
-void Connection::Close() {
-	m_queue = decltype(m_queue){};
-	SetConnected(false);
-}
-
 void Connection::DispatchMessages(const std::string_view data) {
 	std::vector<std::string_view> mstrs = Split(data, Packet::MSG_DELIM);
 	for (auto& mstr : mstrs) {

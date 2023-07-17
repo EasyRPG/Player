@@ -24,6 +24,7 @@ public:
 	void MapQuit();
 	void Quit();
 	void Update();
+	void MapUpdate();
 	void SendBasicData();
 	void MainPlayerMoved(int dir);
 	void MainPlayerFacingChanged(int dir);

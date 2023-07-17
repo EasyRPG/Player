@@ -20,31 +20,19 @@ public:
 
 	static void ParseAddress(std::string address, std::string& host, uint16_t& port);
 
-	Connection() : connected(false) {}
+	Connection() {}
 	Connection(const Connection&) = delete;
 	Connection(Connection&&) = default;
 	Connection& operator=(const Connection&) = delete;
 	Connection& operator=(Connection&&) = default;
 
-	using ParameterList = std::vector<std::string_view>;
+	virtual void Open() = 0;
+	virtual void Close() = 0;
+	virtual void Send(std::string_view data) = 0;
 
 	void SendPacket(const Packet& p);
-	template<typename T, typename... Args>
-	void SendPacketAsync(Args... args) {
-		m_queue.emplace(new T(args...));
-	}
-	template<typename T>
-	void SendPacketAsync(const T& _p) {
-		auto p = new T;
-		*p = _p;
-		m_queue.emplace(p);
-	}
 
-	virtual void Open() = 0;
-	virtual void Close();
-
-	virtual void Send(std::string_view data) = 0;
-	virtual void FlushQueue() {};
+	using ParameterList = std::vector<std::string_view>;
 
 	template<typename M, typename = std::enable_if_t<std::conjunction_v<
 		std::is_convertible<M, Packet>,
@@ -70,8 +58,6 @@ public:
 	void DispatchMessages(const std::string_view data);
 	void Dispatch(std::string_view name, ParameterList args = ParameterList());
 
-	bool IsConnected() const { return connected; }
-
 	virtual ~Connection() = default;
 
 	void SetKey(uint32_t k) { key = std::move(k); }
@@ -80,10 +66,6 @@ public:
 	static std::vector<std::string_view> Split(std::string_view src, std::string_view delim = Packet::PARAM_DELIM);
 
 protected:
-	bool connected;
-	std::queue<std::unique_ptr<Packet>> m_queue;
-
-	void SetConnected(bool v) { connected = v; }
 	void DispatchSystem(SystemMessage m);
 
 	std::map<std::string, std::function<void (const ParameterList&)>> handlers;

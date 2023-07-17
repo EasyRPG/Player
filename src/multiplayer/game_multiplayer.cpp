@@ -120,7 +120,11 @@ void Game_Multiplayer::InitConnection() {
 	using SystemMessage = ClientConnection::SystemMessage;
 	using Connection = Multiplayer::Connection;
 
+	connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
+		CUI().SetStatusConnection(true);
+	});
 	connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
+		CUI().SetStatusConnection(false);
 		if (active) {
 			Output::Debug("MP: connection is closed");
 			if (reconnect_wait) return;
@@ -418,18 +422,21 @@ void Game_Multiplayer::InitConnection() {
 }
 
 void Game_Multiplayer::Connect() {
+	if (connection.IsConnected()) return;
 	active = true;
 	connection.SetAddress(server_address);
+	CUI().SetStatusConnection(false, true);
 	connection.Open();
 	if (room_id != -1)
 		SwitchRoom(room_id);
 }
 
 void Game_Multiplayer::Disconnect() {
+	if (!connection.IsConnected()) return;
 	active = false;
-	CUI().Refresh();
 	Reset();
 	connection.Close();
+	CUI().SetStatusConnection(false);
 }
 
 void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
@@ -699,6 +706,12 @@ void Game_Multiplayer::ApplyScreenTone() {
 }
 
 void Game_Multiplayer::Update() {
+	if (active) {
+		connection.Receive();
+	}
+}
+
+void Game_Multiplayer::MapUpdate() {
 	if (active) {
 		if (last_flash_frame_index > -1 && frame_index > last_flash_frame_index) {
 			connection.SendPacketAsync<RemoveRepeatingFlashPacket>();

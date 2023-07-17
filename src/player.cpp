@@ -351,6 +351,7 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+	GMI().Update();
 	CUI().Update();
 
 	// Game events can query full screen status and change their behavior, so this needs to

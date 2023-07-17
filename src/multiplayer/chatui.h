@@ -12,7 +12,7 @@ public:
 
 	void GotMessage(std::string name, std::string trip, std::string msg, std::string src);
 	void GotInfo(std::string msg);
-	void SetStatusConnection(bool status);
+	void SetStatusConnection(bool status, bool connecting = false);
 	void SetStatusRoom(unsigned int room_id);
 };
 
