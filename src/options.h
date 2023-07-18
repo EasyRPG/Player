@@ -56,7 +56,7 @@
  * Pause the game process when the player window
  * looses its focus.
  */
-#define PAUSE_GAME_WHEN_FOCUS_LOST 1
+#define PAUSE_GAME_WHEN_FOCUS_LOST 0
 
 /**
  * Pause the audio process when the player window

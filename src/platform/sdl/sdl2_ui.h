@@ -150,6 +150,8 @@ private:
 	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
 	std::unique_ptr<AudioInterface> audio_;
+
+	int old_focused_fps_limit = -1;
 };
 
 #endif
