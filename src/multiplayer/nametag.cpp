@@ -1,4 +1,4 @@
-#include "chatname.h"
+#include "nametag.h"
 #include "../cache.h"
 #include "../font.h"
 #include "../drawable_mgr.h"

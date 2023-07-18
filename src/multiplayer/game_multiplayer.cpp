@@ -32,7 +32,7 @@
 #include "../player.h"
 #include "../cache.h"
 #include "chatui.h"
-#include "chatname.h"
+#include "nametag.h"
 #include "game_playerother.h"
 #include "playerother.h"
 #include "messages.h"

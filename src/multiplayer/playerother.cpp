@@ -5,7 +5,7 @@
 #include "../sprite_character.h"
 #include "../battle_animation.h"
 #include "game_playerother.h"
-#include "chatname.h"
+#include "nametag.h"
 
 PlayerOther PlayerOther::Shadow(int x, int y) {
 	PlayerOther po;
