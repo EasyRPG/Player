@@ -1,5 +1,5 @@
-#ifndef EP_CHATNAME_H
-#define EP_CHATNAME_H
+#ifndef EP_NAMETAG_H
+#define EP_NAMETAG_H
 
 #include <queue>
 
@@ -7,9 +7,9 @@
 
 struct PlayerOther;
 
-class ChatName : public Drawable {
+class NameTag : public Drawable {
 public:
-	ChatName(int id, PlayerOther& player, std::string nickname);
+	NameTag(int id, PlayerOther& player, std::string nickname);
 
 	void Draw(Bitmap& dst) override;
 
@@ -41,15 +41,15 @@ private:
 	int GetSpriteYOffset();
 };
 
-inline void ChatName::SetEffectsDirty() {
+inline void NameTag::SetEffectsDirty() {
 	effects_dirty = true;
 };
 
-inline void ChatName::SetFlashFramesLeft(int frames) {
+inline void NameTag::SetFlashFramesLeft(int frames) {
 	flash_frames_left = frames;
 };
 
-inline void ChatName::SetBaseOpacity(int val) {
+inline void NameTag::SetBaseOpacity(int val) {
 	base_opacity = std::clamp(val, 0, 32);
 };
 

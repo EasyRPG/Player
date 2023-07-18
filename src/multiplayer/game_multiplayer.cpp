@@ -220,7 +220,7 @@ void Game_Multiplayer::InitConnection() {
 		auto it = players.find(p.id);
 		if (it == players.end()) return;
 		auto& player = it->second;
-		if (player.chat_name) {
+		if (player.name_tag) {
 			auto scene_map = Scene::Find(Scene::SceneType::Map);
 			if (!scene_map) {
 				Output::Error("MP: unexpected, {}:{}", __FILE__, __LINE__);
@@ -228,7 +228,7 @@ void Game_Multiplayer::InitConnection() {
 			}
 			auto old_list = &DrawableMgr::GetLocalList();
 			DrawableMgr::SetLocalList(&scene_map->GetDrawableList());
-			player.chat_name.reset();
+			player.name_tag.reset();
 			DrawableMgr::SetLocalList(old_list);
 		}
 		dc_players.emplace_back(std::move(player));
@@ -300,9 +300,9 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterHandler<SystemPacket>([this](SystemPacket p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
-		auto chat_name = player.chat_name.get();
-		if (chat_name) {
-			chat_name->SetSystemGraphic(std::string(p.name));
+		auto name_tag = player.name_tag.get();
+		if (name_tag) {
+			name_tag->SetSystemGraphic(std::string(p.name));
 		}
 	});
 	connection.RegisterHandler<SEPacket>([this](SEPacket p) { // se: sound effect
@@ -405,7 +405,7 @@ void Game_Multiplayer::InitConnection() {
 		}
 		auto old_list = &DrawableMgr::GetLocalList();
 		DrawableMgr::SetLocalList(&scene_map->GetDrawableList());
-		player.chat_name = std::make_unique<ChatName>(p.id, player, std::string(p.name));
+		player.name_tag = std::make_unique<NameTag>(p.id, player, std::string(p.name));
 		DrawableMgr::SetLocalList(old_list);
 	});
 
@@ -662,9 +662,9 @@ void Game_Multiplayer::ApplyPlayerBattleAnimUpdates() {
 void Game_Multiplayer::ApplyFlash(int r, int g, int b, int power, int frames) {
 	for (auto& p : players) {
 		p.second.ch->Flash(r, g, b, power, frames);
-		auto chat_name = p.second.chat_name.get();
-		if (chat_name)
-			chat_name->SetFlashFramesLeft(frames);
+		auto name_tag = p.second.name_tag.get();
+		if (name_tag)
+			name_tag->SetFlashFramesLeft(frames);
 	}
 }
 
@@ -673,9 +673,9 @@ void Game_Multiplayer::ApplyRepeatingFlashes() {
 		if (players.find(rf.first) != players.end()) {
 			std::array<int, 5> flash_array = rf.second;
 			players[rf.first].ch->Flash(flash_array[0], flash_array[1], flash_array[2], flash_array[3], flash_array[4]);
-			auto chat_name = players[rf.first].chat_name.get();
-			if (chat_name)
-				chat_name->SetFlashFramesLeft(flash_array[4]);
+			auto name_tag = players[rf.first].name_tag.get();
+			if (name_tag)
+				name_tag->SetFlashFramesLeft(flash_array[4]);
 		}
 	}
 }
@@ -683,9 +683,9 @@ void Game_Multiplayer::ApplyRepeatingFlashes() {
 void Game_Multiplayer::ApplyTone(Tone tone) {
 	for (auto& p : players) {
 		p.second.sprite->SetTone(tone);
-		auto chat_name = p.second.chat_name.get();
-		if (chat_name)
-			chat_name->SetEffectsDirty();
+		auto name_tag = p.second.name_tag.get();
+		if (name_tag)
+			name_tag->SetEffectsDirty();
 	}
 }
 
@@ -721,7 +721,7 @@ void Game_Multiplayer::MapUpdate() {
 
 		++frame_index;
 
-		bool check_chat_name_overlap = frame_index % (8 + ((players.size() >> 4) << 3)) == 0;
+		bool check_name_tag_overlap = frame_index % (8 + ((players.size() >> 4) << 3)) == 0;
 
 		for (auto& p : players) {
 			auto& q = p.second.mvq;
@@ -764,7 +764,7 @@ void Game_Multiplayer::MapUpdate() {
 			ch->Update();
 			p.second.sprite->Update();
 
-			if (check_chat_name_overlap) {
+			if (check_name_tag_overlap) {
 				bool overlap = false;
 				int x = ch->GetX();
 				int y = ch->GetY();
@@ -796,9 +796,9 @@ void Game_Multiplayer::MapUpdate() {
 						}
 					}
 				}
-				auto chat_name = p.second.chat_name.get();
-				if (chat_name)
-					chat_name->SetTransparent(overlap);
+				auto name_tag = p.second.name_tag.get();
+				if (name_tag)
+					name_tag->SetTransparent(overlap);
 			}
 		}
 

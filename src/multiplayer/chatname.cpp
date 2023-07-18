@@ -10,14 +10,14 @@
 
 std::map<std::string, std::array<int, 96>> sprite_y_offsets;
 
-ChatName::ChatName(int id, PlayerOther& player, std::string nickname)
+NameTag::NameTag(int id, PlayerOther& player, std::string nickname)
 	:player(player),
 	nickname(std::move(nickname)),
 	Drawable(Priority_Screen + id) {
 	DrawableMgr::Register(this);
 }
 
-void ChatName::Draw(Bitmap& dst) {
+void NameTag::Draw(Bitmap& dst) {
 	auto nametag_mode = GMI().GetNametagMode();
 
 	if (nametag_mode == Game_Multiplayer::NametagMode::NONE || nickname.empty() || !player.sprite.get()) {
@@ -86,7 +86,7 @@ void ChatName::Draw(Bitmap& dst) {
 	}
 }
 
-void ChatName::SetSystemGraphic(StringView sys_name) {
+void NameTag::SetSystemGraphic(StringView sys_name) {
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", sys_name);
 	request_id = request->Bind([this](FileRequestResult* result) {
 		if (!result->success) {
@@ -99,16 +99,16 @@ void ChatName::SetSystemGraphic(StringView sys_name) {
 	request->Start();
 }
 
-void ChatName::SetTransparent(bool val) {
+void NameTag::SetTransparent(bool val) {
 	transparent = val;
 }
 
-int ChatName::GetOpacity() {
+int NameTag::GetOpacity() {
 	float opacity = (float)player.ch->GetOpacity() * ((float)base_opacity / 32.0);
 	return std::floor(opacity);
 }
 
-int ChatName::GetSpriteYOffset() {
+int NameTag::GetSpriteYOffset() {
 	std::string sprite_name = player.ch->GetSpriteName();
 	if (!sprite_y_offsets.count(sprite_name)) {
 		auto filename = FileFinder::FindImage("CharSet", sprite_name);
