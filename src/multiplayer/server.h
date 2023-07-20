@@ -30,7 +30,7 @@ class ServerMain {
 public:
 	ServerMain();
 	void SetBindAddress(std::string address);
-	void Start();
+	void Start(bool blocking = false);
 	void Stop();
 
 	void ForEachClient(const std::function<void(ServerSideClient&)>& callback);

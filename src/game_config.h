@@ -105,6 +105,18 @@ struct Game_ConfigInput {
 	void Hide();
 };
 
+struct Game_ConfigMultiplayer {
+	BoolConfigParam server_autostart{ "", "", "Multiplayer", "ServerAutoStart", false };
+	StringConfigParam server_bind_address{ "", "", "Multiplayer", "ServerBindAddress", "localhost:6500" };
+	RangeConfigParam<int> server_max_users{ "", "", "Multiplayer", "ServerMaxClients", 10, 0, 100 };
+	StringConfigParam server_picture_names{ "", "", "Multiplayer", "ServerPictureNames", "" };
+	StringConfigParam server_picture_prefixes{ "", "", "Multiplayer", "ServerPicturePrefixes", "" };
+	BoolConfigParam client_autoconnect{ "", "", "Multiplayer", "ClientAutoConnect", false };
+	StringConfigParam client_remote_address{ "", "", "Multiplayer", "ClientRemoteAddress", "localhost:6500" };
+	StringConfigParam client_chat_name{ "", "", "Multiplayer", "ClientChatName", "" };
+	RangeConfigParam<int> client_name_tag_mode{ "", "", "Multiplayer", "ClientNametagMode", 1, 0, 3 };
+};
+
 struct Game_Config {
 	/** Gameplay subsystem options */
 	Game_ConfigPlayer player;
@@ -117,6 +129,9 @@ struct Game_Config {
 
 	/** Input subsystem options */
 	Game_ConfigInput input;
+
+	/** Multiplayer options */
+	Game_ConfigMultiplayer multiplayer;
 
 	/**
 	 * Create an application config. This first determines the config file path if any,

@@ -372,7 +372,7 @@ void ServerMain::SetBindAddress(std::string address) {
 	Connection::ParseAddress(address, addr_host, addr_port);
 }
 
-void ServerMain::Start() {
+void ServerMain::Start(bool blocking) {
 	if (running) return;
 	running = true;
 
@@ -415,7 +415,7 @@ void ServerMain::Start() {
 		}
 	}).detach();
 
-	std::thread([this]() {
+	std::thread server_thread([this]() {
 		acceptor = sockpp::tcp_acceptor(sockpp::inet_address(addr_host, addr_port),
 				Connection::MAX_QUEUE_SIZE);
 		if (!acceptor) {
@@ -440,11 +440,17 @@ void ServerMain::Start() {
 				client->Open();
 			}
 		}
-	}).detach();
+	});
+
+	if (blocking)
+		server_thread.join();
+	else
+		server_thread.detach();
 }
 
 void ServerMain::Stop() {
 	if (!running) return;
+	Output::Debug("Server: Stopping");
 	std::lock_guard lock(m_mutex);
 	running = false;
 	for (const auto& it : clients) {
@@ -454,6 +460,7 @@ void ServerMain::Stop() {
 	// stop message queue loop
 	m_message_data_queue.emplace(new MessageDataEntry{ 0, 0, Messages::CV_NULL, "" });
 	m_message_data_queue_cv.notify_one();
+	Output::Debug("Server: Stopped");
 }
 
 static ServerMain _instance;
