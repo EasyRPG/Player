@@ -36,7 +36,7 @@ void NameTag::Draw(Bitmap& dst) {
 		std::string nick_trim;
 
 		if (nametag_mode != Game_Multiplayer::NametagMode::CLASSIC) {
-			nick_trim = player.account ? nickname : "<" + nickname + ">";
+			nick_trim = nickname;
 		} else {
 			nick_trim = nickname.substr(0, std::min(3, (int)nickname.size()));
 		}

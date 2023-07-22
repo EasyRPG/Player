@@ -134,14 +134,12 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 			}
 		}
 
-		if (close_silently)
-			return;
-
 		OnLogDebug(LABEL + ": Connection closed from: "
 			+ read_socket.peer_address().to_string());
 		if (close)
 			read_socket.close();
-		OnClose();
+		if (!close_silently)
+			OnClose();
 	}).detach();
 }
 
@@ -160,8 +158,8 @@ define ad
 	display buf
 end
 define ab
-	b tcp_socket.cpp:45
-	b tcp_socket.cpp:60
-	b tcp_socket.cpp:67
+	b tcp_socket.cpp:49
+	b tcp_socket.cpp:64
+	b tcp_socket.cpp:74
 end
 */

@@ -4,6 +4,7 @@
 #include "connection.h"
 #include "packet.h"
 #include <memory>
+#include <map>
 #include <lcf/rpg/sound.h>
 #include "../game_pictures.h"
 
@@ -12,6 +13,16 @@ namespace Messages {
 		CV_NULL = 0,
 		CV_LOCAL = 1,
 		CV_GLOBAL = 2
+	};
+
+	static const std::map<VisibilityType, std::string> VisibilityNames = {
+		{ CV_LOCAL, "LOCAL" },
+		{ CV_GLOBAL, "GLOBAL" }
+	};
+
+	static const std::map<std::string, VisibilityType> VisibilityValues = {
+		{ "LOCAL", CV_LOCAL },
+		{ "GLOBAL", CV_GLOBAL }
 	};
 
 	using Packet = Multiplayer::Packet;
@@ -96,14 +107,16 @@ namespace Messages {
 	};
 
 	/**
-	 * Nametag
+	 * Name
 	 */
 
-	class NametagPacket : public PlayerPacket {
+	class NamePacket : public PlayerPacket {
 	public:
-		constexpr static std::string_view packet_name{ "ntag" };
-		NametagPacket() : PlayerPacket(packet_name) {}
-		NametagPacket(int _id, std::string _name)
+		constexpr static std::string_view packet_name{ "name" };
+		NamePacket() : PlayerPacket(packet_name) {}
+		NamePacket(std::string _name) // C2S
+			: PlayerPacket(packet_name), name(std::move(_name)) {}
+		NamePacket(int _id, std::string _name) // S2C
 			: PlayerPacket(packet_name, _id), name(std::move(_name)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
@@ -111,7 +124,7 @@ namespace Messages {
 			AppendPartial(r, name);
 			return r;
 		}
-		NametagPacket(const ParameterList& v)
+		NamePacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)),
 			name(v.at(1)) {}
 		std::string name;
@@ -126,20 +139,25 @@ namespace Messages {
 		constexpr static std::string_view packet_name{ "say" };
 		ChatPacket() : PlayerPacket(packet_name) {}
 		ChatPacket(int _v, std::string _m) // C2S
-			: PlayerPacket(packet_name), visibility(_v), msg(std::move(_m)) {}
-		ChatPacket(int _id, int _v, std::string _m) // S2C
-			: PlayerPacket(packet_name, _id), visibility(_v), msg(std::move(_m)) {}
+			: PlayerPacket(packet_name), visibility(_v), message(std::move(_m)) {}
+		ChatPacket(int _id, int _t, int _v, int _r, std::string _n, std::string _m) // S2C
+			: PlayerPacket(packet_name, _id), type(_t), visibility(_v),
+			room_id(_r), name(std::move(_n)), message(std::move(_m)) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
-			AppendPartial(r, visibility, msg);
+			AppendPartial(r, type, visibility, room_id, name, message);
 			return r;
 		};
 		ChatPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)),
-			visibility(Decode<int>(v.at(1))), msg(v.at(2)) {}
+			type(Decode<int>(v.at(1))), visibility(Decode<int>(v.at(2))),
+			room_id(Decode<int>(v.at(3))), name(v.at(4)), message(v.at(5)) {}
+		int type;
 		int visibility;
-		std::string msg;
+		int room_id;
+		std::string name;
+		std::string message;
 	};
 
 	/**
@@ -593,6 +611,13 @@ namespace Messages {
 	public:
 		constexpr static std::string_view packet_name{ "pns" };
 		PictureNameListSyncPacket() : Packet(packet_name) {}
+		std::string ToBytes() const override {
+			std::string r {GetName()};
+			AppendPartial(r, type);
+			for (const std::string& n : names)
+				AppendPartial(r, n);
+			return r;
+		}
 		PictureNameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
 			auto it = v.begin();
 			type = Decode<int>(*it);

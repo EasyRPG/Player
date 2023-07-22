@@ -4,6 +4,7 @@
 #include <string>
 #include <bitset>
 #include "../string_view.h"
+#include "../game_config.h"
 #include "../game_pictures.h"
 #include "../tone.h"
 #include <lcf/rpg/sound.h>
@@ -17,6 +18,11 @@ public:
 
 	Game_Multiplayer();
 
+	void SetConfig(const Game_ConfigMultiplayer& cfg);
+	Game_ConfigMultiplayer GetConfig() const;
+	void SetChatName(std::string chat_name);
+	std::string GetChatName();
+	void SetRemoteAddress(std::string address);
 	void Connect();
 	void Disconnect();
 	void SwitchRoom(int map_id, bool room_switch = false);
@@ -25,6 +31,7 @@ public:
 	void Quit();
 	void Update();
 	void MapUpdate();
+	void SendChatMessage(int visibility, std::string message);
 	void SendBasicData();
 	void MainPlayerMoved(int dir);
 	void MainPlayerFacingChanged(int dir);
@@ -51,6 +58,8 @@ public:
 	void SwitchSet(int switch_id, int value);
 	void VariableSet(int var_id, int value);
 
+	Game_ConfigMultiplayer cfg;
+
 	struct {
 		bool enable_sounds{ true };
 		bool mute_audio{ false };
@@ -58,7 +67,6 @@ public:
 	} settings;
 
 	ClientConnection connection;
-	std::string_view server_address{ "localhost:6500" };
 	bool reconnect_wait{ false };
 	bool active{ false }; // if true, it will automatically reconnect when disconnected
 	bool switching_room{ true }; // when client enters new room, but not synced to server

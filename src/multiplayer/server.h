@@ -8,6 +8,7 @@
 #include <mutex>
 #include "messages.h"
 #include "sockpp/tcp_acceptor.h"
+#include "../game_config.h"
 
 class ServerSideClient;
 
@@ -27,16 +28,22 @@ class ServerMain {
 
 	std::mutex m_mutex;
 
+	Game_ConfigMultiplayer cfg;
+
 public:
 	ServerMain();
-	void SetBindAddress(std::string address);
+
 	void Start(bool blocking = false);
 	void Stop();
+
+	void SetConfig(const Game_ConfigMultiplayer& _cfg);
+	Game_ConfigMultiplayer GetConfig() const;
 
 	void ForEachClient(const std::function<void(ServerSideClient&)>& callback);
 	void DeleteClient(const int& id);
 	void SendTo(const int& from_client_id, const int& to_client_id,
-		const Messages::VisibilityType& visibility, const std::string& data);
+		const Messages::VisibilityType& visibility, const std::string& data,
+		const bool& return_flag = false);
 };
 
 ServerMain& Server();

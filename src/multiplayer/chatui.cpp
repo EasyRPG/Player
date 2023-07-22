@@ -17,6 +17,7 @@
 #include "../baseui.h"
 #include "game_multiplayer.h"
 #include "server.h"
+#include "strfnd.h"
 
 class DrawableOnlineStatus : public Drawable {
 	Rect bounds;
@@ -418,6 +419,10 @@ public:
 		scroll_box.SetVisible(v);
 	}
 
+	unsigned short GetVisibilityFlags() {
+		return visibility_flags;
+	}
+
 	void ToggleVisibilityFlag(VisibilityType v) {
 		// Expands/collapses messages in-place,
 		// so you don't get lost if you've scrolled far up.
@@ -662,9 +667,8 @@ public:
 		d_log.AddChatEntry(msg);
 	}
 
-	void AddLogEntryUnread(ChatEntry* msg) {
-		AddLogEntry(msg);
-		if (d_minimized_log.GetSize() > 2)
+	void AddLogEntryUnread(ChatEntry* msg, unsigned int limit) {
+		if (d_minimized_log.GetSize() > limit-1)
 			d_minimized_log.RemoveFirstChatEntry();
 		d_minimized_log.AddChatEntry(msg);
 	}
@@ -746,6 +750,10 @@ public:
 		}
 	}
 
+	unsigned short GetVisibilityFlags() {
+		return d_log.GetVisibilityFlags();
+	}
+
 	void ToggleVisibilityFlag(VisibilityType v) {
 		d_minimized_log.ToggleVisibilityFlag(v);
 		d_log.ToggleVisibilityFlag(v);
@@ -759,28 +767,34 @@ public:
 
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
 const unsigned int MAXMESSAGES = 500;
+const unsigned int MAXUNREAD = 3;
 
 std::u32string type_text;
 unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
 unsigned int type_caret_index_head = 0; // moves when SHIFT-selecting text
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
+std::vector<std::unique_ptr<ChatEntry>> chat_minimized_log;
+VisibilityType chat_visibility = Messages::CV_LOCAL;
 
-void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v, bool unread = false) {
+void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) {
 	chat_log.push_back(std::make_unique<ChatEntry>(a, b, c, v));
-	if (unread)
-		chat_box->AddLogEntryUnread(chat_log.back().get());
-	else
-		chat_box->AddLogEntry(chat_log.back().get());
+	chat_box->AddLogEntry(chat_log.back().get());
 	if(chat_log.size() > MAXMESSAGES) {
 		chat_box->RemoveLogEntry(chat_log.front().get());
 		chat_log.erase(chat_log.begin());
 	}
 }
 
-template<typename... Args>
-void AddLogEntryUnread(Args... args) {
-	AddLogEntry(args..., true);
+void AddLogEntryUnread(std::string a, std::string b, std::string c, VisibilityType v) {
+	chat_minimized_log.push_back(std::make_unique<ChatEntry>(a, b, c, v));
+	chat_box->AddLogEntryUnread(chat_minimized_log.back().get(), MAXUNREAD);
+	if(chat_minimized_log.size() > MAXUNREAD)
+		chat_minimized_log.erase(chat_minimized_log.begin());
+}
+
+void AddClientInfo(std::string message) {
+	AddLogEntry("[Client]: ", message, "", Messages::CV_LOCAL);
 }
 
 void Initialize() {
@@ -902,15 +916,56 @@ void InputsTyping() {
 
 	// send
 	if(Input::IsExternalTriggered(Input::InputButton::KEY_RETURN)) {
-		std::string_view text = Utils::EncodeUTF(type_text);
-		if (text == "/1") {
-			Server().Start();
-		}
-		if (text == "/2") {
+		std::string text = std::move(Utils::EncodeUTF(type_text));
+		Strfnd fnd(text);
+		std::string command = fnd.next(" ");
+		// command: !server
+		if (command == "!server" || command == "!srv") {
+			std::string option = fnd.next(" ");
+			if (option == "on") {
+				Server().Start();
+				AddClientInfo("Server: on");
+			} else if (option == "off") {
+				Server().Stop();
+				AddClientInfo("Server: off");
+			}
+		// command: !connect
+		} else if (command == "!connect" || command == "!c") {
+			std::string address = fnd.next("");
+			if (address != "")
+				GMI().SetRemoteAddress(address);
 			GMI().Connect();
-		}
-		if (text == "/3") {
+		// command: !disconnect
+		} else if (command == "!disconnect" || command == "!d") {
 			GMI().Disconnect();
+		// command: !name
+		} else if (command == "!name") {
+			std::string name = fnd.next(" ");
+			if (name != "")
+				GMI().SetChatName(name == "<unknown>" ? "" : name);
+			name = GMI().GetChatName();
+			AddClientInfo("Name: " + (name == "" ? "<unknown>" : name));
+		// command: !chat
+		} else if (command == "!chat") {
+			auto it = Messages::VisibilityValues.find(fnd.next(""));
+			if (it != Messages::VisibilityValues.end())
+				chat_visibility = it->second;
+			AddClientInfo("Visibility: " + \
+				Messages::VisibilityNames.find(chat_visibility)->second);
+		// command: !log
+		} else if (command == "!log") {
+			auto it = Messages::VisibilityValues.find(fnd.next(""));
+			if (it != Messages::VisibilityValues.end())
+				chat_box->ToggleVisibilityFlag(it->second);
+			std::string flags = "";
+			for (const auto& it : Messages::VisibilityValues)
+				if ((chat_box->GetVisibilityFlags() & it.second) > 0)
+					flags += it.first + " ";
+			if (flags.size() > 0)
+				flags.erase(flags.size() - 1);
+			AddClientInfo("Flags: " + flags);
+		} else {
+			GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
 		}
 		// reset typebox
 		type_text.clear();
@@ -968,24 +1023,29 @@ void ChatUi::Update() {
 	ProcessInputs();
 }
 
-void ChatUi::GotMessage(std::string name, std::string trip, std::string msg, std::string src) {
+void ChatUi::GotMessage(int visibility, int room_id,
+		std::string name, std::string message) {
 	if(chat_box == nullptr)
 		return;
+	VisibilityType v = static_cast<VisibilityType>(visibility);
+	std::string vtext = "?";
+	auto it = Messages::VisibilityNames.find(v);
+	if (it != Messages::VisibilityNames.end())
+		vtext = it->second;
 	AddLogEntry(
-		(src=="G"?"G← ":"")+name,
-		"•"+trip+":\n",
-		"\u00A0"+msg,
-		src=="G"?Messages::CV_GLOBAL:Messages::CV_LOCAL
+		vtext + " " + name + " #" + std::to_string(room_id) + "\n",
+		"",
+		"\u00A0" + message,
+		v
 	);
+	AddLogEntryUnread(name + ":", "", message, v);
 }
 
-void ChatUi::GotInfo(std::string msg) {
+void ChatUi::GotInfo(std::string message) {
 	if(chat_box == nullptr)
 		return;
-	// remove leading spaces. TO-DO: fix leading spaces being sent by server on info messages.
-	auto leading_spaces = msg.find_first_not_of(' ');
-	auto trim = msg.substr(leading_spaces != std::string::npos ? leading_spaces : 0);
-	AddLogEntry("", trim, "", Messages::CV_LOCAL);
+	AddLogEntry("", message, "", Messages::CV_LOCAL);
+	AddLogEntryUnread("", message, "", Messages::CV_LOCAL);
 }
 
 void ChatUi::SetStatusConnection(bool status, bool connecting) {

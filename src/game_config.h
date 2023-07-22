@@ -106,12 +106,12 @@ struct Game_ConfigInput {
 };
 
 struct Game_ConfigMultiplayer {
-	BoolConfigParam server_autostart{ "", "", "Multiplayer", "ServerAutoStart", false };
+	BoolConfigParam server_auto_start{ "", "", "Multiplayer", "ServerAutoStart", false };
 	StringConfigParam server_bind_address{ "", "", "Multiplayer", "ServerBindAddress", "localhost:6500" };
-	RangeConfigParam<int> server_max_users{ "", "", "Multiplayer", "ServerMaxClients", 10, 0, 100 };
+	RangeConfigParam<int> server_max_users{ "", "", "Multiplayer", "ServerMaxUsers", 10, 0, 100 };
 	StringConfigParam server_picture_names{ "", "", "Multiplayer", "ServerPictureNames", "" };
 	StringConfigParam server_picture_prefixes{ "", "", "Multiplayer", "ServerPicturePrefixes", "" };
-	BoolConfigParam client_autoconnect{ "", "", "Multiplayer", "ClientAutoConnect", false };
+	BoolConfigParam client_auto_connect{ "", "", "Multiplayer", "ClientAutoConnect", false };
 	StringConfigParam client_remote_address{ "", "", "Multiplayer", "ClientRemoteAddress", "localhost:6500" };
 	StringConfigParam client_chat_name{ "", "", "Multiplayer", "ClientChatName", "" };
 	RangeConfigParam<int> client_name_tag_mode{ "", "", "Multiplayer", "ClientNametagMode", 1, 0, 3 };

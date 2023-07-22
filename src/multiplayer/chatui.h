@@ -10,7 +10,7 @@ public:
 	void Refresh(); // initializes chat or refreshes its theme
 	void Update(); // called once per logical frame
 
-	void GotMessage(std::string name, std::string trip, std::string msg, std::string src);
+	void GotMessage(int visibility, int room_id, std::string name, std::string message);
 	void GotInfo(std::string msg);
 	void SetStatusConnection(bool status, bool connecting = false);
 	void SetStatusRoom(unsigned int room_id);

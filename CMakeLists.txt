@@ -480,6 +480,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	src/multiplayer/chatui.h
 	src/multiplayer/playerother.cpp
 	src/multiplayer/playerother.h
+	src/multiplayer/strfnd.h
 )
 
 # Include directories

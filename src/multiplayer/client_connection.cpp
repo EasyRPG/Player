@@ -30,23 +30,26 @@ void ClientConnection::HandleOpen() {
 	connecting = false;
 	connected = true;
 	std::lock_guard lock(m_receive_mutex);
-	if (m_system_queue.empty())
-		m_system_queue.push(SystemMessage::OPEN);
+	m_system_queue.push(SystemMessage::OPEN);
 }
 
 void ClientConnection::HandleClose() {
 	connecting = false;
 	connected = false;
 	std::lock_guard lock(m_receive_mutex);
-	if (m_system_queue.empty())
-		m_system_queue.push(SystemMessage::CLOSE);
+	m_system_queue.push(SystemMessage::CLOSE);
 }
 
 void ClientConnection::HandleData(const char* data, const size_t& num_bytes) {
 	std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
 	std::lock_guard lock(m_receive_mutex);
-	if (m_data_queue.size() > 100) {
-		m_data_queue.pop();
+	if (_data.size() == 4 && _data.substr(0, 3) == "\uFFFD") {
+		std::string_view code = _data.substr(3, 1);
+		if (code == "0")
+			m_system_queue.push(SystemMessage::EXIT);
+		else if (code == "1")
+			m_system_queue.push(SystemMessage::ACCESSDENIED_TOO_MANY_USERS);
+		return;
 	}
 	m_data_queue.push(std::move(std::string(_data)));
 }

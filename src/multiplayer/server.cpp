@@ -2,6 +2,7 @@
 #include <thread>
 #include "../output.h"
 #include "tcp_socket.h"
+#include "strfnd.h"
 
 using namespace Multiplayer;
 using namespace Messages;
@@ -123,6 +124,7 @@ struct ServerMain::MessageDataEntry {
 	int to_client_id;
 	VisibilityType visibility;
 	std::string data;
+	bool return_flag;
 };
 
 class ServerSideClient {
@@ -142,6 +144,7 @@ class ServerSideClient {
 
 	ServerMain* server;
 
+	bool join_sent = false;
 	int id{0};
 	ServerConnection connection;
 
@@ -159,8 +162,8 @@ class ServerSideClient {
 				SendSelfAsync(other.last.facing);
 			if (other.last.speed.speed != 0)
 				SendSelfAsync(other.last.speed);
-			if (name != "")
-				SendSelfAsync(NametagPacket(other.id, name));
+			if (other.name != "")
+				SendSelfAsync(NamePacket(other.id, other.name));
 			if (other.last.sprite.index != -1)
 				SendSelfAsync(other.last.sprite);
 			if (other.last.has_repeating_flash)
@@ -185,6 +188,8 @@ class ServerSideClient {
 		});
 		connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
 			SendGlobal(LeavePacket(id));
+			SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
+				std::to_string(id) + (name == "" ? "" : " " + name) + " left the server."));
 		});
 
 		connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
@@ -195,11 +200,43 @@ class ServerSideClient {
 			SendLocalAsync(JoinPacket(id));
 			SendLocalAsync(last.move);
 			if (name != "")
-				SendLocalAsync(NametagPacket(id, name));
+				SendLocalAsync(NamePacket(id, name));
+			if (last.system.name != "")
+				SendLocalAsync(last.system);
+		});
+		connection.RegisterHandler<NamePacket>([this](NamePacket p) {
+			name = std::move(p.name);
+			if (!join_sent) {
+				SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
+					std::to_string(id) + (name == "" ? "" : " " + name) + " joined the server."));
+
+				auto pns = [this](const int& type, const std::string& cfg_names) {
+					Strfnd fnd(cfg_names);
+					auto p = PictureNameListSyncPacket();
+					p.type = type;
+					while (!fnd.at_end()) {
+						std::string name = fnd.next(", ");
+						p.names.emplace_back(std::move(name));
+					}
+					SendSelfAsync(p);
+				};
+				pns(0, server->GetConfig().server_picture_names.Get());
+				pns(1, server->GetConfig().server_picture_prefixes.Get());
+
+				join_sent = true;
+			}
+
 		});
 		connection.RegisterHandler<ChatPacket>([this](ChatPacket p) {
 			p.id = id;
-			SendLocalAsync(p);
+			p.type = 1; // 1 = chat
+			p.room_id = room_id;
+			p.name = name == "" ? "<unknown>" : name;
+			VisibilityType visibility = static_cast<VisibilityType>(p.visibility);
+			if (visibility == CV_LOCAL)
+				SendLocalChat(p);
+			else if (visibility == CV_GLOBAL)
+				SendGlobalChat(p);
 		});
 		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket p) {
 			last.move.x = p.x;
@@ -303,6 +340,16 @@ class ServerSideClient {
 	}
 
 	template<typename T>
+	void SendLocalChat(const T& p) {
+		server->SendTo(id, 0, CV_LOCAL, p.ToBytes(), true);
+	}
+
+	template<typename T>
+	void SendGlobalChat(const T& p) {
+		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes(), true);
+	}
+
+	template<typename T>
 	void SendGlobal(const T& p) {
 		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes());
 	}
@@ -354,9 +401,11 @@ void ServerMain::DeleteClient(const int& id) {
 }
 
 void ServerMain::SendTo(const int& from_client_id, const int& to_client_id,
-		const VisibilityType& visibility, const std::string& data) {
+		const VisibilityType& visibility, const std::string& data,
+		const bool& return_flag) {
 	if (!running) return;
-	auto data_entry = new MessageDataEntry{ from_client_id, to_client_id, visibility, data };
+	auto data_entry = new MessageDataEntry{ from_client_id, to_client_id, visibility, data,
+			return_flag };
 	{
 		std::lock_guard lock(m_mutex);
 		m_message_data_queue.emplace(data_entry);
@@ -366,10 +415,6 @@ void ServerMain::SendTo(const int& from_client_id, const int& to_client_id,
 
 ServerMain::ServerMain() {
 	sockpp::initialize();
-}
-
-void ServerMain::SetBindAddress(std::string address) {
-	Connection::ParseAddress(address, addr_host, addr_port);
 }
 
 void ServerMain::Start(bool blocking) {
@@ -399,7 +444,8 @@ void ServerMain::Start(bool blocking) {
 				for (const auto& it : clients) {
 					auto& to_client = it.second;
 					// exclude self
-					if (data_entry->from_client_id == to_client->GetId())
+					if (!data_entry->return_flag &&
+							data_entry->from_client_id == to_client->GetId())
 						continue;
 					// send to local
 					if (data_entry->visibility == Messages::CV_LOCAL &&
@@ -435,9 +481,14 @@ void ServerMain::Start(bool blocking) {
 				Output::Warning("Server: Failed to get the incoming connection: ",
 					acceptor.last_error_str());
 			} else {
-				auto& client = clients[client_id];
-				client.reset(new ServerSideClient(this, client_id++, socket));
-				client->Open();
+				if (clients.size() >= cfg.server_max_users.Get()) {
+					socket.write(std::string("\x04\x00\uFFFD1", 6));
+					socket.close();
+				} else {
+					auto& client = clients[client_id];
+					client.reset(new ServerSideClient(this, client_id++, socket));
+					client->Open();
+				}
 			}
 		}
 	});
@@ -454,6 +505,7 @@ void ServerMain::Stop() {
 	std::lock_guard lock(m_mutex);
 	running = false;
 	for (const auto& it : clients) {
+		it.second->Send("\uFFFD0");
 		it.second->Close();
 	}
 	acceptor.shutdown();
@@ -461,6 +513,15 @@ void ServerMain::Stop() {
 	m_message_data_queue.emplace(new MessageDataEntry{ 0, 0, Messages::CV_NULL, "" });
 	m_message_data_queue_cv.notify_one();
 	Output::Debug("Server: Stopped");
+}
+
+void ServerMain::SetConfig(const Game_ConfigMultiplayer& _cfg) {
+	cfg = _cfg;
+	Connection::ParseAddress(cfg.server_bind_address.Get(), addr_host, addr_port);
+}
+
+Game_ConfigMultiplayer ServerMain::GetConfig() const {
+	return cfg;
 }
 
 static ServerMain _instance;

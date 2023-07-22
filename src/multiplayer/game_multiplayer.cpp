@@ -47,7 +47,6 @@ Game_Multiplayer& Game_Multiplayer::Instance() {
 }
 
 Game_Multiplayer::Game_Multiplayer() {
-	Server().SetBindAddress("localhost:6500");
 	InitConnection();
 }
 
@@ -123,6 +122,7 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
 		CUI().SetStatusConnection(true);
 		SendBasicData();
+		connection.SendPacket(NamePacket(cfg.client_chat_name.Get()));
 	});
 	connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
 		CUI().SetStatusConnection(false);
@@ -141,8 +141,12 @@ void Game_Multiplayer::InitConnection() {
 		}
 	});
 	connection.RegisterSystemHandler(SystemMessage::EXIT, [this](Connection& _) {
-		Output::Info("MP: server shutdown");
+		CUI().GotInfo("!! Server exited");
 		Disconnect();
+	});
+	connection.RegisterSystemHandler(SystemMessage::ACCESSDENIED_TOO_MANY_USERS, [this](Connection& _) {
+		Disconnect();
+		CUI().GotInfo("!! Access denied. Too many users");
 	});
 
 	// ->> unused code
@@ -243,6 +247,10 @@ void Game_Multiplayer::InitConnection() {
 
 	});
 	connection.RegisterHandler<ChatPacket>([this](ChatPacket p) {
+		if (p.type == 0)
+			CUI().GotInfo(p.message);
+		else if (p.type == 1)
+			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message);
 	});
 	connection.RegisterHandler<MovePacket>([this](MovePacket p) {
 		if (players.find(p.id) == players.end()) return;
@@ -398,7 +406,7 @@ void Game_Multiplayer::InitConnection() {
 			players[p.id].battle_animation.reset();
 		}
 	});
-	connection.RegisterHandler<NametagPacket>([this](NametagPacket p) {
+	connection.RegisterHandler<NamePacket>([this](NamePacket p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		auto scene_map = Scene::Find(Scene::SceneType::Map);
@@ -424,10 +432,35 @@ void Game_Multiplayer::InitConnection() {
 	}).detach();
 }
 
+void Game_Multiplayer::SetConfig(const Game_ConfigMultiplayer& _cfg) {
+	cfg = _cfg;
+	Server().SetConfig(_cfg);
+	if (cfg.server_auto_start.Get())
+		Server().Start();
+}
+
+Game_ConfigMultiplayer Game_Multiplayer::GetConfig() const {
+	return cfg;
+}
+
+void Game_Multiplayer::SetChatName(std::string chat_name) {
+	cfg.client_chat_name.Set(std::string(chat_name));
+	connection.SendPacket(NamePacket(cfg.client_chat_name.Get()));
+}
+
+std::string Game_Multiplayer::GetChatName() {
+	return cfg.client_chat_name.Get();
+}
+
+void Game_Multiplayer::SetRemoteAddress(std::string address) {
+	cfg.client_remote_address.Set(std::string(address));
+	connection.SetAddress(cfg.client_remote_address.Get());
+}
+
 void Game_Multiplayer::Connect() {
 	if (connection.IsConnected()) return;
 	active = true;
-	connection.SetAddress(server_address);
+	connection.SetAddress(cfg.client_remote_address.Get());
 	CUI().SetStatusConnection(false, true);
 	connection.Open();
 	if (room_id != -1)
@@ -435,7 +468,6 @@ void Game_Multiplayer::Connect() {
 }
 
 void Game_Multiplayer::Disconnect() {
-	if (!connection.IsConnected()) return;
 	active = false;
 	Reset();
 	connection.Close();
@@ -443,12 +475,18 @@ void Game_Multiplayer::Disconnect() {
 }
 
 void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
+	SetNametagMode(cfg.client_name_tag_mode.Get());
 	CUI().Refresh();
 	CUI().SetStatusRoom(map_id);
 	Output::Debug("MP: room_id=map_id={}", map_id);
 	room_id = map_id;
 	if (!active) {
-		Output::Debug("MP: active == false, skip");
+		bool auto_connect = cfg.client_auto_connect.Get();
+		if (auto_connect) {
+			active = true;
+			Connect();
+		}
+		Output::Debug("MP: active={} auto_connect={}", active, auto_connect);
 		return;
 	}
 	switching_room = true;
@@ -475,12 +513,17 @@ void Game_Multiplayer::Reset() {
 }
 
 void Game_Multiplayer::MapQuit() {
+	SetNametagMode(cfg.client_name_tag_mode.Get());
 	CUI().Refresh();
 	Reset();
 }
 
 void Game_Multiplayer::Quit() {
 	Disconnect();
+}
+
+void Game_Multiplayer::SendChatMessage(int visibility, std::string message) {
+	connection.SendPacket(ChatPacket(visibility, message));
 }
 
 void Game_Multiplayer::SendBasicData() {

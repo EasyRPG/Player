@@ -187,8 +187,12 @@ void Player::Init(std::vector<std::string> args) {
 
 	Output::Debug("CLI: {}", command_line);
 
-	if (server_flag)
+	if (server_flag) {
+		Server().SetConfig(cfg.multiplayer);
 		return;
+	}
+
+	GMI().SetConfig(cfg.multiplayer);
 
 	Game_Clock::logClockInfo();
 	if (rng_seed < 0) {

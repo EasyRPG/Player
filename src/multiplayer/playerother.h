@@ -10,7 +10,6 @@ struct NameTag;
 struct BattleAnimation;
 
 struct PlayerOther {
-	bool account; // player is on an account
 	std::deque<std::pair<int, int>> mvq; // queue of move commands
 	std::unique_ptr<Game_PlayerOther> ch; // character
 	std::unique_ptr<Sprite_Character> sprite;

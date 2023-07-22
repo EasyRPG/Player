@@ -432,14 +432,15 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.settings_in_menu.FromIni(ini);
 
 	/** MULTIPLAYER SECTION */
-	multiplayer.server_autostart.FromIni(ini);
+	multiplayer.server_auto_start.FromIni(ini);
 	multiplayer.server_bind_address.FromIni(ini);
 	multiplayer.server_max_users.FromIni(ini);
 	multiplayer.server_picture_names.FromIni(ini);
 	multiplayer.server_picture_prefixes.FromIni(ini);
-	multiplayer.client_autoconnect.FromIni(ini);
+	multiplayer.client_auto_connect.FromIni(ini);
 	multiplayer.client_remote_address.FromIni(ini);
 	multiplayer.client_chat_name.FromIni(ini);
+	multiplayer.client_name_tag_mode.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -518,14 +519,15 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 
 	/** MULTIPLAYER SECTION */
 	os << "[Multiplayer]\n";
-	multiplayer.server_autostart.ToIni(os);
+	multiplayer.server_auto_start.ToIni(os);
 	multiplayer.server_bind_address.ToIni(os);
 	multiplayer.server_max_users.ToIni(os);
 	multiplayer.server_picture_names.ToIni(os);
 	multiplayer.server_picture_prefixes.ToIni(os);
-	multiplayer.client_autoconnect.ToIni(os);
+	multiplayer.client_auto_connect.ToIni(os);
 	multiplayer.client_remote_address.ToIni(os);
 	multiplayer.client_chat_name.ToIni(os);
+	multiplayer.client_name_tag_mode.ToIni(os);
 
 	os << "\n";
 }
