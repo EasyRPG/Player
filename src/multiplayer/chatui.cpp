@@ -797,28 +797,41 @@ void AddClientInfo(std::string message) {
 	AddLogEntry("[Client]: ", message, "", Messages::CV_LOCAL);
 }
 
-void Initialize() {
-	chat_box = std::make_unique<DrawableChatUi>();
-
+void InitHello() {
 	AddLogEntry("", "!! • IME input now supported!", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!!   (for Japanese, etc.)", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!! • You can now copy and", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!!   paste from type box.", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!! • SHIFT+[←, →] to select text.", "", Messages::CV_LOCAL);
 	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
-
-	AddLogEntry("[TAB]: ", "focus/unfocus.", "", Messages::CV_LOCAL);
+	AddLogEntry("[F9]: ", "hide/show notifications.", "", Messages::CV_LOCAL);
+	AddLogEntry("[F10]: ", "focus/unfocus.", "", Messages::CV_LOCAL);
 	AddLogEntry("[↑, ↓]: ", "scroll.", "", Messages::CV_LOCAL);
-	AddLogEntry("[F8]: ", "hide/show global chat.", "", Messages::CV_LOCAL);
 	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
-	AddLogEntry("• Type /help to list commands.", "", "", Messages::CV_LOCAL);
-	AddLogEntry("• Use '!' at the beginning of", "", "", Messages::CV_LOCAL);
-	AddLogEntry("  message for global chat.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("• Type !help to list commands.", "", "", Messages::CV_LOCAL);
+}
+
+void ShowUsage() {
 	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
-	AddLogEntry("• Set a nickname", "", "", Messages::CV_LOCAL);
-	AddLogEntry("  for chat.", "", "", Messages::CV_LOCAL);
-	AddLogEntry("• Max 8 characters.", "", "", Messages::CV_LOCAL);
-	AddLogEntry("• Alphanumeric only.", "", "", Messages::CV_LOCAL);
+	AddLogEntry("", "Usage:", "", Messages::CV_LOCAL);
+	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
+	AddLogEntry("!server [on, off]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "turn on/off the server", "", Messages::CV_LOCAL);
+	AddLogEntry("!connect [address]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "connect to the server", "", Messages::CV_LOCAL);
+	AddLogEntry("!disconnect", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "disconnect from server", "", Messages::CV_LOCAL);
+	AddLogEntry("!name [text]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "change chat name", "", Messages::CV_LOCAL);
+	AddLogEntry("!chat [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
+	AddLogEntry(" ", "switch visibility to chat", "", Messages::CV_LOCAL);
+	AddLogEntry("!log [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "toggle visibility", "", Messages::CV_LOCAL);
+}
+
+void Initialize() {
+	chat_box = std::make_unique<DrawableChatUi>();
+	InitHello();
 }
 
 void SetFocus(bool focused) {
@@ -964,6 +977,9 @@ void InputsTyping() {
 			if (flags.size() > 0)
 				flags.erase(flags.size() - 1);
 			AddClientInfo("Flags: " + flags);
+		// command: !help
+		} else if (command == "!help") {
+			ShowUsage();
 		} else {
 			GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
 		}
