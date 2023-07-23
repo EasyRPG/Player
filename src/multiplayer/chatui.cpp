@@ -981,7 +981,8 @@ void InputsTyping() {
 		} else if (command == "!help") {
 			ShowUsage();
 		} else {
-			GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
+			if (text != "")
+				GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
 		}
 		// reset typebox
 		type_text.clear();
