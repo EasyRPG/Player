@@ -205,6 +205,9 @@ int ControlVariables::Event(int op, int event_id, const Game_Interpreter& interp
 					return character->GetScreenY();
 				}
 			}
+			case 6:
+				// Event ID
+				return Player::IsPatchManiac() ? interpreter.GetThisEventId() : 0;
 		}
 
 		Output::Warning("ControlVariables::Event: Unknown op {}", op);

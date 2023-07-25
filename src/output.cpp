@@ -31,7 +31,13 @@
 #elif defined(__vita__)
 #  include <psp2/kernel/processmgr.h>
 #endif
-#include "external/rang.hpp"
+
+// Use system rang header if available
+#if __has_include(<rang.hpp>)
+#  include <rang.hpp>
+#else
+#  include "external/rang.hpp"
+#endif
 
 #include "output.h"
 #include "graphics.h"
@@ -119,21 +125,21 @@ EM_ASM({
   msg = UTF8ToString($1);
 
   switch (lvl) {
-    case 0:
-      console.error(msg);
-      break;
-    case 1:
-      console.warn(msg);
-      break;
-    case 2:
-      console.info(msg);
-      break;
-    case 3:
-      console.debug(msg);
-      break;
-    default:
-      console.log(msg);
-      break;
+	case 0:
+	  console.error(msg);
+	  break;
+	case 1:
+	  console.warn(msg);
+	  break;
+	case 2:
+	  console.info(msg);
+	  break;
+	case 3:
+	  console.debug(msg);
+	  break;
+	default:
+	  console.log(msg);
+	  break;
   }
 }, static_cast<int>(lvl), msg.c_str());
 

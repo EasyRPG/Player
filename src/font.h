@@ -77,7 +77,7 @@ class Font {
 
 	/** Contains style informations */
 	struct Style {
-		/** Size in pixel to render at. -1 will use the size specified during initialisation */
+		/** Size in pixel to render at */
 		int size = -1;
 		/** Whether to render text in bold (currently unsupported) */
 		bool bold = false;
@@ -101,12 +101,26 @@ class Font {
 	/**
 	 * Determines the size of a bitmap required to render a single character.
 	 * The dimensions of the Rect describe a bounding box to fit the text.
+	 * To get the real height the glyph must be rendered. For performance reasons the height matches the size of the
+	 * active style instead.
 	 *
 	 * @param glyph the glyph to measure.
 	 * @see Text::GetSize
 	 * @return Rect describing the rendered string boundary
 	 */
 	Rect GetSize(char32_t glyph) const;
+
+	/**
+	 * Determines the size of a bitmap required to render a single character.
+	 * The dimensions of the Rect describe a bounding box to fit the text.
+	 * To get the real height the glyph must be rendered. For performance reasons the height matches the size of the
+	 * active style instead.
+	 *
+	 * @param glyph the glyph to measure.
+	 * @see Text::GetSize
+	 * @return Rect describing the rendered string boundary
+	 */
+	Rect GetSize(const ShapeRet& shape_ret) const;
 
 	/**
 	 * Renders the glyph onto bitmap at the given position with system graphic and color

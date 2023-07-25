@@ -1137,10 +1137,10 @@ void Game_Actor::ChangeClass(int new_class_id,
 }
 
 StringView Game_Actor::GetClassName() const {
-    if (!GetClass()) {
-        return {};
-    }
-    return GetClass()->name;
+	if (!GetClass()) {
+		return {};
+	}
+	return GetClass()->name;
 }
 
 static int ClampMaxHpMod(int hp, const Game_Actor* actor) {

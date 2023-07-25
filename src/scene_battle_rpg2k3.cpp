@@ -2845,27 +2845,27 @@ bool Scene_Battle_Rpg2k3::CheckAnimFlip(Game_Battler* battler) {
 }
 
 void Scene_Battle_Rpg2k3::SetWait(int min_wait, int max_wait) {
-        battle_action_wait = max_wait;
-        battle_action_min_wait = max_wait - min_wait;
+	battle_action_wait = max_wait;
+	battle_action_min_wait = max_wait - min_wait;
 }
 
 bool Scene_Battle_Rpg2k3::CheckWait() {
-        if (battle_action_wait > 0) {
-                if (Input::IsPressed(Input::CANCEL)) {
-                        return false;
-                }
-                --battle_action_wait;
-                if (battle_action_wait > battle_action_min_wait) {
-                        return false;
-                }
-                if (!Input::IsPressed(Input::DECISION)
-                        && !Input::IsPressed(Input::SHIFT)
-                        && battle_action_wait > 0) {
-                        return false;
-                }
-                battle_action_wait = 0;
-        }
-        return true;
+	if (battle_action_wait > 0) {
+		if (Input::IsPressed(Input::CANCEL)) {
+			return false;
+		}
+		--battle_action_wait;
+		if (battle_action_wait > battle_action_min_wait) {
+			return false;
+		}
+		if (!Input::IsPressed(Input::DECISION)
+			&& !Input::IsPressed(Input::SHIFT)
+			&& battle_action_wait > 0) {
+			return false;
+		}
+		battle_action_wait = 0;
+	}
+	return true;
 }
 
 void Scene_Battle_Rpg2k3::OnPartyChanged(Game_Actor* actor, bool added) {

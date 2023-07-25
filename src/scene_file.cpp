@@ -246,13 +246,13 @@ void Scene_File::MoveFileWindows(int dy, int dt) {
 void Scene_File::UpdateArrows() {
 	int max_index = static_cast<int>(file_windows.size()) - 1;
 
-        bool show_up_arrow = (top_index > 0);
-        bool show_down_arrow = (top_index < max_index - 2);
+	bool show_up_arrow = (top_index > 0);
+	bool show_down_arrow = (top_index < max_index - 2);
 
-        if (show_up_arrow || show_down_arrow) {
-                arrow_frame = (arrow_frame + 1) % (arrow_animation_frames * 2);
-        }
-        bool arrow_visible = (arrow_frame < arrow_animation_frames);
-        up_arrow->SetVisible(show_up_arrow && arrow_visible);
-        down_arrow->SetVisible(show_down_arrow && arrow_visible);
+	if (show_up_arrow || show_down_arrow) {
+		arrow_frame = (arrow_frame + 1) % (arrow_animation_frames * 2);
+	}
+	bool arrow_visible = (arrow_frame < arrow_animation_frames);
+	up_arrow->SetVisible(show_up_arrow && arrow_visible);
+	down_arrow->SetVisible(show_down_arrow && arrow_visible);
 }

@@ -73,6 +73,11 @@ namespace Input {
 	void ResetTriggerKeys();
 
 	/**
+	 * Resets all button states of buttons that are not system keys.
+	 */
+	void ResetNonSystemKeys();
+
+	/**
 	 * Loads the default mapping for a button
 	 *
 	 * @param button Button to restore mapping of

@@ -9,7 +9,7 @@
 #
 # This module defines the following :prop_tgt:`IMPORTED` targets:
 #
-# ``Opusfile::Opusfile``
+# ``OpusFile::opusfile``
 #   The ``Opusfile`` library, if found.
 #
 # Result Variables
@@ -50,7 +50,7 @@ find_library(OPUS_LIBRARY
 	NAMES libopus opus)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Opusfile
+find_package_handle_standard_args(OpusFile
 	REQUIRED_VARS OPUSFILE_LIBRARY OPUSFILE_INCLUDE_DIR)
 
 if(OPUSFILE_FOUND)
@@ -60,9 +60,9 @@ if(OPUSFILE_FOUND)
 		set(OPUSFILE_LIBRARIES ${OPUSFILE_LIBRARIES})
 	endif()
 
-	if(NOT TARGET Opusfile::Opusfile)
-		add_library(Opusfile::Opusfile UNKNOWN IMPORTED)
-		set_target_properties(Opusfile::Opusfile PROPERTIES
+	if(NOT TARGET OpusFile::opusfile)
+		add_library(OpusFile::opusfile UNKNOWN IMPORTED)
+		set_target_properties(OpusFile::opusfile PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${OPUSFILE_INCLUDE_DIRS}"
 			INTERFACE_LINK_LIBRARIES "${OGG_LIBRARY};${OPUS_LIBRARY}"
 			IMPORTED_LOCATION "${OPUSFILE_LIBRARY}")

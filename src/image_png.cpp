@@ -26,7 +26,7 @@
 #include "image_png.h"
 
 static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
-    png_bytep* bufp = (png_bytep*) png_get_io_ptr(png_ptr);
+	png_bytep* bufp = (png_bytep*) png_get_io_ptr(png_ptr);
 	memcpy(data, *bufp, length);
 	*bufp += length;
 }

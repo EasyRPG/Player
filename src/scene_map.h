@@ -39,6 +39,7 @@ public:
 	~Scene_Map();
 
 	void Start() override;
+	void StartFromSave(int from_save_id);
 	void Continue(SceneType prev_scene) override;
 	void vUpdate() override;
 	void TransitionIn(SceneType prev_scene) override;
