@@ -86,6 +86,12 @@ public:
 	 */
 	void CalculatePanoramaRenderOffset();
 
+	/** @return x offset for the rendering of the tilemap and events */
+	int GetRenderOx() const;
+
+	/** @return y offset for the rendering of the tilemap and events */
+	int GetRenderOy() const;
+
 protected:
 	std::unique_ptr<Tilemap> tilemap;
 	std::unique_ptr<Plane> panorama;
@@ -118,4 +124,12 @@ protected:
 
 	Tone last_tone;
 };
+
+inline int Spriteset_Map::GetRenderOx() const {
+	return map_render_ox;
+}
+
+inline int Spriteset_Map::GetRenderOy() const {
+	return map_render_oy;
+}
 #endif
