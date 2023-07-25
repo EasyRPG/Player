@@ -3306,7 +3306,9 @@ bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // 
 	Game_Map::Parallax::ChangeBG(params);
 
 	if (!params.name.empty()) {
-		_async_op = AsyncOp::MakeYield();
+		if (!AsyncHandler::RequestFile("Panorama", params.name)->IsReady()) {
+			_async_op = AsyncOp::MakeYield();
+		}
 	}
 
 	return true;
