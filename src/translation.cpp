@@ -820,7 +820,7 @@ void Dictionary::addEntry(const Entry& entry)
 }
 
 // Returns success
-void Dictionary::FromPo(Dictionary& res, std::istream& in) {
+void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 	std::string line;
 	lcf::StringView line_view;
 	bool found_header = false;
@@ -831,7 +831,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 
 	auto extract_string = [&](size_t offset) -> std::string {
 		if (offset >= line_view.size()) {
-			Output::Error("Parse error (Line {}) is empty", line_number);
+			Output::Error("{}\n\nParse error (Line {}) is empty", FileFinder::GetPathInsideGamePath(in.GetName()), line_number);
 			return "";
 		}
 
@@ -847,7 +847,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 					first_quote = true;
 					continue;
 				}
-				Output::Error(R"(Parse error (Line {}): Expected ", got "{}": {})", line_number, c, line);
+				Output::Error("{}\n\nParse error (Line {}): Expected \", got \"{}\":\n{}", FileFinder::GetPathInsideGamePath(in.GetName()), line_number, c, line);
 				return "";
 			}
 
@@ -865,9 +865,10 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 					case '"':
 						out << '"';
 						break;
-					default:
-						Output::Error(R"(Parse error (Line {}): Expected \, \n or ", got "{}": {})", line_number, c, line);
+					default: {
+						Output::Error("{}\n\nParse error (Line {}): Expected \\, \\n or \", got \"{}\":\n{}", FileFinder::GetPathInsideGamePath(in.GetName()), line_number, c, line);
 						break;
+					}
 				}
 			} else {
 				// no-slash
@@ -879,7 +880,7 @@ void Dictionary::FromPo(Dictionary& res, std::istream& in) {
 			}
 		}
 
-		Output::Error("Parse error (Line {}): Unterminated line: {}", line_number, line);
+		Output::Error("{}\n\nParse error (Line {}): Unterminated line:\n{}", FileFinder::GetPathInsideGamePath(in.GetName()), line_number, line);
 		return out.str();
 	};
 

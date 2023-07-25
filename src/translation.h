@@ -97,7 +97,7 @@ public:
 	 * @param res The dictionary to store the translated entries in.
 	 * @param in The stream to load the translated entries from.
 	 */
-	static void FromPo(Dictionary& res, std::istream& in);
+	static void FromPo(Dictionary& res, Filesystem_Stream::InputStream& in);
 
 	/**
 	 * Replace an original string with the translated string.
