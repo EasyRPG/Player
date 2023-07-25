@@ -79,25 +79,23 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 	EndDisplayModeChange();
 
 	// Create the surface we draw on
-	DynamicFormat format;
-
-	if (Utils::IsBigEndian()) {
-		format = DynamicFormat(
-			32,
-			0x0000FF00,
-			0x00FF0000,
-			0xFF000000,
-			0x000000FF,
-			PF::NoAlpha);
-	} else {
-		format = DynamicFormat(
-			32,
-			0x00FF0000,
-			0x0000FF00,
-			0x000000FF,
-			0xFF000000,
-			PF::NoAlpha);
-	}
+#if defined(WORDS_BIGENDIAN)
+	DynamicFormat format = DynamicFormat(
+		32,
+		0x0000FF00,
+		0x00FF0000,
+		0xFF000000,
+		0x000000FF,
+		PF::NoAlpha);
+#else
+	DynamicFormat format = DynamicFormat(
+		32,
+		0x00FF0000,
+		0x0000FF00,
+		0x000000FF,
+		0xFF000000,
+		PF::NoAlpha);
+#endif
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(

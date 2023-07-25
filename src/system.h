@@ -65,7 +65,6 @@
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(GEKKO)
 #  include <cstdint>
-#  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(_WIN32)
@@ -80,7 +79,6 @@
 #elif defined(PLAYER_AMIGA) && !defined(__AROS__)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
-#  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #else // Everything not catched above, e.g. Linux/*BSD/macOS
