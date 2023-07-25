@@ -126,6 +126,7 @@ void Game_Map::InitCommonEvents() {
 	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
 		common_events.emplace_back(ev.ID);
 	}
+	translation_changed = false;
 }
 
 void Game_Map::Dispose() {
@@ -350,7 +351,6 @@ void Game_Map::SetupCommon() {
 	// Restart all common events after translation change
 	// Otherwise new strings are not applied
 	if (translation_changed) {
-		translation_changed = false;
 		InitCommonEvents();
 	}
 
