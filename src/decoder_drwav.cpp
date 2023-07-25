@@ -62,6 +62,7 @@ bool DrWavDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 	if (origin == std::ios_base::beg) {
 		finished = false;
 		drwav_seek_to_pcm_frame(&handle, offset);
+		decoded_samples = 0;
 		return true;
 	}
 	return false;
