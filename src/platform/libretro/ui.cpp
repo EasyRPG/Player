@@ -425,6 +425,7 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 	// Convert RetroArch archive paths to paths our VFS understands
 	game_path = Utils::ReplaceAll(game_path, ".zip#", ".zip/");
 	game_path = Utils::ReplaceAll(game_path, ".easyrpg#", ".easyrpg/");
+	game_path = FileFinder::MakeCanonical(game_path, 0);
 
 	auto fs = FileFinder::Root().Create(game_path);
 	if (!fs) {
