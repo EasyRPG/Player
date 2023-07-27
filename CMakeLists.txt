@@ -767,11 +767,15 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 endif()
 
 # Endianess check
-if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.20)
+	if (CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
+	endif()
+else()
 	include(TestBigEndian)
 	test_big_endian(WORDS_BIGENDIAN)
 	if(WORDS_BIGENDIAN)
-		target_compile_definitions(${PROJECT_NAME} PUBLIC WORDS_BIGENDIAN=1)
+		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
 	endif()
 endif()
 

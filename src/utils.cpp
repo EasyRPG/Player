@@ -470,46 +470,31 @@ int Utils::PositiveModulo(int i, int m) {
 	return (i % m + m) % m;
 }
 
-bool Utils::IsBigEndian() {
-	union {
-		uint32_t i;
-		char c[4];
-	} d = {0x01020304};
-
-	return d.c[0] == 1;
-}
-
 void Utils::SwapByteOrder(uint16_t& us) {
-	if (!IsBigEndian()) {
-		return;
-	}
-
+#ifdef WORDS_BIGENDIAN
 	us =	(us >> 8) |
 			(us << 8);
+#endif
 }
 
 void Utils::SwapByteOrder(uint32_t& ui) {
-	if (!IsBigEndian()) {
-		return;
-	}
-
+#ifdef WORDS_BIGENDIAN
 	ui =	(ui >> 24) |
 			((ui<<8) & 0x00FF0000) |
 			((ui>>8) & 0x0000FF00) |
 			(ui << 24);
+#endif
 }
 
 void Utils::SwapByteOrder(double& d) {
-	if (!IsBigEndian()) {
-		return;
-	}
-
+#ifdef WORDS_BIGENDIAN
 	uint32_t *p = reinterpret_cast<uint32_t *>(&d);
 	SwapByteOrder(p[0]);
 	SwapByteOrder(p[1]);
 	uint32_t tmp = p[0];
 	p[0] = p[1];
 	p[1] = tmp;
+#endif
 }
 
 // based on https://stackoverflow.com/questions/6089231/
