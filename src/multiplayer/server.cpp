@@ -10,7 +10,7 @@ using namespace Messages;
 class ServerConnection : public Connection {
 	int& id;
 	ServerMain* server;
-	TCPSocket tcp_socket{ "Server", MAX_QUEUE_SIZE };
+	TCPSocket tcp_socket{ "Server" };
 	std::mutex m_send_mutex;
 
 	std::queue<std::unique_ptr<Packet>> m_self_queue;

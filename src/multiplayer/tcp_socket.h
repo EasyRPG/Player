@@ -6,12 +6,10 @@
 #include "sockpp/tcp_connector.h"
 
 struct TCPSocket {
-	const std::string LABEL;
-	const size_t MAX_QUEUE_SIZE = 512;
-	const size_t HEAD_SIZE = sizeof(uint16_t);
+	constexpr static size_t HEAD_SIZE = sizeof(uint16_t);
 
-	TCPSocket(const std::string _label, const size_t _queue)
-		: LABEL(std::move(_label)), MAX_QUEUE_SIZE(_queue) {}
+	TCPSocket(const std::string _label)
+		: LABEL(std::move(_label)) {}
 
 	void InitSocket(const sockpp::tcp_socket& socket);
 
@@ -27,6 +25,8 @@ struct TCPSocket {
 	void Close();
 
 private:
+	std::string LABEL{""};
+
 	bool close_silently = false;
 
 	sockpp::tcp_socket read_socket;

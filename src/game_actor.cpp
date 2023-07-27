@@ -38,6 +38,13 @@
 #include "algo.h"
 #include "multiplayer/game_multiplayer.h"
 
+#if defined(_WIN32)
+// fix naming conflict
+#if defined(GetClassName)
+	#undef GetClassName
+#endif
+#endif
+
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 

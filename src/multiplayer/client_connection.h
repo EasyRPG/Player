@@ -35,7 +35,7 @@ protected:
 	sockpp::tcp_connector connector;
 	std::string addr_host;
 	in_port_t addr_port;
-	TCPSocket tcp_socket{ "Client", MAX_QUEUE_SIZE };
+	TCPSocket tcp_socket{ "Client" };
 
 	bool connecting = false;
 	bool connected = false;

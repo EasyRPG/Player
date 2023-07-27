@@ -1,6 +1,9 @@
 #include "tcp_socket.h"
 #include <thread>
-#include <iostream>
+#include <vector>
+#include "connection.h"
+
+constexpr static size_t MAX_QUEUE_SIZE = Multiplayer::Connection::MAX_QUEUE_SIZE;
 
 void TCPSocket::InitSocket(const sockpp::tcp_socket& socket) {
 	read_socket = std::move(socket.clone());
@@ -10,10 +13,10 @@ void TCPSocket::InitSocket(const sockpp::tcp_socket& socket) {
 void TCPSocket::Send(std::string_view& data) {
 	const uint16_t data_size = data.size();
 	const uint16_t final_size = HEAD_SIZE+data_size;
-	char buf[final_size];
-	std::memcpy(buf, &data_size, HEAD_SIZE);
-	std::memcpy(buf+HEAD_SIZE, data.data(), data_size);
-	if (write_socket.write(buf, final_size) != final_size) {
+	std::vector<char> buf(final_size);
+	std::memcpy(buf.data(), &data_size, HEAD_SIZE);
+	std::memcpy(buf.data()+HEAD_SIZE, data.data(), data_size);
+	if (write_socket.write(buf.data(), final_size) != final_size) {
 		if (write_socket.last_error() == EPIPE) {
 			OnLogDebug(LABEL + ": It appears that the write_socket was closed.");
 		} else {
