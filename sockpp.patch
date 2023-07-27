@@ -1,0 +1,15 @@
+diff --git a/include/sockpp/platform.h b/include/sockpp/platform.h
+index 1cbea81..ef1cccb 100644
+--- a/include/sockpp/platform.h
++++ b/include/sockpp/platform.h
+@@ -50,6 +50,10 @@
+ #include <cstdint>
+ 
+ #if defined(_WIN32)
++	#if defined(UNICODE)
++		#undef UNICODE
++	#endif
++
+ 	//#pragma warning(4 : 4996)	// Deprecated functions (CRT & all)
+ 	//#pragma warning(4 : 4250)	// Inheritance via dominance
+ 

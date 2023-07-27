@@ -853,13 +853,19 @@ if(PLAYER_BUILD_LIBS)
 			"v0.8.1"
 			"https://github.com/fpagliughi/sockpp"
 			"${SOCKPP_PATH}")
+		include(Patch)
+		execute_process(COMMAND ${PATCH_EXECUTABLE} -p1 -d "${SOCKPP_PATH}"
+			--input=${CMAKE_CURRENT_SOURCE_DIR}/sockpp.patch )
 	endif()
+	set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+	set(SOCKPP_BUILD_SHARED OFF)
+	set(SOCKPP_BUILD_STATIC ON)
 	add_subdirectory(${SOCKPP_PATH})
 	target_include_directories(${PROJECT_NAME}
 		PUBLIC ${SOCKPP_PATH}/generated/include
 		PRIVATE ${SOCKPP_PATH}/include
 	)
-	target_link_libraries(${PROJECT_NAME} sockpp)
+	target_link_libraries(${PROJECT_NAME} sockpp-static)
 endif()
 
 # Detect all required libraries
