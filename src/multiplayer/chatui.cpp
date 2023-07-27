@@ -1010,34 +1010,26 @@ ChatUi& ChatUi::Instance() {
 	return _instance;
 }
 
-bool init_wait_scene = false;
-
 void ChatUi::Refresh() {
-	if(chat_box == nullptr) {
-		if (Player::debug_flag || init_wait_scene)
-			return;
-		init_wait_scene = true;
-		std::thread thread([]() {
-			while(true) {
-				auto scene_title = Scene::Find(Scene::SceneType::Title);
-				auto scene_map = Scene::Find(Scene::SceneType::Map);
-				if(scene_title != nullptr || scene_map != nullptr) {
-					Initialize();
-					break;
-				}
-				std::this_thread::sleep_for(std::chrono::milliseconds(500));
-			}
-		});
-		thread.detach();
-	} else {
-		chat_box->RefreshTheme();
-	}
+	if(chat_box == nullptr) return;
+	chat_box->RefreshTheme();
 }
 
+bool initialized = false;
+
 void ChatUi::Update() {
-	if(chat_box == nullptr)
-		return;
-	ProcessInputs();
+	if(chat_box == nullptr) {
+		if (Player::debug_flag || initialized)
+			return;
+		for (int e = Scene::SceneType::Title; e < Scene::SceneType::Map; ++e) {
+			if (Scene::Find(static_cast<Scene::SceneType>(e)) != nullptr) {
+				Initialize();
+				initialized = true;
+			}
+		}
+	} else {
+		ProcessInputs();
+	}
 }
 
 void ChatUi::GotMessage(int visibility, int room_id,
