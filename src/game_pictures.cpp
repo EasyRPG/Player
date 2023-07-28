@@ -410,8 +410,8 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 		y = data.current_y;
 	}
 
-	double width = sprite->GetWidth();
-	double height = sprite->GetHeight();
+	double width = sprite->GetFrameWidth();
+	double height = sprite->GetFrameHeight();
 
 	switch (origin) {
 		case 1:

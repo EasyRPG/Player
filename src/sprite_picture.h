@@ -38,6 +38,12 @@ public:
 
 	void OnPictureShow();
 
+	/** @return Width of a single spritesheet frame or the entire width if the picture has no spritesheet */
+	int GetFrameWidth() const;
+
+	/** @return Height of a single spritesheet frame or the entire width if the picture has no spritesheet */
+	int GetFrameHeight() const;
+
 private:
 	int last_spritesheet_frame = -1;
 	const int pic_id = 0;
