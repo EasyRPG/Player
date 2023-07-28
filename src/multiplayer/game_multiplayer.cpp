@@ -419,17 +419,6 @@ void Game_Multiplayer::InitConnection() {
 		player.name_tag = std::make_unique<NameTag>(p.id, player, std::string(p.name));
 		DrawableMgr::SetLocalList(old_list);
 	});
-
-	// Heartbeat
-	connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {});
-	std::thread([this]() {
-		while (true) {
-			std::this_thread::sleep_for(std::chrono::seconds(3));
-			if (active && connection.IsConnected()) {
-				connection.SendPacket(HeartbeatPacket());
-			}
-		}
-	}).detach();
 }
 
 void Game_Multiplayer::SetConfig(const Game_ConfigMultiplayer& _cfg) {
@@ -437,6 +426,19 @@ void Game_Multiplayer::SetConfig(const Game_ConfigMultiplayer& _cfg) {
 	Server().SetConfig(_cfg);
 	if (cfg.server_auto_start.Get())
 		Server().Start();
+	connection.SetConfig(&cfg);
+	// Heartbeat
+	if (!cfg.no_heartbeats.Get()) {
+		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {});
+		std::thread([this]() {
+			while (true) {
+				std::this_thread::sleep_for(std::chrono::seconds(3));
+				if (active && connection.IsConnected()) {
+					connection.SendPacket(HeartbeatPacket());
+				}
+			}
+		}).detach();
+	}
 }
 
 Game_ConfigMultiplayer Game_Multiplayer::GetConfig() const {

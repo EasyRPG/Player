@@ -71,7 +71,7 @@ void ClientConnection::Open() {
 		tcp_socket.OnClose = [this]() { HandleClose(); };
 		tcp_socket.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
 		tcp_socket.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
-		tcp_socket.CreateConnectionThread();
+		tcp_socket.CreateConnectionThread(cfg->no_heartbeats.Get() ? 0 : 6);
 	}).detach();
 }
 

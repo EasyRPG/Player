@@ -5,11 +5,16 @@
 #include "connection.h"
 #include "sockpp/tcp_connector.h"
 #include "tcp_socket.h"
+#include "../game_config.h"
 
 using namespace Multiplayer;
 
 class ClientConnection : public Connection {
 public:
+	void SetConfig(Game_ConfigMultiplayer* _cfg) {
+		cfg = _cfg;
+	}
+
 	void SetAddress(std::string_view address);
 
 	ClientConnection();
@@ -32,6 +37,8 @@ public:
 	void FlushQueue();
 
 protected:
+	Game_ConfigMultiplayer* cfg;
+
 	sockpp::tcp_connector connector;
 	std::string addr_host;
 	in_port_t addr_port;

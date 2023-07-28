@@ -341,6 +341,10 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, "--no-heartbeats")) {
+			multiplayer.no_heartbeats.Set(true);
+			continue;
+		}
 
 		cp.SkipNext();
 	}
