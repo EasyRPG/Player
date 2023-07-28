@@ -47,8 +47,8 @@ void Plane::Draw(Bitmap& dst) {
 	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;
 
 	Rect dst_rect = dst.GetRect();
-	int src_x = -ox;
-	int src_y = -oy;
+	int src_x = -ox - GetRenderOx();
+	int src_y = -oy - GetRenderOy();
 
 	// Apply screen shaking
 	const int shake_x = Main_Data::game_screen->GetShakeOffsetX();
@@ -60,7 +60,7 @@ void Plane::Draw(Bitmap& dst) {
 		// Using coordinates where the top-left of the screen is the origin...
 		// Minimal width is a 20 tile wide map by default, smaller maps are hacked
 		int bg_x = -Game_Map::GetDisplayX() / TILE_SIZE + shake_x;
-		int bg_width = std::max(Game_Map::GetWidth() * TILE_SIZE, Player::screen_width);
+		int bg_width = std::max(Game_Map::GetTilesX() * TILE_SIZE, Player::screen_width);
 
 		// Clip the panorama to the screen
 		if (bg_x < 0) {

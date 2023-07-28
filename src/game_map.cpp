@@ -459,7 +459,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 }
 
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
-	int map_width = GetWidth() * SCREEN_TILE_SIZE;
+	int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		screen_x = (screen_x + inc) % map_width;
 	} else {
@@ -468,7 +468,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 }
 
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
-	int map_height = GetHeight() * SCREEN_TILE_SIZE;
+	int map_height = GetTilesY() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		screen_y = (screen_y + inc) % map_height;
 	} else {
@@ -477,7 +477,7 @@ void Game_Map::AddScreenY(int& screen_y, int& inc) {
 }
 
 bool Game_Map::IsValid(int x, int y) {
-	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
+	return (x >= 0 && x < GetTilesX() && y >= 0 && y < GetTilesY());
 }
 
 static int GetPassableMask(int old_x, int old_y, int new_x, int new_y) {
@@ -673,7 +673,7 @@ bool Game_Map::CanLandAirship(int x, int y) {
 
 	const int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
-	int tile_index = x + y * GetWidth();
+	int tile_index = x + y * GetTilesX();
 
 	if (!IsPassableLowerTile(bit, tile_index)) {
 		return false;
@@ -792,7 +792,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 		};
 	}
 
-	int tile_index = x + y * GetWidth();
+	int tile_index = x + y * GetTilesX();
 	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
@@ -825,7 +825,7 @@ int Game_Map::GetBushDepth(int x, int y) {
 bool Game_Map::IsCounter(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	int const tile_id = map->upper_layer[x + y * GetWidth()];
+	int const tile_id = map->upper_layer[x + y * GetTilesX()];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.upper_tiles[tile_id - BLOCK_F];
 	return !!(passages_up[index] & Passable::Counter);
@@ -857,7 +857,7 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	unsigned chip_index = 0;
 
 	if (Game_Map::IsValid(x, y)) {
-		const auto chip_id = map->lower_layer[x + y * GetWidth()];
+		const auto chip_id = map->lower_layer[x + y * GetTilesX()];
 		chip_index = ChipIdToIndex(chip_id);
 
 		// Apply tile substitution
@@ -900,7 +900,7 @@ bool Game_Map::LoopVertical() {
 
 int Game_Map::RoundX(int x, int units) {
 	if (LoopHorizontal()) {
-		return Utils::PositiveModulo(x, GetWidth() * units);
+		return Utils::PositiveModulo(x, GetTilesX() * units);
 	} else {
 		return x;
 	}
@@ -908,7 +908,7 @@ int Game_Map::RoundX(int x, int units) {
 
 int Game_Map::RoundY(int y, int units) {
 	if (LoopVertical()) {
-		return Utils::PositiveModulo(y, GetHeight() * units);
+		return Utils::PositiveModulo(y, GetTilesY() * units);
 	} else {
 		return y;
 	}
@@ -916,7 +916,7 @@ int Game_Map::RoundY(int y, int units) {
 
 int Game_Map::RoundDx(int dx, int units) {
 	if (LoopHorizontal()) {
-		return Utils::PositiveModulo(std::abs(dx), GetWidth() * units) * Utils::Sign(dx);
+		return Utils::PositiveModulo(std::abs(dx), GetTilesX() * units) * Utils::Sign(dx);
 	} else {
 		return dx;
 	}
@@ -924,7 +924,7 @@ int Game_Map::RoundDx(int dx, int units) {
 
 int Game_Map::RoundDy(int dy, int units) {
 	if (LoopVertical()) {
-		return Utils::PositiveModulo(std::abs(dy), GetHeight() * units) * Utils::Sign(dy);
+		return Utils::PositiveModulo(std::abs(dy), GetTilesY() * units) * Utils::Sign(dy);
 	} else {
 		return dy;
 	}
@@ -1210,11 +1210,11 @@ void Game_Map::PrintPathToMap() {
 	Output::Debug("Tree: {}", ss.str());
 }
 
-int Game_Map::GetWidth() {
+int Game_Map::GetTilesX() {
 	return map->width;
 }
 
-int Game_Map::GetHeight() {
+int Game_Map::GetTilesY() {
 	return map->height;
 }
 
@@ -1391,7 +1391,7 @@ int Game_Map::GetDisplayX() {
 }
 
 void Game_Map::SetPositionX(int x, bool reset_panorama) {
-	const int map_width = GetWidth() * SCREEN_TILE_SIZE;
+	const int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
 	} else {
@@ -1413,7 +1413,7 @@ int Game_Map::GetDisplayY() {
 }
 
 void Game_Map::SetPositionY(int y, bool reset_panorama) {
-	const int map_height = GetHeight() * SCREEN_TILE_SIZE;
+	const int map_height = GetTilesY() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
 	} else {
@@ -1738,8 +1738,8 @@ void Game_Map::Parallax::ResetPositionX() {
 			++tiles_per_screen;
 		}
 
-		if (GetWidth() > tiles_per_screen && parallax_width > screen_width) {
-			const int w = (GetWidth() - tiles_per_screen) * TILE_SIZE;
+		if (GetTilesX() > tiles_per_screen && parallax_width > screen_width) {
+			const int w = (GetTilesX() - tiles_per_screen) * TILE_SIZE;
 			const int ph = 2 * std::min(w, parallax_width - screen_width) * map_info.position_x / w;
 			if (Player::IsRPG2k()) {
 				SetPositionX(ph);
@@ -1776,8 +1776,8 @@ void Game_Map::Parallax::ResetPositionY() {
 			++tiles_per_screen;
 		}
 
-		if (GetHeight() > tiles_per_screen && parallax_height > screen_height) {
-			const int h = (GetHeight() - tiles_per_screen) * TILE_SIZE;
+		if (GetTilesY() > tiles_per_screen && parallax_height > screen_height) {
+			const int h = (GetTilesY() - tiles_per_screen) * TILE_SIZE;
 			const int pv = 2 * std::min(h, parallax_height - screen_height) * map_info.position_y / h;
 			SetPositionY(pv);
 		} else {

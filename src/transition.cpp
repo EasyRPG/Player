@@ -29,6 +29,8 @@
 #include "graphics.h"
 #include "main_data.h"
 #include "scene.h"
+#include "scene_map.h"
+#include "spriteset_map.h"
 #include "baseui.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
@@ -156,8 +158,10 @@ void Transition::SetAttributesTransitions() {
 	case TransitionZoomIn:
 	case TransitionZoomOut:
 		if (scene != nullptr && scene->type == Scene::Map) {
-			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX(), (int)Player::screen_width));
-			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8, (int)Player::screen_height));
+			auto map = static_cast<Scene_Map*>(Scene::instance.get());
+
+			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX() + map->spriteset->GetRenderOx(), (int)Player::screen_width));
+			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8 + map->spriteset->GetRenderOy(), (int)Player::screen_height));
 		}
 		else {
 			zoom_position[0] = Player::screen_width / 2;
@@ -347,6 +351,7 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionMosaicIn:
 	case TransitionMosaicOut:
 		// If TransitionMosaicIn, invert percentage and screen:
+		// FIXME: When the map is smaller than the viewport this will look weird because it mixes the black corners with the mosaic
 		if (transition_type == TransitionMosaicIn) { percentage = 100 - percentage; }
 		screen_pointer1 = transition_type == TransitionMosaicIn ? screen2 : screen1;
 

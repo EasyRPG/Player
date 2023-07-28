@@ -331,19 +331,11 @@ namespace Game_Map {
 	 */
 	void PrintPathToMap();
 
-	/**
-	 * Gets current map width.
-	 *
-	 * @return current map width.
-	 */
-	int GetWidth();
+	/** @return amount of tiles in x direction */
+	int GetTilesX();
 
-	/**
-	 * Gets current map height.
-	 *
-	 * @return current map height.
-	 */
-	int GetHeight();
+	/** @return amount of tiles in y direction */
+	int GetTilesY();
 
 	/** @return original map battle encounter rate steps. */
 	int GetOriginalEncounterSteps();

@@ -151,10 +151,9 @@ protected:
 	void RefreshTargetWindow();
 
 	bool CheckBattleEndConditions();
-	bool RefreshEventsAndCheckBattleEnd();
 
 	void ResetWindows(bool make_invisible);
-	void SetCommandWindows(int x);
+	void SetCommandWindowsX();
 	void MoveCommandWindows(int x, int frames);
 	void RefreshCommandWindow();
 

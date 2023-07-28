@@ -33,10 +33,29 @@ void Screen::Draw(Bitmap& dst) {
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
 		if (!flash) {
-			flash = Bitmap::Create(Player::screen_width, Player::screen_height, flash_color);
+			flash = Bitmap::Create(dst.GetWidth(), dst.GetHeight(), flash_color);
 		} else {
 			flash->Fill(flash_color);
 		}
 		dst.Blit(0, 0, *flash, flash->GetRect(), 255);
+	}
+
+	if (viewport != Rect()) {
+		// Clear all parts of the screen that are out-of-bounds
+		Rect dst_rect = dst.GetRect();
+		int dx = viewport.x - dst_rect.x;
+		int dy = viewport.y - dst_rect.y;
+
+		if (dx > 0) {
+			// Left and Right
+			dst.ClearRect({0, 0, dx, dst.GetHeight()});
+			dst.ClearRect({dst.GetWidth() - dx, 0, dx, dst.GetHeight()});
+		}
+
+		if (dy > 0) {
+			// Top and Bottom
+			dst.ClearRect({0, 0, dst.GetWidth(), dy});
+			dst.ClearRect({0, dst.GetHeight() - dy, dst.GetWidth(), dy});
+		}
 	}
 }

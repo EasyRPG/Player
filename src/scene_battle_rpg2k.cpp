@@ -73,7 +73,7 @@ void Scene_Battle_Rpg2k::CreateUi() {
 		}
 	}
 
-	SetCommandWindows(Player::menu_offset_x);
+	SetCommandWindowsX();
 
 	ResetWindows(true);
 	battle_message_window->SetVisible(true);
@@ -136,9 +136,8 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 		ToString(lcf::Data::terms.command_item)
 	};
 
-	command_window.reset(new Window_Command(std::move(commands), 76));
+	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
 	command_window->SetHeight(80);
-	command_window->SetX(Player::screen_width - Player::menu_offset_x - option_command_mov);
 	command_window->SetY(Player::screen_height - Player::menu_offset_y - 80);
 }
 
@@ -395,7 +394,12 @@ void Scene_Battle_Rpg2k::ResetWindows(bool make_invisible) {
 	help_window->SetVisible(false);
 }
 
-void Scene_Battle_Rpg2k::SetCommandWindows(int x) {
+void Scene_Battle_Rpg2k::SetCommandWindowsX() {
+	int x = Player::menu_offset_x;
+	if (Player::screen_width >= battle_menu_offset_x) {
+		x = std::max<int>((Player::screen_width - battle_menu_offset_x) / 2, 0);
+	}
+
 	options_window->SetX(x);
 	x += options_window->GetWidth();
 	status_window->SetX(x);
@@ -404,6 +408,11 @@ void Scene_Battle_Rpg2k::SetCommandWindows(int x) {
 }
 
 void Scene_Battle_Rpg2k::MoveCommandWindows(int x, int frames) {
+	if (Player::screen_width >= battle_menu_offset_x) {
+		// Do not animate as they fit on the screen in widescreen mode
+		return;
+	}
+
 	options_window->InitMovement(options_window->GetX(), options_window->GetY(),
 			x, options_window->GetY(), frames);
 
@@ -457,7 +466,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 		if (previous_state == State_SelectCommand) {
 			MoveCommandWindows(Player::menu_offset_x, 8);
 		} else {
-			SetCommandWindows(Player::menu_offset_x);
+			SetCommandWindowsX();
 		}
 		SetSceneActionSubState(eWaitForInput);
 		// Prevent that DECISION from a closed message triggers a battle option in eWaitForInput
