@@ -380,7 +380,8 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_GetRendererInfo failed : {}", SDL_GetError());
 		}
 
-		vsync = rinfo.flags & SDL_RENDERER_PRESENTVSYNC;
+		if (vsync && !(rinfo.flags & SDL_RENDERER_PRESENTVSYNC))
+			vsync = false;
 		SetFrameRateSynchronized(vsync);
 
 		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
