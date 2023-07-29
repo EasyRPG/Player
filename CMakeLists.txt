@@ -1130,6 +1130,10 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		target_sources(${EXE_NAME} PRIVATE
 			resources/windows/player.manifest
 			"${CMAKE_CURRENT_BINARY_DIR}/resources/windows/player.rc")
+		if(MSVC)
+			target_link_options(${EXE_NAME} PUBLIC /DEBUG:FULL)
+			message(STATUS "x64dbg: Add x64dbg source file viewing support")
+		endif()
 
 		# Set Visual Studio startup project
 		set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${EXE_NAME})
