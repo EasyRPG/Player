@@ -1016,17 +1016,13 @@ void ChatUi::Refresh() {
 	chat_box->RefreshTheme();
 }
 
-bool initialized = false;
-
 void ChatUi::Update() {
 	if(chat_box == nullptr) {
-		if (Player::debug_flag || initialized)
+		if (Player::debug_flag)
 			return;
 		for (int e = Scene::SceneType::Title; e < Scene::SceneType::Map; ++e) {
-			if (Scene::Find(static_cast<Scene::SceneType>(e)) != nullptr) {
+			if (Scene::Find(static_cast<Scene::SceneType>(e)) != nullptr)
 				Initialize();
-				initialized = true;
-			}
 		}
 	} else {
 		ProcessInputs();
