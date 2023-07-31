@@ -10,7 +10,6 @@ Add multiplayer functionality and the server in C++.
 ### minimal / required
 
 - [liblcf] for RPG Maker data reading.
-- sockpp for TCP socket.
 - SDL2 for screen backend support.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
