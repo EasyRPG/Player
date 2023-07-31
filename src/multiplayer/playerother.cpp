@@ -11,7 +11,7 @@ PlayerOther PlayerOther::Shadow(int x, int y) {
 	PlayerOther po;
 	auto scene_map = Scene::Find(Scene::SceneType::Map);
 	if (!scene_map) {
-		Output::Error("unexpected, {}:{}", __FILE__, __LINE__);
+		Output::Error("MP: unexpected, {}:{}", __FILE__, __LINE__);
 		std::terminate();
 	}
 

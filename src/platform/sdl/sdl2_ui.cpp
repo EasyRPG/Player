@@ -651,11 +651,7 @@ void Sdl2Ui::SetClipboardText(std::string text) {
 }
 
 void Sdl2Ui::SetTextInputRect(int x, int y, int w, int h) {
-	SDL_Rect rect;
-	rect.x = x;
-	rect.y = y;
-	rect.w = w;
-	rect.h = h;
+	SDL_Rect rect = {x, y, w, h};
 	SDL_SetTextInputRect(&rect);
 }
 

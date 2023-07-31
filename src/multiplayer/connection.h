@@ -70,9 +70,6 @@ public:
 
 	virtual ~Connection() = default;
 
-	void SetKey(uint32_t k) { key = std::move(k); }
-	uint32_t GetKey() const { return key; }
-
 	static std::vector<std::string_view> Split(std::string_view src, std::string_view delim = Packet::PARAM_DELIM);
 
 protected:
@@ -80,8 +77,6 @@ protected:
 
 	std::map<std::string, std::function<void (const ParameterList&)>> handlers;
 	SystemMessageHandler sys_handlers[static_cast<size_t>(SystemMessage::_PLACEHOLDER)];
-
-	uint32_t key;
 };
 
 }

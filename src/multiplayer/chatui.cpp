@@ -274,7 +274,8 @@ class DrawableChatLog : public Drawable {
 		// clamp the scroll_box minimum height
 		const unsigned int bar_height_safe = std::max<unsigned int>(bar_height, 16);
 		const unsigned int bar_y = scroll_position*ratio;
-		unsigned int bar_offset_safe = (bar_height_safe-bar_height)*(1.0f-float(bar_y)/bounds.height);
+		const unsigned int bar_offset_safe = (bar_height_safe-bar_height)*
+			(1.0f-float(bar_y)/bounds.height);
 		scroll_box.SetHeight(bar_height_safe);
 		scroll_box.SetY(bounds.y+bounds.height-bar_y-bar_height-bar_offset_safe);
 	}
