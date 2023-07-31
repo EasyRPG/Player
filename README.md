@@ -1,5 +1,7 @@
 # EasyRPG Multiplayer Native
 
+[English](README.md) | [简体中文](README-ZH.md)
+
 Add multiplayer functionality and the server in C++.
 
 
@@ -34,7 +36,6 @@ SDL 1.2 is still supported, but deprecated.
 - EasyRPG developers - EasyRPG Player (https://github.com/EasyRPG/Player)
 - YNOproject - Yume Nikki Online (https://github.com/ynoproject/ynoclient)
 - CataractJustice - EasyRPG Player online fork (https://github.com/CataractJustice/ynoclient)
-- fpagliughi - Simple, modern, C++ socket library (https://github.com/fpagliughi/sockpp)
 
 
 ## License
@@ -56,6 +57,10 @@ EasyRPG Player makes use of the following 3rd party software:
 * [PicoJSON] JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
   Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
 * [rang] terminal color library - by Abhinav Gauniyal, provided under Unlicense
+* [sockpp] C++ socket library - Copyright (c) 2016-2017 Frank Pagliughi, provided
+  under the (3-clause) BSD license
+* [strfnd.h] Minetest string utils - Copyright (C) 2013 celeron55,
+  Perttu Ahola \<celeron55@gmail.com\>, provided under the LGPLv2.1+
 
 ### 3rd party resources
 
@@ -82,6 +87,8 @@ EasyRPG Player makes use of the following 3rd party software:
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
 [rang]: https://github.com/agauniyal/rang
+[sockpp]: https://github.com/fpagliughi/sockpp
+[strfnd.h]: https://github.com/minetest/minetest
 [baekmuk]: https://kldp.net/baekmuk
 [Shinonome]: http://openlab.ring.gr.jp/efont/shinonome
 [ttyp0]: https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0
