@@ -32,9 +32,19 @@ SDL 1.2 is still supported, but deprecated.
 
 ## Credits
 
+### Projects
+
 - EasyRPG developers - EasyRPG Player (https://github.com/EasyRPG/Player)
 - YNOproject - Yume Nikki Online (https://github.com/ynoproject/ynoclient)
-- CataractJustice - EasyRPG Player online fork (https://github.com/CataractJustice/ynoclient)
+- CataractJustice - EasyRPG Player online fork (https://github.com/CataractJustice/ynoclient) [Chat UI]
+
+### Additional thanks
+
+- [Jixun](https://github.com/jixunmoe) for helping in the C++ problems
+- [Ratizux](https://github.com/Ratizux) for the podman suggestions
+- [Proselyte093](https://github.com/Proselyte093) for giving the project a chance to compile on the macOS ARM
+- ChatGPT for the C++ knowledge
+- With help from various participants
 
 
 ## License
