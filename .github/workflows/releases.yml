@@ -19,10 +19,11 @@ jobs:
       fail-fast: false
       matrix:
         image:
+          - debian:12-slim
           - ubuntu:22.04
 
     env:
-      FILENAME: "Linux-Build-${{ github.ref_name }}"
+      FILENAME: "Linux-Build-${{ matrix.image }}-${{ github.ref_name }}"
 
     steps:
       - name: Install dependencies
@@ -70,7 +71,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      FILENAME: "Windows-Build-${{ github.ref_name }}"
+      FILENAME: "Windows-Build-debug-${{ github.ref_name }}"
       TOOLCHAIN: "vcpkg-export-20230429-132534"
 
     steps:
