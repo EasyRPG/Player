@@ -36,7 +36,6 @@ SDL 1.2 is still supported, but deprecated.
 
 - EasyRPG developers - EasyRPG Player (https://github.com/EasyRPG/Player)
 - YNOproject - Yume Nikki Online (https://github.com/ynoproject/ynoclient)
-- CataractJustice - EasyRPG Player online fork (https://github.com/CataractJustice/ynoclient) [Chat UI]
 
 ### Additional thanks
 
@@ -66,6 +65,8 @@ EasyRPG Player makes use of the following 3rd party software:
 * [PicoJSON] JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
   Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
 * [rang] terminal color library - by Abhinav Gauniyal, provided under Unlicense
+* [chat_multiplayer.cpp] In-game chat for SDL2 UI from CataractJustice/ynoclient,
+  filename was renamed to chatui.cpp - by ledgamedev, provided under the GPLv3
 * [sockpp] C++ socket library - Copyright (c) 2016-2017 Frank Pagliughi, provided
   under the (3-clause) BSD license
 * [strfnd.h] Minetest string utils - Copyright (C) 2013 celeron55,
@@ -96,6 +97,7 @@ EasyRPG Player makes use of the following 3rd party software:
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
 [rang]: https://github.com/agauniyal/rang
+[chat_multiplayer.cpp]: https://github.com/CataractJustice/ynoclient
 [sockpp]: https://github.com/fpagliughi/sockpp
 [strfnd.h]: https://github.com/minetest/minetest
 [baekmuk]: https://kldp.net/baekmuk
