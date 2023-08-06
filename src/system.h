@@ -18,6 +18,8 @@
 #ifndef EP_SYSTEM_H
 #define EP_SYSTEM_H
 
+#ifndef SERVER
+
 /*
  * Includes GNU Autotools build configuration parameters.
  * This option may have defined USE_SDL and others.
@@ -119,3 +121,5 @@
 #if defined(__APPLE__) && defined(__MACH__)
 #include <TargetConditionals.h>
 #endif
+
+#endif // SERVER

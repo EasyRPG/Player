@@ -59,6 +59,11 @@ function(player_find_package)
 				endif()
 
 				target_link_libraries(${PROJECT_NAME} ${TARGET_ITEM})
+
+				if(BUILD_SERVER)
+					target_link_libraries(${PROJECT_NAME}_server ${TARGET_ITEM})
+				endif()
+
 				if(PLAYER_FIND_PACKAGE_DEFINITION)
 					target_compile_definitions(${PROJECT_NAME} PUBLIC ${PLAYER_FIND_PACKAGE_DEFINITION}=1)
 				endif()

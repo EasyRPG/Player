@@ -22,7 +22,12 @@
 #include <string>
 #include <iosfwd>
 #include <fmt/core.h>
-#include "filesystem_stream.h"
+
+#ifndef SERVER
+#  include "filesystem_stream.h"
+#else
+#  include <iostream>
+#endif
 
 enum class LogLevel {
 	Error,
@@ -35,6 +40,7 @@ enum class LogLevel {
  * Output Namespace.
  */
 namespace Output {
+#ifndef SERVER
 	/** @return the configurated log level */
 	LogLevel GetLogLevel();
 
@@ -157,8 +163,22 @@ namespace Output {
 	 * @param msg formatted debug text to display.
 	 */
 	void DebugStr(std::string const& msg);
+#else // SERVER
+	template <typename FmtStr, typename... Args>
+	void Info(FmtStr&& fmtstr, Args&&... args);
+
+	template <typename FmtStr, typename... Args>
+	void Warning(FmtStr&& fmtstr, Args&&... args);
+
+	template <typename FmtStr, typename... Args>
+	[[noreturn]] void Error(FmtStr&& fmtstr, Args&&... args);
+
+	template <typename FmtStr, typename... Args>
+	void Debug(FmtStr&& fmtstr, Args&&... args);
+#endif // else SERVER
 }
 
+#ifndef SERVER
 template <typename FmtStr, typename... Args>
 inline void Output::Info(FmtStr&& fmtstr, Args&&... args) {
 	InfoStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
@@ -178,5 +198,26 @@ template <typename FmtStr, typename... Args>
 inline void Output::Debug(FmtStr&& fmtstr, Args&&... args) {
 	DebugStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
 }
+#else // SERVER
+template <typename FmtStr, typename... Args>
+inline void Output::Info(FmtStr&& fmtstr, Args&&... args) {
+	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Error(FmtStr&& fmtstr, Args&&... args) {
+	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Warning(FmtStr&& fmtstr, Args&&... args) {
+	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+}
+
+template <typename FmtStr, typename... Args>
+inline void Output::Debug(FmtStr&& fmtstr, Args&&... args) {
+	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+}
+#endif // else SERVER
 
 #endif

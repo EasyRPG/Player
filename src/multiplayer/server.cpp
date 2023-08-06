@@ -4,6 +4,15 @@
 #include "tcp_socket.h"
 #include "strfnd.h"
 
+#ifdef SERVER
+#  include <csignal>
+#  include <getopt.h>
+#  include <fstream>
+#  include <ostream>
+#  include <istream>
+#  include <lcf/inireader.h>
+#endif
+
 using namespace Multiplayer;
 using namespace Messages;
 
@@ -531,3 +540,56 @@ static ServerMain _instance;
 ServerMain& Server() {
 	return _instance;
 }
+
+#ifdef SERVER
+int main(int argc, char *argv[])
+{
+	Game_ConfigMultiplayer cfg;
+	std::string config_path{""};
+
+	const char* short_opts = "a:nc:";
+	const option long_opts[] = {
+		{"bind-address", required_argument, nullptr, 'a'},
+		{"no-heartbeats", no_argument, nullptr, 'n'},
+		{"config-path", required_argument, nullptr, 'c'},
+		{nullptr, no_argument, nullptr, 0}
+	};
+
+	while (true) {
+		const auto opt = getopt_long(argc, argv, short_opts, long_opts, nullptr);
+		if (opt == 'a')
+			cfg.server_bind_address.Set(std::string(optarg));
+		else if (opt == 'n')
+			cfg.no_heartbeats.Set(true);
+		else if (opt == 'c')
+			config_path = optarg;
+		else
+			break;
+	}
+
+	if (config_path != "") {
+		// create file if not exists
+		{ std::ofstream ofs(config_path, std::ios::app); }
+		std::ifstream ifs(config_path);
+		std::istream& is = ifs;
+		lcf::INIReader ini(is);
+		cfg.server_bind_address.FromIni(ini);
+		cfg.server_max_users.FromIni(ini);
+		cfg.server_picture_names.FromIni(ini);
+		cfg.server_picture_prefixes.FromIni(ini);
+	}
+
+	Server().SetConfig(cfg);
+
+	auto signal_handler = [](int signal) {
+		Server().Stop();
+		Output::Debug("Server: signal={}", signal);
+	};
+	std::signal(SIGINT, signal_handler);
+	std::signal(SIGTERM, signal_handler);
+
+	Server().Start(true);
+
+	return EXIT_SUCCESS;
+}
+#endif

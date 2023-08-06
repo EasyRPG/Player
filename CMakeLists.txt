@@ -22,6 +22,13 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
+option(BUILD_CLIENT "Build client" ON)
+option(BUILD_SERVER "Build server" OFF)
+
+if(NOT BUILD_CLIENT AND NOT BUILD_SERVER)
+	set(BUILD_CLIENT on)
+endif()
+
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
 	option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 endif()
@@ -483,6 +490,12 @@ target_sources(${PROJECT_NAME} PRIVATE
 	src/multiplayer/strfnd.h
 )
 
+add_library(${PROJECT_NAME}_server OBJECT
+	src/multiplayer/connection.cpp
+	src/multiplayer/tcp_socket.cpp
+	src/multiplayer/packet.cpp
+)
+
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -557,6 +570,12 @@ set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options
 set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro psvita 3ds switch wii amigaos4)
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
+
+if(NOT BUILD_CLIENT AND BUILD_SERVER)
+	set(PLAYER_TARGET_PLATFORM OFF)
+	set(PLAYER_BUILD_EXECUTABLE OFF)
+	set(PLAYER_AUDIO_BACKEND OFF)
+endif()
 
 if(ANDROID AND PLAYER_GRADLE_BUILD)
 	# Build invoked by Gradle
@@ -861,12 +880,10 @@ if(PLAYER_BUILD_LIBS)
 	set(SOCKPP_BUILD_SHARED OFF)
 	set(SOCKPP_BUILD_STATIC ON)
 	add_subdirectory(${SOCKPP_PATH})
-	target_include_directories(${PROJECT_NAME}
-		PUBLIC ${SOCKPP_PATH}/generated/include
-		PRIVATE ${SOCKPP_PATH}/include
-	)
 	target_link_libraries(${PROJECT_NAME} sockpp-static)
 endif()
+
+if(BUILD_CLIENT) # BUILD_CLIENT
 
 # Detect all required libraries
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
@@ -1343,6 +1360,30 @@ else()
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
 	endif()
+endif()
+
+if (NOT BUILD_SERVER)
+	set_target_properties(${PROJECT_NAME}_server PROPERTIES EXCLUDE_FROM_ALL ON)
+endif()
+
+endif() # BUILD_CLIENT
+
+if(BUILD_SERVER)
+	if (NOT BUILD_CLIENT)
+		set_target_properties(${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_ALL ON)
+	endif()
+
+	player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
+	target_link_libraries(${PROJECT_NAME}_server lcf)
+	target_link_libraries(${PROJECT_NAME}_server sockpp-static)
+
+	add_executable(${PROJECT_NAME}_server_exe "src/multiplayer/server.cpp")
+	set_target_properties(${PROJECT_NAME}_server_exe PROPERTIES OUTPUT_NAME "easyrpg-player-server")
+	target_link_libraries(${PROJECT_NAME}_server_exe ${PROJECT_NAME}_server)
+	install(TARGETS ${PROJECT_NAME}_server_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+	target_compile_definitions(${PROJECT_NAME}_server PRIVATE SERVER)
+	target_compile_definitions(${PROJECT_NAME}_server_exe PRIVATE SERVER)
 endif()
 
 # manpage
