@@ -1,6 +1,6 @@
 # EasyRPG Player 联机版
 
-[English](README.md) | [简体中文](README-ZH.md)
+[English](../README.md)
 
 多人联机的 C++ 实现，通过此项目可以快速的获得客户端和服务端
 
@@ -30,6 +30,5 @@
 SDL 1.2 仍然支持，但已过时
 
 
-...
-
-[未翻译](README.md#credits)
+---
+[致谢 & 许可](../README.md#credits)

@@ -1,6 +1,6 @@
 # EasyRPG Multiplayer Native
 
-[English](README.md) | [简体中文](README-ZH.md)
+[简体中文](docs/README-ZH.md)
 
 Add multiplayer functionality and the server in C++.
 
