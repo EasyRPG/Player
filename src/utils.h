@@ -314,6 +314,11 @@ namespace Utils {
 	std::string ReplacePlaceholders(StringView text_template, Span<const char> types, Span<const StringView> values);
 
 	/**
+	 * @return String without the escape characters
+	 */
+	std::string UnescapeString(const std::string &str, const char esc = '\\');
+
+	/**
 	 * @return value clamped between min and max
 	 */
 	template <typename T>

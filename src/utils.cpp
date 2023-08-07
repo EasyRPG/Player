@@ -26,7 +26,10 @@
 #include <algorithm>
 #include <random>
 #include <cctype>
-#include <zlib.h>
+
+#ifndef SERVER
+#  include <zlib.h>
+#endif
 
 namespace {
 	char Lower(char c) {
@@ -46,6 +49,8 @@ namespace {
 	};
 
 }
+
+#ifndef SERVER
 
 std::string Utils::LowerCase(StringView str) {
 	auto result = std::string(str);
@@ -657,4 +662,23 @@ std::string Utils::FormatDate(const std::tm *tm, StringView format) {
 	auto res = strftime(buffer, buf_size, ToString(format).c_str(), tm);
 
 	return std::string(buffer, res);
+}
+
+#endif // SERVER
+
+// via minetest sfan5
+std::string Utils::UnescapeString(const std::string &str, const char esc) {
+	std::string out;
+	size_t pos = 0, cpos;
+	out.reserve(str.size());
+	while (1) {
+		cpos = str.find_first_of(esc, pos);
+		if (cpos == std::string::npos) {
+			out += str.substr(pos);
+			break;
+		}
+		out += str.substr(pos, cpos - pos) + str[cpos + 1];
+		pos = cpos + 2;
+	}
+	return out;
 }

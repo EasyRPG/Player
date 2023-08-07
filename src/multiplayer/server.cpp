@@ -1,5 +1,6 @@
 #include "server.h"
 #include <thread>
+#include "../utils.h"
 #include "../output.h"
 #include "tcp_socket.h"
 #include "strfnd.h"
@@ -224,7 +225,7 @@ class ServerSideClient {
 					auto p = PictureNameListSyncPacket();
 					p.type = type;
 					while (!fnd.at_end()) {
-						std::string name = fnd.next(", ");
+						std::string name = Utils::UnescapeString(fnd.next_esc(","));
 						p.names.emplace_back(std::move(name));
 					}
 					SendSelfAsync(p);

@@ -491,6 +491,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 add_library(${PROJECT_NAME}_server OBJECT
+	src/utils.cpp
 	src/multiplayer/connection.cpp
 	src/multiplayer/tcp_socket.cpp
 	src/multiplayer/packet.cpp
