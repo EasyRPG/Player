@@ -875,7 +875,7 @@ if(PLAYER_BUILD_LIBS)
 			"${SOCKPP_PATH}")
 		include(Patch)
 		execute_process(COMMAND ${PATCH_EXECUTABLE} -p1 -d "${SOCKPP_PATH}"
-			--input=${CMAKE_CURRENT_SOURCE_DIR}/sockpp.patch )
+			--input=${CMAKE_CURRENT_SOURCE_DIR}/patches/sockpp.patch )
 	endif()
 	set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 	set(SOCKPP_BUILD_SHARED OFF)

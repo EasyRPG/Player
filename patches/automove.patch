@@ -1,0 +1,78 @@
+diff --git a/src/input_source.cpp b/src/input_source.cpp
+index 93fbc8d5..218bfb59 100644
+--- a/src/input_source.cpp
++++ b/src/input_source.cpp
+@@ -31,6 +31,10 @@
+ 
+ using namespace std::chrono_literals;
+ 
++bool automove = true;
++bool automove_init = false;
++bool automove_start = false;
++
+ std::unique_ptr<Input::Source> Input::Source::Create(
+ 		const Game_ConfigInput& cfg,
+ 		Input::DirectionMappingArray directions,
+@@ -51,10 +55,47 @@ std::unique_ptr<Input::Source> Input::Source::Create(
+ }
+ 
+ void Input::UiSource::DoUpdate(bool system_only) {
+-	keystates = DisplayUi->GetKeyStates();
+-
++	if (!automove_start) {
++		keystates = DisplayUi->GetKeyStates();
++	}
+ 	pressed_buttons = {};
+ 
++	if (automove && !automove_init) {
++		automove_init = true;
++		std::thread([this]() {
++			while (true) {
++				if (!automove_start) {
++					std::this_thread::sleep_for(std::chrono::seconds(15));
++					Output::Debug("## Start ##");
++					automove_start = true;
++				}
++				keystates[Keys::UP] = true;
++				std::this_thread::sleep_for(std::chrono::seconds(5));
++				keystates[Keys::UP] = false;
++
++				keystates[Keys::RETURN] = true;
++				std::this_thread::sleep_for(std::chrono::milliseconds(500));
++				keystates[Keys::RETURN] = false;
++
++				keystates[Keys::UP] = true;
++				std::this_thread::sleep_for(std::chrono::seconds(1));
++				keystates[Keys::UP] = false;
++
++				keystates[Keys::DOWN] = true;
++				std::this_thread::sleep_for(std::chrono::seconds(1));
++				keystates[Keys::DOWN] = false;
++
++				keystates[Keys::RETURN] = true;
++				std::this_thread::sleep_for(std::chrono::milliseconds(500));
++				keystates[Keys::RETURN] = false;
++
++				keystates[Keys::DOWN] = true;
++				std::this_thread::sleep_for(std::chrono::seconds(5));
++				keystates[Keys::DOWN] = false;
++			}
++		}).detach();
++	}
++
+ 	UpdateGamepad();
+ 	UpdateTouch();
+ 
+diff --git a/src/platform/sdl/sdl2_ui.cpp b/src/platform/sdl/sdl2_ui.cpp
+index 15d3ff8b..24531bdf 100644
+--- a/src/platform/sdl/sdl2_ui.cpp
++++ b/src/platform/sdl/sdl2_ui.cpp
+@@ -771,7 +771,7 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
+ 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
+ 		old_focused_fps_limit = vcfg.fps_limit.Get();
+ 		// keep multiplayer data receiving
+-		SetFrameLimit(1);
++		SetFrameLimit(4);
+ 	} else if (state == SDL_WINDOWEVENT_FOCUS_GAINED) {
+ 		if (old_focused_fps_limit != -1)
+ 			SetFrameLimit(old_focused_fps_limit);
