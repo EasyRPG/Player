@@ -5,9 +5,101 @@
 Add multiplayer functionality and the server in C++.
 
 
+## Frequently Asked Questions
+
+### How to create server with podman?
+
+You can use docker, although podman is used in the project.
+
+```
+# Change directory
+cd EasyRPG-Multiplayer-Native
+
+# Build the image
+podman build --build-arg TAG="$(git describe --tags)" -t epmp_img .
+
+# Create the container
+podman create --name epmp_container -p 6500:6500 epmp_img
+
+# Start the container
+podman restart epmp_container
+
+# Remove the container
+podman stop epmp_container && podman rm epmp_container
+```
+
+### How to build the Player on the macOS?
+
+The project can be compiled and run on macOS, but the installation of
+ icu4c may not match your expectations, and the Opus cannot be enabled.
+
+```
+# Install dependencies of liblcf
+brew install expat icu4c
+brew link icu4c --force
+
+# Install dependencies of Player
+brew install libpng libvorbis sdl2 sdl2_mixer pixman freetype
+
+# Build
+cmake -B build -DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Debug -DPLAYER_WITH_OPUS=off
+cmake --build build
+
+# If you have problems, you can revert back to previous state
+brew unlink icu4c
+```
+
+### How to run on Windows?
+
+You can get the precompiled binaries from here:
+
+https://github.com/monokotech/EasyRPG-Multiplayer-Native/releases
+
+The file `Windows-Build-debug-*.zip` is what you need, only the Player.exe is
+ needed inside the zip and copy it to the game folder.
+
+### How to make translation work?
+
+Download the master.zip of ynotranslations and extract it:
+
+https://github.com/ynoproject/ynotranslations/archive/refs/heads/master.zip
+
+Find the folder as you need in the ynotranslations and copy that to the game folder,
+ and then rename it to `Language`. After that, a new entry will appear in the game menu,
+ enter and select language.
+
+If you want to lock the language, you can pass --language \<name\> to the Player, the name
+ you want is in the Language folder.
+
+### What is the game folder?
+
+The game folder should include a lot of .lmu files, and may include the RPG\_RT.exe
+
+### How to limit the frame rate?
+
+To enable frame limiter requires to turn off V-Sync.
+
+For older laptops, it is recommended to limit the frame rate below 20fps
+ to minimize fan noise.
+
+Press F1 -> Turn V-Sync Off -> Change Frame Limter to 20
+
+### Why doesn't Save Settings work?
+
+The Save Settings will not have any feedback when it is saved, but it outputs
+ a log in the terminal with the path of config.ini. In fact, the settings are saved.
+
+Also, the multiplayer settings are included in the config.ini, i.e. you can use
+ client commands without the arguments.
+
+### Is there a key to mute or unmute?
+
+Yes, you can press the M key to toggle mute on and off.
+
+
 ## Requirements
 
-### minimal / required
+### Required
 
 - [liblcf] for RPG Maker data reading.
 - SDL2 for screen backend support.
@@ -16,7 +108,7 @@ Add multiplayer functionality and the server in C++.
 - zlib for XYZ image support.
 - fmtlib for interal logging.
 
-### extended / optional / recommended
+### Optional
 
 - FreeType2 for external font support (+ HarfBuzz for Unicode text shaping)
 - mpg123 for better MP3 audio support
@@ -52,7 +144,6 @@ EasyRPG Player is free software available under the GPLv3 license. See the file
 [COPYING] for license conditions. For Author information see [AUTHORS document].
 
 EasyRPG [Logo] and [Logo2] are licensed under the CC-BY-SA 4.0 license.
-
 
 ### 3rd party software
 
