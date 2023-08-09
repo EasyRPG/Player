@@ -825,7 +825,7 @@ void ShowUsage() {
 	AddLogEntry("!name [text]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "change chat name", "", Messages::CV_LOCAL);
 	AddLogEntry("!chat [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
-	AddLogEntry(" ", "switch visibility to chat", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "switch visibility to chat", "", Messages::CV_LOCAL);
 	AddLogEntry("!log [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "toggle visibility", "", Messages::CV_LOCAL);
 }

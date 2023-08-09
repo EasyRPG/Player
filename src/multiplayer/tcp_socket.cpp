@@ -19,6 +19,8 @@ void TCPSocket::Send(std::string_view& data) {
 	if (write_socket.write(buf.data(), final_size) != final_size) {
 		if (write_socket.last_error() == EPIPE) {
 			OnLogDebug(LABEL + ": It appears that the write_socket was closed.");
+			Close();
+			OnClose();
 		} else {
 			OnLogDebug(LABEL + ": Error writing to the TCP stream "
 				+ std::string("[") + std::to_string(write_socket.last_error()) + std::string("]: ")
@@ -137,8 +139,9 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 			}
 		}
 
-		OnLogDebug(LABEL + ": Connection closed from: "
-			+ read_socket.peer_address().to_string());
+		if (!close_silently)
+			OnLogDebug(LABEL + ": Connection closed from: "
+				+ read_socket.peer_address().to_string());
 		if (close)
 			read_socket.close();
 		if (!close_silently)

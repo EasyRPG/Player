@@ -16,7 +16,8 @@ RUN \
 	IMG="$(echo $IMAGE | sed 's/:/./')"; \
 	URL="https://github.com/monokotech/EasyRPG-Multiplayer-Native$ALT"; \
 	URL="$URL/releases/download/$TAG/Linux-Server-Build-$IMG-$TAG.zip"; \
-	wget "$URL" && 7z x -o/ "Linux-Server-Build-$IMG-$TAG.zip"
+	wget "$URL" && 7z x -o/ "Linux-Server-Build-$IMG-$TAG.zip"; \
+	rm -rfv "Linux-Server-Build-$IMG-$TAG.zip"
 
 EXPOSE 6500/tcp
 VOLUME /opt/config
