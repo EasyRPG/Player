@@ -2,8 +2,8 @@ ARG IMAGE="debian:12-slim"
 FROM docker.io/library/$IMAGE
 
 ARG IMAGE="debian:12-slim"
-ARG ALT="-dev"
-ARG TAG="test"
+ARG ALT=""
+ARG TAG=""
 
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update
