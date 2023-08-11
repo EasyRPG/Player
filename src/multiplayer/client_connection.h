@@ -41,7 +41,7 @@ protected:
 
 	sockpp::tcp_connector connector;
 	std::string addr_host;
-	in_port_t addr_port;
+	in_port_t addr_port{ 6500 };
 	TCPSocket tcp_socket{ "Client" };
 
 	bool connecting = false;
