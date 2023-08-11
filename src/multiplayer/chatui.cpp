@@ -1038,12 +1038,8 @@ void ChatUi::GotMessage(int visibility, int room_id,
 	auto it = Messages::VisibilityNames.find(v);
 	if (it != Messages::VisibilityNames.end())
 		vtext = it->second;
-	AddLogEntry(
-		vtext + " " + name + " #" + std::to_string(room_id) + "\n",
-		"",
-		"\u00A0" + message,
-		v
-	);
+	AddLogEntry(vtext + " " + name + " #" + std::to_string(room_id), "", "", v);
+	AddLogEntry("", "", "\u00A0" + message, v);
 	AddLogEntryUnread(name + ":", "", message, v);
 	Output::Info("Chat: {} [{}, {}]: {}", name, visibility, room_id, message);
 }
