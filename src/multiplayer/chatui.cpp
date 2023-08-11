@@ -1045,6 +1045,7 @@ void ChatUi::GotMessage(int visibility, int room_id,
 		v
 	);
 	AddLogEntryUnread(name + ":", "", message, v);
+	Output::Info("Chat: {} [{}, {}]: {}", name, visibility, room_id, message);
 }
 
 void ChatUi::GotInfo(std::string message) {
