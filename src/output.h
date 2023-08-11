@@ -26,6 +26,7 @@
 #ifndef SERVER
 #  include "filesystem_stream.h"
 #else
+#  include "utils.h"
 #  include <iostream>
 #endif
 
@@ -199,24 +200,32 @@ inline void Output::Debug(FmtStr&& fmtstr, Args&&... args) {
 	DebugStr(fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...));
 }
 #else // SERVER
+inline std::string output_time() {
+	std::time_t t = std::time(nullptr);
+	return Utils::FormatDate(std::localtime(&t), "[%Y-%m-%d %H:%M:%S] ");
+}
 template <typename FmtStr, typename... Args>
 inline void Output::Info(FmtStr&& fmtstr, Args&&... args) {
-	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+	std::cout << output_time() << "Info: "
+		<< (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
 }
 
 template <typename FmtStr, typename... Args>
 inline void Output::Error(FmtStr&& fmtstr, Args&&... args) {
-	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+	std::cerr << output_time() << "Error: "
+		<< (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
 }
 
 template <typename FmtStr, typename... Args>
 inline void Output::Warning(FmtStr&& fmtstr, Args&&... args) {
-	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+	std::cout << output_time() << "Warning: "
+		<< (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
 }
 
 template <typename FmtStr, typename... Args>
 inline void Output::Debug(FmtStr&& fmtstr, Args&&... args) {
-	std::cout << (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
+	std::cout << output_time() << "Debug: "
+		<< (fmt::format(std::forward<FmtStr>(fmtstr), std::forward<Args>(args)...)) << std::endl;
 }
 #endif // else SERVER
 

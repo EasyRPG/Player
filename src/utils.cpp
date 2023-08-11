@@ -655,6 +655,8 @@ StringView Utils::TrimWhitespace(StringView s) {
 	return s;
 }
 
+#endif // SERVER
+
 std::string Utils::FormatDate(const std::tm *tm, StringView format) {
 	constexpr int buf_size = 128;
 	char buffer[buf_size];
@@ -663,8 +665,6 @@ std::string Utils::FormatDate(const std::tm *tm, StringView format) {
 
 	return std::string(buffer, res);
 }
-
-#endif // SERVER
 
 // via minetest sfan5
 std::string Utils::UnescapeString(const std::string &str, const char esc) {
