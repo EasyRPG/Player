@@ -25,6 +25,7 @@
 #include "player.h"
 #include "fps_overlay.h"
 #include "message_overlay.h"
+#include "statustext_overlay.h"
 #include "transition.h"
 #include "scene.h"
 #include "drawable_mgr.h"
@@ -39,6 +40,7 @@ namespace Graphics {
 	std::shared_ptr<Scene> current_scene;
 
 	std::unique_ptr<MessageOverlay> message_overlay;
+	std::unique_ptr<StatusTextOverlay> statustext_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
 
 	std::string window_title_key;
@@ -49,12 +51,14 @@ void Graphics::Init() {
 	UpdateSceneCallback();
 
 	message_overlay = std::make_unique<MessageOverlay>();
+	statustext_overlay = std::make_unique<StatusTextOverlay>();
 	fps_overlay = std::make_unique<FpsOverlay>();
 }
 
 void Graphics::Quit() {
 	fps_overlay.reset();
 	message_overlay.reset();
+	statustext_overlay.reset();
 
 	Cache::ClearAll();
 
@@ -149,3 +153,6 @@ MessageOverlay& Graphics::GetMessageOverlay() {
 	return *message_overlay;
 }
 
+StatusTextOverlay& Graphics::GetStatusTextOverlay() {
+	return *statustext_overlay;
+}

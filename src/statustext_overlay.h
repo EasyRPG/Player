@@ -15,55 +15,39 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_GRAPHICS_H
-#define EP_GRAPHICS_H
+#ifndef EP_STATUSTEXT_OVERLAY_H
+#define EP_STATUSTEXT_OVERLAY_H
 
-// Headers
-#include <vector>
-#include "bitmap.h"
+#include <string>
 #include "drawable.h"
-#include "drawable_list.h"
+#include "memory_management.h"
+#include "rect.h"
 #include "game_clock.h"
 
-class MessageOverlay;
-class StatusTextOverlay;
-class Scene;
+class StatusTextOverlay : public Drawable {
+public:
+	StatusTextOverlay();
 
-/**
- * Graphics namespace.
- * Handles screen drawing.
- */
-namespace Graphics {
-	/**
-	 * Initializes Graphics.
-	 */
-	void Init();
+	void ShowText(const std::string& statustext);
 
-	/**
-	 * Disposes Graphics.
-	 */
-	void Quit();
+	void Draw(Bitmap& dst) override;
 
-	/**
-	 * Updates the screen.
-	 */
 	void Update();
 
-	void Draw(Bitmap& dst);
+private:
+	void UpdateText();
 
-	void LocalDraw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z);
+	BitmapRef statustext_bitmap;
 
-	std::shared_ptr<Scene> UpdateSceneCallback();
+	Game_Clock::time_point last_update_time;
 
-	/**
-	 * Returns a handle to the message overlay.
-	 * Only used by Output to put messages.
-	 *
-	 * @return message overlay
-	 */
-	MessageOverlay& GetMessageOverlay();
+	Rect statustext_rect;
 
-	StatusTextOverlay& GetStatusTextOverlay();
-}
+	std::string text;
+
+	bool show = false;
+
+	bool dirty = true;
+};
 
 #endif

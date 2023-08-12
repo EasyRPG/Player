@@ -15,6 +15,8 @@
 #include "../player.h"
 #include "../compiler.h"
 #include "../baseui.h"
+#include "../graphics.h"
+#include "../statustext_overlay.h"
 #include "game_multiplayer.h"
 #include "server.h"
 #include "strfnd.h"
@@ -763,6 +765,9 @@ public:
 	void ToggleMinimizedLog() {
 		minimized_log_shown = !minimized_log_shown;
 		d_minimized_log.SetVisible(minimized_log_shown);
+		Graphics::GetStatusTextOverlay().ShowText(
+			minimized_log_shown ? "Notifications shown" : "Notifications hidden"
+		);
 	}
 };
 
