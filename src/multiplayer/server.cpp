@@ -200,6 +200,7 @@ class ServerSideClient {
 			SendGlobal(LeavePacket(id));
 			SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
 				std::to_string(id) + (name == "" ? "" : " " + name) + " left the server."));
+			Output::Info("Server: room_id={} name={} left the server", room_id, name);
 		});
 
 		connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
@@ -219,6 +220,7 @@ class ServerSideClient {
 			if (!join_sent) {
 				SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
 					std::to_string(id) + (name == "" ? "" : " " + name) + " joined the server."));
+				Output::Info("Server: room_id={} name={} joined the server", room_id, name);
 
 				auto pns = [this](const int& type, const std::string& cfg_names) {
 					Strfnd fnd(cfg_names);
@@ -245,10 +247,13 @@ class ServerSideClient {
 			p.room_id = room_id;
 			p.name = name == "" ? "<unknown>" : name;
 			VisibilityType visibility = static_cast<VisibilityType>(p.visibility);
-			if (visibility == CV_LOCAL)
+			if (visibility == CV_LOCAL) {
 				SendLocalChat(p);
-			else if (visibility == CV_GLOBAL)
+				Output::Info("Server: Chat: {} [LOCAL, {}]: {}", p.name, p.room_id, p.message);
+			} else if (visibility == CV_GLOBAL) {
 				SendGlobalChat(p);
+				Output::Info("Server: Chat: {} [GLOBAL, {}]: {}", p.name, p.room_id, p.message);
+			}
 		});
 		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket p) {
 			last.move.x = p.x;
