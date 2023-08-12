@@ -21,6 +21,8 @@
 #include "baseui.h"
 #include "player.h"
 #include "game_clock.h"
+#include "graphics.h"
+#include "statustext_overlay.h"
 
 AudioInterface& Audio() {
 	static Game_ConfigAudio cfg;
@@ -102,4 +104,7 @@ void AudioInterface::ToggleMute() {
 		SE_SetGlobalVolume(volume_se);
 		BGM_SetGlobalVolume(volume_bgm);
 	}
+	Graphics::GetStatusTextOverlay().ShowText(
+		toggle_mute_flag ? "Muted" : "Unmuted"
+	);
 }
