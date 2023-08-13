@@ -401,6 +401,15 @@ void Scene_Debug::vUpdate() {
 					PushUiVarList();
 				}
 				break;
+			case eMoveSpeed:
+				if (sz > 1) {
+					DoMoveSpeed();
+				} else {
+					PushUiNumberInput(Main_Data::game_player->GetMoveSpeed(), 1, false);
+					range_index = 0;
+					range_window->SetIndex(range_index);
+				}
+				break;
 			case eCallCommonEvent:
 				if (sz > 2) {
 					DoCallCommonEvent();
@@ -508,6 +517,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Full Heal");
 				addItem("Level");
 			} else {
+				addItem("Move Speed", !is_battle);
 				addItem("Call ComEvent");
 				addItem("Call MapEvent", !is_battle);
 				addItem("Call BtlEvent", is_battle);
@@ -571,6 +581,10 @@ void Scene_Debug::UpdateRangeListWindow() {
 			break;
 		case eLevel:
 			addItem("Level");
+			break;
+		case eMoveSpeed:
+			addItem("Move Speed");
+			addItem("Range: 1-7");
 			break;
 		case eCallBattleEvent:
 			if (is_battle) {
@@ -768,6 +782,12 @@ void Scene_Debug::DoLevel() {
 			actors[idx]->ChangeLevel(level, nullptr);
 		}
 	}
+
+	Pop();
+}
+
+void Scene_Debug::DoMoveSpeed() {
+	Main_Data::game_player->SetMoveSpeed(Utils::Clamp<int>(GetFrame().value, 1, 7));
 
 	Pop();
 }
