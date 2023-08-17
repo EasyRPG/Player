@@ -3,7 +3,7 @@
 #include <vector>
 #include "connection.h"
 
-constexpr static size_t MAX_QUEUE_SIZE = Multiplayer::Connection::MAX_QUEUE_SIZE;
+constexpr size_t MAX_QUEUE_SIZE = Multiplayer::Connection::MAX_QUEUE_SIZE;
 
 void TCPSocket::InitSocket(const sockpp::tcp_socket& socket) {
 	read_socket = std::move(socket.clone());
@@ -164,8 +164,8 @@ define ad
 	display buf
 end
 define ab
-	b tcp_socket.cpp:49
-	b tcp_socket.cpp:64
-	b tcp_socket.cpp:74
+	b tcp_socket.cpp:15 if data_size > 4096
+	b tcp_socket.cpp:95 if data_size > 4096
+	b tcp_socket.cpp:109 if data_size > 4096
 end
 */

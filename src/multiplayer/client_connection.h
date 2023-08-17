@@ -30,7 +30,9 @@ public:
 
 	template<typename T, typename... Args>
 	void SendPacketAsync(Args... args) {
-		m_queue.emplace(new T(args...));
+		if (connected) {
+			m_queue.emplace(new T(args...));
+		}
 	}
 
 	void Receive();

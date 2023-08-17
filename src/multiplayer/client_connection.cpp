@@ -2,6 +2,9 @@
 #include "client_connection.h"
 #include "../output.h"
 
+constexpr size_t MAX_BULK_SIZE = Connection::MAX_QUEUE_SIZE -
+		Packet::MSG_DELIM.size();
+
 ClientConnection::ClientConnection() {
 	// This is primarily required for Win32, to startup the WinSock DLL.
 	// On Unix-style platforms it disables SIGPIPE signals.
@@ -123,7 +126,7 @@ void ClientConnection::FlushQueue() {
 				break;
 			auto data = e->ToBytes();
 			// prevent overflow
-			if (bulk.size() + data.size() > MAX_QUEUE_SIZE) {
+			if (bulk.size() + data.size() > MAX_BULK_SIZE) {
 				Send(bulk);
 				bulk.clear();
 			}

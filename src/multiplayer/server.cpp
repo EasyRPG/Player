@@ -17,6 +17,9 @@
 using namespace Multiplayer;
 using namespace Messages;
 
+constexpr size_t MAX_BULK_SIZE = Connection::MAX_QUEUE_SIZE -
+		Packet::MSG_DELIM.size();
+
 class ServerConnection : public Connection {
 	int& id;
 	ServerMain* server;
@@ -29,8 +32,6 @@ class ServerConnection : public Connection {
 
 protected:
 	void HandleData(const char* data, const ssize_t& num_bytes) {
-		if (num_bytes > MAX_QUEUE_SIZE)
-			return;
 		std::string_view _data(reinterpret_cast<const char*>(data), num_bytes);
 		DispatchMessages(std::move(_data));
 		DispatchSystem(SystemMessage::EOM);
@@ -98,7 +99,7 @@ public:
 		while (!queue.empty()) {
 			auto& e = queue.front();
 			auto data = e->ToBytes();
-			if (bulk.size() + data.size() > MAX_QUEUE_SIZE) {
+			if (bulk.size() + data.size() > MAX_BULK_SIZE) {
 				if (self)
 					Send(bulk);
 				else
