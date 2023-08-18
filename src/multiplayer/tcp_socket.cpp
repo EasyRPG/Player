@@ -65,7 +65,7 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 							if (data_remaining <= tmp_buf_remaining) {
 								if (data_remaining <= buf_remaining) {
 									std::memcpy(tmp_buf+tmp_buf_used, buf+begin, data_remaining);
-									tmp_buf_used += data_remaining;
+									OnData(tmp_buf, data_size);
 									begin += data_remaining;
 								} else {
 									if (buf_remaining > 0) {
@@ -80,26 +80,16 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 									+ std::string(", data_size: ") + std::to_string(data_size)
 									+ std::string(", data_remaining: ") + std::to_string(data_remaining));
 							}
-							if (tmp_buf_used == data_size) {
-								OnData(tmp_buf, data_size);
-							}
-							tmp_buf_used = 0;
 							got_head = false;
+							tmp_buf_used = 0;
 							data_size = 0;
 						} else {
 							uint16_t head_remaining = HEAD_SIZE-tmp_buf_used;
 							if (head_remaining <= buf_remaining && head_remaining <= tmp_buf_remaining) {
 								std::memcpy(tmp_buf+tmp_buf_used, buf+begin, head_remaining);
-								tmp_buf_used += head_remaining;
-								if (tmp_buf_used == HEAD_SIZE) {
-									std::memcpy(&data_size, tmp_buf, HEAD_SIZE);
-									got_head = true;
-								}
+								std::memcpy(&data_size, tmp_buf, HEAD_SIZE);
 								begin += head_remaining;
-							} else {
-								OnLogDebug(LABEL + ": Exception (head): "
-									+ std::string("tmp_buf_used: ") + std::to_string(tmp_buf_used)
-									+ std::string(", head_remaining: ") + std::to_string(head_remaining));
+								got_head = true;
 							}
 							tmp_buf_used = 0;
 						}
@@ -166,6 +156,6 @@ define ad
 end
 define ab
 	b tcp_socket.cpp:15 if data_size > 4096
-	b tcp_socket.cpp:110 if data_size > 4096
+	b tcp_socket.cpp:100 if data_size > 4096
 end
 */
