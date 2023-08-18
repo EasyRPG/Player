@@ -53,9 +53,9 @@
 #endif
 
 namespace {
-#ifdef SUPPORT_MOVIES
-	auto MOVIE_TYPES = { ".avi", ".mpg" };
-#endif
+//#ifdef SUPPORT_MOVIES
+	constexpr const auto MOVIE_TYPES = Utils::MakeSvArray( ".mov", ".mp4", ".webm", ".ogv"); //".avi", ".mpg" not supported by web standards
+//#endif
 
 	std::string fonts_path;
 	std::shared_ptr<Filesystem> root_fs;
@@ -354,6 +354,12 @@ std::string FileFinder::FindImage(StringView dir, StringView name) {
 
 std::string FileFinder::FindMusic(StringView name) {
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
+	return find_generic(args);
+
+}
+
+std::string FileFinder::FindMovie(StringView name) {
+	DirectoryTree::Args args = { MakePath("Movie", name), MOVIE_TYPES, 1, true };
 	return find_generic(args);
 
 }

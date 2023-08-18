@@ -35,6 +35,9 @@
 #include "flash.h"
 #include "shake.h"
 #include "rand.h"
+#include <cstdlib> // For system function
+#include <iostream>
+#include "baseui.h"
 
 Game_Screen::Game_Screen()
 {
@@ -170,12 +173,53 @@ void Game_Screen::SetWeatherEffect(int type, int strength) {
 }
 
 void Game_Screen::PlayMovie(std::string filename,
-							int pos_x, int pos_y, int res_x, int res_y) {
-	movie_filename = std::move(filename);
+	int pos_x, int pos_y, int res_x, int res_y) {
+
 	movie_pos_x = pos_x;
 	movie_pos_y = pos_y;
 	movie_res_x = res_x;
 	movie_res_y = res_y;
+	movie_filename = filename;
+
+	Rect metrics = DisplayUi->GetWindowMetrics();
+	int w = metrics.width;
+	int h = metrics.height;
+	int x = metrics.x;
+	int y = metrics.y;
+
+	const auto& config = DisplayUi->GetConfig();
+	int fs = DisplayUi->IsFullscreen();
+	int stretch = config.stretch.Get();
+	int zoom = config.window_zoom.Get();
+
+	std::string path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
+	if (path.empty()) path = "%cd%";
+
+	std::string movie_src = path + "/" + FileFinder::FindMovie(movie_filename);
+	std::string pluginPath = path + "/Plugins/PageOverlay.exe";
+	std::string htmlPath = path + "/Plugins/Pages/videoPlayer.html";
+
+	std::string appParams = fmt::format("-a \"{}\"",
+		htmlPath);
+
+	std::string windowParams = fmt::format("-w \"{};{};{};{};{};{};{};{};{}\"",
+		w, h, x, y, fs, stretch, zoom, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+
+	std::string videoParams = fmt::format("-v \"{};{};{};{};{};{}\"",
+		movie_src, movie_res_x, movie_res_y, movie_pos_x, movie_pos_y, movie_filename);
+
+	std::string asyncFlag;
+	//asyncFlag = "start /B";
+
+	std::string command = fmt::format("{} call \"{}\" {} {} {}",
+		asyncFlag, pluginPath, appParams, windowParams, videoParams);
+
+	Output::Debug("\n\ncmd: {}\n\n", command);
+
+	int result = std::system(command.c_str());
+	Player::Resume();
+
+	if (result != 0) Output::Warning("Error ID: {}", result);
 }
 
 static double interpolate(double d, double x0, double x1)
