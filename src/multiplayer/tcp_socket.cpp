@@ -61,25 +61,27 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 					if (tmp_buf_used > 0) {
 						if (got_head) {
 							uint16_t data_remaining = data_size-tmp_buf_used;
-							// has buffer to read && has tmp room to write
-							if (data_remaining <= buf_remaining && data_remaining <= tmp_buf_remaining) {
-								std::memcpy(tmp_buf+tmp_buf_used, buf+begin, data_remaining);
-								tmp_buf_used += data_remaining;
-								// the statement may be meaningless, it should be removed in the future
-								if (tmp_buf_used == data_size) {
-									OnData(tmp_buf, data_size);
+							// has tmp room to write
+							if (data_remaining <= tmp_buf_remaining) {
+								if (data_remaining <= buf_remaining) {
+									std::memcpy(tmp_buf+tmp_buf_used, buf+begin, data_remaining);
+									tmp_buf_used += data_remaining;
+									begin += data_remaining;
 								} else {
-									OnLogDebug(LABEL + ": Exception 2 (data): tmp_buf_used != data_size: "
-										+ std::string("tmp_buf_used: ") + std::to_string(tmp_buf_used)
-										+ std::string(", data_size: ") +  std::to_string(data_size)
-										+ std::string(", data_remaining: ") +  std::to_string(data_remaining));
+									if (buf_remaining > 0) {
+										std::memcpy(tmp_buf+tmp_buf_used, buf+begin, buf_remaining);
+										tmp_buf_used += buf_remaining;
+									}
+									break; // to the next packet
 								}
-								begin += data_remaining;
 							} else {
-								OnLogDebug(LABEL + ": Exception 1 (data): "
+								OnLogDebug(LABEL + ": Exception (data): "
 									+ std::string("tmp_buf_used: ") + std::to_string(tmp_buf_used)
 									+ std::string(", data_size: ") + std::to_string(data_size)
 									+ std::string(", data_remaining: ") + std::to_string(data_remaining));
+							}
+							if (tmp_buf_used == data_size) {
+								OnData(tmp_buf, data_size);
 							}
 							tmp_buf_used = 0;
 							got_head = false;
@@ -90,13 +92,12 @@ void TCPSocket::CreateConnectionThread(const size_t read_timeout_seconds) {
 								std::memcpy(tmp_buf+tmp_buf_used, buf+begin, head_remaining);
 								tmp_buf_used += head_remaining;
 								if (tmp_buf_used == HEAD_SIZE) {
-									std::memcpy(tmp_buf+tmp_buf_used, buf+begin, head_remaining);
 									std::memcpy(&data_size, tmp_buf, HEAD_SIZE);
 									got_head = true;
 								}
 								begin += head_remaining;
 							} else {
-								OnLogDebug(LABEL + ": Exception 1 (head): "
+								OnLogDebug(LABEL + ": Exception (head): "
 									+ std::string("tmp_buf_used: ") + std::to_string(tmp_buf_used)
 									+ std::string(", head_remaining: ") + std::to_string(head_remaining));
 							}
@@ -165,7 +166,6 @@ define ad
 end
 define ab
 	b tcp_socket.cpp:15 if data_size > 4096
-	b tcp_socket.cpp:95 if data_size > 4096
-	b tcp_socket.cpp:109 if data_size > 4096
+	b tcp_socket.cpp:110 if data_size > 4096
 end
 */
