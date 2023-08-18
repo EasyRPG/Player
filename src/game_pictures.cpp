@@ -100,7 +100,7 @@ std::vector<lcf::rpg::SavePicture> Game_Pictures::GetSaveData() const {
 	auto data_size = GetDefaultNumberOfPictures();
 	save.reserve(data_size);
 
-	int idx;
+	int idx = 0;
 	for (auto& pic: pictures) {
 		if (++idx > data_size) break;
 		save.push_back(pic.data);
