@@ -20,6 +20,7 @@ jobs:
       matrix:
         image:
           - debian:12-slim
+          - ubuntu:22.04
 
     env:
       FILENAME: "Linux-Server-Build-${{ matrix.image }}-${{ github.ref_name }}"
