@@ -161,3 +161,31 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	Sprite::Draw(dst);
 }
+
+int Sprite_Picture::GetFrameWidth() const {
+	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+	const auto& data = pic.data;
+
+	auto& bitmap = GetBitmap();
+	assert(bitmap);
+
+	if (feature_spritesheet && pic.NumSpriteSheetFrames() > 1) {
+		return bitmap->GetWidth() / data.spritesheet_cols;
+	} else {
+		return bitmap->GetWidth();
+	}
+}
+
+int Sprite_Picture::GetFrameHeight() const {
+	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+	const auto& data = pic.data;
+
+	auto& bitmap = GetBitmap();
+	assert(bitmap);
+
+	if (feature_spritesheet && pic.NumSpriteSheetFrames() > 1) {
+		return bitmap->GetHeight() / data.spritesheet_rows;
+	} else {
+		return bitmap->GetHeight();
+	}
+}

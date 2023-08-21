@@ -54,6 +54,20 @@ void Tilemap::SetOy(int noy) {
 	layer_down.SetOy(noy);
 	layer_up.SetOy(noy);
 }
+int Tilemap::GetRenderOx() const {
+	return layer_down.GetRenderOx();
+}
+void Tilemap::SetRenderOx(int render_x) {
+	layer_down.SetRenderOx(render_x);
+	layer_up.SetRenderOx(render_x);
+}
+int Tilemap::GetRenderOy() const {
+	return layer_down.GetRenderOy();
+}
+void Tilemap::SetRenderOy(int render_y) {
+	layer_down.SetRenderOy(render_y);
+	layer_up.SetRenderOy(render_y);
+}
 int Tilemap::GetWidth() const {
 	return layer_down.GetWidth();
 }

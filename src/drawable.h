@@ -61,21 +61,44 @@ public:
 
 	void SetZ(Z_t z);
 
-	/* @return true if this drawable should appear in all scenes */
+	/** @return true if this drawable should appear in all scenes */
 	bool IsGlobal() const;
 
-	/* @return true if this drawable should appear in all scenes that use shared drawables */
+	/** @return true if this drawable should appear in all scenes that use shared drawables */
 	bool IsShared() const;
 
-	/* @return true if the drawable is currently visible */
+	/** @return true if the drawable is currently visible */
 	bool IsVisible() const;
 
 	/**
-	 * Set if the drawable should be visisble
+	 * Set if the drawable should be visible
 	 *
 	 * @param value whether is visible or not.
 	 */
 	void SetVisible(bool value);
+
+	/** @return x offset for the rendering */
+	int GetRenderOx() const;
+
+	/**
+	 * Sets the rendering offset in x direction. Used for custom resolutions.
+	 * This is not enforced by the Drawable. Drawables must honor this value.
+	 *
+	 * @param offset_x x offset
+	 */
+	// FIXME: Currently only used by panorama, sprites and tiles on the map
+	void SetRenderOx(int offset_x);
+
+	/** @return y offset for the rendering */
+	int GetRenderOy() const;
+
+	/**
+	 * Sets the rendering offset in y direction. Used for custom resolutions.
+	 * This is not enforced by the Drawable. Drawables must honor this value.
+	 *
+	 * @param offset_y y offset
+	 */
+	void SetRenderOy(int offset_y);
 
 	/**
 	 * Converts a RPG Maker map layer value into a EasyRPG priority value.
@@ -93,6 +116,8 @@ public:
 private:
 	Z_t _z = 0;
 	Flags _flags = Flags::Default;
+	int render_ox = 0;
+	int render_oy = 0;
 };
 
 inline Drawable::Flags operator|(Drawable::Flags l, Drawable::Flags r) {
@@ -135,6 +160,22 @@ inline bool Drawable::IsVisible() const {
 
 inline void Drawable::SetVisible(bool value) {
 	_flags = value ? _flags & ~Flags::Invisible : _flags | Flags::Invisible;
+}
+
+inline int Drawable::GetRenderOx() const {
+	return render_ox;
+}
+
+inline void Drawable::SetRenderOx(int offset_x) {
+	render_ox = offset_x;
+}
+
+inline int Drawable::GetRenderOy() const {
+	return render_oy;
+}
+
+inline void Drawable::SetRenderOy(int offset_y) {
+	render_oy = offset_y;
 }
 
 // Upper 8 bit are reserved for the layer 

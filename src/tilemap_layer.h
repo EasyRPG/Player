@@ -60,7 +60,7 @@ public:
 
 	TilemapLayer(int ilayer);
 
-	void Draw(Bitmap& dst, uint8_t z_order);
+	void Draw(Bitmap& dst, uint8_t z_order, int render_ox, int render_oy);
 
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
@@ -74,6 +74,10 @@ public:
 	void SetOx(int nox);
 	int GetOy() const;
 	void SetOy(int noy);
+	int GetRenderOx() const;
+	void SetRenderOx(int offset_x);
+	int GetRenderOy() const;
+	void SetRenderOy(int offset_y);
 	int GetWidth() const;
 	void SetWidth(int nwidth);
 	int GetHeight() const;
@@ -195,6 +199,24 @@ inline int TilemapLayer::GetOy() const {
 
 inline void TilemapLayer::SetOy(int noy) {
 	oy = noy;
+}
+
+inline int TilemapLayer::GetRenderOx() const {
+	return lower_layer.GetRenderOx();
+}
+
+inline void TilemapLayer::SetRenderOx(int offset_x) {
+	lower_layer.SetRenderOx(offset_x);
+	upper_layer.SetRenderOx(offset_x);
+}
+
+inline int TilemapLayer::GetRenderOy() const {
+	return lower_layer.GetRenderOy();
+}
+
+inline void TilemapLayer::SetRenderOy(int offset_y) {
+	lower_layer.SetRenderOy(offset_y);
+	upper_layer.SetRenderOy(offset_y);
 }
 
 inline int TilemapLayer::GetWidth() const {

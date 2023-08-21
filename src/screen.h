@@ -38,8 +38,21 @@ public:
 
 	void Draw(Bitmap& dst) override;
 
+	Rect GetViewport() const;
+	void SetViewport(const Rect& rect);
+
 private:
 	BitmapRef flash;
+
+	Rect viewport;
 };
+
+inline Rect Screen::GetViewport() const {
+	return viewport;
+}
+
+inline void Screen::SetViewport(const Rect &rect) {
+	viewport = rect;
+}
 
 #endif

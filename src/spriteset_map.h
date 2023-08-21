@@ -25,11 +25,11 @@
 #include "plane.h"
 #include "screen.h"
 #include "sprite_airshipshadow.h"
+#include "sprite_character.h"
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
 
-class Sprite_Character;
 class Game_Character;
 class FileRequestAsync;
 class DrawableList;
@@ -45,11 +45,6 @@ public:
 	void Refresh();
 
 	void Update();
-
-	/**
-	 * Finds the sprite for a specific character.
-	 */
-	Sprite_Character* FindCharacter(Game_Character* character) const;
 
 	/**
 	 * Notifies that the map's chipset has changed.
@@ -81,12 +76,28 @@ public:
 	 */
 	bool RequireClear(DrawableList& drawable_list);
 
+	/**
+	 * Determines the map render offset when Fake Resolution is used and sets the viewport of the screen for cropping.
+	 */
+	void CalculateMapRenderOffset();
+
+	/**
+	 * Determines the panorama offset when Fake Resolution is used.
+	 */
+	void CalculatePanoramaRenderOffset();
+
+	/** @return x offset for the rendering of the tilemap and events */
+	int GetRenderOx() const;
+
+	/** @return y offset for the rendering of the tilemap and events */
+	int GetRenderOy() const;
+
 protected:
 	std::unique_ptr<Tilemap> tilemap;
 	std::unique_ptr<Plane> panorama;
 	std::string panorama_name;
-	std::vector<std::shared_ptr<Sprite_Character>> character_sprites;
-	std::vector<std::shared_ptr<Sprite_AirshipShadow>> airship_shadows;
+	std::vector<std::unique_ptr<Sprite_Character>> character_sprites;
+	std::vector<std::unique_ptr<Sprite_AirshipShadow>> airship_shadows;
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
 	std::unique_ptr<Screen> screen;
@@ -104,8 +115,21 @@ protected:
 	bool need_x_clone = false;
 	bool need_y_clone = false;
 
+	int map_render_ox = 0;
+	int map_render_oy = 0;
+	int map_tiles_x = 0;
+	int map_tiles_y = 0;
+
 	bool vehicle_loaded[3] = {};
 
 	Tone last_tone;
 };
+
+inline int Spriteset_Map::GetRenderOx() const {
+	return map_render_ox;
+}
+
+inline int Spriteset_Map::GetRenderOy() const {
+	return map_render_oy;
+}
 #endif

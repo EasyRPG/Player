@@ -208,13 +208,6 @@ namespace Utils {
 	int PositiveModulo(int i, int m);
 
 	/**
-	 * Checks if the platform is big endian
-	 *
-	 * @return true if big, false if little endian
-	 */
-	bool IsBigEndian();
-
-	/**
 	 * Swaps the byte order of the passed number when on big endian systems.
 	 * Does nothing otherwise.
 	 *

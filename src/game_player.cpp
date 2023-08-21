@@ -195,8 +195,8 @@ void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 	auto dx = (GetX() * SCREEN_TILE_SIZE) - Game_Map::GetPositionX() - GetPanX();
 	auto dy = (GetY() * SCREEN_TILE_SIZE) - Game_Map::GetPositionY() - GetPanY();
 
-	const auto w = Game_Map::GetWidth() * SCREEN_TILE_SIZE;
-	const auto h = Game_Map::GetHeight() * SCREEN_TILE_SIZE;
+	const auto w = Game_Map::GetTilesX() * SCREEN_TILE_SIZE;
+	const auto h = Game_Map::GetTilesY() * SCREEN_TILE_SIZE;
 
 	dx = Utils::PositiveModulo(dx + w / 2, w) - w / 2;
 	dy = Utils::PositiveModulo(dy + h / 2, h) - h / 2;
