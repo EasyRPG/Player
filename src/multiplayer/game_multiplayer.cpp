@@ -85,11 +85,11 @@ static bool MovePlayerToPos(Game_PlayerOther& player, int x, int y) {
 	int dy = y - player.GetY();
 	int adx = abs(dx);
 	int ady = abs(dy);
-	if (Game_Map::LoopHorizontal() && adx == Game_Map::GetWidth() - 1) {
+	if (Game_Map::LoopHorizontal() && adx == Game_Map::GetTilesX() - 1) {
 		dx = dx > 0 ? -1 : 1;
 		adx = 1;
 	}
-	if (Game_Map::LoopVertical() && ady == Game_Map::GetHeight() - 1) {
+	if (Game_Map::LoopVertical() && ady == Game_Map::GetTilesY() - 1) {
 		dy = dy > 0 ? -1 : 1;
 		ady = 1;
 	}
@@ -255,15 +255,15 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterHandler<MovePacket>([this](MovePacket p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
-		int x = Utils::Clamp(p.x, 0, Game_Map::GetWidth() - 1);
-		int y = Utils::Clamp(p.y, 0, Game_Map::GetHeight() - 1);
+		int x = Utils::Clamp(p.x, 0, Game_Map::GetTilesX() - 1);
+		int y = Utils::Clamp(p.y, 0, Game_Map::GetTilesY() - 1);
 		player.mvq.emplace_back(x, y);
 	});
 	connection.RegisterHandler<JumpPacket>([this](JumpPacket p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
-		int x = Utils::Clamp(p.x, 0, Game_Map::GetWidth() - 1);
-		int y = Utils::Clamp(p.y, 0, Game_Map::GetHeight() - 1);
+		int x = Utils::Clamp(p.x, 0, Game_Map::GetTilesX() - 1);
+		int y = Utils::Clamp(p.y, 0, Game_Map::GetTilesY() - 1);
 		auto rc = player.ch->Jump(x, y);
 		if (rc) {
 			player.ch->SetMaxStopCount(player.ch->GetMaxStopCountForStep(player.ch->GetMoveFrequency()));
@@ -326,24 +326,24 @@ void Game_Multiplayer::InitConnection() {
 			int ox = player.ch->GetX();
 			int oy = player.ch->GetY();
 
-			int hmw = Game_Map::GetWidth() / 2;
-			int hmh = Game_Map::GetHeight() / 2;
+			int hmw = Game_Map::GetTilesX() / 2;
+			int hmh = Game_Map::GetTilesY() / 2;
 
 			int rx;
 			int ry;
 
 			if (Game_Map::LoopHorizontal() && px - ox >= hmw) {
-				rx = Game_Map::GetWidth() - (px - ox);
+				rx = Game_Map::GetTilesX() - (px - ox);
 			} else if (Game_Map::LoopHorizontal() && px - ox < hmw * -1) {
-				rx = Game_Map::GetWidth() + (px - ox);
+				rx = Game_Map::GetTilesX() + (px - ox);
 			} else {
 				rx = px - ox;
 			}
 
 			if (Game_Map::LoopVertical() && py - oy >= hmh) {
-				ry = Game_Map::GetHeight() - (py - oy);
+				ry = Game_Map::GetTilesY() - (py - oy);
 			} else if (Game_Map::LoopVertical() && py - oy < hmh * -1) {
-				ry = Game_Map::GetHeight() + (py - oy);
+				ry = Game_Map::GetTilesY() + (py - oy);
 			} else {
 				ry = py - oy;
 			}
@@ -365,13 +365,13 @@ void Game_Multiplayer::InitConnection() {
 
 	auto modify_args = [] (PicturePacket pa) {
 		if (Game_Map::LoopHorizontal()) {
-			int alt_map_x = pa.map_x + Game_Map::GetWidth() * TILE_SIZE * TILE_SIZE;
+			int alt_map_x = pa.map_x + Game_Map::GetTilesX() * TILE_SIZE * TILE_SIZE;
 			if (std::abs(pa.map_x - Game_Map::GetPositionX()) > std::abs(alt_map_x - Game_Map::GetPositionX())) {
 				pa.map_x = alt_map_x;
 			}
 		}
 		if (Game_Map::LoopVertical()) {
-			int alt_map_y = pa.map_y + Game_Map::GetHeight() * TILE_SIZE * TILE_SIZE;
+			int alt_map_y = pa.map_y + Game_Map::GetTilesY() * TILE_SIZE * TILE_SIZE;
 			if (std::abs(pa.map_y - Game_Map::GetPositionY()) > std::abs(alt_map_y - Game_Map::GetPositionY())) {
 				pa.map_y = alt_map_y;
 			}
@@ -821,7 +821,7 @@ void Game_Multiplayer::MapUpdate() {
 					if (x == x2) {
 						int y2 = ch2->GetY();
 						if (y == 0) {
-							if (Game_Map::LoopVertical() && y2 == Game_Map::GetHeight() - 1) {
+							if (Game_Map::LoopVertical() && y2 == Game_Map::GetTilesY() - 1) {
 								overlap = true;
 								break;
 							}
@@ -835,7 +835,7 @@ void Game_Multiplayer::MapUpdate() {
 					auto& player = Main_Data::game_player;
 					if (x == player->GetX()) {
 						if (y == 0) {
-							if (Game_Map::LoopVertical() && player->GetY() == Game_Map::GetHeight() - 1) {
+							if (Game_Map::LoopVertical() && player->GetY() == Game_Map::GetTilesY() - 1) {
 								overlap = true;
 							}
 						} else if (player->GetY() == y - 1) {
