@@ -2,7 +2,6 @@ ARG IMAGE="debian:12-slim"
 FROM docker.io/library/$IMAGE
 
 ARG IMAGE="debian:12-slim"
-ARG ALT=""
 ARG TAG=""
 
 ENV DEBIAN_FRONTEND="noninteractive"
@@ -14,7 +13,7 @@ WORKDIR /opt
 
 RUN \
 	IMG="$(echo $IMAGE | sed 's/:/./')"; \
-	URL="https://github.com/monokotech/EasyRPG-Multiplayer-Native$ALT"; \
+	URL="https://github.com/monokotech/EasyRPG-Multiplayer-Native"; \
 	URL="$URL/releases/download/$TAG/Linux-Server-Build-$IMG-$TAG.zip"; \
 	wget "$URL" && 7z x -o/ "Linux-Server-Build-$IMG-$TAG.zip"; \
 	rm -rfv "Linux-Server-Build-$IMG-$TAG.zip"
