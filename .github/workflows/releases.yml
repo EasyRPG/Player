@@ -165,3 +165,63 @@ jobs:
           replacesArtifacts: false
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  android:
+    name: android-${{ matrix.abi }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        abi:
+          - armeabi-v7a
+          - arm64-v8a
+
+    env:
+      FILENAME: "Android-Build-${{ matrix.abi }}-${{ github.ref_name }}"
+
+    steps:
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref == ''
+
+      - name: Setup Toolchain
+        run: |
+          aria2c -o tmp.tar.gz \
+            "https://ci.easyrpg.org/view/Toolchains/job/toolchain-android/lastSuccessfulBuild/artifact/android_toolchain.tar.gz"
+          mkdir -p toolchain && tar xf tmp.tar.gz -C toolchain
+
+      - name: Decode Base64 Keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'keystore'
+          fileDir: './'
+          encodedString: ${{ secrets.APK_STORE_FILE_B64 }}
+
+      - name: Compile
+        env:
+          ORG_GRADLE_PROJECT_RELEASE_STORE_FILE: ${{ github.workspace }}/keystore
+          ORG_GRADLE_PROJECT_RELEASE_STORE_PASSWORD: ${{ secrets.APK_KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_RELEASE_KEY_ALIAS: ${{ secrets.APK_KEY_ALIAS }}
+          ORG_GRADLE_PROJECT_RELEASE_KEY_PASSWORD: ${{ secrets.APK_KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_ABI_FILTERS_RELEASE: ${{ matrix.abi }}
+        run: |
+          cd builds/android
+          ./gradlew -PtoolchainDirs="${{ github.workspace }}/toolchain" \
+            -PcmakeOptions="-DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Release" \
+            assembleRelease
+          cp -v app/build/outputs/apk/release/app-release.apk \
+            ${{ github.workspace }}/${{ env.FILENAME }}.apk
+
+      - name: Create Github Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ env.FILENAME }}.apk"
+          replacesArtifacts: false
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
