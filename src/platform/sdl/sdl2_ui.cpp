@@ -463,8 +463,6 @@ void Sdl2Ui::ToggleFullscreen() {
 	} else {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		SDL_GetWindowPosition(sdl_window, &window_mode_metrics.x, &window_mode_metrics.y);
-		window_mode_metrics.width = window.width;
-		window_mode_metrics.height = window.height;
 	}
 	EndDisplayModeChange();
 }
@@ -551,6 +549,9 @@ void Sdl2Ui::UpdateDisplay() {
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
+
+		window_mode_metrics.width = window.width;
+		window_mode_metrics.height = window.height;
 
 		float width_float = static_cast<float>(window.width);
 		float height_float = static_cast<float>(window.height);

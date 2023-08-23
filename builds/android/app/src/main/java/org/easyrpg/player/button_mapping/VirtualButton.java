@@ -33,7 +33,8 @@ public class VirtualButton extends View {
             KEY_5 = KeyEvent.KEYCODE_5, KEY_6 = KeyEvent.KEYCODE_6, KEY_7 = KeyEvent.KEYCODE_7,
             KEY_8 = KeyEvent.KEYCODE_8, KEY_9 = KeyEvent.KEYCODE_9, KEY_PLUS = 157, KEY_MINUS = 156, KEY_MULTIPLY = 155,
             KEY_DIVIDE = 154, KEY_FAST_FORWARD = KeyEvent.KEYCODE_F,
-            KEY_DEBUG_THROUGH = KeyEvent.KEYCODE_CTRL_LEFT, KEY_DEBUG_MENU = KeyEvent.KEYCODE_F9;
+            KEY_DEBUG_THROUGH = KeyEvent.KEYCODE_CTRL_LEFT, KEY_DEBUG_MENU = KeyEvent.KEYCODE_F9,
+            KEY_CHAT = KeyEvent.KEYCODE_F10;
 
     public static VirtualButton Create(Activity activity, int keyCode, double posX, double posY, int size) {
         if (keyCode == KEY_FAST_FORWARD) {
@@ -244,6 +245,8 @@ public class VirtualButton extends View {
             charButton = 'M';
         } else if (keyCode == KEY_DEBUG_THROUGH) {
             charButton = 'T';
+        } else if (keyCode == KEY_CHAT) {
+            charButton = '☏';
         } else {
             charButton = '?';
         }

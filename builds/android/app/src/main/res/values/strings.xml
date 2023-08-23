@@ -133,6 +133,8 @@ Please tell us in detail what went wrong.\n\n
     <string name="key_fast_forward">Fast forward</string>
     <string name="key_debug_walk_through_walls">Walk through walls (Requires debug mode)</string>
     <string name="key_debug_menu">Open Debug menu (Requires debug mode)</string>
+    <string name="key_toggle_minilog">Toggle MiniLog</string>
+    <string name="key_toggle_chat">Toggle Chat</string>
 
     <!--GameBrowser Activity-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
