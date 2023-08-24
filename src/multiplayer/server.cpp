@@ -2,7 +2,6 @@
 #include <thread>
 #include "../utils.h"
 #include "../output.h"
-#include "tcp_socket.h"
 #include "strfnd.h"
 
 #ifdef SERVER
@@ -23,7 +22,7 @@ constexpr size_t MAX_BULK_SIZE = Connection::MAX_QUEUE_SIZE -
 class ServerConnection : public Connection {
 	int& id;
 	ServerMain* server;
-	TCPSocket tcp_socket{ "Server" };
+	TCPSocketConnection tcp_socket_conn;
 	std::mutex m_send_mutex;
 
 	std::queue<std::unique_ptr<Packet>> m_self_queue;
@@ -47,27 +46,27 @@ protected:
 	}
 
 public:
-	ServerConnection(int &_id, ServerMain* _server, sockpp::tcp_socket& _socket)
+	ServerConnection(int &_id, ServerMain* _server, TCPSocketConnection& _tcp_socket_conn)
 			: id(_id), server(_server) {
-		tcp_socket.InitSocket(_socket);
+		tcp_socket_conn = std::move(_tcp_socket_conn);
 	}
 
 	void Open() override {
-		tcp_socket.OnData = [this](auto p1, auto& p2) { HandleData(p1, p2); };
-		tcp_socket.OnOpen = [this]() { HandleOpen(); };
-		tcp_socket.OnClose = [this]() { HandleClose(); };
-		tcp_socket.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
-		tcp_socket.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
-		tcp_socket.CreateConnectionThread(server->GetConfig().no_heartbeats.Get() ? 0 : 6);
+		tcp_socket_conn.OnData = [this](auto p1, auto& p2) { HandleData(p1, p2); };
+		tcp_socket_conn.OnOpen = [this]() { HandleOpen(); };
+		tcp_socket_conn.OnClose = [this]() { HandleClose(); };
+		tcp_socket_conn.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
+		tcp_socket_conn.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
+		tcp_socket_conn.CreateConnectionThread(server->GetConfig().no_heartbeats.Get() ? 0 : 6);
 	}
 
 	void Close() override {
-		tcp_socket.Close();
+		tcp_socket_conn.Close();
 	}
 
 	void Send(std::string_view data) override {
 		std::lock_guard lock(m_send_mutex);
-		tcp_socket.Send(data); // send to self
+		tcp_socket_conn.Send(data); // send to self
 	}
 
 	template<typename T>
@@ -373,9 +372,9 @@ class ServerSideClient {
 	}
 
 public:
-	ServerSideClient(ServerMain* _server, int _id, sockpp::tcp_socket& _socket)
+	ServerSideClient(ServerMain* _server, int _id, TCPSocketConnection& _tcp_socket_conn)
 			: server(_server), id(_id),
-			connection(ServerConnection(id, _server, _socket)) {
+			connection(ServerConnection(id, _server, _tcp_socket_conn)) {
 		InitConnection();
 	}
 
@@ -479,42 +478,31 @@ void ServerMain::Start(bool blocking) {
 		}
 	}).detach();
 
-	std::thread server_thread([this]() {
-		acceptor = sockpp::tcp_acceptor(sockpp::inet_address(addr_host, addr_port),
-				Connection::MAX_QUEUE_SIZE);
-		if (!acceptor) {
-			Stop();
-			Output::Warning("Server: Failed to create the acceptor to {}:{}: {}",
-				addr_host, addr_port, acceptor.last_error_str());
-			return;
+	auto CreateServerSideClient = [this](TCPSocketConnection& tcp_socket_conn) {
+		if (clients.size() >= cfg.server_max_users.Get()) {
+			std::string_view data = "\uFFFD1";
+			tcp_socket_conn.Send(data);
+			tcp_socket_conn.Close();
+		} else {
+			auto& client = clients[client_id];
+			client.reset(new ServerSideClient(this, client_id++, tcp_socket_conn));
+			client->Open();
 		}
-		Output::Debug("Server: Awaiting connections on {}:{}...", addr_host, addr_port);
-		while (true) {
-			sockpp::tcp_socket socket = acceptor.accept();
-			if (!socket) {
-				// Stop() executed
-				if (!running) {
-					break;
-				}
-				Output::Warning("Server: Failed to get the incoming connection: ",
-					acceptor.last_error_str());
-			} else {
-				if (clients.size() >= cfg.server_max_users.Get()) {
-					socket.write(std::string("\x04\x00\uFFFD1", 6));
-					socket.close();
-				} else {
-					auto& client = clients[client_id];
-					client.reset(new ServerSideClient(this, client_id++, socket));
-					client->Open();
-				}
-			}
-		}
-	});
+	};
 
-	if (blocking)
-		server_thread.join();
-	else
-		server_thread.detach();
+	if (cfg.server_bind_address_v6.Get() != "") {
+		tcp_socket_listener_v6 = TCPSocketListener("Server", addr_host_v6, addr_port_v6);
+		tcp_socket_listener_v6.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
+		tcp_socket_listener_v6.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
+		tcp_socket_listener_v6.OnConnection = CreateServerSideClient;
+		tcp_socket_listener_v6.CreateListenerThread();
+	}
+
+	tcp_socket_listener = TCPSocketListener("Server", addr_host, addr_port);
+	tcp_socket_listener.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
+	tcp_socket_listener.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
+	tcp_socket_listener.OnConnection = CreateServerSideClient;
+	tcp_socket_listener.CreateListenerThread(blocking);
 }
 
 void ServerMain::Stop() {
@@ -526,7 +514,8 @@ void ServerMain::Stop() {
 		it.second->Send("\uFFFD0");
 		it.second->Close();
 	}
-	acceptor.shutdown();
+	tcp_socket_listener.Shutdown();
+	tcp_socket_listener_v6.Shutdown();
 	// stop message queue loop
 	m_message_data_queue.emplace(new MessageDataEntry{ 0, 0, Messages::CV_NULL, "" });
 	m_message_data_queue_cv.notify_one();
@@ -536,6 +525,8 @@ void ServerMain::Stop() {
 void ServerMain::SetConfig(const Game_ConfigMultiplayer& _cfg) {
 	cfg = _cfg;
 	Connection::ParseAddress(cfg.server_bind_address.Get(), addr_host, addr_port);
+	if (cfg.server_bind_address_v6.Get() != "")
+		Connection::ParseAddress(cfg.server_bind_address_v6.Get(), addr_host_v6, addr_port_v6);
 }
 
 Game_ConfigMultiplayer ServerMain::GetConfig() const {
@@ -554,9 +545,10 @@ int main(int argc, char *argv[])
 	Game_ConfigMultiplayer cfg;
 	std::string config_path{""};
 
-	const char* short_opts = "a:nc:";
+	const char* short_opts = "a:A:nc:";
 	const option long_opts[] = {
 		{"bind-address", required_argument, nullptr, 'a'},
+		{"bind-address-v6", required_argument, nullptr, 'A'},
 		{"no-heartbeats", no_argument, nullptr, 'n'},
 		{"config-path", required_argument, nullptr, 'c'},
 		{nullptr, no_argument, nullptr, 0}
@@ -566,6 +558,8 @@ int main(int argc, char *argv[])
 		const auto opt = getopt_long(argc, argv, short_opts, long_opts, nullptr);
 		if (opt == 'a')
 			cfg.server_bind_address.Set(std::string(optarg));
+		if (opt == 'A')
+			cfg.server_bind_address_v6.Set(std::string(optarg));
 		else if (opt == 'n')
 			cfg.no_heartbeats.Set(true);
 		else if (opt == 'c')
@@ -581,6 +575,7 @@ int main(int argc, char *argv[])
 		std::istream& is = ifs;
 		lcf::INIReader ini(is);
 		cfg.server_bind_address.FromIni(ini);
+		cfg.server_bind_address_v6.FromIni(ini);
 		cfg.server_max_users.FromIni(ini);
 		cfg.server_picture_names.FromIni(ini);
 		cfg.server_picture_prefixes.FromIni(ini);

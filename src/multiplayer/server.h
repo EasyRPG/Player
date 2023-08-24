@@ -7,7 +7,7 @@
 #include <condition_variable>
 #include <mutex>
 #include "messages.h"
-#include "sockpp/tcp_acceptor.h"
+#include "tcp_socket.h"
 #include "../game_config.h"
 
 class ServerSideClient;
@@ -19,9 +19,12 @@ class ServerMain {
 	int client_id = 10;
 	std::map<int, std::unique_ptr<ServerSideClient>> clients;
 
-	sockpp::tcp_acceptor acceptor;
+	TCPSocketListener tcp_socket_listener;
+	TCPSocketListener tcp_socket_listener_v6;
 	std::string addr_host;
-	in_port_t addr_port;
+	std::string addr_host_v6;
+	uint16_t addr_port;
+	uint16_t addr_port_v6;
 
 	std::queue<std::unique_ptr<MessageDataEntry>> m_message_data_queue;
 	std::condition_variable m_message_data_queue_cv;

@@ -3,15 +3,27 @@
 using namespace Multiplayer;
 
 void Connection::ParseAddress(std::string address, std::string& host, uint16_t& port) {
-	std::string delimiter = ":";
 	size_t pos = 0;
-	pos = address.find(delimiter);
+	if (address.find("[") != std::string::npos) {
+		address.erase(0, 1);
+		pos = address.find("]:");
+		if (pos == std::string::npos) {
+			address.erase(address.size() - 1);
+			host = address;
+			return;
+		}
+		host = address.substr(0, pos);
+		address.erase(0, pos + 2);
+		port = std::stoi(address);
+		return;
+	}
+	pos = address.find(":");
 	if (pos == std::string::npos) {
 		host = address;
 		return;
 	}
 	host = address.substr(0, pos);
-	address.erase(0, pos + delimiter.length());
+	address.erase(0, pos + 1);
 	port = std::stoi(address);
 }
 

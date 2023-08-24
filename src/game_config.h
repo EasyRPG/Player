@@ -108,7 +108,8 @@ struct Game_ConfigInput {
 struct Game_ConfigMultiplayer {
 	BoolConfigParam no_heartbeats{ "", "", "Multiplayer", "NoHeartbeats", false };
 	BoolConfigParam server_auto_start{ "", "", "Multiplayer", "ServerAutoStart", false };
-	StringConfigParam server_bind_address{ "", "", "Multiplayer", "ServerBindAddress", "localhost:6500" };
+	StringConfigParam server_bind_address{ "", "", "Multiplayer", "ServerBindAddress", "0.0.0.0:6500" };
+	StringConfigParam server_bind_address_v6{ "", "", "Multiplayer", "ServerBindAddressV6", "[::]:6500" };
 	RangeConfigParam<int> server_max_users{ "", "", "Multiplayer", "ServerMaxUsers", 10, 0, 100 };
 	StringConfigParam server_picture_names{ "", "", "Multiplayer", "ServerPictureNames", "" };
 	StringConfigParam server_picture_prefixes{ "", "", "Multiplayer", "ServerPicturePrefixes", "" };
