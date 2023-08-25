@@ -10,7 +10,6 @@
 #include "sockpp/tcp6_connector.h"
 #include "sockpp/acceptor.h"
 #include "sockpp/stream_socket.h"
-#include "sockpp/exception.h"
 
 /**
  * TCPSocket Connection
