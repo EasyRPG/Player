@@ -82,7 +82,7 @@ class TCPSocketListener {
 
 	sockpp::acceptor acceptor;
 
-	bool is_ipv6 = false;
+	bool is_ipv6;
 	std::string addr_host;
 	in_port_t addr_port;
 
@@ -90,8 +90,10 @@ public:
 	TCPSocketListener() {}
 
 	TCPSocketListener(const std::string _label,
-			const std::string _host, const uint16_t _port)
-		: LABEL(std::move(_label)), addr_host(_host), addr_port(_port) {}
+			const std::string _host, const uint16_t _port,
+			const bool _is_ipv6 = false)
+		: LABEL(std::move(_label)), addr_host(_host), addr_port(_port),
+		is_ipv6(_is_ipv6) {}
 
 	void CreateListenerThread(bool blocking = false);
 	void Shutdown();

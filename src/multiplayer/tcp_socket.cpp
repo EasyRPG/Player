@@ -167,19 +167,18 @@ void TCPSocketConnector::Connect(const size_t connect_timeout_seconds,
 		try {
 			sockpp::inet_address::resolve_name(addr_host);
 		} catch (const sockpp::getaddrinfo_error& e) {
-			if (e.error() == EAI_ADDRFAMILY) {
-				try {
-					sockpp::inet6_address::resolve_name(addr_host);
-					is_ipv6 = true;
-				} catch (const sockpp::getaddrinfo_error& e) {
-					OnLogWarning(LABEL + ": " + e.what()
-						+ ", ipv6 hostname: " + e.hostname());
-					OnClose();
-					return;
-				}
-			} else {
-				OnLogWarning(LABEL + ": " + e.what()
-					+ ", ipv4 hostname: " + e.hostname());
+#ifndef _WIN32
+			if (e.error() != EAI_ADDRFAMILY) {
+				OnLogDebug(LABEL + ": ipv4 test failed: " + e.what()
+					+ ", hostname: " + e.hostname());
+			}
+#endif
+			try {
+				sockpp::inet6_address::resolve_name(addr_host);
+				is_ipv6 = true;
+			} catch (const sockpp::getaddrinfo_error& e) {
+				OnLogDebug(LABEL + ": ipv6 test failed: " + e.what()
+					+ ", hostname: " + e.hostname());
 				OnClose();
 				return;
 			}
@@ -211,12 +210,6 @@ void TCPSocketListener::CreateListenerThread(bool blocking) {
 	running = true;
 
 	std::thread server_thread([this]() {
-		try {
-			sockpp::inet_address::resolve_name(addr_host);
-		} catch (const sockpp::getaddrinfo_error& e) {
-			if (e.error() == EAI_ADDRFAMILY)
-				is_ipv6 = true;
-		}
 		if (is_ipv6) {
 			acceptor = sockpp::tcp6_acceptor(sockpp::inet6_address(addr_host, addr_port),
 					MAX_QUEUE_SIZE);

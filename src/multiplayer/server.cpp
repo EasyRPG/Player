@@ -491,7 +491,7 @@ void ServerMain::Start(bool blocking) {
 	};
 
 	if (cfg.server_bind_address_v6.Get() != "") {
-		tcp_socket_listener_v6 = TCPSocketListener("Server", addr_host_v6, addr_port_v6);
+		tcp_socket_listener_v6 = TCPSocketListener("Server", addr_host_v6, addr_port_v6, true);
 		tcp_socket_listener_v6.OnLogDebug = [](std::string v) { Output::Debug(std::move(v)); };
 		tcp_socket_listener_v6.OnLogWarning = [](std::string v) { Output::Warning(std::move(v)); };
 		tcp_socket_listener_v6.OnConnection = CreateServerSideClient;
