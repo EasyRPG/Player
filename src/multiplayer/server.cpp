@@ -197,10 +197,12 @@ class ServerSideClient {
 		connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
 		});
 		connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
-			SendGlobal(LeavePacket(id));
-			SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
-				std::to_string(id) + (name == "" ? "" : " " + name) + " left the server."));
-			Output::Info("Server: room_id={} name={} left the server", room_id, name);
+			if (join_sent) {
+				SendGlobal(LeavePacket(id));
+				SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
+					std::to_string(id) + (name == "" ? "" : " " + name) + " left the server."));
+				Output::Info("Server: room_id={} name={} left the server", room_id, name);
+			}
 		});
 
 		connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {

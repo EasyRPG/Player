@@ -57,7 +57,7 @@ void Connection::Dispatch(std::string_view name, ParameterList args) {
 	if (it != handlers.end()) {
 		std::invoke(it->second, args);
 	} else {
-		Output::Debug("Connection: Unregistered packet received: {}", name);
+		Output::Debug("Connection: Unregistered packet received");
 	}
 }
 
