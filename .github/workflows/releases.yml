@@ -64,62 +64,6 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  linux:
-    name: ${{ matrix.image }}
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ matrix.image }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        image:
-          - ubuntu:22.04
-
-    env:
-      FILENAME: "Linux-Build-${{ matrix.image }}-${{ github.ref_name }}"
-
-    steps:
-      - name: Install dependencies
-        run: |
-          export DEBIAN_FRONTEND="noninteractive"
-          apt-get update
-          apt-get install -yqq --no-install-recommends --no-install-suggests \
-            ca-certificates build-essential cmake ninja-build git p7zip-full \
-            libicu-dev libexpat1-dev libsdl2-dev libpng-dev libpixman-1-dev \
-            libfmt-dev libfreetype6-dev libharfbuzz-dev libmpg123-dev \
-            libsndfile-dev libvorbis-dev libopusfile-dev libspeexdsp-dev \
-            libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
-
-      - name: Clone Repository
-        uses: actions/checkout@v2
-        if: github.event.inputs.git-ref == ''
-
-      - name: Compile
-        run: |
-          VER="(GA, `date +%Y-%m-%d`)"
-          cmake -G Ninja -B build . \
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=usr \
-            -DPLAYER_BUILD_LIBS=on -DPLAYER_VERSION_APPEND="$VER"
-          cmake --build build
-
-      - name: Install
-        run: |
-          # cmake < 3.16 does not support '--install'
-          cmake --build build --target install
-
-      - name: Create Archive
-        run: |
-          7z a -tzip ${{ env.FILENAME }}.zip usr
-
-      - name: Create Github Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "${{ env.FILENAME }}.zip"
-          replacesArtifacts: false
-          allowUpdates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   windows:
     name: windows
     runs-on: windows-latest
