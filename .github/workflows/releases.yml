@@ -54,7 +54,7 @@ jobs:
 
       - name: Create Archive
         run: |
-          7z a -tzip ${{ env.FILENAME }}.zip usr
+          7z a -mx9 ${{ env.FILENAME }}.zip usr
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
@@ -101,7 +101,7 @@ jobs:
       - name: Create Archive
         shell: bash
         run: |
-          7z a -tzip ${{ env.FILENAME }}.zip build/RelWithDebInfo
+          7z a -mx9 ${{ env.FILENAME }}.zip build/RelWithDebInfo
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
