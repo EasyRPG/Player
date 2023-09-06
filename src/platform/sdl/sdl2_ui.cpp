@@ -771,11 +771,15 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 #else
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
 		old_focused_fps_limit = vcfg.fps_limit.Get();
+		old_frame_rate_synchronized = IsFrameRateSynchronized();
 		// keep multiplayer data receiving
-		SetFrameLimit(1);
+		SetFrameLimit(2);
+		SetFrameRateSynchronized(false);
 	} else if (state == SDL_WINDOWEVENT_FOCUS_GAINED) {
 		if (old_focused_fps_limit != -1)
 			SetFrameLimit(old_focused_fps_limit);
+		if (old_frame_rate_synchronized)
+			SetFrameRateSynchronized(old_frame_rate_synchronized);
 	}
 #endif
 #if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)

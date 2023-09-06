@@ -152,6 +152,7 @@ private:
 	std::unique_ptr<AudioInterface> audio_;
 
 	int old_focused_fps_limit = -1;
+	bool old_frame_rate_synchronized = false;
 };
 
 #endif

@@ -212,6 +212,8 @@ class ServerSideClient {
 			SendSelfRoomInfoAsync();
 			SendLocalAsync(JoinPacket(id));
 			SendLocalAsync(last.move);
+			SendLocalAsync(last.facing);
+			SendLocalAsync(last.sprite);
 			if (name != "")
 				SendLocalAsync(NamePacket(id, name));
 			if (last.system.name != "")
@@ -560,7 +562,7 @@ int main(int argc, char *argv[])
 		const auto opt = getopt_long(argc, argv, short_opts, long_opts, nullptr);
 		if (opt == 'a')
 			cfg.server_bind_address.Set(std::string(optarg));
-		if (opt == 'A')
+		else if (opt == 'A')
 			cfg.server_bind_address_v6.Set(std::string(optarg));
 		else if (opt == 'n')
 			cfg.no_heartbeats.Set(true);
