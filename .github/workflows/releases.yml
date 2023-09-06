@@ -125,7 +125,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      FILENAME: "Windows-Build-debug-${{ github.ref_name }}"
+      FILENAME: "Windows-Build-${{ github.ref_name }}"
       TOOLCHAIN: "vcpkg-export-20230429-132534"
 
     steps:
@@ -146,17 +146,18 @@ jobs:
       - name: Compile
         shell: cmd
         run: |
-          cmake . -A x64 -B build \^
-            -DVCPKG_TARGET_TRIPLET=x64-windows-static \^
-            -DCMAKE_TOOLCHAIN_FILE=.\vcpkg\scripts\buildsystems\vcpkg.cmake \^
-            -DCMAKE_BUILD_TYPE=Debug \^
+          cmake . -A x64 -B build ^
+            -DVCPKG_TARGET_TRIPLET=x64-windows-static ^
+            -DCMAKE_TOOLCHAIN_FILE=.\vcpkg\scripts\buildsystems\vcpkg.cmake ^
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
             -DPLAYER_BUILD_LIBS=on
-          cmake --build build
+          # https://stackoverflow.com/questions/19024259/how-to-change-the-build-type-to-release-mode-in-cmake/20423820#20423820
+          cmake --build build --config RelWithDebInfo
 
       - name: Create Archive
         shell: bash
         run: |
-          7z a -tzip ${{ env.FILENAME }}.zip build/Debug
+          7z a -tzip ${{ env.FILENAME }}.zip build/RelWithDebInfo
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
