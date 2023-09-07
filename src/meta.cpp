@@ -142,30 +142,27 @@ std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent
 
 
 std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
-	(void)parent_fs;
-	(void)child_path;
-	(void)parent_game_name;
-	(void)pivot_map_id;
-
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
-#if 0
-	FIXME
+
 	// Try to read the game name. Note that we assume the games all have the same encoding (and use Player::encoding)
-	auto child_full_path = child_path;
-	auto child_tree = FileFinder::CreateDirectoryTree(child_full_path);
 	bool is_match = false;
-	if (child_tree != nullptr) {
-		// Try to match the parent game name
-		std::string lmtPath = child_tree->FindFile(TREEMAP_NAME);
+
+	// NOTE: FindFile doesn't work outside the root of the FileSystemView, so we use Exists() and pass a relative path.
+	//       This will likely only work on Native filesystems; the Exists(".") attempts to sanity check this.
+	auto child_tree = parent_fs.Subtree(child_path);
+	if (child_tree.Exists(".")) {
+		// Try to match the parent game name.
+		std::string lmtPath = child_tree.GetSubPath() + "/" + TREEMAP_NAME;
 		std::string crcLMT = crc32file(lmtPath);
 		std::string crcLDB = "*";
+
 		if (parent_game_name.find(crcLMT)==0) {
 			if (parent_game_name == crcLMT + "/" + crcLDB) {
 				is_match = true;
 			} else {
-				std::string ldbPath = child_tree->FindFile(DATABASE_NAME);
+				std::string ldbPath = child_tree.GetSubPath() + "/" + DATABASE_NAME;
 				crcLDB = crc32file(ldbPath);
 				if (parent_game_name == crcLMT + "/" + crcLDB) {
 					is_match = true;
@@ -182,13 +179,13 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView&
 
 			// Check for an existing, non-corrupt file with the right mapID
 			// Note that corruptness is checked later (in window_savefile.cpp)
-			std::string file = child_tree->FindFile(ss.str());
-			if (!file.empty()) {
-				std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(file, Player::encoding);
+			if (child_tree.Exists(ss.str())) {
+				auto filePath= child_tree.GetSubPath() + "/" + ss.str();
+				std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(filePath, Player::encoding);
 				if (savegame != nullptr) {
 					if (savegame->party_location.map_id == pivot_map_id || pivot_map_id==0) {
 						FileItem item;
-						item.full_path = file;
+						item.full_path = filePath;
 						item.short_path = FileFinder::MakeCanonical(child_path, 1);
 						item.file_id = saveId + 1;
 						res.push_back(item);
@@ -197,7 +194,6 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView&
 			}
 		}
 	}
-#endif
 	return res;
 }
 
