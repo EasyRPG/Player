@@ -205,7 +205,7 @@ class ServerSideClient {
 			}
 		});
 
-		connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
+		connection.RegisterHandler<RoomPacket>([this](RoomPacket& p) {
 			SendGlobalAsync(LeavePacket(id));
 			room_id = p.room_id;
 			SendSelfAsync(p);
@@ -219,7 +219,7 @@ class ServerSideClient {
 			if (last.system.name != "")
 				SendLocalAsync(last.system);
 		});
-		connection.RegisterHandler<NamePacket>([this](NamePacket p) {
+		connection.RegisterHandler<NamePacket>([this](NamePacket& p) {
 			name = std::move(p.name);
 			if (!join_sent) {
 				SendGlobalChat(ChatPacket(id, 0, CV_GLOBAL, room_id, "", "*** id:"+
@@ -243,7 +243,7 @@ class ServerSideClient {
 			}
 
 		});
-		connection.RegisterHandler<ChatPacket>([this](ChatPacket p) {
+		connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
 			p.id = id;
 			if (p.message == "")
 				return;
@@ -259,79 +259,79 @@ class ServerSideClient {
 				Output::Info("Server: Chat: {} [GLOBAL, {}]: {}", p.name, p.room_id, p.message);
 			}
 		});
-		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket p) {
+		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket& p) {
 			last.move.x = p.x;
 			last.move.y = p.y;
 		});
-		connection.RegisterHandler<MovePacket>([this](MovePacket p) {
+		connection.RegisterHandler<MovePacket>([this](MovePacket& p) {
 			p.id = id;
 			last.move = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<JumpPacket>([this](JumpPacket p) {
+		connection.RegisterHandler<JumpPacket>([this](JumpPacket& p) {
 			p.id = id;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<FacingPacket>([this](FacingPacket p) {
+		connection.RegisterHandler<FacingPacket>([this](FacingPacket& p) {
 			p.id = id;
 			last.facing = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<SpeedPacket>([this](SpeedPacket p) {
+		connection.RegisterHandler<SpeedPacket>([this](SpeedPacket& p) {
 			p.id = id;
 			last.speed = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<SpritePacket>([this](SpritePacket p) {
+		connection.RegisterHandler<SpritePacket>([this](SpritePacket& p) {
 			p.id = id;
 			last.sprite = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<FlashPacket>([this](FlashPacket p) {
+		connection.RegisterHandler<FlashPacket>([this](FlashPacket& p) {
 			p.id = id;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<RepeatingFlashPacket>([this](RepeatingFlashPacket p) {
+		connection.RegisterHandler<RepeatingFlashPacket>([this](RepeatingFlashPacket& p) {
 			p.id = id;
 			last.repeating_flash = p;
 			last.has_repeating_flash = true;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<RemoveRepeatingFlashPacket>([this](RemoveRepeatingFlashPacket p) {
+		connection.RegisterHandler<RemoveRepeatingFlashPacket>([this](RemoveRepeatingFlashPacket& p) {
 			p.id = id;
 			last.has_repeating_flash = false;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<HiddenPacket>([this](HiddenPacket p) {
+		connection.RegisterHandler<HiddenPacket>([this](HiddenPacket& p) {
 			p.id = id;
 			last.hidden = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<SystemPacket>([this](SystemPacket p) {
+		connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
 			p.id = id;
 			last.system = p;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<SEPacket>([this](SEPacket p) {
+		connection.RegisterHandler<SEPacket>([this](SEPacket& p) {
 			p.id = id;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<ShowPicturePacket>([this](ShowPicturePacket p) {
+		connection.RegisterHandler<ShowPicturePacket>([this](ShowPicturePacket& p) {
 			p.id = id;
 			last.picture = p;
 			last.has_picture = true;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<MovePicturePacket>([this](MovePicturePacket p) {
+		connection.RegisterHandler<MovePicturePacket>([this](MovePicturePacket& p) {
 			p.id = id;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket p) {
+		connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket& p) {
 			p.id = id;
 			last.has_picture = false;
 			SendLocalAsync(p);
 		});
-		connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket p) {
+		connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket& p) {
 			p.id = id;
 			SendLocalAsync(p);
 		});

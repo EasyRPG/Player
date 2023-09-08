@@ -150,7 +150,7 @@ void Game_Multiplayer::InitConnection() {
 	});
 
 	// ->> unused code
-	connection.RegisterHandler<SyncSwitchPacket>([this](SyncSwitchPacket p) {
+	connection.RegisterHandler<SyncSwitchPacket>([this](SyncSwitchPacket& p) {
 		int value_bin = (int) Main_Data::game_switches->GetInt(p.switch_id);
 		if (p.sync_type != 1) {
 			connection.SendPacketAsync<SyncSwitchPacket>(p.switch_id, value_bin);
@@ -159,7 +159,7 @@ void Game_Multiplayer::InitConnection() {
 			sync_switches.push_back(p.switch_id);
 		}
 	});
-	connection.RegisterHandler<SyncVariablePacket>([this](SyncVariablePacket p) {
+	connection.RegisterHandler<SyncVariablePacket>([this](SyncVariablePacket& p) {
 		auto value = 0;
 		switch (p.var_id) {
 			case 10000:
@@ -179,7 +179,7 @@ void Game_Multiplayer::InitConnection() {
 			sync_vars.push_back(p.var_id);
 		}
 	});
-	connection.RegisterHandler<SyncEventPacket>([this](SyncEventPacket p) {
+	connection.RegisterHandler<SyncEventPacket>([this](SyncEventPacket& p) {
 		if (p.trigger_type != 1) {
 			sync_events.push_back(p.event_id);
 		}
@@ -187,11 +187,11 @@ void Game_Multiplayer::InitConnection() {
 			sync_action_events.push_back(p.event_id);
 		}
 	});
-	connection.RegisterHandler<SyncPicturePacket>([this](SyncPicturePacket p) {
+	connection.RegisterHandler<SyncPicturePacket>([this](SyncPicturePacket& p) {
 		sync_picture_names.push_back(p.picture_name);
 	});
 	// <<-
-	connection.RegisterHandler<PictureNameListSyncPacket>([this](PictureNameListSyncPacket p) {
+	connection.RegisterHandler<PictureNameListSyncPacket>([this](PictureNameListSyncPacket& p) {
 		std::vector<std::string>* list;
 		switch (p.type) {
 		case 0:
@@ -205,10 +205,10 @@ void Game_Multiplayer::InitConnection() {
 		}
 		list->assign(p.names.begin(), p.names.end());
 	});
-	connection.RegisterHandler<BattleAnimIdListSyncPacket>([this](BattleAnimIdListSyncPacket p) {
+	connection.RegisterHandler<BattleAnimIdListSyncPacket>([this](BattleAnimIdListSyncPacket& p) {
 		sync_battle_anim_ids.assign(p.ids.begin(), p.ids.end());
 	});
-	connection.RegisterHandler<RoomPacket>([this](RoomPacket p) {
+	connection.RegisterHandler<RoomPacket>([this](RoomPacket& p) {
 		if (p.room_id != room_id) {
 			SwitchRoom(room_id); // wrong room, resend
 			return;
@@ -216,14 +216,14 @@ void Game_Multiplayer::InitConnection() {
 		// server syned. accept other players spawn
 		switching_room = false;
 	});
-	connection.RegisterHandler<JoinPacket>([this](JoinPacket p) {
+	connection.RegisterHandler<JoinPacket>([this](JoinPacket& p) {
 		// I am entering a new room and don't care about players in the old(server side) room
 		if (switching_room)
 			return;
 		if (players.find(p.id) == players.end())
 			SpawnOtherPlayer(p.id);
 	});
-	connection.RegisterHandler<LeavePacket>([this](LeavePacket p) {
+	connection.RegisterHandler<LeavePacket>([this](LeavePacket& p) {
 		auto it = players.find(p.id);
 		if (it == players.end()) return;
 		auto& player = it->second;
@@ -246,20 +246,20 @@ void Game_Multiplayer::InitConnection() {
 		}
 
 	});
-	connection.RegisterHandler<ChatPacket>([this](ChatPacket p) {
+	connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
 		if (p.type == 0)
 			CUI().GotInfo(p.message);
 		else if (p.type == 1)
 			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message);
 	});
-	connection.RegisterHandler<MovePacket>([this](MovePacket p) {
+	connection.RegisterHandler<MovePacket>([this](MovePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		int x = Utils::Clamp(p.x, 0, Game_Map::GetTilesX() - 1);
 		int y = Utils::Clamp(p.y, 0, Game_Map::GetTilesY() - 1);
 		player.mvq.emplace_back(x, y);
 	});
-	connection.RegisterHandler<JumpPacket>([this](JumpPacket p) {
+	connection.RegisterHandler<JumpPacket>([this](JumpPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		int x = Utils::Clamp(p.x, 0, Game_Map::GetTilesX() - 1);
@@ -269,46 +269,46 @@ void Game_Multiplayer::InitConnection() {
 			player.ch->SetMaxStopCount(player.ch->GetMaxStopCountForStep(player.ch->GetMoveFrequency()));
 		}
 	});
-	connection.RegisterHandler<FacingPacket>([this](FacingPacket p) {
+	connection.RegisterHandler<FacingPacket>([this](FacingPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		int facing = Utils::Clamp(p.facing, 0, 3);
 		player.ch->SetFacing(facing);
 	});
-	connection.RegisterHandler<SpeedPacket>([this](SpeedPacket p) {
+	connection.RegisterHandler<SpeedPacket>([this](SpeedPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		int speed = Utils::Clamp(p.speed, 1, 6);
 		player.ch->SetMoveSpeed(speed);
 	});
-	connection.RegisterHandler<SpritePacket>([this](SpritePacket p) {
+	connection.RegisterHandler<SpritePacket>([this](SpritePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		int idx = Utils::Clamp(p.index, 0, 7);
 		player.ch->SetSpriteGraphic(std::string(p.name), idx);
 	});
-	connection.RegisterHandler<FlashPacket>([this](FlashPacket p) {
+	connection.RegisterHandler<FlashPacket>([this](FlashPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		player.ch->Flash(p.r, p.g, p.b, p.p, p.f);
 	});
-	connection.RegisterHandler<RepeatingFlashPacket>([this](RepeatingFlashPacket p) {
+	connection.RegisterHandler<RepeatingFlashPacket>([this](RepeatingFlashPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		auto flash_array = std::array<int, 5>{ p.r, p.g, p.b, p.p, p.f };
 		repeating_flashes[p.id] = std::array<int, 5>(flash_array);
 		player.ch->Flash(p.r, p.g, p.b, p.p, p.f);
 	});
-	connection.RegisterHandler<RemoveRepeatingFlashPacket>([this](RemoveRepeatingFlashPacket p) {
+	connection.RegisterHandler<RemoveRepeatingFlashPacket>([this](RemoveRepeatingFlashPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		repeating_flashes.erase(p.id);
 	});
-	connection.RegisterHandler<HiddenPacket>([this](HiddenPacket p) {
+	connection.RegisterHandler<HiddenPacket>([this](HiddenPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		player.ch->SetSpriteHidden(p.hidden_bin == 1);
 	});
-	connection.RegisterHandler<SystemPacket>([this](SystemPacket p) {
+	connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		auto name_tag = player.name_tag.get();
@@ -316,7 +316,7 @@ void Game_Multiplayer::InitConnection() {
 			name_tag->SetSystemGraphic(std::string(p.name));
 		}
 	});
-	connection.RegisterHandler<SEPacket>([this](SEPacket p) { // se: sound effect
+	connection.RegisterHandler<SEPacket>([this](SEPacket& p) { // se: sound effect
 		if (players.find(p.id) == players.end()) return;
 		if (settings.enable_sounds) {
 			auto& player = players[p.id];
@@ -363,7 +363,7 @@ void Game_Multiplayer::InitConnection() {
 		}
 	});
 
-	auto modify_args = [] (PicturePacket pa) {
+	auto modify_args = [] (PicturePacket& pa) {
 		if (Game_Map::LoopHorizontal()) {
 			int alt_map_x = pa.map_x + Game_Map::GetTilesX() * TILE_SIZE * TILE_SIZE;
 			if (std::abs(pa.map_x - Game_Map::GetPositionX()) > std::abs(alt_map_x - Game_Map::GetPositionX())) {
@@ -380,24 +380,24 @@ void Game_Multiplayer::InitConnection() {
 		pa.params.position_y += (int)(std::floor((pa.map_y / TILE_SIZE) - (pa.pan_y / (TILE_SIZE * 2))) - std::floor((Game_Map::GetPositionY() / TILE_SIZE) - Main_Data::game_player->GetPanY() / (TILE_SIZE * 2)));
 	};
 
-	connection.RegisterHandler<ShowPicturePacket>([this, modify_args](ShowPicturePacket p) {
+	connection.RegisterHandler<ShowPicturePacket>([this, modify_args](ShowPicturePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		modify_args(p);
 		int pic_id = p.pic_id + (p.id + 1) * 50; //offset to avoid conflicting with others using the same picture
 		Main_Data::game_pictures->Show(pic_id, p.params);
 	});
-	connection.RegisterHandler<MovePicturePacket>([this, modify_args](MovePicturePacket p) {
+	connection.RegisterHandler<MovePicturePacket>([this, modify_args](MovePicturePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		int pic_id = p.pic_id + (p.id + 1) * 50; //offset to avoid conflicting with others using the same picture
 		modify_args(p);
 		Main_Data::game_pictures->Move(pic_id, p.params);
 	});
-	connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket p) {
+	connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		int pic_id = p.pic_id + (p.id + 1) * 50; //offset to avoid conflicting with others using the same picture
 		Main_Data::game_pictures->Erase(pic_id);
 	});
-	connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket p) {
+	connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		const lcf::rpg::Animation* anim = lcf::ReaderUtil::GetElement(lcf::Data::animations, p.anim_id);
 		if (anim) {
@@ -406,7 +406,7 @@ void Game_Multiplayer::InitConnection() {
 			players[p.id].battle_animation.reset();
 		}
 	});
-	connection.RegisterHandler<NamePacket>([this](NamePacket p) {
+	connection.RegisterHandler<NamePacket>([this](NamePacket& p) {
 		if (players.find(p.id) == players.end()) return;
 		auto& player = players[p.id];
 		auto scene_map = Scene::Find(Scene::SceneType::Map);
@@ -429,7 +429,7 @@ void Game_Multiplayer::SetConfig(const Game_ConfigMultiplayer& _cfg) {
 	connection.SetConfig(&cfg);
 	// Heartbeat
 	if (!cfg.no_heartbeats.Get()) {
-		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket p) {});
+		connection.RegisterHandler<HeartbeatPacket>([this](HeartbeatPacket& p) {});
 		std::thread([this]() {
 			while (true) {
 				std::this_thread::sleep_for(std::chrono::seconds(3));
