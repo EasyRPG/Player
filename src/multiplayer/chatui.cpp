@@ -235,9 +235,16 @@ class DrawableChatLog : public Drawable {
 			}
 		} while(glyphs_current.size() > 0);
 
+		unsigned int message_padding = 1;
+		if (minimized_log_flag)
+			message_padding = 2;
+
 		// once all lines have been saved
 		// render them into a bitmap
-		BitmapRef text_img = Bitmap::Create(total_width+1, total_height+1, true);
+		BitmapRef text_img = Bitmap::Create(total_width+message_padding*2, total_height+message_padding*2, true);
+		// add background
+		if (minimized_log_flag)
+			text_img->Fill(Color(0, 0, 0, 102));
 		int n_lines = lines.size();
 		for(int i = 0; i < n_lines; i++) {
 			auto& line = lines[i];
@@ -246,8 +253,17 @@ class DrawableChatLog : public Drawable {
 				auto& glyph = line.first[j];
 				auto ret = glyph.data;
 				if(EP_UNLIKELY(!ret)) continue;
-				glyph_offset += Text::Draw(*text_img, glyph_offset, line.second,
-					*Font::Default(), *current_theme, glyph.color, ret.ch, ret.is_exfont).x;
+				if (glyph.color == 1 || !minimized_log_flag) {
+					glyph_offset += Text::Draw(*text_img, glyph_offset+message_padding, line.second+message_padding,
+						*Font::Default(), *current_theme, glyph.color, ret.ch, ret.is_exfont).x;
+				} else {
+					// shadow
+					Text::Draw(*text_img, glyph_offset+message_padding+1, line.second+message_padding+1,
+						*Font::Default(), Color(36, 36, 36, 229), ret.ch, ret.is_exfont);
+					// text
+					glyph_offset += Text::Draw(*text_img, glyph_offset+message_padding, line.second+message_padding,
+						*Font::Default(), Color(204, 204, 204, 229), ret.ch, ret.is_exfont).x;
+				}
 			}
 		}
 		msg.render_graphic = text_img;
@@ -338,7 +354,10 @@ public:
 			if(messages[i].dirty)
 				BuildMessageGraphic(dmsg);
 			// draw
-			dst.Blit(bounds.x+message_margin, bounds.y+bounds.height-next_height+top_offscreen,
+			unsigned int margin = message_margin;
+			if (minimized_log_flag)
+				margin = 0;
+			dst.Blit(bounds.x+margin, bounds.y+bounds.height-next_height+top_offscreen,
 				*(dmsg.render_graphic), cutoff_rect, Opacity::Opaque());
 			// stop drawing offscreen messages (top offscreen)
 			if(next_height > bounds.height)
@@ -348,8 +367,8 @@ public:
 		// automatically remove messages in the notification
 		if (minimized_log_flag && messages.size() > 0) {
 			++counter;
-			// the delay is 30 seconds
-			if (Game_Clock::GetFPS() > 0.0f && counter > Game_Clock::GetFPS()*30.0f) {
+			// the delay is 10 seconds
+			if (Game_Clock::GetFPS() > 0.0f && counter > Game_Clock::GetFPS()*10.0f) {
 				counter = 0.0f;
 				RemoveFirstChatEntry();
 			}
@@ -612,7 +631,7 @@ class DrawableChatUi : public Drawable {
 	// design parameters
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
-	const unsigned int minimized_log_height = Player::screen_height*0.275;
+	const unsigned int minimized_log_height = Player::screen_height*0.4;
 	const unsigned int panel_frame_left_top = 4; // width of panel's visual frame (border width is missing)
 	const unsigned int panel_frame_right_bottom = 6; // on right and bottom side (including border width)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
@@ -772,7 +791,7 @@ public:
 
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
 const unsigned int MAXMESSAGES = 500;
-const unsigned int MAXUNREAD = 3;
+const unsigned int MAXUNREAD = 6;
 
 std::u32string type_text;
 unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
