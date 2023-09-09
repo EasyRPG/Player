@@ -146,10 +146,9 @@ class ServerSideClient {
 		RepeatingFlashPacket repeating_flash;
 		HiddenPacket hidden;
 		SystemPacket system;
-		ShowPicturePacket picture;
+		std::map<int, ShowPicturePacket> pictures;
 
 		bool has_repeating_flash{ false };
-		bool has_picture{ false };
 	};
 
 	ServerMain* server;
@@ -182,8 +181,9 @@ class ServerSideClient {
 				SendSelfAsync(other.last.hidden);
 			if (other.last.system.name != "")
 				SendSelfAsync(other.last.system);
-			if (other.last.has_picture)
-				SendSelfAsync(other.last.picture);
+			for (const auto& it : other.last.pictures) {
+				SendSelfAsync(it.second);
+			}
 		});
 	}
 
@@ -206,6 +206,7 @@ class ServerSideClient {
 		});
 
 		connection.RegisterHandler<RoomPacket>([this](RoomPacket& p) {
+			last.pictures.clear();
 			SendGlobalAsync(LeavePacket(id));
 			room_id = p.room_id;
 			SendSelfAsync(p);
@@ -318,17 +319,23 @@ class ServerSideClient {
 		});
 		connection.RegisterHandler<ShowPicturePacket>([this](ShowPicturePacket& p) {
 			p.id = id;
-			last.picture = p;
-			last.has_picture = true;
+			if (last.pictures.size() < 200)
+				last.pictures[p.pic_id] = p;
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<MovePicturePacket>([this](MovePicturePacket& p) {
 			p.id = id;
+			const auto& it = last.pictures.find(p.pic_id);
+			if(it != last.pictures.end()) {
+				PicturePacket& pic = it->second;
+				pic.params = p.params;
+				pic = p;
+			}
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<ErasePicturePacket>([this](ErasePicturePacket& p) {
 			p.id = id;
-			last.has_picture = false;
+			last.pictures.erase(p.pic_id);
 			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<ShowPlayerBattleAnimPacket>([this](ShowPlayerBattleAnimPacket& p) {
