@@ -87,6 +87,7 @@ public:
 	}
 	NametagMode nametag_mode{NametagMode::CLASSIC};
 
+	std::map<int, std::string> global_players_system;
 	std::map<int, PlayerOther> players;
 	std::vector<PlayerOther> dc_players; // disconnect and player fade
 	std::vector<int> sync_switches;
@@ -101,6 +102,7 @@ public:
 	int last_flash_frame_index{-1};
 	std::unique_ptr<std::array<int, 5>> last_frame_flash;
 	std::map<int, std::array<int, 5>> repeating_flashes;
+	std::shared_ptr<int> sys_graphic_request_id;
 
 	void SpawnOtherPlayer(int id);
 	void ResetRepeatingFlash();

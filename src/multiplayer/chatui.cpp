@@ -67,22 +67,42 @@ public:
 		room_label = "Room #"+std::to_string(room_id);
 		auto r_rect = Text::GetSize(*Font::Default(), room_label);
 		room_status = Bitmap::Create(r_rect.width+1, r_rect.height+1, true);
-		Text::Draw(*room_status, 0, 0, *Font::Default(), *Cache::SystemOrBlack(), 2, room_label);
+		Text::Draw(*room_status, 0, 0, *Font::Default(), *Cache::SystemOrBlack(), 1, room_label);
 	}
 };
 
 using VisibilityType = Messages::VisibilityType;
 
 struct ChatEntry {
-	std::string color_a;
-	std::string color_b;
-	std::string color_c;
+	std::string color_a; // text a
+	std::string color_b; // text b
+	std::string color_c; // text c
+	std::string color_d; // text d
+	std::string color_e; // text e
+	int8_t _color_a; // color selection _a of text a
+	int8_t _color_b; // color selection _b of text b
+	int8_t _color_c; // color selection _c of text c
+	int8_t _color_d; // color selection _d of text d
+	int8_t _color_e; // color selection _e of text e
 	VisibilityType visibility;
-	ChatEntry(std::string a, std::string b, std::string c, VisibilityType v) {
+	std::string sys_graphic;
+	bool break_word;
+	ChatEntry(std::string a, std::string b, std::string c, std::string d, std::string e,
+			int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
+			VisibilityType v, std::string sys, bool bw) {
 		color_a = a;
 		color_b = b;
 		color_c = c;
+		color_d = d;
+		color_e = e;
+		_color_a = _a;
+		_color_b = _b;
+		_color_c = _c;
+		_color_d = _d;
+		_color_e = _e;
 		visibility = v;
+		sys_graphic = sys;
+		break_word = bw;
 	}
 };
 
@@ -111,16 +131,17 @@ class DrawableChatLog : public Drawable {
 	int scroll_position = 0;
 	unsigned int scroll_content_height = 0; // total height of scrollable message log
 	unsigned short visibility_flags = Messages::CV_LOCAL | Messages::CV_GLOBAL;
+	BitmapRef default_theme; // system graphic for the default theme
 	BitmapRef current_theme; // system graphic for the current theme
 
 	void BuildMessageGraphic(DrawableChatEntry& msg) {
 		struct Glyph {
 			Utils::TextRet data;
 			Rect dims;
-			unsigned short color;
+			int8_t color;
 		};
 		using GlyphLine = std::vector<Glyph>;
-		auto ExtractGlyphs = [](StringView str, unsigned short color, GlyphLine& line, unsigned int& width) {
+		auto ExtractGlyphs = [](StringView str, int8_t color, GlyphLine& line, unsigned int& width) {
 			const auto* iter = str.data();
 			const auto* end = str.data() + str.size();
 			while(iter != end) {
@@ -188,11 +209,22 @@ class DrawableChatLog : public Drawable {
 		unsigned int width_current = 0; // total width of glyphs on current line
 		unsigned int width_next = 0; // total width of glyphs on next line
 
+		BitmapRef graphic;
+		if (msg.message_data->sys_graphic == "") {
+			graphic = current_theme;
+		} else {
+			graphic = Cache::System(msg.message_data->sys_graphic);
+		}
+
 		// break down whole message string into glyphs for processing.
 		// glyph lookup is performed only at this stage, and their dimensions are saved for subsequent line width recalculations.
-		ExtractGlyphs(msg.message_data->color_a, 1, glyphs_current, width_current);
-		ExtractGlyphs(msg.message_data->color_b, 2, glyphs_current, width_current);
-		ExtractGlyphs(msg.message_data->color_c, 0, glyphs_current, width_current);
+		ExtractGlyphs(msg.message_data->color_a, msg.message_data->_color_a, glyphs_current, width_current);
+		ExtractGlyphs(msg.message_data->color_b, msg.message_data->_color_b, glyphs_current, width_current);
+		ExtractGlyphs(msg.message_data->color_c, msg.message_data->_color_c, glyphs_current, width_current);
+		ExtractGlyphs(msg.message_data->color_d, msg.message_data->_color_d, glyphs_current, width_current);
+		ExtractGlyphs(msg.message_data->color_e, msg.message_data->_color_e, glyphs_current, width_current);
+
+		bool break_word = msg.message_data->break_word;
 
 		// break down message into fitting lines
 		do {
@@ -200,7 +232,7 @@ class DrawableChatLog : public Drawable {
 				// as long as current line exceeds maximum width,
 				// move one word from this line down to the next one
 				int last_space = FindLastGlyphOf(glyphs_current, ' ');
-				if(last_space != -1 && last_space < glyphs_current.size()-1) {
+				if(break_word && last_space != -1 && last_space < glyphs_current.size()-1) {
 					// there is a word that can be moved down
 					MoveGlyphsToNext(glyphs_current, glyphs_next,
 						width_current, width_next, glyphs_current.size()-last_space-1);
@@ -230,7 +262,7 @@ class DrawableChatLog : public Drawable {
 				// use the '>' as the truncated signs
 				auto& last_glyph = lines.front().first.back();
 				last_glyph.data.ch = '>';
-				last_glyph.color = 1;
+				last_glyph.color = 2;
 				break;
 			}
 		} while(glyphs_current.size() > 0);
@@ -253,16 +285,12 @@ class DrawableChatLog : public Drawable {
 				auto& glyph = line.first[j];
 				auto ret = glyph.data;
 				if(EP_UNLIKELY(!ret)) continue;
-				if (glyph.color == 1 || !minimized_log_flag) {
+				if (glyph.color > -1) {
 					glyph_offset += Text::Draw(*text_img, glyph_offset+message_padding, line.second+message_padding,
-						*Font::Default(), *current_theme, glyph.color, ret.ch, ret.is_exfont).x;
+						*Font::Default(), *graphic, glyph.color, ret.ch, ret.is_exfont).x;
 				} else {
-					// shadow
-					Text::Draw(*text_img, glyph_offset+message_padding+1, line.second+message_padding+1,
-						*Font::Default(), Color(36, 36, 36, 229), ret.ch, ret.is_exfont);
-					// text
 					glyph_offset += Text::Draw(*text_img, glyph_offset+message_padding, line.second+message_padding,
-						*Font::Default(), Color(204, 204, 204, 229), ret.ch, ret.is_exfont).x;
+						*Font::Default(), *default_theme, 0, ret.ch, ret.is_exfont).x;
 				}
 			}
 		}
@@ -320,6 +348,7 @@ public:
 		scroll_box.SetVisible(false);
 
 		current_theme = Cache::SystemOrBlack();
+		default_theme = current_theme;
 	}
 
 	void SetMinimized(bool minimized) {
@@ -801,8 +830,12 @@ std::vector<std::unique_ptr<ChatEntry>> chat_log;
 std::vector<std::unique_ptr<ChatEntry>> chat_minimized_log;
 VisibilityType chat_visibility = Messages::CV_LOCAL;
 
-void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) {
-	chat_log.push_back(std::make_unique<ChatEntry>(a, b, c, v));
+void AddLogEntry(
+		std::string a, std::string b, std::string c, std::string d, std::string e,
+		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
+		VisibilityType v, std::string sys_graphic) {
+	chat_log.push_back(std::make_unique<ChatEntry>(
+			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_graphic, true));
 	chat_box->AddLogEntry(chat_log.back().get());
 	if(chat_log.size() > MAXMESSAGES) {
 		chat_box->RemoveLogEntry(chat_log.front().get());
@@ -810,11 +843,23 @@ void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) 
 	}
 }
 
-void AddLogEntryUnread(std::string a, std::string b, std::string c, VisibilityType v) {
-	chat_minimized_log.push_back(std::make_unique<ChatEntry>(a, b, c, v));
+void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) {
+	AddLogEntry(a, b, c, "", "", 1, 2, 0, 0, 0, v, "");
+}
+
+void AddLogEntryUnread(
+		std::string a, std::string b, std::string c, std::string d, std::string e,
+		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
+		VisibilityType v, std::string sys_graphic) {
+	chat_minimized_log.push_back(std::make_unique<ChatEntry>(
+			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_graphic, false));
 	chat_box->AddLogEntryUnread(chat_minimized_log.back().get(), MAXUNREAD);
 	if(chat_minimized_log.size() > MAXUNREAD)
 		chat_minimized_log.erase(chat_minimized_log.begin());
+}
+
+void AddLogEntryUnread(std::string a, std::string b, std::string c, VisibilityType v) {
+	AddLogEntryUnread(a, b, c, "", "", 1, 2, 0, 0, 0, v, "");
 }
 
 void AddClientInfo(std::string message) {
@@ -1053,7 +1098,7 @@ void ChatUi::Update() {
 }
 
 void ChatUi::GotMessage(int visibility, int room_id,
-		std::string name, std::string message) {
+		std::string name, std::string message, std::string sys_graphic) {
 	if(chat_box == nullptr)
 		return;
 	VisibilityType v = static_cast<VisibilityType>(visibility);
@@ -1061,9 +1106,12 @@ void ChatUi::GotMessage(int visibility, int room_id,
 	auto it = Messages::VisibilityNames.find(v);
 	if (it != Messages::VisibilityNames.end())
 		vtext = it->second;
-	AddLogEntry(vtext + " " + name + " #" + std::to_string(room_id), "", "", v);
-	AddLogEntry("", "", "\u00A0" + message, v);
-	AddLogEntryUnread(name + ":", "", message, v);
+	AddLogEntry("<", name, "> ", vtext, " #" + std::to_string(room_id),
+			1, 0, 1, 2, 1, v, sys_graphic);
+	AddLogEntry("\u00A0", message, "", "", "",
+			0, -1, 0, 0, 0, v, "");
+	AddLogEntryUnread("<", name, "> ", message, "",
+			1, 0, 1, -1, 0, v, sys_graphic);
 	Output::Info("Chat: {} [{}, {}]: {}", name, visibility, room_id, message);
 }
 

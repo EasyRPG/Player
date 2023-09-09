@@ -249,8 +249,13 @@ void Game_Multiplayer::InitConnection() {
 	connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
 		if (p.type == 0)
 			CUI().GotInfo(p.message);
-		else if (p.type == 1)
-			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message);
+		else if (p.type == 1) {
+			std::string sys_graphic = "";
+			auto it = global_players_system.find(p.id);
+			if (it != global_players_system.end())
+				sys_graphic = it->second;
+			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message, sys_graphic);
+		}
 	});
 	connection.RegisterHandler<MovePacket>([this](MovePacket& p) {
 		if (players.find(p.id) == players.end()) return;
@@ -309,12 +314,21 @@ void Game_Multiplayer::InitConnection() {
 		player.ch->SetSpriteHidden(p.hidden_bin == 1);
 	});
 	connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
-		if (players.find(p.id) == players.end()) return;
-		auto& player = players[p.id];
-		auto name_tag = player.name_tag.get();
-		if (name_tag) {
-			name_tag->SetSystemGraphic(std::string(p.name));
-		}
+		FileRequestAsync* request = AsyncHandler::RequestFile("System", p.name);
+		sys_graphic_request_id = request->Bind([this, &p](FileRequestResult* result) {
+			if (!result->success) {
+				return;
+			}
+			global_players_system[p.id] = p.name;
+			if (players.find(p.id) == players.end()) return;
+			auto& player = players[p.id];
+			auto name_tag = player.name_tag.get();
+			if (name_tag) {
+				name_tag->SetSystemGraphic(p.name);
+			}
+		});
+		request->SetGraphicFile(true);
+		request->Start();
 	});
 	connection.RegisterHandler<SEPacket>([this](SEPacket& p) { // se: sound effect
 		if (players.find(p.id) == players.end()) return;
@@ -604,6 +618,7 @@ void Game_Multiplayer::MainPlayerTriggeredEvent(int event_id, bool action) {
 }
 
 void Game_Multiplayer::SystemGraphicChanged(StringView sys) {
+	CUI().Refresh();
 	connection.SendPacketAsync<SystemPacket>(ToString(sys));
 }
 

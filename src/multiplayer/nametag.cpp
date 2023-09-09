@@ -87,16 +87,8 @@ void NameTag::Draw(Bitmap& dst) {
 }
 
 void NameTag::SetSystemGraphic(StringView sys_name) {
-	FileRequestAsync* request = AsyncHandler::RequestFile("System", sys_name);
-	request_id = request->Bind([this](FileRequestResult* result) {
-		if (!result->success) {
-			return;
-		}
-		sys_graphic = Cache::System(result->file);
-		dirty = true;
-	});
-	request->SetGraphicFile(true);
-	request->Start();
+	sys_graphic = Cache::System(sys_name);
+	dirty = true;
 }
 
 void NameTag::SetTransparent(bool val) {

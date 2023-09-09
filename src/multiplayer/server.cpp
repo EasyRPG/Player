@@ -311,7 +311,7 @@ class ServerSideClient {
 		connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
 			p.id = id;
 			last.system = p;
-			SendLocalAsync(p);
+			SendGlobalAsync(p);
 		});
 		connection.RegisterHandler<SEPacket>([this](SEPacket& p) {
 			p.id = id;

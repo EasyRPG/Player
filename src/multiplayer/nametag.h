@@ -27,7 +27,6 @@ private:
 	BitmapRef nick_img;
 	BitmapRef sys_graphic;
 	BitmapRef effects_img;
-	std::shared_ptr<int> request_id;
 	bool transparent;
 	int base_opacity = 32;
 	bool dirty = true;
