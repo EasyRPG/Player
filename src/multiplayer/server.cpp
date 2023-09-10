@@ -256,6 +256,8 @@ class ServerSideClient {
 				SendLocalChat(p);
 				Output::Info("Server: Chat: {} [LOCAL, {}]: {}", p.name, p.room_id, p.message);
 			} else if (visibility == CV_GLOBAL) {
+				if (last.system.name != "")
+					SendGlobal(last.system);
 				SendGlobalChat(p);
 				Output::Info("Server: Chat: {} [GLOBAL, {}]: {}", p.name, p.room_id, p.message);
 			}
@@ -311,7 +313,7 @@ class ServerSideClient {
 		connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
 			p.id = id;
 			last.system = p;
-			SendGlobalAsync(p);
+			SendLocalAsync(p);
 		});
 		connection.RegisterHandler<SEPacket>([this](SEPacket& p) {
 			p.id = id;
@@ -367,16 +369,19 @@ class ServerSideClient {
 		connection.FlushQueue();
 	}
 
+	// also send to self
 	template<typename T>
 	void SendLocalChat(const T& p) {
 		server->SendTo(id, 0, CV_LOCAL, p.ToBytes(), true);
 	}
 
+	// also send to self
 	template<typename T>
 	void SendGlobalChat(const T& p) {
 		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes(), true);
 	}
 
+	// for no EOM and non-async order
 	template<typename T>
 	void SendGlobal(const T& p) {
 		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes());

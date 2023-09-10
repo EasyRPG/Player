@@ -224,6 +224,11 @@ void Game_Multiplayer::InitConnection() {
 			SpawnOtherPlayer(p.id);
 	});
 	connection.RegisterHandler<LeavePacket>([this](LeavePacket& p) {
+		{
+			auto it = global_players_system.find(p.id);
+			if (it != global_players_system.end())
+				global_players_system.erase(it);
+		}
 		auto it = players.find(p.id);
 		if (it == players.end()) return;
 		auto& player = it->second;
@@ -244,7 +249,6 @@ void Game_Multiplayer::InitConnection() {
 		if (Main_Data::game_pictures) {
 			Main_Data::game_pictures->EraseAllMultiplayerForPlayer(p.id);
 		}
-
 	});
 	connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
 		if (p.type == 0)
@@ -313,22 +317,37 @@ void Game_Multiplayer::InitConnection() {
 		auto& player = players[p.id];
 		player.ch->SetSpriteHidden(p.hidden_bin == 1);
 	});
-	connection.RegisterHandler<SystemPacket>([this](SystemPacket& p) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("System", p.name);
-		sys_graphic_request_id = request->Bind([this, &p](FileRequestResult* result) {
-			if (!result->success) {
+
+	auto SetGlobalPlayersSystemGraphic = [this] (SystemPacket& p) {
+		auto it = global_players_system.find(p.id);
+		if (it != global_players_system.end()) {
+			if (it->second == p.name)
 				return;
-			}
-			global_players_system[p.id] = p.name;
-			if (players.find(p.id) == players.end()) return;
-			auto& player = players[p.id];
-			auto name_tag = player.name_tag.get();
-			if (name_tag) {
-				name_tag->SetSystemGraphic(p.name);
-			}
-		});
-		request->SetGraphicFile(true);
-		request->Start();
+		}
+		global_players_system[p.id] = p.name;
+		if (players.find(p.id) == players.end()) return;
+		auto& player = players[p.id];
+		auto name_tag = player.name_tag.get();
+		if (name_tag) {
+			name_tag->SetSystemGraphic(p.name);
+		}
+	};
+
+	connection.RegisterHandler<SystemPacket>([this, SetGlobalPlayersSystemGraphic](SystemPacket& p) {
+		// local Player always return ture
+		if (Cache::System(p.name)) {
+			SetGlobalPlayersSystemGraphic(p);
+		} else {
+			FileRequestAsync* request = AsyncHandler::RequestFile("System", p.name);
+			sys_graphic_request_id = request->Bind([this, &p, SetGlobalPlayersSystemGraphic](FileRequestResult* result) {
+				if (!result->success) {
+					return;
+				}
+				SetGlobalPlayersSystemGraphic(p);
+			});
+			request->SetGraphicFile(true);
+			request->Start();
+		}
 	});
 	connection.RegisterHandler<SEPacket>([this](SEPacket& p) { // se: sound effect
 		if (players.find(p.id) == players.end()) return;
