@@ -146,18 +146,20 @@ namespace Messages {
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
-			AppendPartial(r, type, visibility, room_id, name, message);
+			AppendPartial(r, type, visibility, room_id, name, message, sys_name);
 			return r;
 		};
 		ChatPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)),
 			type(Decode<int>(v.at(1))), visibility(Decode<int>(v.at(2))),
-			room_id(Decode<int>(v.at(3))), name(v.at(4)), message(v.at(5)) {}
-		int type;
+			room_id(Decode<int>(v.at(3))),
+			name(v.at(4)), message(v.at(5)), sys_name(v.at(6)) {}
+		int type; // 0 = info, 1 = chat
 		int visibility;
 		int room_id;
 		std::string name;
 		std::string message;
+		std::string sys_name;
 	};
 
 	/**

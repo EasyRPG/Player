@@ -251,13 +251,12 @@ class ServerSideClient {
 			p.type = 1; // 1 = chat
 			p.room_id = room_id;
 			p.name = name == "" ? "<unknown>" : name;
+			p.sys_name = last.system.name;
 			VisibilityType visibility = static_cast<VisibilityType>(p.visibility);
 			if (visibility == CV_LOCAL) {
 				SendLocalChat(p);
 				Output::Info("Server: Chat: {} [LOCAL, {}]: {}", p.name, p.room_id, p.message);
 			} else if (visibility == CV_GLOBAL) {
-				if (last.system.name != "")
-					SendGlobal(last.system);
 				SendGlobalChat(p);
 				Output::Info("Server: Chat: {} [GLOBAL, {}]: {}", p.name, p.room_id, p.message);
 			}

@@ -85,7 +85,7 @@ struct ChatEntry {
 	int8_t _color_d; // color selection _d of text d
 	int8_t _color_e; // color selection _e of text e
 	VisibilityType visibility;
-	std::string sys_graphic;
+	std::string sys_name;
 	bool break_word;
 	ChatEntry(std::string a, std::string b, std::string c, std::string d, std::string e,
 			int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
@@ -101,7 +101,7 @@ struct ChatEntry {
 		_color_d = _d;
 		_color_e = _e;
 		visibility = v;
-		sys_graphic = sys;
+		sys_name = sys;
 		break_word = bw;
 	}
 };
@@ -210,10 +210,10 @@ class DrawableChatLog : public Drawable {
 		unsigned int width_next = 0; // total width of glyphs on next line
 
 		BitmapRef graphic;
-		if (msg.message_data->sys_graphic == "") {
+		if (msg.message_data->sys_name == "") {
 			graphic = current_theme;
 		} else {
-			graphic = Cache::System(msg.message_data->sys_graphic);
+			graphic = Cache::System(msg.message_data->sys_name);
 		}
 
 		// break down whole message string into glyphs for processing.
@@ -833,9 +833,9 @@ VisibilityType chat_visibility = Messages::CV_LOCAL;
 void AddLogEntry(
 		std::string a, std::string b, std::string c, std::string d, std::string e,
 		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
-		VisibilityType v, std::string sys_graphic) {
+		VisibilityType v, std::string sys_name) {
 	chat_log.push_back(std::make_unique<ChatEntry>(
-			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_graphic, true));
+			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_name, true));
 	chat_box->AddLogEntry(chat_log.back().get());
 	if(chat_log.size() > MAXMESSAGES) {
 		chat_box->RemoveLogEntry(chat_log.front().get());
@@ -850,9 +850,9 @@ void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) 
 void AddLogEntryUnread(
 		std::string a, std::string b, std::string c, std::string d, std::string e,
 		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
-		VisibilityType v, std::string sys_graphic) {
+		VisibilityType v, std::string sys_name) {
 	chat_minimized_log.push_back(std::make_unique<ChatEntry>(
-			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_graphic, false));
+			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_name, false));
 	chat_box->AddLogEntryUnread(chat_minimized_log.back().get(), MAXUNREAD);
 	if(chat_minimized_log.size() > MAXUNREAD)
 		chat_minimized_log.erase(chat_minimized_log.begin());
@@ -1098,7 +1098,7 @@ void ChatUi::Update() {
 }
 
 void ChatUi::GotMessage(int visibility, int room_id,
-		std::string name, std::string message, std::string sys_graphic) {
+		std::string name, std::string message, std::string sys_name) {
 	if(chat_box == nullptr)
 		return;
 	VisibilityType v = static_cast<VisibilityType>(visibility);
@@ -1107,11 +1107,11 @@ void ChatUi::GotMessage(int visibility, int room_id,
 	if (it != Messages::VisibilityNames.end())
 		vtext = it->second;
 	AddLogEntry("<", name, "> ", vtext, " #" + std::to_string(room_id),
-			1, 0, 1, 2, 1, v, sys_graphic);
+			1, 0, 1, 2, 1, v, sys_name);
 	AddLogEntry("\u00A0", message, "", "", "",
 			0, -1, 0, 0, 0, v, "");
 	AddLogEntryUnread("<", name, "> ", message, "",
-			1, 0, 1, -1, 0, v, sys_graphic);
+			1, 0, 1, -1, 0, v, sys_name);
 	Output::Info("Chat: {} [{}, {}]: {}", name, visibility, room_id, message);
 }
 

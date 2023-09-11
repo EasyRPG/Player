@@ -11,7 +11,7 @@ public:
 	void Update(); // called once per logical frame
 
 	void GotMessage(int visibility, int room_id, std::string name,
-			std::string message, std::string sys_graphic);
+			std::string message, std::string sys_name);
 
 	void GotInfo(std::string msg);
 	void SetStatusConnection(bool status, bool connecting = false);

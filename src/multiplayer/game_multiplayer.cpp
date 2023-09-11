@@ -149,6 +149,38 @@ void Game_Multiplayer::InitConnection() {
 		CUI().GotInfo("!! Access denied. Too many users");
 	});
 
+	auto SetGlobalPlayersSystem = [this](int id, std::string& sys_name, bool replace) {
+		auto it = global_players_system.find(id);
+		if (!replace && it != global_players_system.end()) {
+			if (it->second == sys_name)
+				return;
+		}
+		global_players_system[id] = sys_name;
+		if (players.find(id) == players.end()) return;
+		auto& player = players[id];
+		auto name_tag = player.name_tag.get();
+		if (name_tag) {
+			name_tag->SetSystemGraphic(sys_name);
+		}
+	};
+	auto UpdateGlobalPlayersSystem = [this, SetGlobalPlayersSystem](int id, std::string& sys_name, bool replace) {
+		// local Player always return ture
+		if (Cache::System(sys_name)) {
+			SetGlobalPlayersSystem(id, sys_name, replace);
+		} else {
+			FileRequestAsync* request = AsyncHandler::RequestFile("System", sys_name);
+			sys_graphic_request_id = request->Bind([this, SetGlobalPlayersSystem,
+						id, &sys_name, replace](FileRequestResult* result) {
+				if (!result->success) {
+					return;
+				}
+				SetGlobalPlayersSystem(id, sys_name, replace);
+			});
+			request->SetGraphicFile(true);
+			request->Start();
+		}
+	};
+
 	// ->> unused code
 	connection.RegisterHandler<SyncSwitchPacket>([this](SyncSwitchPacket& p) {
 		int value_bin = (int) Main_Data::game_switches->GetInt(p.switch_id);
@@ -250,15 +282,13 @@ void Game_Multiplayer::InitConnection() {
 			Main_Data::game_pictures->EraseAllMultiplayerForPlayer(p.id);
 		}
 	});
-	connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
+	connection.RegisterHandler<ChatPacket>([this, UpdateGlobalPlayersSystem](ChatPacket& p) {
 		if (p.type == 0)
 			CUI().GotInfo(p.message);
 		else if (p.type == 1) {
-			std::string sys_graphic = "";
-			auto it = global_players_system.find(p.id);
-			if (it != global_players_system.end())
-				sys_graphic = it->second;
-			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message, sys_graphic);
+			if (p.sys_name != "")
+				UpdateGlobalPlayersSystem(p.id, p.sys_name, false);
+			CUI().GotMessage(p.visibility, p.room_id, p.name, p.message, p.sys_name);
 		}
 	});
 	connection.RegisterHandler<MovePacket>([this](MovePacket& p) {
@@ -317,37 +347,8 @@ void Game_Multiplayer::InitConnection() {
 		auto& player = players[p.id];
 		player.ch->SetSpriteHidden(p.hidden_bin == 1);
 	});
-
-	auto SetGlobalPlayersSystemGraphic = [this] (SystemPacket& p) {
-		auto it = global_players_system.find(p.id);
-		if (it != global_players_system.end()) {
-			if (it->second == p.name)
-				return;
-		}
-		global_players_system[p.id] = p.name;
-		if (players.find(p.id) == players.end()) return;
-		auto& player = players[p.id];
-		auto name_tag = player.name_tag.get();
-		if (name_tag) {
-			name_tag->SetSystemGraphic(p.name);
-		}
-	};
-
-	connection.RegisterHandler<SystemPacket>([this, SetGlobalPlayersSystemGraphic](SystemPacket& p) {
-		// local Player always return ture
-		if (Cache::System(p.name)) {
-			SetGlobalPlayersSystemGraphic(p);
-		} else {
-			FileRequestAsync* request = AsyncHandler::RequestFile("System", p.name);
-			sys_graphic_request_id = request->Bind([this, &p, SetGlobalPlayersSystemGraphic](FileRequestResult* result) {
-				if (!result->success) {
-					return;
-				}
-				SetGlobalPlayersSystemGraphic(p);
-			});
-			request->SetGraphicFile(true);
-			request->Start();
-		}
+	connection.RegisterHandler<SystemPacket>([this, UpdateGlobalPlayersSystem](SystemPacket& p) {
+		UpdateGlobalPlayersSystem(p.id, p.name, true);
 	});
 	connection.RegisterHandler<SEPacket>([this](SEPacket& p) { // se: sound effect
 		if (players.find(p.id) == players.end()) return;
