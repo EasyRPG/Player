@@ -112,6 +112,7 @@ __MACOSX
 # legacy
 /lib/liblcf/
 /lib/sockpp/
+/lib/cryptopp-cmake/
 .buildconfig
 
 # Android

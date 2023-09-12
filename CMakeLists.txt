@@ -892,6 +892,18 @@ endif()
 
 if(BUILD_CLIENT) # BUILD_CLIENT
 
+if(PLAYER_BUILD_LIBS)
+	set(CRYPTOPP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/cryptopp-cmake")
+	if(NOT EXISTS ${CRYPTOPP_PATH})
+		find_package(Git REQUIRED)
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" "--branch"
+			"v8.8.0"
+			"https://github.com/abdes/cryptopp-cmake"
+			"${CRYPTOPP_PATH}")
+	endif()
+	add_subdirectory(${CRYPTOPP_PATH})
+endif()
+
 # Detect all required libraries
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
 player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
