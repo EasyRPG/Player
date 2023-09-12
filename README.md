@@ -30,19 +30,17 @@ podman stop epmp_container && podman rm epmp_container
 
 ### How to build the Player on the macOS?
 
-The project can be compiled and run on macOS, but the installation of
- icu4c may not match your expectations, and the Opus cannot be enabled.
+The project can be compiled and run on macOS, but the Opus cannot be enabled.
 
 ```
 # Install dependencies of liblcf
 brew install expat icu4c
-brew link icu4c --force
 
 # Install dependencies of Player
 brew install libpng libvorbis sdl2 sdl2_mixer pixman freetype
 
 # Build
-cmake -B build -DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Debug -DPLAYER_WITH_OPUS=off
+ICU_ROOT=/opt/homebrew/opt/icu4c cmake -B build -DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Debug -DPLAYER_WITH_OPUS=off
 cmake --build build
 
 # If you have problems, you can revert back to previous state
@@ -55,7 +53,7 @@ You can get the precompiled binaries from here:
 
 https://github.com/monokotech/EasyRPG-Multiplayer-Native/releases
 
-The file `Windows-Build-debug-*.zip` is what you need, only the Player.exe is
+The file `Windows-Build-*.zip` is what you need, only the Player.exe is
  needed inside the zip and copy it to the game folder.
 
 ### How to make translation work?

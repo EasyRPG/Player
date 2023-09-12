@@ -30,19 +30,17 @@ podman stop epmp_container && podman rm epmp_container
 
 ### 如何在 macOS 上运行？
 
-该项目可以在 macOS 上编译和运行，但是 icu4c 可能不符合你的预期
-，并且 Opus 无法启用
+该项目可以在 macOS 上编译和运行，但是 Opus 无法启用
 
 ```
 # 安装 liblcf 的所有依赖
 brew install expat icu4c
-brew link icu4c --force
 
 # 安装 Player 的所有依赖
 brew install libpng libvorbis sdl2 sdl2_mixer pixman freetype
 
 # 编译
-cmake -B build -DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Debug -DPLAYER_WITH_OPUS=off
+ICU_ROOT=/opt/homebrew/opt/icu4c cmake -B build -DPLAYER_BUILD_LIBS=on -DCMAKE_BUILD_TYPE=Debug -DPLAYER_WITH_OPUS=off
 cmake --build build
 
 # 如果遇到问题可以恢复到以前的状态
@@ -55,7 +53,7 @@ brew unlink icu4c
 
 https://github.com/monokotech/EasyRPG-Multiplayer-Native/releases
 
-找到 `Windows-Build-debug-*.zip` 下载并保存，压缩档里面只有 Player.exe 是你需要的
+找到 `Windows-Build-*.zip` 下载并保存，压缩档里面只有 Player.exe 是你需要的
 ，将它复制到游戏目录
 
 ### 如何使用多语言？
