@@ -2613,9 +2613,13 @@ bool Game_Interpreter::CommandShakeScreen(lcf::rpg::EventCommand const& com) { /
 
 	switch (shake_cmd) {
 		case 0:
-			screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
-			if (wait) {
-				SetupWait(tenths);
+			if (tenths > 0) {
+				screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
+				if (wait) {
+					SetupWait(tenths);
+				}
+			} else {
+				screen->ShakeEnd();
 			}
 			break;
 		case 1:
