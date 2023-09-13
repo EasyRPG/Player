@@ -145,7 +145,7 @@ int Game_Party::GetItemCount(int item_id) const {
 
 int Game_Party::GetEquippedItemCount(int item_id) const {
 	int number = 0;
-	if (item_id > 0) {
+	if (item_id >= 0) {
 		for (int i = 0; i < (int) data.party.size(); i++) {
 			Game_Actor* actor = Main_Data::game_actors->GetActor(data.party[i]);
 			number += actor->GetItemCount(item_id);
