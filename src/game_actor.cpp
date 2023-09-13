@@ -352,6 +352,10 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 }
 
 void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
+	if (!IsItemUsable(item_id)) {
+		return;
+	}
+
 	int prev_item = SetEquipment(equip_type, item_id);
 
 	if (prev_item != 0) {

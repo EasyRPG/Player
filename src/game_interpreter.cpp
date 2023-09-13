@@ -1862,10 +1862,6 @@ bool Game_Interpreter::CommandChangeEquipment(lcf::rpg::EventCommand const& com)
 				continue;
 			}
 
-			if (Main_Data::game_party->GetItemCount(item_id) == 0 && !actor->IsEquipped(item_id)) {
-				Main_Data::game_party->AddItem(item_id, 1);
-			}
-
 			if (actor->HasTwoWeapons() && slot == lcf::rpg::Item::Type_weapon && item_id != 0) {
 				lcf::rpg::Item* new_equipment = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 				lcf::rpg::Item* equipment1 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetWeaponId());
