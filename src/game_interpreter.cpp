@@ -3091,7 +3091,7 @@ int Game_Interpreter::KeyInputState::CheckInput() const {
 		return 1001;
 	}
 
-	if (keys[Keys::eMouseScrollUp] && check(Input::SCROLL_DOWN)) {
+	if (keys[Keys::eMouseScrollUp] && check(Input::SCROLL_UP)) {
 		return 1004;
 	}
 
