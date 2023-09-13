@@ -1513,7 +1513,7 @@ bool Player::IsBig5() {
 		return Tr::GetCurrentLanguageCode() == "zh_TW";
 	}
 
-	return (encoding == "Big5" || encoding == "950");
+	return (encoding == "Big5" || encoding == "windows-950" || encoding == "950");
 }
 
 bool Player::IsCP936() {
