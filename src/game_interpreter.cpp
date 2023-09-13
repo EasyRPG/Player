@@ -2910,7 +2910,10 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			} else if (blend_mode == 3) {
 				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
 			}
-			params.duration = ValueOrVariableBitfield(com.parameters[17], 2, params.duration);
+
+			if (param_size > 17) {
+				params.duration = ValueOrVariableBitfield(com.parameters[17], 2, params.duration);
+			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
 			params.origin = com.parameters[1] >> 8;
