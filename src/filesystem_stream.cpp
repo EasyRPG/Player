@@ -45,6 +45,16 @@ StringView Filesystem_Stream::InputStream::GetName() const {
 	return name;
 }
 
+std::streampos Filesystem_Stream::InputStream::GetSize() const {
+	if (!size_cached) {
+		size_cached = true;
+		auto cur_pos = rdbuf()->pubseekoff(0, std::ios_base::cur, std::ios_base::in);
+		size = rdbuf()->pubseekoff(0, std::ios_base::end, std::ios_base::in);
+		rdbuf()->pubseekoff(cur_pos, std::ios_base::beg, std::ios_base::in);
+	}
+	return size;
+}
+
 void Filesystem_Stream::InputStream::Close() {
 	delete rdbuf();
 	set_rdbuf(nullptr);

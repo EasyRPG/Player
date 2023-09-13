@@ -437,9 +437,12 @@ public:
 	bool IsLoadedThisFrame() const;
 
 private:
+	std::string InelukiReadLink(Filesystem_Stream::InputStream& stream);
+
 	void OnBgmReady(FileRequestResult* result);
 	void OnBgmInelukiReady(FileRequestResult* result);
 	void OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds);
+	void OnSeInelukiReady(FileRequestResult* result, lcf::rpg::Sound se);
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 private:
 	lcf::rpg::SaveSystem data;
