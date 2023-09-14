@@ -1,0 +1,45 @@
+diff --git a/cmake/GetCryptoppSources.cmake b/cmake/GetCryptoppSources.cmake
+index 3a6e90c..80ec3af 100644
+--- a/cmake/GetCryptoppSources.cmake
++++ b/cmake/GetCryptoppSources.cmake
+@@ -6,6 +6,7 @@
+ 
+ include(FetchContent)
+ set (version_underscore "${cryptopp-cmake_VERSION_MAJOR}_${cryptopp-cmake_VERSION_MINOR}_${cryptopp-cmake_VERSION_PATCH}")
++set(FETCHCONTENT_QUIET FALSE)
+ if(GIT_FOUND)
+   if(${CRYPTOPP_USE_MASTER_BRANCH})
+     set(source_location "master")
+@@ -18,7 +19,8 @@ if(GIT_FOUND)
+     cryptopp
+     GIT_REPOSITORY ${cryptopp-cmake_HOMEPAGE_URL}
+     GIT_TAG ${source_location}
+-    QUIET
++    GIT_SHALLOW 1
++    GIT_PROGRESS TRUE
+     SOURCE_DIR ${CRYPTOPP_INCLUDE_PREFIX})
+ else()
+   message(STATUS "Downloading crypto++ from URL...")
+@@ -33,7 +35,6 @@ else()
+   FetchContent_Declare(
+     cryptopp
+       URL "${source_location}.zip"
+-      QUIET
+       SOURCE_DIR ${CRYPTOPP_INCLUDE_PREFIX}
+   )
+ endif()
+diff --git a/cryptopp/CMakeLists.txt b/cryptopp/CMakeLists.txt
+index 8ea2276..5140c92 100644
+--- a/cryptopp/CMakeLists.txt
++++ b/cryptopp/CMakeLists.txt
+@@ -1186,7 +1186,9 @@ target_compile_definitions(
+ cmake_path(GET cryptopp_SOURCE_DIR PARENT_PATH CRYPTOPP_PREFIXED_INCLUDE_DIR)
+ target_include_directories(
+   cryptopp
+-  PUBLIC $<BUILD_INTERFACE:${cryptopp_SOURCE_DIR}>
++  INTERFACE $<BUILD_INTERFACE:${cryptopp_SOURCE_DIR}/..>
++         $<BUILD_INTERFACE:${CRYPTOPP_PREFIXED_INCLUDE_DIR}/..>
++  PRIVATE $<BUILD_INTERFACE:${cryptopp_SOURCE_DIR}>
+          $<BUILD_INTERFACE:${CRYPTOPP_PREFIXED_INCLUDE_DIR}>
+          $<INSTALL_INTERFACE:include>)
+ 

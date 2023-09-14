@@ -900,8 +900,14 @@ if(PLAYER_BUILD_LIBS)
 			"v8.8.0"
 			"https://github.com/abdes/cryptopp-cmake"
 			"${CRYPTOPP_PATH}")
+		include(Patch)
+		execute_process(COMMAND ${PATCH_EXECUTABLE} -p1 -d "${CRYPTOPP_PATH}"
+			--input=${CMAKE_CURRENT_SOURCE_DIR}/patches/cryptopp.patch )
 	endif()
+	set(CRYPTOPP_BUILD_TESTING OFF)
+	set(CRYPTOPP_INSTALL OFF)
 	add_subdirectory(${CRYPTOPP_PATH})
+	target_link_libraries(${PROJECT_NAME} cryptopp)
 endif()
 
 # Detect all required libraries
