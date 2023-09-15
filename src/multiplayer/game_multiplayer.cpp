@@ -475,7 +475,7 @@ void Game_Multiplayer::SetConfig(const Game_ConfigMultiplayer& _cfg) {
 	}
 }
 
-Game_ConfigMultiplayer Game_Multiplayer::GetConfig() const {
+Game_ConfigMultiplayer& Game_Multiplayer::GetConfig() {
 	return cfg;
 }
 
@@ -558,8 +558,10 @@ void Game_Multiplayer::Quit() {
 	Disconnect();
 }
 
-void Game_Multiplayer::SendChatMessage(int visibility, std::string message) {
-	connection.SendPacket(ChatPacket(visibility, message));
+void Game_Multiplayer::SendChatMessage(int visibility, std::string message, int crypt_key_hash) {
+	auto p = ChatPacket(visibility, message);
+	p.crypt_key_hash = crypt_key_hash;
+	connection.SendPacket(p);
 }
 
 void Game_Multiplayer::SendBasicData() {

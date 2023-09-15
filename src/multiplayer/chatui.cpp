@@ -15,7 +15,6 @@
 #include "../baseui.h"
 #include "../graphics.h"
 #include "../statustext_overlay.h"
-#include "../version.h"
 #include "game_multiplayer.h"
 #include "server.h"
 #include "strfnd.h"
@@ -834,6 +833,7 @@ const unsigned int MAXUNREAD = 6;
 std::u32string type_text;
 unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
 unsigned int type_caret_index_head = 0; // moves when SHIFT-selecting text
+std::mutex chat_mutex;
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
 std::vector<std::unique_ptr<ChatEntry>> chat_minimized_log;
@@ -843,6 +843,7 @@ void AddLogEntry(
 		std::string a, std::string b, std::string c, std::string d, std::string e,
 		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
 		VisibilityType v, std::string sys_name) {
+	const std::lock_guard<std::mutex> lock(chat_mutex);
 	chat_log.push_back(std::make_unique<ChatEntry>(
 			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_name, true));
 	chat_box->AddLogEntry(chat_log.back().get());
@@ -860,6 +861,7 @@ void AddLogEntryUnread(
 		std::string a, std::string b, std::string c, std::string d, std::string e,
 		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
 		VisibilityType v, std::string sys_name) {
+	const std::lock_guard<std::mutex> lock(chat_mutex);
 	chat_minimized_log.push_back(std::make_unique<ChatEntry>(
 			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_name, false));
 	chat_box->AddLogEntryUnread(chat_minimized_log.back().get(), MAXUNREAD);
@@ -877,7 +879,7 @@ void AddClientInfo(std::string message) {
 
 // https://www.cryptopp.com/wiki/PKCS5_PBKDF2_HMAC
 std::string GetPasswordHash(const std::string& password, unsigned int iterations = 600000) {
-	std::string salt = Version::GetVersionString();
+	std::string salt = "";
 
 	CryptoPP::byte derived[CryptoPP::SHA256::DIGESTSIZE];
 
@@ -975,18 +977,21 @@ std::string DecryptMessage(const std::string& password, const std::string& data,
 	return std::move(exception_what);
 }
 
-void InitHello() {
-	std::string k1 = "!! • IME input now supported!";
-	std::string k = GetPasswordHash(k1);
-	Output::Debug("--- key:{} salt:{}", k1, Version::GetVersionString());
-	Output::Debug("--- key hash {} {}", StringToCRC32(k), k);
-	std::string m = "• Type !help to list commands.";
-	std::string out = EncryptMessage(k, m);
-	Output::Debug("--- cipher {}", out);
-	std::string message;
-	std::string error = DecryptMessage(k, out, message);
-	Output::Debug("--- message {}; {}", error, message);
+bool SetChatVisibility(std::string visibility_name) {
+	auto it = Messages::VisibilityValues.find(visibility_name);
+	if (it != Messages::VisibilityValues.end()) {
+		chat_visibility = it->second;
+		if (chat_visibility == Messages::CV_CRYPT) {
+			std::string key = GMI().GetConfig().client_chat_crypt_key.Get();
+			// send a hash integer to help the server to search for clients with the same key
+			GMI().SendChatMessage(static_cast<int>(chat_visibility), "", StringToCRC32(key));
+		}
+		return true;
+	}
+	return false;
+}
 
+void InitHello() {
 	AddLogEntry("", "!! • IME input now supported!", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!!   (for Japanese, etc.)", "", Messages::CV_LOCAL);
 	AddLogEntry("", "!! • You can now copy and", "", Messages::CV_LOCAL);
@@ -1021,6 +1026,8 @@ void ShowUsage() {
 void Initialize() {
 	chat_box = std::make_unique<DrawableChatUi>();
 	InitHello();
+	// initialize saved settings
+	SetChatVisibility(GMI().GetConfig().client_chat_visibility.Get());
 }
 
 void SetFocus(bool focused) {
@@ -1149,11 +1156,23 @@ void InputsTyping() {
 			AddClientInfo("Name: " + (name == "" ? "<unknown>" : name));
 		// command: !chat
 		} else if (command == "!chat") {
-			auto it = Messages::VisibilityValues.find(fnd.next(""));
-			if (it != Messages::VisibilityValues.end())
-				chat_visibility = it->second;
+			std::string visibility_name = fnd.next(" ");
+			if (visibility_name != "") {
+				if (SetChatVisibility(visibility_name))
+					GMI().GetConfig().client_chat_visibility.Set(visibility_name);
+			}
 			AddClientInfo("Visibility: " + \
 				Messages::VisibilityNames.find(chat_visibility)->second);
+			if (visibility_name == "CRYPT") {
+				std::string chat_crypt_password = fnd.next(" ");
+				if (chat_crypt_password != "") {
+					AddClientInfo("CRYPT: Generating encryption key ...");
+					std::thread([chat_crypt_password]() {
+						GMI().GetConfig().client_chat_crypt_key.Set(GetPasswordHash(chat_crypt_password));
+						AddClientInfo("CRYPT: Done");
+					}).detach();
+				}
+			}
 		// command: !log
 		} else if (command == "!log") {
 			auto it = Messages::VisibilityValues.find(fnd.next(""));
@@ -1170,8 +1189,14 @@ void InputsTyping() {
 		} else if (command == "!help") {
 			ShowUsage();
 		} else {
-			if (text != "")
-				GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
+			if (text != "") {
+				if (chat_visibility == Messages::CV_CRYPT) {
+					std::string key = GMI().GetConfig().client_chat_crypt_key.Get();
+					GMI().SendChatMessage(static_cast<int>(chat_visibility),
+						EncryptMessage(key, text));
+				} else
+					GMI().SendChatMessage(static_cast<int>(chat_visibility), text);
+			}
 		}
 		// reset typebox
 		type_text.clear();
@@ -1223,6 +1248,15 @@ void ChatUi::GotMessage(int visibility, int room_id,
 		return;
 	VisibilityType v = static_cast<VisibilityType>(visibility);
 	std::string vtext = "?";
+	if (v == Messages::CV_CRYPT) {
+		std::string decrypted_message;
+		std::string key = GMI().GetConfig().client_chat_crypt_key.Get();
+		std::string error = DecryptMessage(key, message, decrypted_message);
+		if (error != "") {
+			AddLogEntry("", error, "", Messages::CV_LOCAL);
+		} else
+			message = decrypted_message;
+	}
 	auto it = Messages::VisibilityNames.find(v);
 	if (it != Messages::VisibilityNames.end())
 		vtext = it->second;
@@ -1232,7 +1266,7 @@ void ChatUi::GotMessage(int visibility, int room_id,
 			0, -1, 0, 0, 0, v, "");
 	AddLogEntryUnread("<", name, "> ", message, "",
 			1, 0, 1, -1, 0, v, sys_name);
-	Output::Info("Chat: {} [{}, {}]: {}", name, visibility, room_id, message);
+	Output::Info("Chat: {} [{}, {}]: {}", name, vtext, room_id, message);
 }
 
 void ChatUi::GotInfo(std::string message) {

@@ -158,6 +158,7 @@ class ServerSideClient {
 	ServerConnection connection;
 
 	int room_id{0};
+	int chat_crypt_key_hash{0};
 	std::string name{""};
 	LastState last;
 
@@ -259,6 +260,16 @@ class ServerSideClient {
 			} else if (visibility == CV_GLOBAL) {
 				SendGlobalChat(p);
 				Output::Info("Server: Chat: {} [GLOBAL, {}]: {}", p.name, p.room_id, p.message);
+			} else if (visibility == CV_CRYPT) {
+				// use "crypt_key_hash != 0" to distinguish whether to set or send
+				if (p.crypt_key_hash != 0) { // set
+					// the chat_crypt_key_hash is used for searching
+					chat_crypt_key_hash = p.crypt_key_hash;
+					Output::Info("Server: Chat: {} [CRYPT, {}]: Update chat_crypt_key_hash: {}",
+						p.name, p.room_id, chat_crypt_key_hash);
+				} else { // send
+					SendCryptChat(p);
+				}
 			}
 		});
 		connection.RegisterHandler<TeleportPacket>([this](TeleportPacket& p) {
@@ -380,6 +391,12 @@ class ServerSideClient {
 		server->SendTo(id, 0, CV_GLOBAL, p.ToBytes(), true);
 	}
 
+	// also send to self
+	template<typename T>
+	void SendCryptChat(const T& p) {
+		server->SendTo(id, 0, CV_CRYPT, p.ToBytes(), true);
+	}
+
 	// for no EOM and non-async order
 	template<typename T>
 	void SendGlobal(const T& p) {
@@ -411,6 +428,10 @@ public:
 
 	const int& GetRoomId() {
 		return room_id;
+	}
+
+	const int& GetChatCryptKeyHash() {
+		return chat_crypt_key_hash;
 	}
 };
 
@@ -470,7 +491,7 @@ void ServerMain::Start(bool blocking) {
 			if (from_client_it != clients.end()) {
 				from_client = from_client_it->second.get();
 			}
-			// send to global and local
+			// send to global, local and crypt
 			if (data_entry->to_client_id == 0) {
 				// enter on every client
 				for (const auto& it : clients) {
@@ -482,6 +503,10 @@ void ServerMain::Start(bool blocking) {
 					// send to local
 					if (data_entry->visibility == Messages::CV_LOCAL &&
 							from_client && from_client->GetRoomId() == to_client->GetRoomId()) {
+						to_client->Send(data_entry->data);
+					// send to crypt
+					} else if (data_entry->visibility == Messages::CV_CRYPT &&
+							from_client && from_client->GetChatCryptKeyHash() == to_client->GetChatCryptKeyHash()) {
 						to_client->Send(data_entry->data);
 					// send to global
 					} else if (data_entry->visibility == Messages::CV_GLOBAL) {

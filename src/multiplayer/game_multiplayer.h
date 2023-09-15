@@ -19,7 +19,7 @@ public:
 	Game_Multiplayer();
 
 	void SetConfig(const Game_ConfigMultiplayer& cfg);
-	Game_ConfigMultiplayer GetConfig() const;
+	Game_ConfigMultiplayer& GetConfig();
 	void SetChatName(std::string chat_name);
 	std::string GetChatName();
 	void SetRemoteAddress(std::string address);
@@ -31,7 +31,7 @@ public:
 	void Quit();
 	void Update();
 	void MapUpdate();
-	void SendChatMessage(int visibility, std::string message);
+	void SendChatMessage(int visibility, std::string message, int crypt_key_hash = 0);
 	void SendBasicData();
 	void MainPlayerMoved(int dir);
 	void MainPlayerFacingChanged(int dir);
