@@ -1,3 +1,43 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b0ee7a2..06e82eb 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -163,18 +163,6 @@ else()
+   set (CRYPTOPP_DEFAULT_BUILD_TYPE "Release")
+ endif (EXISTS "${CMAKE_SOURCE_DIR}/.git")
+ 
+-# Set the possible values of build type for cmake-gui
+-if (CMAKE_CONFIGURATION_TYPES)
+-  set (CMAKE_CONFIGURATION_TYPES "Debug;Release"
+-       CACHE STRING
+-       "Semicolon separated list of supported configuration types, only supports debug and release, anything else will be ignored"
+-       FORCE)
+-
+-  set_property (CACHE CMAKE_CONFIGURATION_TYPES
+-                PROPERTY STRINGS
+-                "Debug" "Release")
+-endif()
+-
+ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+   message (STATUS "Setting build type to '${CRYPTOPP_DEFAULT_BUILD_TYPE}' as none was specified.")
+ 
+@@ -214,16 +202,6 @@ else()
+   endif()
+ endif()
+ 
+-if (Git_FOUND)
+-  execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+-                  WORKING_DIRECTORY ${cryptopp-cmake_SOURCE_DIR}
+-                  OUTPUT_VARIABLE cryptopp_GIT_BRANCH)
+-  string(STRIP ${cryptopp_GIT_BRANCH} cryptopp_GIT_BRANCH)
+-else()
+-  set(cryptopp_GIT_BRANCH "master")
+-endif()
+-message(STATUS "Using branch ${cryptopp_GIT_BRANCH} for tests")
+-
+ # ------------------------------------------------------------------------------
+ # Testing
+ # ------------------------------------------------------------------------------
 diff --git a/cmake/GetCryptoppSources.cmake b/cmake/GetCryptoppSources.cmake
 index 3a6e90c..80ec3af 100644
 --- a/cmake/GetCryptoppSources.cmake

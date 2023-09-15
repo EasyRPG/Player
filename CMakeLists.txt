@@ -875,7 +875,8 @@ if(PLAYER_BUILD_LIBS)
 	set(SOCKPP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/sockpp")
 	if(NOT EXISTS ${SOCKPP_PATH})
 		find_package(Git REQUIRED)
-		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" "--branch"
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
+			"-c" "advice.detachedHead=false" "--branch"
 			"v0.8.1"
 			"https://github.com/fpagliughi/sockpp"
 			"${SOCKPP_PATH}")
@@ -894,12 +895,19 @@ if(BUILD_CLIENT) # BUILD_CLIENT
 
 if(PLAYER_BUILD_LIBS)
 	set(CRYPTOPP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/cryptopp-cmake")
+	set(CRYPTOPP_SOURCES "${CRYPTOPP_PATH}/cryptopp/cryptopp")
 	if(NOT EXISTS ${CRYPTOPP_PATH})
 		find_package(Git REQUIRED)
-		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" "--branch"
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
+			"-c" "advice.detachedHead=false" "--branch"
 			"v8.8.0"
 			"https://github.com/abdes/cryptopp-cmake"
 			"${CRYPTOPP_PATH}")
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
+			"-c" "advice.detachedHead=false" "--branch"
+			"CRYPTOPP_8_8_0"
+			"https://github.com/weidai11/cryptopp"
+			"${CRYPTOPP_SOURCES}")
 		include(Patch)
 		execute_process(COMMAND ${PATCH_EXECUTABLE} -p1 -d "${CRYPTOPP_PATH}"
 			--input=${CMAKE_CURRENT_SOURCE_DIR}/patches/cryptopp.patch )
