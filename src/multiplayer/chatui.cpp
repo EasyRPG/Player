@@ -138,7 +138,7 @@ class DrawableChatLog : public Drawable {
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
 	int scroll_position = 0;
 	unsigned int scroll_content_height = 0; // total height of scrollable message log
-	unsigned short visibility_flags = Messages::CV_LOCAL | Messages::CV_GLOBAL;
+	unsigned short visibility_flags = Messages::CV_LOCAL | Messages::CV_GLOBAL | Messages::CV_CRYPT;
 	BitmapRef default_theme; // system graphic for the default theme
 	BitmapRef current_theme; // system graphic for the current theme
 
@@ -981,14 +981,17 @@ bool SetChatVisibility(std::string visibility_name) {
 	auto it = Messages::VisibilityValues.find(visibility_name);
 	if (it != Messages::VisibilityValues.end()) {
 		chat_visibility = it->second;
-		if (chat_visibility == Messages::CV_CRYPT) {
-			std::string key = GMI().GetConfig().client_chat_crypt_key.Get();
-			// send a hash integer to help the server to search for clients with the same key
-			GMI().SendChatMessage(static_cast<int>(chat_visibility), "", StringToCRC32(key));
-		}
 		return true;
 	}
 	return false;
+}
+
+void SendKeyHash() {
+	if (chat_visibility == Messages::CV_CRYPT) {
+		std::string key = GMI().GetConfig().client_chat_crypt_key.Get();
+		// send a hash integer to help the server to search for clients with the same key
+		GMI().SendChatMessage(static_cast<int>(chat_visibility), "", StringToCRC32(key));
+	}
 }
 
 void InitHello() {
@@ -1008,6 +1011,7 @@ void InitHello() {
 void ShowUsage() {
 	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
 	AddLogEntry("", "Usage:", "", Messages::CV_LOCAL);
+	AddLogEntry("", "[...] Optional | <...> Required", "", Messages::CV_LOCAL);
 	AddLogEntry("", "", "―――", Messages::CV_LOCAL);
 	AddLogEntry("!server [on, off]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "turn on/off the server", "", Messages::CV_LOCAL);
@@ -1017,9 +1021,9 @@ void ShowUsage() {
 	AddLogEntry("- ", "disconnect from server", "", Messages::CV_LOCAL);
 	AddLogEntry("!name [text]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "change chat name", "", Messages::CV_LOCAL);
-	AddLogEntry("!chat [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("!chat [LOCAL, GLOBAL, CRYPT] [CRYPT Password]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "switch visibility to chat", "", Messages::CV_LOCAL);
-	AddLogEntry("!log [LOCAL, GLOBAL]", "", "", Messages::CV_LOCAL);
+	AddLogEntry("!log [LOCAL, GLOBAL, CRYPT]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "toggle visibility", "", Messages::CV_LOCAL);
 }
 
@@ -1169,6 +1173,7 @@ void InputsTyping() {
 					AddClientInfo("CRYPT: Generating encryption key ...");
 					std::thread([chat_crypt_password]() {
 						GMI().GetConfig().client_chat_crypt_key.Set(GetPasswordHash(chat_crypt_password));
+						SendKeyHash();
 						AddClientInfo("CRYPT: Done");
 					}).detach();
 				}
@@ -1276,10 +1281,12 @@ void ChatUi::GotInfo(std::string message) {
 	AddLogEntryUnread("", message, "", Messages::CV_LOCAL);
 }
 
-void ChatUi::SetStatusConnection(bool status, bool connecting) {
+void ChatUi::SetStatusConnection(bool connected, bool connecting) {
 	if(chat_box == nullptr)
 		return;
-	chat_box->SetStatusConnection(status, connecting);
+	chat_box->SetStatusConnection(connected, connecting);
+	if (connected)
+		SendKeyHash();
 }
 
 void ChatUi::SetStatusRoom(unsigned int room_id) {

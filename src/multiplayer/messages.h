@@ -13,7 +13,7 @@ namespace Messages {
 		CV_NULL = 0,
 		CV_LOCAL = 1,
 		CV_GLOBAL = 2,
-		CV_CRYPT = 3
+		CV_CRYPT = 4
 	};
 
 	static const std::map<VisibilityType, std::string> VisibilityNames = {

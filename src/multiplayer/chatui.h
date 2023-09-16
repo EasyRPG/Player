@@ -14,7 +14,7 @@ public:
 			std::string message, std::string sys_name);
 
 	void GotInfo(std::string msg);
-	void SetStatusConnection(bool status, bool connecting = false);
+	void SetStatusConnection(bool connected, bool connecting = false);
 	void SetStatusRoom(unsigned int room_id);
 };
 

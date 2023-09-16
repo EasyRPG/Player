@@ -120,9 +120,9 @@ void Game_Multiplayer::InitConnection() {
 	using Connection = Multiplayer::Connection;
 
 	connection.RegisterSystemHandler(SystemMessage::OPEN, [this](Connection& _) {
-		CUI().SetStatusConnection(true);
 		SendBasicData();
 		connection.SendPacket(NamePacket(cfg.client_chat_name.Get()));
+		CUI().SetStatusConnection(true);
 	});
 	connection.RegisterSystemHandler(SystemMessage::CLOSE, [this](Connection& _) {
 		CUI().SetStatusConnection(false);

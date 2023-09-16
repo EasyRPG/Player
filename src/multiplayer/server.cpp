@@ -247,8 +247,6 @@ class ServerSideClient {
 		});
 		connection.RegisterHandler<ChatPacket>([this](ChatPacket& p) {
 			p.id = id;
-			if (p.message == "")
-				return;
 			p.type = 1; // 1 = chat
 			p.room_id = room_id;
 			p.name = name == "" ? "<unknown>" : name;
