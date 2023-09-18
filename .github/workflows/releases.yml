@@ -170,3 +170,61 @@ jobs:
           replacesArtifacts: false
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  macos:
+    name: macos-${{ matrix.arch }}
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        arch:
+          - x86_64
+          - arm64
+
+    env:
+      FILENAME: "MacOS-Build-${{ matrix.arch }}-${{ github.ref_name }}"
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref == ''
+
+      - name: Setup Toolchain
+        env:
+          LC_ALL: C # resolve sed error - illegal byte sequence
+        run: |
+          aria2c -o tmp.tar.gz \
+            "https://ci.easyrpg.org/view/macOS/job/macos-toolchain/lastSuccessfulBuild/artifact/macos_toolchain.tar.gz"
+          mkdir -p toolchain && tar xf tmp.tar.gz -C toolchain
+          # fix: Imported target ... includes non-existent path
+          oldpath="/Users/macos/jenkins/workspace/macos-toolchain/macos/x86_64"; \
+            grep toolchain -l -r -e "$oldpath" | \
+            xargs -I{} sed -i '' "s|$oldpath|${{ github.workspace }}/toolchain/universal|g" "{}"
+
+      # CMAKE_FIND_PACKAGE_PREFER_CONFIG=off
+      #  force to use module (builds/cmake/Modules/Find*.cmake) instead of config
+      - name: Compile
+        run: |
+          VER="(GithubActions, `date +%Y-%m-%d`)"
+          cmake . -B build \
+          -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=off \
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/toolchain/universal" \
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=10.12 \
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DPLAYER_BUILD_LIBS=on \
+          -DPLAYER_VERSION_APPEND="$VER" \
+          -DPLAYER_WITH_FLUIDSYNTH=off
+          cmake --build build
+
+      - name: Create Archive
+        run: |
+          7z a -mx9 ${{ env.FILENAME }}.zip "build/EasyRPG Player.app"
+
+      - name: Create Github Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ env.FILENAME }}.zip"
+          replacesArtifacts: false
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
