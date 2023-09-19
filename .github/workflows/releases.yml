@@ -190,15 +190,14 @@ jobs:
         if: github.event.inputs.git-ref == ''
 
       - name: Setup Toolchain
-        env:
-          LC_ALL: C # resolve sed error - illegal byte sequence
         run: |
           aria2c -o tmp.tar.gz \
             "https://ci.easyrpg.org/view/macOS/job/macos-toolchain/lastSuccessfulBuild/artifact/macos_toolchain.tar.gz"
           mkdir -p toolchain && tar xf tmp.tar.gz -C toolchain
           # fix: Imported target ... includes non-existent path
+          # grep: -I is to exclude binary files
           oldpath="/Users/macos/jenkins/workspace/macos-toolchain/macos/x86_64"; \
-            grep toolchain -l -r -e "$oldpath" | \
+            grep toolchain -I -l -r -e "$oldpath" | \
             xargs -I{} sed -i '' "s|$oldpath|${{ github.workspace }}/toolchain/universal|g" "{}"
 
       # CMAKE_FIND_PACKAGE_PREFER_CONFIG=off
