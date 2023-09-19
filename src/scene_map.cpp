@@ -248,6 +248,7 @@ void Scene_Map::vUpdate() {
 		UpdateInn();
 		return;
 	}
+
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
 }

@@ -68,7 +68,7 @@ namespace Game_Message {
 	 * given font (except in cases when breaking by spaces
 	 * can't produce a short line), and calls the callback
 	 * for each resulting line.
-	 * 
+	 *
 	 * Font::Default() will be used to determine the word breaking.
 	 * The caller is responsible for ensuring that Font::Default()
 	 * either does not change between calling this function and
@@ -109,6 +109,14 @@ namespace Game_Message {
 		const char* next = nullptr;
 		/** value that was parsed */
 		int value = 0;
+	};
+
+	/** Struct returned by parameter parsing methods */
+	struct ParseParamStringResult {
+		/** iterator to the next character after parsed content */
+		const char* next = nullptr;
+		/** value that was parsed */
+		std::string value;
 	};
 
 	/** Parse a \v[] variable string
@@ -158,7 +166,10 @@ namespace Game_Message {
 	 * @return \refer ParseParamResult
 	 */
 	ParseParamResult ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
-}
 
+	Game_Message::ParseParamResult ParseParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+	// same as ParseParam but the parameter is of structure \x[some_word] instead of \x[1]
+	Game_Message::ParseParamStringResult ParseStringParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+}
 
 #endif
