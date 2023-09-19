@@ -21,6 +21,7 @@
 #include <sstream>
 #include <algorithm>
 #include <climits>
+#include <numeric>
 
 #include "async_handler.h"
 #include "options.h"
@@ -125,6 +126,7 @@ void Game_Map::InitCommonEvents() {
 	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
 		common_events.emplace_back(ev.ID);
 	}
+	translation_changed = false;
 }
 
 void Game_Map::Dispose() {
@@ -162,12 +164,8 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	SetEncounterSteps(GetMapInfo().encounter_steps);
 	SetChipset(map->chipset_id);
 
-	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
-		map_info.lower_tiles[i] = i;
-	}
-	for (size_t i = 0; i < map_info.upper_tiles.size(); i++) {
-		map_info.upper_tiles[i] = i;
-	}
+	std::iota(map_info.lower_tiles.begin(), map_info.lower_tiles.end(), 0);
+	std::iota(map_info.upper_tiles.begin(), map_info.upper_tiles.end(), 0);
 
 	// Save allowed
 	const auto* current_info = &GetMapInfo();
@@ -227,6 +225,13 @@ void Game_Map::SetupFromSave(
 
 	map = std::move(map_in);
 	map_info = std::move(save_map);
+
+	if (!Player::IsRPG2k3E()) {
+		// RPG_RT bug: Substitutions are not loaded except in 2k3E
+		std::iota(map_info.lower_tiles.begin(), map_info.lower_tiles.end(), 0);
+		std::iota(map_info.upper_tiles.begin(), map_info.upper_tiles.end(), 0);
+	}
+
 	panorama = std::move(save_pan);
 
 	SetupCommon();
@@ -346,7 +351,6 @@ void Game_Map::SetupCommon() {
 	// Restart all common events after translation change
 	// Otherwise new strings are not applied
 	if (translation_changed) {
-		translation_changed = false;
 		InitCommonEvents();
 	}
 

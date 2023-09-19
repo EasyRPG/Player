@@ -509,7 +509,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Level");
 			} else {
 				addItem("Call ComEvent");
-				addItem("Call MapEvent", !is_battle);
+				addItem("Call MapEvent", Scene::Find(Scene::Map) != nullptr);
 				addItem("Call BtlEvent", is_battle);
 				addItem("Open Menu", !is_battle);
 			}
@@ -793,7 +793,7 @@ void Scene_Debug::DoCallCommonEvent() {
 }
 
 void Scene_Debug::DoCallMapEvent() {
-	if (Game_Battle::IsBattleRunning()) {
+	if (Scene::Find(Scene::Map) != nullptr) {
 		return;
 	}
 
@@ -810,9 +810,15 @@ void Scene_Debug::DoCallMapEvent() {
 		return;
 	}
 
-	Game_Map::GetInterpreter().Push(me, page, false);
-	Scene::PopUntil(Scene::Map);
-	Output::Debug("Debug Scene Forced execution of map event {} page {} on the map foreground interpreter.", me->GetId(), page->ID);
+	if (Game_Battle::IsBattleRunning()) {
+		Game_Battle::GetInterpreter().Push(me, page, false);
+		Scene::PopUntil(Scene::Battle);
+		Output::Debug("Debug Scene Forced execution of map event {} page {} on the battle foreground interpreter.", me->GetId(), page->ID);
+	} else {
+		Game_Map::GetInterpreter().Push(me, page, false);
+		Scene::PopUntil(Scene::Map);
+		Output::Debug("Debug Scene Forced execution of map event {} page {} on the map foreground interpreter.", me->GetId(), page->ID);
+	}
 }
 
 void Scene_Debug::DoCallBattleEvent() {

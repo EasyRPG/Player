@@ -25,14 +25,15 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 
 ### extended / recommended
 
-- FreeType2 for external font support (+ HarfBuzz for Unicode text shaping)
-- mpg123 for better MP3 audio support
-- WildMIDI for better MIDI audio support
-- Libvorbis / Tremor for Ogg Vorbis audio support
-- opusfile for Opus audio support
-- libsndfile for better WAVE audio support
-- libxmp for better tracker music support
-- SpeexDSP for proper audio resampling
+- FreeType2 for external font support (+ HarfBuzz for Unicode text shaping).
+- mpg123 for MP3 audio support.
+- WildMIDI for MIDI audio support using GUS patches.
+- FluidSynth for MIDI audio support using soundfonts.
+- Libvorbis / Tremor for Ogg Vorbis audio support.
+- opusfile for Opus audio support.
+- libsndfile for better WAVE audio support.
+- libxmp for tracker music support.
+- SpeexDSP or libsamplerate for proper audio resampling.
 
 SDL 1.2 is still supported, but deprecated.
 

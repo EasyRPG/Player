@@ -1862,10 +1862,6 @@ bool Game_Interpreter::CommandChangeEquipment(lcf::rpg::EventCommand const& com)
 				continue;
 			}
 
-			if (Main_Data::game_party->GetItemCount(item_id) == 0 && !actor->IsEquipped(item_id)) {
-				Main_Data::game_party->AddItem(item_id, 1);
-			}
-
 			if (actor->HasTwoWeapons() && slot == lcf::rpg::Item::Type_weapon && item_id != 0) {
 				lcf::rpg::Item* new_equipment = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 				lcf::rpg::Item* equipment1 = lcf::ReaderUtil::GetElement(lcf::Data::items, actor->GetWeaponId());
@@ -2613,9 +2609,13 @@ bool Game_Interpreter::CommandShakeScreen(lcf::rpg::EventCommand const& com) { /
 
 	switch (shake_cmd) {
 		case 0:
-			screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
-			if (wait) {
-				SetupWait(tenths);
+			if (tenths > 0) {
+				screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
+				if (wait) {
+					SetupWait(tenths);
+				}
+			} else {
+				screen->ShakeEnd();
 			}
 			break;
 		case 1:
@@ -2910,7 +2910,10 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			} else if (blend_mode == 3) {
 				params.blend_mode = (int)Bitmap::BlendMode::Overlay;
 			}
-			params.duration = ValueOrVariableBitfield(com.parameters[17], 2, params.duration);
+
+			if (param_size > 17) {
+				params.duration = ValueOrVariableBitfield(com.parameters[17], 2, params.duration);
+			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
 			params.origin = com.parameters[1] >> 8;
@@ -3088,7 +3091,7 @@ int Game_Interpreter::KeyInputState::CheckInput() const {
 		return 1001;
 	}
 
-	if (keys[Keys::eMouseScrollUp] && check(Input::SCROLL_DOWN)) {
+	if (keys[Keys::eMouseScrollUp] && check(Input::SCROLL_UP)) {
 		return 1004;
 	}
 
@@ -3306,7 +3309,9 @@ bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // 
 	Game_Map::Parallax::ChangeBG(params);
 
 	if (!params.name.empty()) {
-		_async_op = AsyncOp::MakeYield();
+		if (!AsyncHandler::RequestFile("Panorama", params.name)->IsReady()) {
+			_async_op = AsyncOp::MakeYield();
+		}
 	}
 
 	return true;

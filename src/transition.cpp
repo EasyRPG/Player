@@ -158,7 +158,7 @@ void Transition::SetAttributesTransitions() {
 	case TransitionZoomIn:
 	case TransitionZoomOut:
 		if (scene != nullptr && scene->type == Scene::Map) {
-			auto map = static_cast<Scene_Map*>(Scene::instance.get());
+			auto map = static_cast<Scene_Map*>(scene);
 
 			zoom_position[0] = std::max(0, std::min(Main_Data::game_player->GetScreenX() + map->spriteset->GetRenderOx(), (int)Player::screen_width));
 			zoom_position[1] = std::max(0, std::min(Main_Data::game_player->GetScreenY() - 8 + map->spriteset->GetRenderOy(), (int)Player::screen_height));
