@@ -192,11 +192,11 @@ jobs:
       - name: Setup Toolchain
         run: |
           aria2c -o tmp.tar.gz \
-            "https://ci.easyrpg.org/view/macOS/job/macos-toolchain/lastSuccessfulBuild/artifact/macos_toolchain.tar.gz"
+            "https://github.com/monokotech/EasyRPG-buildscripts/releases/download/20230920/macos_toolchain.tar.gz"
           mkdir -p toolchain && tar xf tmp.tar.gz -C toolchain
           # fix: Imported target ... includes non-existent path
           # grep: -I is to exclude binary files
-          oldpath="/Users/macos/jenkins/workspace/macos-toolchain/macos/x86_64"; \
+          oldpath="/Users/runner/work/EasyRPG-buildscripts/EasyRPG-buildscripts/macos/x86_64"; \
             grep toolchain -I -l -r -e "$oldpath" | \
             xargs -I{} sed -i '' "s|$oldpath|${{ github.workspace }}/toolchain/universal|g" "{}"
 
@@ -212,8 +212,7 @@ jobs:
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DPLAYER_BUILD_LIBS=on \
-          -DPLAYER_VERSION_APPEND="$VER" \
-          -DPLAYER_WITH_FLUIDSYNTH=off
+          -DPLAYER_VERSION_APPEND="$VER"
           cmake --build build
 
       - name: Create Archive
