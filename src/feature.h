@@ -51,11 +51,6 @@ namespace Feature {
 	 * @return true if fixed enemy facing direction is used
 	 */
 	bool HasFixedEnemyFacingDirection();
-
-	/**
-	 * @return true if horizontal ally/enemy selecting during battle is used
-	 */
-	bool HasHorizontalAllyEnemySelecting();
 }
 
 #endif

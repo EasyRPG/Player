@@ -56,6 +56,3 @@ bool Feature::HasFixedEnemyFacingDirection() {
 	return HasRpg2k3BattleSystem() && lcf::Data::battlecommands.easyrpg_fixed_enemy_facing_direction > 0;
 }
 
-bool Feature::HasHorizontalAllyEnemySelecting() {
-	return HasRpg2k3BattleSystem() && lcf::Data::battlecommands.easyrpg_horizontal_ally_enemy_selection;
-}

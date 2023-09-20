@@ -554,6 +554,8 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 		int transp = IsTransparent() ? 160 : 255;
 		target_window->SetBackOpacity(transp);
 	}
+
+	target_window->SetSingleColumnWrapping(true);
 }
 
 void Scene_Battle_Rpg2k3::RefreshTargetWindow() {

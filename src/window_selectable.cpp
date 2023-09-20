@@ -195,13 +195,13 @@ void Window_Selectable::Update() {
 			}
 		}
 		if (Input::IsRepeated(Input::RIGHT)) {
-			if (column_max >= 2 && index < item_max - 1) {
+			if (column_max >= wrap_limit && index < item_max - 1) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index += 1;
 			}
 		}
 		if (Input::IsRepeated(Input::LEFT)) {
-			if (column_max >= 2 && index > 0) {
+			if (column_max >= wrap_limit && index > 0) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index -= 1;
 			}
@@ -233,4 +233,8 @@ void Window_Selectable::SetEndlessScrolling(bool state) {
 // Set menu item height
 void Window_Selectable::SetMenuItemHeight(int height) {
 	menu_item_height = height;
+}
+
+void Window_Selectable::SetSingleColumnWrapping(bool wrap) {
+	wrap_limit = wrap ? 1 : 2;
 }
