@@ -75,6 +75,8 @@ void Scene_Import::Start() {
 	index = latest_slot;
 	top_index = std::max(0, index - 2);
 
+	Scene_File::Start();
+
 	Refresh();
 	Update();
 }
@@ -85,7 +87,7 @@ void Scene_Import::vUpdate() {
 		return;
 	}
 
-	Scene_File::Update();
+	Scene_File::vUpdate();
 }
 
 void Scene_Import::UpdateScanAndProgress() {
@@ -104,8 +106,8 @@ void Scene_Import::UpdateScanAndProgress() {
 
 	// Gather the list of children, if it does not exist.
 	if (children.empty()) {
-		/*FIXME if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
-			auto parentPath = FileFinder::MakePath(Main_Data::GetSavePath(), "..");
+		std::string parentPath = FileFinder::Save().MakePath("../");
+		if (FileFinder::Save().Exists("../")) {
 			parent_fs = FileFinder::Root().Create(parentPath);
 			if (parent_fs) {
 				children = Player::meta->GetImportChildPaths(parent_fs);
@@ -113,7 +115,7 @@ void Scene_Import::UpdateScanAndProgress() {
 		}
 		if (children.empty()) {
 			FinishScan();
-		}*/
+		}
 	} else if (curr_child_id < children.size()) {
 		auto candidates = Player::meta->SearchImportPaths(parent_fs, children[curr_child_id]);
 		files.insert(files.end(), candidates.begin(), candidates.end());
