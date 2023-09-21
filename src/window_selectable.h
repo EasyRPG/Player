@@ -92,6 +92,14 @@ public:
 	 */
 	void SetMenuItemHeight(int height);
 
+	/**
+	 * Allow left/right input to move cursor up/down when the selectable has only one column.
+	 * By default this behaviour is only enabled for two and more columns.
+	 *
+	 * @param wrap enable/disable single column wrap
+	 */
+	void SetSingleColumnWrapping(bool wrap);
+
 protected:
 	void UpdateArrows();
 
@@ -107,6 +115,8 @@ protected:
 
 	int scroll_dir = 0;
 	int scroll_progress = 0;
+
+	int wrap_limit = 2;
 };
 
 inline void Window_Selectable::SetItemMax(int value) {

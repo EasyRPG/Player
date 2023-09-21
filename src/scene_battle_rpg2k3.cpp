@@ -554,6 +554,8 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 		int transp = IsTransparent() ? 160 : 255;
 		target_window->SetBackOpacity(transp);
 	}
+
+	target_window->SetSingleColumnWrapping(true);
 }
 
 void Scene_Battle_Rpg2k3::RefreshTargetWindow() {
@@ -1744,6 +1746,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 			auto* sprite = actor->GetActorBattleSprite();
 			if (actor->Exists() && sprite) {
 				sprite->SetNormalAttacking(false);
+				sprite->ResetFixedFacingDirection();
 				auto* weapon = actor->GetWeaponSprite();
 				if (weapon) {
 					weapon->StopAttack();

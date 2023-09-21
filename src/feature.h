@@ -41,6 +41,16 @@ namespace Feature {
 	 * @return true if text placeholders are used
 	 */
 	bool HasPlaceholders();
+
+	/**
+	 * @return true if fixed actor facing direction is used
+	 */
+	bool HasFixedActorFacingDirection();
+
+	/**
+	 * @return true if fixed enemy facing direction is used
+	 */
+	bool HasFixedEnemyFacingDirection();
 }
 
 #endif

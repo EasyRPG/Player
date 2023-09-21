@@ -30,6 +30,11 @@ class Game_Battler;
  */
 class Sprite_Battler : public Sprite {
 public:
+	enum FixedFacing {
+		Disabled = 0,
+		AlwaysFlipped = 1,
+		NeverFlipped = 2,
+	};
 	/**
 	 * Constructor.
 	 *
@@ -44,6 +49,15 @@ public:
 
 	void SetBattler(Game_Battler* new_battler);
 
+	void ResetFixedFacingDirection();
+
+	FixedFacing GetFixedFacing() const;
+
+	/**
+	 * Sets the sprite flip when fixed facing direction is enabled. Otherwise does nothing..
+	 */
+	void SetFixedFlipX();
+
 	/**
 	 * Recompute the Z value for the sprite from it's Y coordinate.
 	 */
@@ -52,6 +66,7 @@ public:
 protected:
 	Game_Battler* battler = nullptr;
 	int battle_index = 0;
+	FixedFacing fixed_facing = Disabled;
 };
 
 inline Game_Battler* Sprite_Battler::GetBattler() const {
@@ -62,5 +77,25 @@ inline void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 	battler = new_battler;
 }
 
+inline void Sprite_Battler::ResetFixedFacingDirection() {
+	fixed_facing = Disabled;
+}
+
+inline void Sprite_Battler::SetFixedFlipX() {
+	switch (fixed_facing) {
+		case AlwaysFlipped:
+			SetFlipX(true);
+			break;
+		case NeverFlipped:
+			SetFlipX(false);
+			break;
+		default:
+			break;
+	}
+}
+
+inline Sprite_Battler::FixedFacing Sprite_Battler::GetFixedFacing() const {
+	return fixed_facing;
+}
 
 #endif
