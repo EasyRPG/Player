@@ -37,6 +37,7 @@ namespace Filesystem_Stream {
 		InputStream& operator=(InputStream&& is) noexcept;
 
 		StringView GetName() const;
+		std::streampos GetSize() const;
 		void Close();
 
 		template <typename T>
@@ -47,6 +48,8 @@ namespace Filesystem_Stream {
 		bool Read0(T& obj);
 
 		std::string name;
+		mutable bool size_cached = false;
+		mutable std::streampos size = 0;
 	};
 
 	class OutputStream final : public std::ostream {

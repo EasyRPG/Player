@@ -245,7 +245,6 @@ void Game_System::ResetSystemGraphic() {
 	ReloadSystemGraphic();
 }
 
-
 template <typename T>
 static const T& GetAudio(const T& save, const T& db) {
 	return save.name.empty() ? db : save;
@@ -509,6 +508,21 @@ void Game_System::SetTransition(int which, int transition) {
 	}
 }
 
+std::string Game_System::InelukiReadLink(Filesystem_Stream::InputStream& stream) {
+	// The first line contains the path to the actual audio file to play
+	std::string line;
+	if (!Utils::ReadLine(stream, line)) {
+		Output::Warning("Ineluki MP3: Link file is empty: {}", stream.GetName());
+		return {};
+	}
+	line = lcf::ReaderUtil::Recode(line, Player::encoding);
+
+	Output::Debug("Ineluki MP3: Link file: {} -> {}", stream.GetName(), line);
+	std::string line_canonical = FileFinder::MakeCanonical(line, 1);
+
+	return line_canonical;
+}
+
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
 	bgm_pending = false;
@@ -522,27 +536,13 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (StringView(result->file).ends_with(".link")) {
+	if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".link") && stream.GetSize() < 500) {
 		// Handle Ineluki's MP3 patch
-		if (!stream) {
-			Output::Warning("Ineluki MP3: Link read error: {}", stream.GetName());
-			return;
-		}
-
-		// The first line contains the path to the actual audio file to play
-		std::string line;
-		if (!Utils::ReadLine(stream, line)) {
-			Output::Warning("Ineluki MP3: Link file is empty: {}", stream.GetName());
-			return;
-		}
-		line = lcf::ReaderUtil::Recode(line, Player::encoding);
-
-		Output::Debug("Ineluki MP3: Link file: {} -> {}", stream.GetName(), line);
-		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
+		std::string line = InelukiReadLink(stream);
 
 		// Needs another Async roundtrip
 		bgm_pending = true;
-		FileRequestAsync *request = AsyncHandler::RequestFile(line_canonical);
+		FileRequestAsync *request = AsyncHandler::RequestFile(line);
 		music_request_id = request->Bind(&Game_System::OnBgmInelukiReady, this);
 		request->Start();
 		return;
@@ -580,6 +580,38 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 			Output::Debug("Sound not found: {}", result->file);
 			return;
 		}
+
+		if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".link") && stream.GetSize() < 500) {
+			// Handle Ineluki's MP3 patch
+			std::string line = InelukiReadLink(stream);
+
+			// Needs another Async roundtrip
+			FileRequestAsync* request = AsyncHandler::RequestFile(line);
+			se_request_ids[line] = request->Bind(&Game_System::OnSeInelukiReady, this, se);
+			request->Start();
+			return;
+		}
+
+		se_cache = AudioSeCache::Create(std::move(stream), result->file);
+	}
+
+	if (!se_cache) {
+		Output::Warning("Sound {}: Format not supported", result->file);
+		return;
+	}
+
+	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo);
+}
+
+void Game_System::OnSeInelukiReady(FileRequestResult* result, lcf::rpg::Sound se) {
+	auto item = se_request_ids.find(result->file);
+	if (item != se_request_ids.end()) {
+		se_request_ids.erase(item);
+	}
+
+	auto se_cache = AudioSeCache::GetCachedSe(result->file);
+	if (!se_cache) {
+		auto stream = FileFinder::Game().OpenFile(result->file);
 		se_cache = AudioSeCache::Create(std::move(stream), result->file);
 	}
 
