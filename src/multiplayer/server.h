@@ -23,8 +23,8 @@ class ServerMain {
 	TCPSocketListener tcp_socket_listener_v6;
 	std::string addr_host;
 	std::string addr_host_v6;
-	uint16_t addr_port;
-	uint16_t addr_port_v6;
+	uint16_t addr_port{ 6500 };
+	uint16_t addr_port_v6{ 6500 };
 
 	std::queue<std::unique_ptr<MessageDataEntry>> m_message_data_queue;
 	std::condition_variable m_message_data_queue_cv;
