@@ -20,8 +20,8 @@
 
 #include <memory>
 #include "system.h"
+#include "audio_decoder_midi.h"
 
-class AudioDecoderMidi;
 namespace Filesystem_Stream {
 	class InputStream;
 }

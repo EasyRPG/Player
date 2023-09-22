@@ -95,6 +95,9 @@ static fluid_fileapi_t fluidlite_vio = {
 
 namespace {
 	std::string preferred_soundfont;
+
+	bool once = false;
+	bool init = false;
 }
 
 struct FluidSynthDeleter {
@@ -208,10 +211,7 @@ FluidSynthDecoder::~FluidSynthDecoder() {
 }
 
 bool FluidSynthDecoder::Initialize(std::string& error_message) {
-	static bool init = false;
-	static bool once = false;
-
-	// only initialize once
+	// only initialize once until a new game starts
 	if (once)
 		return init;
 	once = true;
@@ -220,45 +220,49 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 	fluid_set_default_fileapi(&fluidlite_vio);
 #endif
 
+	global_settings.reset(new_fluid_settings());
 	if (!global_settings) {
-		global_settings.reset(new_fluid_settings());
-		if (!global_settings) {
-			return false;
-		}
-		fluid_settings_setstr(global_settings.get(), "player.timing-source", "sample");
-		fluid_settings_setint(global_settings.get(), "synth.lock-memory", 0);
-
-		fluid_settings_setnum(global_settings.get(), "synth.gain", 0.6);
-		fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
-		fluid_settings_setint(global_settings.get(), "synth.polyphony", 256);
-
-#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
-		fluid_settings_setint(global_settings.get(), "synth.reverb.active", 0);
-		fluid_settings_setint(global_settings.get(), "synth.chorus.active", 0);
-#else
-		fluid_settings_setstr(global_settings.get(), "synth.reverb.active", "no");
-		fluid_settings_setstr(global_settings.get(), "synth.chorus.active", "no");
-#endif
-
-		// Fluidsynth 1.x does not support VIO API for soundfonts
-#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
-		// owned by fluid_settings
-		global_loader = new_fluid_defsfloader(global_settings.get());
-		fluid_sfloader_set_callbacks(global_loader,
-				vio_open, vio_read, vio_seek, vio_tell, vio_close);
-#endif
+		return false;
 	}
+	fluid_settings_setstr(global_settings.get(), "player.timing-source", "sample");
+	fluid_settings_setint(global_settings.get(), "synth.lock-memory", 0);
 
+	fluid_settings_setnum(global_settings.get(), "synth.gain", 0.6);
+	fluid_settings_setnum(global_settings.get(), "synth.sample-rate", EP_MIDI_FREQ);
+	fluid_settings_setint(global_settings.get(), "synth.polyphony", 256);
+
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
+	fluid_settings_setint(global_settings.get(), "synth.reverb.active", 0);
+	fluid_settings_setint(global_settings.get(), "synth.chorus.active", 0);
+#else
+	fluid_settings_setstr(global_settings.get(), "synth.reverb.active", "no");
+	fluid_settings_setstr(global_settings.get(), "synth.chorus.active", "no");
+#endif
+
+	// Fluidsynth 1.x does not support VIO API for soundfonts
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
+	// owned by fluid_settings
+	global_loader = new_fluid_defsfloader(global_settings.get());
+	fluid_sfloader_set_callbacks(global_loader,
+			vio_open, vio_read, vio_seek, vio_tell, vio_close);
+#endif
+
+	global_synth.reset(create_synth(error_message));
 	if (!global_synth) {
-		global_synth.reset(create_synth(error_message));
-		if (!global_synth) {
-			return false;
-		}
+		return false;
 	}
 
 	init = true;
 
 	return init;
+}
+
+void FluidSynthDecoder::ResetState() {
+	once = false;
+	init = false;
+
+	global_synth.reset();
+	global_settings.reset();
 }
 
 void FluidSynthDecoder::SetSoundfont(StringView sf) {

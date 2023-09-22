@@ -125,3 +125,16 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 
 	return mididec;
 }
+
+void MidiDecoder::Reset() {
+	works.fluidsynth = true;
+	works.wildmidi = true;
+
+#ifdef HAVE_LIBWILDMIDI
+	WildMidiDecoder::ResetState();
+#endif
+
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	FluidSynthDecoder::ResetState();
+#endif
+}

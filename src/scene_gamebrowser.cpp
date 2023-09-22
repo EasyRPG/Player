@@ -21,6 +21,7 @@
 #include <memory>
 #include "options.h"
 #include "scene_settings.h"
+#include "audio_midi.h"
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_system.h"
@@ -49,6 +50,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 
 	Cache::ClearAll();
 	AudioSeCache::Clear();
+	MidiDecoder::Reset();
 	lcf::Data::Clear();
 	Main_Data::Cleanup();
 

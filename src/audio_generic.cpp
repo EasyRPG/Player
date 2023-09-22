@@ -20,7 +20,6 @@
 #include <cstring>
 #include <cassert>
 #include <memory>
-#include "audio_decoder_midi.h"
 #include "audio_generic.h"
 #include "output.h"
 
