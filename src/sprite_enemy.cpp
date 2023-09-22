@@ -75,8 +75,6 @@ void Sprite_Enemy::OnMonsterSpriteReady(FileRequestResult* result) {
 	SetOx(graphic->GetWidth() / 2);
 	SetOy(graphic->GetHeight() / 2);
 
-	ResetZ();
-
 	bool hue_change = hue != 0;
 	if (hue_change) {
 		BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
@@ -85,6 +83,8 @@ void Sprite_Enemy::OnMonsterSpriteReady(FileRequestResult* result) {
 	}
 
 	SetBitmap(graphic);
+
+	ResetZ();
 }
 
 void Sprite_Enemy::Draw(Bitmap& dst) {
