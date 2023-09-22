@@ -117,6 +117,7 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 		return false;
 	}
 	seq->rewind();
+	tempo.clear();
 	tempo.emplace_back(this, midi_default_tempo);
 	mtime = seq->get_start_skipping_silence();
 	seq->play(mtime, this);
