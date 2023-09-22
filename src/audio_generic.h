@@ -21,9 +21,8 @@
 #include "audio.h"
 #include "audio_secache.h"
 #include "audio_decoder_base.h"
+#include "audio_generic_midiout.h"
 #include <memory>
-
-class GenericAudioMidiOut;
 
 /**
  * A software implementation for handling EasyRPG Audio utilizing the
@@ -73,6 +72,7 @@ private:
 	struct BgmChannel {
 		int id;
 		std::unique_ptr<AudioDecoderBase> decoder;
+		GenericAudio* instance = nullptr;
 		bool paused;
 		bool stopped;
 		bool midi_out_used = false;
@@ -87,6 +87,7 @@ private:
 	struct SeChannel {
 		int id;
 		std::unique_ptr<AudioDecoderBase> decoder;
+		GenericAudio* instance = nullptr;
 		bool paused;
 		bool stopped;
 	};
@@ -103,17 +104,17 @@ private:
 	static constexpr unsigned nr_of_se_channels = 31;
 	static constexpr unsigned nr_of_bgm_channels = 2;
 
-	static BgmChannel BGM_Channels[nr_of_bgm_channels];
-	static SeChannel SE_Channels[nr_of_se_channels];
-	static bool BGM_PlayedOnceIndicator;
-	static bool Muted;
+	BgmChannel BGM_Channels[nr_of_bgm_channels];
+	SeChannel SE_Channels[nr_of_se_channels];
+	mutable bool BGM_PlayedOnceIndicator;
+	bool Muted;
 
-	static std::vector<int16_t> sample_buffer;
-	static std::vector<uint8_t> scrap_buffer;
-	static unsigned scrap_buffer_size;
-	static std::vector<float> mixer_buffer;
+	std::vector<int16_t> sample_buffer = {};
+	std::vector<uint8_t> scrap_buffer = {};
+	unsigned scrap_buffer_size = 0;
+	std::vector<float> mixer_buffer = {};
 
-	static std::unique_ptr<GenericAudioMidiOut> midi_thread;
+	std::unique_ptr<GenericAudioMidiOut> midi_thread;
 };
 
 #endif
