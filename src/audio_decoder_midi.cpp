@@ -224,7 +224,7 @@ void AudioDecoderMidi::Update(std::chrono::microseconds delta) {
 	if (paused) {
 		return;
 	}
-	if (fade_steps >= 0 && mtime - last_fade_mtime > 0.1s) {
+	if (fade_steps > 0 && mtime - last_fade_mtime > 0.1s) {
 		volume = Utils::Clamp<float>(volume + delta_volume_step, 0.0f, 1.0f);
 		if (!mididec->SupportsMidiMessages()) {
 			log_volume = AdjustVolume(volume * 100.0f);
