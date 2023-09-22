@@ -37,11 +37,15 @@ constexpr int sample_divider = 1;
 #endif
 constexpr int samples_per_play = 64 / sample_divider;
 
-static const uint8_t midi_event_control_change = 0b1011;
-static const uint8_t midi_control_volume = 7;
-static const uint8_t midi_control_all_sound_off = 120;
-//static const uint8_t midi_control_all_note_off = 123;
-static const uint8_t midi_control_reset_all_controller = 121;
+static const uint8_t midi_set_reg_param_upper = 0x6;
+static const uint8_t midi_control_volume = 0x7;
+static const uint8_t midi_event_control_change = 0xB;
+static const uint8_t midi_set_reg_param_lower = 0x26;
+//static const uint8_t midi_control_all_sound_off = 0x78;
+static const uint8_t midi_control_reset_all_controller = 0x79;
+//static const uint8_t midi_control_all_note_off = 0x7B;
+static const uint8_t midi_set_reg_param_number_lower = 0x64;
+static const uint8_t midi_set_reg_param_number_upper = 0x65;
 
 static uint32_t midimsg_make(uint8_t event_type, uint8_t channel, uint8_t value1, uint8_t value2) {
 	uint32_t msg = 0;
@@ -53,11 +57,11 @@ static uint32_t midimsg_make(uint8_t event_type, uint8_t channel, uint8_t value1
 
 /*static uint32_t midimsg_all_note_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_note_off, 0);
-}*/
+}
 
 static uint32_t midimsg_all_sound_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_sound_off, 0);
-}
+}*/
 
 static uint32_t midimsg_volume(uint8_t channel, uint8_t volume) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_volume, volume);
@@ -374,12 +378,26 @@ void AudioDecoderMidi::meta_event(int event, const void* data, std::size_t size)
 
 void AudioDecoderMidi::reset() {
 	// MIDI reset event
-	SendMessageToAllChannels(midimsg_all_sound_off(0));
 	SendMessageToAllChannels(midimsg_reset_all_controller(0));
 
 	// GM system on (resets most parameters)
-	const unsigned char gm_reset[] = {0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7};
+	const unsigned char gm_reset[] = { 0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7 };
 	mididec->SendSysExMessage(gm_reset, sizeof(gm_reset));
+
+	// Set the Pitch bend range to 256
+	for (int channel = 0; channel < 16; channel++) {
+		auto midi_msg = midimsg_make(midi_event_control_change, channel, midi_set_reg_param_number_upper, 0);
+		mididec->SendMidiMessage(midi_msg);
+
+		midi_msg = midimsg_make(midi_event_control_change, channel, midi_set_reg_param_number_lower, 0);
+		mididec->SendMidiMessage(midi_msg);
+
+		midi_msg = midimsg_make(midi_event_control_change, channel, midi_set_reg_param_upper, 2);
+		mididec->SendMidiMessage(midi_msg);
+
+		midi_msg = midimsg_make(midi_event_control_change, channel, midi_set_reg_param_lower, 0);
+		mididec->SendMidiMessage(midi_msg);
+	}
 }
 
 void AudioDecoderMidi::reset_tempos_after_loop() {
