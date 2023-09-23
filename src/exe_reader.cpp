@@ -327,7 +327,14 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 			// VALUE! or Rpg2k3 < 1.0.2.1
 			// Check CODE segment size to be sure
 			if (code_size > 0xB0000) {
-				return Player::EngineRpg2k3;
+				if (code_size >= 0xC7400) {
+					// Code segment size for >= 1.0.5.0
+					// In theory this check is unnecessary because this version has a VERSIONINFO.
+					// However the modified exe shipped with Ahriman's Prophecy is a 1.0.8.0 without a VERSIONINFO.
+					return Player::EngineRpg2k3 | Player::EngineMajorUpdated;
+				} else {
+					return Player::EngineRpg2k3;
+				}
 			}
 
 			return Player::EngineRpg2k | Player::EngineMajorUpdated;
