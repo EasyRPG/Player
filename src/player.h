@@ -307,6 +307,9 @@ namespace Player {
 	/** Set the desired rendering frames per second */
 	void SetTargetFps(int fps);
 
+	/** Current Logo - for startup */
+	extern int current_logo;
+
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
 

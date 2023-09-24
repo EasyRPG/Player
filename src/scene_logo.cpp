@@ -40,16 +40,39 @@ Scene_Logo::Scene_Logo() :
 	type = Scene::Logo;
 }
 
+Filesystem_Stream::InputStream logo_stream;
+Filesystem_Stream::InputStream next_logo;
+
 void Scene_Logo::Start() {
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
 		std::time_t t = std::time(nullptr);
 		std::tm* tm = std::localtime(&t);
 
-		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
-			logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
-		} else {
-			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+		if (FileFinder::Game()) logo_stream = FileFinder::OpenImage("Font", "LOGO" + std::to_string(Player::current_logo));
+		//TODO: Maybe get LOGO1,LOGO2,LOGO3 from rpg_rt too?
+
+		if (!logo_stream && Player::current_logo == 0) {
+
+			if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
+				logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
+			}
+			else {
+				logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+			}
+
 		}
+		else {
+			// Read the data from logo_stream and store it in a variable
+			std::vector<uint8_t> logoData = Utils::ReadStream(logo_stream);
+
+			// Access the data as needed
+			const uint8_t* cached_logo = logoData.data();
+			size_t logoSize = logoData.size();
+
+			// Create a bitmap using the logo data
+			logo_img = Bitmap::Create(cached_logo, logoSize, false);
+		}
+
 
 		DrawText(false);
 
@@ -91,7 +114,7 @@ void Scene_Logo::vUpdate() {
 #endif
 
 		if (FileFinder::IsValidProject(fs)) {
-			Player::CreateGameObjects();
+			if (Player::current_logo == 0) Player::CreateGameObjects(); // changed to stop loading the same assets multiple times.
 			is_valid = true;
 		}
 	}
@@ -105,9 +128,20 @@ void Scene_Logo::vUpdate() {
 
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
-		frame_counter == 60 ||
+		frame_counter == 90 || //had to be longer to cover when Player::CreateGameObjects() doesn't happen
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
+
+		Player::current_logo++;
+		next_logo = FileFinder::OpenImage("Font", "LOGO" + std::to_string(Player::current_logo));
+
+		if (next_logo) {
+			Scene::Pop();
+			Scene::Push(std::make_shared<Scene_Logo>());
+			return;
+		}
+
+		Player::current_logo = 0;
 
 		if (is_valid) {
 			if (!Player::startup_language.empty()) {
@@ -137,7 +171,9 @@ void Scene_Logo::DrawBackground(Bitmap& dst) {
 }
 
 void Scene_Logo::DrawText(bool verbose) {
-	Rect text_rect = {17, 215, 320 - 32, 16};
+	if (Player::current_logo != 0) return;
+
+	Rect text_rect = {17, 215, 320 - 32, 0}; //last argument (rect height) is now 0 to remove a black rectangle that appears as text background color.
 	Color text_color = {185, 199, 173, 255};
 	Color shadow_color = {69, 69, 69, 255};
 	logo_img->ClearRect(text_rect);
