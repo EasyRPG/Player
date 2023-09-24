@@ -668,7 +668,7 @@ class DrawableChatUi : public Drawable {
 	// design parameters
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
-	const unsigned int minimized_log_height = Player::screen_height*0.4;
+	const unsigned int minimized_log_height = Player::screen_height*0.275;
 	const unsigned int panel_frame_left_top = 4; // width of panel's visual frame (border width is missing)
 	const unsigned int panel_frame_right_bottom = 6; // on right and bottom side (including border width)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
@@ -828,7 +828,7 @@ public:
 
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
 const unsigned int MAXMESSAGES = 500;
-const unsigned int MAXUNREAD = 6;
+const unsigned int MAXUNREAD = 3;
 
 std::u32string type_text;
 unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
