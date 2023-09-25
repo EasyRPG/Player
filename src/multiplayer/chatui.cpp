@@ -132,7 +132,7 @@ class DrawableChatLog : public Drawable {
 	const unsigned int scroll_frame = 8; // width of scroll bar's visual frame (on right side)
 	const unsigned int scroll_bleed = 2; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
 
-	bool minimized_log_flag = false;
+	bool overlay_flag = false;
 	float counter = 0;
 	std::vector<DrawableChatEntry> messages;
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
@@ -266,7 +266,7 @@ class DrawableChatLog : public Drawable {
 			glyphs_next.clear();
 			width_current = width_next;
 			width_next = 0;
-			if (minimized_log_flag && glyphs_current.size() > 0) {
+			if (overlay_flag && glyphs_current.size() > 0) {
 				// use the '>' as the truncated signs
 				auto& last_glyph = lines.front().first.back();
 				last_glyph.data.ch = '>';
@@ -276,14 +276,14 @@ class DrawableChatLog : public Drawable {
 		} while(glyphs_current.size() > 0);
 
 		unsigned int message_padding = 1;
-		if (minimized_log_flag)
+		if (overlay_flag)
 			message_padding = 2;
 
 		// once all lines have been saved
 		// render them into a bitmap
 		BitmapRef text_img = Bitmap::Create(total_width+message_padding*2, total_height+message_padding*2, true);
 		// add background
-		if (minimized_log_flag)
+		if (overlay_flag)
 			text_img->Fill(Color(0, 0, 0, 102));
 		int n_lines = lines.size();
 		for(int i = 0; i < n_lines; i++) {
@@ -359,8 +359,8 @@ public:
 		default_theme = current_theme;
 	}
 
-	void SetMinimized(bool minimized) {
-		minimized_log_flag = minimized;
+	void SetOverlayMode(bool enabled) {
+		overlay_flag = enabled;
 	}
 
 	void SetHeight(unsigned int h) {
@@ -392,7 +392,7 @@ public:
 				BuildMessageGraphic(dmsg);
 			// draw
 			unsigned int margin = message_margin;
-			if (minimized_log_flag)
+			if (overlay_flag)
 				margin = 0;
 			dst.Blit(bounds.x+margin, bounds.y+bounds.height-next_height+top_offscreen,
 				*(dmsg.render_graphic), cutoff_rect, Opacity::Opaque());
@@ -401,8 +401,8 @@ public:
 				break;
 		}
 
-		// automatically remove messages in the notification
-		if (minimized_log_flag && messages.size() > 0) {
+		// automatically remove messages
+		if (overlay_flag && messages.size() > 0) {
 			++counter;
 			// the delay is 10 seconds
 			if (Game_Clock::GetFPS() > 0.0f && counter > Game_Clock::GetFPS()*10.0f) {
@@ -668,7 +668,7 @@ class DrawableChatUi : public Drawable {
 	// design parameters
 	const unsigned int chat_width = Player::screen_width*0.725;
 	const unsigned int chat_left = Player::screen_width-chat_width;
-	const unsigned int minimized_log_height = Player::screen_height*0.275;
+	const unsigned int notification_log_height = Player::screen_height*0.275;
 	const unsigned int panel_frame_left_top = 4; // width of panel's visual frame (border width is missing)
 	const unsigned int panel_frame_right_bottom = 6; // on right and bottom side (including border width)
 	const unsigned int status_height = 19; // height of status region on top of chatlog
@@ -676,8 +676,8 @@ class DrawableChatUi : public Drawable {
 	const unsigned int type_height = 19; // height of type box
 	const unsigned int type_border_offset = 8; // width of type border offset
 
-	DrawableChatLog d_minimized_log; // notifications
-	bool minimized_log_shown = true;
+	DrawableChatLog d_notification_log;
+	bool notification_log_shown = true;
 
 	Window_Base back_panel; // background pane
 	DrawableOnlineStatus d_status;
@@ -699,8 +699,8 @@ class DrawableChatUi : public Drawable {
 public:
 	DrawableChatUi()
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
-		d_minimized_log(0, Player::screen_height-minimized_log_height,
-			Player::screen_width, minimized_log_height),
+		d_notification_log(0, Player::screen_height-notification_log_height,
+			Player::screen_width, notification_log_height),
 		back_panel(chat_left, 0, chat_width, Player::screen_height, Drawable::Flags::Global),
 		d_status(chat_left+panel_frame_left_top, 0, chat_width-panel_frame_right_bottom, status_height),
 		d_log(chat_left+panel_frame_left_top, status_height,
@@ -713,7 +713,7 @@ public:
 		back_panel.SetZ(Priority::Priority_Maximum-1);
 		back_panel.SetOpacity(240);
 
-		d_minimized_log.SetMinimized(true);
+		d_notification_log.SetOverlayMode(true);
 
 		SetFocus(false);
 	}
@@ -724,10 +724,10 @@ public:
 		d_log.AddChatEntry(msg);
 	}
 
-	void AddLogEntryUnread(ChatEntry* msg, unsigned int limit) {
-		if (d_minimized_log.GetSize() > limit-1)
-			d_minimized_log.RemoveFirstChatEntry();
-		d_minimized_log.AddChatEntry(msg);
+	void AddNotificationLogEntry(ChatEntry* msg, unsigned int limit) {
+		if (d_notification_log.GetSize() > limit-1)
+			d_notification_log.RemoveFirstChatEntry();
+		d_notification_log.AddChatEntry(msg);
 	}
 
 	void RemoveLogEntry(ChatEntry* msg) {
@@ -743,7 +743,7 @@ public:
 	}
 
 	void RefreshTheme() {
-		d_minimized_log.RefreshTheme();
+		d_notification_log.RefreshTheme();
 		back_panel.SetWindowskin(Cache::SystemOrBlack());
 		d_status.RefreshTheme();
 		d_log.RefreshTheme();
@@ -788,8 +788,8 @@ public:
 	}
 
 	void SetFocus(bool focused) {
-		if (minimized_log_shown)
-			d_minimized_log.SetVisible(!focused);
+		if (notification_log_shown)
+			d_notification_log.SetVisible(!focused);
 		this->SetVisible(focused);
 		back_panel.SetVisible(focused);
 		d_status.SetVisible(focused);
@@ -813,22 +813,22 @@ public:
 	}
 
 	void ToggleVisibilityFlag(VisibilityType v) {
-		d_minimized_log.ToggleVisibilityFlag(v);
+		d_notification_log.ToggleVisibilityFlag(v);
 		d_log.ToggleVisibilityFlag(v);
 	}
 
-	void ToggleMinimizedLog() {
-		minimized_log_shown = !minimized_log_shown;
-		d_minimized_log.SetVisible(minimized_log_shown);
+	void ToggleNotificationLog() {
+		notification_log_shown = !notification_log_shown;
+		d_notification_log.SetVisible(notification_log_shown);
 		Graphics::GetStatusTextOverlay().ShowText(
-			minimized_log_shown ? "Notifications shown" : "Notifications hidden"
+			notification_log_shown ? "Notifications shown" : "Notifications hidden"
 		);
 	}
 };
 
 const unsigned int MAXCHARSINPUT_MESSAGE = 200;
 const unsigned int MAXMESSAGES = 500;
-const unsigned int MAXUNREAD = 3;
+const unsigned int MAXNOTIFICATIONS = 3;
 
 std::u32string type_text;
 unsigned int type_caret_index_tail = 0; // anchored when SHIFT-selecting text
@@ -836,7 +836,7 @@ unsigned int type_caret_index_head = 0; // moves when SHIFT-selecting text
 std::mutex chat_mutex;
 std::unique_ptr<DrawableChatUi> chat_box; // chat renderer
 std::vector<std::unique_ptr<ChatEntry>> chat_log;
-std::vector<std::unique_ptr<ChatEntry>> chat_minimized_log;
+std::vector<std::unique_ptr<ChatEntry>> chat_notification_log;
 VisibilityType chat_visibility = Messages::CV_LOCAL;
 
 void AddLogEntry(
@@ -857,20 +857,20 @@ void AddLogEntry(std::string a, std::string b, std::string c, VisibilityType v) 
 	AddLogEntry(a, b, c, "", "", 1, 2, 0, 0, 0, v, "");
 }
 
-void AddLogEntryUnread(
+void AddNotificationLogEntry(
 		std::string a, std::string b, std::string c, std::string d, std::string e,
 		int8_t _a, int8_t _b, int8_t _c, int8_t _d, int8_t _e,
 		VisibilityType v, std::string sys_name) {
 	const std::lock_guard<std::mutex> lock(chat_mutex);
-	chat_minimized_log.push_back(std::make_unique<ChatEntry>(
+	chat_notification_log.push_back(std::make_unique<ChatEntry>(
 			a, b, c, d, e, _a, _b, _c, _d, _e, v, sys_name, false));
-	chat_box->AddLogEntryUnread(chat_minimized_log.back().get(), MAXUNREAD);
-	if(chat_minimized_log.size() > MAXUNREAD)
-		chat_minimized_log.erase(chat_minimized_log.begin());
+	chat_box->AddNotificationLogEntry(chat_notification_log.back().get(), MAXNOTIFICATIONS);
+	if(chat_notification_log.size() > MAXNOTIFICATIONS)
+		chat_notification_log.erase(chat_notification_log.begin());
 }
 
-void AddLogEntryUnread(std::string a, std::string b, std::string c, VisibilityType v) {
-	AddLogEntryUnread(a, b, c, "", "", 1, 2, 0, 0, 0, v, "");
+void AddNotificationLogEntry(std::string a, std::string b, std::string c, VisibilityType v) {
+	AddNotificationLogEntry(a, b, c, "", "", 1, 2, 0, 0, 0, v, "");
 }
 
 void AddClientInfo(std::string message) {
@@ -1056,7 +1056,7 @@ void InputsLog() {
 		chat_box->ScrollDown();
 	}
 	if(Input::IsTriggered(Input::InputButton::KEY_F9)) {
-		chat_box->ToggleMinimizedLog();
+		chat_box->ToggleNotificationLog();
 	}
 }
 
@@ -1269,7 +1269,7 @@ void ChatUi::GotMessage(int visibility, int room_id,
 			1, 0, 1, 2, 1, v, sys_name);
 	AddLogEntry("\u00A0", message, "", "", "",
 			0, -1, 0, 0, 0, v, "");
-	AddLogEntryUnread("<", name, "> ", message, "",
+	AddNotificationLogEntry("<", name, "> ", message, "",
 			1, 0, 1, -1, 0, v, sys_name);
 	Output::Info("Chat: {} [{}, {}]: {}", name, vtext, room_id, message);
 }
@@ -1278,7 +1278,7 @@ void ChatUi::GotInfo(std::string message) {
 	if(chat_box == nullptr)
 		return;
 	AddLogEntry("", message, "", Messages::CV_LOCAL);
-	AddLogEntryUnread("", message, "", Messages::CV_LOCAL);
+	AddNotificationLogEntry("", message, "", Messages::CV_LOCAL);
 }
 
 void ChatUi::SetStatusConnection(bool connected, bool connecting) {
