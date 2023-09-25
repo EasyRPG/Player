@@ -512,7 +512,6 @@ void Game_Multiplayer::Disconnect() {
 
 void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
 	SetNametagMode(cfg.client_name_tag_mode.Get());
-	CUI().Refresh();
 	CUI().SetStatusRoom(map_id);
 	Output::Debug("MP: room_id=map_id={}", map_id);
 	room_id = map_id;
@@ -550,7 +549,6 @@ void Game_Multiplayer::Reset() {
 
 void Game_Multiplayer::MapQuit() {
 	SetNametagMode(cfg.client_name_tag_mode.Get());
-	CUI().Refresh();
 	Reset();
 }
 
