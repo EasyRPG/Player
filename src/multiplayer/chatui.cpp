@@ -131,8 +131,11 @@ class DrawableChatLog : public Drawable {
 	const unsigned int message_margin = 2; // horizontal margin between panel edges and content
 	const unsigned int scroll_frame = 8; // width of scroll bar's visual frame (on right side)
 	const unsigned int scroll_bleed = 2; // how much to stretch right edge of scroll box offscreen (so only left frame shows)
+	const unsigned int overlay_padding = 2;
 
 	bool overlay_flag = false;
+	bool overlay_oneline_flag = false;
+	bool overlay_auto_remove_flag = false;
 	float counter = 0;
 	std::vector<DrawableChatEntry> messages;
 	Window_Base scroll_box; // box used as rendered design for a scrollbar
@@ -266,7 +269,7 @@ class DrawableChatLog : public Drawable {
 			glyphs_next.clear();
 			width_current = width_next;
 			width_next = 0;
-			if (overlay_flag && glyphs_current.size() > 0) {
+			if (overlay_flag && overlay_oneline_flag && glyphs_current.size() > 0) {
 				// use the '>' as the truncated signs
 				auto& last_glyph = lines.front().first.back();
 				last_glyph.data.ch = '>';
@@ -277,7 +280,7 @@ class DrawableChatLog : public Drawable {
 
 		unsigned int message_padding = 1;
 		if (overlay_flag)
-			message_padding = 2;
+			message_padding = overlay_padding;
 
 		// once all lines have been saved
 		// render them into a bitmap
@@ -344,6 +347,11 @@ class DrawableChatLog : public Drawable {
 	bool MessageVisible(DrawableChatEntry& msg, unsigned short v) {
 		return (msg.message_data->visibility & v) > 0;
 	}
+
+	void RefreshMessages() {
+		for(int i = 0; i < messages.size(); i++)
+			messages[i].dirty = true;
+	}
 public:
 	DrawableChatLog(int x, int y, int w, int h)
 		: Drawable(Priority::Priority_Maximum, Drawable::Flags::Global),
@@ -359,8 +367,17 @@ public:
 		default_theme = current_theme;
 	}
 
-	void SetOverlayMode(bool enabled) {
+	void SetOverlayMode(bool enabled, bool oneline, bool auto_remove) {
 		overlay_flag = enabled;
+		overlay_oneline_flag = oneline;
+		overlay_auto_remove_flag = auto_remove;
+
+		unsigned int n_messages = messages.size();
+		unsigned int padding = n_messages * overlay_padding;
+		scroll_content_height += enabled ? padding : -padding;
+		RefreshScroll();
+
+		RefreshMessages();
 	}
 
 	void SetHeight(unsigned int h) {
@@ -402,7 +419,7 @@ public:
 		}
 
 		// automatically remove messages
-		if (overlay_flag && messages.size() > 0) {
+		if (overlay_flag && overlay_auto_remove_flag && messages.size() > 0) {
 			++counter;
 			// the delay is 10 seconds
 			if (Game_Clock::GetFPS() > 0.0f && counter > Game_Clock::GetFPS()*10.0f) {
@@ -421,10 +438,9 @@ public:
 
 		current_theme = new_theme;
 		scroll_box.SetWindowskin(current_theme);
-		for(int i = 0; i < messages.size(); i++) {
-			// all messages now need to be redrawn with different UI skin
-			messages[i].dirty = true;
-		}
+
+		// all messages now need to be redrawn with different UI skin
+		RefreshMessages();
 	}
 
 	void AddChatEntry(ChatEntry* message_data) {
@@ -683,6 +699,7 @@ class DrawableChatUi : public Drawable {
 	DrawableOnlineStatus d_status;
 	DrawableChatLog d_log;
 	DrawableTypeBox d_type;
+	bool immersive_mode_flag = false;
 
 	void UpdateTypePanel() {
 		if(d_type.IsVisible()) {
@@ -713,8 +730,9 @@ public:
 		back_panel.SetZ(Priority::Priority_Maximum-1);
 		back_panel.SetOpacity(240);
 
-		d_notification_log.SetOverlayMode(true);
+		d_notification_log.SetOverlayMode(true, true, true);
 
+		SetImmersiveMode(GMI().GetConfig().client_chat_immersive_mode.Get());
 		SetFocus(false);
 	}
 
@@ -743,8 +761,9 @@ public:
 	}
 
 	void RefreshTheme() {
+		if (!immersive_mode_flag)
+			back_panel.SetWindowskin(Cache::SystemOrBlack());
 		d_notification_log.RefreshTheme();
-		back_panel.SetWindowskin(Cache::SystemOrBlack());
 		d_status.RefreshTheme();
 		d_log.RefreshTheme();
 		d_type.RefreshTheme();
@@ -791,7 +810,8 @@ public:
 		if (notification_log_shown)
 			d_notification_log.SetVisible(!focused);
 		this->SetVisible(focused);
-		back_panel.SetVisible(focused);
+		if (!immersive_mode_flag)
+			back_panel.SetVisible(focused);
 		d_status.SetVisible(focused);
 		d_log.SetVisible(focused);
 		d_type.SetVisible(focused);
@@ -806,6 +826,19 @@ public:
 			d_log.SetScroll(0);
 			DisplayUi->StopTextInput();
 		}
+	}
+
+	void SetImmersiveMode(bool enabled) {
+		GMI().GetConfig().client_chat_immersive_mode.Set(enabled);
+		immersive_mode_flag = enabled;
+		back_panel.SetVisible(!enabled);
+		d_log.SetOverlayMode(enabled, false, false);
+		if (!immersive_mode_flag)
+			back_panel.SetWindowskin(Cache::SystemOrBlack());
+	}
+
+	void SetImmersiveMode() {
+		SetImmersiveMode(!immersive_mode_flag);
 	}
 
 	unsigned short GetVisibilityFlags() {
@@ -1025,6 +1058,8 @@ void ShowUsage() {
 	AddLogEntry("- ", "switch visibility to chat", "", Messages::CV_LOCAL);
 	AddLogEntry("!log [LOCAL, GLOBAL, CRYPT]", "", "", Messages::CV_LOCAL);
 	AddLogEntry("- ", "toggle visibility", "", Messages::CV_LOCAL);
+	AddLogEntry("!immersive", "", "", Messages::CV_LOCAL);
+	AddLogEntry("- ", "toggle the immersive mode", "", Messages::CV_LOCAL);
 }
 
 void Initialize() {
@@ -1190,6 +1225,9 @@ void InputsTyping() {
 			if (flags.size() > 0)
 				flags.erase(flags.size() - 1);
 			AddClientInfo("Flags: " + flags);
+		// command: !immersive
+		} else if (command == "!immersive" || command == "!imm") {
+			chat_box->SetImmersiveMode();
 		// command: !help
 		} else if (command == "!help") {
 			ShowUsage();

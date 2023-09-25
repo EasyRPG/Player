@@ -115,6 +115,7 @@ struct Game_ConfigMultiplayer {
 	StringConfigParam server_picture_prefixes{ "", "", "Multiplayer", "ServerPicturePrefixes", "" };
 	BoolConfigParam client_auto_connect{ "", "", "Multiplayer", "ClientAutoConnect", false };
 	StringConfigParam client_remote_address{ "", "", "Multiplayer", "ClientRemoteAddress", "localhost:6500" };
+	BoolConfigParam client_chat_immersive_mode{ "", "", "Multiplayer", "ClientChatImmersiveMode", false };
 	StringConfigParam client_chat_visibility{ "", "", "Multiplayer", "ClientChatVisibility", "" };
 	StringConfigParam client_chat_name{ "", "", "Multiplayer", "ClientChatName", "" };
 	StringConfigParam client_chat_crypt_key{ "", "", "Multiplayer", "ClientChatCryptKey", "" };
