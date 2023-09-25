@@ -40,39 +40,25 @@ Scene_Logo::Scene_Logo() :
 	type = Scene::Logo;
 }
 
-Filesystem_Stream::InputStream logo_stream;
-Filesystem_Stream::InputStream next_logo;
+static bool detected_game = false;
 
 void Scene_Logo::Start() {
+	
+
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		std::time_t t = std::time(nullptr);
-		std::tm* tm = std::localtime(&t);
+		// Preload logos if the container is empty
+		if (Player::logos_container.empty()) {
+			Player::logos_container = Scene_Logo::preloadLogos();
+		}
 
-		if (FileFinder::Game()) logo_stream = FileFinder::OpenImage("Font", "LOGO" + std::to_string(Player::current_logo));
-		//TODO: Maybe get LOGO1,LOGO2,LOGO3 from rpg_rt too?
-
-		if (!logo_stream && Player::current_logo == 0) {
-
-			if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
-				logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
-			}
-			else {
-				logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
-			}
-
+		// Access the logo based on Player::current_logo
+		if (Player::current_logo < Player::logos_container.size()) {
+			logo_img = Player::logos_container[Player::current_logo];
 		}
 		else {
-			// Read the data from logo_stream and store it in a variable
-			std::vector<uint8_t> logoData = Utils::ReadStream(logo_stream);
-
-			// Access the data as needed
-			const uint8_t* cached_logo = logoData.data();
-			size_t logoSize = logoData.size();
-
-			// Create a bitmap using the logo data
-			logo_img = Bitmap::Create(cached_logo, logoSize, false);
+			// Handle the case when Player::current_logo exceeds the number of logos
+			// You may want to add error handling here.
 		}
-
 
 		DrawText(false);
 
@@ -84,64 +70,29 @@ void Scene_Logo::Start() {
 }
 
 void Scene_Logo::vUpdate() {
-	static bool is_valid = false;
-
-	if (frame_counter == 0) {
-		auto fs = FileFinder::Game();
-
-		if (!fs) {
-			fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
-			if (!fs) {
-				Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
-			}
-			FileFinder::SetGameFilesystem(fs);
-		}
-
-#ifdef EMSCRIPTEN
-		static bool once = true;
-		if (once) {
-			FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
-			index->SetImportantFile(true);
-			request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
-			once = false;
-			index->Start();
-			return;
-		}
-
-		if (!async_ready) {
-			return;
-		}
-#endif
-
-		if (FileFinder::IsValidProject(fs)) {
-			if (Player::current_logo == 0) Player::CreateGameObjects(); // changed to stop loading the same assets multiple times.
-			is_valid = true;
-		}
-	}
-
+	static bool is_valid = detected_game;
 	++frame_counter;
 
-	if (Input::IsPressed(Input::SHIFT)) {
+	if (Input::IsPressed(Input::SHIFT) && Player::current_logo == 0) {
 		DrawText(true);
 		--frame_counter;
 	}
 
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
-		frame_counter == 90 || //had to be longer to cover when Player::CreateGameObjects() doesn't happen
+		frame_counter == (Player::current_logo == 0 ? 60 : 90) || //had to be longer to cover when Player::CreateGameObjects() doesn't happen
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
 		Player::current_logo++;
-		next_logo = FileFinder::OpenImage("Font", "LOGO" + std::to_string(Player::current_logo));
-
-		if (next_logo) {
+		if (Player::current_logo < Player::logos_container.size()) {
 			Scene::Pop();
 			Scene::Push(std::make_shared<Scene_Logo>());
 			return;
 		}
 
 		Player::current_logo = 0;
+		Player::logos_container.clear();
 
 		if (is_valid) {
 			if (!Player::startup_language.empty()) {
@@ -166,6 +117,80 @@ void Scene_Logo::vUpdate() {
 	}
 }
 
+void Scene_Logo::DetectGame() {
+
+	if (detected_game) {
+		return;
+	}
+
+	auto fs = FileFinder::Game();
+	if (!fs) {
+		fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+		if (!fs) {
+			Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+		}
+		FileFinder::SetGameFilesystem(fs);
+	}
+
+#ifdef EMSCRIPTEN
+	static bool once = true;
+	if (once) {
+		FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
+		index->SetImportantFile(true);
+		request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
+		once = false;
+		index->Start();
+		return;
+	}
+	if (!async_ready) {
+		return;
+	}
+#endif
+
+	if (FileFinder::IsValidProject(fs)) {
+		Player::CreateGameObjects();
+		detected_game = true;
+	}
+}
+
+std::vector<BitmapRef> Scene_Logo::preloadLogos() {
+	std::vector<BitmapRef> logos;
+	std::time_t t = std::time(nullptr);
+	std::tm* tm = std::localtime(&t);
+
+	for (int logoIndex = 0; ; logoIndex++) {
+		Filesystem_Stream::InputStream logoStream;
+		if (logoIndex != 0) logoStream = FileFinder::OpenImage("Font", "LOGO" + std::to_string(logoIndex));
+		//TODO: Maybe get LOGO1,LOGO2,LOGO3 from rpg_rt too?
+
+		if (!logoStream) {
+			if (logoIndex == 0) {
+				if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
+					logos.push_back(Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false));
+				}
+				else {
+					logos.push_back(Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false));
+				}
+				Scene_Logo::DetectGame();
+			}
+			else break;  // Stop when no more logos can be found
+		}
+		else {
+			// Read the data from logoStream and store it in a variable
+			std::vector<uint8_t> logoData = Utils::ReadStream(logoStream);
+
+			// Access the data as needed
+			const uint8_t* cachedLogo = logoData.data();
+			size_t logoSize = logoData.size();
+
+			// Create a bitmap using the logo data and store it
+			logos.push_back(Bitmap::Create(cachedLogo, logoSize, false));
+		}
+	}
+
+	return logos;
+}
+
 void Scene_Logo::DrawBackground(Bitmap& dst) {
 	dst.Clear();
 }
@@ -173,7 +198,7 @@ void Scene_Logo::DrawBackground(Bitmap& dst) {
 void Scene_Logo::DrawText(bool verbose) {
 	if (Player::current_logo != 0) return;
 
-	Rect text_rect = {17, 215, 320 - 32, 0}; //last argument (rect height) is now 0 to remove a black rectangle that appears as text background color.
+	Rect text_rect = { 17, 215, 320 - 32, 16 * verbose }; //last argument (rect height) is now 0 to remove a black rectangle that appears as text background color.
 	Color text_color = {185, 199, 173, 255};
 	Color shadow_color = {69, 69, 69, 255};
 	logo_img->ClearRect(text_rect);
@@ -186,6 +211,7 @@ void Scene_Logo::DrawText(bool verbose) {
 		text_rect.x--;
 		text_rect.y--;
 	}
+
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {

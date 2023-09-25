@@ -40,6 +40,8 @@ public:
 
 	void Start() override;
 	void vUpdate() override;
+	void DetectGame();
+	std::vector<BitmapRef> preloadLogos();
 	void DrawBackground(Bitmap& dst) override;
 	void DrawText(bool verbose);
 

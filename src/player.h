@@ -307,6 +307,9 @@ namespace Player {
 	/** Set the desired rendering frames per second */
 	void SetTargetFps(int fps);
 
+	/** Logos Container - A collection of logo files */
+	extern std::vector<BitmapRef> logos_container;
+
 	/** Current Logo - for startup */
 	extern int current_logo;
 

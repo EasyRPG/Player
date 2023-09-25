@@ -106,6 +106,7 @@ namespace Player {
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 	bool has_custom_resolution = false;
 
+	std::vector<BitmapRef> logos_container;
 	int current_logo;
 
 	bool exit_flag;
@@ -206,6 +207,8 @@ void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
 
 	current_logo = 0;
+	logos_container.clear();
+
 	Scene::Push(std::make_shared<Scene_Logo>());
 	Graphics::UpdateSceneCallback();
 
