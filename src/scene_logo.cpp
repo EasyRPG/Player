@@ -160,7 +160,7 @@ std::vector<BitmapRef> Scene_Logo::preloadLogos() {
 
 	for (int logoIndex = 0; ; logoIndex++) {
 		Filesystem_Stream::InputStream logoStream;
-		if (logoIndex != 0) logoStream = FileFinder::OpenImage("Font", "LOGO" + std::to_string(logoIndex));
+		if (logoIndex != 0) logoStream = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(logoIndex));
 		//TODO: Maybe get LOGO1,LOGO2,LOGO3 from rpg_rt too?
 
 		if (!logoStream) {
