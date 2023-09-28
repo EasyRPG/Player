@@ -61,11 +61,7 @@ void Scene_Logo::Start() {
 		}
 
 		DrawText(false);
-
-		logo = std::make_unique<Sprite>();
-		logo->SetBitmap(logo_img);
-		logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
-		logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
+		DrawLogo(logo_img);
 	}
 }
 
@@ -171,6 +167,7 @@ std::vector<BitmapRef> Scene_Logo::preloadLogos() {
 				else {
 					logos.push_back(Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false));
 				}
+				DrawLogo(logos[logoIndex]);
 				Scene_Logo::DetectGame();
 			}
 			else break;  // Stop when no more logos can be found
@@ -189,6 +186,13 @@ std::vector<BitmapRef> Scene_Logo::preloadLogos() {
 	}
 
 	return logos;
+}
+
+void Scene_Logo::DrawLogo(BitmapRef logo_img) {
+	logo = std::make_unique<Sprite>();
+	logo->SetBitmap(logo_img);
+	logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
+	logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
 }
 
 void Scene_Logo::DrawBackground(Bitmap& dst) {
