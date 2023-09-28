@@ -400,6 +400,7 @@ namespace Player {
 	 *  GetSpeedModifier() instead.
 	 */
 	extern int speed_modifier;
+	extern int speed_modifier_plus;
 
 	/**
 	 * The engine game logic configuration
