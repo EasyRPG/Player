@@ -131,8 +131,8 @@ namespace Player {
 	std::string replay_input_path;
 	std::string record_input_path;
 	std::string command_line;
-	int speed_modifier = 3;
-	int speed_modifier_plus = 10;
+	int speed_modifier;
+	int speed_modifier_plus;
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
@@ -198,6 +198,8 @@ void Player::Init(std::vector<std::string> args) {
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);
+	speed_modifier = cfg.input.speed_modifier.Get();
+	speed_modifier_plus = cfg.input.speed_modifier_plus.Get();
 }
 
 void Player::Run() {
