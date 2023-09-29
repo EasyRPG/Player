@@ -57,7 +57,6 @@ public:
 
 	bool IsForceFleeEnabled() const;
 
-	bool ExecuteCommand() override;
 	bool ExecuteCommand(lcf::rpg::EventCommand const& com) override;
 
 private:

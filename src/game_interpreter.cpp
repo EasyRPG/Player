@@ -615,7 +615,7 @@ lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(lcf::DBArray<int32_t>::const_
 bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
-	return Game_Interpreter::ExecuteCommand(com);
+	return ExecuteCommand(com);
 }
 
 bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
