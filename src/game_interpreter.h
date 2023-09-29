@@ -76,6 +76,7 @@ public:
 	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
 	virtual bool ExecuteCommand();
+	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
 
 
 	/**

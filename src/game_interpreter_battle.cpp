@@ -157,7 +157,10 @@ int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flag
 bool Game_Interpreter_Battle::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
+	return Game_Interpreter_Battle::ExecuteCommand(com);
+}
 
+bool Game_Interpreter_Battle::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::CallCommonEvent:
 			return CommandCallCommonEvent(com);
@@ -194,7 +197,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		case Cmd::Maniac_GetBattleInfo:
 			return CommandManiacGetBattleInfo(com);
 		default:
-			return Game_Interpreter::ExecuteCommand();
+			return Game_Interpreter::ExecuteCommand(com);
 	}
 }
 

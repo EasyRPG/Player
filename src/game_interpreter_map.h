@@ -52,6 +52,7 @@ public:
 	void OnMapChange();
 
 	bool ExecuteCommand() override;
+	bool ExecuteCommand(lcf::rpg::EventCommand const& com) override;
 
 private:
 	bool CommandRecallToLocation(lcf::rpg::EventCommand const& com);
