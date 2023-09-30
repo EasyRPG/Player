@@ -174,20 +174,21 @@ namespace Messages {
 	public:
 		constexpr static std::string_view packet_name{ "m" };
 		MovePacket() : PlayerPacket(packet_name) {}
-		MovePacket(int _x, int _y)
-			: PlayerPacket(packet_name), x(_x), y(_y) {}
-		MovePacket(int _id, int _x, int _y)
-			: PlayerPacket(packet_name, _id), x(_x), y(_y) {}
+		MovePacket(int _type, int _x, int _y) // C2S
+			: PlayerPacket(packet_name), type(_type), x(_x), y(_y) {}
+		MovePacket(int _id, int _type, int _x, int _y) // S2C
+			: PlayerPacket(packet_name, _id), type(_type), x(_x), y(_y) {}
 		std::string ToBytes() const override {
 			std::string r {GetName()};
 			PlayerPacket::Append(r);
-			AppendPartial(r, x, y);
+			AppendPartial(r, type, x, y);
 			return r;
 		};
 		MovePacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)),
-			x(Decode<int>(v.at(1))), y(Decode<int>(v.at(2))) {}
-		int x, y;
+			type(Decode<int>(v.at(1))), // 0: normal, 1: event location
+			x(Decode<int>(v.at(2))), y(Decode<int>(v.at(3))) {}
+		int type, x, y;
 	};
 
 	/**
@@ -607,6 +608,23 @@ namespace Messages {
 		ShowPlayerBattleAnimPacket(const ParameterList& v)
 			: PlayerPacket(packet_name, v.at(0)), anim_id(Decode<int>(v.at(1))) {}
 		int anim_id;
+	};
+
+	/**
+	 * Config
+	 */
+
+	class ConfigPacket : public Packet {
+	public:
+		constexpr static std::string_view packet_name{ "cfg" };
+		ConfigPacket() {}
+		ConfigPacket(int _type, std::string _config)
+			: Packet(packet_name), type(_type), config(std::move(_config)) {} // S2C
+		std::string ToBytes() const override { return Build(type, config); }
+		ConfigPacket(const ParameterList& v)
+			: Packet(packet_name), type(Decode<int>(v.at(0))), config(v.at(1)) {}
+		int type;
+		std::string config;
 	};
 
 	/**

@@ -12,6 +12,12 @@
 
 class PlayerOther;
 
+struct Virtual3DMapConfig {
+	int character_event_id;
+	int character_terrain_id;
+	int refresh_switch_id;
+};
+
 class Game_Multiplayer {
 public:
 	static Game_Multiplayer& Instance();
@@ -57,6 +63,9 @@ public:
 	void ApplyScreenTone();
 	void SwitchSet(int switch_id, int value);
 	void VariableSet(int var_id, int value);
+	void EventLocationChanged(int event_id, int x, int y);
+
+	int GetTerrainTag(int original_terrain_id, int x, int y);
 
 	Game_ConfigMultiplayer cfg;
 
@@ -90,6 +99,7 @@ public:
 	std::map<int, std::string> global_players_system;
 	std::map<int, PlayerOther> players;
 	std::vector<PlayerOther> dc_players; // disconnect and player fade
+	std::map<std::tuple<int8_t, int16_t, int16_t>, uint8_t> players_pos_cache; // {type, x, y} = any
 	std::vector<int> sync_switches;
 	std::vector<int> sync_vars;
 	std::vector<int> sync_events;
@@ -97,6 +107,7 @@ public:
 	std::vector<std::string> sync_picture_names; // for badge conditions
 	std::vector<std::string> global_sync_picture_names;
 	std::vector<std::string> global_sync_picture_prefixes;
+	std::map<int, Virtual3DMapConfig> virtual_3d_map_configs;
 	std::map<int, bool> sync_picture_cache;
 	std::vector<int> sync_battle_anim_ids;
 	int last_flash_frame_index{-1};

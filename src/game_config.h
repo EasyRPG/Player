@@ -113,6 +113,7 @@ struct Game_ConfigMultiplayer {
 	RangeConfigParam<int> server_max_users{ "", "", "Multiplayer", "ServerMaxUsers", 10, 0, 100 };
 	StringConfigParam server_picture_names{ "", "", "Multiplayer", "ServerPictureNames", "" };
 	StringConfigParam server_picture_prefixes{ "", "", "Multiplayer", "ServerPicturePrefixes", "" };
+	StringConfigParam server_virtual_3d_maps{ "", "", "Multiplayer", "ServerVirtual3DMaps", "" };
 	BoolConfigParam client_auto_connect{ "", "", "Multiplayer", "ClientAutoConnect", false };
 	StringConfigParam client_remote_address{ "", "", "Multiplayer", "ClientRemoteAddress", "localhost:6500" };
 	BoolConfigParam client_chat_immersive_mode{ "", "", "Multiplayer", "ClientChatImmersiveMode", false };

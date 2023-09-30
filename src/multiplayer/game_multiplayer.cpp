@@ -37,6 +37,7 @@
 #include "playerother.h"
 #include "messages.h"
 #include "server.h"
+#include "strfnd.h"
 
 using namespace Messages;
 
@@ -223,6 +224,26 @@ void Game_Multiplayer::InitConnection() {
 		sync_picture_names.push_back(p.picture_name);
 	});
 	// <<-
+	connection.RegisterHandler<ConfigPacket>([this](ConfigPacket& p) {
+		switch (p.type) {
+		case 2:
+			Strfnd map_cfg_fnd(p.config);
+			while (!map_cfg_fnd.at_end()) {
+				std::string map_cfg = map_cfg_fnd.next("^");
+				Strfnd fnd(map_cfg);
+				try {
+					int map_id = stoi(fnd.next(","));
+					int event_id = stoi(fnd.next(","));
+					int terrain_id = stoi(fnd.next(","));
+					int switch_id = stoi(fnd.next(","));
+					if (virtual_3d_map_configs.size() < 100)
+						virtual_3d_map_configs[map_id] = { event_id, terrain_id, switch_id };
+				} catch (const std::exception& e) {
+				}
+			}
+			break;
+		}
+	});
 	connection.RegisterHandler<PictureNameListSyncPacket>([this](PictureNameListSyncPacket& p) {
 		std::vector<std::string>* list;
 		switch (p.type) {
@@ -275,6 +296,15 @@ void Game_Multiplayer::InitConnection() {
 			player.name_tag.reset();
 			DrawableMgr::SetLocalList(old_list);
 		}
+		// virtual 3d
+		auto cfg_it = virtual_3d_map_configs.find(room_id);
+		if (cfg_it != virtual_3d_map_configs.end()) {
+			for (const auto& it : player.previous_pos) {
+				players_pos_cache.erase(it.second);
+				if (cfg_it->second.refresh_switch_id != 0 && it.first == 1)
+					Main_Data::game_switches->Flip(cfg_it->second.refresh_switch_id);
+			}
+		}
 		dc_players.emplace_back(std::move(player));
 		players.erase(it);
 		repeating_flashes.erase(p.id);
@@ -296,7 +326,7 @@ void Game_Multiplayer::InitConnection() {
 		auto& player = players[p.id];
 		int x = Utils::Clamp(p.x, 0, Game_Map::GetTilesX() - 1);
 		int y = Utils::Clamp(p.y, 0, Game_Map::GetTilesY() - 1);
-		player.mvq.emplace_back(x, y);
+		player.mvq.emplace_back(p.type, x, y);
 	});
 	connection.RegisterHandler<JumpPacket>([this](JumpPacket& p) {
 		if (players.find(p.id) == players.end()) return;
@@ -536,6 +566,7 @@ void Game_Multiplayer::SwitchRoom(int map_id, bool room_switch) {
 
 void Game_Multiplayer::Reset() {
 	players.clear();
+	players_pos_cache.clear();
 	sync_switches.clear();
 	sync_vars.clear();
 	sync_events.clear();
@@ -564,7 +595,7 @@ void Game_Multiplayer::SendChatMessage(int visibility, std::string message, int 
 
 void Game_Multiplayer::SendBasicData() {
 	auto& player = Main_Data::game_player;
-	connection.SendPacketAsync<MovePacket>(player->GetX(), player->GetY());
+	connection.SendPacketAsync<MovePacket>(0, player->GetX(), player->GetY());
 	connection.SendPacketAsync<SpeedPacket>(player->GetMoveSpeed());
 	connection.SendPacketAsync<SpritePacket>(player->GetSpriteName(),
 				player->GetSpriteIndex());
@@ -579,7 +610,7 @@ void Game_Multiplayer::SendBasicData() {
 
 void Game_Multiplayer::MainPlayerMoved(int dir) {
 	auto& p = Main_Data::game_player;
-	connection.SendPacketAsync<MovePacket>(p->GetX(), p->GetY());
+	connection.SendPacketAsync<MovePacket>(0, p->GetX(), p->GetY());
 }
 
 void Game_Multiplayer::MainPlayerFacingChanged(int dir) {
@@ -787,6 +818,24 @@ void Game_Multiplayer::ApplyScreenTone() {
 	ApplyTone(Main_Data::game_screen->GetTone());
 }
 
+void Game_Multiplayer::EventLocationChanged(int event_id, int x, int y) {
+	auto cfg_it = virtual_3d_map_configs.find(room_id);
+	if (cfg_it != virtual_3d_map_configs.end())
+		if (event_id == cfg_it->second.character_event_id)
+			connection.SendPacketAsync<MovePacket>(1, x, y);
+}
+
+int Game_Multiplayer::GetTerrainTag(int original_terrain_id, int x, int y) {
+	auto cfg_it = virtual_3d_map_configs.find(room_id);
+	if (cfg_it != virtual_3d_map_configs.end()) {
+		auto it = players_pos_cache.find(std::make_tuple(
+			cfg_it->second.character_event_id != 0 ? 1 : 0, x, y));
+		if (it != players_pos_cache.end())
+			return it->second;
+	}
+	return original_terrain_id;
+}
+
 void Game_Multiplayer::Update() {
 	if (active) {
 		connection.Receive();
@@ -805,6 +854,18 @@ void Game_Multiplayer::MapUpdate() {
 
 		bool check_name_tag_overlap = frame_index % (8 + ((players.size() >> 4) << 3)) == 0;
 
+		bool is_virtual_3d_map = false;
+		bool virtual_3d_updated = false;
+		int virtual_3d_character_terrain_id;
+		int virtual_3d_refresh_switch_id;
+
+		auto cfg_it = virtual_3d_map_configs.find(room_id);
+		if (cfg_it != virtual_3d_map_configs.end()) {
+			is_virtual_3d_map = true;
+			virtual_3d_character_terrain_id = cfg_it->second.character_terrain_id;
+			virtual_3d_refresh_switch_id = cfg_it->second.refresh_switch_id;
+		}
+
 		for (auto& p : players) {
 			auto& q = p.second.mvq;
 			auto& ch = p.second.ch;
@@ -815,8 +876,20 @@ void Game_Multiplayer::MapUpdate() {
 					std::next(q.begin(), q.size() - settings.moving_queue_limit)
 				);
 			}
+			if (!q.empty() && is_virtual_3d_map) {
+				auto [type, x, y] = q.front();
+				auto it = p.second.previous_pos.find(type);
+				if (it != p.second.previous_pos.end())
+					players_pos_cache.erase(it->second);
+				auto pos = std::make_tuple(type, x, y);
+				if (players_pos_cache.size() < 100)
+					players_pos_cache[pos] = virtual_3d_character_terrain_id;
+				if (type > -1 && type < 2)
+					p.second.previous_pos[type] = pos;
+				virtual_3d_updated = true;
+			}
 			if (!q.empty() && ch->IsStopping()) {
-				auto [x, y] = q.front();
+				auto [_, x, y] = q.front();
 				MovePlayerToPos(*ch, x, y);
 				if (!switched_room) {
 					ch->SetMultiplayerVisible(true);
@@ -887,6 +960,9 @@ void Game_Multiplayer::MapUpdate() {
 		if (!switching_room && !switched_room) {
 			switched_room = true;
 		}
+
+		if (virtual_3d_refresh_switch_id != 0 && virtual_3d_updated)
+			Main_Data::game_switches->Flip(virtual_3d_refresh_switch_id);
 	}
 
 	if (!dc_players.empty()) {

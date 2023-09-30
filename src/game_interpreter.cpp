@@ -2333,6 +2333,8 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 		const auto y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 		event->MoveTo(event->GetMapId(), x, y);
 
+		GMI().EventLocationChanged(event_id, x, y);
+
 		// RPG2k3 feature
 		int direction = com.parameters.size() > 4 ? com.parameters[4] - 1 : -1;
 		// Only for the constant case, not for variables
@@ -2371,7 +2373,8 @@ bool Game_Interpreter::CommandStoreTerrainID(lcf::rpg::EventCommand const& com) 
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
-	Main_Data::game_variables->Set(var_id, Game_Map::GetTerrainTag(x, y));
+	Main_Data::game_variables->Set(var_id,
+		GMI().GetTerrainTag(Game_Map::GetTerrainTag(x, y), x, y));
 	Game_Map::SetNeedRefresh(true);
 	return true;
 }
