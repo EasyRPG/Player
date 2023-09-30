@@ -127,8 +127,8 @@ namespace Input {
 		"MOUSE_MIDDLE",
 		"SCROLL_UP",
 		"SCROLL_DOWN",
-		"FAST_FORWARD",
-		"FAST_FORWARD_PLUS",
+		"FAST_FORWARD_A",
+		"FAST_FORWARD_B",
 		"TOGGLE_FULLSCREEN",
 		"TOGGLE_ZOOM",
 		"BUTTON_COUNT");
@@ -172,8 +172,8 @@ namespace Input {
 		"Middle mouse key",
 		"Scroll up key",
 		"Scroll down key",
-		"Fast forward the game",
-		"Fast forward the game even more",
+		"PLACEHOLDER",
+		"PLACEHOLDER",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
 		"Total Button Count");

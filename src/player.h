@@ -399,8 +399,8 @@ namespace Player {
 	 *  Only used for configuring the speedup, don't read this var directly use
 	 *  GetSpeedModifier() instead.
 	 */
-	extern int speed_modifier;
-	extern int speed_modifier_plus;
+	extern int speed_modifier_a;
+	extern int speed_modifier_b;
 
 	/**
 	 * The engine game logic configuration
