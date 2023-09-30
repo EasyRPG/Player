@@ -228,19 +228,8 @@ class ServerSideClient {
 					std::to_string(id) + (name == "" ? "" : " " + name) + " joined the server."));
 				Output::Info("Server: room_id={} name={} joined the server", room_id, name);
 
-				auto pns = [this](const int& type, const std::string& cfg_names) {
-					Strfnd fnd(cfg_names);
-					auto p = PictureNameListSyncPacket();
-					p.type = type;
-					while (!fnd.at_end()) {
-						std::string name = Utils::UnescapeString(fnd.next_esc(","));
-						p.names.emplace_back(std::move(name));
-					}
-					SendSelfAsync(p);
-				};
-				pns(0, server->GetConfig().server_picture_names.Get());
-				pns(1, server->GetConfig().server_picture_prefixes.Get());
-
+				SendSelfAsync(ConfigPacket(0, server->GetConfig().server_picture_names.Get()));
+				SendSelfAsync(ConfigPacket(1, server->GetConfig().server_picture_prefixes.Get()));
 				SendSelfAsync(ConfigPacket(2, server->GetConfig().server_virtual_3d_maps.Get()));
 
 				join_sent = true;

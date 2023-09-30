@@ -225,8 +225,23 @@ void Game_Multiplayer::InitConnection() {
 	});
 	// <<-
 	connection.RegisterHandler<ConfigPacket>([this](ConfigPacket& p) {
-		switch (p.type) {
-		case 2:
+		if (p.type == 0) {
+			Strfnd fnd(p.config);
+			while (!fnd.at_end()) {
+				if (global_sync_picture_names.size() < 500)
+					global_sync_picture_names.emplace_back(Utils::UnescapeString(fnd.next_esc(",")));
+				else
+					break;
+			}
+		} else if (p.type == 1) {
+			Strfnd fnd(p.config);
+			while (!fnd.at_end()) {
+				if (global_sync_picture_prefixes.size() < 500)
+					global_sync_picture_prefixes.emplace_back(Utils::UnescapeString(fnd.next_esc(",")));
+				else
+					break;
+			}
+		} else if (p.type == 2) {
 			Strfnd map_cfg_fnd(p.config);
 			while (!map_cfg_fnd.at_end()) {
 				std::string map_cfg = map_cfg_fnd.next("^");
@@ -241,22 +256,7 @@ void Game_Multiplayer::InitConnection() {
 				} catch (const std::exception& e) {
 				}
 			}
-			break;
 		}
-	});
-	connection.RegisterHandler<PictureNameListSyncPacket>([this](PictureNameListSyncPacket& p) {
-		std::vector<std::string>* list;
-		switch (p.type) {
-		case 0:
-			list = &global_sync_picture_names;
-			break;
-		case 1:
-			list = &global_sync_picture_prefixes;
-			break;
-		default:
-			std::terminate();
-		}
-		list->assign(p.names.begin(), p.names.end());
 	});
 	connection.RegisterHandler<BattleAnimIdListSyncPacket>([this](BattleAnimIdListSyncPacket& p) {
 		sync_battle_anim_ids.assign(p.ids.begin(), p.ids.end());

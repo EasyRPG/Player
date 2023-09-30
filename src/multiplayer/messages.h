@@ -628,31 +628,6 @@ namespace Messages {
 	};
 
 	/**
-	 * Allowed Picture Names
-	 */
-
-	class PictureNameListSyncPacket : public Packet {
-	public:
-		constexpr static std::string_view packet_name{ "pns" };
-		PictureNameListSyncPacket() : Packet(packet_name) {}
-		std::string ToBytes() const override {
-			std::string r {GetName()};
-			AppendPartial(r, type);
-			for (const std::string& n : names)
-				AppendPartial(r, n);
-			return r;
-		}
-		PictureNameListSyncPacket(const ParameterList& v) : Packet(packet_name) {
-			auto it = v.begin();
-			type = Decode<int>(*it);
-			++it;
-			names.assign(it, v.end());
-		}
-		int type;
-		std::vector<std::string> names;
-	};
-
-	/**
 	 * Allowed Battle Animation Ids
 	 */
 
