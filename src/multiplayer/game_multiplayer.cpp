@@ -599,7 +599,7 @@ void Game_Multiplayer::SendChatMessage(int visibility, std::string message, int 
 void Game_Multiplayer::SendBasicData() {
 	auto& player = Main_Data::game_player;
 	auto cfg_it = virtual_3d_map_configs.find(room_id);
-	if (cfg_it != virtual_3d_map_configs.end()) {
+	if (cfg_it != virtual_3d_map_configs.end() && cfg_it->second.character_event_id != -1) {
 		Game_Character* ch = Game_Map::GetEvent(cfg_it->second.character_event_id);
 		if (ch)
 			connection.SendPacketAsync<MovePacket>(1, ch->GetX(), ch->GetY());
@@ -830,7 +830,8 @@ void Game_Multiplayer::ApplyScreenTone() {
 void Game_Multiplayer::EventLocationChanged(int event_id, int x, int y) {
 	auto cfg_it = virtual_3d_map_configs.find(room_id);
 	if (cfg_it != virtual_3d_map_configs.end())
-		if (event_id == cfg_it->second.character_event_id)
+		if (cfg_it->second.character_event_id != -1 &&
+				event_id == cfg_it->second.character_event_id)
 			connection.SendPacketAsync<MovePacket>(1, x, y);
 }
 
@@ -838,7 +839,7 @@ int Game_Multiplayer::GetTerrainTag(int original_terrain_id, int x, int y) {
 	auto cfg_it = virtual_3d_map_configs.find(room_id);
 	if (cfg_it != virtual_3d_map_configs.end()) {
 		auto it = players_pos_cache.find(std::make_tuple(
-			cfg_it->second.character_event_id != 0 ? 1 : 0, x, y));
+			cfg_it->second.character_event_id != -1 ? 1 : 0, x, y));
 		if (it != players_pos_cache.end())
 			return it->second;
 	}
