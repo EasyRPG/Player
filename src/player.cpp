@@ -302,10 +302,10 @@ void Player::UpdateInput() {
 		DisplayUi->ToggleZoom();
 	}
 	float speed = 1.0;
-	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_A)) {
 		speed = speed_modifier_a;
 	}
-	if (Input::IsSystemPressed(Input::FAST_FORWARD_PLUS)) {
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
 		speed = speed_modifier_b;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);

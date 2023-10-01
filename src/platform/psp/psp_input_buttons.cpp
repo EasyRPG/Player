@@ -25,7 +25,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
 		{CANCEL, Keys::JOY_A}, // Cross
 		{DECISION, Keys::JOY_B}, // Circle
-		{FAST_FORWARD, Keys::JOY_X}, // Square
+		{FAST_FORWARD_A, Keys::JOY_X}, // Square
 		{SHIFT, Keys::JOY_Y}, // Triangle
 
 		{N1, Keys::JOY_SHOULDER_LEFT}, // Left trigger

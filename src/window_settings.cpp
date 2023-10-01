@@ -414,7 +414,7 @@ void Window_Settings::RefreshButtonList() {
 			break;
 		case 1:
 			buttons = {Input::SETTINGS_MENU, Input::TOGGLE_FPS, Input::TOGGLE_FULLSCREEN, Input::TOGGLE_ZOOM,
-				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD, Input::FAST_FORWARD_PLUS,
+				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD_A, Input::FAST_FORWARD_B,
 				Input::PAGE_UP, Input::PAGE_DOWN };
 			break;
 		case 2:
@@ -478,10 +478,10 @@ void Window_Settings::RefreshButtonList() {
 		}
 
 		switch(button){
-			case Input::FAST_FORWARD:
+			case Input::FAST_FORWARD_A:
 				help = GetFastForwardDescription(0);
 				break;
-			case Input::FAST_FORWARD_PLUS:
+			case Input::FAST_FORWARD_B:
 				help = GetFastForwardDescription(1);
 				break;
 			default:
