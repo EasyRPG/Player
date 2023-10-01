@@ -825,6 +825,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(2049) : //Cmd::Easy_SetGameSpeed
+			return CommandSetGameSpeed(com);
 		default:
 			return true;
 	}
@@ -4982,6 +4984,12 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	}
 
 	Output::Warning("Maniac Patch: Command CallCommand not supported");
+	return true;
+}
+
+bool Game_Interpreter::CommandSetGameSpeed(lcf::rpg::EventCommand const& com) {
+	int32_t speed = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	Game_Clock::SetGameSpeedFactor(speed);
 	return true;
 }
 
