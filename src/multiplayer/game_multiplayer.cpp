@@ -301,7 +301,7 @@ void Game_Multiplayer::InitConnection() {
 		if (cfg_it != virtual_3d_map_configs.end()) {
 			for (const auto& it : player.previous_pos) {
 				players_pos_cache.erase(it.second);
-				if (cfg_it->second.refresh_switch_id != 0 && it.first == 1)
+				if (cfg_it->second.refresh_switch_id != -1 && it.first == 1)
 					Main_Data::game_switches->Flip(cfg_it->second.refresh_switch_id);
 			}
 		}
@@ -577,7 +577,7 @@ void Game_Multiplayer::Reset() {
 		Main_Data::game_pictures->EraseAllMultiplayer();
 	}
 	auto cfg_it = virtual_3d_map_configs.find(room_id);
-	if (cfg_it != virtual_3d_map_configs.end() && cfg_it->second.refresh_switch_id != 0)
+	if (cfg_it != virtual_3d_map_configs.end() && cfg_it->second.refresh_switch_id != -1)
 		Main_Data::game_switches->Flip(cfg_it->second.refresh_switch_id);
 }
 
@@ -971,7 +971,7 @@ void Game_Multiplayer::MapUpdate() {
 			switched_room = true;
 		}
 
-		if (virtual_3d_refresh_switch_id != 0 && virtual_3d_updated)
+		if (virtual_3d_refresh_switch_id != -1 && virtual_3d_updated)
 			Main_Data::game_switches->Flip(virtual_3d_refresh_switch_id);
 	}
 
