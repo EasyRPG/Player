@@ -576,6 +576,9 @@ void Game_Multiplayer::Reset() {
 	if (Main_Data::game_pictures) {
 		Main_Data::game_pictures->EraseAllMultiplayer();
 	}
+	auto cfg_it = virtual_3d_map_configs.find(room_id);
+	if (cfg_it != virtual_3d_map_configs.end() && cfg_it->second.refresh_switch_id != 0)
+		Main_Data::game_switches->Flip(cfg_it->second.refresh_switch_id);
 }
 
 void Game_Multiplayer::MapQuit() {
@@ -595,7 +598,13 @@ void Game_Multiplayer::SendChatMessage(int visibility, std::string message, int 
 
 void Game_Multiplayer::SendBasicData() {
 	auto& player = Main_Data::game_player;
-	connection.SendPacketAsync<MovePacket>(0, player->GetX(), player->GetY());
+	auto cfg_it = virtual_3d_map_configs.find(room_id);
+	if (cfg_it != virtual_3d_map_configs.end()) {
+		Game_Character* ch = Game_Map::GetEvent(cfg_it->second.character_event_id);
+		if (ch)
+			connection.SendPacketAsync<MovePacket>(1, ch->GetX(), ch->GetY());
+	} else
+		connection.SendPacketAsync<MovePacket>(0, player->GetX(), player->GetY());
 	connection.SendPacketAsync<SpeedPacket>(player->GetMoveSpeed());
 	connection.SendPacketAsync<SpritePacket>(player->GetSpriteName(),
 				player->GetSpriteIndex());
