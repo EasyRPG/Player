@@ -29,10 +29,13 @@ void TCPSocketConnection::Send(std::string_view& data) {
 	std::memcpy(buf.data(), &data_size, HEAD_SIZE);
 	std::memcpy(buf.data()+HEAD_SIZE, data.data(), data_size);
 	if (write_socket.write(buf.data(), final_size) != final_size) {
+		// closed socket == EPIPE (Broken pipe)
 		if (write_socket.last_error() == EPIPE) {
 			OnLogDebug(LABEL + ": It appears that the write_socket was closed.");
-			Close();
-			OnClose();
+			/**
+			 * don't call to OnClose here to avoid deadlock
+			 * use read_timeout mechanism to remove dead connections
+			 */
 		} else {
 			OnLogDebug(LABEL + ": Error writing to the TCP stream "
 				+ std::string("[") + std::to_string(write_socket.last_error()) + std::string("]: ")
