@@ -4988,7 +4988,8 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 }
 
 bool Game_Interpreter::CommandSetGameSpeed(lcf::rpg::EventCommand const& com) {
-	int32_t speed = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int32_t speed = ValueOrVariable(com.parameters[0], com.parameters[1]) * Game_Clock::GetGameSpeedFactor();
+	if (speed > 100) speed = 100;
 	Game_Clock::SetGameSpeedFactor(speed);
 	return true;
 }
