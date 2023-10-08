@@ -33,6 +33,7 @@
 #include "rand.h"
 #include <cmath>
 #include <cassert>
+#include <unordered_set>
 
 Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 	_type(type), _data(d)
@@ -468,6 +469,20 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 bool Game_Character::MakeWay(int from_x, int from_y, int to_x, int to_y) {
 	return Game_Map::MakeWay(*this, from_x, from_y, to_x, to_y);
 }
+
+
+bool Game_Character::CheckWay(int from_x, int from_y, int to_x, int to_y) {
+	return Game_Map::CheckWay(*this, from_x, from_y, to_x, to_y);
+}
+
+
+bool Game_Character::CheckWayEx(
+		int from_x, int from_y, int to_x, int to_y, bool ignore_all_events,
+		std::unordered_set<int> *ignore_some_events_by_id) {
+	return Game_Map::CheckWayEx(*this, from_x, from_y, to_x, to_y,
+		ignore_all_events, ignore_some_events_by_id);
+}
+
 
 bool Game_Character::Move(int dir) {
 	if (!IsStopping()) {
