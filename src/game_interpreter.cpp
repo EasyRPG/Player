@@ -4861,6 +4861,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			// maniacs does not like a file extension
 			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 			// args[1] is the encoding... 0 for sjis, 1 for utf8
+			// FIXME: support multiple encodings
 
 			Filesystem_Stream::InputStream is = FileFinder::OpenText(StringView(filename));
 			if (is.good()) {

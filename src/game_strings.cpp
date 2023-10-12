@@ -131,6 +131,7 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 }
 
 Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
+	// FIXME: consideration needed around encoding -- what mode are files read in?
 	if (!ResizeWithId(params.string_id)) return "";
 
 	int index;
@@ -139,7 +140,7 @@ Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int str
 
 	std::stringstream ss(str);
 
-	while (offset >= 0 && std::getline(ss, result)) { offset--; }
+	while (offset >= 0 && Utils::ReadLine(ss, result)) { offset--; }
 
 	offset = ss.rdbuf()->in_avail();
 
