@@ -29,7 +29,6 @@
 #include "output.h"
 
 #include <lcf/reader_util.h>
-#include <regex>
 #include <vector>
 
 /*
@@ -612,21 +611,20 @@ bool ManiacPatch::GetKeyState(uint32_t key_id) {
 }
 
 bool ManiacPatch::CheckString(std::string str_l, std::string str_r, int op, bool ignore_case) {
-	std::regex specialChars { R"([-[\]{}()*+?.,\^$|#\s])" };
-	std::string sanitized_r = std::regex_replace(str_r, specialChars, R"(\$&)");
-	if (op > 1) { sanitized_r = ".*" + sanitized_r + ".*"; }
-
-	std::regex search;
-	if (ignore_case) { search = std::regex(sanitized_r, std::regex_constants::icase); }
-	else { search = std::regex(sanitized_r); }
+	if (ignore_case) {
+		str_l = Utils::LowerCase(str_l);
+		str_r = Utils::LowerCase(str_r);
+	}
 
 	switch (op) {
 	case 0: // eq
+		return strcmp(str_l.c_str(), str_r.c_str()) == 0;
 	case 2: // contains (l contains r)
-		return std::regex_match(str_l, search);
+		return str_l.find(str_r) != std::string::npos;
 	case 1: // neq
+		return strcmp(str_l.c_str(), str_r.c_str()) != 0;
 	case 3: // notContains (l does not contain r)
-		return !std::regex_match(str_l, search);
+		return str_l.find(str_r) == std::string::npos;
 	default:
 		return false;
 	}
