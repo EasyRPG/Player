@@ -324,7 +324,7 @@ Game_Message::ParseParamResult Game_Message::ParseVariable(const char* iter, con
 }
 
 Game_Message::ParseParamResult Game_Message::ParseString(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
-	return ParseParamImpl('T', 't', iter, end, escape_char, skip_prefix, max_recursion);
+	return ParseParam('T', 't', iter, end, escape_char, skip_prefix, max_recursion);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {

@@ -160,20 +160,20 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 
 		int variable_value = Main_Data::game_variables->Get(value);
 		return std::to_string(variable_value);
-	}
-
-	return std::nullopt;
-};
-
-std::optional<std::string> PendingMessage::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
-	 if (ch == 'T' || ch == 't') {
+	} else if (ch == 'T' || ch == 't') {
 		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
 		*iter = parse_ret.next;
 		int value = parse_ret.value;
 
 		Game_Strings::Str_t string = Main_Data::game_strings->Get(value);
 		return (std::string)string;
-	} else if (ch == 'S' || ch == 's') {
+	}
+
+	return std::nullopt;
+};
+
+std::optional<std::string> PendingMessage::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	  if (ch == 'S' || ch == 's') {
 		// parsing a switch within an extracted string var command will parse \s[N] as a switch (ON/OFF)
 		auto parse_ret = Game_Message::ParseSpeed(*iter, end, escape_char, true);
 		*iter = parse_ret.next;
