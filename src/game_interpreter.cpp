@@ -4754,14 +4754,14 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		{
 		case 0: //String <fn(string text, int min_size)>
 			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 
 			// min_size
 			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
 			break;
 		case 1: //Number <fn(int number, int min_size)>
-			args[0] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[0] = ValueOrVariable(modes[0], args[0]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 
 			result = std::to_string(args[0]);
 			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
@@ -4769,7 +4769,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 2: //Switch <fn(int number, int min_size)>
 		{
 			if (modes[0] == 1) args[0] = Main_Data::game_variables->Get(args[0]);
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 
 			if (Main_Data::game_switches->Get(args[0])) {
 				result = "ON";
@@ -4780,11 +4780,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		}
 		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 			result = ManiacPatch::GetLcfName(args[0], args[1], (bool)args[2]);
 			break;
 		case 4: //Database Descriptions <fn(int id, bool dynamic)>
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 			result = ManiacPatch::GetLcfDescription(args[0], args[1], (bool)args[2]);
 			break;
 		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
@@ -4802,7 +4802,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, insert;
 
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
 			base =    Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
 			insert =  Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
 
@@ -4828,8 +4828,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		}
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
 			result =  Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).substr(args[1], args[2]);
 			break;
 		case 10: //Join (join) <fn(string delimiter, int id, int size)>
@@ -4840,8 +4840,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			Output::Debug("modes {} {} {}", modes[0], modes[1], modes[2]);
 			// args[1] & mode[1] relates to starting ID for strings to join
 			// mode 0 = id literal, 1 = direct var, 2 = var literal, 3 = direct var
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1] % 2);
-			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+			args[1] = ValueOrVariable(modes[1] % 2, args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
 
 			while (args[2] > 0) {
 				if (modes[1] < 2) {
@@ -4873,8 +4873,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			break;
 		}
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
-			args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-			args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
 			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).erase(args[1], args[2]);
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
@@ -4913,8 +4913,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 4: //inStr <fn(string text, int var_id, int begin)> takes hex??????
 	{
 		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // not sure this is necessary but better safe
-		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe
+		args[2] = ValueOrVariable(modes[2], args[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, search, op, args);
 		else          Main_Data::game_strings->InStr(str_params, search, args[1], args[2]);
@@ -4923,8 +4923,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
 	{
 		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
-		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]);
+		args[1] = ValueOrVariable(modes[1], args[1]);
+		args[2] = ValueOrVariable(modes[2], args[2]);
 		
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, delimiter, op, args);
 		else          Main_Data::game_strings->Split(str_params, delimiter, args[1], args[2]);
@@ -4933,7 +4933,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 7: //toFile <fn(string filename, int encode)>  takes hex
 	{
 		std::string filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]);
+		args[1] = ValueOrVariable(modes[1], args[1]);
 
 		Main_Data::game_strings->ToFile(str_params, filename, args[1]);
 		break;
@@ -4943,7 +4943,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		// it instead alters the behavior.
 		// given a range t[a..b], it will pop the first (b-a)+1 lines,
 		// and store the last popped line into the output string.
-		args[1] = Main_Data::game_variables->GetWithMode(args[0], modes[0]);
+		args[1] = ValueOrVariable(modes[0], args[0]);
 
 		if (is_range) Main_Data::game_strings->PopLine(str_params, string_id_1 - string_id_0, args[0]);
 		else          Main_Data::game_strings->PopLine(str_params, 0, args[0]);
@@ -4953,8 +4953,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	{
 		// takes hex
 		std::string expr = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-		args[1] = Main_Data::game_variables->GetWithMode(args[1], modes[1]); // output var
-		args[2] = Main_Data::game_variables->GetWithMode(args[2], modes[2]); // beginning pos
+		args[1] = ValueOrVariable(modes[1], args[1]); // output var
+		args[2] = ValueOrVariable(modes[2], args[2]); // beginning pos
 
 		if (is_range) {
 			Main_Data::game_strings->RangeOp(str_params, string_id_1, expr, op, args);
