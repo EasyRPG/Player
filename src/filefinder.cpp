@@ -339,9 +339,9 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string find_generic_with_fallback(DirectoryTree::Args& args) {
-	std::string found = find_generic(args);
+	std::string found = FileFinder::Save().FindFile(args); 
 	if (found.empty()) {
-		return FileFinder::Save().FindFile(args);
+		return find_generic(args);
 	}
 
 	return found;
@@ -393,8 +393,8 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 }
 
 Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
-	auto is = open_generic(dir, name, args);
-	if (!is) { is = FileFinder::Save().OpenFile(args); }
+	auto is = FileFinder::Save().OpenFile(args); 
+	if (!is) { is = open_generic(dir, name, args); }
 	if (!is) {
 		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
 	}
