@@ -85,8 +85,9 @@ inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
 
 	auto& s = _strings[params.string_id - 1];
 	s = string;
-	if (params.extract)
+	if (params.extract) {
 		s = Extract(s, params.hex);
+	}
 	return s;
 }
 
