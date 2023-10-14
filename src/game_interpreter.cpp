@@ -826,6 +826,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
+			return CommandEasyRpgSetInterpreterFlag(com);
 		default:
 			return true;
 	}
@@ -5104,6 +5106,35 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	// FIXME: Store them as part of the interpreter state
+
+	std::string flag_name = Utils::LowerCase(ToString(com.string));
+	int flag_value = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	if (flag_name == "dynrpg")
+		Player::game_config.patch_dynrpg.Set(flag_value);
+	if (flag_name == "maniac")
+		Player::game_config.patch_maniac.Set(flag_value);
+	if (flag_name == "common-this")
+		Player::game_config.patch_common_this_event.Set(flag_value);
+	if (flag_name == "pic-unlock")
+		Player::game_config.patch_unlock_pics.Set(flag_value);
+	if (flag_name == "key-patch")
+		Player::game_config.patch_key_patch.Set(flag_value);
+	if (flag_name == "rpg2k3-cmds" || flag_name == "rpg2k3-commands")
+		Player::game_config.patch_rpg2k3_commands.Set(flag_value);
+
+	if (flag_name == "rpg2k-battle")
+		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
 
 	return true;
 }
