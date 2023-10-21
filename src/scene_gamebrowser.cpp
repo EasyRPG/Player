@@ -26,6 +26,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
+#include "scene_logo.h"
 #include "scene_title.h"
 #include "bitmap.h"
 #include "audio.h"
@@ -213,11 +214,17 @@ void Scene_GameBrowser::BootGame() {
 	FileFinder::SetGameFilesystem(fs);
 	Player::CreateGameObjects();
 
+	game_loading = false;
+	load_window->SetVisible(false);
+
+	if (!FileFinder::FindImage("Logo", "LOGO1").empty()) {
+		// Delegate to Scene_Logo when a startup graphic was found
+		Scene::Push(std::make_shared<Scene_Logo>(1));
+		return;
+	}
+
 	if (!Player::startup_language.empty()) {
 		Player::translation.SelectLanguage(Player::startup_language);
 	}
 	Scene::Push(std::make_shared<Scene_Title>());
-
-	game_loading = false;
-	load_window->SetVisible(false);
 }

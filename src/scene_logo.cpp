@@ -26,6 +26,7 @@
 #include "player.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
+#include "scene_settings.h"
 #include "output.h"
 #include "generated/logo.h"
 #include "generated/logo2.h"
@@ -35,81 +36,62 @@
 #include "version.h"
 #include <ctime>
 
-Scene_Logo::Scene_Logo() :
-	frame_counter(0) {
+Scene_Logo::Scene_Logo(unsigned current_logo_index) :
+	frame_counter(0), current_logo_index(current_logo_index) {
 	type = Scene::Logo;
+
+	if (current_logo_index > 0) {
+		detected_game = true;
+	}
+
+	skip_logos = Player::debug_flag || Game_Battle::battle_test.enabled;
 }
 
 void Scene_Logo::Start() {
-	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		std::time_t t = std::time(nullptr);
-		std::tm* tm = std::localtime(&t);
-
-		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
-			logo_img = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
-		} else {
-			logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
-		}
-
-		DrawText(false);
-
-		logo = std::make_unique<Sprite>();
-		logo->SetBitmap(logo_img);
-		logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
-		logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
+	if (!skip_logos) {
+		logo_img = LoadLogo();
+		DrawTextOnLogo(false);
+		DrawLogo(logo_img);
 	}
 }
 
 void Scene_Logo::vUpdate() {
-	static bool is_valid = false;
-
-	if (frame_counter == 0) {
-		auto fs = FileFinder::Game();
-
-		if (!fs) {
-			fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
-			if (!fs) {
-				Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
-			}
-			FileFinder::SetGameFilesystem(fs);
-		}
-
-#ifdef EMSCRIPTEN
-		static bool once = true;
-		if (once) {
-			FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
-			index->SetImportantFile(true);
-			request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
-			once = false;
-			index->Start();
+	if (current_logo_index == 0 && frame_counter == 0) {
+		if (!DetectGame()) {
+			// async delay for emscripten
 			return;
-		}
-
-		if (!async_ready) {
-			return;
-		}
-#endif
-
-		if (FileFinder::IsValidProject(fs)) {
-			Player::CreateGameObjects();
-			is_valid = true;
 		}
 	}
 
 	++frame_counter;
 
 	if (Input::IsPressed(Input::SHIFT)) {
-		DrawText(true);
+		DrawTextOnLogo(true);
 		--frame_counter;
 	}
 
-	if (Player::debug_flag ||
-		Game_Battle::battle_test.enabled ||
-		frame_counter == 60 ||
+	// Allow calling the settings when the first logo was shown (startup completed)
+	if (current_logo_index > 0 && Input::IsTriggered(Input::SETTINGS_MENU)) {
+		Scene::Push(std::make_shared<Scene_Settings>());
+	}
+
+	// other logos do not invoke the slow CreateGameObjects: display them longer
+	bool frame_limit_reached = (frame_counter == (current_logo_index == 0 ? 60 : 90));
+
+	if (skip_logos ||
+		frame_limit_reached ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
-		if (is_valid) {
+		if (detected_game) {
+			if (!skip_logos) {
+				// Check for another logo
+				if (!FileFinder::FindImage("Logo", "LOGO" + std::to_string(current_logo_index + 1)).empty()) {
+					Scene::Push(std::make_shared<Scene_Logo>(current_logo_index + 1), true);
+					return;
+				}
+			}
+
 			if (!Player::startup_language.empty()) {
 				Player::translation.SelectLanguage(Player::startup_language);
 			}
@@ -132,12 +114,80 @@ void Scene_Logo::vUpdate() {
 	}
 }
 
+bool Scene_Logo::DetectGame() {
+	auto fs = FileFinder::Game();
+	if (!fs) {
+		fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+		if (!fs) {
+			Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+		}
+		FileFinder::SetGameFilesystem(fs);
+	}
+
+#ifdef EMSCRIPTEN
+	static bool once = true;
+	if (once) {
+		FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
+		index->SetImportantFile(true);
+		request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
+		once = false;
+		index->Start();
+		return false;
+	}
+	if (!async_ready) {
+		return false;
+	}
+#endif
+
+	if (FileFinder::IsValidProject(fs)) {
+		Player::CreateGameObjects();
+		detected_game = true;
+	}
+
+	return true;
+}
+
+BitmapRef Scene_Logo::LoadLogo() {
+	BitmapRef current_logo;
+	std::time_t t = std::time(nullptr);
+	std::tm* tm = std::localtime(&t);
+
+	if (current_logo_index == 0) {
+		// Load the built-in logo
+		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
+			current_logo = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
+		}
+		else {
+			current_logo = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+		}
+	} else {
+		// Load external logos
+		// FIXME: Also get the LOGO1,LOGO2,LOGO3 from RPG_RT
+		auto logo_stream = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(current_logo_index));
+		current_logo = Bitmap::Create(std::move(logo_stream), false);
+	}
+
+	return current_logo;
+}
+
+void Scene_Logo::DrawLogo(BitmapRef logo_img) {
+	logo = std::make_unique<Sprite>();
+	logo->SetBitmap(logo_img);
+	logo->SetX((Player::screen_width - logo->GetWidth()) / 2);
+	logo->SetY((Player::screen_height - logo->GetHeight()) / 2);
+}
+
 void Scene_Logo::DrawBackground(Bitmap& dst) {
 	dst.Clear();
 }
 
-void Scene_Logo::DrawText(bool verbose) {
-	Rect text_rect = {17, 215, 320 - 32, 16};
+void Scene_Logo::DrawTextOnLogo(bool verbose) {
+	if (current_logo_index > 0) {
+		// only render version info on EasyRPG startup logo
+		return;
+	}
+
+	Rect text_rect = { 17, 215, 320 - 32, 16 * verbose }; //last argument (rect height) is now 0 to remove a black rectangle that appears as text background color.
 	Color text_color = {185, 199, 173, 255};
 	Color shadow_color = {69, 69, 69, 255};
 	logo_img->ClearRect(text_rect);
@@ -150,6 +200,7 @@ void Scene_Logo::DrawText(bool verbose) {
 		text_rect.x--;
 		text_rect.y--;
 	}
+
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {
@@ -171,7 +222,10 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 		"Font/Font", // Custom Gothic Font
 		"Font/Font2", // Custom Mincho Font
 		"easyrpg.soundfont", // Custom SF2 soundfont
-		"autorun.script" // Key Patch Startup script
+		"autorun.script", // Key Patch Startup script,
+		"Logo/Logo1", // up to 3 custom startup logos
+		"Logo/Logo2",
+		"Logo/Logo3"
 	);
 
 	for (auto file: startup_files) {
