@@ -51,6 +51,7 @@ private:
 	BitmapRef logo_img;
 	int frame_counter;
 	unsigned current_logo_index;
+	bool skip_logos = false;
 	bool detected_game = false;
 
 	void OnIndexReady(FileRequestResult* result);

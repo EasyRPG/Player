@@ -219,7 +219,7 @@ void Scene_GameBrowser::BootGame() {
 
 	if (!FileFinder::FindImage("Logo", "LOGO1").empty()) {
 		// Delegate to Scene_Logo when a startup graphic was found
-		Scene::Push(std::make_shared<Scene_Logo>(1), true);
+		Scene::Push(std::make_shared<Scene_Logo>(1));
 		return;
 	}
 

@@ -26,6 +26,7 @@
 #include "player.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
+#include "scene_settings.h"
 #include "output.h"
 #include "generated/logo.h"
 #include "generated/logo2.h"
@@ -42,10 +43,12 @@ Scene_Logo::Scene_Logo(unsigned current_logo_index) :
 	if (current_logo_index > 0) {
 		detected_game = true;
 	}
+
+	skip_logos = Player::debug_flag || Game_Battle::battle_test.enabled;
 }
 
 void Scene_Logo::Start() {
-	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
+	if (!skip_logos) {
 		logo_img = LoadLogo();
 		DrawTextOnLogo(false);
 		DrawLogo(logo_img);
@@ -67,20 +70,26 @@ void Scene_Logo::vUpdate() {
 		--frame_counter;
 	}
 
+	// Allow calling the settings when the first logo was shown (startup completed)
+	if (current_logo_index > 0 && Input::IsTriggered(Input::SETTINGS_MENU)) {
+		Scene::Push(std::make_shared<Scene_Settings>());
+	}
+
 	// other logos do not invoke the slow CreateGameObjects: display them longer
 	bool frame_limit_reached = (frame_counter == (current_logo_index == 0 ? 60 : 90));
 
-	if (Player::debug_flag ||
-		Game_Battle::battle_test.enabled ||
+	if (skip_logos ||
 		frame_limit_reached ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
 		if (detected_game) {
-			// Check for another logo
-			if (!FileFinder::FindImage("Logo", "LOGO" + std::to_string(current_logo_index + 1)).empty()) {
-				Scene::Push(std::make_shared<Scene_Logo>(current_logo_index + 1), true);
-				return;
+			if (!skip_logos) {
+				// Check for another logo
+				if (!FileFinder::FindImage("Logo", "LOGO" + std::to_string(current_logo_index + 1)).empty()) {
+					Scene::Push(std::make_shared<Scene_Logo>(current_logo_index + 1), true);
+					return;
+				}
 			}
 
 			if (!Player::startup_language.empty()) {
