@@ -35,62 +35,54 @@
 #include "version.h"
 #include <ctime>
 
-Scene_Logo::Scene_Logo() :
-	frame_counter(0) {
+Scene_Logo::Scene_Logo(unsigned current_logo_index) :
+	frame_counter(0), current_logo_index(current_logo_index) {
 	type = Scene::Logo;
+
+	if (current_logo_index > 0) {
+		detected_game = true;
+	}
 }
 
-static bool detected_game = false;
-
 void Scene_Logo::Start() {
-	
-
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
-		// Preload logos if the container is empty
-		if (Player::logos_container.empty()) {
-			Player::logos_container = Scene_Logo::preloadLogos();
-		}
-
-		// Access the logo based on Player::current_logo
-		if (Player::current_logo < Player::logos_container.size()) {
-			logo_img = Player::logos_container[Player::current_logo];
-		}
-		else {
-			// Handle the case when Player::current_logo exceeds the number of logos
-			// You may want to add error handling here.
-		}
-
-		DrawText(false);
+		logo_img = LoadLogo();
+		DrawTextOnLogo(false);
 		DrawLogo(logo_img);
 	}
 }
 
 void Scene_Logo::vUpdate() {
-	static bool is_valid = detected_game;
+	if (current_logo_index == 0 && frame_counter == 0) {
+		if (!DetectGame()) {
+			// async delay for emscripten
+			return;
+		}
+	}
+
 	++frame_counter;
 
-	if (Input::IsPressed(Input::SHIFT) && Player::current_logo == 0) {
-		DrawText(true);
+	if (Input::IsPressed(Input::SHIFT)) {
+		DrawTextOnLogo(true);
 		--frame_counter;
 	}
 
+	// other logos do not invoke the slow CreateGameObjects: display them longer
+	bool frame_limit_reached = (frame_counter == (current_logo_index == 0 ? 60 : 90));
+
 	if (Player::debug_flag ||
 		Game_Battle::battle_test.enabled ||
-		frame_counter == (Player::current_logo == 0 ? 60 : 90) || //had to be longer to cover when Player::CreateGameObjects() doesn't happen
+		frame_limit_reached ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 
-		Player::current_logo++;
-		if (Player::current_logo < Player::logos_container.size()) {
-			Scene::Pop();
-			Scene::Push(std::make_shared<Scene_Logo>());
-			return;
-		}
+		if (detected_game) {
+			// Check for another logo
+			if (!FileFinder::FindImage("Logo", "LOGO" + std::to_string(current_logo_index + 1)).empty()) {
+				Scene::Push(std::make_shared<Scene_Logo>(current_logo_index + 1), true);
+				return;
+			}
 
-		Player::current_logo = 0;
-		Player::logos_container.clear();
-
-		if (is_valid) {
 			if (!Player::startup_language.empty()) {
 				Player::translation.SelectLanguage(Player::startup_language);
 			}
@@ -113,12 +105,7 @@ void Scene_Logo::vUpdate() {
 	}
 }
 
-void Scene_Logo::DetectGame() {
-
-	if (detected_game) {
-		return;
-	}
-
+bool Scene_Logo::DetectGame() {
 	auto fs = FileFinder::Game();
 	if (!fs) {
 		fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
@@ -136,10 +123,10 @@ void Scene_Logo::DetectGame() {
 		request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
 		once = false;
 		index->Start();
-		return;
+		return false;
 	}
 	if (!async_ready) {
-		return;
+		return false;
 	}
 #endif
 
@@ -147,45 +134,31 @@ void Scene_Logo::DetectGame() {
 		Player::CreateGameObjects();
 		detected_game = true;
 	}
+
+	return true;
 }
 
-std::vector<BitmapRef> Scene_Logo::preloadLogos() {
-	std::vector<BitmapRef> logos;
+BitmapRef Scene_Logo::LoadLogo() {
+	BitmapRef current_logo;
 	std::time_t t = std::time(nullptr);
 	std::tm* tm = std::localtime(&t);
 
-	for (int logoIndex = 0; ; logoIndex++) {
-		Filesystem_Stream::InputStream logoStream;
-		if (logoIndex != 0) logoStream = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(logoIndex));
-		//TODO: Maybe get LOGO1,LOGO2,LOGO3 from rpg_rt too?
-
-		if (!logoStream) {
-			if (logoIndex == 0) {
-				if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
-					logos.push_back(Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false));
-				}
-				else {
-					logos.push_back(Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false));
-				}
-				DrawLogo(logos[logoIndex]);
-				Scene_Logo::DetectGame();
-			}
-			else break;  // Stop when no more logos can be found
+	if (current_logo_index == 0) {
+		// Load the built-in logo
+		if (Rand::ChanceOf(1, 32) || (tm->tm_mday == 1 && tm->tm_mon == 3)) {
+			current_logo = Bitmap::Create(easyrpg_logo2, sizeof(easyrpg_logo2), false);
 		}
 		else {
-			// Read the data from logoStream and store it in a variable
-			std::vector<uint8_t> logoData = Utils::ReadStream(logoStream);
-
-			// Access the data as needed
-			const uint8_t* cachedLogo = logoData.data();
-			size_t logoSize = logoData.size();
-
-			// Create a bitmap using the logo data and store it
-			logos.push_back(Bitmap::Create(cachedLogo, logoSize, false));
+			current_logo = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		}
+	} else {
+		// Load external logos
+		// FIXME: Also get the LOGO1,LOGO2,LOGO3 from RPG_RT
+		auto logo_stream = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(current_logo_index));
+		current_logo = Bitmap::Create(std::move(logo_stream), false);
 	}
 
-	return logos;
+	return current_logo;
 }
 
 void Scene_Logo::DrawLogo(BitmapRef logo_img) {
@@ -199,8 +172,11 @@ void Scene_Logo::DrawBackground(Bitmap& dst) {
 	dst.Clear();
 }
 
-void Scene_Logo::DrawText(bool verbose) {
-	if (Player::current_logo != 0) return;
+void Scene_Logo::DrawTextOnLogo(bool verbose) {
+	if (current_logo_index > 0) {
+		// only render version info on EasyRPG startup logo
+		return;
+	}
 
 	Rect text_rect = { 17, 215, 320 - 32, 16 * verbose }; //last argument (rect height) is now 0 to remove a black rectangle that appears as text background color.
 	Color text_color = {185, 199, 173, 255};
@@ -237,7 +213,10 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 		"Font/Font", // Custom Gothic Font
 		"Font/Font2", // Custom Mincho Font
 		"easyrpg.soundfont", // Custom SF2 soundfont
-		"autorun.script" // Key Patch Startup script
+		"autorun.script", // Key Patch Startup script,
+		"Logo/Logo1", // up to 3 custom startup logos
+		"Logo/Logo2",
+		"Logo/Logo3"
 	);
 
 	for (auto file: startup_files) {
