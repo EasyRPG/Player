@@ -60,7 +60,7 @@ public:
 	int GetLen(Str_Params params, int var_id);
 	int InStr(Str_Params params, std::string search, int var_id, int begin = 0);
 	int Split(Str_Params params, std::string delimiter, int string_out_id, int var_id);
-	static Str_t FromFile(StringView filename, int encoding);
+	static Str_t FromFile(StringView filename, int encoding, bool& do_yield);
 	Str_t ToFile(Str_Params params, std::string filename, int encoding);
 	Str_t PopLine(Str_Params params, int offset, int string_out_id);
 	Str_t ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);

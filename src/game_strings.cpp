@@ -18,6 +18,7 @@
  // Headers
 #include <regex>
 #include <lcf/encoder.h>
+#include "async_handler.h"
 #include "game_message.h"
 #include "game_strings.h"
 #include "game_switches.h"
@@ -109,9 +110,17 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 	return splits;
 }
 
-Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding) {
+Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding, bool& do_yield) {
+	do_yield = false;
+
 	Filesystem_Stream::InputStream is = FileFinder::OpenText(filename);
 	if (!is) {
+		// Emscripten: Try to async fetch the file
+		auto* request = AsyncHandler::RequestFile("Text", filename);
+		request->SetImportantFile(true);
+		request->Start();
+		do_yield = !request->IsReady();
+
 		return {};
 	}
 
@@ -158,6 +167,8 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 
 	txt_out << str;
 	txt_out.Close();
+
+	AsyncHandler::SaveFilesystem();
 
 	return str;
 }

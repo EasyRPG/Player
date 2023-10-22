@@ -257,6 +257,16 @@ bool AsyncHandler::IsFilePending(bool important, bool graphic) {
 	return false;
 }
 
+void AsyncHandler::SaveFilesystem() {
+#ifdef EMSCRIPTEN
+	// Save changed file system
+	EM_ASM({
+		FS.syncfs(function(err) {
+		});
+	});
+#endif
+}
+
 bool AsyncHandler::IsImportantFilePending() {
 	return IsFilePending(true, false);
 }

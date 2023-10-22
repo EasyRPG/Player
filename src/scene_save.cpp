@@ -157,14 +157,7 @@ bool Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	bool res = lcf::LSD_Reader::Save(os, save, lcf_engine, Player::encoding);
 
 	DynRpg::Save(slot_id);
-
-#ifdef EMSCRIPTEN
-	// Save changed file system
-	EM_ASM({
-		FS.syncfs(function(err) {
-		});
-	});
-#endif
+	AsyncHandler::SaveFilesystem();
 
 	return res;
 }

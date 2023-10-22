@@ -92,6 +92,12 @@ namespace AsyncHandler {
 	 * @return If any file with params is pending.
 	 */
 	bool IsFilePending(bool important, bool graphic);
+
+	/**
+	 * Saves the state of the Save filesystem.
+	 * Only works on emscripten, noop on other platforms.
+	 */
+	void SaveFilesystem();
 }
 
 using FileRequestBinding = std::shared_ptr<int>;

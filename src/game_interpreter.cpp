@@ -4866,7 +4866,15 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			// maniacs does not like a file extension
 			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 			// args[1] is the encoding... 0 for ansi, 1 for utf8
-			result = Game_Strings::FromFile(filename, args[1]);
+			bool do_yield;
+			result = Game_Strings::FromFile(filename, args[1], do_yield);
+
+			if (do_yield) {
+				// Wait for text file download and repeat
+				_async_op = AsyncOp::MakeYieldRepeat();
+				return true;
+			}
+
 			break;
 		}
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
