@@ -77,8 +77,6 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 
 	std::string str = Get(params.string_id);
 
-	Output::Debug("Searching for {} in {}", search, str);
-
 	int index = Get(params.string_id).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
 	return index;

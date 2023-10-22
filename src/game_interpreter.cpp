@@ -4841,8 +4841,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		{
 			std::string op_string = "";
 			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-			Output::Debug("args {} {} {}", args[0], args[1], args[2]);
-			Output::Debug("modes {} {} {}", modes[0], modes[1], modes[2]);
+
 			// args[1] & mode[1] relates to starting ID for strings to join
 			// mode 0 = id literal, 1 = direct var, 2 = var literal, 3 = direct var
 			args[1] = ValueOrVariable(modes[1] % 2, args[1]);
