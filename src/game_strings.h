@@ -70,6 +70,9 @@ public:
 	Str_t PrependMin(Str_t string, int min_size, char c);
 	Str_t Extract(Str_t string, bool as_hex);
 
+	static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
+	static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);
+
 private:
 	Str_t Set(Str_Params params, Str_t string);
 	bool ResizeWithId(int id);
@@ -168,9 +171,4 @@ inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int a
 		break;
 	}
 	return ret;
-}
-
-inline Game_Strings::Str_t Game_Strings::Extract(Str_t string, bool as_hex) {
-	PendingMessage::CommandInserter cmd_fn = PendingMessage::BuildManiacsCommandInserter(as_hex);
-	return static_cast<Str_t>(PendingMessage::ApplyTextInsertingCommands(static_cast<std::string>(string), Player::escape_char, cmd_fn));
 }

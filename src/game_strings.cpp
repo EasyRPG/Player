@@ -18,7 +18,9 @@
  // Headers
 #include <regex>
 #include <lcf/encoder.h>
+#include "game_message.h"
 #include "game_strings.h"
+#include "game_switches.h"
 #include "game_variables.h"
 #include "output.h"
 
@@ -217,9 +219,7 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 
 	// swap so that id_0 is < id_1
 	if (params.string_id > string_id_1) {
-		params.string_id = params.string_id ^ string_id_1;
-		string_id_1 = string_id_1 ^ params.string_id;
-		params.string_id = params.string_id ^ string_id_1;
+		std::swap(params.string_id, string_id_1);
 	}
 
 	if (EP_UNLIKELY(string_id_1 > static_cast<int>(_strings.size()))) {
@@ -251,3 +251,43 @@ Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size, char c)
 	return string;
 }
 
+Game_Strings::Str_t Game_Strings::Extract(Str_t string, bool as_hex) {
+	PendingMessage::CommandInserter cmd_fn;
+
+	if (as_hex) {
+		cmd_fn = ManiacsCommandInserterHex;
+	} else {
+		cmd_fn = ManiacsCommandInserter;
+	}
+
+	return static_cast<Str_t>(PendingMessage::ApplyTextInsertingCommands(string, Player::escape_char, cmd_fn));
+}
+
+std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	if (ch == 'S' || ch == 's') {
+		// \s in a normal message is the speed modifier
+		// parsing a switch within an extracted string var command will parse \s[N] as a switch (ON/OFF)
+		auto parse_ret = Game_Message::ParseSpeed(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		return Main_Data::game_switches->Get(value) ? "ON" : "OFF";
+	}
+
+	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
+};
+
+std::optional<std::string> Game_Strings::ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	if (ch == 'V' || ch == 'v') {
+		auto parse_ret = Game_Message::ParseVariable(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		int variable_value = Main_Data::game_variables->Get(value);
+		std::ostringstream ss;
+		ss << std::hex << variable_value;
+		return ss.str();
+	}
+
+	return ManiacsCommandInserter(ch, iter, end, escape_char);
+};
