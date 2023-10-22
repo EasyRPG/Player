@@ -38,10 +38,6 @@ namespace ManiacPatch {
 
 	Game_Strings::Str_t GetLcfName(int data_type, int id, bool is_dynamic);
 	Game_Strings::Str_t GetLcfDescription(int data_type, int id, bool is_dynamic);
-
-	template <typename T> Game_Strings::Str_t GetNameSafely(std::vector<T> vec, int id);
-	template <typename T> Game_Strings::Str_t GetDescriptionSafely(std::vector<T> vec, int id);
-	template <>			  Game_Strings::Str_t GetDescriptionSafely<lcf::rpg::Actor>(std::vector<lcf::rpg::Actor> vec, int id);
 }
 
 #endif

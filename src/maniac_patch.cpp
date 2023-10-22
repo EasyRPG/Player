@@ -618,11 +618,11 @@ bool ManiacPatch::CheckString(std::string str_l, std::string str_r, int op, bool
 
 	switch (op) {
 	case 0: // eq
-		return strcmp(str_l.c_str(), str_r.c_str()) == 0;
+		return str_l == str_r;
 	case 2: // contains (l contains r)
 		return str_l.find(str_r) != std::string::npos;
 	case 1: // neq
-		return strcmp(str_l.c_str(), str_r.c_str()) != 0;
+		return str_l != str_r;
 	case 3: // notContains (l does not contain r)
 		return str_l.find(str_r) == std::string::npos;
 	default:
@@ -631,6 +631,15 @@ bool ManiacPatch::CheckString(std::string str_l, std::string str_r, int op, bool
 }
 
 Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
+	auto get_name = [id](StringView type, const auto& vec) -> std::string {
+		auto* data = lcf::ReaderUtil::GetElement(vec, id);
+		if (!data) {
+			Output::Warning("Unable to read {} name: {}", type, id);
+			return {};
+		}
+		return ToString(data->name);
+	};
+
 	switch (data_type)
 	{
 	case 0:  //.actor[a].name
@@ -641,21 +650,21 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 			}
 		}
 		else {
-			return GetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+			return get_name("Actor", lcf::Data::actors);
 		}
 		break;
-	case 1:	 return GetNameSafely<lcf::rpg::Skill>(lcf::Data::skills, id);   //.skill[a].name
-	case 2:	 return GetNameSafely<lcf::rpg::Item>(lcf::Data::items, id);   //.item[a].name
-	case 3:	 return GetNameSafely<lcf::rpg::Enemy>(lcf::Data::enemies, id);   //.enemy[a].name
-	case 4:	 return GetNameSafely<lcf::rpg::Troop>(lcf::Data::troops, id);   //.troop[a].name
-	case 5:	 return GetNameSafely<lcf::rpg::Terrain>(lcf::Data::terrains, id);   //.terrain[a].name
-	case 6:	 return GetNameSafely<lcf::rpg::Attribute>(lcf::Data::attributes, id);   //.element[a].name
-	case 7:	 return GetNameSafely<lcf::rpg::State>(lcf::Data::states, id);   //.state[a].name
-	case 8:	 return GetNameSafely<lcf::rpg::Animation>(lcf::Data::animations, id);   //.anim[a].name
-	case 9:	 return GetNameSafely<lcf::rpg::Chipset>(lcf::Data::chipsets, id);   //.tileset[a].name
+	case 1:	 return get_name("Skill", lcf::Data::skills);   //.skill[a].name
+	case 2:	 return get_name("Item", lcf::Data::items);   //.item[a].name
+	case 3:	 return get_name("Enemy", lcf::Data::enemies);   //.enemy[a].name
+	case 4:	 return get_name("Troop", lcf::Data::troops);   //.troop[a].name
+	case 5:	 return get_name("Terrain", lcf::Data::terrains);   //.terrain[a].name
+	case 6:	 return get_name("Attribute", lcf::Data::attributes);   //.element[a].name
+	case 7:	 return get_name("State", lcf::Data::states);   //.state[a].name
+	case 8:	 return get_name("Animation", lcf::Data::animations);   //.anim[a].name
+	case 9:	 return get_name("Chipset", lcf::Data::chipsets);   //.tileset[a].name
 	case 10: return static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(id));   //.s[a].name
 	case 11: return static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(id));   //.v[a].name
-	case 12: break;  //.t[a].name -- not sure how to get this for now
+	case 12: return {};  // FIXME: .t[a].name -- not sure how to get this for now
 	case 13: //.cev[a].name
 	{
 		// assuming the vector of common events here is ordered by common event ID
@@ -664,8 +673,8 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 		}
 		break;
 	}
-	case 14: return GetNameSafely<lcf::rpg::Class>(lcf::Data::classes, id);   //.class[a].name
-	case 15: return GetNameSafely<lcf::rpg::BattlerAnimation>(lcf::Data::battleranimations, id);   //.anim2[a].name
+	case 14: return get_name("Class", lcf::Data::classes);   //.class[a].name
+	case 15: return get_name("BattlerAnimation", lcf::Data::battleranimations);   //.anim2[a].name
 	case 16: return static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(id));   //.map[a].name
 	case 17:   //.mev[a].name
 	{
@@ -684,18 +693,31 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 			}
 			else {
 				id = actor->GetId();
-				return GetNameSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+				return get_name("Actor", lcf::Data::actors);
 			}
 		}
 		break;
 	}
 	}
 
-	Output::Warning("Unable to read name: {} {}", data_type, id);
-	return "";
+	Output::Warning("GetLcfName: Unsupported data_type {} {}", data_type, id);
+	return {};
 }
 
 Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool is_dynamic) {
+	auto get_desc = [id](StringView type, const auto& vec) -> std::string {
+		auto* data = lcf::ReaderUtil::GetElement(vec, id);
+		if (!data) {
+			Output::Warning("Unable to read {} description: {}", type, id);
+			return {};
+		}
+		if constexpr (std::is_same_v<typename std::decay_t<decltype(vec)>::value_type, lcf::rpg::Actor>) {
+			return ToString(data->title);
+		} else {
+			return ToString(data->description);
+		}
+	};
+
 	switch (data_type)
 	{
 	case 0:  //.actor[a].desc
@@ -706,11 +728,11 @@ Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool i
 			}
 		}
 		else {
-			return GetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+			return get_desc("Actor", lcf::Data::actors);
 		}
 		break;
-	case 1: return GetDescriptionSafely<lcf::rpg::Skill>(lcf::Data::skills, id); //.skill[a].desc
-	case 2: return GetDescriptionSafely<lcf::rpg::Item>(lcf::Data::items, id); //.item[a].desc
+	case 1: return get_desc("Skill", lcf::Data::skills); //.skill[a].desc
+	case 2: return get_desc("Item", lcf::Data::items); //.item[a].desc
 	case 18: //.member[a].desc
 	{
 		auto actor = Main_Data::game_party->GetActor(id);
@@ -720,46 +742,13 @@ Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool i
 			}
 			else {
 				id = actor->GetId();
-				return GetDescriptionSafely<lcf::rpg::Actor>(lcf::Data::actors, id);
+				return get_desc("Actor", lcf::Data::actors);
 			}
 		}
 		break;
 	}
 	}
 
-	Output::Warning("Unable to read description: {} {}", data_type, id);
-	return "";
-}
-
-template <typename T>
-Game_Strings::Str_t ManiacPatch::GetNameSafely(std::vector<T> vec, int id) {
-	T* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->name);
-	}
-
-	Output::Warning("Unable to read name: {}", id);
-	return "";
-}
-
-template <typename T>
-Game_Strings::Str_t ManiacPatch::GetDescriptionSafely(std::vector<T> vec, int id) {
-	T* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->description);
-	}
-
-	Output::Warning("Unable to read description: {}", id);
-	return "";
-}
-
-template <>
-Game_Strings::Str_t ManiacPatch::GetDescriptionSafely<lcf::rpg::Actor>(std::vector<lcf::rpg::Actor> vec, int id) {
-	lcf::rpg::Actor* data = lcf::ReaderUtil::GetElement(vec, id);
-	if (data != nullptr) {
-		return static_cast<Game_Strings::Str_t>(data->title);
-	}
-
-	Output::Warning("Unable to read description: {}", id);
+	Output::Warning("GetLcfDescription: Unsupported data_type {} {}", data_type, id);
 	return "";
 }
