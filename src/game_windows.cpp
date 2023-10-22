@@ -254,6 +254,19 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 					const auto ch = tret.ch;
 
+					if (ch == '\n') {
+						if (!line32.empty()) {
+							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+							line32.clear();
+						}
+
+						x_max = std::max(x, x_max);
+						x = 0;
+						y += text.font_size + text.line_spacing;
+
+						continue;
+					}
+
 					if (Utils::IsControlCharacter(ch)) {
 						// control characters not handled
 						continue;
@@ -370,6 +383,17 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 				}
 
 				const auto ch = tret.ch;
+
+				if (ch == '\n') {
+					if (!line32.empty()) {
+						Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
+						line32.clear();
+					}
+
+					x = 0;
+					y += text.font_size + text.line_spacing;
+					continue;
+				}
 
 				if (Utils::IsControlCharacter(ch)) {
 					// control characters not handled
