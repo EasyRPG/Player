@@ -35,13 +35,14 @@ public:
 	using Str_t = std::string;
 	using Strings_t = std::vector<Str_t>;
 
-	static constexpr int max_warnings = 10;
+	// Warnings disabled for now as there is no way to predefine text strings in the database
+	static constexpr int max_warnings = 0;
 
 	struct Str_Params {
 		int string_id, hex, extract;
 	};
 
-	Game_Strings();
+	Game_Strings() = default;
 
 	void SetData(Strings_t s);
 	void SetData(std::vector<lcf::DBString> s);
@@ -59,6 +60,7 @@ public:
 	int GetLen(Str_Params params, int var_id);
 	int InStr(Str_Params params, std::string search, int var_id, int begin = 0);
 	int Split(Str_Params params, std::string delimiter, int string_out_id, int var_id);
+	static Str_t FromFile(StringView filename, int encoding);
 	Str_t ToFile(Str_Params params, std::string filename, int encoding);
 	Str_t PopLine(Str_Params params, int offset, int string_out_id);
 	Str_t ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);

@@ -4314,11 +4314,16 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	text.text = static_cast<std::string>(Main_Data::game_strings->GetWithMode(
-		static_cast<Game_Strings::Str_t>(components[1]),
-		com.parameters[22],
-		delims[0]-1
-	));
+	if (com.parameters.size() >= 23) {
+		text.text = Main_Data::game_strings->GetWithMode(
+			components[1],
+			com.parameters[22],
+			delims[0] - 1
+		);
+	} else {
+		text.text = components[1];
+	}
+
 	params.system_name = components[2];
 	text.font_name = components[3];
 
@@ -4860,16 +4865,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		{
 			// maniacs does not like a file extension
 			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
-			// args[1] is the encoding... 0 for sjis, 1 for utf8
-			// FIXME: support multiple encodings
-
-			Filesystem_Stream::InputStream is = FileFinder::OpenText(StringView(filename));
-			if (is.good()) {
-				std::stringstream buffer;
-				buffer << is.rdbuf();
-				result = buffer.str();
-			}
-			is.Close();
+			// args[1] is the encoding... 0 for ansi, 1 for utf8
+			result = Game_Strings::FromFile(filename, args[1]);
 			break;
 		}
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
@@ -4910,7 +4907,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			if (op == 3) Main_Data::game_strings->GetLen(str_params, args[0]);
 		}
 		break;
-	case 4: //inStr <fn(string text, int var_id, int begin)> takes hex??????
+	case 4: //inStr <fn(string text, int var_id, int begin)> FIXME: takes hex?
 	{
 		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
 		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe

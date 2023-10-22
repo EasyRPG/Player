@@ -399,7 +399,7 @@ Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, String
 		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
 	}
 
-	return is;	
+	return is;
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {

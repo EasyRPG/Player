@@ -17,12 +17,10 @@
 
  // Headers
 #include <regex>
+#include <lcf/encoder.h>
 #include "game_strings.h"
 #include "game_variables.h"
 #include "output.h"
-
-Game_Strings::Game_Strings()
-{}
 
 void Game_Strings::WarnGet(int id) const {
 	Output::Debug("Invalid read strvar[{}]!", id);
@@ -49,9 +47,9 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 
 	int num;
 	if (params.hex)
-		num = std::stoi(str, 0, 16);
+		num = static_cast<int>(std::strtol(str.c_str(), nullptr, 16));
 	else
-		num = std::stoi(str);
+		num = static_cast<int>(std::strtol(str.c_str(), nullptr, 0));
 
 	Main_Data::game_variables->Set(var_id, num);
 	return num;
@@ -107,6 +105,23 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 	return splits;
 }
 
+Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding) {
+	Filesystem_Stream::InputStream is = FileFinder::OpenText(filename);
+	if (!is) {
+		return {};
+	}
+
+	auto vec = Utils::ReadStream(is);
+	Str_t file_content(vec.begin(), vec.end());
+
+	if (encoding == 0) {
+		lcf::Encoder enc(Player::encoding);
+		enc.Decode(file_content);
+	}
+
+	return file_content;
+}
+
 Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
 	std::string str = Get(params.string_id);
 
@@ -114,14 +129,27 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 		filename = Extract(filename, params.hex);
 	}
 
-	// this sucks but it is what maniacs does
+	// Maniacs forces the File in Text/ folder with .txt extension
+	// TODO: Maybe relax this?
 	filename = "Text/" + filename + ".txt";
 
-	auto txt_out = FileFinder::Game().OpenOutputStream(filename);
-	if (!txt_out) { txt_out = FileFinder::Save().OpenOutputStream(filename); }
+	auto txt_out = FileFinder::Save().OpenOutputStream(filename);
 	if (!txt_out) {
-		Output::Warning("Maniac String Op toFile failed!");
-		return "";
+		if (!FileFinder::Save().MakeDirectory("Text", false)) {
+			Output::Warning("Maniac String Op ToFile failed: Cannot create Text directory");
+			return {};
+		}
+
+		txt_out = FileFinder::Save().OpenOutputStream(filename);
+		if (!txt_out) {
+			Output::Warning("Maniac String Op ToFile failed: Cannot write to {}", filename);
+			return {};
+		}
+	}
+
+	if (encoding == 0) {
+		lcf::Encoder enc(Player::encoding);
+		enc.Encode(str);
 	}
 
 	txt_out << str;
