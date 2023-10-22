@@ -91,7 +91,8 @@ void DebugLogText(const char*, Args&&...) { }
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	number_input_window(new Window_NumberInput(0, 0)),
-	gold_window(new Window_Gold(Player::screen_width - Player::menu_offset_x - gold_window_width, Player::menu_offset_y, gold_window_width, gold_window_height))
+	gold_window(new Window_Gold(Player::screen_width - Player::menu_offset_x - gold_window_width, Player::menu_offset_y, gold_window_width, gold_window_height)),
+	pending_message(Game_Message::CommandCodeInserter)
 {
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -359,7 +360,7 @@ void Window_Message::FinishMessageProcessing() {
 	line_char_counter = 0;
 	SetIndex(-1);
 
-	pending_message = {};
+	pending_message = PendingMessage(Game_Message::CommandCodeInserter);
 
 	auto close_frames = Game_Battle::IsBattleRunning() ? 0 : message_animation_frames;
 

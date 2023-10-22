@@ -96,6 +96,9 @@ namespace Game_Message {
 	/** @return true if message window is running */
 	bool IsMessageActive();
 
+	/** The command code parser for the message box */
+	std::optional<std::string> CommandCodeInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
+
 	// EasyRPG extension allowing more recursive variables \v[\v[...]]
 	static constexpr int easyrpg_default_max_recursion = 8;
 	// RPG_RT only allows 1 level of recursion.

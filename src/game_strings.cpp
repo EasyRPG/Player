@@ -58,6 +58,8 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 }
 
 int Game_Strings::GetLen(Str_Params params, int var_id) {
+	// Note: The length differs between Maniac and EasyRPG due to different internal encoding (utf-8 vs. ansi)
+
 	if (!ResizeWithId(params.string_id)) return -1;
 
 	int len = Get(params.string_id).length();
@@ -272,9 +274,16 @@ std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const c
 		int value = parse_ret.value;
 
 		return Main_Data::game_switches->Get(value) ? "ON" : "OFF";
+	} else if (ch == 'T' || ch == 't') {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		// Contrary to Messages, the content of \t[]-strings is not evaluated
+		return Main_Data::game_strings->Get(value);
 	}
 
-	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
+	return Game_Message::CommandCodeInserter(ch, iter, end, escape_char);
 };
 
 std::optional<std::string> Game_Strings::ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char) {

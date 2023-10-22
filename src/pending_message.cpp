@@ -29,6 +29,7 @@
 #include <cassert>
 #include <cctype>
 #include <algorithm>
+#include <utility>
 
 static void RemoveControlChars(std::string& s) {
 	// RPG_RT ignores any control characters within messages.
@@ -36,26 +37,31 @@ static void RemoveControlChars(std::string& s) {
 	s.erase(iter, s.end());
 }
 
-int PendingMessage::PushLineImpl(std::string msg, CommandInserter cmd_fn) {
+PendingMessage::PendingMessage(PendingMessage::CommandInserter cmd_fn) :
+	command_inserter(std::move(cmd_fn)) {
+	// no-op
+};
+
+int PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
-	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, cmd_fn);
+	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, command_inserter);
 	texts.push_back(std::move(msg));
 	return texts.size();
 }
 
-int PendingMessage::PushLine(std::string msg, CommandInserter cmd_fn) {
+int PendingMessage::PushLine(std::string msg) {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
-	return PushLineImpl(std::move(msg), cmd_fn);
+	return PushLineImpl(std::move(msg));
 }
 
-int PendingMessage::PushChoice(std::string msg, bool enabled, CommandInserter cmd_fn) {
+int PendingMessage::PushChoice(std::string msg, bool enabled) {
 	assert(!HasNumberInput());
 	if (!HasChoices()) {
 		choice_start = NumLines();
 	}
 	choice_enabled[GetNumChoices()] = enabled;
-	return PushLineImpl(std::move(msg), cmd_fn);
+	return PushLineImpl(std::move(msg));
 }
 
 int PendingMessage::PushNumInput(int variable_id, int num_digits) {
@@ -88,8 +94,7 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
 
-std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn) {
-
+std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, const CommandInserter& cmd_fn) {
 	if (input.empty()) {
 		return input;
 	}
@@ -160,14 +165,7 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 
 		int variable_value = Main_Data::game_variables->Get(value);
 		return std::to_string(variable_value);
-	} else if (ch == 'T' || ch == 't') {
-		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
-		*iter = parse_ret.next;
-		int value = parse_ret.value;
-
-		Game_Strings::Str_t string = Main_Data::game_strings->Get(value);
-		return (std::string)string;
 	}
 
 	return std::nullopt;
-};
+}

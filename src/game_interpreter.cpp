@@ -909,7 +909,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	// Set first line
@@ -1000,7 +1000,7 @@ bool Game_Interpreter::CommandShowChoices(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	// Choices setup
@@ -1031,7 +1031,7 @@ bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	int variable_id = com.parameters[1];
@@ -1696,7 +1696,7 @@ bool Game_Interpreter::CommandChangeExp(lcf::rpg::EventCommand const& com) { // 
 		com.parameters[4]
 	);
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
@@ -1726,7 +1726,7 @@ bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { /
 		com.parameters[4]
 	);
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
@@ -3937,7 +3937,7 @@ bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	const lcf::rpg::Class* cls = lcf::ReaderUtil::GetElement(lcf::Data::classes, class_id);

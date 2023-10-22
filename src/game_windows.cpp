@@ -27,6 +27,19 @@
 #include "output.h"
 #include "player.h"
 
+static std::optional<std::string> CommandCodeInserter(char ch, const char **iter, const char *end, uint32_t escape_char) {
+	if ((ch == 'T' || ch == 't') && Player::IsPatchManiac()) {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		// Contrary to Messages, the content of \t[]-strings is not evaluated
+		return Main_Data::game_strings->Get(value);
+	}
+
+	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
+}
+
 Game_Windows::Window_User::Window_User(lcf::rpg::SaveEasyRpgWindow save)
 	: data(std::move(save))
 {
@@ -206,7 +219,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 		std::stringstream ss(ToString(text.text));
 		std::string out;
-		PendingMessage pm;
+		PendingMessage pm(CommandCodeInserter);
 		while (Utils::ReadLine(ss, out)) {
 			pm.PushLine(out);
 		}

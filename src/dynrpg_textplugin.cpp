@@ -164,8 +164,8 @@ public:
 	}
 
 	static DynRpgText* GetTextHandle(const std::string& id, bool silent = false) {
-		PendingMessage pm;
-		pm.PushLine(id, DynRpgText::CommandCodeInserter);
+		PendingMessage pm(CommandCodeInserter);
+		pm.PushLine(id);
 		std::string new_id = pm.GetLines().front();
 
 		auto it = graphics.find(new_id);
@@ -230,8 +230,8 @@ private:
 		const FontRef& font = Font::Default();
 
 		for (auto& t : texts) {
-			PendingMessage pm;
-			pm.PushLine(t, CommandCodeInserter);
+			PendingMessage pm(CommandCodeInserter);
+			pm.PushLine(t);
 			t = pm.GetLines().front();
 
 			Rect r = Text::GetSize(*font, t);
@@ -269,8 +269,8 @@ static bool WriteText(dyn_arg_list args) {
 	if (!okay)
 		return true;
 
-	PendingMessage pm;
-	pm.PushLine(id, DynRpgText::CommandCodeInserter);
+	PendingMessage pm(DynRpgText::CommandCodeInserter);
+	pm.PushLine(id);
 	std::string new_id = pm.GetLines().front();
 	graphics[new_id] = std::make_unique<DynRpgText>(1, x, y, text);
 
