@@ -26,6 +26,7 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
+#include "destiny.h"
 #include "dynrpg.h"
 #include "filefinder.h"
 #include "game_map.h"

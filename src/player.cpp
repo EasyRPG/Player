@@ -38,6 +38,7 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
+#include "destiny.h"
 #include "dynrpg.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
@@ -832,10 +833,14 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
 			game_config.patch_maniac.Set(true);
 		}
+
+		if (!FileFinder::Game().FindFile(Destiny::DESTINY_DLL).empty()) {
+			game_config.patch_destiny.Set(true);
+		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} destiny={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), Player::IsPatchDestiny());
 
 	ResetGameObjects();
 
@@ -843,6 +848,10 @@ void Player::CreateGameObjects() {
 
 	if (Player::IsPatchKeyPatch()) {
 		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	}
+
+	if (Player::IsPatchDestiny()) {
+		Destiny::Load();
 	}
 }
 
