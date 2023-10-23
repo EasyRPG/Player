@@ -20,33 +20,21 @@
 #include <cstring>
 #include <cassert>
 #include <memory>
-#include "audio_decoder_midi.h"
 #include "audio_generic.h"
-#include "audio_generic_midiout.h"
-#include "filefinder.h"
 #include "output.h"
-
-GenericAudio::BgmChannel GenericAudio::BGM_Channels[nr_of_bgm_channels];
-GenericAudio::SeChannel GenericAudio::SE_Channels[nr_of_se_channels];
-bool GenericAudio::BGM_PlayedOnceIndicator;
-
-std::vector<int16_t> GenericAudio::sample_buffer = {};
-std::vector<uint8_t> GenericAudio::scrap_buffer = {};
-unsigned GenericAudio::scrap_buffer_size = 0;
-std::vector<float> GenericAudio::mixer_buffer = {};
-
-std::unique_ptr<GenericAudioMidiOut> GenericAudio::midi_thread;
 
 GenericAudio::GenericAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
 	int i = 0;
 	for (auto& BGM_Channel : BGM_Channels) {
 		BGM_Channel.id = i++;
 		BGM_Channel.decoder.reset();
+		BGM_Channel.instance = this;
 	}
 	i = 0;
 	for (auto& SE_Channel : SE_Channels) {
 		SE_Channel.id = i++;
 		SE_Channel.decoder.reset();
+		SE_Channel.instance = this;
 	}
 	BGM_PlayedOnceIndicator = false;
 	midi_thread.reset();
@@ -492,8 +480,8 @@ void GenericAudio::BgmChannel::Stop() {
 	stopped = true;
 	if (midi_out_used) {
 		midi_out_used = false;
-		midi_thread->GetMidiOut().Reset();
-		midi_thread->GetMidiOut().Pause();
+		instance->midi_thread->GetMidiOut().Reset();
+		instance->midi_thread->GetMidiOut().Pause();
 	} else if (decoder) {
 		decoder.reset();
 	}
@@ -503,16 +491,16 @@ void GenericAudio::BgmChannel::SetPaused(bool newPaused) {
 	paused = newPaused;
 	if (midi_out_used) {
 		if (newPaused) {
-			midi_thread->GetMidiOut().Pause();
+			instance->midi_thread->GetMidiOut().Pause();
 		} else {
-			midi_thread->GetMidiOut().Resume();
+			instance->midi_thread->GetMidiOut().Resume();
 		}
 	}
 }
 
 int GenericAudio::BgmChannel::GetTicks() const {
 	if (midi_out_used) {
-		return midi_thread->GetMidiOut().GetTicks();
+		return instance->midi_thread->GetMidiOut().GetTicks();
 	} else if (decoder) {
 		return decoder->GetTicks();
 	}
@@ -521,7 +509,7 @@ int GenericAudio::BgmChannel::GetTicks() const {
 
 void GenericAudio::BgmChannel::SetFade(int fade) {
 	if (midi_out_used) {
-		midi_thread->GetMidiOut().SetFade(0, std::chrono::milliseconds(fade));
+		instance->midi_thread->GetMidiOut().SetFade(0, std::chrono::milliseconds(fade));
 	} else if (decoder) {
 		decoder->SetFade(0, std::chrono::milliseconds(fade));
 	}
@@ -529,7 +517,7 @@ void GenericAudio::BgmChannel::SetFade(int fade) {
 
 void GenericAudio::BgmChannel::SetVolume(int volume) {
 	if (midi_out_used) {
-		midi_thread->GetMidiOut().SetVolume(volume);
+		instance->midi_thread->GetMidiOut().SetVolume(volume);
 	} else if (decoder) {
 		decoder->SetVolume(volume);
 	}
@@ -537,7 +525,7 @@ void GenericAudio::BgmChannel::SetVolume(int volume) {
 
 void GenericAudio::BgmChannel::SetPitch(int pitch) {
 	if (midi_out_used) {
-		midi_thread->GetMidiOut().SetPitch(pitch);
+		instance->midi_thread->GetMidiOut().SetPitch(pitch);
 	} else if (decoder) {
 		decoder->SetPitch(pitch);
 	}

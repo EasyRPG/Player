@@ -194,6 +194,11 @@ public:
 
 	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(bool resample);
 
+	/**
+	 * Resets the global state of the midi libraries.
+	 */
+	static void Reset();
+
 protected:
 	int frequency = EP_MIDI_FREQ;
 };
