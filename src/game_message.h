@@ -96,6 +96,9 @@ namespace Game_Message {
 	/** @return true if message window is running */
 	bool IsMessageActive();
 
+	/** The command code parser for the message box */
+	std::optional<std::string> CommandCodeInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
+
 	// EasyRPG extension allowing more recursive variables \v[\v[...]]
 	static constexpr int easyrpg_default_max_recursion = 8;
 	// RPG_RT only allows 1 level of recursion.
@@ -130,6 +133,18 @@ namespace Game_Message {
 	 * @return \refer ParseParamResult
 	 */
 	ParseParamResult ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	/** Parse a \t[] variable string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseString(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 
 	/** Parse a \c[] color string
 	 *

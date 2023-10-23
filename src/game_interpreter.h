@@ -283,6 +283,7 @@ protected:
 	bool CommandManiacControlGlobalSave(lcf::rpg::EventCommand const& com);
 	bool CommandManiacChangePictureId(lcf::rpg::EventCommand const& com);
 	bool CommandManiacSetGameOption(lcf::rpg::EventCommand const& com);
+	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
@@ -330,6 +331,7 @@ protected:
 
 	bool CheckOperator(int val, int val2, int op) const;
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op) const;
+	bool ManiacCheckString(std::string str_l, std::string str_r, int op, bool ignore_case) const;
 
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;

@@ -362,7 +362,7 @@ bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 
 	StringView greeting_1, greeting_2, greeting_3, accept, cancel;
 

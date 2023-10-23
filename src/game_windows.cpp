@@ -17,6 +17,7 @@
 
 #include "game_windows.h"
 #include "game_message.h"
+#include "game_strings.h"
 #include "main_data.h"
 #include "compiler.h"
 #include "text.h"
@@ -25,6 +26,19 @@
 #include "filefinder.h"
 #include "output.h"
 #include "player.h"
+
+static std::optional<std::string> CommandCodeInserter(char ch, const char **iter, const char *end, uint32_t escape_char) {
+	if ((ch == 'T' || ch == 't') && Player::IsPatchManiac()) {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		// Contrary to Messages, the content of \t[]-strings is not evaluated
+		return Main_Data::game_strings->Get(value);
+	}
+
+	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
+}
 
 Game_Windows::Window_User::Window_User(lcf::rpg::SaveEasyRpgWindow save)
 	: data(std::move(save))
@@ -205,7 +219,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 		std::stringstream ss(ToString(text.text));
 		std::string out;
-		PendingMessage pm;
+		PendingMessage pm(CommandCodeInserter);
 		while (Utils::ReadLine(ss, out)) {
 			pm.PushLine(out);
 		}
@@ -252,6 +266,19 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 					}
 
 					const auto ch = tret.ch;
+
+					if (ch == '\n') {
+						if (!line32.empty()) {
+							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+							line32.clear();
+						}
+
+						x_max = std::max(x, x_max);
+						x = 0;
+						y += text.font_size + text.line_spacing;
+
+						continue;
+					}
 
 					if (Utils::IsControlCharacter(ch)) {
 						// control characters not handled
@@ -369,6 +396,17 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 				}
 
 				const auto ch = tret.ch;
+
+				if (ch == '\n') {
+					if (!line32.empty()) {
+						Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
+						line32.clear();
+					}
+
+					x = 0;
+					y += text.font_size + text.line_spacing;
+					continue;
+				}
 
 				if (Utils::IsControlCharacter(ch)) {
 					// control characters not handled

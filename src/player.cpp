@@ -55,6 +55,7 @@
 #include "game_pictures.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "game_targets.h"
 #include "game_windows.h"
 #include "graphics.h"
@@ -904,6 +905,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
+	Main_Data::game_strings = std::make_unique<Game_Strings>();
+
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
@@ -1162,6 +1165,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	Main_Data::game_switches->SetData(std::move(save->system.switches));
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 	Main_Data::game_variables->SetData(std::move(save->system.variables));
+	Main_Data::game_strings->SetData(std::move(save->system.maniac_strings));
 	Main_Data::game_system->SetupFromSave(std::move(save->system));
 	Main_Data::game_actors->SetSaveData(std::move(save->actors));
 	Main_Data::game_party->SetupFromSave(std::move(save->inventory));

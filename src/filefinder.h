@@ -98,6 +98,23 @@ namespace FileFinder {
 	std::string FindSound(StringView name);
 
 	/**
+	 * Finds a font file.
+	 * Searches through the current RPG Maker game and the RTP directories.
+	 *
+	 * @param name the font name.
+	 * @return path to file.
+	 */
+	std::string FindFont(StringView name);
+
+	/**
+	 * Finds a text file in the current RPG Maker game.
+	 *
+	 * @param name the text path and name.
+	 * @return path to file.
+	 */
+	std::string FindText(StringView name);
+
+	/**
 	 * Finds an image file and opens a file handle to it.
 	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
@@ -137,13 +154,24 @@ namespace FileFinder {
 	Filesystem_Stream::InputStream OpenFont(StringView name);
 
 	/**
-	 * Finds a font file.
-	 * Searches through the current RPG Maker game and the RTP directories.
+	 * Finds a text file and opens a file handle to it.
+	 * Searches through the Text folder of the current RPG Maker game.
+	 * Will also search through the directory save files are written to as a fallback,
+	 * as it needs to account for files written by the game as well.
 	 *
-	 * @param name the font name.
-	 * @return path to file.
+	 * @param name the text path and name.
+	 * @return read handle on success or invalid handle if not found
 	 */
-	std::string FindFont(StringView name);
+	Filesystem_Stream::InputStream OpenText(StringView name);
+
+	/**
+	* Writes data to a txt file.
+	* If the file exists, it will be overwritten.
+	*
+	* @param name the text file path and name
+	* @param data the content of the text file to be written
+	*/
+	void WriteText(StringView name, StringView data);
 
 	/**
 	 * Appends name to directory.

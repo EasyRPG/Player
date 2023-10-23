@@ -566,13 +566,7 @@ bool Scene_Settings::SaveConfig(bool silent) {
 
 	cfg.WriteToStream(cfg_out);
 
-#ifdef EMSCRIPTEN
-	// Save changed file system
-	EM_ASM({
-		FS.syncfs(function(err) {
-		});
-	});
-#endif
+	AsyncHandler::SaveFilesystem();
 
 	if (silent) {
 		Output::Debug("Configuration saved to {}", cfg_out.GetName());

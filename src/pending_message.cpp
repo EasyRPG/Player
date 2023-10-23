@@ -17,8 +17,10 @@
 
 #include "pending_message.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "game_actors.h"
 #include "game_message.h"
+#include "game_switches.h"
 #include <lcf/data.h>
 #include "output.h"
 #include "utils.h"
@@ -27,6 +29,7 @@
 #include <cassert>
 #include <cctype>
 #include <algorithm>
+#include <utility>
 
 static void RemoveControlChars(std::string& s) {
 	// RPG_RT ignores any control characters within messages.
@@ -34,26 +37,31 @@ static void RemoveControlChars(std::string& s) {
 	s.erase(iter, s.end());
 }
 
-int PendingMessage::PushLineImpl(std::string msg, CommandInserter cmd_fn) {
+PendingMessage::PendingMessage(PendingMessage::CommandInserter cmd_fn) :
+	command_inserter(std::move(cmd_fn)) {
+	// no-op
+};
+
+int PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
-	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, cmd_fn);
+	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, command_inserter);
 	texts.push_back(std::move(msg));
 	return texts.size();
 }
 
-int PendingMessage::PushLine(std::string msg, CommandInserter cmd_fn) {
+int PendingMessage::PushLine(std::string msg) {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
-	return PushLineImpl(std::move(msg), cmd_fn);
+	return PushLineImpl(std::move(msg));
 }
 
-int PendingMessage::PushChoice(std::string msg, bool enabled, CommandInserter cmd_fn) {
+int PendingMessage::PushChoice(std::string msg, bool enabled) {
 	assert(!HasNumberInput());
 	if (!HasChoices()) {
 		choice_start = NumLines();
 	}
 	choice_enabled[GetNumChoices()] = enabled;
-	return PushLineImpl(std::move(msg), cmd_fn);
+	return PushLineImpl(std::move(msg));
 }
 
 int PendingMessage::PushNumInput(int variable_id, int num_digits) {
@@ -86,7 +94,7 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
 
-std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, CommandInserter cmd_fn) {
+std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, const CommandInserter& cmd_fn) {
 	if (input.empty()) {
 		return input;
 	}
@@ -124,7 +132,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 		if (fn_res) {
 			output.append(*fn_res);
 			start_copy = iter;
-		}
+		} 
 	}
 
 	if (start_copy == input.data()) {
@@ -160,4 +168,4 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 	}
 
 	return std::nullopt;
-};
+}

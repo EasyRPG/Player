@@ -23,6 +23,8 @@
 #include <cstdint>
 #include "span.h"
 
+#include "game_strings.h"
+
 class Game_Interpreter;
 
 namespace ManiacPatch {
@@ -31,6 +33,11 @@ namespace ManiacPatch {
 	std::array<bool, 50> GetKeyRange();
 
 	bool GetKeyState(uint32_t key_id);
+
+	bool CheckString(std::string str_l, std::string str_r, int op, bool ignore_case);
+
+	Game_Strings::Str_t GetLcfName(int data_type, int id, bool is_dynamic);
+	Game_Strings::Str_t GetLcfDescription(int data_type, int id, bool is_dynamic);
 }
 
 #endif

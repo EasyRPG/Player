@@ -17,11 +17,13 @@
 
 // Headers
 #include <algorithm>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <regex>
 #include <sstream>
+#include <string>
 #include <cassert>
-#include <ctime>
 #include "game_interpreter.h"
 #include "audio.h"
 #include "dynrpg.h"
@@ -819,6 +821,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacChangePictureId(com);
 		case Cmd::Maniac_SetGameOption:
 			return CommandManiacSetGameOption(com);
+		case Cmd::Maniac_ControlStrings:
+			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
 		default:
@@ -905,7 +909,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	// Set first line
@@ -996,7 +1000,7 @@ bool Game_Interpreter::CommandShowChoices(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	// Choices setup
@@ -1027,7 +1031,7 @@ bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	auto pm = PendingMessage();
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
 
 	int variable_id = com.parameters[1];
@@ -1692,7 +1696,7 @@ bool Game_Interpreter::CommandChangeExp(lcf::rpg::EventCommand const& com) { // 
 		com.parameters[4]
 	);
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
@@ -1722,7 +1726,7 @@ bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { /
 		com.parameters[4]
 	);
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
@@ -3598,6 +3602,23 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			result = CheckOperator(value1, value2, com.parameters[4]);
 		}
 		break;
+	case 15:
+		//Maniac: string comparison
+		if (Player::IsPatchManiac()) {
+			int modes[] = {
+				(com.parameters[1]     ) & 15, //str_l mode: 0 = direct, 1 = indirect
+				(com.parameters[1] >> 4) & 15, //str_r mode: 0 = literal, 1 = direct, 2 = indirect
+			};
+
+			int op = com.parameters[4] & 3;
+			int ignoreCase = com.parameters[4] >> 8 & 1;
+
+			std::string str_param = static_cast<std::string>(com.string);
+			std::string str_l = Main_Data::game_strings->GetWithMode(str_param, com.parameters[2], modes[0]+1);
+			std::string str_r = Main_Data::game_strings->GetWithMode(str_param, com.parameters[3], modes[1]);
+			result = ManiacPatch::CheckString(str_l, str_r, op, ignoreCase);
+		}
+		break;
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
@@ -3916,7 +3937,7 @@ bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { /
 		return false;
 	}
 
-	PendingMessage pm;
+	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
 
 	const lcf::rpg::Class* cls = lcf::ReaderUtil::GetElement(lcf::Data::classes, class_id);
@@ -4272,8 +4293,20 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	text.font_size = font_px;
 
-	auto components = Utils::Tokenize(com.string, [](char32_t ch) {
-		return ch == '\x01';
+	// maniacs stores string parsing modes in the delimiters
+	// x01 -> literal string
+	// x02 -> direct reference
+	// x03 -> indirect reference
+	// for the displayed string, the id argument is in com.parameters[22]
+	// here we are capturing all the delimiters, but currently only need to support reading the first one
+	int i = 0;
+	std::vector<int> delims;
+	auto components = Utils::Tokenize(com.string, [p = &delims, &i](char32_t ch) {
+		if (ch == '\x01' || ch == '\x02' || ch == '\x03') {
+			p->push_back(static_cast<int>(ch));
+			return true;
+		}
+		return false;
 	});
 
 	if (components.size() < 4) {
@@ -4281,7 +4314,16 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	text.text = components[1];
+	if (com.parameters.size() >= 23) {
+		text.text = Main_Data::game_strings->GetWithMode(
+			components[1],
+			com.parameters[22],
+			delims[0] - 1
+		);
+	} else {
+		text.text = components[1];
+	}
+
 	params.system_name = components[2];
 	text.font_name = components[3];
 
@@ -4634,6 +4676,306 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const&)
 	return true;
 }
 
+bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+	//*parameter 0 - Modifier of the operation members
+	//	-bits 0..3:
+	//		Refers to the String mode: t[x], t[x..y], t[v[x]], t[v[x]..v[y]]
+	//	-bits 4..7:
+	//		Refers to the first argument, which can change depending on the type of operation:  x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 8..11:
+	//		Refers to the second argument, which can change depending on the type of operation: x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 12..15:
+	//		Refers to the third argument, which can change depending on the type of operation:  x, v[x], v[v[x]] | string, t[x], t[v[x]]
+	//	-bits 16..19:
+	//		Refers to the fourth argument, which can change depending on the type of operation: x, v[x], v[v[x]] | string, t[x], t[v[x]] (edge case for exMatch)
+	// 
+	//*parameter 1 - String index 0
+	// 
+	//*parameter 2 - String index 1 (optional for ranges)
+	// 
+	//*parameter 3 - general flags
+	//	-byte0:
+	//		Refers to the type of operation: asg, cat, toNum...
+	//	-byte1:
+	//		It is a flag that indicates sub-operation: actor[x].name, .actor[x].desc, ins, rep, subs, join... Used only in asg and cat operations
+	//	-byte2:
+	//		Flags, such as: extract, hex... There is also an edge case where the last argument of exRep is here
+	// 
+	//*parameters 4..n - arguments
+	int string_mode = com.parameters[0] & 15;
+	int string_id_0 = com.parameters[1];
+	int string_id_1 = com.parameters[2]; //for ranges
+
+	int is_range = string_mode & 1;
+
+	if (string_mode >= 2) {
+		string_id_0 = Main_Data::game_variables->Get(string_id_0);
+	}
+	if (string_mode == 3) {
+		string_id_1 = Main_Data::game_variables->Get(string_id_1);
+	}
+
+	int op    = (com.parameters[3] >>  0) & 255;
+	int fn    = (com.parameters[3] >>  8) & 255;
+	int flags = (com.parameters[3] >> 16) & 255;
+
+	int hex_flag     = (flags >> 1) & 1;
+	int extract_flag = (flags >> 2) & 1;
+	int first_flag = (flags >> 3) & 1;
+
+	int args[] = {
+		com.parameters[4],
+		com.parameters[5],
+		com.parameters[6],
+		0
+	};
+	if (com.parameters.size() > 7) {
+		args[3] = com.parameters[7]; //The exMatch command is a edge case that uses 4 arguments
+	}
+	int modes[] = {
+		(com.parameters[0] >>  4) & 15,
+		(com.parameters[0] >>  8) & 15,
+		(com.parameters[0] >> 12) & 15,
+
+		(com.parameters[0] >> 16) & 15
+	};
+
+	Game_Strings::Str_t str_param = static_cast<Game_Strings::Str_t>(com.string);
+	Game_Strings::Str_t result = "";
+	Game_Strings::Str_Params str_params = {
+		string_id_0,
+		hex_flag,
+		extract_flag,
+	};
+
+	switch (op)
+	{
+	case 0: //asg <fn(string text)>
+	case 1: //cat <fn(string text)>
+		switch (fn)
+		{
+		case 0: //String <fn(string text, int min_size)>
+			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
+
+			// min_size
+			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
+			break;
+		case 1: //Number <fn(int number, int min_size)>
+			args[0] = ValueOrVariable(modes[0], args[0]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
+
+			result = std::to_string(args[0]);
+			result = Main_Data::game_strings->PrependMin(result, args[1], '0');
+			break;
+		case 2: //Switch <fn(int number, int min_size)>
+		{
+			if (modes[0] == 1) args[0] = Main_Data::game_variables->Get(args[0]);
+			args[1] = ValueOrVariable(modes[1], args[1]);
+
+			if (Main_Data::game_switches->Get(args[0])) {
+				result = "ON";
+			} else {
+				result = "OFF";
+			}
+			result = Main_Data::game_strings->PrependMin(result, args[1], ' ');
+			break;
+		}
+		case 3: //Database Names <fn(int database_id, int entity_id, bool dynamic)>
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			result = ManiacPatch::GetLcfName(args[0], args[1], (bool)args[2]);
+			break;
+		case 4: //Database Descriptions <fn(int id, bool dynamic)>
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			result = ManiacPatch::GetLcfDescription(args[0], args[1], (bool)args[2]);
+			break;
+		case 6: //Concatenate (cat) <fn(int id_or_length_a, int id_or_length_b, int id_or_length_c)>
+		{
+			int pos = 0;
+			std::string op_string;
+			for (int i = 0; i < 3; i++) {
+				op_string += Main_Data::game_strings->GetWithModeAndPos(str_param, args[i], modes[i], &pos);
+			}
+			result = (Game_Strings::Str_t)op_string;
+			break;
+		}
+		case 7: //Insert (ins) <fn(string base, int index, string insert)>
+		{
+			int pos = 0;
+			std::string base, insert;
+
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			base =    Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			insert =  Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
+
+			result = (Game_Strings::Str_t)base.insert(args[1], insert);
+			break;
+		}
+		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
+		{
+			int pos = 0;
+			std::string base, search, replacement;
+
+			base =        Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			search =      Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
+
+			std::size_t index = base.find(search);
+			while (index != std::string::npos) {
+				base.replace(index, search.length(), replacement);
+				index = base.find(search, index + replacement.length());
+			}
+
+			result = static_cast<Game_Strings::Str_t>(base);
+			break;
+		}
+		case 9: //Substring (subs) <fn(string base, int index, int size)>
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
+			result =  Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).substr(args[1], args[2]);
+			break;
+		case 10: //Join (join) <fn(string delimiter, int id, int size)>
+		{
+			std::string op_string = "";
+			std::string delimiter = (std::string)Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+
+			// args[1] & mode[1] relates to starting ID for strings to join
+			// mode 0 = id literal, 1 = direct var, 2 = var literal, 3 = direct var
+			args[1] = ValueOrVariable(modes[1] % 2, args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
+
+			while (args[2] > 0) {
+				if (modes[1] < 2) {
+					op_string += Main_Data::game_strings->Get(args[1]++);
+				} else {
+					op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
+				}
+				
+				if (--args[2] > 0) op_string += delimiter;
+			}
+
+			result = op_string;
+			break;
+		}
+		case 12: //File (file) <fn(string filename, int encode)>
+		{
+			// maniacs does not like a file extension
+			Game_Strings::Str_t filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+			// args[1] is the encoding... 0 for ansi, 1 for utf8
+			bool do_yield;
+			result = Game_Strings::FromFile(filename, args[1], do_yield);
+
+			if (do_yield) {
+				// Wait for text file download and repeat
+				_async_op = AsyncOp::MakeYieldRepeat();
+				return true;
+			}
+
+			break;
+		}
+		case 13: //Remove (rem) <fn(string base, int index, int size)>
+			args[1] = ValueOrVariable(modes[1], args[1]);
+			args[2] = ValueOrVariable(modes[2], args[2]);
+			result = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]).erase(args[1], args[2]);
+			break;
+		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
+		{
+			int pos = 0;
+			std::string base, search, replacement;
+
+			base =        Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos);
+			search =      Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos);
+
+			std::regex rexp(search);
+
+			if (first_flag) result = std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only);
+			else result =            std::regex_replace(base, rexp, replacement);
+			break;
+		}
+		default:
+			Output::Warning("Unknown or unimplemented string sub-operation {}", op);
+			break;
+		}
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, result, op);
+		else {
+			if (op == 0) Main_Data::game_strings->Asg(str_params, result);
+			if (op == 1) Main_Data::game_strings->Cat(str_params, result);
+		}
+		break;
+	case 2: //toNum <fn(int var_id)> takes hex
+	case 3: //getLen <fn(int var_id)>
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, result, op, args);
+		else {
+			if (op == 2) Main_Data::game_strings->ToNum(str_params, args[0]);
+			if (op == 3) Main_Data::game_strings->GetLen(str_params, args[0]);
+		}
+		break;
+	case 4: //inStr <fn(string text, int var_id, int begin)> FIXME: takes hex?
+	{
+		Game_Strings::Str_t search = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe
+		args[2] = ValueOrVariable(modes[2], args[2]);
+		
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, search, op, args);
+		else          Main_Data::game_strings->InStr(str_params, search, args[1], args[2]);
+		break;
+	}
+	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
+	{
+		Game_Strings::Str_t delimiter = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+		args[1] = ValueOrVariable(modes[1], args[1]);
+		args[2] = ValueOrVariable(modes[2], args[2]);
+		
+		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, delimiter, op, args);
+		else          Main_Data::game_strings->Split(str_params, delimiter, args[1], args[2]);
+		break;
+	}
+	case 7: //toFile <fn(string filename, int encode)>  takes hex
+	{
+		std::string filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+		args[1] = ValueOrVariable(modes[1], args[1]);
+
+		Main_Data::game_strings->ToFile(str_params, filename, args[1]);
+		break;
+	}
+	case 8: //popLine <fn(int output_str_id)> takes hex
+		// a range parameter with popLine doesn't affect multiple strings;
+		// it instead alters the behavior.
+		// given a range t[a..b], it will pop the first (b-a)+1 lines,
+		// and store the last popped line into the output string.
+		args[1] = ValueOrVariable(modes[0], args[0]);
+
+		if (is_range) Main_Data::game_strings->PopLine(str_params, string_id_1 - string_id_0, args[0]);
+		else          Main_Data::game_strings->PopLine(str_params, 0, args[0]);
+		break;
+	case 9: //exInStr <fn(string text, int var_id, int begin)>  
+	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
+	{
+		// takes hex
+		std::string expr = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0]);
+		args[1] = ValueOrVariable(modes[1], args[1]); // output var
+		args[2] = ValueOrVariable(modes[2], args[2]); // beginning pos
+
+		if (is_range) {
+			Main_Data::game_strings->RangeOp(str_params, string_id_1, expr, op, args);
+		}
+		else {
+			if (op == 9) Main_Data::game_strings->ExMatch(str_params, expr, args[1], args[2]);
+			else         Main_Data::game_strings->ExMatch(str_params, expr, args[1], args[2], args[3]);
+		}
+		break;
+	}
+	default:
+		Output::Warning("Unknown or unimplemented string operation {}", op);
+		break;
+	}
+	return true;
+}
+ 
 bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	if (!Player::IsPatchManiac()) {
 		return true;

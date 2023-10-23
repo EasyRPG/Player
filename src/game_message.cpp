@@ -22,6 +22,7 @@
 #include "game_player.h"
 #include "game_battle.h"
 #include "game_system.h"
+#include "game_strings.h"
 #include "main_data.h"
 #include "window_message.h"
 #include "font.h"
@@ -152,6 +153,36 @@ bool Game_Message::IsMessageActive() {
 
 bool Game_Message::CanShowMessage(bool foreground) {
 	return window ? window->GetAllowNextMessage(foreground) : false;
+}
+
+static std::optional<std::string> CommandCodeInserterNoRecurse(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	if ((ch == 'T' || ch == 't') && Player::IsPatchManiac()) {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		std::string str = Main_Data::game_strings->Get(value);
+
+		// \t[] is evaluated but command codes inside it are not evaluated again
+		return PendingMessage::ApplyTextInsertingCommands(str, escape_char, PendingMessage::DefaultCommandInserter);
+	}
+
+	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
+}
+
+std::optional<std::string> Game_Message::CommandCodeInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+	if ((ch == 'T' || ch == 't') && Player::IsPatchManiac()) {
+		auto parse_ret = Game_Message::ParseString(*iter, end, escape_char, true);
+		*iter = parse_ret.next;
+		int value = parse_ret.value;
+
+		std::string str = Main_Data::game_strings->Get(value);
+
+		// Command codes in \t[] are evaluated once.
+		return PendingMessage::ApplyTextInsertingCommands(str, escape_char, CommandCodeInserterNoRecurse);
+	}
+
+	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseParam(
@@ -321,6 +352,10 @@ Game_Message::ParseParamStringResult Game_Message::ParseStringParam(
 
 Game_Message::ParseParamResult Game_Message::ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
 	return ParseParam('V', 'v', iter, end, escape_char, skip_prefix, max_recursion - 1);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseString(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParam('T', 't', iter, end, escape_char, skip_prefix, max_recursion);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {

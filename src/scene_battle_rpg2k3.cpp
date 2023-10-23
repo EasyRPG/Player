@@ -1811,7 +1811,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		auto pm = PendingMessage();
+		PendingMessage pm(Game_Message::CommandCodeInserter);
 		pm.SetEnableFace(false);
 
 		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
@@ -1911,7 +1911,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionDe
 		Main_Data::game_system->SetMessagePosition(0);
 		Main_Data::game_system->SetMessageTransparent(false);
 
-		auto pm = PendingMessage();
+		PendingMessage pm(Game_Message::CommandCodeInserter);
 		pm.SetEnableFace(false);
 		pm.PushLine(ToString(lcf::Data::terms.defeat));
 

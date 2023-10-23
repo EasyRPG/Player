@@ -68,6 +68,7 @@ namespace {
 	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
+	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ".svg", ".xml", ".json", ".yml", ".yaml");
 }
 
 FilesystemView FileFinder::Game() {
@@ -337,6 +338,15 @@ std::string find_generic(const DirectoryTree::Args& args) {
 	return FileFinder::Game().FindFile(args);
 }
 
+std::string find_generic_with_fallback(DirectoryTree::Args& args) {
+	std::string found = FileFinder::Save().FindFile(args); 
+	if (found.empty()) {
+		return find_generic(args);
+	}
+
+	return found;
+}
+
 std::string FileFinder::FindImage(StringView dir, StringView name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return find_generic(args);
@@ -358,6 +368,11 @@ std::string FileFinder::FindFont(StringView name) {
 	return find_generic(args);
 }
 
+std::string FileFinder::FindText(StringView name) {
+	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, true };
+	return find_generic_with_fallback(args);
+}
+
 Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, DirectoryTree::Args& args) {
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
@@ -374,6 +389,16 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 			Output::Debug("Cannot find: {}/{}", dir, name);
 		}
 	}
+	return is;
+}
+
+Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
+	auto is = FileFinder::Save().OpenFile(args); 
+	if (!is) { is = open_generic(dir, name, args); }
+	if (!is) {
+		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
+	}
+
 	return is;
 }
 
@@ -395,6 +420,11 @@ Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
 Filesystem_Stream::InputStream FileFinder::OpenFont(StringView name) {
 	DirectoryTree::Args args = { MakePath("Font", name), FONTS_TYPES, 1, false };
 	return open_generic("Font", name, args);
+}
+
+Filesystem_Stream::InputStream FileFinder::OpenText(StringView name) {
+	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, false };
+	return open_generic_with_fallback("Text", name, args);
 }
 
 bool FileFinder::IsMajorUpdatedTree() {

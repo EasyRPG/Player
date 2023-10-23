@@ -7,6 +7,7 @@ EasyRPG Player authors
 * Carsten Teibes (carstene1ns)
 * Christian Breitwieser (ChrisBreiti)
 * Diego Pedraza (zegeri)
+* Erich Newey (enewey)
 * Dmytro Kushnariov (rohkea)
 * Francisco de la Peña (fdelapena)
 * Gabriel Kind (Ghabry)

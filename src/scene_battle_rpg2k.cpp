@@ -844,7 +844,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVict
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		auto pm = PendingMessage();
+		PendingMessage pm(Game_Message::CommandCodeInserter);
 		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Feature::HasPlaceholders());
@@ -901,7 +901,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionDefe
 		Main_Data::game_system->SetMessagePosition(2);
 		Main_Data::game_system->SetMessageTransparent(false);
 
-		auto pm = PendingMessage();
+		PendingMessage pm(Game_Message::CommandCodeInserter);
 		pm.SetEnableFace(false);
 
 		pm.SetWordWrapped(Feature::HasPlaceholders());

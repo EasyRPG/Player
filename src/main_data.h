@@ -36,6 +36,7 @@ class Game_Party;
 class Game_EnemyParty;
 class Game_Switches;
 class Game_Variables;
+class Game_Strings;
 class Game_Targets;
 class Game_Quit;
 class Game_Ineluki;
@@ -46,6 +47,7 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_System> game_system;
 	extern std::unique_ptr<Game_Switches> game_switches;
 	extern std::unique_ptr<Game_Variables> game_variables;
+	extern std::unique_ptr<Game_Strings> game_strings;
 	extern std::unique_ptr<Game_Screen> game_screen;
 	extern std::unique_ptr<Game_Pictures> game_pictures;
 	extern std::unique_ptr<Game_Windows> game_windows;
