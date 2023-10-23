@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <unordered_set>
 #include "system.h"
 #include "game_commonevent.h"
 #include "game_event.h"
@@ -91,7 +92,7 @@ namespace Game_Map {
 	 */
 	void Quit();
 
-	/** Disposes Game_Map.  */
+	/** Disposes Game_Map. */
 	void Dispose();
 
 	/**
@@ -197,6 +198,61 @@ namespace Game_Map {
 	bool MakeWay(const Game_Character& self,
 			int from_x, int from_y,
 			int to_x, int to_y);
+
+	/**
+	 * Check if a move of self is possible to (to_x,to_y).
+	 * Any events that are blocked will also be checked for collision.
+	 *
+	 * Returns true if move is possible.
+	 *
+	 * @param self Character to move.
+	 * @param from_x from tile x.
+	 * @param from_y from tile y.
+	 * @param to_x to new tile x.
+	 * @param to_y to new tile y.
+	 * @return whether move is possible.
+	 */
+	bool CheckWay(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y);
+
+	/**
+	 * Extended function of CheckWay that spits out some
+	 * additional computed values for use in MakeWay.
+	 *
+	 * @param self See CheckWay.
+	 * @param from_x See CheckWay.
+	 * @param from_y See CheckWay.
+	 * @param to_x See CheckWay.
+	 * @param to_y See CheckWay.
+	 * @param ignore_events_and_vehicles Whether to ignore
+	 *   all events and vehicles and only check map geometry.
+	 * @param ignore_some_events_by_id Ignore some specific
+	 *   events by ID.
+	 * @param out_bit_from Outputs bitmap mask for passability.
+	 * @param out_bit_to Outputs bitmap mask for passability.
+	 * @param out_to_x Target pos adjusted for map repeat.
+	 * @param out_to_y Target pos adjusted for map repeat.
+	 * @param out_self_conflict Outputs whether the moving self
+	 *	 has a tile graphic that conflicts with the movement
+	 *	 direction.
+	 * @return See CheckWay.
+	 */
+	 bool CheckWayEx(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y,
+			bool ignore_events_and_vehicles,
+			std::unordered_set<int> *ignore_some_events_by_id,
+			int *out_bit_from,
+			int *out_bit_to,
+			int *out_to_x,
+			int *out_to_y,
+			bool *out_self_conflict);
+	bool CheckWayEx(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y,
+			bool ignore_all_events,
+			std::unordered_set<int> *ignore_some_events_by_id);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)
@@ -569,8 +625,14 @@ namespace Game_Map {
 	 * @param bit which direction bits to check
 	 * @param x target tile x.
 	 * @param y target tile y.
+	 * @param check_events_and_vehicles Whether to consider events and vehicles.
+	 * @param check_map_geometry Whether to take map collision into account.
 	 * @return whether is passable.
 	 */
+	bool IsPassableTile(
+		const Game_Character* self, int bit, int x, int y,
+		bool check_events_and_vehicles, bool check_map_geometry
+		);
 	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
 	/**

@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <climits>
 #include <numeric>
+#include <unordered_set>
 
 #include "async_handler.h"
 #include "options.h"
@@ -337,7 +338,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 
 void Game_Map::SetupCommon() {
 	if (!Tr::GetCurrentTranslationId().empty()) {
-		//  Build our map translation id.
+		// Build our map translation id.
 		std::stringstream ss;
 		ss << "map" << std::setfill('0') << std::setw(4) << GetMapId() << ".po";
 
@@ -533,6 +534,19 @@ static void MakeWayUpdate(Game_Event& other) {
 }
 
 template <typename T>
+static bool CheckWayTestCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
+	if (&self == &other) {
+		return false;
+	}
+
+	if (!other.IsInPosition(x, y)) {
+		return false;
+	}
+
+	return WouldCollide(self, other, self_conflict);
+}
+
+template <typename T>
 static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
 	if (&self == &other) {
 		return false;
@@ -559,18 +573,53 @@ static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
 	return Game_Vehicle::None;
 }
 
-bool Game_Map::MakeWay(const Game_Character& self,
+bool Game_Map::CheckWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y
 		)
 {
+	return CheckWayEx(
+		self, from_x, from_y, to_x, to_y, false, nullptr,
+		nullptr, nullptr, nullptr, nullptr, nullptr
+	);
+}
+
+bool Game_Map::CheckWayEx(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y,
+		bool ignore_events_and_vehicles,
+		std::unordered_set<int> *ignore_some_events_by_id) {
+	return CheckWayEx(
+		self, from_x, from_y, to_x, to_y,
+		ignore_events_and_vehicles,
+		ignore_some_events_by_id,
+		nullptr, nullptr, nullptr, nullptr, nullptr
+	);
+}
+
+bool Game_Map::CheckWayEx(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y,
+		bool ignore_events_and_vehicles,
+		std::unordered_set<int> *ignore_some_events_by_id,
+		int *out_bit_from,
+		int *out_bit_to,
+		int *out_to_x,
+		int *out_to_y,
+		bool *out_self_conflict
+		)
+{
 	// Infer directions before we do any rounding.
-	const auto bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
-	const auto bit_to = GetPassableMask(to_x, to_y, from_x, from_y);
+	const int bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
+	const int bit_to = GetPassableMask(to_x, to_y, from_x, from_y);
+	if (out_bit_from) *out_bit_from = bit_from;
+	if (out_bit_to) *out_bit_to = bit_to;
 
 	// Now round for looping maps.
 	to_x = Game_Map::RoundX(to_x);
 	to_y = Game_Map::RoundY(to_y);
+	if (out_to_x) *out_to_x = to_x;
+	if (out_to_y) *out_to_y = to_y;
 
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
 	if (!Game_Map::IsValid(to_x, to_y)) {
@@ -582,7 +631,6 @@ bool Game_Map::MakeWay(const Game_Character& self,
 	}
 
 	const auto vehicle_type = GetCollisionVehicleType(&self);
-
 	bool self_conflict = false;
 	if (!self.IsJumping()) {
 		// Check for self conflict.
@@ -611,7 +659,63 @@ bool Game_Map::MakeWay(const Game_Character& self,
 			}
 		}
 	}
+	if (out_self_conflict) *out_self_conflict = self_conflict;
+	if (vehicle_type != Game_Vehicle::Airship && !ignore_events_and_vehicles) {
+		// Check for collision with events on the target tile.
+		for (auto& other: GetEvents()) {
+			if (ignore_some_events_by_id != NULL &&
+					ignore_some_events_by_id->find(other.GetId()) !=
+					ignore_some_events_by_id->end())
+				continue;
+			if (CheckWayTestCollideEvent(to_x, to_y, self, other, self_conflict)) {
+				return false;
+			}
+		}
+		auto& player = Main_Data::game_player;
+		if (player->GetVehicleType() == Game_Vehicle::None) {
+			if (CheckWayTestCollideEvent(to_x, to_y, self, *Main_Data::game_player, self_conflict)) {
+				return false;
+			}
+		}
+		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
+			auto& other = vehicles[vid - 1];
+			if (other.IsInCurrentMap()) {
+				if (CheckWayTestCollideEvent(to_x, to_y, self, other, self_conflict)) {
+					return false;
+				}
+			}
+		}
+		auto& airship = vehicles[Game_Vehicle::Airship - 1];
+		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
+			if (CheckWayTestCollideEvent(to_x, to_y, self, airship, self_conflict)) {
+				return false;
+			}
+		}
+	}
+	int bit = bit_to;
+	if (self.IsJumping()) {
+		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
+	}
 
+	return IsPassableTile(
+		&self, bit, to_x, to_y, !ignore_events_and_vehicles, true
+		);
+}
+
+bool Game_Map::MakeWay(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y
+		)
+{
+	// First, check basic passability but ignoring all events:
+	int bit_from, bit_to;
+	bool self_conflict;
+	if (!CheckWayEx(self, from_x, from_y, to_x, to_y, true, NULL,
+			&bit_from, &bit_to,
+			&to_x, &to_y, &self_conflict))
+		return false;
+
+	const auto vehicle_type = GetCollisionVehicleType(&self);
 	if (vehicle_type != Game_Vehicle::Airship) {
 		// Check for collision with events on the target tile.
 		for (auto& other: GetEvents()) {
@@ -646,7 +750,7 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
 	}
 
-	return IsPassableTile(&self, bit, to_x, to_y);
+	return IsPassableTile(&self, bit, to_x, to_y, true, false);
 }
 
 bool Game_Map::CanLandAirship(int x, int y) {
@@ -742,77 +846,93 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 	return (passages_down[tile_id] & bit) != 0;
 }
 
-bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y) {
+bool Game_Map::IsPassableTile(
+		const Game_Character* self, int bit, int x, int y
+		) {
+	return IsPassableTile(
+		self, bit, x, y, true, true
+	);
+}
+
+bool Game_Map::IsPassableTile(
+		const Game_Character* self, int bit, int x, int y,
+		bool check_events_and_vehicles, bool check_map_geometry
+		) {
 	if (!IsValid(x, y)) return false;
 
 	const auto vehicle_type = GetCollisionVehicleType(self);
-
-	if (vehicle_type != Game_Vehicle::None) {
-		const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
-		if (!terrain) {
-			Output::Warning("IsPassableTile: Invalid terrain at ({}, {})", x, y);
-			return false;
-		}
-		if (vehicle_type == Game_Vehicle::Boat && !terrain->boat_pass) {
-			return false;
-		}
-		if (vehicle_type == Game_Vehicle::Ship && !terrain->ship_pass) {
-			return false;
-		}
-		if (vehicle_type == Game_Vehicle::Airship) {
-			return terrain->airship_pass;
-		}
-	}
-
-	// Highest ID event with layer=below, not through, and a tile graphic wins.
-	int event_tile_id = 0;
-	for (auto& ev: events) {
-		if (self == &ev) {
-			continue;
-		}
-		if (!ev.IsActive() || ev.GetActivePage() == nullptr || ev.GetThrough()) {
-			continue;
-		}
-		if (ev.IsInPosition(x, y) && ev.GetLayer() == lcf::rpg::EventPage::Layers_below) {
-			int tile_id = ev.GetTileId();
-			if (tile_id > 0) {
-				event_tile_id = tile_id;
+	if (check_events_and_vehicles) {
+		if (vehicle_type != Game_Vehicle::None) {
+			const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
+			if (!terrain) {
+				Output::Warning("IsPassableTile: Invalid terrain at ({}, {})", x, y);
+				return false;
+			}
+			if (vehicle_type == Game_Vehicle::Boat && !terrain->boat_pass) {
+				return false;
+			}
+			if (vehicle_type == Game_Vehicle::Ship && !terrain->ship_pass) {
+				return false;
+			}
+			if (vehicle_type == Game_Vehicle::Airship) {
+				return terrain->airship_pass;
 			}
 		}
+
+		// Highest ID event with layer=below, not through, and a tile graphic wins.
+		int event_tile_id = 0;
+		for (auto& ev: events) {
+			if (self == &ev) {
+				continue;
+			}
+			if (!ev.IsActive() || ev.GetActivePage() == nullptr || ev.GetThrough()) {
+				continue;
+			}
+			if (ev.IsInPosition(x, y) && ev.GetLayer() == lcf::rpg::EventPage::Layers_below) {
+				int tile_id = ev.GetTileId();
+				if (tile_id > 0) {
+					event_tile_id = tile_id;
+				}
+			}
+		}
+
+		// If there was a below tile event, and the tile is not above
+		// Override the chipset with event tile behavior.
+		if (event_tile_id > 0
+				&& ((passages_up[event_tile_id] & Passable::Above) == 0)) {
+			switch (vehicle_type) {
+				case Game_Vehicle::None:
+					return ((passages_up[event_tile_id] & bit) != 0);
+				case Game_Vehicle::Boat:
+				case Game_Vehicle::Ship:
+					return false;
+				case Game_Vehicle::Airship:
+					break;
+			};
+		}
 	}
 
-	// If there was a below tile event, and the tile is not above
-	// Override the chipset with event tile behavior.
-	if (event_tile_id > 0
-			&& ((passages_up[event_tile_id] & Passable::Above) == 0)) {
-		switch (vehicle_type) {
-			case Game_Vehicle::None:
-				return ((passages_up[event_tile_id] & bit) != 0);
-			case Game_Vehicle::Boat:
-			case Game_Vehicle::Ship:
+	if (check_map_geometry) {
+		int tile_index = x + y * GetTilesX();
+		int tile_id = map->upper_layer[tile_index] - BLOCK_F;
+		tile_id = map_info.upper_tiles[tile_id];
+
+		if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
+			if ((passages_up[tile_id] & Passable::Above) == 0)
 				return false;
-			case Game_Vehicle::Airship:
-				break;
-		};
-	}
+			return true;
+		}
 
-	int tile_index = x + y * GetTilesX();
-	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
-	tile_id = map_info.upper_tiles[tile_id];
-
-	if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
-		if ((passages_up[tile_id] & Passable::Above) == 0)
+		if ((passages_up[tile_id] & bit) == 0)
 			return false;
+
+		if ((passages_up[tile_id] & Passable::Above) == 0)
+			return true;
+
+		return IsPassableLowerTile(bit, tile_index);
+	} else {
 		return true;
 	}
-
-	if ((passages_up[tile_id] & bit) == 0)
-		return false;
-
-	if ((passages_up[tile_id] & Passable::Above) == 0)
-		return true;
-
-	return IsPassableLowerTile(bit, tile_index);
 }
 
 int Game_Map::GetBushDepth(int x, int y) {
