@@ -2094,6 +2094,7 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
+	// DynRpg command
 	if (Player::IsPatchDynRpg()) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
@@ -2118,6 +2119,20 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 
 		return DynRpg::Invoke(command);
 	}
+
+
+	// DestinyScript
+	if (Player::IsPatchDestiny()) {
+		if (com.string.empty() || com.string[0] != '$') {
+			// Not a DestinyScript
+			return true;
+		}
+
+		const std::string& code = Destiny::MakeString(GetFrame());
+		Output::Debug("DestinyScript Code:\n{}", code);
+		return Destiny::Interpret(code);
+	}
+
 	return true;
 }
 
