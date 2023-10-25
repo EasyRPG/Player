@@ -19,12 +19,53 @@
 #define EP_DESTINY_H
 
 #include <cstdint>
+#include <sstream>
+
+#include "lcf/rpg/saveeventexecframe.h"
 
 
 namespace Destiny {
+	// Constants
 	constexpr const char* DESTINY_DLL = "Destiny.dll";
 
+
+	// Enums
+	enum Language {
+		DEUTSCH = 0,
+		ENGLISH,
+	};
+
+
+	// Structs
+	struct Version {
+		uint16_t major;
+		uint16_t minor;
+
+		Version()
+			: major(0), minor(0) {}
+		Version(uint32_t version) {
+			major = version >> 0x10;
+			minor = version & 0xFFFF;
+		}
+
+		std::string toString() {
+			std::stringstream ss;
+
+			ss << major << '.' << minor;
+			return ss.str();
+		}
+	};
+
+
+	// Functions
+	/**
+	 * Load the Destiny module
+	 */
 	void Load();
+
+	/**
+	 * Initialize and apply the patch to the game interpreter
+	 */
 	void Initialize(
 		uint32_t _dllVersion,
 		uint32_t _language,
@@ -34,6 +75,25 @@ namespace Destiny {
 		uint32_t _floatSize,
 		uint32_t _stringSize
 	);
-}
 
+	/**
+	 * Clear Destiny patch before close
+	 */
+	void Terminate();
+
+
+	// Interpret functions
+
+	/*
+	 * Make the DestinyScript code exctracting from the event script's comment command
+	 */
+	std::string MakeString(lcf::rpg::SaveEventExecFrame& scriptData);
+
+
+	/*
+	 * Evaluate DestinyScript code
+	 */
+	bool Interpret(const std::string& code);
+
+}
 #endif // !EP_DESTINY_H

@@ -18,7 +18,6 @@
 // Headers
 #include "destiny.h"
 
-#include <sstream>
 #include <vector>
 
 #ifndef EMSCRIPTEN
@@ -26,6 +25,9 @@
 #endif // !EMSCRIPTEN
 #include "output.h"
 
+
+using lcf::ToString;
+using lcf::rpg::EventCommand;
 
 
 // Definitions
@@ -35,30 +37,6 @@ using destiny_string_list = std::vector<std::string>;
 
 
 namespace Destiny {
-	enum Language {
-		DEUTSCH = 0,
-		ENGLISH,
-	};
-
-	struct Version {
-		uint16_t major;
-		uint16_t minor;
-
-		Version()
-			: major(0), minor(0) {}
-		Version(uint32_t version) {
-			major = version >> 0x10;
-			minor = version & 0xFFFF;
-		}
-
-		std::string toString() {
-			std::stringstream ss;
-
-			ss << major << '.' << minor;
-			return ss.str();
-		}
-	};
-
 	// Destiny containers
 	static destiny_dword_list dwords;
 	static destiny_float_list floats;
@@ -69,6 +47,9 @@ namespace Destiny {
 	static Version gameVersion;
 	static Language language;
 	static uint32_t extra;
+
+	// Settings
+	static bool decimalComma;
 }
 
 
@@ -108,7 +89,7 @@ void Destiny::Load()
 		exe.seekg(1, std::ios_base::cur);
 	}
 #else
-	// TODO [Dr.XGB]: Find to manage Destiny initialization parameters on emscripten
+	// TODO [Dr.XGB]: Find to manage Destiny initialization parameters on Emscripten
 	dllVersion = 0x20000;
 	language = ENGLISH;
 	gameVersion = 0x20000107;
@@ -123,15 +104,57 @@ void Destiny::Initialize(uint32_t _dllVersion, uint32_t _language, uint32_t _gam
 {
 	dllVersion = Version(_dllVersion);
 	gameVersion = Version(_gameVersion);
-	language = (Language)_language;
+	language = static_cast<Language>(_language);
 	extra = _extra;
+	decimalComma = language == ENGLISH;
+
+	// Init containers
 	dwords.resize(_dwordSize);
 	floats.resize(_floatSize);
 	strings.resize(_stringSize);
 
+	// TODO: Init File container
+	// TODO: Init ClientSocket container
+
+	// Debug
 	Output::Debug("Destiny Initialized");
+	Output::Debug("Language: {}", decimalComma ? "English" : "Deutsch");
 	Output::Debug("DLL Version: {}", dllVersion.toString());
 	Output::Debug("Dwords: {}", _dwordSize);
 	Output::Debug("Floats: {}", _floatSize);
 	Output::Debug("Strings: {}", _stringSize);
+}
+
+void Destiny::Terminate()
+{
+	dwords.clear();
+	floats.clear();
+	strings.clear();
+
+	// TODO: Clear File container
+	// TODO: Clear ClientSocket container
+}
+
+std::string Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
+{
+	std::string code;
+
+	int32_t& current = scriptData.current_command;
+	const std::vector<EventCommand>& cmdList = scriptData.commands;
+	std::vector<EventCommand>::const_iterator it = cmdList.begin() + current++;
+
+	code = ToString((*it++).string);
+	while (it != cmdList.cend() && it->code == static_cast<int32_t>(EventCommand::Code::Comment_2)) {
+		code += '\n';
+		code += ToString((*it++).string);
+		++current;
+	}
+
+	return code;
+}
+
+bool Destiny::Interpret(const std::string& code)
+{
+	// TODO [Dr.XGB]: DestinyScript Interpret
+	return true;
 }
