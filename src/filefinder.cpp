@@ -90,7 +90,7 @@ FilesystemView FileFinder::Save() {
 
 	if (!game_fs) {
 		// Filesystem not initialized yet (happens on startup)
-		return FilesystemView();
+		return {};
 	}
 
 	// Not overwritten, check if game fs is writable. If not redirect the write operation.
@@ -283,6 +283,19 @@ std::string FileFinder::GetPathInsidePath(StringView path_to, StringView path_in
 
 std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
 	return FileFinder::GetPathInsidePath(Game().GetFullPath(), path_in);
+}
+
+bool FileFinder::IsSupportedArchiveExtension(std::string path) {
+	Utils::LowerCaseInPlace(path);
+	StringView pv = path;
+
+#ifdef HAVE_LHASA
+	if (pv.ends_with(".lzh")) {
+		return true;
+	}
+#endif
+
+	return pv.ends_with(".zip") || pv.ends_with(".easyrpg");
 }
 
 void FileFinder::Quit() {

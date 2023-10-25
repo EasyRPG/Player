@@ -24,26 +24,18 @@
 #include "output.h"
 #include "utils.h"
 
-#include <zlib.h>
+#include <lcf/encoder.h>
 #include <lcf/reader_util.h>
 #include <lcf/scope_guard.h>
 #include <iostream>
 #include <sstream>
-#include <cassert>
 #include <algorithm>
 #include <fmt/core.h>
 
 #include "lhasa.h"
 
-constexpr uint32_t end_of_central_directory = 0x06054b50;
-constexpr int32_t end_of_central_directory_size = 22;
-
-constexpr uint32_t central_directory_entry = 0x02014b50;
-constexpr uint32_t local_header = 0x04034b50;
-constexpr uint32_t local_header_size = 30;
-
 static std::string normalize_path(StringView path) {
-	if (path == "." || path == "/" || path == "") {
+	if (path == "." || path == "/" || path.empty()) {
 		return "";
 	};
 	std::string inner_path = FileFinder::MakeCanonical(path, 1);
@@ -94,6 +86,7 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 	lha_reader.reset(lha_reader_new(lha_is.get()));
 
 	if (!lha_reader) {
+		Output::Debug("LzhFS: {} is not a valid archive", GetPath());
 		return;
 	}
 
@@ -104,9 +97,63 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 	std::vector<std::string> paths;
 
 	// Compressed data offset is manually calculated to reduce calls to tellg()
-	size_t last_offset = is.tellg();
+	auto last_offset = is.tellg();
 
-	// TODO: Encoding detection
+	// Guess the encoding
+	if (encoding.empty()) {
+		std::stringstream filename_guess;
+		int items = 0;
+
+		while ((header = lha_reader_next_file(lha_reader.get())) != nullptr) {
+			std::string filepath;
+
+			// Only consider Non-ASCII and skip directories
+			if (strcmp(header->compress_method, LHA_COMPRESS_TYPE_DIR) != 0) {
+				filepath = header->filename;
+				if (Utils::StringIsAscii(filepath)) {
+					continue;
+				}
+				filename_guess << filepath;
+
+				++items;
+				if (items == 10) {
+					break;
+				}
+			}
+		}
+
+		if (items == 0) {
+			// Only ASCII text (UTF-8 compatible)
+			encoding = "UTF-8";
+		} else {
+			std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(filename_guess.str());
+			for (const auto &enc_ : encodings) {
+				lcf::Encoder lcf_encoder(enc_);
+				if (!lcf_encoder.IsOk()) {
+					// Bad encoding
+					Output::Debug("Bad encoding: {}. Trying next.", enc_);
+					continue;
+				}
+				encoding = enc_;
+				break;
+			}
+		}
+		Output::Debug("Detected LZH encoding: {}", encoding);
+
+		is.clear();
+		is.seekg(last_offset);
+
+		// Cannot figure out how to rewind the reader: Creating a new one instead
+		lha_reader.reset(lha_reader_new(lha_is.get()));
+
+		if (!lha_reader) {
+			Output::Debug("LzhFS: {} is not a valid archive", GetPath());
+			return;
+		}
+	}
+
+	// Read the archive
+	lcf::Encoder lzh_encoder(encoding);
 
 	while ((header = lha_reader_next_file(lha_reader.get())) != nullptr) {
 		std::string filepath;
@@ -115,23 +162,25 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 			last_offset += header->raw_data_len;
 
 			filepath = header->path;
+			lzh_encoder.Encode(filepath);
 			if (filepath.back() == '/') {
 				filepath.pop_back();
 			}
-			std::cout << "DIR: " << filepath << "\n";
 			paths.push_back(filepath);
 		} else {
 			entry.uncompressed_size = header->length;
 			entry.compressed_size = header->compressed_length;
-			entry.fileoffset = last_offset + header->raw_data_len;
+			entry.fileoffset = last_offset + static_cast<std::streamoff>(header->raw_data_len);
 			last_offset = entry.fileoffset + entry.compressed_size;
-
-			std::cout << entry.fileoffset << " | " << is.tellg() << " | " << entry.uncompressed_size << "\n";
 
 			entry.is_directory = false;
 			entry.compress_method = header->compress_method;
 			if (header->path != nullptr) {
+				// File is not in the root
 				filepath = header->path;
+				lzh_encoder.Encode(filepath);
+
+				// Safety check: Directories should end with a /
 				if (filepath.back() == '/') {
 					paths.push_back(filepath);
 					paths.back().pop_back();
@@ -140,8 +189,9 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 					filepath += '/';
 				}
 			}
-			filepath += header->filename;
-			std::cout << "FILE: " << filepath << "\n";
+			std::string fname = header->filename;
+			lzh_encoder.Encode(fname);
+			filepath += fname;
 
 			lzh_entries.emplace_back(filepath, entry);
 		}
@@ -155,100 +205,6 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 			paths.push_back(filepath);
 		}
 	}
-
-		/*if (encoding.empty()) {
-			zipfile.seekg(central_directory_offset);
-			std::stringstream filename_guess;
-
-			// Guess the encoding first
-			int items = 0;
-			while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
-				// Only consider Non-ASCII & Non-UTF8 for encoding detection
-				// Skip directories, files already contain the paths
-				if (is_utf8 || filepath.back() == '/' || Utils::StringIsAscii(filepath)) {
-					continue;
-				}
-				// Codepath will be only entered by Windows "compressed folder" ZIPs (uses local encoding) and
-				// 7zip (uses CP932 for Western European filenames)
-
-				auto pos = filepath.find_last_of('/');
-				if (pos == std::string::npos) {
-					filename_guess << filepath;
-				} else {
-					filename_guess << filepath.substr(pos + 1);
-				}
-
-				++items;
-
-				if (items == 10) {
-					break;
-				}
-			}
-
-			if (items == 0) {
-				// Only ASCII or UTF-8 flags set
-				encoding = "UTF-8";
-			} else {
-				std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(filename_guess.str());
-				for (const auto &enc_ : encodings) {
-					std::string enc_test = lcf::ReaderUtil::Recode("\\", enc_);
-					if (enc_test.empty()) {
-						// Bad encoding
-						Output::Debug("Bad encoding: {}. Trying next.", enc_);
-						continue;
-					}
-					encoding = enc_;
-					break;
-				}
-			}
-			Output::Debug("Detected ZIP encoding: {}", encoding);
-		}*/
-/*
-		zipfile.clear();
-		zipfile.seekg(central_directory_offset);
-
-		std::vector<std::string> paths;
-		while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
-			if (is_utf8 || enc_is_utf8 || Utils::StringIsAscii(filepath)) {
-				// No reencoding necessary
-				filepath_cp437.clear();
-			} else {
-				// also store CP437 to ensure files inside 7zip zip archives are found
-				filepath_cp437 = lcf::ReaderUtil::Recode(filepath, "437");
-				filepath = lcf::ReaderUtil::Recode(filepath, encoding);
-			}
-
-			// Workaround ZIP archives containing invalid "\" paths created by .net or Powershell
-			std::replace(filepath_cp437.begin(), filepath_cp437.end(), '\\', '/');
-			std::replace(filepath.begin(), filepath.end(), '\\', '/');
-
-			// check if the entry is an directory or not (indicated by trailing /)
-			// this will fail when the (game) directory has cp437, but the users can rename it before
-			if (filepath.back() == '/') {
-				filepath = filepath.substr(0, filepath.size() - 1);
-
-				// Determine intermediate directories
-				while (!filepath.empty()) {
-					paths.push_back(filepath);
-					filepath = std::get<0>(FileFinder::GetPathAndFilename(filepath));
-				}
-			} else {
-				lzh_entries.emplace_back(filepath, entry);
-				if (!filepath_cp437.empty()) {
-					lzh_entries_cp437.emplace_back(filepath_cp437, entry);
-				}
-
-				// Determine intermediate directories
-				for (;;) {
-					filepath = std::get<0>(FileFinder::GetPathAndFilename(filepath));
-					if (filepath.empty()) {
-						break;
-					}
-					paths.push_back(filepath);
-				}
-			}
-		}
-	}*/
 
 	// Build directories
 	entry = {};
@@ -264,7 +220,7 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 		lzh_entries.emplace_back(e, entry);
 	}
 
-	// entries can be duplicated in the lzh archive, e.g. when creating a game disk the RTP is embedded, followed by
+	// entries can be duplicated in the archive, e.g. when creating a game disk the RTP is embedded, followed by
 	// the game entries. Use a stable sort to preserve this order.
 	std::stable_sort(lzh_entries.begin(), lzh_entries.end(), [](auto& a, auto& b) {
 		return a.first < b.first;
@@ -272,7 +228,7 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 
 	// Then remove all duplicates but keep the last
 	auto entries_del_it = std::unique(lzh_entries.rbegin(), lzh_entries.rend(), [](auto& a, auto& b) {
-		return a.first < b.first;
+		return a.first == b.first;
 	});
 	lzh_entries.erase(lzh_entries.begin(), entries_del_it.base());
 }
@@ -318,7 +274,7 @@ std::streambuf* LzhFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		auto* decoder_type = lha_decoder_for_name(const_cast<char*>(entry->compress_method.c_str()));
 
 		if (!decoder_type) {
-			// TODO Error
+			Output::Warning("LzhFS: Unsupported compression method {} for {}", entry->compress_method, path_normalized);
 			return nullptr;
 		}
 
@@ -334,7 +290,10 @@ std::streambuf* LzhFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		auto dec_buf = std::vector<uint8_t>(entry->uncompressed_size);
 		size_t res = lha_decoder_read(decoder.get(), dec_buf.data(), dec_buf.size());
 
-		// TODO: Error handling
+		if (res != entry->uncompressed_size) {
+			Output::Warning("LzhFS: Less data compressed than expected ({})", path_normalized);
+			return nullptr;
+		}
 
 		return new Filesystem_Stream::InputMemoryStreamBuf(std::move(dec_buf));
 	}

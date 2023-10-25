@@ -63,7 +63,7 @@ private:
 	struct LzhEntry {
 		size_t compressed_size;
 		size_t uncompressed_size;
-		size_t fileoffset;
+		std::streamoff fileoffset;
 		std::string compress_method;
 		bool is_directory;
 	};

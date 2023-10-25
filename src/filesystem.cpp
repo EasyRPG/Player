@@ -122,8 +122,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 				internal_path += comp + "/";
 			} else {
 				path_prefix += comp + "/";
-				auto sv = StringView(comp);
-				if (sv.ends_with(".zip") || sv.ends_with(".easyrpg") || sv.ends_with(".lzh")) {
+				if (FileFinder::IsSupportedArchiveExtension(comp)) {
 					path_prefix.pop_back();
 					handle_internal = true;
 				}
@@ -140,13 +139,13 @@ FilesystemView Filesystem::Create(StringView path) const {
 			filesystem = std::make_shared<LzhFilesystem>(path_prefix, Subtree(dir_of_file));
 #endif
 			if (!filesystem->IsValid()) {
-				return FilesystemView();
+				return {};
 			}
 		}
 		if (!internal_path.empty()) {
 			auto fs_view = filesystem->Create(internal_path);
 			if (!fs_view) {
-				return FilesystemView();
+				return {};
 			}
 			return fs_view;
 		}
@@ -155,7 +154,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 		// This way archives with structure "archive/game_folder" launch the game directly
 		auto fs_view = filesystem->Subtree("");
 		if (!fs_view) {
-			return FilesystemView();
+			return {};
 		}
 		auto entries = fs_view.ListDirectory("");
 		if (entries->size() == 1 && entries->begin()->second.type == DirectoryTree::FileType::Directory) {
@@ -164,7 +163,7 @@ FilesystemView Filesystem::Create(StringView path) const {
 		return fs_view;
 	} else {
 		if (!(Exists(path) || !IsDirectory(path, true))) {
-			return FilesystemView();
+			return {};
 		}
 
 		// Handle as a normal path in the current filesystem
