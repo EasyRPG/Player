@@ -786,6 +786,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CommandManiacGetGameInfo(com);
+		case Cmd::EasyRpg_AnimateVariable:
+			return CommandEasyRpgAnimateVariable(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -5502,3 +5504,334 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 
 	return value;
 }
+std::vector<double> parseBezier(const std::string& bezierParams) {
+	std::vector<double> params;
+	std::string temp;
+	size_t startPos = bezierParams.find("(") + 1;
+	size_t endPos = bezierParams.find(")");
+	std::string valuesString = bezierParams.substr(startPos, endPos - startPos);
+
+	size_t commaPos = valuesString.find(",");
+	while (commaPos != std::string::npos) {
+		temp = valuesString.substr(0, commaPos);
+		params.push_back(std::stod(temp));
+		valuesString = valuesString.substr(commaPos + 1);
+		commaPos = valuesString.find(",");
+	}
+	// Push the last value into the vector
+	params.push_back(std::stod(valuesString));
+
+	return params;
+}
+
+//FIXME: cubicBezier is completely Broken
+// references to how it should work:
+// https://matthewlein.com/tools/ceaser
+// https://cubic-bezier.com/
+
+double cubicBezier(double t, double p0, double p1, double p2, double p3) {
+	double u = 1 - t;
+	double tt = t * t;
+	double uu = u * u;
+	double uuu = uu * u;
+	double ttt = tt * t;
+
+	double p = uuu * p0; // (1-t)^3
+	double q = 3 * uu * t * p1; // 3t(1-t)^2
+	double r = 3 * u * tt * p2; // 3(1-t)t^2
+	double s = ttt * p3; // t^3
+
+	return p + q + r + s;
+}
+
+double getEasedT(const std::string& easingType, double t, double b, double c, double d) {
+	if (easingType == "linear") {
+		return c * t / d + b;
+	}
+	else if (easingType == "quadIn") {
+		t /= d;
+		return c * t * t + b;
+	}
+	else if (easingType == "quadOut") {
+		t /= d;
+		return -c * t * (t - 2) + b;
+	}
+	else if (easingType == "quadInOut") {
+		t /= d / 2;
+		if (t < 1) {
+			return c / 2 * t * t + b;
+		}
+		else {
+			t -= 1;
+			return -c / 2 * (t * (t - 2) - 1) + b;
+		}
+	}
+	else if (easingType == "cubicIn") {
+		t /= d;
+		return c * t * t * t + b;
+	}
+	else if (easingType == "cubicOut") {
+		t = (t / d) - 1;
+		return c * (t * t * t + 1) + b;
+	}
+	else if (easingType == "cubicInOut") {
+		t /= d / 2;
+		if (t < 1) {
+			return c / 2 * t * t * t + b;
+		}
+		else {
+			t -= 2;
+			return c / 2 * (t * t * t + 2) + b;
+		}
+	}
+	else if (easingType == "sinIn") {
+		return -c * cos(t / d * (M_PI / 2)) + c + b;
+	}
+	else if (easingType == "sinOut") {
+		return c * sin(t / d * (M_PI / 2)) + b;
+	}
+	else if (easingType == "sinInOut") {
+		return -c / 2 * (cos(M_PI * t / d) - 1) + b;
+	}
+	else if (easingType == "expoIn") {
+		return c * pow(2, 10 * (t / d - 1)) + b;
+	}
+	else if (easingType == "expoOut") {
+		return c * (-pow(2, -10 * t / d) + 1) + b;
+	}
+	else if (easingType == "expoInOut") {
+		t /= d / 2;
+		if (t < 1) {
+			return c / 2 * pow(2, 10 * (t - 1)) + b;
+		}
+		else {
+			t -= 1;
+			return c / 2 * (-pow(2, -10 * t) + 2) + b;
+		}
+	}
+	else if (easingType == "circIn") {
+		t /= d;
+		return -c * (sqrt(1 - t * t) - 1) + b;
+	}
+	else if (easingType == "circOut") {
+		t = (t / d) - 1;
+		return c * sqrt(1 - t * t) + b;
+	}
+	else if (easingType == "circInOut") {
+		t /= d / 2;
+		if (t < 1) {
+			return -c / 2 * (sqrt(1 - t * t) - 1) + b;
+		}
+		else {
+			t -= 2;
+			return c / 2 * (sqrt(1 - t * t) + 1) + b;
+		}
+	}
+	else if (easingType == "elasticIn") {
+		if (t == 0) {
+			return b;
+		}
+		if ((t /= d) == 1) {
+			return b + c;
+		}
+
+		double p = d * 0.3;
+		double a = c;
+		double s = p / 4;
+
+		double postFix = a * pow(2, 10 * (t -= 1)); // this is a fix, again, with post-increment operators
+		return -(postFix * sin((t * d - s) * (2 * M_PI) / p)) + b;
+	}
+	else if (easingType == "elasticOut") {
+		if (t == 0) {
+			return b;
+		}
+		if ((t /= d) == 1) {
+			return b + c;
+		}
+
+		double p = d * 0.3;
+		double a = c;
+		double s = p / 4;
+
+		return (a * pow(2, -10 * t) * sin((t * d - s) * (2 * M_PI) / p) + c + b);
+	}
+	else if (easingType == "elasticInOut") {
+		if (t == 0) {
+			return b;
+		}
+		if ((t /= d / 2) == 2) {
+			return b + c;
+		}
+
+		double p = d * (0.3 * 1.5);
+		double a = c;
+		double s = p / 4;
+
+		if (t < 1) {
+			double postFix = a * pow(2, 10 * (t -= 1)); // this is a fix, again, with post-increment operators
+			return -0.5 * (postFix * sin((t * d - s) * (2 * M_PI) / p)) + b;
+		}
+
+		double postFix = a * pow(2, -10 * (t -= 1)); // this is a fix, again, with post-increment operators
+		return postFix * sin((t * d - s) * (2 * M_PI) / p) * 0.5 + c + b;
+	}
+	else if (easingType == "bounceIn") {
+		return c - getEasedT("bounceOut", d - t, 0, c, d) + b;
+	}
+	else if (easingType == "bounceOut") {
+		if ((t /= d) < (1 / 2.75)) {
+			return c * (7.5625 * t * t) + b;
+		}
+		else if (t < (2 / 2.75)) {
+			t -= (1.5 / 2.75);
+			return c * (7.5625 * t * t + 0.75) + b;
+		}
+		else if (t < (2.5 / 2.75)) {
+			t -= (2.25 / 2.75);
+			return c * (7.5625 * t * t + 0.9375) + b;
+		}
+		else {
+			t -= (2.625 / 2.75);
+			return c * (7.5625 * t * t + 0.984375) + b;
+		}
+	}
+	else if (easingType == "bounceInOut") {
+		if (t < d / 2) {
+			return getEasedT("bounceIn", t * 2, 0, c, d) * 0.5 + b;
+		}
+		else {
+			return getEasedT("bounceOut", t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+		}
+	}
+	if (easingType.substr(0, 6) == "bezier") {
+		std::vector < double > bezierParams = parseBezier(easingType.substr(7));
+		if (bezierParams.size() == 4) {
+			return cubicBezier(t / d, bezierParams[0], bezierParams[1], bezierParams[2], bezierParams[3]);
+		}
+	}
+
+	return c * t / d + b; // Default to linear easing if the easing type is not recognized
+}
+
+std::vector<double> interpolate(double start, double end, double duration, const std::string& easingTypeAtStart, const std::string& easingTypeAtEnd) {
+	std::vector<double> interpolatedValues;
+	interpolatedValues.push_back(start);
+
+	// Calculate the number of steps based on the duration
+	int numSteps = static_cast<int>(duration); // Convert duration to an integer
+	double stepSize = 1.0 / numSteps;
+
+	// Calculate the halfway point
+	double halfway = start + (end - start) * 0.5;
+
+	if (easingTypeAtEnd == "null") {
+		// Use easingTypeAtStart for the entire animation
+		for (int step = 1; step <= numSteps; ++step) {
+			double t = step * stepSize;
+			double easedT = getEasedT(easingTypeAtStart, t, 0, 1, 1);  // Call getEasedT with appropriate parameters
+			double interpolatedValue = start + easedT * (end - start);
+			interpolatedValues.push_back(interpolatedValue);
+		}
+	}
+	else {
+		// Generate the first half of the interpolation
+		for (int step = 1; step <= numSteps / 2; ++step) {
+			double t = step * stepSize;
+			double normalizedT = t / 0.5;  // Normalize the time for the first half
+			double easedT = getEasedT(easingTypeAtStart, normalizedT, 0, 1, 1);  // Call getEasedT with appropriate parameters
+			double interpolatedValue = start + easedT * (halfway - start);
+			interpolatedValues.push_back(interpolatedValue);
+		}
+
+		// Generate the second half of the interpolation
+		for (int step = numSteps / 2 + 1; step <= numSteps; ++step) {
+			double t = step * stepSize;
+			double normalizedT = (t - 0.5) / 0.5;  // Normalize the time for the second half
+			double easedT = getEasedT(easingTypeAtEnd, normalizedT, 0, 1, 1);  // Call getEasedT with appropriate parameters
+			double interpolatedValue = halfway + easedT * (end - halfway);
+			interpolatedValues.push_back(interpolatedValue);
+		}
+	}
+
+	interpolatedValues.push_back(end);
+
+	return interpolatedValues;
+}
+
+bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand const& com) {
+	// CommandInterpolateVariable("typeStart/typeEnd",[useVarTarget, target, useVarStart, start, useVarEnd, end, useVarDuration, duration])
+
+	auto* frame = GetFramePtr();
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
+	int i = frame->current_command + 1;
+
+	// Extract parameters: target, start, end, and duration for the animation
+	int32_t target = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int32_t start = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int32_t end = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int32_t duration = ValueOrVariable(com.parameters[6], com.parameters[7]);
+
+	// Prepare animation-related commands
+	lcf::rpg::EventCommand waitCom;
+	waitCom.code = int(Cmd::Wait);
+
+	lcf::rpg::EventCommand updateVarCom;
+	updateVarCom.code = int(Cmd::ControlVars);
+	std::vector<int32_t> updateVarParams = { 0, static_cast<int32_t>(target), 0, 0, 0, static_cast<int32_t>(end) };
+	updateVarCom.parameters = lcf::DBArray<int32_t>(updateVarParams.begin(), updateVarParams.end());
+
+	lcf::rpg::EventCommand branchCom;
+	branchCom.code = int(Cmd::ShowChoiceOption);
+
+	// Extract easing information
+	std::string easeStart = ToString(com.string);
+	std::string easeEnd = "null";
+
+	std::size_t pos = easeStart.find('/');
+
+	if (pos != std::string::npos) {
+		easeEnd = easeStart.substr(pos + 1);
+		easeStart = easeStart.substr(0, pos);
+	}
+
+	// Check if new commands don't exist in the timeline yet
+	if (!(i < frame->commands.size() && frame->commands.at(i).code == int(Cmd::ShowChoiceOption))) {
+		// Insert animation commands
+		Output::Debug("inserting animation commands");
+		std::vector<double> interpolatedValues = interpolate(start, end, duration, easeStart, easeEnd);
+
+		// Insert ShowChoiceOption command
+		// This helps me isolating all the "keyframes" commands inside a nested commands, it also helps to avoid creating a repeated list.
+		// It's problematic when "start", "end" and "duration" are variables.
+		frame->commands.insert(frame->commands.begin() + i, branchCom);
+		i++;
+
+		// Insert updateVarCom and waitCom commands for each interpolated value
+		for (int value : interpolatedValues) {
+			updateVarParams.back() = value;
+			updateVarCom.parameters = lcf::DBArray<int32_t>(updateVarParams.begin(), updateVarParams.end());
+			updateVarCom.indent = com.indent + 1;
+
+			frame->commands.insert(frame->commands.begin() + i, updateVarCom);
+			i++;
+			frame->commands.insert(frame->commands.begin() + i, waitCom);
+			i++;
+		}
+
+		// Insert ShowChoiceEnd command
+		branchCom.code = int(Cmd::ShowChoiceEnd);
+		frame->commands.insert(frame->commands.begin() + i, branchCom);
+		i++;
+	}
+	else {
+		Output::Debug("Animated Commands Already Exists");
+	}
+
+	// Update current_command index and return true to indicate success
+	frame->current_command = index + 2;
+	return false;
+}
+
