@@ -127,7 +127,7 @@ Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding, bo
 
 	if (encoding == 0) {
 		lcf::Encoder enc(Player::encoding);
-		enc.Decode(file_content);
+		enc.Encode(file_content);
 	}
 
 	return file_content;
@@ -160,7 +160,7 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 
 	if (encoding == 0) {
 		lcf::Encoder enc(Player::encoding);
-		enc.Encode(str);
+		enc.Decode(str);
 	}
 
 	txt_out << str;
