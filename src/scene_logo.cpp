@@ -147,7 +147,8 @@ bool Scene_Logo::DetectGame() {
 	}
 #endif
 
-	if (FileFinder::IsValidProject(fs)) {
+	if (FileFinder::IsValidProject(fs) || FileFinder::OpenViewToEasyRpgFile(fs)) {
+		FileFinder::SetGameFilesystem(fs);
 		Player::CreateGameObjects();
 		detected_game = true;
 	}

@@ -253,19 +253,19 @@ namespace FileFinder {
 	bool IsSupportedArchiveExtension(std::string path);
 
 	/**
-	 * @param p tree Tree to check
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
 	 */
 	bool IsValidProject(const FilesystemView& fs);
 
 	/**
-	 * @param p tree Tree to check
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) project
 	 */
 	bool IsRPG2kProject(const FilesystemView& fs);
 
 	/**
-	 * @param p tree Tree to check
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid EasyRPG project
 	 */
 	bool IsEasyRpgProject(const FilesystemView& fs);
@@ -274,10 +274,19 @@ namespace FileFinder {
 	 * Determines if the directory in question represents an RPG2k project with non-standard
 	 *   database, map tree, or map file names.
 	 *
-	 * @param tree The directory tree in question
+	 * @param fs The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
 	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
+
+	/**
+	 * Determines if the directory contains a single file/directory ending in ".easyrpg" for use in the
+	 * autostart feature.
+	 *
+	 * @param fs The directory tree to check. Is replaced with a view to the game for autorun.
+	 * @return true when autorun is possible, fs contains the new view; when false fs is not modified
+	 */
+	bool OpenViewToEasyRpgFile(FilesystemView& fs);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name

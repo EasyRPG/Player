@@ -199,7 +199,7 @@ void Scene_GameBrowser::BootGame() {
 		return;
 	}
 
-	if (!FileFinder::IsValidProject(fs)) {
+	if (!FileFinder::IsValidProject(fs) && !FileFinder::OpenViewToEasyRpgFile(fs)) {
 		// Not a game: Open as directory
 		load_window->SetVisible(false);
 		game_loading = false;

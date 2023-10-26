@@ -320,6 +320,40 @@ bool FileFinder::IsRPG2kProjectWithRenames(const FilesystemView& fs) {
 	return !FileExtGuesser::GetRPG2kProjectWithRenames(fs).Empty();
 }
 
+bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
+	auto files = fs.ListDirectory();
+	if (!files) {
+		return false;
+	}
+
+	int items = 0;
+	std::string filename;
+
+	for (auto& file : *files) {
+		if (StringView(file.second.name).ends_with(".easyrpg")) {
+			++items;
+			if (items == 2) {
+				// Contains more than one game
+				return false;
+			}
+			filename = file.second.name;
+		}
+	}
+
+	if (filename.empty()) {
+		return false;
+	}
+
+	// One candidate to check
+	auto ep_fs = fs.Create(filename);
+	if (FileFinder::IsValidProject(ep_fs)) {
+		fs = ep_fs;
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool FileFinder::HasSavegame() {
 	return GetSavegames() > 0;
 }
