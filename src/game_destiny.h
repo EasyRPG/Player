@@ -15,20 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_DESTINY_H
-#define EP_DESTINY_H
+#ifndef EP_GAME_DESTINY_H
+#define EP_GAME_DESTINY_H
 
 #include <cstdint>
 #include <sstream>
+#include <vector>
 
 #include "lcf/rpg/saveeventexecframe.h"
 
 
+// Constants
+constexpr const char* DESTINY_DLL = "Destiny.dll";
+
+
 namespace Destiny {
-	// Constants
-	constexpr const char* DESTINY_DLL = "Destiny.dll";
-
-
 	// Enums
 	enum Language {
 		DEUTSCH = 0,
@@ -55,25 +56,45 @@ namespace Destiny {
 			return ss.str();
 		}
 	};
+}
 
 
-	// Functions
+/**
+ * The Destiny Patch class
+ */
+class Game_Destiny {
+public:
+	// ctor and dtor
+	Game_Destiny();
+	~Game_Destiny();
+
+public:
+	// Member functions
+
 	/**
-	 * Load the Destiny module
+	 * Load the Destiny Patch
 	 */
 	void Load();
 
 	/**
 	 * Initialize and apply the patch to the game interpreter
+	 *
+	 * @param dllVersion The Destiny.dll version
+	 * @param language The DLL language. Usually for displaying errors and for decimal format.
+	 * @param gameVersion The RPG_RT version
+	 * @param extra Extra flags
+	 * @param dwordSize Length of dowrd container
+	 * @param floatSize Length of float container
+	 * @param stringSize Length of string container
 	 */
 	void Initialize(
-		uint32_t _dllVersion,
-		uint32_t _language,
-		uint32_t _gameVersion,
-		uint32_t _extra,
-		uint32_t _dwordSize,
-		uint32_t _floatSize,
-		uint32_t _stringSize
+		uint32_t dllVersion,
+		uint32_t language,
+		uint32_t gameVersion,
+		uint32_t extra,
+		uint32_t dwordSize,
+		uint32_t floatSize,
+		uint32_t stringSize
 	);
 
 	/**
@@ -82,18 +103,39 @@ namespace Destiny {
 	void Terminate();
 
 
-	// Interpret functions
-
 	/*
 	 * Make the DestinyScript code exctracting from the event script's comment command
+	 *
+	 * @param scriptData The event script data
+	 * @return A full DestinyScript code extracted from the comment event command
 	 */
 	std::string MakeString(lcf::rpg::SaveEventExecFrame& scriptData);
 
 
 	/*
 	 * Evaluate DestinyScript code
+	 *
+	 * @param code The DestinyScript code to evaluate
+	 * @return Whether evaluation is successful
 	 */
 	bool Interpret(const std::string& code);
 
-}
-#endif // !EP_DESTINY_H
+
+private:
+	// Member data
+
+	// Destiny containers
+	std::vector<int> _dwords;
+	std::vector<double> _floats;
+	std::vector<std::string> _strings;
+
+	// Destiny data
+	Destiny::Version _dllVersion;
+	Destiny::Version _gameVersion;
+	Destiny::Language _language;
+	uint32_t _extra;
+
+	// Settings
+	bool _decimalComma;
+};
+#endif // !EP_GAME_DESTINY_H

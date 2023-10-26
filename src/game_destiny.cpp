@@ -16,9 +16,7 @@
  */
 
 // Headers
-#include "destiny.h"
-
-#include <vector>
+#include "game_destiny.h"
 
 #ifndef EMSCRIPTEN
 #include "exe_reader.h"
@@ -30,31 +28,11 @@ using lcf::ToString;
 using lcf::rpg::EventCommand;
 
 
-// Definitions
-using destiny_dword_list = std::vector<int>;
-using destiny_float_list = std::vector<double>;
-using destiny_string_list = std::vector<std::string>;
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//				Game_Destiny implementations
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-
-namespace Destiny {
-	// Destiny containers
-	static destiny_dword_list dwords;
-	static destiny_float_list floats;
-	static destiny_string_list strings;
-
-	// Destiny data
-	static Version dllVersion;
-	static Version gameVersion;
-	static Language language;
-	static uint32_t extra;
-
-	// Settings
-	static bool decimalComma;
-}
-
-
-// Implementations
-void Destiny::Load()
+void Game_Destiny::Load()
 {
 	// Do not load Destiny whether player cannot find "Destiny.dll"
 	if (!FileFinder::Game().Exists(DESTINY_DLL))
@@ -100,42 +78,63 @@ void Destiny::Load()
 	Initialize(dllVersion, language, gameVersion, extra, dwordSize, floatSize, stringSize);
 }
 
-void Destiny::Initialize(uint32_t _dllVersion, uint32_t _language, uint32_t _gameVersion, uint32_t _extra, uint32_t _dwordSize, uint32_t _floatSize, uint32_t _stringSize)
+Game_Destiny::Game_Destiny()
 {
-	dllVersion = Version(_dllVersion);
-	gameVersion = Version(_gameVersion);
-	language = static_cast<Language>(_language);
-	extra = _extra;
-	decimalComma = language == ENGLISH;
+	_dllVersion = {};
+	_gameVersion = {};
+	_language = Destiny::Language::DEUTSCH;
+	_extra = 0U;
+	_decimalComma = false;
+}
+
+Game_Destiny::~Game_Destiny()
+{
+	Terminate();
+}
+
+void Game_Destiny::Initialize(
+	uint32_t dllVersion,
+	uint32_t language,
+	uint32_t gameVersion,
+	uint32_t extra,
+	uint32_t dwordSize,
+	uint32_t floatSize,
+	uint32_t stringSize)
+{
+	_dllVersion = Destiny::Version(dllVersion);
+	_gameVersion = Destiny::Version(gameVersion);
+	_language = static_cast<Destiny::Language>(language);
+	_extra = extra;
+	_decimalComma = _language == Destiny::Language::ENGLISH;
 
 	// Init containers
-	dwords.resize(_dwordSize);
-	floats.resize(_floatSize);
-	strings.resize(_stringSize);
+	_dwords.resize(dwordSize);
+	_floats.resize(floatSize);
+	_strings.resize(stringSize);
 
 	// TODO: Init File container
 	// TODO: Init ClientSocket container
 
 	// Debug
 	Output::Debug("Destiny Initialized");
-	Output::Debug("Language: {}", decimalComma ? "English" : "Deutsch");
-	Output::Debug("DLL Version: {}", dllVersion.toString());
-	Output::Debug("Dwords: {}", _dwordSize);
-	Output::Debug("Floats: {}", _floatSize);
-	Output::Debug("Strings: {}", _stringSize);
+	Output::Debug("Language: {}", _decimalComma ? "English" : "Deutsch");
+	Output::Debug("DLL Version: {}", _dllVersion.toString());
+	Output::Debug("Dwords: {}", dwordSize);
+	Output::Debug("Floats: {}", floatSize);
+	Output::Debug("Strings: {}", stringSize);
 }
 
-void Destiny::Terminate()
+void Game_Destiny::Terminate()
 {
-	dwords.clear();
-	floats.clear();
-	strings.clear();
+	_dwords.clear();
+	_floats.clear();
+	_strings.clear();
 
 	// TODO: Clear File container
 	// TODO: Clear ClientSocket container
 }
 
-std::string Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
+std::string Game_Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
 {
 	std::string code;
 
@@ -143,7 +142,7 @@ std::string Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
 	const std::vector<EventCommand>& cmdList = scriptData.commands;
 	std::vector<EventCommand>::const_iterator it = cmdList.begin() + current++;
 
-	code = ToString((*it++).string);
+	code = ToString((*it++).string).substr(1);
 	while (it != cmdList.cend() && it->code == static_cast<int32_t>(EventCommand::Code::Comment_2)) {
 		code += '\n';
 		code += ToString((*it++).string);
@@ -153,7 +152,7 @@ std::string Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
 	return code;
 }
 
-bool Destiny::Interpret(const std::string& code)
+bool Game_Destiny::Interpret(const std::string& code)
 {
 	// TODO [Dr.XGB]: DestinyScript Interpret
 	return true;

@@ -26,9 +26,9 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
-#include "destiny.h"
 #include "dynrpg.h"
 #include "filefinder.h"
+#include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
 #include "game_enemyparty.h"
@@ -2128,9 +2128,9 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 			return true;
 		}
 
-		const std::string& code = Destiny::MakeString(GetFrame());
+		const std::string& code = Main_Data::game_destiny->MakeString(GetFrame());
 		Output::Debug("DestinyScript Code:\n{}", code);
-		return Destiny::Interpret(code);
+		return Main_Data::game_destiny->Interpret(code);
 	}
 
 	return true;

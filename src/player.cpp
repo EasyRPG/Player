@@ -38,13 +38,13 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
-#include "destiny.h"
 #include "dynrpg.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
 #include "game_actors.h"
 #include "game_battle.h"
+#include "game_destiny.h"
 #include "game_map.h"
 #include "game_message.h"
 #include "game_enemyparty.h"
@@ -834,7 +834,7 @@ void Player::CreateGameObjects() {
 			game_config.patch_maniac.Set(true);
 		}
 
-		if (!FileFinder::Game().FindFile(Destiny::DESTINY_DLL).empty()) {
+		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
 	}
@@ -851,7 +851,7 @@ void Player::CreateGameObjects() {
 	}
 
 	if (Player::IsPatchDestiny()) {
-		Destiny::Load();
+		Main_Data::game_destiny->Load();
 	}
 }
 
@@ -935,6 +935,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
 	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
+	Main_Data::game_destiny = std::make_unique<Game_Destiny>();
 
 	DynRpg::Reset();
 
