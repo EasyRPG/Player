@@ -210,49 +210,48 @@ namespace Game_Map {
 	 * @param from_y from tile y.
 	 * @param to_x to new tile x.
 	 * @param to_y to new tile y.
+	 * @param check_events_and_events (Optional) Whether to check
+	 * events, or only consider map collision.
+	 * @param ignore_some_events_by_id (Optional) A set of
+	 * specific event IDs to ignore.
 	 * @return whether move is possible.
 	 */
+	bool CheckWay(const Game_Character& self,
+			int from_x, int from_y,
+			int to_x, int to_y,
+			bool check_events_and_vehicles,
+			std::unordered_set<int> *ignore_some_events_by_id);
+
+	/** Shorter version of CheckWay. */
 	bool CheckWay(const Game_Character& self,
 			int from_x, int from_y,
 			int to_x, int to_y);
 
 	/**
-	 * Extended function of CheckWay that spits out some
-	 * additional computed values for use in MakeWay.
+	 * Extended function behind MakeWay and CheckWay
+	 * that allows controlling exactly which events are
+	 * ignored in the collision, and whether events should
+	 * be prompted to make way with side effects (for MakeWay)
+	 * or not (for CheckWay).
 	 *
-	 * @param self See CheckWay.
-	 * @param from_x See CheckWay.
-	 * @param from_y See CheckWay.
-	 * @param to_x See CheckWay.
-	 * @param to_y See CheckWay.
-	 * @param ignore_events_and_vehicles Whether to ignore
-	 *   all events and vehicles and only check map geometry.
-	 * @param ignore_some_events_by_id Ignore some specific
-	 *   events by ID.
-	 * @param out_bit_from Outputs bitmap mask for passability.
-	 * @param out_bit_to Outputs bitmap mask for passability.
-	 * @param out_to_x Target pos adjusted for map repeat.
-	 * @param out_to_y Target pos adjusted for map repeat.
-	 * @param out_self_conflict Outputs whether the moving self
-	 *	 has a tile graphic that conflicts with the movement
-	 *	 direction.
-	 * @return See CheckWay.
+	 * @param self See CheckWay or MakeWay.
+	 * @param from_x See CheckWay or MakeWay.
+	 * @param from_y See CheckWay or MakeWay.
+	 * @param to_x See CheckWay or MakeWay.
+	 * @param to_y See CheckWay or MakeWay.
+	 * @param check_events_and_vehicles whether to check
+	 * events, or only consider map collision.
+	 * @param make_way Whether to cause side effects.
+	 * @param ignore_some_events_by_id A set of
+	 * specific event IDs to ignore.
+	 * @return See CheckWay or MakeWay.
 	 */
-	 bool CheckWayEx(const Game_Character& self,
+	 bool CheckOrMakeWayEx(const Game_Character& self,
 			int from_x, int from_y,
 			int to_x, int to_y,
-			bool ignore_events_and_vehicles,
+			bool check_events_and_vehicles,
 			std::unordered_set<int> *ignore_some_events_by_id,
-			int *out_bit_from,
-			int *out_bit_to,
-			int *out_to_x,
-			int *out_to_y,
-			bool *out_self_conflict);
-	bool CheckWayEx(const Game_Character& self,
-			int from_x, int from_y,
-			int to_x, int to_y,
-			bool ignore_all_events,
-			std::unordered_set<int> *ignore_some_events_by_id);
+			bool make_way);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)

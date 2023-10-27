@@ -476,10 +476,10 @@ bool Game_Character::CheckWay(int from_x, int from_y, int to_x, int to_y) {
 }
 
 
-bool Game_Character::CheckWayEx(
+bool Game_Character::CheckWay(
 		int from_x, int from_y, int to_x, int to_y, bool ignore_all_events,
 		std::unordered_set<int> *ignore_some_events_by_id) {
-	return Game_Map::CheckWayEx(*this, from_x, from_y, to_x, to_y,
+	return Game_Map::CheckWay(*this, from_x, from_y, to_x, to_y,
 		ignore_all_events, ignore_some_events_by_id);
 }
 

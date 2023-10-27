@@ -578,48 +578,38 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	return CheckWayEx(
-		self, from_x, from_y, to_x, to_y, false, nullptr,
-		nullptr, nullptr, nullptr, nullptr, nullptr
+	return CheckOrMakeWayEx(
+		self, from_x, from_y, to_x, to_y, true, nullptr, false
 	);
 }
 
-bool Game_Map::CheckWayEx(const Game_Character& self,
+bool Game_Map::CheckWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
-		bool ignore_events_and_vehicles,
+		bool check_events_and_vehicles,
 		std::unordered_set<int> *ignore_some_events_by_id) {
-	return CheckWayEx(
+	return CheckOrMakeWayEx(
 		self, from_x, from_y, to_x, to_y,
-		ignore_events_and_vehicles,
-		ignore_some_events_by_id,
-		nullptr, nullptr, nullptr, nullptr, nullptr
+		check_events_and_vehicles,
+		ignore_some_events_by_id, false
 	);
 }
 
-bool Game_Map::CheckWayEx(const Game_Character& self,
+bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
-		bool ignore_events_and_vehicles,
+		bool check_events_and_vehicles,
 		std::unordered_set<int> *ignore_some_events_by_id,
-		int *out_bit_from,
-		int *out_bit_to,
-		int *out_to_x,
-		int *out_to_y,
-		bool *out_self_conflict
+		bool make_way
 		)
 {
 	// Infer directions before we do any rounding.
 	const int bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
 	const int bit_to = GetPassableMask(to_x, to_y, from_x, from_y);
-	if (out_bit_from) *out_bit_from = bit_from;
-	if (out_bit_to) *out_bit_to = bit_to;
 
 	// Now round for looping maps.
 	to_x = Game_Map::RoundX(to_x);
 	to_y = Game_Map::RoundY(to_y);
-	if (out_to_x) *out_to_x = to_x;
-	if (out_to_y) *out_to_y = to_y;
 
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
 	if (!Game_Map::IsValid(to_x, to_y)) {
@@ -632,6 +622,19 @@ bool Game_Map::CheckWayEx(const Game_Character& self,
 
 	const auto vehicle_type = GetCollisionVehicleType(&self);
 	bool self_conflict = false;
+
+	// Depending on whether we're supposed to call MakeWayCollideEvent
+	// (which might change the map) or not, choose what to call:
+	auto CheckOrMakeCollideEvent = [&](auto& other) {
+		if (make_way) {
+			return MakeWayCollideEvent(to_x, to_y, self, other, self_conflict);
+		} else {
+			return CheckWayTestCollideEvent(
+				to_x, to_y, self, other, self_conflict
+			);
+		}
+	};
+
 	if (!self.IsJumping()) {
 		// Check for self conflict.
 		// If this event has a tile graphic and the tile itself has passage blocked in the direction
@@ -659,35 +662,34 @@ bool Game_Map::CheckWayEx(const Game_Character& self,
 			}
 		}
 	}
-	if (out_self_conflict) *out_self_conflict = self_conflict;
-	if (vehicle_type != Game_Vehicle::Airship && !ignore_events_and_vehicles) {
+	if (vehicle_type != Game_Vehicle::Airship && check_events_and_vehicles) {
 		// Check for collision with events on the target tile.
 		for (auto& other: GetEvents()) {
 			if (ignore_some_events_by_id != NULL &&
 					ignore_some_events_by_id->find(other.GetId()) !=
 					ignore_some_events_by_id->end())
 				continue;
-			if (CheckWayTestCollideEvent(to_x, to_y, self, other, self_conflict)) {
+			if (CheckOrMakeCollideEvent(other)) {
 				return false;
 			}
 		}
 		auto& player = Main_Data::game_player;
 		if (player->GetVehicleType() == Game_Vehicle::None) {
-			if (CheckWayTestCollideEvent(to_x, to_y, self, *Main_Data::game_player, self_conflict)) {
+			if (CheckOrMakeCollideEvent(*Main_Data::game_player)) {
 				return false;
 			}
 		}
 		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
 			auto& other = vehicles[vid - 1];
 			if (other.IsInCurrentMap()) {
-				if (CheckWayTestCollideEvent(to_x, to_y, self, other, self_conflict)) {
+				if (CheckOrMakeCollideEvent(other)) {
 					return false;
 				}
 			}
 		}
 		auto& airship = vehicles[Game_Vehicle::Airship - 1];
 		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
-			if (CheckWayTestCollideEvent(to_x, to_y, self, airship, self_conflict)) {
+			if (CheckOrMakeCollideEvent(airship)) {
 				return false;
 			}
 		}
@@ -698,7 +700,7 @@ bool Game_Map::CheckWayEx(const Game_Character& self,
 	}
 
 	return IsPassableTile(
-		&self, bit, to_x, to_y, !ignore_events_and_vehicles, true
+		&self, bit, to_x, to_y, check_events_and_vehicles, true
 		);
 }
 
@@ -707,51 +709,11 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	// First, check basic passability but ignoring all events:
-	int bit_from, bit_to;
-	bool self_conflict;
-	if (!CheckWayEx(self, from_x, from_y, to_x, to_y, true, NULL,
-			&bit_from, &bit_to,
-			&to_x, &to_y, &self_conflict))
-		return false;
-
-	const auto vehicle_type = GetCollisionVehicleType(&self);
-	if (vehicle_type != Game_Vehicle::Airship) {
-		// Check for collision with events on the target tile.
-		for (auto& other: GetEvents()) {
-			if (MakeWayCollideEvent(to_x, to_y, self, other, self_conflict)) {
-				return false;
-			}
-		}
-		auto& player = Main_Data::game_player;
-		if (player->GetVehicleType() == Game_Vehicle::None) {
-			if (MakeWayCollideEvent(to_x, to_y, self, *Main_Data::game_player, self_conflict)) {
-				return false;
-			}
-		}
-		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
-			auto& other = vehicles[vid - 1];
-			if (other.IsInCurrentMap()) {
-				if (MakeWayCollideEvent(to_x, to_y, self, other, self_conflict)) {
-					return false;
-				}
-			}
-		}
-		auto& airship = vehicles[Game_Vehicle::Airship - 1];
-		if (airship.IsInCurrentMap() && self.GetType() != Game_Character::Player) {
-			if (MakeWayCollideEvent(to_x, to_y, self, airship, self_conflict)) {
-				return false;
-			}
-		}
-	}
-
-	int bit = bit_to;
-	if (self.IsJumping()) {
-		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
-	}
-
-	return IsPassableTile(&self, bit, to_x, to_y, true, false);
+	return CheckOrMakeWayEx(
+		self, from_x, from_y, to_x, to_y, true, NULL, true
+		);
 }
+
 
 bool Game_Map::CanLandAirship(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
