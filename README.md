@@ -20,8 +20,8 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - SDL2 for screen backend support.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
-- zlib for XYZ image support.
-- fmtlib for interal logging.
+- zlib for XYZ image and ZIP archive support.
+- fmtlib for text formatting and interal logging.
 
 ### extended / recommended
 
@@ -34,6 +34,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - libsndfile for better WAVE audio support.
 - libxmp for tracker music support.
 - SpeexDSP or libsamplerate for proper audio resampling.
+- lhasa for LHA (.lzh) archive support.
 
 SDL 1.2 is still supported, but deprecated.
 
