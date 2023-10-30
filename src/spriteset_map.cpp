@@ -18,12 +18,12 @@
 // Headers
 #include "spriteset_map.h"
 #include "cache.h"
-#include "dynrpg.h"
 #include "game_map.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
 #include "sprite_character.h"
 #include "game_character.h"
+#include "game_dynrpg.h"
 #include "game_player.h"
 #include "game_vehicle.h"
 #include "game_screen.h"
@@ -114,7 +114,7 @@ void Spriteset_Map::Update() {
 		shadow->Update();
 	}
 
-	DynRpg::Update();
+	Main_Data::game_dynrpg->Update();
 }
 
 void Spriteset_Map::ChipsetUpdated() {

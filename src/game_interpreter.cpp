@@ -26,8 +26,8 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
-#include "dynrpg.h"
 #include "filefinder.h"
+#include "game_dynrpg.h"
 #include "game_map.h"
 #include "game_event.h"
 #include "game_enemyparty.h"
@@ -2119,7 +2119,7 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 	std::string command = ToString(com.string);
 
-	if (Player::IsPatchDynRpg() || DynRpg::Whitelist(command)) {
+	if (Player::IsPatchDynRpg() || Main_Data::game_dynrpg->Whitelist(command)) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
 			return true;
@@ -2140,7 +2140,7 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 			}
 		}
 
-		return DynRpg::Invoke(command);
+		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
 	return true;
 }
