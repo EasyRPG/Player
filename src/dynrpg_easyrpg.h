@@ -31,12 +31,12 @@ namespace DynRpg {
 	public:
 		EasyRpgPlugin() : DynRpgPlugin("EasyRpgPlugin") {}
 
-		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
+		bool Invoke(Game_DynRpg& dynrpg_instance, StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Load(const std::vector<uint8_t>& buffer) override;
 		std::vector<uint8_t> Save() override;
 
 	private:
-		bool EasyCall(dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter);
+		bool EasyCall(Game_DynRpg& dynrpg_instance, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter);
 		bool EasyRaw(dyn_arg_list args, Game_Interpreter* interpreter);
 	};
 }

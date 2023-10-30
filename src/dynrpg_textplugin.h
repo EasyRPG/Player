@@ -26,7 +26,7 @@ namespace DynRpg {
 		TextPlugin() : DynRpgPlugin("DynTextPlugin") {}
 		~TextPlugin() override;
 
-		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
+		bool Invoke(Game_DynRpg& dynrpg_instance, StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Update() override;
 		void Load(const std::vector<uint8_t>&) override;
 		std::vector<uint8_t> Save() override;

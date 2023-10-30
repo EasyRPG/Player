@@ -137,7 +137,7 @@ public:
 private:
 	friend DynRpg::EasyRpgPlugin;
 
-	bool Invoke(StringView func, dyn_arg_list args, Game_Interpreter* interpreter = nullptr);
+	bool Invoke(StringView func, dyn_arg_list args, Game_Interpreter* interpreter);
 	void InitPlugins();
 
 	using dyn_rpg_func = std::unordered_map<std::string, dynfunc>;
@@ -159,7 +159,7 @@ public:
 	virtual ~DynRpgPlugin() = default;
 
 	StringView GetIdentifier() const { return identifier; }
-	virtual bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) = 0;
+	virtual bool Invoke(Game_DynRpg& dynrpg_instance, StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) = 0;
 	virtual void Update() {}
 	virtual void Load(const std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }

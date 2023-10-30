@@ -399,7 +399,7 @@ static bool RemoveAll(dyn_arg_list) {
 	return true;
 }
 
-bool DynRpg::TextPlugin::Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+bool DynRpg::TextPlugin::Invoke(Game_DynRpg&, StringView func, dyn_arg_list args, bool&, Game_Interpreter*) {
 	if (func == "write_text") {
 		return WriteText(args);
 	} else if (func == "append_line") {

@@ -19,6 +19,7 @@
 #include <map>
 
 #include "dynrpg_easyrpg.h"
+#include "string_view.h"
 #include "main_data.h"
 #include "game_variables.h"
 #include "utils.h"
@@ -48,7 +49,7 @@ static bool EasyOput(dyn_arg_list args) {
 	return true;
 }
 
-bool DynRpg::EasyRpgPlugin::EasyCall(dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+bool DynRpg::EasyRpgPlugin::EasyCall(Game_DynRpg& dynrpg_instance, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
 	auto func_name = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
 
 	if (func_name.empty()) {
@@ -58,8 +59,8 @@ bool DynRpg::EasyRpgPlugin::EasyCall(dyn_arg_list args, bool& do_yield, Game_Int
 		return true;
 	}
 
-	for (auto& plugin: Main_Data::game_dynrpg->plugins) {
-		if (plugin->Invoke(func_name, args.subspan(1), do_yield, interpreter)) {
+	for (auto& plugin: dynrpg_instance.plugins) {
+		if (plugin->Invoke(dynrpg_instance, func_name, args.subspan(1), do_yield, interpreter)) {
 			return true;
 		}
 	}
@@ -93,37 +94,50 @@ bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpr
 		return true;
 	}
 
-	auto func = "raw";
+	auto func = "easyrpg_raw";
 	bool okay = false;
 
-	lcf::rpg::EventCommand outputCommand;
-	std::vector<int32_t> outputParams = {};
+	lcf::rpg::EventCommand cmd;
+	std::vector<int32_t> output_args;
 
-	for (std::size_t i = 0; i < args.size(); ++i) {
-		std::string currValue = DynRpg::ParseVarArg(func, args, i, okay);
-		Output::Warning("{}", currValue);
-
-		if (!okay) return true;
-
-		if (i == 0) outputCommand.code = stoi(currValue);
-		if (i == 1) outputCommand.string = lcf::DBString(currValue);
-		else outputParams.push_back(stoi(currValue));
+	if (args.empty()) {
+		Output::Warning("easyrpg_raw: Command too short");
+		return true;
 	}
 
-	outputCommand.parameters = lcf::DBArray<int32_t>(outputParams.begin(), outputParams.end());
+	std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
 
-	//FIXME: this will crash when you two interpreters run a raw command in parallel.
-	// The lack to access the current interpreter frame is a lack in the dynrpg API design.
-	// Have to fix this. The current frame should be easy to access
-	std::vector<lcf::rpg::EventCommand> cmdList = { outputCommand };
-	interpreter->Push(cmdList, 0, false);
+	if (!okay) {
+		return true;
+	}
+
+	if (args.size() >= 2) {
+		auto [string_arg] = DynRpg::ParseArgs<std::string>(func, args.subspan(1), &okay);
+		cmd.string = lcf::DBString(string_arg);
+
+		if (!okay) {
+			return true;
+		}
+
+		for (size_t i = 2; i < args.size(); ++i) {
+			auto [int_arg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+
+			if (!okay) {
+				return true;
+			}
+		}
+	}
+
+	cmd.parameters = lcf::DBArray<int32_t>(output_args.begin(), output_args.end());
+
+	interpreter->Push({ cmd }, 0, false);
 
 	return true;
 }
 
-bool DynRpg::EasyRpgPlugin::Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+bool DynRpg::EasyRpgPlugin::Invoke(Game_DynRpg& dynrpg_instance, StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
 	if (func == "call") {
-		return EasyCall(args, do_yield, interpreter);
+		return EasyCall(dynrpg_instance, args, do_yield, interpreter);
 	} else if (func == "easyrpg_output") {
 		return EasyOput(args);
 	} else if (func == "easyrpg_add") {

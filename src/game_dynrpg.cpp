@@ -364,7 +364,7 @@ bool Game_DynRpg::Invoke(StringView command, Game_Interpreter* interpreter) {
 		return true;
 	}
 
-	return Invoke(function_name, args);
+	return Invoke(function_name, args, interpreter);
 }
 
 bool Game_DynRpg::Invoke(StringView func, dyn_arg_list args, Game_Interpreter* interpreter) {
@@ -373,7 +373,7 @@ bool Game_DynRpg::Invoke(StringView func, dyn_arg_list args, Game_Interpreter* i
 	bool yield = false;
 
 	for (auto& plugin: plugins) {
-		if (plugin->Invoke(func, args, yield, interpreter)) {
+		if (plugin->Invoke(*this, func, args, yield, interpreter)) {
 			return !yield;
 		}
 	}

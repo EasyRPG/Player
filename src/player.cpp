@@ -915,6 +915,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
 	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
+	Main_Data::game_dynrpg = std::make_unique<Game_DynRpg>();
 	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
@@ -1541,4 +1542,3 @@ std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
 }
-
