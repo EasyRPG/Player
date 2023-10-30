@@ -30,6 +30,9 @@
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
+#include <unordered_set>
+
+std::unordered_set<std::string> whiteList = { "@easyrpg_output" };
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -533,4 +536,14 @@ void DynRpg::Reset() {
 	init = false;
 	dyn_rpg_functions.clear();
 	plugins.clear();
+}
+
+bool DynRpg::Whitelist(std::string cmd) {
+	for (const std::string& whitelistItem : whiteList) {
+		if (cmd.find(whitelistItem) != std::string::npos) {
+			return true;
+		}
+	}
+
+	return false;
 }

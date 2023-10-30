@@ -112,6 +112,8 @@ namespace DynRpg {
 	void Load(int slot);
 	void Save(int slot);
 
+	bool Whitelist(std::string cmd);
+
 	template <typename... Targs>
 	std::tuple<Targs...> ParseArgs(StringView func_name, dyn_arg_list args, bool* parse_okay = nullptr) {
 		std::tuple<Targs...> t;

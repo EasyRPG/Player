@@ -2117,7 +2117,9 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
-	if (Player::IsPatchDynRpg()) {
+	std::string command = ToString(com.string);
+
+	if (Player::IsPatchDynRpg() || DynRpg::Whitelist(command)) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
 			return true;
@@ -2127,7 +2129,6 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 		const auto& list = frame.commands;
 		auto& index = frame.current_command;
 
-		std::string command = ToString(com.string);
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
 			const auto& cmd = list[i];
