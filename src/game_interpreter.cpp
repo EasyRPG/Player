@@ -100,7 +100,7 @@ bool Game_Interpreter::IsRunning() const {
 
 // Setup.
 void Game_Interpreter::Push(
-	const std::vector<lcf::rpg::EventCommand>& _list,
+	std::vector<lcf::rpg::EventCommand> _list,
 	int event_id,
 	bool started_by_decision_key
 ) {
@@ -114,7 +114,7 @@ void Game_Interpreter::Push(
 
 	lcf::rpg::SaveEventExecFrame frame;
 	frame.ID = _state.stack.size() + 1;
-	frame.commands = _list;
+	frame.commands = std::move(_list);
 	frame.current_command = 0;
 	frame.triggered_by_decision_key = started_by_decision_key;
 	frame.event_id = event_id;
@@ -4975,13 +4975,38 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	return true;
 }
- 
-bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
+
+bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command CallCommand not supported");
+	lcf::rpg::EventCommand cmd;
+	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
+
+	if (com.parameters.size() >= 5) {
+		cmd.string = Main_Data::game_strings->GetWithModeBitfield(com.string, com.parameters[0], 3, com.parameters[4]);
+	} else {
+		cmd.string = com.string;
+	}
+
+	int arr_begin = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+	int arr_length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+
+	std::vector<int32_t> output_args;
+	if (arr_length > 0) {
+		output_args.reserve(arr_length);
+		for (int i = 0; i < arr_length; ++i) {
+			output_args.push_back(Main_Data::game_variables->Get(arr_begin + i));
+		}
+	}
+
+	cmd.parameters = lcf::DBArray<int32_t>(output_args.begin(), output_args.end());
+
+	// Our implementation pushes a new frame containing the command instead of invoking it directly.
+	// This is incompatible to Maniacs but has a better compatibility with our code.
+	Push({ cmd }, GetCurrentEventId(), false);
+
 	return true;
 }
 

@@ -64,7 +64,7 @@ public:
 	void Update(bool reset_loop_count=true);
 
 	void Push(
-			const std::vector<lcf::rpg::EventCommand>& _list,
+			std::vector<lcf::rpg::EventCommand> _list,
 			int _event_id,
 			bool started_by_decision_key = false
 	);
