@@ -48,6 +48,36 @@ static bool EasyOput(dyn_arg_list args) {
 	return true;
 }
 
+static bool EasyRaw(dyn_arg_list args) {
+	auto func = "raw";
+	bool okay = false;
+
+	lcf::rpg::EventCommand outputCommand;
+	std::vector<int32_t> outputParams = {};
+
+	for (std::size_t i = 0; i < args.size(); ++i) {
+		std::string currValue = DynRpg::ParseVarArg(func, args, i, okay);
+		Output::Warning("{}", currValue);
+
+		if (!okay) return true;
+
+		if (i == 0) outputCommand.code = stoi(currValue);
+		if (i == 1) outputCommand.string = lcf::DBString(currValue);
+		else outputParams.push_back(stoi(currValue));
+	}
+
+	outputCommand.parameters = lcf::DBArray<int32_t>(outputParams.begin(), outputParams.end());
+
+	//FIXME: this will crash when you two interpreters run a raw command in parallel.
+	// The lack to access the current interpreter frame is a lack in the dynrpg API design.
+	// Have to fix this. The current frame should be easy to access
+	std::vector<lcf::rpg::EventCommand> cmdList = { outputCommand };
+	if (Game_Battle::IsBattleRunning()) Game_Battle::GetInterpreter().Push(cmdList, 0, false);
+	else Game_Map::GetInterpreter().Push(cmdList, 0, false);
+
+	return true;
+}
+
 static bool EasyCall(dyn_arg_list args) {
 	auto token = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
 
@@ -92,6 +122,7 @@ void DynRpg::EasyRpgPlugin::RegisterFunctions() {
 	DynRpg::RegisterFunction("call", EasyCall);
 	DynRpg::RegisterFunction("easyrpg_output", EasyOput);
 	DynRpg::RegisterFunction("easyrpg_add", EasyAdd);
+	DynRpg::RegisterFunction("easyrpg_raw", EasyRaw);
 }
 
 void DynRpg::EasyRpgPlugin::Load(const std::vector<uint8_t>& buffer) {

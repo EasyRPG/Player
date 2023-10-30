@@ -19,6 +19,8 @@
 #define EP_DYNRPG_EASYRPG_H
 
 #include "dynrpg.h"
+#include "game_battle.h"
+#include "game_map.h"
 
 namespace DynRpg {
 	/**

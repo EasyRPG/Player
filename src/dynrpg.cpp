@@ -32,7 +32,7 @@
 #include "dynrpg_textplugin.h"
 #include <unordered_set>
 
-std::unordered_set<std::string> whiteList = { "@easyrpg_output" };
+std::unordered_set<std::string> whiteList = { "@easyrpg_output", "@easyrpg_raw" };
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
