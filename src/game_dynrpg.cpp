@@ -19,6 +19,7 @@
 #include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_actors.h"
+#include "game_strings.h"
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
@@ -110,6 +111,9 @@ static std::string ParseToken(std::string token, StringView function_name) {
 	std::stringstream number_part;
 
 	for (;;) {
+		// This loop checks if the token is to be substituted
+		// If a token is (regex) [NT]?V+[0-9]+ it is resolved to a var or an actor
+		// T is an EasyRPG extension: It will return a Maniac Patch String Var
 		if (text_index != end) {
 			chr = *text_index;
 		}
@@ -131,8 +135,11 @@ static std::string ParseToken(std::string token, StringView function_name) {
 						return {};
 					}
 
-					// N is last
+					// N (Actor Name) is last
 					return ToString(Main_Data::game_actors->GetActor(number)->GetName());
+				} else if (*it == 'T' && Player::IsPatchManiac()) {
+					// T (String Var) is last
+					return Main_Data::game_strings->Get(number);
 				} else {
 					// Variable
 					number = Main_Data::game_variables->Get(number);
@@ -151,6 +158,11 @@ static std::string ParseToken(std::string token, StringView function_name) {
 			}
 			var_part << chr;
 		} else if (chr == 'V') {
+			var_part << chr;
+		} else if (chr == 'T' && Player::IsPatchManiac()) {
+			if (!first) {
+				break;
+			}
 			var_part << chr;
 		} else {
 			break;
@@ -204,7 +216,6 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 	// Strings are in "", a "-literal is represented by ""
 	// Number is a valid float number
 	// Tokens are Strings without "" and with Whitespace stripped o_O
-	// If a token is (regex) N?V+[0-9]+ it is resolved to a var or an actor
 
 	// All arguments are passed as string to the DynRpg functions and are
 	// converted to int or float on demand.
