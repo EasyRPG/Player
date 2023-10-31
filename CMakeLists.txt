@@ -77,6 +77,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/color.h
 	src/compiler.h
 	src/config_param.h
+	src/constants.h
 	src/decoder_fluidsynth.cpp
 	src/decoder_fluidsynth.h
 	src/decoder_libsndfile.cpp

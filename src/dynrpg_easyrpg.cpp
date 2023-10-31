@@ -105,9 +105,23 @@ bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpr
 		return true;
 	}
 
-	std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
+	Constants Constants;
+	std::string keyToPrint = "ENABLE";
+
+	//Output::Warning("Key {}, value {}", keyToPrint, Constants.get("DestinyScript",keyToPrint));
+
+	auto evt = args[0];
+	if (evt.find("@") == 0) {
+		evt = evt.substr(1);
+		evt = Constants.get("EventCode", evt);
+
+		cmd.code = stoi(evt);
+		okay = bool(cmd.code);
+	} else
+		std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
 
 	if (!okay) {
+		Output::Warning("EasyRpgPlugin - Unknown Input: {}",args[0]);
 		return true;
 	}
 
