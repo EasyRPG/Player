@@ -30,20 +30,23 @@ void Game_Strings::WarnGet(int id) const {
 	--_warnings;
 }
 
-Game_Strings::Str_t Game_Strings::Asg(Str_Params params, Str_t string) {
-	return Set(params, string);
+StringView Game_Strings::Asg(Str_Params params, StringView string) {
+	Set(params, string);
+	return Get(params.string_id);
 }
 
-Game_Strings::Str_t Game_Strings::Cat(Str_Params params, Str_t string) {
+StringView Game_Strings::Cat(Str_Params params, StringView string) {
 	if (params.string_id <= 0) {
 		return {};
 	}
 
-	Str_t s = Get(params.string_id);
-	std::string op_string = s;
-	op_string.append(string);
-	Set(params, op_string);
-	return s;
+	auto it = _strings.find(params.string_id);
+	if (it == _strings.end()) {
+		Set(params, string);
+		return Get(params.string_id);
+	}
+	it->second += ToString(string);
+	return it->second;
 }
 
 int Game_Strings::ToNum(Str_Params params, int var_id) {
@@ -51,19 +54,22 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 		return -1;
 	}
 
-	std::string str = Get(params.string_id);
+	auto it = _strings.find(params.string_id);
+	if (it == _strings.end()) {
+		return 0;
+	}
 
 	int num;
 	if (params.hex)
-		num = static_cast<int>(std::strtol(str.c_str(), nullptr, 16));
+		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 16));
 	else
-		num = static_cast<int>(std::strtol(str.c_str(), nullptr, 0));
+		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 0));
 
 	Main_Data::game_variables->Set(var_id, num);
 	return num;
 }
 
-int Game_Strings::GetLen(Str_Params params, int var_id) {
+int Game_Strings::GetLen(Str_Params params, int var_id) const {
 	// Note: The length differs between Maniac and EasyRPG due to different internal encoding (utf-8 vs. ansi)
 
 	if (params.string_id <= 0) {
@@ -75,7 +81,7 @@ int Game_Strings::GetLen(Str_Params params, int var_id) {
 	return len;
 }
 
-int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin) {
+int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin) const {
 	if (params.string_id <= 0) {
 		return -1;
 	}
@@ -84,14 +90,12 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 		search = Extract(search, params.hex);
 	}
 
-	std::string str = Get(params.string_id);
-
 	int index = Get(params.string_id).find(search, begin);
 	Main_Data::game_variables->Set(var_id, index);
 	return index;
 }
 
-int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out_id, int var_id) {
+int Game_Strings::Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id) {
 	if (params.string_id <= 0) {
 		return -1;
 	}
@@ -101,7 +105,7 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 
 	// always returns at least 1
 	int splits = 1;
-	std::string str = Get(params.string_id);
+	std::string str = ToString(Get(params.string_id));
 
 	params.string_id = string_out_id;
 
@@ -119,7 +123,7 @@ int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out
 	return splits;
 }
 
-Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding, bool& do_yield) {
+std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_yield) {
 	do_yield = false;
 
 	Filesystem_Stream::InputStream is = FileFinder::OpenText(filename);
@@ -134,7 +138,7 @@ Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding, bo
 	}
 
 	auto vec = Utils::ReadStream(is);
-	Str_t file_content(vec.begin(), vec.end());
+	std::string file_content(vec.begin(), vec.end());
 
 	if (encoding == 0) {
 		lcf::Encoder enc(Player::encoding);
@@ -144,8 +148,8 @@ Game_Strings::Str_t Game_Strings::FromFile(StringView filename, int encoding, bo
 	return file_content;
 }
 
-Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
-	std::string str = Get(params.string_id);
+StringView Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
+	std::string str = ToString(Get(params.string_id));
 
 	if (params.extract) {
 		filename = Extract(filename, params.hex);
@@ -182,7 +186,7 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 	return str;
 }
 
-Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
+StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
 	// FIXME: consideration needed around encoding -- what mode are files read in?
 	if (params.string_id <= 0) {
 		return {};
@@ -190,29 +194,31 @@ Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int str
 
 	int index;
 	std::string result;
-	std::string str = Get(params.string_id);
+	StringView str = Get(params.string_id);
 
-	std::stringstream ss(str);
+	std::stringstream ss(ToString(str));
 
 	while (offset >= 0 && Utils::ReadLine(ss, result)) { offset--; }
 
 	offset = ss.rdbuf()->in_avail();
 
 	Set(params, ss.str().substr(str.length() - offset));
+
 	params.string_id = string_out_id;
-	return Set(params, result);
+	Set(params, result);
+	return Get(params.string_id);
 }
 
-Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id) {
+StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id) {
 	int var_result;
-	Str_t str_result;
+	std::string str_result;
 	std::smatch match;
 
 	if (params.extract) {
 		expr = Extract(expr, params.hex);
 	}
 
-	std::string base = Get(params.string_id).erase(0, begin);
+	std::string base = ToString(Get(params.string_id)).erase(0, begin);
 	std::regex r(expr);
 
 	std::regex_search(base, match, r);
@@ -228,7 +234,7 @@ Game_Strings::Str_t Game_Strings::ExMatch(Str_Params params, std::string expr, i
 	return str_result;
 }
 
-const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int string_id_1, Str_t string, int op, int args[]) {
+const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[]) {
 	if (EP_UNLIKELY(ShouldWarn(params.string_id))) {
 		WarnGet(params.string_id);
 	}
@@ -262,16 +268,15 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 	return GetData();
 }
 
-Game_Strings::Str_t Game_Strings::PrependMin(Str_t string, int min_size, char c) {
+std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
 	if (string.size() < min_size) {
 		int s = min_size - string.size();
-		std::string res = std::string(s, c) + (std::string)string;
-		return res;
+		return std::string(s, c) + ToString(string);
 	}
-	return string;
+	return ToString(string);
 }
 
-Game_Strings::Str_t Game_Strings::Extract(Str_t string, bool as_hex) {
+std::string Game_Strings::Extract(StringView string, bool as_hex) {
 	PendingMessage::CommandInserter cmd_fn;
 
 	if (as_hex) {
@@ -280,7 +285,7 @@ Game_Strings::Str_t Game_Strings::Extract(Str_t string, bool as_hex) {
 		cmd_fn = ManiacsCommandInserter;
 	}
 
-	return static_cast<Str_t>(PendingMessage::ApplyTextInsertingCommands(string, Player::escape_char, cmd_fn));
+	return PendingMessage::ApplyTextInsertingCommands(ToString(string), Player::escape_char, cmd_fn);
 }
 
 std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
@@ -298,7 +303,7 @@ std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const c
 		int value = parse_ret.value;
 
 		// Contrary to Messages, the content of \t[]-strings is not evaluated
-		return Main_Data::game_strings->Get(value);
+		return ToString(Main_Data::game_strings->Get(value));
 	}
 
 	return Game_Message::CommandCodeInserter(ch, iter, end, escape_char);

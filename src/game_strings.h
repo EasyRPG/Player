@@ -32,8 +32,7 @@
  */
 class Game_Strings {
 public:
-	using Str_t = std::string;
-	using Strings_t = std::unordered_map<int, Str_t>;
+	using Strings_t = std::unordered_map<int, std::string>;
 
 	// currently only warns when ID <= 0
 	static constexpr int max_warnings = 10;
@@ -49,62 +48,60 @@ public:
 	const Strings_t& GetData() const;
 	std::vector<lcf::DBString> GetLcfData() const;
 
-	Str_t Get(int id) const;
-	Str_t GetIndirect(int id) const;
-	Str_t GetWithMode(Str_t str_data, int mode, int arg) const;
-	Str_t GetWithModeAndPos(Str_t str_data, int mode, int arg, int* pos);
+	StringView Get(int id) const;
+	StringView GetIndirect(int id) const;
+	StringView GetWithMode(StringView str_data, int arg, int mode) const;
+	StringView GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos);
 
-	Str_t Asg(Str_Params params, Str_t string);
-	Str_t Cat(Str_Params params, Str_t string);
+	StringView Asg(Str_Params params, StringView string);
+	StringView Cat(Str_Params params, StringView string);
 	int ToNum(Str_Params params, int var_id);
-	int GetLen(Str_Params params, int var_id);
-	int InStr(Str_Params params, std::string search, int var_id, int begin = 0);
-	int Split(Str_Params params, std::string delimiter, int string_out_id, int var_id);
-	static Str_t FromFile(StringView filename, int encoding, bool& do_yield);
-	Str_t ToFile(Str_Params params, std::string filename, int encoding);
-	Str_t PopLine(Str_Params params, int offset, int string_out_id);
-	Str_t ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);
+	int GetLen(Str_Params params, int var_id) const;
+	int InStr(Str_Params params, std::string search, int var_id, int begin = 0) const;
+	int Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id);
+	static std::string FromFile(StringView filename, int encoding, bool& do_yield);
+	StringView ToFile(Str_Params params, std::string filename, int encoding);
+	StringView PopLine(Str_Params params, int offset, int string_out_id);
+	StringView ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);
 
-	const Strings_t& RangeOp(Str_Params params, int string_id_1, Str_t string, int op, int args[] = nullptr);
+	const Strings_t& RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[] = nullptr);
 
-	Str_t PrependMin(Str_t string, int min_size, char c);
-	Str_t Extract(Str_t string, bool as_hex);
+	static std::string PrependMin(StringView string, int min_size, char c);
+	static std::string Extract(StringView string, bool as_hex);
 
 	static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
 	static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);
 
 private:
-	Str_t Set(Str_Params params, Str_t string);
+	void Set(Str_Params params, StringView string);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
 
-private:
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
 };
 
 
-inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
+inline void Game_Strings::Set(Str_Params params, StringView string) {
 	if (params.string_id <= 0) {
-		return {};
+		return;
+	}
+
+	std::string ins_string = ToString(string);
+	if (params.extract) {
+		ins_string = Extract(ins_string, params.hex);
 	}
 
 	auto it = _strings.find(params.string_id);
 	if (it == _strings.end()) {
-		if (string.empty()) {
-			return {};
+		if (ins_string.empty()) {
+			return;
 		} else {
-			_strings[params.string_id] = string;
-			it = _strings.find(params.string_id);
+			_strings[params.string_id] = ins_string;
 		}
+	} else {
+		it->second = ins_string;
 	}
-
-	auto& s = it->second;
-	s = string;
-	if (params.extract) {
-		s = Extract(s, params.hex);
-	}
-	return s;
 }
 
 inline void Game_Strings::SetData(Strings_t s) {
@@ -143,7 +140,7 @@ inline bool Game_Strings::ShouldWarn(int id) const {
 	return id <= 0 && _warnings > 0;
 }
 
-inline Game_Strings::Str_t Game_Strings::Get(int id) const {
+inline StringView Game_Strings::Get(int id) const {
 	if (EP_UNLIKELY(ShouldWarn(id))) {
 		WarnGet(id);
 	}
@@ -154,36 +151,35 @@ inline Game_Strings::Str_t Game_Strings::Get(int id) const {
 	return it->second;
 }
 
-inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
+inline StringView Game_Strings::GetIndirect(int id) const {
 	auto val_indirect = Main_Data::game_variables->Get(id);
 	return Get(static_cast<int>(val_indirect));
 }
 
-inline Game_Strings::Str_t Game_Strings::GetWithMode(Str_t str_data, int arg, int mode) const {
+inline StringView Game_Strings::GetWithMode(StringView str_data, int arg, int mode) const {
 	switch (mode) {
 	case 1: // direct string reference
 		return Get(arg);
-		break;
 	case 2: // indirect string reference
 		return GetIndirect(arg);
-		break;
+	default:
+		return str_data;
 	}
-	return str_data;
 }
 
-inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int arg, int mode, int* pos) {
-	Str_t ret;
+inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos) {
+	StringView ret;
 	switch (mode) {
 	case 0:
+		assert(pos);
 		ret = str_data.substr(*pos, arg);
 		*pos += arg;
-		break;
+		return ret;
 	case 1: // direct string reference
-		ret = Get(arg);
-		break;
+		return Get(arg);
 	case 2: // indirect string reference
-		ret = GetIndirect(arg);
-		break;
+		return GetIndirect(arg);
+	default:
+		return ret;
 	}
-	return ret;
 }

@@ -34,7 +34,7 @@ static std::optional<std::string> CommandCodeInserter(char ch, const char **iter
 		int value = parse_ret.value;
 
 		// Contrary to Messages, the content of \t[]-strings is not evaluated
-		return Main_Data::game_strings->Get(value);
+		return ToString(Main_Data::game_strings->Get(value));
 	}
 
 	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);

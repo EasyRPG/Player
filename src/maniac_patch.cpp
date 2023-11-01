@@ -610,34 +610,39 @@ bool ManiacPatch::GetKeyState(uint32_t key_id) {
 
 }
 
-bool ManiacPatch::CheckString(std::string str_l, std::string str_r, int op, bool ignore_case) {
+bool ManiacPatch::CheckString(StringView str_l, StringView str_r, int op, bool ignore_case) {
+	auto check = [op](const auto& l, const auto& r) {
+		switch (op) {
+			case 0: // eq
+				return l == r;
+			case 2: // contains (l contains r)
+				return l.find(r) != std::string::npos;
+			case 1: // neq
+				return l != r;
+			case 3: // notContains (l does not contain r)
+				return l.find(r) == std::string::npos;
+			default:
+				return false;
+		}
+	};
+
 	if (ignore_case) {
-		str_l = Utils::LowerCase(str_l);
-		str_r = Utils::LowerCase(str_r);
+		std::string str_l_lower = Utils::LowerCase(str_l);
+		std::string str_r_lower = Utils::LowerCase(str_r);
+		return check(str_l_lower, str_r_lower);
 	}
 
-	switch (op) {
-	case 0: // eq
-		return str_l == str_r;
-	case 2: // contains (l contains r)
-		return str_l.find(str_r) != std::string::npos;
-	case 1: // neq
-		return str_l != str_r;
-	case 3: // notContains (l does not contain r)
-		return str_l.find(str_r) == std::string::npos;
-	default:
-		return false;
-	}
+	return check(str_l, str_r);
 }
 
-Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
-	auto get_name = [id](StringView type, const auto& vec) -> std::string {
+StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
+	auto get_name = [id](StringView type, const auto& vec) -> StringView {
 		auto* data = lcf::ReaderUtil::GetElement(vec, id);
 		if (!data) {
 			Output::Warning("Unable to read {} name: {}", type, id);
 			return {};
 		}
-		return ToString(data->name);
+		return data->name;
 	};
 
 	switch (data_type)
@@ -646,7 +651,7 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 		if (is_dynamic) {
 			auto actor = Main_Data::game_actors->GetActor(id);
 			if (actor != nullptr) {
-				return static_cast<Game_Strings::Str_t>(actor->GetName());
+				return actor->GetName();
 			}
 		}
 		else {
@@ -662,25 +667,25 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 	case 7:	 return get_name("State", lcf::Data::states);   //.state[a].name
 	case 8:	 return get_name("Animation", lcf::Data::animations);   //.anim[a].name
 	case 9:	 return get_name("Chipset", lcf::Data::chipsets);   //.tileset[a].name
-	case 10: return static_cast<Game_Strings::Str_t>(Main_Data::game_switches->GetName(id));   //.s[a].name
-	case 11: return static_cast<Game_Strings::Str_t>(Main_Data::game_variables->GetName(id));   //.v[a].name
+	case 10: return Main_Data::game_switches->GetName(id);   //.s[a].name
+	case 11: return Main_Data::game_variables->GetName(id);   //.v[a].name
 	case 12: return {};  // FIXME: .t[a].name -- not sure how to get this for now
 	case 13: //.cev[a].name
 	{
 		// assuming the vector of common events here is ordered by common event ID
 		if (Game_Map::GetCommonEvents().size() >= id) {
-			return (Game_Strings::Str_t)Game_Map::GetCommonEvents()[id - 1].GetName();
+			return Game_Map::GetCommonEvents()[id - 1].GetName();
 		}
 		break;
 	}
 	case 14: return get_name("Class", lcf::Data::classes);   //.class[a].name
 	case 15: return get_name("BattlerAnimation", lcf::Data::battleranimations);   //.anim2[a].name
-	case 16: return static_cast<Game_Strings::Str_t>(Game_Map::GetMapName(id));   //.map[a].name
+	case 16: return Game_Map::GetMapName(id);   //.map[a].name
 	case 17:   //.mev[a].name
 	{
 		auto map = Game_Map::GetEvent(id);
 		if (map != nullptr) {
-			return static_cast<Game_Strings::Str_t>(map->GetName());
+			return map->GetName();
 		}
 		break;
 	}
@@ -689,7 +694,7 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 		auto actor = Main_Data::game_party->GetActor(id);
 		if (actor != nullptr) {
 			if (is_dynamic) {
-				return static_cast<Game_Strings::Str_t>(actor->GetName());
+				return actor->GetName();
 			}
 			else {
 				id = actor->GetId();
@@ -704,17 +709,17 @@ Game_Strings::Str_t ManiacPatch::GetLcfName(int data_type, int id, bool is_dynam
 	return {};
 }
 
-Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool is_dynamic) {
-	auto get_desc = [id](StringView type, const auto& vec) -> std::string {
+StringView ManiacPatch::GetLcfDescription(int data_type, int id, bool is_dynamic) {
+	auto get_desc = [id](StringView type, const auto& vec) -> StringView {
 		auto* data = lcf::ReaderUtil::GetElement(vec, id);
 		if (!data) {
 			Output::Warning("Unable to read {} description: {}", type, id);
 			return {};
 		}
 		if constexpr (std::is_same_v<typename std::decay_t<decltype(vec)>::value_type, lcf::rpg::Actor>) {
-			return ToString(data->title);
+			return data->title;
 		} else {
-			return ToString(data->description);
+			return data->description;
 		}
 	};
 
@@ -724,7 +729,7 @@ Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool i
 		if (is_dynamic) {
 			auto actor = Main_Data::game_actors->GetActor(id);
 			if (actor != nullptr) {
-				return static_cast<Game_Strings::Str_t>(actor->GetTitle());
+				return actor->GetTitle();
 			}
 		}
 		else {
@@ -738,7 +743,7 @@ Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool i
 		auto actor = Main_Data::game_party->GetActor(id);
 		if (actor != nullptr) {
 			if (is_dynamic) {
-				return static_cast<Game_Strings::Str_t>(actor->GetTitle());
+				return actor->GetTitle();
 			}
 			else {
 				id = actor->GetId();
@@ -750,5 +755,5 @@ Game_Strings::Str_t ManiacPatch::GetLcfDescription(int data_type, int id, bool i
 	}
 
 	Output::Warning("GetLcfDescription: Unsupported data_type {} {}", data_type, id);
-	return "";
+	return {};
 }
