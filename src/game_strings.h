@@ -50,8 +50,8 @@ public:
 
 	StringView Get(int id) const;
 	StringView GetIndirect(int id, const Game_Variables& variables) const;
-	StringView GetWithMode(StringView str_data, int arg, int mode, const Game_Variables& variables) const;
-	StringView GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos, const Game_Variables& variables);
+	StringView GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const;
+	StringView GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables);
 
 	StringView Asg(Str_Params params, StringView string);
 	StringView Cat(Str_Params params, StringView string);
@@ -156,7 +156,7 @@ inline StringView Game_Strings::GetIndirect(int id, const Game_Variables& variab
 	return Get(static_cast<int>(val_indirect));
 }
 
-inline StringView Game_Strings::GetWithMode(StringView str_data, int arg, int mode, const Game_Variables& variables) const {
+inline StringView Game_Strings::GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const {
 	switch (mode) {
 	case 1: // direct string reference
 		return Get(arg);
@@ -167,7 +167,7 @@ inline StringView Game_Strings::GetWithMode(StringView str_data, int arg, int mo
 	}
 }
 
-inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos, const Game_Variables& variables) {
+inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables) {
 	StringView ret;
 	switch (mode) {
 	case 0:

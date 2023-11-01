@@ -3614,8 +3614,8 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			int ignoreCase = com.parameters[4] >> 8 & 1;
 
 			std::string str_param = ToString(com.string);
-			StringView str_l = Main_Data::game_strings->GetWithMode(str_param, com.parameters[2], modes[0]+1, *Main_Data::game_variables);
-			StringView str_r = Main_Data::game_strings->GetWithMode(str_param, com.parameters[3], modes[1], *Main_Data::game_variables);
+			StringView str_l = Main_Data::game_strings->GetWithMode(str_param, modes[0]+1, com.parameters[2], *Main_Data::game_variables);
+			StringView str_r = Main_Data::game_strings->GetWithMode(str_param, modes[1], com.parameters[3], *Main_Data::game_variables);
 			result = ManiacPatch::CheckString(str_l, str_r, op, ignoreCase);
 		}
 		break;
@@ -4317,8 +4317,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	if (com.parameters.size() >= 23) {
 		text.text = ToString(Main_Data::game_strings->GetWithMode(
 			components[1],
-			com.parameters[22],
 			delims[0] - 1,
+			com.parameters[22],
 			*Main_Data::game_variables
 		));
 	} else {
@@ -4759,7 +4759,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		switch (fn)
 		{
 		case 0: //String <fn(string text, int min_size)>
-			result = ToString(Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables));
+			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
 			args[1] = ValueOrVariable(modes[1], args[1]);
 
 			// min_size
@@ -4798,7 +4798,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string op_string;
 			for (int i = 0; i < 3; i++) {
-				op_string += ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[i], modes[i], &pos, *Main_Data::game_variables));
+				op_string += ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[i], args[i], &pos, *Main_Data::game_variables));
 			}
 			result = std::move(op_string);
 			break;
@@ -4809,8 +4809,8 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			std::string base, insert;
 
 			args[1] = ValueOrVariable(modes[1], args[1]);
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos, *Main_Data::game_variables));
-			insert = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos, *Main_Data::game_variables));
+			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
+			insert = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
 
 			result = base.insert(args[1], insert);
 			break;
@@ -4820,9 +4820,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos, *Main_Data::game_variables));
-			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos, *Main_Data::game_variables));
-			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos, *Main_Data::game_variables));
+			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
+			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], &pos, *Main_Data::game_variables));
+			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
 
 			std::size_t index = base.find(search);
 			while (index != std::string::npos) {
@@ -4836,12 +4836,12 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
 			args[1] = ValueOrVariable(modes[1], args[1]);
 			args[2] = ValueOrVariable(modes[2], args[2]);
-			result = ToString(Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables).substr(args[1], args[2]));
+			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables).substr(args[1], args[2]));
 			break;
 		case 10: //Join (join) <fn(string delimiter, int id, int size)>
 		{
 			std::string op_string;
-			std::string delimiter = ToString(Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables));
+			std::string delimiter = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
 
 			// args[1] & mode[1] relates to starting ID for strings to join
 			// mode 0 = id literal, 1 = direct var, 2 = var literal, 3 = direct var
@@ -4864,7 +4864,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 12: //File (file) <fn(string filename, int encode)>
 		{
 			// maniacs does not like a file extension
-			StringView filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables);
+			StringView filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 			// args[1] is the encoding... 0 for ansi, 1 for utf8
 			bool do_yield;
 			result = Game_Strings::FromFile(filename, args[1], do_yield);
@@ -4880,7 +4880,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 13: //Remove (rem) <fn(string base, int index, int size)>
 			args[1] = ValueOrVariable(modes[1], args[1]);
 			args[2] = ValueOrVariable(modes[2], args[2]);
-			result = ToString(Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables));
+			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
 			result = result.erase(args[1], args[2]);
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
@@ -4888,9 +4888,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[0], modes[0], &pos, *Main_Data::game_variables));
-			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[1], modes[1], &pos, *Main_Data::game_variables));
-			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, args[2], modes[2], &pos, *Main_Data::game_variables));
+			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
+			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], &pos, *Main_Data::game_variables));
+			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
 
 			std::regex rexp(search);
 
@@ -4921,7 +4921,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)> FIXME: takes hex?
 	{
-		StringView search = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables);
+		StringView search = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe
 		args[2] = ValueOrVariable(modes[2], args[2]);
 		
@@ -4931,7 +4931,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
 	{
-		StringView delimiter = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables);
+		StringView delimiter = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]);
 		args[2] = ValueOrVariable(modes[2], args[2]);
 		
@@ -4941,7 +4941,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	case 7: //toFile <fn(string filename, int encode)>  takes hex
 	{
-		StringView filename = Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables);
+		StringView filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]);
 
 		Main_Data::game_strings->ToFile(str_params, ToString(filename), args[1]);
@@ -4961,7 +4961,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
 	{
 		// takes hex
-		std::string expr = ToString(Main_Data::game_strings->GetWithMode(str_param, args[0], modes[0], *Main_Data::game_variables));
+		std::string expr = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
 		args[1] = ValueOrVariable(modes[1], args[1]); // output var
 		args[2] = ValueOrVariable(modes[2], args[2]); // beginning pos
 
