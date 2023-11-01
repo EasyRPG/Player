@@ -134,8 +134,24 @@ bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpr
 		}
 
 		for (size_t i = 2; i < args.size(); ++i) {
-			auto [int_arg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
-			output_args.push_back(int_arg);
+
+			
+			auto currArg = args[i];
+
+			if (currArg.find("@") == 0) {
+				currArg = currArg.substr(1);
+				currArg = Constants.get("DestinyScript", currArg);
+
+				auto int_arg = stoi(currArg);
+				okay = true;
+				output_args.push_back(int_arg);
+			}
+			else {
+				auto [int_arg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+				output_args.push_back(int_arg);
+			}
+
+			
 			if (!okay) {
 				return true;
 			}
