@@ -19,6 +19,7 @@
 #include <regex>
 #include <lcf/encoder.h>
 #include "async_handler.h"
+#include "game_map.h"
 #include "game_message.h"
 #include "game_strings.h"
 #include "game_switches.h"
@@ -49,7 +50,7 @@ StringView Game_Strings::Cat(Str_Params params, StringView string) {
 	return it->second;
 }
 
-int Game_Strings::ToNum(Str_Params params, int var_id) {
+int Game_Strings::ToNum(Str_Params params, int var_id, Game_Variables& variables) {
 	if (params.string_id <= 0) {
 		return -1;
 	}
@@ -65,11 +66,12 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 	else
 		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 0));
 
-	Main_Data::game_variables->Set(var_id, num);
+	variables.Set(var_id, num);
+	Game_Map::SetNeedRefresh(true);
 	return num;
 }
 
-int Game_Strings::GetLen(Str_Params params, int var_id) const {
+int Game_Strings::GetLen(Str_Params params, int var_id, Game_Variables& variables) const {
 	// Note: The length differs between Maniac and EasyRPG due to different internal encoding (utf-8 vs. ansi)
 
 	if (params.string_id <= 0) {
@@ -77,11 +79,12 @@ int Game_Strings::GetLen(Str_Params params, int var_id) const {
 	}
 
 	int len = Get(params.string_id).length();
-	Main_Data::game_variables->Set(var_id, len);
+	variables.Set(var_id, len);
+	Game_Map::SetNeedRefresh(true);
 	return len;
 }
 
-int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin) const {
+int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin, Game_Variables& variables) const {
 	if (params.string_id <= 0) {
 		return -1;
 	}
@@ -91,11 +94,12 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 	}
 
 	int index = Get(params.string_id).find(search, begin);
-	Main_Data::game_variables->Set(var_id, index);
+	variables.Set(var_id, index);
+	Game_Map::SetNeedRefresh(true);
 	return index;
 }
 
-int Game_Strings::Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id) {
+int Game_Strings::Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id, Game_Variables& variables) {
 	if (params.string_id <= 0) {
 		return -1;
 	}
@@ -119,7 +123,7 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 
 	// set the remaining string
 	Set(params, str);
-	Main_Data::game_variables->Set(var_id, splits);
+	variables.Set(var_id, splits);
 	return splits;
 }
 
@@ -209,7 +213,7 @@ StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_i
 	return Get(params.string_id);
 }
 
-StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id) {
+StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables) {
 	int var_result;
 	std::string str_result;
 	std::smatch match;
@@ -224,7 +228,8 @@ StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id
 	std::regex_search(base, match, r);
 
 	var_result = match.position() + begin;
-	Main_Data::game_variables->Set(var_id, var_result);
+	variables.Set(var_id, var_result);
+	Game_Map::SetNeedRefresh(true);
 
 	str_result = match.str();
 	if (string_out_id > 0) {
@@ -234,7 +239,7 @@ StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id
 	return str_result;
 }
 
-const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[]) {
+const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[], Game_Variables& variables) {
 	if (EP_UNLIKELY(ShouldWarn(params.string_id))) {
 		WarnGet(params.string_id);
 	}
@@ -256,13 +261,13 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 		switch (op) {
 		case 0:  Asg(params, string); break;
 		case 1:  Cat(params, string); break;
-		case 2:  ToNum(params, args[0] + (params.string_id - start)); break;
-		case 3:  GetLen(params, args[0] + (params.string_id - start)); break;
-		case 4:  InStr(params, string, args[1], args[2]); break;
-		case 5:  params.string_id += Split(params, string, args[1], args[2]); break;
+		case 2:  ToNum(params, args[0] + (params.string_id - start), variables); break;
+		case 3:  GetLen(params, args[0] + (params.string_id - start), variables); break;
+		case 4:  InStr(params, string, args[1], args[2], variables); break;
+		case 5:  params.string_id += Split(params, string, args[1], args[2], variables); break;
 		case 8:  break; // range case not applicable for popLine; see case in game_interpreter.cpp
-		case 9:  ExMatch(params, string, args[1] + (params.string_id - start), args[2]); break;
-		case 10: ExMatch(params, string, args[1] + (params.string_id - start), args[2], args[3]); break;
+		case 9:  ExMatch(params, string, args[1] + (params.string_id - start), args[2], -1, variables); break;
+		case 10: ExMatch(params, string, args[1] + (params.string_id - start), args[2], args[3], variables); break;
 		}
 	}
 	return GetData();

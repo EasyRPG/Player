@@ -49,22 +49,22 @@ public:
 	std::vector<lcf::DBString> GetLcfData() const;
 
 	StringView Get(int id) const;
-	StringView GetIndirect(int id) const;
-	StringView GetWithMode(StringView str_data, int arg, int mode) const;
-	StringView GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos);
+	StringView GetIndirect(int id, const Game_Variables& variables) const;
+	StringView GetWithMode(StringView str_data, int arg, int mode, const Game_Variables& variables) const;
+	StringView GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos, const Game_Variables& variables);
 
 	StringView Asg(Str_Params params, StringView string);
 	StringView Cat(Str_Params params, StringView string);
-	int ToNum(Str_Params params, int var_id);
-	int GetLen(Str_Params params, int var_id) const;
-	int InStr(Str_Params params, std::string search, int var_id, int begin = 0) const;
-	int Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id);
+	int ToNum(Str_Params params, int var_id, Game_Variables& variables);
+	int GetLen(Str_Params params, int var_id, Game_Variables& variables) const;
+	int InStr(Str_Params params, std::string search, int var_id, int begin, Game_Variables& variables) const;
+	int Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id, Game_Variables& variables);
 	static std::string FromFile(StringView filename, int encoding, bool& do_yield);
 	StringView ToFile(Str_Params params, std::string filename, int encoding);
 	StringView PopLine(Str_Params params, int offset, int string_out_id);
-	StringView ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);
+	StringView ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables);
 
-	const Strings_t& RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[] = nullptr);
+	const Strings_t& RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[], Game_Variables& variables);
 
 	static std::string PrependMin(StringView string, int min_size, char c);
 	static std::string Extract(StringView string, bool as_hex);
@@ -151,23 +151,23 @@ inline StringView Game_Strings::Get(int id) const {
 	return it->second;
 }
 
-inline StringView Game_Strings::GetIndirect(int id) const {
-	auto val_indirect = Main_Data::game_variables->Get(id);
+inline StringView Game_Strings::GetIndirect(int id, const Game_Variables& variables) const {
+	auto val_indirect = variables.Get(id);
 	return Get(static_cast<int>(val_indirect));
 }
 
-inline StringView Game_Strings::GetWithMode(StringView str_data, int arg, int mode) const {
+inline StringView Game_Strings::GetWithMode(StringView str_data, int arg, int mode, const Game_Variables& variables) const {
 	switch (mode) {
 	case 1: // direct string reference
 		return Get(arg);
 	case 2: // indirect string reference
-		return GetIndirect(arg);
+		return GetIndirect(arg, variables);
 	default:
 		return str_data;
 	}
 }
 
-inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos) {
+inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int arg, int mode, int* pos, const Game_Variables& variables) {
 	StringView ret;
 	switch (mode) {
 	case 0:
@@ -178,7 +178,7 @@ inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int arg, 
 	case 1: // direct string reference
 		return Get(arg);
 	case 2: // indirect string reference
-		return GetIndirect(arg);
+		return GetIndirect(arg, variables);
 	default:
 		return ret;
 	}
