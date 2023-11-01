@@ -35,7 +35,9 @@ Game_Strings::Str_t Game_Strings::Asg(Str_Params params, Str_t string) {
 }
 
 Game_Strings::Str_t Game_Strings::Cat(Str_Params params, Str_t string) {
-	if (!ResizeWithId(params.string_id)) return "";
+	if (params.string_id <= 0) {
+		return {};
+	}
 
 	Str_t s = Get(params.string_id);
 	std::string op_string = s;
@@ -45,7 +47,10 @@ Game_Strings::Str_t Game_Strings::Cat(Str_Params params, Str_t string) {
 }
 
 int Game_Strings::ToNum(Str_Params params, int var_id) {
-	if (!ResizeWithId(params.string_id)) return -1;
+	if (params.string_id <= 0) {
+		return -1;
+	}
+
 	std::string str = Get(params.string_id);
 
 	int num;
@@ -61,7 +66,9 @@ int Game_Strings::ToNum(Str_Params params, int var_id) {
 int Game_Strings::GetLen(Str_Params params, int var_id) {
 	// Note: The length differs between Maniac and EasyRPG due to different internal encoding (utf-8 vs. ansi)
 
-	if (!ResizeWithId(params.string_id)) return -1;
+	if (params.string_id <= 0) {
+		return -1;
+	}
 
 	int len = Get(params.string_id).length();
 	Main_Data::game_variables->Set(var_id, len);
@@ -69,7 +76,9 @@ int Game_Strings::GetLen(Str_Params params, int var_id) {
 }
 
 int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int begin) {
-	if (!ResizeWithId(params.string_id)) return -1;
+	if (params.string_id <= 0) {
+		return -1;
+	}
 
 	if (params.extract) {
 		search = Extract(search, params.hex);
@@ -83,7 +92,9 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 }
 
 int Game_Strings::Split(Str_Params params, std::string delimiter, int string_out_id, int var_id) {
-	if (!ResizeWithId(params.string_id)) return -1;
+	if (params.string_id <= 0) {
+		return -1;
+	}
 
 	size_t index;
 	std::string token;
@@ -173,7 +184,9 @@ Game_Strings::Str_t Game_Strings::ToFile(Str_Params params, std::string filename
 
 Game_Strings::Str_t Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
 	// FIXME: consideration needed around encoding -- what mode are files read in?
-	if (!ResizeWithId(params.string_id)) return "";
+	if (params.string_id <= 0) {
+		return {};
+	}
 
 	int index;
 	std::string result;
@@ -231,10 +244,6 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 	// swap so that id_0 is < id_1
 	if (params.string_id > string_id_1) {
 		std::swap(params.string_id, string_id_1);
-	}
-
-	if (EP_UNLIKELY(string_id_1 > static_cast<int>(_strings.size()))) {
-		_strings.resize(string_id_1, "");
 	}
 
 	for (int start = params.string_id; params.string_id <= string_id_1; params.string_id++) {

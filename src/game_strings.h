@@ -33,21 +33,21 @@
 class Game_Strings {
 public:
 	using Str_t = std::string;
-	using Strings_t = std::vector<Str_t>;
+	using Strings_t = std::unordered_map<int, Str_t>;
 
-	// Warnings disabled for now as there is no way to predefine text strings in the database
-	static constexpr int max_warnings = 0;
+	// currently only warns when ID <= 0
+	static constexpr int max_warnings = 10;
 
 	struct Str_Params {
-		int string_id, hex, extract;
+		int string_id = 0, hex = 0, extract = 0;
 	};
 
 	Game_Strings() = default;
 
 	void SetData(Strings_t s);
-	void SetData(std::vector<lcf::DBString> s);
+	void SetData(const std::vector<lcf::DBString>& s);
 	const Strings_t& GetData() const;
-	std::vector<lcf::DBString> GetLcfData();
+	std::vector<lcf::DBString> GetLcfData() const;
 
 	Str_t Get(int id) const;
 	Str_t GetIndirect(int id) const;
@@ -75,7 +75,6 @@ public:
 
 private:
 	Str_t Set(Str_Params params, Str_t string);
-	bool ResizeWithId(int id);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
 
@@ -86,9 +85,21 @@ private:
 
 
 inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
-	if (!ResizeWithId(params.string_id)) return "";
+	if (params.string_id <= 0) {
+		return {};
+	}
 
-	auto& s = _strings[params.string_id - 1];
+	auto it = _strings.find(params.string_id);
+	if (it == _strings.end()) {
+		if (string.empty()) {
+			return {};
+		} else {
+			_strings[params.string_id] = string;
+			it = _strings.find(params.string_id);
+		}
+	}
+
+	auto& s = it->second;
 	s = string;
 	if (params.extract) {
 		s = Extract(s, params.hex);
@@ -100,16 +111,32 @@ inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
 }
 
-inline void Game_Strings::SetData(std::vector<lcf::DBString> s) {
-	_strings = std::vector<Str_t>(s.begin(), s.end());
+inline void Game_Strings::SetData(const std::vector<lcf::DBString>& s) {
+	int i = 1;
+	for (const auto& string: s) {
+		if (!s.empty()) {
+			_strings[i] = ToString(string);
+		}
+		++i;
+	}
 }
 
 inline const Game_Strings::Strings_t& Game_Strings::GetData() const {
 	return _strings;
 }
 
-inline std::vector<lcf::DBString> Game_Strings::GetLcfData() {
-	return std::vector<lcf::DBString>(_strings.begin(), _strings.end());
+inline std::vector<lcf::DBString> Game_Strings::GetLcfData() const {
+	std::vector<lcf::DBString> lcf_data;
+
+	for (auto& [index, value]: _strings) {
+		assert(index > 0);
+		if (index >= lcf_data.size()) {
+			lcf_data.resize(index + 1);
+		}
+		lcf_data[index - 1] = lcf::DBString(value);
+	}
+
+	return lcf_data;
 }
 
 inline bool Game_Strings::ShouldWarn(int id) const {
@@ -120,23 +147,11 @@ inline Game_Strings::Str_t Game_Strings::Get(int id) const {
 	if (EP_UNLIKELY(ShouldWarn(id))) {
 		WarnGet(id);
 	}
-	if (id <= 0 || id > static_cast<int>(_strings.size())) {
-		return "";
+	auto it = _strings.find(id);
+	if (it == _strings.end()) {
+		return {};
 	}
-	return _strings[id - 1];
-}
-
-inline bool Game_Strings::ResizeWithId(int id) {
-	if (EP_UNLIKELY(ShouldWarn(id))) {
-		WarnGet(id);
-	}
-	if (id <= 0) {
-		return false;
-	}
-	if (EP_UNLIKELY(id > static_cast<int>(_strings.size()))) {
-		_strings.resize(id, "");
-	}
-	return true;
+	return it->second;
 }
 
 inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
