@@ -81,8 +81,8 @@ namespace Input {
 		MOUSE_MIDDLE,
 		SCROLL_UP,
 		SCROLL_DOWN,
-		FAST_FORWARD,
-		FAST_FORWARD_PLUS,
+		FAST_FORWARD_A,
+		FAST_FORWARD_B,
 		TOGGLE_FULLSCREEN,
 		TOGGLE_ZOOM,
 		BUTTON_COUNT
@@ -127,8 +127,8 @@ namespace Input {
 		"MOUSE_MIDDLE",
 		"SCROLL_UP",
 		"SCROLL_DOWN",
-		"FAST_FORWARD",
-		"FAST_FORWARD_PLUS",
+		"FAST_FORWARD_A",
+		"FAST_FORWARD_B",
 		"TOGGLE_FULLSCREEN",
 		"TOGGLE_ZOOM",
 		"BUTTON_COUNT");
@@ -167,15 +167,13 @@ namespace Input {
 		"Reset to the title screen",
 		"Move up one page in menus",
 		"Move down one page in menus",
-		"Page up key",
-		"Page down key",
 		"Left mouse key",
 		"Right mouse key",
 		"Middle mouse key",
 		"Scroll up key",
 		"Scroll down key",
-		"Fast forward the game (x3)",
-		"Fast forward the game even more (x10)",
+		"PLACEHOLDER",
+		"PLACEHOLDER",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
 		"Total Button Count");
@@ -191,8 +189,8 @@ namespace Input {
 			case TAKE_SCREENSHOT:
 			case SHOW_LOG:
 			case TOGGLE_ZOOM:
-			case FAST_FORWARD:
-			case FAST_FORWARD_PLUS:
+			case FAST_FORWARD_A:
+			case FAST_FORWARD_B:
 				return true;
 			default:
 				return false;

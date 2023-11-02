@@ -132,8 +132,8 @@ namespace Player {
 	std::string replay_input_path;
 	std::string record_input_path;
 	std::string command_line;
-	int speed_modifier;
-	int speed_modifier_plus;
+	int speed_modifier_a;
+	int speed_modifier_b;
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
@@ -199,8 +199,8 @@ void Player::Init(std::vector<std::string> args) {
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);
-	speed_modifier = cfg.input.speed_modifier.Get();
-	speed_modifier_plus = cfg.input.speed_modifier_plus.Get();
+	speed_modifier_a = cfg.input.speed_modifier_a.Get();
+	speed_modifier_b = cfg.input.speed_modifier_b.Get();
 }
 
 void Player::Run() {
@@ -304,11 +304,11 @@ void Player::UpdateInput() {
 		DisplayUi->ToggleZoom();
 	}
 	float speed = 1.0;
-	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
-		speed = speed_modifier;
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_A)) {
+		speed = speed_modifier_a;
 	}
-	if (Input::IsSystemPressed(Input::FAST_FORWARD_PLUS)) {
-		speed = speed_modifier_plus;
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
+		speed = speed_modifier_b;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 

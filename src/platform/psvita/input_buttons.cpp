@@ -32,7 +32,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{CANCEL, Keys::JOY_X},
 		{SHIFT, Keys::JOY_Y},
 		{TOGGLE_FPS, Keys::JOY_SHOULDER_LEFT},
-		{FAST_FORWARD, Keys::JOY_SHOULDER_RIGHT},
+		{FAST_FORWARD_A, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
 		{RESET, Keys::JOY_BACK},
 #endif

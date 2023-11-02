@@ -378,8 +378,8 @@ void Window_Settings::RefreshInput() {
 	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); Input::ResetTriggerKeys(); });
 	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); Input::ResetTriggerKeys(); });
 	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); Input::ResetTriggerKeys(); });
-	AddOption(cfg.speed_modifier, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier = tmp; cfg.speed_modifier.Set(tmp); });
-	AddOption(cfg.speed_modifier_plus, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_plus = tmp; cfg.speed_modifier_plus.Set(tmp); });
+	AddOption(cfg.speed_modifier_a, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_a = tmp; cfg.speed_modifier_a.Set(tmp); });
+	AddOption(cfg.speed_modifier_b, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_b = tmp; cfg.speed_modifier_b.Set(tmp); });
 }
 
 void Window_Settings::RefreshButtonCategory() {
@@ -389,6 +389,15 @@ void Window_Settings::RefreshButtonCategory() {
 		[this]() { Push(eInputListButtonsEngine, 1); });
 	AddOption(MenuItem("Developer", "Buttons useful for developers", ""),
 		[this]() { Push(eInputListButtonsDeveloper, 2); });
+}
+
+const char * GetFastForwardDescription(int index){
+	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
+	RangeConfigParam<int> config_arr[] = {cfg.speed_modifier_a, cfg.speed_modifier_b};
+	static char fast_forward_strs[2][64];
+
+	snprintf(fast_forward_strs[index], sizeof(fast_forward_strs[index]), "Run the game at x%i speed", config_arr[index].Get());
+	return fast_forward_strs[index];
 }
 
 void Window_Settings::RefreshButtonList() {
@@ -405,7 +414,7 @@ void Window_Settings::RefreshButtonList() {
 			break;
 		case 1:
 			buttons = {Input::SETTINGS_MENU, Input::TOGGLE_FPS, Input::TOGGLE_FULLSCREEN, Input::TOGGLE_ZOOM,
-				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD, Input::FAST_FORWARD_PLUS,
+				Input::TAKE_SCREENSHOT, Input::RESET, Input::FAST_FORWARD_A, Input::FAST_FORWARD_B,
 				Input::PAGE_UP, Input::PAGE_DOWN };
 			break;
 		case 2:
@@ -466,6 +475,17 @@ void Window_Settings::RefreshButtonList() {
 			}
 
 			value_size += cur_value_size;
+		}
+
+		switch(button){
+			case Input::FAST_FORWARD_A:
+				help = GetFastForwardDescription(0);
+				break;
+			case Input::FAST_FORWARD_B:
+				help = GetFastForwardDescription(1);
+				break;
+			default:
+				break;
 		}
 
 		auto param = MenuItem(name, help, value);

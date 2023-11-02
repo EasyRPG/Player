@@ -43,7 +43,7 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endG
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_setFastForwardMultiplier
   (JNIEnv *, jclass, jint ji)
 {
-	Player::speed_modifier = ji;
+	Player::speed_modifier_a = ji;
 }
 
 JNIEXPORT void JNICALL
