@@ -3655,9 +3655,9 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		}
 		break;
 	case 16:
-		// Maniac: Expression (TODO)
-		// see https://jetrotal.github.io/CSA/#Conditional%20Branch
-		[[fallthrough]];
+		// Maniac: Expression
+		result = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6), *this);
+		break;
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
