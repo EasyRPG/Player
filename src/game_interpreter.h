@@ -170,6 +170,8 @@ protected:
 	static std::vector<Game_Actor*> GetActors(int mode, int id);
 	static int ValueOrVariable(int mode, int val);
 	static int ValueOrVariableBitfield(int mode, int shift, int val);
+	StringView CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
+	StringView CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
 
 	/**
 	 * When current frame finishes executing we pop the stack

@@ -1769,6 +1769,35 @@ int Game_Interpreter::ValueOrVariableBitfield(int mode, int shift, int val) {
 	return ValueOrVariable((mode & (0xF << shift * 4)) >> shift * 4, val);
 }
 
+StringView Game_Interpreter::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
+	if (!Player::IsPatchManiac()) {
+		return com.string;
+	}
+
+	assert(mode_idx != val_idx);
+
+	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
+		return Main_Data::game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx]);
+	}
+
+	return com.string;
+}
+
+StringView Game_Interpreter::CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
+	if (!Player::IsPatchManiac()) {
+		return com.string;
+	}
+
+	assert(mode_idx != val_idx);
+
+	if (com.parameters.size() >= std::max(mode_idx, val_idx) + 1) {
+		int mode = com.parameters[mode_idx];
+		return Main_Data::game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx]);
+	}
+
+	return com.string;
+}
+
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
 	int value = OperateValue(
 		com.parameters[2],
@@ -2043,7 +2072,7 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
-	music.name = ToString(com.string);
+	music.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
 
 	if (Player::IsPatchManiac() && com.parameters.size() >= 5) {
 		int mode = com.parameters[4];
@@ -2070,7 +2099,7 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
-	sound.name = ToString(com.string);
+	sound.name = ToString(CommandStringOrVariableBitfield(com, 3, 0, 4));
 
 	if (Player::IsPatchManiac() && com.parameters.size() >= 4) {
 		int mode = com.parameters[3];
@@ -4984,11 +5013,7 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	lcf::rpg::EventCommand cmd;
 	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
-	if (com.parameters.size() >= 5) {
-		cmd.string = Main_Data::game_strings->GetWithModeBitfield(com.string, com.parameters[0], 3, com.parameters[4]);
-	} else {
-		cmd.string = com.string;
-	}
+	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
 
 	int arr_begin = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
 	int arr_length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
