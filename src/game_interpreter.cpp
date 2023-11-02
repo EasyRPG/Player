@@ -2786,8 +2786,9 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	Game_Pictures::ShowParams params = {};
 	params.name = ToString(com.string);
 	// Maniac Patch uses the upper bits for X/Y origin, mask it away
-	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
+	int pos_mode = ManiacBitmask(com.parameters[1], 0xFF);
+	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
+	params.position_y = ValueOrVariable(pos_mode, com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
 	params.magnify = com.parameters[5];
 	params.use_transparent_color = com.parameters[7] > 0;
@@ -2806,7 +2807,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
 		// both chunks here.
 		// Maniac Patch uses the upper bits for flags, mask it away
-		params.bottom_trans = com.parameters[14] & 0xFF;
+		params.bottom_trans = ManiacBitmask(com.parameters[14], 0xFF);
 	} else if (Player::IsRPG2k3() && !Player::IsRPG2k3E()) {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		params.bottom_trans = params.top_trans;
@@ -2905,8 +2906,9 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 	Game_Pictures::MoveParams params;
 	// Maniac Patch uses the upper bits for X/Y origin, mask it away
-	params.position_x = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[2]);
-	params.position_y = ValueOrVariable(com.parameters[1] & 0xFF, com.parameters[3]);
+	int pos_mode = ManiacBitmask(com.parameters[1], 0xFF);
+	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
+	params.position_y = ValueOrVariable(pos_mode, com.parameters[3]);
 	params.magnify = com.parameters[5];
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
@@ -2925,7 +2927,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 		if (param_size > 17 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
 			// Handling of RPG2k3 1.12 chunks
 			// Maniac Patch uses the upper bits for "wait is variable", mask it away
-			pic_id = ValueOrVariable(com.parameters[17] & 0xFF, pic_id);
+			pic_id = ValueOrVariable(ManiacBitmask(com.parameters[17], 0xFF), pic_id);
 			// Currently unused by RPG Maker
 			//int chars_to_replace = com.parameters[18];
 			//int replace_with = com.parameters[19];
@@ -5079,4 +5081,12 @@ bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int 
 		default:
 			return false;
 	}
+}
+
+int Game_Interpreter::ManiacBitmask(int value, int mask) const {
+	if (Player::IsPatchManiac()) {
+		return value & mask;
+	}
+
+	return value;
 }
