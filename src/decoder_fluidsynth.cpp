@@ -339,6 +339,15 @@ void FluidSynthDecoder::SendSysExMessage(const uint8_t* data, std::size_t size) 
 		nullptr, nullptr, nullptr, 0);
 }
 
+void FluidSynthDecoder::Reset() {
+	// Prevent that old notes resume playing when BGM is stopped and resumed later
+	auto* instance_synth = GetSynthInstance();
+
+	for (int channel = 0; channel < 16; channel++) {
+		fluid_synth_all_sounds_off(GetSynthInstance(), channel);
+	}
+}
+
 fluid_synth_t *FluidSynthDecoder::GetSynthInstance() {
 	if (use_global_synth) {
 		return global_synth.get();

@@ -126,7 +126,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 	return mididec;
 }
 
-void MidiDecoder::Reset() {
+void MidiDecoder::ResetGlobalState() {
 	works.fluidsynth = true;
 	works.wildmidi = true;
 

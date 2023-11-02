@@ -398,6 +398,8 @@ void AudioDecoderMidi::reset() {
 		midi_msg = midimsg_make(midi_event_control_change, channel, midi_set_reg_param_lower, 0);
 		mididec->SendMidiMessage(midi_msg);
 	}
+
+	mididec->Reset();
 }
 
 void AudioDecoderMidi::reset_tempos_after_loop() {

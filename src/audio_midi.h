@@ -60,7 +60,7 @@ public:
 	 *
 	 * The library must implement the following commands:
 	 * - SendMidiMessage
-	 * - SendSysExMessage (nice to have)
+	 * - SendSysExMessage
 	 *
 	 * When Midi messages are not supported (library uses own sequencer)
 	 * - Open
@@ -167,6 +167,12 @@ public:
 	};
 
 	/**
+	 * Called when the device is reset due to a Midi file change.
+	 * Can be used when the normal reset sequence (GM reset etc.) is not sufficient.
+	 */
+	virtual void Reset() {};
+
+	/**
 	 * Returns the unique name of the Midi decoder.
 	 *
 	 * @return decoder name
@@ -197,7 +203,7 @@ public:
 	/**
 	 * Resets the global state of the midi libraries.
 	 */
-	static void Reset();
+	static void ResetGlobalState();
 
 protected:
 	int frequency = EP_MIDI_FREQ;

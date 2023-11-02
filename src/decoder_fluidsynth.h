@@ -61,6 +61,8 @@ public:
 
 	void SendSysExMessage(const uint8_t* data, size_t size) override;
 
+	void Reset() override;
+
 	std::string GetName() override {
 #if defined(HAVE_FLUIDSYNTH)
 		return "FluidSynth";

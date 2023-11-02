@@ -51,7 +51,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 
 	Cache::ClearAll();
 	AudioSeCache::Clear();
-	MidiDecoder::Reset();
+	MidiDecoder::ResetGlobalState();
 	lcf::Data::Clear();
 	Main_Data::Cleanup();
 
