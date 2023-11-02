@@ -962,6 +962,10 @@ bool Game_Interpreter::CommandMessageOptions(lcf::rpg::EventCommand const& com) 
 	Main_Data::game_system->SetMessagePosition(com.parameters[1]);
 	Main_Data::game_system->SetMessagePositionFixed(com.parameters[2] == 0);
 	Main_Data::game_system->SetMessageContinueEvents(com.parameters[3] != 0);
+
+	// TODO: Maniac Patch Message Box Size and Font not implemented
+	// see https://jetrotal.github.io/CSA/#Display%20Text%20Options
+
 	return true;
 }
 
@@ -970,10 +974,11 @@ bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& co
 		return false;
 	}
 
-	Main_Data::game_system->SetMessageFaceName(ToString(com.string));
-	Main_Data::game_system->SetMessageFaceIndex(com.parameters[0]);
+	Main_Data::game_system->SetMessageFaceName(ToString(CommandStringOrVariableBitfield(com, 3, 0, 4)));
+	Main_Data::game_system->SetMessageFaceIndex(ValueOrVariableBitfield(com, 3, 1, 0));
 	Main_Data::game_system->SetMessageFaceRightPosition(com.parameters[1] != 0);
 	Main_Data::game_system->SetMessageFaceFlipped(com.parameters[2] != 0);
+
 	return true;
 }
 
@@ -1769,6 +1774,23 @@ int Game_Interpreter::ValueOrVariableBitfield(int mode, int shift, int val) {
 	return ValueOrVariable((mode & (0xF << shift * 4)) >> shift * 4, val);
 }
 
+int Game_Interpreter::ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
+	assert(com.parameters.size() > val_idx);
+
+	if (!Player::IsPatchManiac()) {
+		return com.parameters[val_idx];
+	}
+
+	assert(mode_idx != val_idx);
+
+	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
+		int mode = com.parameters[mode_idx];
+		return ValueOrVariableBitfield(com.parameters[mode_idx], shift, com.parameters[val_idx]);
+	}
+
+	return com.parameters[val_idx];
+}
+
 StringView Game_Interpreter::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
 	if (!Player::IsPatchManiac()) {
 		return com.string;
@@ -2074,18 +2096,10 @@ bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // co
 	lcf::rpg::Music music;
 	music.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
 
-	if (Player::IsPatchManiac() && com.parameters.size() >= 5) {
-		int mode = com.parameters[4];
-		music.fadein = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
-		music.volume = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
-		music.tempo = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
-		music.balance = ValueOrVariableBitfield(mode, 4, com.parameters[3]);
-	} else {
-		music.fadein = com.parameters[0];
-		music.volume = com.parameters[1];
-		music.tempo = com.parameters[2];
-		music.balance = com.parameters[3];
-	}
+	music.fadein = ValueOrVariableBitfield(com, 4, 1, 0);
+	music.volume = ValueOrVariableBitfield(com, 4, 2, 1);
+	music.tempo = ValueOrVariableBitfield(com, 4, 3, 2);
+	music.balance = ValueOrVariableBitfield(com, 4, 4, 3);
 
 	Main_Data::game_system->BgmPlay(music);
 	return true;
@@ -2101,16 +2115,9 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 	lcf::rpg::Sound sound;
 	sound.name = ToString(CommandStringOrVariableBitfield(com, 3, 0, 4));
 
-	if (Player::IsPatchManiac() && com.parameters.size() >= 4) {
-		int mode = com.parameters[3];
-		sound.volume = ValueOrVariableBitfield(mode, 1, com.parameters[0]);
-		sound.tempo = ValueOrVariableBitfield(mode, 2, com.parameters[1]);
-		sound.balance = ValueOrVariableBitfield(mode, 3, com.parameters[2]);
-	} else {
-		sound.volume = com.parameters[0];
-		sound.tempo = com.parameters[1];
-		sound.balance = com.parameters[2];
-	}
+	sound.volume = ValueOrVariableBitfield(com, 3, 1, 0);
+	sound.tempo = ValueOrVariableBitfield(com, 3, 2, 1);
+	sound.balance = ValueOrVariableBitfield(com, 3, 3, 2);
 
 	Main_Data::game_system->SePlay(sound, true);
 	return true;
@@ -2170,39 +2177,41 @@ bool Game_Interpreter::CommandGameOver(lcf::rpg::EventCommand const& /* com */) 
 }
 
 bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) { // code 10610
-	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
+	int id = ValueOrVariableBitfield(com, 1, 0, 0);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(id);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroName: Invalid actor ID {}", com.parameters[0]);
+		Output::Warning("ChangeHeroName: Invalid actor ID {}", id);
 		return true;
 	}
 
-	actor->SetName(ToString(com.string));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com) { // code 10620
-	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
+	int id = ValueOrVariableBitfield(com, 1, 0, 0);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(id);
 
 	if (!actor) {
-		Output::Warning("ChangeHeroTitle: Invalid actor ID {}", com.parameters[0]);
+		Output::Warning("ChangeHeroTitle: Invalid actor ID {}", id);
 		return true;
 	}
 
-	actor->SetTitle(ToString(com.string));
+	actor->SetTitle(ToString(CommandStringOrVariableBitfield(com, 1, 1, 2)));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand const& com) { // code 10630
-	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
+	int id = ValueOrVariableBitfield(com, 3, 0, 0);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(id);
 
 	if (!actor) {
-		Output::Warning("ChangeSpriteAssociation: Invalid actor ID {}", com.parameters[0]);
+		Output::Warning("ChangeSpriteAssociation: Invalid actor ID {}", id);
 		return true;
 	}
 
-	auto file = ToString(com.string);
-	int idx = com.parameters[1];
+	auto file = ToString(CommandStringOrVariableBitfield(com, 3, 1, 3));
+	int idx = ValueOrVariableBitfield(com, 3, 2, 1);
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
 	Main_Data::game_player->ResetGraphic();
@@ -2210,14 +2219,17 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 }
 
 bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com) { // code 10640
-	Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[0]);
+	int id = ValueOrVariableBitfield(com, 2, 0, 0);
+	Game_Actor* actor = Main_Data::game_actors->GetActor(id);
 
 	if (!actor) {
-		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", com.parameters[0]);
+		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", id);
 		return true;
 	}
 
-	actor->SetFace(ToString(com.string), com.parameters[1]);
+	actor->SetFace(
+			ToString(CommandStringOrVariableBitfield(com, 2, 1, 3)),
+			ValueOrVariableBitfield(com, 2, 2, 1));
 	return true;
 }
 
@@ -2263,7 +2275,7 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Main_Data::game_system->SetSystemGraphic(ToString(com.string),
+	Main_Data::game_system->SetSystemGraphic(ToString(CommandStringOrVariable(com, 2, 3)),
 			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
 			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
@@ -3634,7 +3646,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		}
 		break;
 	case 15:
-		//Maniac: string comparison
+		// Maniac: string comparison
 		if (Player::IsPatchManiac()) {
 			int modes[] = {
 				(com.parameters[1]     ) & 15, //str_l mode: 0 = direct, 1 = indirect
@@ -3650,6 +3662,10 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			result = ManiacPatch::CheckString(str_l, str_r, op, ignoreCase);
 		}
 		break;
+	case 16:
+		// Maniac: Expression (TODO)
+		// see https://jetrotal.github.io/CSA/#Conditional%20Branch
+		[[fallthrough]];
 	default:
 		Output::Warning("ConditionalBranch: Branch {} unsupported", com.parameters[0]);
 	}
