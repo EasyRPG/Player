@@ -1499,13 +1499,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 }
 
 int Game_Interpreter::OperateValue(int operation, int operand_type, int operand) {
-	int value = 0;
-
-	if (operand_type == 0) {
-		value = operand;
-	} else {
-		value = Main_Data::game_variables->Get(operand);
-	}
+	int value = ValueOrVariable(operand_type, operand);
 
 	// Reverse sign of value if operation is substract
 	if (operation == 1) {
@@ -1651,13 +1645,7 @@ bool Game_Interpreter::CommandChangeItems(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandChangePartyMember(lcf::rpg::EventCommand const& com) { // Code 10330
 	Game_Actor* actor;
-	int id;
-
-	if (com.parameters[1] == 0) {
-		id = com.parameters[2];
-	} else {
-		id = Main_Data::game_variables->Get(com.parameters[2]);
-	}
+	int id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 
 	actor = Main_Data::game_actors->GetActor(id);
 
