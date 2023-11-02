@@ -4706,12 +4706,21 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command SetGameOption not supported");
+	int operation = com.parameters[1];
+	//int value = ValueOrVariable(com.parameters[0], com.parameters[2]);
+
+	switch (operation) {
+		case 2: // Change Picture Limit (noop, we support arbitrary amount of pictures)
+			break;
+		default:
+			Output::Warning("Maniac SetGameOption: Operation {} not supported", operation);
+	}
+
 	return true;
 }
 
