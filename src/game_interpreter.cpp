@@ -2345,13 +2345,17 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
 	Game_Character *event = GetCharacter(event_id);
-	if (event != NULL) {
+	if (event != nullptr) {
 		const auto x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 		const auto y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 		event->MoveTo(event->GetMapId(), x, y);
 
 		// RPG2k3 feature
-		int direction = com.parameters.size() > 4 ? com.parameters[4] - 1 : -1;
+		int direction = -1;
+		if (Player::IsRPG2k3Commands() && com.parameters.size() > 4) {
+			direction = com.parameters[4] - 1;
+		}
+
 		// Only for the constant case, not for variables
 		if (com.parameters[1] == 0 && direction != -1) {
 			event->SetDirection(direction);
@@ -2368,7 +2372,7 @@ bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& 
 	Game_Character *event1 = GetCharacter(event1_id);
 	Game_Character *event2 = GetCharacter(event2_id);
 
-	if (event1 != NULL && event2 != NULL) {
+	if (event1 != nullptr && event2 != nullptr) {
 		auto m1 = event1->GetMapId();
 		auto x1 = event1->GetX();
 		auto y1 = event1->GetY();
