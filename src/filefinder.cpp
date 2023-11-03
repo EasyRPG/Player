@@ -54,7 +54,7 @@
 
 namespace {
 //#ifdef SUPPORT_MOVIES
-	constexpr const auto MOVIE_TYPES = Utils::MakeSvArray( ".mov", ".mp4", ".webm", ".ogv"); //".avi", ".mpg" not supported by web standards
+	constexpr const auto MOVIE_TYPES = Utils::MakeSvArray( ".mov", ".mp4", ".webm", ".ogv", ".avi", ".mpg"); 
 //#endif
 
 	std::string fonts_path;

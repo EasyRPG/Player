@@ -35,7 +35,7 @@
 #include "flash.h"
 #include "shake.h"
 #include "rand.h"
-#include <cstdlib> // For system function
+#include <Windows.h> //#include <cstdlib> // For system function
 #include <iostream>
 #include "baseui.h"
 
@@ -188,38 +188,63 @@ void Game_Screen::PlayMovie(std::string filename,
 	int y = metrics.y;
 
 	const auto& config = DisplayUi->GetConfig();
-	int fs = DisplayUi->IsFullscreen();
-	int stretch = config.stretch.Get();
+	std::string fs = int(DisplayUi->IsFullscreen()) ? "-fs" : "";
+	std::string stretch = int(config.stretch.Get()) ? "-vf \"setdar = 16 / 9\"" : "";
 	int zoom = config.window_zoom.Get();
 
 	std::string path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
 	if (path.empty()) path = "%cd%";
 
 	std::string movie_src = path + "/" + FileFinder::FindMovie(movie_filename);
-	std::string pluginPath = path + "/Plugins/PageOverlay.exe";
-	std::string htmlPath = path + "/Plugins/Pages/videoPlayer.html";
 
-	std::string appParams = fmt::format("-a \"{}\"",
-		htmlPath);
+	std::string pluginPath = path + "/Plugin/ffplay.exe";
 
-	std::string windowParams = fmt::format("-w \"{};{};{};{};{};{};{};{};{}\"",
-		w, h, x, y, fs, stretch, zoom, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+	std::string xtraParams = "-noborder -autoexit -fast -nostats -alwaysontop -exitonmousedown -exitonkeydown";
 
-	std::string videoParams = fmt::format("-v \"{};{};{};{};{};{}\"",
-		movie_src, movie_res_x, movie_res_y, movie_pos_x, movie_pos_y, movie_filename);
-
-	std::string asyncFlag;
-	//asyncFlag = "start /B";
-
-	std::string command = fmt::format("{} call \"{}\" {} {} {}",
-		asyncFlag, pluginPath, appParams, windowParams, videoParams);
+	std::string command = fmt::format(
+		"{} -i \"{}\" -left {} -top {} -x {} -y {} {} {} {}" ,
+		pluginPath, movie_src, x, y, w, h, fs, stretch, xtraParams);
 
 	Output::Debug("\n\ncmd: {}\n\n", command);
 
-	int result = std::system(command.c_str());
-	Player::Resume();
+	// Define a structure to set up the startup information
+	STARTUPINFO startupInfo;
+	PROCESS_INFORMATION processInfo;
 
-	if (result != 0) Output::Warning("Error ID: {}", result);
+	HWND oldWindow = GetForegroundWindow();
+
+	ZeroMemory(&startupInfo, sizeof(startupInfo));
+	startupInfo.cb = sizeof(startupInfo);
+	startupInfo.dwFlags = STARTF_USESHOWWINDOW;
+	startupInfo.wShowWindow = SW_SHOWNORMAL; // Show the window normally
+	ZeroMemory(&processInfo, sizeof(processInfo));
+
+	std::wstring wideCommand = std::wstring(command.begin(), command.end());
+	if (CreateProcess(nullptr,
+		const_cast<LPWSTR>(wideCommand.c_str()), // Command to execute
+		nullptr, // Process handle not inheritable
+		nullptr, // Thread handle not inheritable
+		FALSE, // Set handle inheritance to FALSE
+		0, // No creation flags
+		nullptr, // Use parent's environment block
+		nullptr, // Use parent's starting directory
+		&startupInfo, // Pointer to STARTUPINFO structure
+		&processInfo) // Pointer to PROCESS_INFORMATION structure)
+		) {
+		WaitForSingleObject(processInfo.hProcess, INFINITE);
+
+		// Close handles
+		CloseHandle(processInfo.hProcess);
+		CloseHandle(processInfo.hThread);
+
+		// Bring focus back to the old window
+		SetForegroundWindow(oldWindow);
+	}
+	else {
+		Output::Warning("CreateProcess failed, Error Code: {}", GetLastError());
+	}
+
+	Player::Resume();
 }
 
 static double interpolate(double d, double x0, double x1)
