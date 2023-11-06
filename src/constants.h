@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "utils.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -1178,7 +1179,6 @@ public:
 
 		};
 		EventCode = {
-			// AJUDAS
 			{"END", 10},
 			{"CallCommonEvent", 1005},
 			{"ForceFlee", 1006},
@@ -1336,33 +1336,21 @@ public:
 		};
 	};
 
-	std::string toLower(const std::string& str) {
-		std::string result = str;
-		std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-		return result;
-	};
-
 	// Function to return contents from either DestinyScript or EventCode
 	std::unordered_map<std::string, int>& MapCollection(const std::string& collectionName) {
-		std::string lowercaseCollectionName = toLower(collectionName);
+		if ( Utils::StrICmp(collectionName, "destinyscript") == 0 ) return DestinyScript;
+		else if ( Utils::StrICmp(collectionName, "eventcode") == 0 ) return EventCode;
 
-		if (lowercaseCollectionName == "destinyscript") return DestinyScript;
-		else if (lowercaseCollectionName == "eventcode") return EventCode;
 		else return EventCode;
-
 	};
 
 	// Function to retrieve a value from mapCollection ignoring case
 	std::string get(const std::string& mapName, const std::string& key) {
 		std::unordered_map<std::string, int>& selectedMap = MapCollection(mapName);
-		std::string lowercaseKey = toLower(key);
 
-		for (auto it = selectedMap.begin(); it != selectedMap.end(); ++it) {
-			std::string lowercaseMapKey = toLower(it->first);
+		for (auto it = selectedMap.begin(); it != selectedMap.end(); ++it)
+			if ( Utils::StrICmp(it->first, key) == 0 ) return std::to_string(it->second);
 
-			if (lowercaseMapKey == lowercaseKey) return std::to_string(it->second);
-		}
-
-		return "0"; // Key not found
+		return key; // Key not found
 	}
 };

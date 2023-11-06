@@ -88,80 +88,59 @@ static bool EasyAdd(dyn_arg_list args) {
 
 	return true;
 }
-
 bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpreter) {
-	if (!interpreter) {
-		return true;
-	}
-
-	auto func = "easyrpg_raw";
-	bool okay = false;
-
-	lcf::rpg::EventCommand cmd;
-	std::vector<int32_t> output_args;
+	if (!interpreter) return true;
 
 	if (args.empty()) {
 		Output::Warning("easyrpg_raw: Command too short");
 		return true;
 	}
 
-	Constants Constants;
-	std::string keyToPrint = "ENABLE";
+	Constants constList;
 
-	//Output::Warning("Key {}, value {}", keyToPrint, Constants.get("DestinyScript",keyToPrint));
+	const std::string func = "easyrpg_raw";
+	bool okay = false;
+	int codeArgIndex = 0;
+	int stringArgIndex = 1;
+	bool endOfLine = false;
 
-	auto evt = args[0];
-	if (evt.find("@") == 0) {
-		evt = evt.substr(1);
-		evt = Constants.get("EventCode", evt);
+	lcf::rpg::EventCommand cmd;
+	std::vector<int32_t> outputArgs;
+	std::vector<lcf::rpg::EventCommand> cmdList;
 
-		cmd.code = stoi(evt);
-		okay = bool(cmd.code);
-	} else
-		std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
-
-	if (!okay) {
-		Output::Warning("EasyRpgPlugin - Unknown Input: {}",args[0]);
-		return true;
-	}
-
-	if (args.size() >= 2) {
-		auto [string_arg] = DynRpg::ParseArgs<std::string>(func, args.subspan(1), &okay);
-		cmd.string = lcf::DBString(string_arg);
-
-		if (!okay) {
-			return true;
+	for (size_t i = 0; i < args.size(); ++i) {
+		if (i == args.size() - 1) {
+			if (args[i].back() == ';') args[i] = args[i].substr(0, args[i].length() - 1);
+			endOfLine = true;
 		}
 
-		for (size_t i = 2; i < args.size(); ++i) {
+		// TODO: Implement multi-line command interpretation split by ';'.
 
-			
-			auto currArg = args[i];
-
-			if (currArg.find("@") == 0) {
-				currArg = currArg.substr(1);
-				currArg = Constants.get("DestinyScript", currArg);
-
-				auto int_arg = stoi(currArg);
-				okay = true;
-				output_args.push_back(int_arg);
-			}
-			else {
-				auto [int_arg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
-				output_args.push_back(int_arg);
-			}
-
-			
-			if (!okay) {
-				return true;
-			}
+		if (i == codeArgIndex) {
+			if (args[i].front() == '@') args[i] = constList.get("EventCode", args[i].substr(1));
+			std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
 		}
+		else if (i == stringArgIndex) {
+			auto [stringArg] = DynRpg::ParseArgs<std::string>(func, args.subspan(i), &okay);
+			cmd.string = lcf::DBString(stringArg);
+		}
+		else {
+			if (args[i].front() == '@') args[i] = constList.get("DestinyScript", args[i].substr(1));
+			auto [intArg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+			outputArgs.push_back(intArg);
+		}
+
+		if (endOfLine) {
+			codeArgIndex = i + 1;
+			stringArgIndex = i + 2;
+			cmd.parameters = lcf::DBArray<int32_t>(outputArgs.begin(), outputArgs.end());
+			cmdList.push_back(cmd);
+		}
+
+		if (!okay) return true;
 	}
 
-	cmd.parameters = lcf::DBArray<int32_t>(output_args.begin(), output_args.end());
-
-	interpreter->Push({ cmd }, 0, false);
-
+	interpreter->Push(cmdList, 0, false);
 	return true;
 }
 
