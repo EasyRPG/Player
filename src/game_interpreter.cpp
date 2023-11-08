@@ -821,8 +821,6 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacSetGameOption(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
-		case static_cast<Game_Interpreter::Cmd>(2054): //Cmd::EasyRpg_GetTime
-			return CommandGetTime(com);
 		default:
 			return true;
 	}
@@ -1074,6 +1072,33 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com) { // code 10220
+
+	if (!com.string.empty()){
+	std::string periodName = Utils::LowerCase(ToString(com.string));
+	int32_t outputVariable = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	std::time_t t = std::time(nullptr);
+	std::tm* tm = std::localtime(&t);
+
+	int32_t dateOutput{};
+
+	if (periodName == "getyear") dateOutput = tm->tm_year + 1900;
+	if (periodName == "getmonth") dateOutput = tm->tm_mon + 1;
+	if (periodName == "getday") dateOutput = tm->tm_mday;
+	if (periodName == "gethour") dateOutput = tm->tm_hour;
+	if (periodName == "getminute") dateOutput = tm->tm_min;
+	if (periodName == "getsecond") dateOutput = tm->tm_sec;
+	if (periodName == "getweekday") dateOutput = tm->tm_wday + 1;
+	if (periodName == "getyearday") dateOutput = tm->tm_yday + 1;
+	if (periodName == "getdaylightsavings") dateOutput = tm->tm_isdst + 1;
+	if (periodName == "gettimestamp") dateOutput = t;
+
+	Main_Data::game_variables->Set(outputVariable, dateOutput);
+	Game_Map::SetNeedRefresh(true);
+
+	return true;
+	}
+
 	int value = 0;
 	int operand = com.parameters[4];
 
@@ -4642,32 +4667,6 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 	}
 
 	Output::Warning("Maniac Patch: Command CallCommand not supported");
-	return true;
-}
-
-bool Game_Interpreter::CommandGetTime(lcf::rpg::EventCommand const& com) {
-
-	std::string periodName = Utils::LowerCase(ToString(com.string));
-	int32_t outputVariable = ValueOrVariable(com.parameters[0], com.parameters[1]);
-
-	std::time_t t = std::time(nullptr);
-	std::tm* tm = std::localtime(&t);
-
-	int32_t dateOutput{};
-
-	if (periodName == "getyear") dateOutput = tm->tm_year + 1900;
-	if (periodName == "getmonth") dateOutput = tm->tm_mon + 1;
-	if (periodName == "getday") dateOutput = tm->tm_mday;
-	if (periodName == "gethour") dateOutput = tm->tm_hour;
-	if (periodName == "getminute") dateOutput = tm->tm_min;
-	if (periodName == "getsecond") dateOutput = tm->tm_sec;
-	if (periodName == "getweekday") dateOutput = tm->tm_wday +1;
-	if (periodName == "getyearday") dateOutput = tm->tm_yday +1;
-	if (periodName == "gettimestamp") dateOutput = t;
-
-	Main_Data::game_variables->Set(outputVariable, dateOutput);
-	Game_Map::SetNeedRefresh(true);
-
 	return true;
 }
 
