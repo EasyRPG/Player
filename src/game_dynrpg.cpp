@@ -314,7 +314,44 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 					token.str("");
 					break;
 			}
-		} else {
+		}
+		else if (chr == ';') {
+			switch (mode) {
+			case ParseMode_Function:
+				// End of function token
+				function_name = Utils::LowerCase(token.str());
+				if (function_name.empty()) {
+					// empty function name
+					Output::Warning("Empty DynRPG function name");
+					return {};
+				}
+				token.str("");
+				// Empty arg
+				args.emplace_back("");
+				mode = ParseMode_WaitForArg;
+				break;
+			case ParseMode_WaitForComma:
+				mode = ParseMode_WaitForArg;
+				break;
+			case ParseMode_WaitForArg:
+				
+				// Empty arg
+				args.emplace_back("");
+				break;
+			case ParseMode_String:
+				token << chr;
+				break;
+			case ParseMode_Token:
+				tmp = ParseToken(token.str(), function_name);
+				args.emplace_back(tmp);
+				if (function_name == "easyrpg_raw") args.emplace_back(";");
+				// already on a comma
+				mode = ParseMode_WaitForArg;
+				token.str("");
+				break;
+			}
+		}
+		else {
 			// Anything else that isn't special purpose
 			switch (mode) {
 				case ParseMode_Function:

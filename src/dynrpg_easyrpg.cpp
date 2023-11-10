@@ -17,6 +17,7 @@
 
 // Headers
 #include <map>
+#include <numeric>
 
 #include "dynrpg_easyrpg.h"
 #include "string_view.h"
@@ -99,42 +100,86 @@ bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpr
 	Constants constList;
 
 	const std::string func = "easyrpg_raw";
-	bool okay = false;
+	
 	int codeArgIndex = 0;
 	int stringArgIndex = 1;
+	int indentArgIndex = -1;
+
 	bool endOfLine = false;
+	bool okay = false;
 
 	lcf::rpg::EventCommand cmd;
+	lcf::rpg::EventCommand _cmd;
 	std::vector<int32_t> outputArgs;
 	std::vector<lcf::rpg::EventCommand> cmdList;
 
 	for (size_t i = 0; i < args.size(); ++i) {
-		if (i == args.size() - 1) {
-			if (args[i].back() == ';') args[i] = args[i].substr(0, args[i].length() - 1);
-			endOfLine = true;
+		
+		bool valid = !args[i].empty();
+
+		if (valid && args[i].front() == '[') args[i] = args[i].substr(1);
+		if (valid && args[i].back() == ']') {
+			args[i] = args[i].substr(0, args[i].length() - 1);
+			indentArgIndex = i + 1;
 		}
 
-		// TODO: Implement multi-line command interpretation split by ';'.
+		valid = !args[i].empty();
 
-		if (i == codeArgIndex) {
-			if (args[i].front() == '@') args[i] = constList.get("EventCode", args[i].substr(1));
-			std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args, &okay);
-		}
-		else if (i == stringArgIndex) {
-			auto [stringArg] = DynRpg::ParseArgs<std::string>(func, args.subspan(i), &okay);
-			cmd.string = lcf::DBString(stringArg);
-		}
-		else {
-			if (args[i].front() == '@') args[i] = constList.get("DestinyScript", args[i].substr(1));
-			auto [intArg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
-			outputArgs.push_back(intArg);
+		if (i == args.size() - 1) endOfLine = true;
+		
+
+		else if (args[i] == ";") {
+			endOfLine = !args[i + 1].empty();
+			valid = 0;
 		}
 
+		if (valid) {
+			if (i == codeArgIndex)
+			{
+				size_t start_pos = args[i].find_first_not_of(" \t\r\n");
+				if (start_pos != std::string::npos)
+					args[i] = args[i].substr(start_pos);
+
+			//	Output::Debug("code ----> {}", args[i]);
+
+				if (args[i].front() == '$')
+					args[i] = constList.get("EventCode", args[i].substr(1));
+				std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+			}
+			else if (i == stringArgIndex)
+			{
+			//	Output::Debug("str ----> {}", args[i]);
+				auto [stringArg] = DynRpg::ParseArgs<std::string>(func, args.subspan(i), &okay);
+				cmd.string = lcf::DBString(stringArg);
+			}
+			else
+			{
+				if (args[i].front() == '$')
+					args[i] = constList.get("DestinyScript", args[i].substr(1));
+				auto [intArg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+
+				if (indentArgIndex == i) {
+				//	Output::Debug("idt ----> {}", args[i]);
+					indentArgIndex = -1;
+					cmd.indent = intArg;
+				}
+				else
+				//	Output::Debug("pls ----> {}", args[i]),
+					outputArgs.push_back(intArg);
+			}
+		}
 		if (endOfLine) {
-			codeArgIndex = i + 1;
-			stringArgIndex = i + 2;
+		//	Output::Debug("com ----> {}\n\n", cmd.code);
 			cmd.parameters = lcf::DBArray<int32_t>(outputArgs.begin(), outputArgs.end());
 			cmdList.push_back(cmd);
+			outputArgs.clear();
+
+			cmd = _cmd;
+
+			codeArgIndex = i + 1;
+			stringArgIndex = i + 2;
+			
+			endOfLine = false;
 		}
 
 		if (!okay) return true;
