@@ -103,6 +103,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/fileext_guesser.h \
 	src/filesystem.cpp \
 	src/filesystem.h \
+	src/filesystem_lzh.cpp \
+	src/filesystem_lzh.h \
 	src/filesystem_native.cpp \
 	src/filesystem_native.h \
 	src/filesystem_root.cpp \
@@ -575,6 +577,7 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
 	$(HARFBUZZ_CFLAGS) \
+	$(LHASA_CFLAGS) \
 	$(SDL_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
@@ -627,6 +630,7 @@ easyrpg_player_LDADD = libeasyrpg-player.a libplayer-version.a \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
 	$(HARFBUZZ_LIBS) \
+	$(LHASA_LIBS) \
 	$(SDL_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \

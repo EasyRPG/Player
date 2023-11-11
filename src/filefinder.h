@@ -245,6 +245,14 @@ namespace FileFinder {
 	std::string GetPathInsideGamePath(StringView path_in);
 
 	/**
+	 * Checks whether a passed path ends with a supported extension for an archive, e.g. ".zip"
+	 *
+	 * @param path path to check
+	 * @return true when the path ends on an archive extension
+	 */
+	bool IsSupportedArchiveExtension(std::string path);
+
+	/**
 	 * @param p tree Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
 	 */

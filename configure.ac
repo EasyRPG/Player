@@ -95,6 +95,7 @@ EP_PKG_CHECK([FREETYPE],[freetype2],[Custom Font rendering.])
 AS_IF([test "$with_freetype" = "yes"],[
 	EP_PKG_CHECK([HARFBUZZ],[harfbuzz],[Custom Font text shaping.])
 ])
+EP_PKG_CHECK([LHASA],[liblhasa],[Support running games in lzh archives.])
 
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
 AS_IF([test "x$with_audio" != "xno"],[
@@ -226,6 +227,7 @@ if test "yes" != "$silent"; then
 	echo "  -custom Font rendering (freetype2):   $with_freetype"
 	test "$with_freetype" = "yes" && \
 		echo "  -custom Font text shaping (harfbuzz): $with_harfbuzz"
+	echo "  -run games in lzh archives (lhasa):   $with_lhasa"
 
 	if test "$with_audio" = "no"; then
 		echo "Audio support:               no"

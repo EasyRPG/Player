@@ -356,10 +356,10 @@ void Window_Settings::RefreshLicense() {
 	AddOption(MenuItem("ALSA", "Linux sound support (used for MIDI playback)", "LGPL2.1+"), [](){});
 #endif
 #endif
-	AddOption(MenuItem("rang", "Colors the terminal output", "Unlicense"), [](){});
-#ifdef _WIN32
-	AddOption(MenuItem("dirent", "Dirent interface for Microsoft Visual Studio", "MIT"), [](){});
+#ifdef HAVE_LHASA
+	AddOption(MenuItem("lhasa", "For parsing LHA (.lzh) archives", "ISC"), [](){});
 #endif
+	AddOption(MenuItem("rang", "Colors the terminal output", "Unlicense"), [](){});
 	AddOption(MenuItem("Baekmuk", "Korean font family", "Baekmuk"), [](){});
 	AddOption(MenuItem("Shinonome", "Japanese font family", "Public Domain"), [](){});
 	AddOption(MenuItem("ttyp0", "ttyp0 font family", "ttyp0"), [](){});
