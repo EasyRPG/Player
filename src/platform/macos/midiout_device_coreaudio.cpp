@@ -98,6 +98,10 @@ std::string CoreAudioMidiOutDevice::GetName() {
 	return "CoreAudio MIDI";
 }
 
+bool CoreAudioMidiOutDevice::NeedsSoftReset() {
+	return true;
+}
+
 bool CoreAudioMidiOutDevice::IsInitialized() const {
 	return works;
 }
