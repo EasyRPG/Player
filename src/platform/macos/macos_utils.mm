@@ -22,7 +22,7 @@
 #ifdef __APPLE__
 #import <Foundation/Foundation.h>
 #include <string>
-#include "platform/macos/utils.h"
+#include "platform/macos/macos_utils.h"
 
 bool MacOSUtils::IsAppBundle() {
 	bool is_bundle = false;

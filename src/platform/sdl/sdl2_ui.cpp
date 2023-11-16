@@ -42,10 +42,10 @@
 #include "lcf/scope_guard.h"
 
 #ifdef SUPPORT_AUDIO
-#  include "audio.h"
+#  include "sdl_audio.h"
 
 #  if defined(__APPLE__) && TARGET_OS_OSX
-#    include "platform/macos/utils.h"
+#    include "platform/macos/macos_utils.h"
 #  endif
 
 

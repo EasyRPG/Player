@@ -30,7 +30,7 @@
 #  include <emscripten.h>
 #endif
 
-#include "audio.h"
+#include "sdl_audio.h"
 #include "output.h"
 
 using namespace std::chrono_literals;

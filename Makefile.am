@@ -443,8 +443,8 @@ libeasyrpg_player_a_SOURCES = \
 SOURCEFILES_SDL2 = \
 	src/platform/sdl/sdl2_ui.cpp \
 	src/platform/sdl/sdl2_ui.h \
-	src/platform/sdl/audio.cpp \
-	src/platform/sdl/audio.h
+	src/platform/sdl/sdl_audio.cpp \
+	src/platform/sdl/sdl_audio.h
 if HAVE_SDL2
 libeasyrpg_player_a_SOURCES += $(SOURCEFILES_SDL2)
 else
@@ -454,8 +454,8 @@ endif
 SOURCEFILES_SDL1 = \
 	src/platform/sdl/sdl_ui.cpp \
 	src/platform/sdl/sdl_ui.h \
-	src/platform/sdl/audio.cpp \
-	src/platform/sdl/audio.h \
+	src/platform/sdl/sdl_audio.cpp \
+	src/platform/sdl/sdl_audio.h \
 	src/platform/sdl/axis.h
 if HAVE_SDL1
 libeasyrpg_player_a_SOURCES += $(SOURCEFILES_SDL1)
@@ -493,8 +493,8 @@ EXTRA_DIST += $(SOURCEFILES_ALSA)
 endif
 
 SOURCEFILES_MACOS = \
-	src/platform/macos/utils.h \
-	src/platform/macos/utils.mm \
+	src/platform/macos/macos_utils.h \
+	src/platform/macos/macos_utils.mm \
 	src/platform/macos/midiout_device_coreaudio.cpp \
 	src/platform/macos/midiout_device_coreaudio.h
 if MACOS

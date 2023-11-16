@@ -33,7 +33,7 @@
 #endif
 
 #ifdef SUPPORT_AUDIO
-#  include "audio.h"
+#  include "sdl_audio.h"
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
