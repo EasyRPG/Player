@@ -32,143 +32,154 @@
  */
 class Game_Strings {
 public:
-	using Str_t = std::string;
-	using Strings_t = std::vector<Str_t>;
+	using Strings_t = std::unordered_map<int, std::string>;
 
-	// Warnings disabled for now as there is no way to predefine text strings in the database
-	static constexpr int max_warnings = 0;
+	// currently only warns when ID <= 0
+	static constexpr int max_warnings = 10;
 
 	struct Str_Params {
-		int string_id, hex, extract;
+		int string_id = 0, hex = 0, extract = 0;
 	};
 
 	Game_Strings() = default;
 
 	void SetData(Strings_t s);
-	void SetData(std::vector<lcf::DBString> s);
+	void SetData(const std::vector<lcf::DBString>& s);
 	const Strings_t& GetData() const;
-	std::vector<lcf::DBString> GetLcfData();
+	std::vector<lcf::DBString> GetLcfData() const;
 
-	Str_t Get(int id) const;
-	Str_t GetIndirect(int id) const;
-	Str_t GetWithMode(Str_t str_data, int mode, int arg) const;
-	Str_t GetWithModeAndPos(Str_t str_data, int mode, int arg, int* pos);
+	StringView Get(int id) const;
+	StringView GetIndirect(int id, const Game_Variables& variables) const;
+	StringView GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const;
+	StringView GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables);
 
-	Str_t Asg(Str_Params params, Str_t string);
-	Str_t Cat(Str_Params params, Str_t string);
-	int ToNum(Str_Params params, int var_id);
-	int GetLen(Str_Params params, int var_id);
-	int InStr(Str_Params params, std::string search, int var_id, int begin = 0);
-	int Split(Str_Params params, std::string delimiter, int string_out_id, int var_id);
-	static Str_t FromFile(StringView filename, int encoding, bool& do_yield);
-	Str_t ToFile(Str_Params params, std::string filename, int encoding);
-	Str_t PopLine(Str_Params params, int offset, int string_out_id);
-	Str_t ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id = -1);
+	StringView Asg(Str_Params params, StringView string);
+	StringView Cat(Str_Params params, StringView string);
+	int ToNum(Str_Params params, int var_id, Game_Variables& variables);
+	int GetLen(Str_Params params, int var_id, Game_Variables& variables) const;
+	int InStr(Str_Params params, std::string search, int var_id, int begin, Game_Variables& variables) const;
+	int Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id, Game_Variables& variables);
+	static std::string FromFile(StringView filename, int encoding, bool& do_yield);
+	StringView ToFile(Str_Params params, std::string filename, int encoding);
+	StringView PopLine(Str_Params params, int offset, int string_out_id);
+	StringView ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables);
 
-	const Strings_t& RangeOp(Str_Params params, int string_id_1, Str_t string, int op, int args[] = nullptr);
+	const Strings_t& RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[], Game_Variables& variables);
 
-	Str_t PrependMin(Str_t string, int min_size, char c);
-	Str_t Extract(Str_t string, bool as_hex);
+	static std::string PrependMin(StringView string, int min_size, char c);
+	static std::string Extract(StringView string, bool as_hex);
 
 	static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
 	static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);
 
 private:
-	Str_t Set(Str_Params params, Str_t string);
-	bool ResizeWithId(int id);
+	void Set(Str_Params params, StringView string);
 	bool ShouldWarn(int id) const;
 	void WarnGet(int id) const;
 
-private:
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
 };
 
 
-inline Game_Strings::Str_t Game_Strings::Set(Str_Params params, Str_t string) {
-	if (!ResizeWithId(params.string_id)) return "";
-
-	auto& s = _strings[params.string_id - 1];
-	s = string;
-	if (params.extract) {
-		s = Extract(s, params.hex);
+inline void Game_Strings::Set(Str_Params params, StringView string) {
+	if (params.string_id <= 0) {
+		return;
 	}
-	return s;
+
+	std::string ins_string = ToString(string);
+	if (params.extract) {
+		ins_string = Extract(ins_string, params.hex);
+	}
+
+	auto it = _strings.find(params.string_id);
+	if (it == _strings.end()) {
+		if (ins_string.empty()) {
+			return;
+		} else {
+			_strings[params.string_id] = ins_string;
+		}
+	} else {
+		it->second = ins_string;
+	}
 }
 
 inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
 }
 
-inline void Game_Strings::SetData(std::vector<lcf::DBString> s) {
-	_strings = std::vector<Str_t>(s.begin(), s.end());
+inline void Game_Strings::SetData(const std::vector<lcf::DBString>& s) {
+	int i = 1;
+	for (const auto& string: s) {
+		if (!s.empty()) {
+			_strings[i] = ToString(string);
+		}
+		++i;
+	}
 }
 
 inline const Game_Strings::Strings_t& Game_Strings::GetData() const {
 	return _strings;
 }
 
-inline std::vector<lcf::DBString> Game_Strings::GetLcfData() {
-	return std::vector<lcf::DBString>(_strings.begin(), _strings.end());
+inline std::vector<lcf::DBString> Game_Strings::GetLcfData() const {
+	std::vector<lcf::DBString> lcf_data;
+
+	for (auto& [index, value]: _strings) {
+		assert(index > 0);
+		if (index >= lcf_data.size()) {
+			lcf_data.resize(index + 1);
+		}
+		lcf_data[index - 1] = lcf::DBString(value);
+	}
+
+	return lcf_data;
 }
 
 inline bool Game_Strings::ShouldWarn(int id) const {
 	return id <= 0 && _warnings > 0;
 }
 
-inline Game_Strings::Str_t Game_Strings::Get(int id) const {
+inline StringView Game_Strings::Get(int id) const {
 	if (EP_UNLIKELY(ShouldWarn(id))) {
 		WarnGet(id);
 	}
-	if (id <= 0 || id > static_cast<int>(_strings.size())) {
-		return "";
+	auto it = _strings.find(id);
+	if (it == _strings.end()) {
+		return {};
 	}
-	return _strings[id - 1];
+	return it->second;
 }
 
-inline bool Game_Strings::ResizeWithId(int id) {
-	if (EP_UNLIKELY(ShouldWarn(id))) {
-		WarnGet(id);
-	}
-	if (id <= 0) {
-		return false;
-	}
-	if (EP_UNLIKELY(id > static_cast<int>(_strings.size()))) {
-		_strings.resize(id, "");
-	}
-	return true;
-}
-
-inline Game_Strings::Str_t Game_Strings::GetIndirect(int id) const {
-	auto val_indirect = Main_Data::game_variables->Get(id);
+inline StringView Game_Strings::GetIndirect(int id, const Game_Variables& variables) const {
+	auto val_indirect = variables.Get(id);
 	return Get(static_cast<int>(val_indirect));
 }
 
-inline Game_Strings::Str_t Game_Strings::GetWithMode(Str_t str_data, int arg, int mode) const {
+inline StringView Game_Strings::GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const {
 	switch (mode) {
 	case 1: // direct string reference
 		return Get(arg);
-		break;
 	case 2: // indirect string reference
-		return GetIndirect(arg);
-		break;
+		return GetIndirect(arg, variables);
+	default:
+		return str_data;
 	}
-	return str_data;
 }
 
-inline Game_Strings::Str_t Game_Strings::GetWithModeAndPos(Str_t str_data, int arg, int mode, int* pos) {
-	Str_t ret;
+inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables) {
+	StringView ret;
 	switch (mode) {
 	case 0:
+		assert(pos);
 		ret = str_data.substr(*pos, arg);
 		*pos += arg;
-		break;
+		return ret;
 	case 1: // direct string reference
-		ret = Get(arg);
-		break;
+		return Get(arg);
 	case 2: // indirect string reference
-		ret = GetIndirect(arg);
-		break;
+		return GetIndirect(arg, variables);
+	default:
+		return ret;
 	}
-	return ret;
 }
