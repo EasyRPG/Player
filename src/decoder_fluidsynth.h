@@ -69,6 +69,8 @@ public:
 #endif
 	};
 
+	bool NeedsSoftReset() override;
+
 private:
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 	fluid_synth_t* GetSynthInstance();

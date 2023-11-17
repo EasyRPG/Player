@@ -402,15 +402,16 @@ void AudioDecoderMidi::meta_event(int event, const void* data, std::size_t size)
 
 void AudioDecoderMidi::reset() {
 	// MIDI reset event
-	if (mididec->NeedsSoftReset()) {
-		// SoundOff every channel: necessary for synths like macOS which tend to get stuck
-		SendMessageToAllChannels(midimsg_all_sound_off(0));
-	}
 	SendMessageToAllChannels(midimsg_reset_all_controller(0));
 
 	// GM system on (resets most parameters)
 	const unsigned char gm_reset[] = { 0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7 };
 	mididec->SendSysExMessage(gm_reset, sizeof(gm_reset));
+
+	// SoundOff every channel: only necessary for synths like macOS which tend to get stuck
+	if (mididec->NeedsSoftReset()) {
+		SendMessageToAllChannels(midimsg_all_sound_off(0));
+	}
 
 	// Set the Pitch bend range to 256
 	for (int channel = 0; channel < 16; channel++) {
