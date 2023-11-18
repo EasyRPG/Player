@@ -4667,13 +4667,64 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& com) {
+	// #ManiacSetGameOption, "",[optIsVar, optType, opt, bitshift(moreOpt)]
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command SetGameOption not supported");
-	return true;
+	int optType = com.parameters[1];
+
+	switch (optType) //optType
+	{
+	case 0: { // behavior when game's window is inactive.
+		int whenInactive = ValueOrVariable(com.parameters[0], com.parameters[2]); // pause_game || run_game;
+
+		Output::Warning("Maniac Patch - Command SetGameOption: \"Pause When Inactive\" toggle is not supported");
+		return true;
+	}
+	case 1: { // Fatal Mix.
+		int fps = ValueOrVariable(com.parameters[0], com.parameters[2]); // int FPS
+		int testPlayToggle = ValueOrVariableBitfield(0, 0, com.parameters[3]); // TestPlay_FromGame || TestPlay_Off || TestPlay_On;
+		int SkipDialogs = ValueOrVariableBitfield(0, 1, com.parameters[3]); // Rshift_SkipDialogs_Off || Rshift_SkipDialogs_On || SkipDialogs_fromEasyRPG?;
+
+		Output::Warning("Maniac Patch - Command SetGameOption: Fatal Mix is not supported");
+		return true;
+	}
+	case 2: { // Pictures Limit.
+		return true; // <---- EasyRPG has a dynamic limit of maximum pictures on screen, skip it.
+	}
+	case 3: { // Skip Frames.
+		int skipAmount = ValueOrVariable(com.parameters[0], com.parameters[2]); // NoSkip || Skip 1/5 || Skip 1/3 || Skip 1/2
+
+		Output::Warning("Maniac Patch - Command SetGameOption: Skipping Frames is not supported");
+		return true;
+	}
+	case 4: { // Mouse - text window Operation, AKA .mouse.disableMsgProcession(n) (IDK what that is)
+		int value = ValueOrVariable(com.parameters[0], com.parameters[2]); // ???
+
+		Output::Warning("Maniac Patch - Command SetGameOption: Mouse's Text Window Operation is not supported");
+		return true;
+	}
+	case 5: { // Battle Screen Display Position
+		int btlOrigin = ValueOrVariable(com.parameters[0], com.parameters[2]); // center || topLeft || bottomLeft || topRight || bottomRight || top || bottom || Left || right;
+
+		Output::Warning("Maniac Patch - Command SetGameOption: Reposition Battle UI is not supported");
+		return true;
+	}
+	case 6: { // Number of Multiple Animation Running at same time (battle animations)?
+		int AnimAmount = ValueOrVariable(com.parameters[0], com.parameters[2]); // int ammount
+
+		Output::Warning("Maniac Patch - Command SetGameOption: Changing the ammount of animations is not supported");
+		return true;
+	}
+	case 7: { // WinFaceSize (IDK what that is)
+		Output::Warning("Maniac Patch - Command SetGameOption: WinFaceSize is not supported");
+		return true;
+	}
+	default:
+		return true;
+	}
 }
 
 bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const& com) {
