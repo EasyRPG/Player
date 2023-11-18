@@ -36,6 +36,8 @@ public:
 	using duration = clock::duration;
 	using time_point = clock::time_point;
 
+	int hideDisplay;
+
 	static constexpr bool is_steady = clock::is_steady;
 
 	/** Get current time */
@@ -75,6 +77,12 @@ public:
 
 	/** @return the speed up or slowdown factor we'll use to run the game. */
 	static float GetGameSpeedFactor();
+
+	/** Set either if Speed Multiplier Overlay is hidden or Visible. */
+	static void setSpeedOverlayMode(bool mode);
+
+	/** Check if Speed Multiplier Overlay is hidden or Visible. */
+	static int GetSpeedOverlayMode();
 
 	/** Get the time of the current frame */
 	static time_point GetFrameTime();
@@ -117,6 +125,7 @@ private:
 		float speed = 1.0;
 		float fps = 0.0;
 		int frame = 0;
+		bool hideSpeedOverlay = 0;
 	};
 	static Data data;
 };
@@ -178,6 +187,14 @@ inline void Game_Clock::SetGameSpeedFactor(float s) {
 
 inline float Game_Clock::GetGameSpeedFactor() {
 	return data.speed;
+}
+
+inline int Game_Clock::GetSpeedOverlayMode() {
+	return data.hideSpeedOverlay;
+}
+
+inline void Game_Clock::setSpeedOverlayMode(bool s) {
+	data.hideSpeedOverlay = s;
 }
 
 #endif

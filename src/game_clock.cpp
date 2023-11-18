@@ -25,6 +25,8 @@
 constexpr bool Game_Clock::is_steady;
 Game_Clock::Data Game_Clock::data;
 
+int hideDisplay = 0;
+
 // Damping factor fps computation.
 static constexpr auto _fps_smooth = 2.0f / 121.0f;
 

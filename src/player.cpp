@@ -310,6 +310,7 @@ void Player::UpdateInput() {
 	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
 		speed = speed_modifier_b;
 	}
+	Game_Clock::setSpeedOverlayMode(0);
 	Game_Clock::SetGameSpeedFactor(speed);
 
 	if (Main_Data::game_quit) {

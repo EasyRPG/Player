@@ -4988,8 +4988,20 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const&) {
 }
 
 bool Game_Interpreter::CommandSetGameSpeed(lcf::rpg::EventCommand const& com) {
+	// #SetGameSpeed, "",[speedIsVar, speed, speedLimitIsVar,speedLimit, hideSpeedMultiplierIsVar, hideSpeedMultiplier ];
+
 	int32_t speed = ValueOrVariable(com.parameters[0], com.parameters[1]) * Game_Clock::GetGameSpeedFactor();
-	if (speed > 100) speed = 100;
+	int32_t speedLimit = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	bool hideSpeedMultiplier = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	if (speedLimit == 0) speedLimit = 100;
+	if (speed > speedLimit) speed = speedLimit;
+
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_A) || Input::IsSystemPressed(Input::FAST_FORWARD_B))
+		Game_Clock::setSpeedOverlayMode(0);
+	else
+		Game_Clock::setSpeedOverlayMode(hideSpeedMultiplier);
+
 	Game_Clock::SetGameSpeedFactor(speed);
 	return true;
 }
