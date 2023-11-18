@@ -62,7 +62,7 @@ import org.easyrpg.player.R;
 public class SDLActivity extends Activity implements View.OnSystemUiVisibilityChangeListener {
     private static final String TAG = "SDL";
     private static final int SDL_MAJOR_VERSION = 2;
-    private static final int SDL_MINOR_VERSION = 26;
+    private static final int SDL_MINOR_VERSION = 28;
     private static final int SDL_MICRO_VERSION = 5;
 /*
     // Display InputType.SOURCE/CLASS of events and devices
@@ -95,7 +95,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
         s2 = s_copy & InputDevice.SOURCE_ANY; // keep source only, no class;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= 23) {
             tst = InputDevice.SOURCE_BLUETOOTH_STYLUS;
             if ((s & tst) == tst) src += " BLUETOOTH_STYLUS";
             s2 &= ~tst;
@@ -109,7 +109,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if ((s & tst) == tst) src += " GAMEPAD";
         s2 &= ~tst;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 21) {
             tst = InputDevice.SOURCE_HDMI;
             if ((s & tst) == tst) src += " HDMI";
             s2 &= ~tst;
@@ -148,7 +148,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if ((s & tst) == tst) src += " TOUCHSCREEN";
         s2 &= ~tst;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= 18) {
             tst = InputDevice.SOURCE_TOUCH_NAVIGATION;
             if ((s & tst) == tst) src += " TOUCH_NAVIGATION";
             s2 &= ~tst;
@@ -172,7 +172,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 */
 
     public static boolean mIsResumedCalled, mHasFocus;
-    public static final boolean mHasMultiWindow = (Build.VERSION.SDK_INT >= 24);
+    public static final boolean mHasMultiWindow = (Build.VERSION.SDK_INT >= 24  /* Android 7.0 (N) */);
 
     // Cursor types
     // private static final int SDL_SYSTEM_CURSOR_NONE = -1;
@@ -226,9 +226,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     protected static SDLGenericMotionListener_API12 getMotionListener() {
         if (mMotionListener == null) {
-            if (Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 26 /* Android 8.0 (O) */) {
                 mMotionListener = new SDLGenericMotionListener_API26();
-            } else if (Build.VERSION.SDK_INT >= 24) {
+            } else if (Build.VERSION.SDK_INT >= 24 /* Android 7.0 (N) */) {
                 mMotionListener = new SDLGenericMotionListener_API24();
             } else {
                 mMotionListener = new SDLGenericMotionListener_API12();
@@ -313,7 +313,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mNextNativeState = NativeState.INIT;
         mCurrentNativeState = NativeState.INIT;
     }
-
+    
     protected SDLSurface createSDLSurface(Context context) {
         return new SDLSurface(context);
     }
@@ -398,7 +398,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mHIDDeviceManager = HIDDeviceManager.acquire(this);
 
         // Set up the surface
-        mSurface = createSDLSurface(getApplication());
+        mSurface = createSDLSurface(this);
 
         /* EasyRPG modification: overwrite layout
         mLayout = new RelativeLayout(this);
@@ -411,7 +411,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         SDLActivity.onNativeOrientationChanged(mCurrentOrientation);
 
         try {
-            if (Build.VERSION.SDK_INT < 24) {
+            if (Build.VERSION.SDK_INT < 24 /* Android 7.0 (N) */) {
                 mCurrentLocale = getContext().getResources().getConfiguration().locale;
             } else {
                 mCurrentLocale = getContext().getResources().getConfiguration().getLocales().get(0);
@@ -597,6 +597,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             mHIDDeviceManager = null;
         }
 
+        SDLAudioManager.release(this);
+
         if (SDLActivity.mBrokenLibraries) {
            super.onDestroy();
            return;
@@ -775,7 +777,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 }
                 break;
             case COMMAND_CHANGE_WINDOW_STYLE:
-                if (Build.VERSION.SDK_INT >= 19) {
+                if (Build.VERSION.SDK_INT >= 19 /* Android 4.4 (KITKAT) */) {
                     if (context instanceof Activity) {
                         Window window = ((Activity) context).getWindow();
                         if (window != null) {
@@ -850,7 +852,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         msg.obj = data;
         boolean result = commandHandler.sendMessage(msg);
 
-        if (Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT >= 19 /* Android 4.4 (KITKAT) */) {
             if (command == COMMAND_CHANGE_WINDOW_STYLE) {
                 // Ensure we don't return until the resize has actually happened,
                 // or 500ms have passed.
@@ -978,15 +980,18 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         /* If set, hint "explicitly controls which UI orientations are allowed". */
         if (hint.contains("LandscapeRight") && hint.contains("LandscapeLeft")) {
             orientation_landscape = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
-        } else if (hint.contains("LandscapeRight")) {
-            orientation_landscape = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         } else if (hint.contains("LandscapeLeft")) {
+            orientation_landscape = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        } else if (hint.contains("LandscapeRight")) {
             orientation_landscape = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
         }
 
-        if (hint.contains("Portrait") && hint.contains("PortraitUpsideDown")) {
+        /* exact match to 'Portrait' to distinguish with PortraitUpsideDown */
+        boolean contains_Portrait = hint.contains("Portrait ") || hint.endsWith("Portrait");
+
+        if (contains_Portrait && hint.contains("PortraitUpsideDown")) {
             orientation_portrait = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
-        } else if (hint.contains("Portrait")) {
+        } else if (contains_Portrait) {
             orientation_portrait = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         } else if (hint.contains("PortraitUpsideDown")) {
             orientation_portrait = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
@@ -1099,7 +1104,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         // thus SDK version 27.  If we are in DeX mode and not API 27 or higher, as a result,
         // we should stick to relative mode.
         //
-        if ((Build.VERSION.SDK_INT < 27) && isDeXMode()) {
+        if (Build.VERSION.SDK_INT < 27 /* Android 8.1 (O_MR1) */ && isDeXMode()) {
             return false;
         }
 
@@ -1189,7 +1194,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      * This method is called by SDL using JNI.
      */
     public static boolean isDeXMode() {
-        if (Build.VERSION.SDK_INT < 24) {
+        if (Build.VERSION.SDK_INT < 24 /* Android 7.0 (N) */) {
             return false;
         }
         try {
@@ -1356,23 +1361,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             }
         }
 
-        if ((source & InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                if (isTextInputEvent(event)) {
-                    if (ic != null) {
-                        ic.commitText(String.valueOf((char) event.getUnicodeChar()), 1);
-                    } else {
-                        SDLInputConnection.nativeCommitText(String.valueOf((char) event.getUnicodeChar()), 1);
-                    }
-                }
-                onNativeKeyDown(keyCode);
-                return true;
-            } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                onNativeKeyUp(keyCode);
-                return true;
-            }
-        }
-
         if ((source & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
             // on some devices key events are sent for mouse BUTTON_BACK/FORWARD presses
             // they are ignored here because sending them as mouse input to SDL is messy
@@ -1385,6 +1373,21 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     return true;
                 }
             }
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (isTextInputEvent(event)) {
+                if (ic != null) {
+                    ic.commitText(String.valueOf((char) event.getUnicodeChar()), 1);
+                } else {
+                    SDLInputConnection.nativeCommitText(String.valueOf((char) event.getUnicodeChar()), 1);
+                }
+            }
+            onNativeKeyDown(keyCode);
+            return true;
+        } else if (event.getAction() == KeyEvent.ACTION_UP) {
+            onNativeKeyUp(keyCode);
+            return true;
         }
 
         return false;
@@ -1633,7 +1636,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     private final Runnable rehideSystemUi = new Runnable() {
         @Override
         public void run() {
-            if (Build.VERSION.SDK_INT >= 19) {
+            if (Build.VERSION.SDK_INT >= 19 /* Android 4.4 (KITKAT) */) {
                 int flags = View.SYSTEM_UI_FLAG_FULLSCREEN |
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
@@ -1686,7 +1689,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Bitmap bitmap = Bitmap.createBitmap(colors, width, height, Bitmap.Config.ARGB_8888);
         ++mLastCursorID;
 
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24 /* Android 7.0 (N) */) {
             try {
                 mCursors.put(mLastCursorID, PointerIcon.create(bitmap, hotSpotX, hotSpotY));
             } catch (Exception e) {
@@ -1702,7 +1705,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      * This method is called by SDL using JNI.
      */
     public static void destroyCustomCursor(int cursorID) {
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24 /* Android 7.0 (N) */) {
             try {
                 mCursors.remove(cursorID);
             } catch (Exception e) {
@@ -1716,7 +1719,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      */
     public static boolean setCustomCursor(int cursorID) {
 
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24 /* Android 7.0 (N) */) {
             try {
                 mSurface.setPointerIcon(mCursors.get(cursorID));
             } catch (Exception e) {
@@ -1771,7 +1774,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             cursor_type = 1002; //PointerIcon.TYPE_HAND;
             break;
         }
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24 /* Android 7.0 (N) */) {
             try {
                 mSurface.setPointerIcon(PointerIcon.getSystemIcon(SDL.getContext(), cursor_type));
             } catch (Exception e) {
@@ -1785,7 +1788,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      * This method is called by SDL using JNI.
      */
     public static void requestPermission(String permission, int requestCode) {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < 23 /* Android 6.0 (M) */) {
             nativePermissionResult(requestCode, true);
             return;
         }
@@ -1814,7 +1817,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             i.setData(Uri.parse(url));
 
             int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-            if (Build.VERSION.SDK_INT >= 21) {
+            if (Build.VERSION.SDK_INT >= 21 /* Android 5.0 (LOLLIPOP) */) {
                 flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
             } else {
                 flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
@@ -2018,6 +2021,18 @@ class SDLInputConnection extends BaseInputConnection {
 
     @Override
     public boolean deleteSurroundingText(int beforeLength, int afterLength) {
+        if (Build.VERSION.SDK_INT <= 29 /* Android 10.0 (Q) */) {
+            // Workaround to capture backspace key. Ref: http://stackoverflow.com/questions>/14560344/android-backspace-in-webview-baseinputconnection
+            // and https://bugzilla.libsdl.org/show_bug.cgi?id=2265
+            if (beforeLength > 0 && afterLength == 0) {
+                // backspace(s)
+                while (beforeLength-- > 0) {
+                    nativeGenerateScancodeForUnichar('\b');
+                }
+                return true;
+           }
+        }
+
         if (!super.deleteSurroundingText(beforeLength, afterLength)) {
             return false;
         }
