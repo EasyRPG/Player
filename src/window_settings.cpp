@@ -261,10 +261,10 @@ void Window_Settings::RefreshVideo() {
 }
 
 void Window_Settings::RefreshAudio() {
-	auto cfg = DisplayUi->GetAudio().GetConfig();
+	auto cfg = Audio().GetConfig();
 
-	AddOption(cfg.music_volume, [this](){ DisplayUi->GetAudio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
-	AddOption(cfg.sound_volume, [this](){ DisplayUi->GetAudio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
+	AddOption(cfg.music_volume, [this](){ Audio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
+	AddOption(cfg.sound_volume, [this](){ Audio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
 	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
 			[](){},
 			"Which MIDI backend to use");

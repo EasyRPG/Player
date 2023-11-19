@@ -143,7 +143,9 @@ private:
 
 	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
+#ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
+#endif
 };
 
 #endif

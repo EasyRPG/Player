@@ -50,9 +50,8 @@ int EmptyAudio::BGM_GetTicks() const {
 	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
 }
 
-void EmptyAudio::vGetConfig(Game_ConfigAudio& cfg) const {
-	cfg.music_volume.SetOptionVisible(false);
-	cfg.sound_volume.SetOptionVisible(false);
+void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
+	// Not supported. The audio menu is disabled.
 }
 
 bool EmptyAudio::BGM_PlayedOnce() const {

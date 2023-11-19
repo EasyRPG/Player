@@ -41,13 +41,12 @@
 #include "bitmap.h"
 #include "lcf/scope_guard.h"
 
+#if defined(__APPLE__) && TARGET_OS_OSX
+#  include "platform/macos/macos_utils.h"
+#endif
+
 #ifdef SUPPORT_AUDIO
 #  include "sdl_audio.h"
-
-#  if defined(__APPLE__) && TARGET_OS_OSX
-#    include "platform/macos/macos_utils.h"
-#  endif
-
 
 AudioInterface& Sdl2Ui::GetAudio() {
 	return *audio_;
@@ -170,8 +169,6 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 		audio_ = std::make_unique<SdlAudio>(cfg.audio);
 		return;
 	}
-#else
-	audio_ = std::make_unique<EmptyAudio>(cfg.audio);
 #endif
 }
 
