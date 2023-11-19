@@ -226,13 +226,6 @@ void Game_Map::SetupFromSave(
 
 	map = std::move(map_in);
 	map_info = std::move(save_map);
-
-	if (!Player::IsRPG2k3E()) {
-		// RPG_RT bug: Substitutions are not loaded except in 2k3E
-		std::iota(map_info.lower_tiles.begin(), map_info.lower_tiles.end(), 0);
-		std::iota(map_info.upper_tiles.begin(), map_info.upper_tiles.end(), 0);
-	}
-
 	panorama = std::move(save_pan);
 
 	SetupCommon();
@@ -267,7 +260,13 @@ void Game_Map::SetupFromSave(
 	}
 
 	SetEncounterSteps(map_info.encounter_steps);
-	SetChipset(map_info.chipset_id);
+
+	// RPG_RT bug: Chipset is not loaded. Fixed in 2k3E
+	if (Player::IsRPG2k3E()) {
+		SetChipset(map_info.chipset_id);
+	} else {
+		SetChipset(0);
+	}
 
 	if (!is_map_save_compat) {
 		panorama = {};
