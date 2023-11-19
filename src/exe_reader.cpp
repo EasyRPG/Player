@@ -173,6 +173,73 @@ std::vector<uint8_t> EXEReader::GetExFont() {
 	return {};
 }
 
+std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
+	corefile.clear();
+
+	if (!resource_ofs) {
+		return {};
+	}
+
+	std::vector<std::vector<uint8_t>> logos;
+
+	uint32_t resourcesIDEs = GetU16(resource_ofs + 0x0C);
+	if (resourcesIDEs == 1) {
+		uint32_t resourcesIDEbase = resource_ofs + 0x10;
+		if (ResNameCheck(exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase)), "XYZ")) {
+			uint32_t xyz_base = exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase + 4));
+			uint16_t xyz_logos = GetU16(xyz_base + 0x0C);
+			uint32_t xyz_logo_base = xyz_base + 0x10;
+
+			char current_logo = '1';
+			std::string res_name = "LOGOX";
+			while (xyz_logos > 0) {
+				res_name.back() = current_logo;
+
+				uint32_t name = GetU32(xyz_logo_base);
+				// Actually a name?
+				if (name & 0x80000000) {
+					name = exe_reader_roffset(resource_ofs, name);
+
+					if (ResNameCheck(name, res_name.c_str())) {
+						uint32_t dataent = GetU32(xyz_logo_base + 4);
+						if (dataent & 0x80000000) {
+							dataent = exe_reader_roffset(resource_ofs, dataent);
+							dataent = resource_ofs + GetU32(dataent + 0x14);
+						}
+						uint32_t filebase = (GetU32(dataent) - resource_rva) + resource_ofs;
+						uint32_t filesize = GetU32(dataent + 0x04);
+						Output::Debug("EXEReader: {} resource found (DE {:#x}; {:#x}; len {:#x})", res_name, dataent, filebase, filesize);
+						std::vector<uint8_t> logo;
+						logo.resize(filesize);
+
+						corefile.seekg(filebase, std::ios_base::beg);
+						corefile.read(reinterpret_cast<char*>(logo.data()), filesize);
+						if (logo.size() < 8 || strncmp(reinterpret_cast<char*>(logo.data()), "XYZ1", 4) != 0) {
+							Output::Debug("{}: Not a XYZ image", res_name);
+							return {};
+						}
+
+						if (corefile.gcount() != filesize) {
+							Output::Debug("{}: Error reading resource (read {}, expected {})", res_name, corefile.gcount(), filesize);
+							return {};
+						}
+						//auto crc = crc32(0, logo.data(), logo.size());
+						//Output::Debug("{} {:x}", res_name, crc);
+						logos.push_back(logo);
+					} else {
+						return logos;
+					}
+				}
+				xyz_logo_base += 8;
+				current_logo++;
+				xyz_logos--;
+			}
+		}
+	}
+
+	return logos;
+}
+
 const EXEReader::FileInfo& EXEReader::GetFileInfo() {
 	corefile.clear();
 

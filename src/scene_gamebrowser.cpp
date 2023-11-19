@@ -219,9 +219,10 @@ void Scene_GameBrowser::BootGame() {
 	game_loading = false;
 	load_window->SetVisible(false);
 
-	if (!FileFinder::FindImage("Logo", "LOGO1").empty()) {
+	auto logos = Scene_Logo::LoadLogos();
+	if (!logos.empty()) {
 		// Delegate to Scene_Logo when a startup graphic was found
-		Scene::Push(std::make_shared<Scene_Logo>(1));
+		Scene::Push(std::make_shared<Scene_Logo>(std::move(logos), 1));
 		return;
 	}
 
