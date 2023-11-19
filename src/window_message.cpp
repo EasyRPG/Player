@@ -664,6 +664,14 @@ void Window_Message::UpdateMessage() {
 				text_index = text_prev;
 				continue;
 			}
+
+			if (Player::debug_flag && Input::IsPressed(Input::CANCEL)){
+				line_char_counter = 0;
+				if (strlen(text_index) < 3 && !pending_message.HasNumberInput() && pending_message.GetNumChoices() <= 0) {
+					SetWait(5);
+					FinishMessageProcessing();
+				}
+			}
 		}
 	}
 }
