@@ -281,10 +281,12 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
 #else
 	AddOption(cfg.settings_autosave, [](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.show_startup_logos, [this](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
 #endif
 }
 

@@ -210,6 +210,10 @@ void Scene_Logo::DrawTextOnLogo(bool verbose) {
 }
 
 std::vector<std::vector<uint8_t>> Scene_Logo::LoadLogos() {
+	if (Player::player_config.show_startup_logos.Get() == StartupLogos::None) {
+		return {};
+	}
+
 	std::vector<std::vector<uint8_t>> logos;
 
 	for (int i = 1; i < 100; ++i) {

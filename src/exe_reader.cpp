@@ -26,6 +26,11 @@
 #include <fstream>
 #include <zlib.h>
 
+namespace {
+	// hashes of known RPG_RT startup logos
+	std::array<uint32_t, 5> logo_crc32 = { 0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a };
+}
+
 EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(core)) {
 	// The Incredibly Dumb PE parser (tm)
 	// Extracts data from the resource section for engine detection and can read ExFont.
@@ -180,6 +185,10 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 		return {};
 	}
 
+	if (Player::player_config.show_startup_logos.Get() == StartupLogos::None) {
+		return {};
+	}
+
 	std::vector<std::vector<uint8_t>> logos;
 
 	uint32_t resourcesIDEs = GetU16(resource_ofs + 0x0C);
@@ -192,6 +201,7 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 
 			char current_logo = '1';
 			std::string res_name = "LOGOX";
+			bool only_custom_logos = (Player::player_config.show_startup_logos.Get() == StartupLogos::Custom);
 			while (xyz_logos > 0) {
 				res_name.back() = current_logo;
 
@@ -223,9 +233,15 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 							Output::Debug("{}: Error reading resource (read {}, expected {})", res_name, corefile.gcount(), filesize);
 							return {};
 						}
-						//auto crc = crc32(0, logo.data(), logo.size());
-						//Output::Debug("{} {:x}", res_name, crc);
-						logos.push_back(logo);
+
+						if (only_custom_logos) {
+							auto crc = static_cast<uint32_t>(crc32(0, logo.data(), logo.size()));
+							if (std::find(logo_crc32.begin(), logo_crc32.end(), crc) == logo_crc32.end()) {
+								logos.push_back(logo);
+							}
+						} else {
+							logos.push_back(logo);
+						}
 					} else {
 						return logos;
 					}
