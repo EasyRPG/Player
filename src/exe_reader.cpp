@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <zlib.h>
 
 EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(core)) {
 	// The Incredibly Dumb PE parser (tm)
@@ -76,15 +77,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 	}
 }
 
-static uint32_t djb2_hash(char* str, size_t length) {
-	uint32_t hash = 5381;
-	for (size_t i = 0; i < length; ++i) {
-		hash = ((hash << 5) + hash) + (uint8_t)str[i];
-	}
-	return hash;
-}
-
-static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem_Stream::InputStream& corefile, uint32_t position, uint32_t len) {
+static std::vector<uint8_t> ExtractExFont(Filesystem_Stream::InputStream& corefile, uint32_t position, uint32_t len) {
 	std::vector<uint8_t> exfont;
 	constexpr int header_size = 14; // Size of BITMAPFILEHEADER
 	exfont.resize(len + header_size);
@@ -132,7 +125,8 @@ static std::vector<uint8_t> exe_reader_perform_exfont_save(Filesystem_Stream::In
 	exfont[pos++] = (header_len >> 24) & 0xFF;
 
 	// Check if the ExFont is the original through a fast hash function
-	if (djb2_hash((char*)exfont.data() + header_size, exfont.size() - header_size) != 0x491e19de) {
+	auto crc = crc32(0, exfont.data() + header_size, exfont.size() - header_size);
+	if (crc != 0x86bc6c68) {
 		Output::Debug("EXEReader: Custom ExFont found");
 	}
 	return exfont;
@@ -169,7 +163,7 @@ std::vector<uint8_t> EXEReader::GetExFont() {
 				uint32_t filebase = (GetU32(dataent) - resource_rva) + resource_ofs;
 				uint32_t filesize = GetU32(dataent + 0x04);
 				Output::Debug("EXEReader: EXFONT resource found (DE {:#x}; {:#x}; len {:#x})", dataent, filebase, filesize);
-				return exe_reader_perform_exfont_save(corefile, filebase, filesize);
+				return ExtractExFont(corefile, filebase, filesize);
 			}
 		}
 		resourcesNDEbase += 8;
@@ -282,14 +276,13 @@ uint32_t EXEReader::GetLogoCount() {
 	if (!resource_ofs) {
 		return 0;
 	}
-	// For each ID/Name entry in the outer...
+
 	uint32_t resourcesIDEs = GetU16(resource_ofs + 0x0C);
 	if (resourcesIDEs == 1) {
 		uint32_t resourcesIDEbase = resource_ofs + 0x10;
 		if (ResNameCheck(exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase)), "XYZ")) {
 			uint32_t xyz_logo_base = exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase + 4));
 			return static_cast<uint32_t>(GetU16(xyz_logo_base + 0x0C));
-			return exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase + 4));
 		}
 	}
 	return 0;
