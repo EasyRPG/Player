@@ -68,7 +68,7 @@ namespace {
 	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
-	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ".svg", ".xml", ".json", ".yml", ".yaml");
+	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
 }
 
 FilesystemView FileFinder::Game() {
@@ -352,7 +352,7 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string find_generic_with_fallback(DirectoryTree::Args& args) {
-	std::string found = FileFinder::Save().FindFile(args); 
+	std::string found = FileFinder::Save().FindFile(args);
 	if (found.empty()) {
 		return find_generic(args);
 	}
@@ -406,7 +406,7 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 }
 
 Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
-	auto is = FileFinder::Save().OpenFile(args); 
+	auto is = FileFinder::Save().OpenFile(args);
 	if (!is) { is = open_generic(dir, name, args); }
 	if (!is) {
 		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
