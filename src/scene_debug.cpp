@@ -813,7 +813,7 @@ void Scene_Debug::DoCallCommonEvent() {
 }
 
 void Scene_Debug::DoCallMapEvent() {
-	if (Scene::Find(Scene::Map) != nullptr) {
+	if (!Scene::Find(Scene::Map)) {
 		return;
 	}
 
