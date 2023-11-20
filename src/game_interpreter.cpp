@@ -1787,7 +1787,7 @@ StringView Game_Interpreter::CommandStringOrVariable(lcf::rpg::EventCommand cons
 	assert(mode_idx != val_idx);
 
 	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
-		return Main_Data::game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx]);
+		return Main_Data::game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx], *Main_Data::game_variables);
 	}
 
 	return com.string;
@@ -1802,7 +1802,7 @@ StringView Game_Interpreter::CommandStringOrVariableBitfield(lcf::rpg::EventComm
 
 	if (com.parameters.size() >= std::max(mode_idx, val_idx) + 1) {
 		int mode = com.parameters[mode_idx];
-		return Main_Data::game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx]);
+		return Main_Data::game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *Main_Data::game_variables);
 	}
 
 	return com.string;
@@ -4740,11 +4740,11 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	//		Refers to the third argument, which can change depending on the type of operation:  x, v[x], v[v[x]] | string, t[x], t[v[x]]
 	//	-bits 16..19:
 	//		Refers to the fourth argument, which can change depending on the type of operation: x, v[x], v[v[x]] | string, t[x], t[v[x]] (edge case for exMatch)
-	// 
+	//
 	//*parameter 1 - String index 0
-	// 
+	//
 	//*parameter 2 - String index 1 (optional for ranges)
-	// 
+	//
 	//*parameter 3 - general flags
 	//	-byte0:
 	//		Refers to the type of operation: asg, cat, toNum...
@@ -4752,7 +4752,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	//		It is a flag that indicates sub-operation: actor[x].name, .actor[x].desc, ins, rep, subs, join... Used only in asg and cat operations
 	//	-byte2:
 	//		Flags, such as: extract, hex... There is also an edge case where the last argument of exRep is here
-	// 
+	//
 	//*parameters 4..n - arguments
 	int string_mode = com.parameters[0] & 15;
 	int string_id_0 = com.parameters[1];
@@ -4902,7 +4902,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 				} else {
 					op_string += std::to_string(Main_Data::game_variables->Get(args[1]++));
 				}
-				
+
 				if (--args[2] > 0) op_string += delimiter;
 			}
 
@@ -4972,7 +4972,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		StringView search = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe
 		args[2] = ValueOrVariable(modes[2], args[2]);
-		
+
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, ToString(search), op, args, *Main_Data::game_variables);
 		else          Main_Data::game_strings->InStr(str_params, ToString(search), args[1], args[2], *Main_Data::game_variables);
 		break;
@@ -4982,7 +4982,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		StringView delimiter = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]);
 		args[2] = ValueOrVariable(modes[2], args[2]);
-		
+
 		if (is_range) Main_Data::game_strings->RangeOp(str_params, string_id_1, ToString(delimiter), op, args, *Main_Data::game_variables);
 		else          Main_Data::game_strings->Split(str_params, ToString(delimiter), args[1], args[2], *Main_Data::game_variables);
 		break;
@@ -5005,7 +5005,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		if (is_range) Main_Data::game_strings->PopLine(str_params, string_id_1 - string_id_0, args[0]);
 		else          Main_Data::game_strings->PopLine(str_params, 0, args[0]);
 		break;
-	case 9: //exInStr <fn(string text, int var_id, int begin)>  
+	case 9: //exInStr <fn(string text, int var_id, int begin)>
 	case 10: //exMatch <fn(string text, int var_id, int begin, int str_id)>, edge case: the only command that generates 8 parameters instead of 7
 	{
 		// takes hex
