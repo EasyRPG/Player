@@ -32,6 +32,7 @@ public:
 	void SendMidiMessage(uint32_t message) override;
 	void SendSysExMessage(const uint8_t* data, size_t size) override;
 	std::string GetName() override;
+	bool NeedsSoftReset() override;
 	bool IsInitialized() const;
 
 private:

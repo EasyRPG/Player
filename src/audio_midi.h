@@ -180,6 +180,16 @@ public:
 		return true;
 	}
 
+	/*
+	 * Does the sequencer need "sound off" messages sent to every channel between
+	 * tracks? NOTE: enabling this can break smooth fade outs between tracks.
+	 *
+	 * @return true only if synth needs "sound off" messages between tracks.
+	 */
+	virtual bool NeedsSoftReset() {
+		return false;
+	}
+
 	/**
 	 * Attempts to initialize a Midi library for processing the Midi data.
 	 *

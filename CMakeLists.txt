@@ -551,8 +551,8 @@ endif()
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
@@ -574,8 +574,8 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
@@ -668,8 +668,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
 		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
@@ -681,8 +681,8 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
@@ -753,8 +753,8 @@ endif()
 
 if(APPLE)
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/macos/utils.mm
-		src/platform/macos/utils.h
+		src/platform/macos/macos_utils.mm
+		src/platform/macos/macos_utils.h
 		src/platform/macos/midiout_device_coreaudio.cpp
 		src/platform/macos/midiout_device_coreaudio.h)
 

@@ -41,7 +41,7 @@ static const uint8_t midi_set_reg_param_upper = 0x6;
 static const uint8_t midi_control_volume = 0x7;
 static const uint8_t midi_event_control_change = 0xB;
 static const uint8_t midi_set_reg_param_lower = 0x26;
-//static const uint8_t midi_control_all_sound_off = 0x78;
+static const uint8_t midi_control_all_sound_off = 0x78;
 static const uint8_t midi_control_reset_all_controller = 0x79;
 //static const uint8_t midi_control_all_note_off = 0x7B;
 static const uint8_t midi_set_reg_param_number_lower = 0x64;
@@ -57,11 +57,11 @@ static uint32_t midimsg_make(uint8_t event_type, uint8_t channel, uint8_t value1
 
 /*static uint32_t midimsg_all_note_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_note_off, 0);
-}
+}*/
 
 static uint32_t midimsg_all_sound_off(uint8_t channel) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_all_sound_off, 0);
-}*/
+}
 
 static uint32_t midimsg_volume(uint8_t channel, uint8_t volume) {
 	return midimsg_make(midi_event_control_change, channel, midi_control_volume, volume);
@@ -85,6 +85,28 @@ static inline uint8_t midimsg_get_value1(uint32_t msg) {
 
 static inline uint8_t midimsg_get_value2(uint32_t msg) {
 	return (msg & 0xFF0000) >> 16;
+}
+
+static bool midimsg_validate(uint32_t msg) {
+	// Do some very basic sanity checks on the messages as
+	// invalid messages can cause the underlying MIDI synth to crash.
+	uint8_t event_type = midimsg_get_event_type(msg);
+	uint8_t channel = midimsg_get_channel(msg);
+	uint8_t value1 = midimsg_get_value1(msg);
+	uint8_t value2 = midimsg_get_value2(msg);
+
+	if ((event_type >= 0 && event_type < 64) ||
+		(event_type >= 70 && event_type < 84) ||
+		(event_type == 88) ||
+		(event_type >= 91 && event_type < 96) ||
+		(event_type >= 98 && event_type < 102))
+	{
+		if (value1 >= 128) {
+			// These event types must have a value of 0-127
+			return false;
+		}
+	}
+	return true;
 }
 
 AudioDecoderMidi::AudioDecoderMidi(std::unique_ptr<MidiDecoder> mididec)
@@ -357,7 +379,9 @@ void AudioDecoderMidi::midi_message(int, uint_least32_t message) {
 		// Send the modified volume to midiout
 		message = midimsg_volume(channel, static_cast<uint8_t>(value2 * volume));
 	}
-	mididec->SendMidiMessage(message);
+	if (midimsg_validate(message)) {
+		mididec->SendMidiMessage(message);
+	}
 }
 
 void AudioDecoderMidi::sysex_message(int, const void* data, std::size_t size) {
@@ -383,6 +407,11 @@ void AudioDecoderMidi::reset() {
 	// GM system on (resets most parameters)
 	const unsigned char gm_reset[] = { 0xF0, 0x7E, 0x7F, 0x09, 0x01, 0xF7 };
 	mididec->SendSysExMessage(gm_reset, sizeof(gm_reset));
+
+	// SoundOff every channel: only necessary for synths like macOS which tend to get stuck
+	if (mididec->NeedsSoftReset()) {
+		SendMessageToAllChannels(midimsg_all_sound_off(0));
+	}
 
 	// Set the Pitch bend range to 256
 	for (int channel = 0; channel < 16; channel++) {

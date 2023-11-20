@@ -49,7 +49,7 @@
 #  include <SDL_system.h>
 #elif defined(__APPLE__) && TARGET_OS_OSX
 #  include <sys/syslimits.h>
-#  include "platform/macos/utils.h"
+#  include "platform/macos/macos_utils.h"
 #endif
 
 // Global variables.

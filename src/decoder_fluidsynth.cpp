@@ -347,4 +347,8 @@ fluid_synth_t *FluidSynthDecoder::GetSynthInstance() {
 	}
 }
 
+bool FluidSynthDecoder::NeedsSoftReset() {
+	return true;
+}
+
 #endif
