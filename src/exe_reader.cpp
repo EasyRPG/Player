@@ -68,7 +68,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 		} else if (secName == 0x50454547) { // GEEP
 			file_info.geep_size = sectVs;
 		} else if (secName == 0x30585055) { // UPX0
-			Output::Debug("EXE is UPX compressed. Engine detection could be incorrect.");
+			Output::Debug("EXEReader: EXE is UPX compressed. Engine detection could be incorrect.");
 		}
 
 		uint32_t sectRva = GetU32(sectionsOfs + 0x0C);
@@ -90,7 +90,7 @@ static std::vector<uint8_t> ExtractExFont(Filesystem_Stream::InputStream& corefi
 	corefile.seekg(position, std::ios_base::beg);
 	corefile.read(reinterpret_cast<char*>(exfont.data()) + header_size, len);
 	if (corefile.gcount() != len) {
-		Output::Debug("ExFont: Error reading resource (read {}, expected {})", corefile.gcount(), len);
+		Output::Debug("EXEReader: ExFont: Error reading resource (read {}, expected {})", corefile.gcount(), len);
 		return {};
 	}
 
@@ -103,7 +103,7 @@ static std::vector<uint8_t> ExtractExFont(Filesystem_Stream::InputStream& corefi
 	// And the header that's going to be prepended.
 	int header_len = header_size + header.size;
 	if (header.depth != 8) {
-		Output::Debug("ExFont: Unsupported depth {}", header.depth);
+		Output::Debug("EXEReader: ExFont: Unsupported depth {}", header.depth);
 		return {};
 	}
 	header_len += header.num_colors * 4;
@@ -196,21 +196,20 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 		uint32_t resourcesIDEbase = resource_ofs + 0x10;
 		if (ResNameCheck(exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase)), "XYZ")) {
 			uint32_t xyz_base = exe_reader_roffset(resource_ofs, GetU32(resourcesIDEbase + 4));
-			uint16_t xyz_logos = GetU16(xyz_base + 0x0C);
+			uint16_t xyz_logos = std::min<uint16_t>(GetU16(xyz_base + 0x0C), 9);
 			uint32_t xyz_logo_base = xyz_base + 0x10;
 
-			char current_logo = '1';
-			std::string res_name = "LOGOX";
 			bool only_custom_logos = (Player::player_config.show_startup_logos.Get() == StartupLogos::Custom);
-			while (xyz_logos > 0) {
-				res_name.back() = current_logo;
+			std::string res_name = "LOGOX";
 
+			for (int i = 0; i <= xyz_logos; ++i) {
 				uint32_t name = GetU32(xyz_logo_base);
 				// Actually a name?
 				if (name & 0x80000000) {
 					name = exe_reader_roffset(resource_ofs, name);
+					res_name.back() = '1' + i;
 
-					if (ResNameCheck(name, res_name.c_str())) {
+					if (ResNameCheck(name, res_name.c_str()) || (i == 0 && ResNameCheck(name, "LOGO"))) {
 						uint32_t dataent = GetU32(xyz_logo_base + 4);
 						if (dataent & 0x80000000) {
 							dataent = exe_reader_roffset(resource_ofs, dataent);
@@ -225,12 +224,12 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 						corefile.seekg(filebase, std::ios_base::beg);
 						corefile.read(reinterpret_cast<char*>(logo.data()), filesize);
 						if (logo.size() < 8 || strncmp(reinterpret_cast<char*>(logo.data()), "XYZ1", 4) != 0) {
-							Output::Debug("{}: Not a XYZ image", res_name);
+							Output::Debug("EXEReader: {}: Not a XYZ image", res_name);
 							return {};
 						}
 
 						if (corefile.gcount() != filesize) {
-							Output::Debug("{}: Error reading resource (read {}, expected {})", res_name, corefile.gcount(), filesize);
+							Output::Debug("EXEReader: {}: Error reading resource (read {}, expected {})", res_name, corefile.gcount(), filesize);
 							return {};
 						}
 
@@ -242,13 +241,10 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 						} else {
 							logos.push_back(logo);
 						}
-					} else {
-						return logos;
 					}
 				}
+
 				xyz_logo_base += 8;
-				current_logo++;
-				xyz_logos--;
 			}
 		}
 	}
@@ -263,7 +259,6 @@ const EXEReader::FileInfo& EXEReader::GetFileInfo() {
 
 	auto versionDBase = ResOffsetByType(16);
 	if (versionDBase == 0) {
-		Output::Debug("EXEReader: VERSIONINFO not found");
 		return file_info;
 	}
 
