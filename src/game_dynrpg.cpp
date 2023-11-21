@@ -139,7 +139,8 @@ static std::string ParseToken(std::string token, StringView function_name) {
 					return ToString(Main_Data::game_actors->GetActor(number)->GetName());
 				} else if (*it == 'T' && Player::IsPatchManiac()) {
 					// T (String Var) is last
-					return Main_Data::game_strings->Get(number);
+					std::string output(Main_Data::game_strings->Get(number));
+					return output;
 				} else {
 					// Variable
 					number = Main_Data::game_variables->Get(number);

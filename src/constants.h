@@ -1345,12 +1345,17 @@ public:
 	};
 
 	// Function to retrieve a value from mapCollection ignoring case
-	std::string get(const std::string& mapName, const std::string& key) {
+	std::string get(const std::string& mapName, const std::string& key, bool convertMode = 0 ) {
 		std::unordered_map<std::string, int>& selectedMap = MapCollection(mapName);
 
-		for (auto it = selectedMap.begin(); it != selectedMap.end(); ++it)
-			if ( Utils::StrICmp(it->first, key) == 0 ) return std::to_string(it->second);
+		if (convertMode == 0) // Name 2 ID
+			for (auto it = selectedMap.begin(); it != selectedMap.end(); ++it)
+				if ( Utils::StrICmp(it->first, key) == 0 ) return std::to_string(it->second);
 
-		return key; // Key not found
+		if (convertMode == 1) // ID 2 Name
+			for (auto it = selectedMap.begin(); it != selectedMap.end(); ++it)
+				if (Utils::StrICmp(std::to_string(it->second), key) == 0) return it->first;
+
+		return key; // Match not found
 	}
 };
