@@ -5760,15 +5760,8 @@ std::vector<double> interpolate(double start, double end, double duration, const
 }
 
 bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand const& com) {
-	// CommandInterpolateVariable("typeStart/typeEnd",[useVarTarget, target, useVarStart, start, useVarEnd, end, useVarDuration, duration])
+	// $InterpolateVariable("typeStart/typeEnd",[useVarTarget, target, useVarStart, start, useVarEnd, end, useVarDuration, duration])
 
-	auto* frame = GetFramePtr();
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
-
-	int i = frame->current_command + 1;
-
-	// Extract parameters: target, start, end, and duration for the animation
 	int32_t target = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int32_t start = ValueOrVariable(com.parameters[2], com.parameters[3]);
 	int32_t end = ValueOrVariable(com.parameters[4], com.parameters[5]);
@@ -5778,13 +5771,12 @@ bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand cons
 	lcf::rpg::EventCommand waitCom;
 	waitCom.code = int(Cmd::Wait);
 
-	lcf::rpg::EventCommand updateVarCom;
-	updateVarCom.code = int(Cmd::ControlVars);
-	std::vector<int32_t> updateVarParams = { 0, static_cast<int32_t>(target), 0, 0, 0, static_cast<int32_t>(end) };
-	updateVarCom.parameters = lcf::DBArray<int32_t>(updateVarParams.begin(), updateVarParams.end());
+	lcf::rpg::EventCommand animatedCom;
+	animatedCom.code = int(Cmd::ControlVars);
+	std::vector<int32_t> animatedVarParams = { 0, static_cast<int32_t>(target), 0, 0, 0, static_cast<int32_t>(end) };
+	animatedCom.parameters = lcf::DBArray<int32_t>(animatedVarParams.begin(), animatedVarParams.end());
 
-	lcf::rpg::EventCommand branchCom;
-	branchCom.code = int(Cmd::ShowChoiceOption);
+	std::vector<lcf::rpg::EventCommand> cmdList;
 
 	// Extract easing information
 	std::string easeStart = ToString(com.string);
@@ -5797,41 +5789,21 @@ bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand cons
 		easeStart = easeStart.substr(0, pos);
 	}
 
-	// Check if new commands don't exist in the timeline yet
-	if (!(i < frame->commands.size() && frame->commands.at(i).code == int(Cmd::ShowChoiceOption))) {
-		// Insert animation commands
-		Output::Debug("inserting animation commands");
-		std::vector<double> interpolatedValues = interpolate(start, end, duration, easeStart, easeEnd);
+	// Insert animation commands
+	std::vector<double> interpolatedValues = interpolate(start, end, duration, easeStart, easeEnd);
 
-		// Insert ShowChoiceOption command
-		// This helps me isolating all the "keyframes" commands inside a nested commands, it also helps to avoid creating a repeated list.
-		// It's problematic when "start", "end" and "duration" are variables.
-		frame->commands.insert(frame->commands.begin() + i, branchCom);
-		i++;
+	// Insert animatedCom and waitCom commands for each interpolated value
+	for (int value : interpolatedValues) {
+		animatedVarParams.back() = value;
+		animatedCom.parameters = lcf::DBArray<int32_t>(animatedVarParams.begin(), animatedVarParams.end());
+		animatedCom.indent = com.indent + 1;
 
-		// Insert updateVarCom and waitCom commands for each interpolated value
-		for (int value : interpolatedValues) {
-			updateVarParams.back() = value;
-			updateVarCom.parameters = lcf::DBArray<int32_t>(updateVarParams.begin(), updateVarParams.end());
-			updateVarCom.indent = com.indent + 1;
-
-			frame->commands.insert(frame->commands.begin() + i, updateVarCom);
-			i++;
-			frame->commands.insert(frame->commands.begin() + i, waitCom);
-			i++;
-		}
-
-		// Insert ShowChoiceEnd command
-		branchCom.code = int(Cmd::ShowChoiceEnd);
-		frame->commands.insert(frame->commands.begin() + i, branchCom);
-		i++;
-	}
-	else {
-		Output::Debug("Animated Commands Already Exists");
+		cmdList.push_back(animatedCom);
+		cmdList.push_back(waitCom);
 	}
 
 	// Update current_command index and return true to indicate success
-	frame->current_command = index + 2;
-	return false;
+	Push(cmdList, 0, false);
+	return true;
 }
 
