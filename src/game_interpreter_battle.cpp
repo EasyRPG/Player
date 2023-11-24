@@ -69,7 +69,7 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 	if (condition.flags.turn && !Game_Battle::CheckTurns(Game_Battle::GetTurn(), condition.turn_b, condition.turn_a))
 		return false;
 
-	if (condition.flags.turn_enemy) {
+	if (Player::IsRPG2k3Commands() && condition.flags.turn_enemy) {
 		const auto* enemy = Main_Data::game_enemyparty->GetEnemy(condition.turn_enemy_id);
 		if (!enemy) {
 			Output::Warning("AreConditionsMet: Invalid enemy ID {}", condition.turn_enemy_id);
@@ -82,7 +82,7 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 			return false;
 	}
 
-	if (condition.flags.turn_actor) {
+	if (Player::IsRPG2k3Commands() && condition.flags.turn_actor) {
 		const auto* actor = Main_Data::game_actors->GetActor(condition.turn_actor_id);
 		if (!actor) {
 			Output::Warning("AreConditionsMet: Invalid actor ID {}", condition.turn_actor_id);
@@ -95,7 +95,7 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 			return false;
 	}
 
-	if (condition.flags.fatigue) {
+	if (Player::IsRPG2k3Commands() && condition.flags.fatigue) {
 		int fatigue = Main_Data::game_party->GetFatigue();
 		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
 			return false;
@@ -125,7 +125,7 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 			return false;
 	}
 
-	if (condition.flags.command_actor) {
+	if (Player::IsRPG2k3Commands() && condition.flags.command_actor) {
 		if (!source)
 			return false;
 		const auto* actor = Main_Data::game_actors->GetActor(condition.command_actor_id);
@@ -553,11 +553,13 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 		}
 		case 4:
 			// Monster is the current target
-			result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
+			if (Player::IsRPG2k3Commands()) {
+				result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
+			}
 			break;
 		case 5: {
 			// Hero uses the ... command
-			if (current_actor_id == com.parameters[1]) {
+			if (Player::IsRPG2k3Commands() && current_actor_id == com.parameters[1]) {
 				auto *actor = Main_Data::game_actors->GetActor(current_actor_id);
 				if (actor) {
 					result = actor->GetLastBattleAction() == com.parameters[2];
