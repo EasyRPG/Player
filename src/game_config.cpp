@@ -377,7 +377,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
-		auto name = Input::kButtonNames.tag(button);
+		auto name = Input::kInputButtonNames.tag(button);
 		if (ini.HasValue("input", name)) {
 			auto values = ini.GetString("input", name, "");
 			mappings.RemoveAll(button);
@@ -466,7 +466,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	for (int i = 0; i < Input::BUTTON_COUNT; ++i) {
 		auto button = static_cast<Input::InputButton>(i);
 
-		auto name = Input::kButtonNames.tag(button);
+		auto name = Input::kInputButtonNames.tag(button);
 		os << name << "=";
 
 		std::stringstream ss;
@@ -478,7 +478,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 			first = false;
 
 			auto key = static_cast<Input::Keys::InputKey>(ki->second);
-			auto kname = Input::Keys::kNames.tag(key);
+			auto kname = Input::Keys::kInputKeyNames.tag(key);
 			os << kname;
 		}
 

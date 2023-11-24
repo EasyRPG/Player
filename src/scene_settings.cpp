@@ -529,7 +529,7 @@ bool Scene_Settings::RefreshInputEmergencyReset() {
 				}
 				Input::ResetAllMappings();
 			} else {
-				Output::Info("Button {} reset to default", Input::kButtonNames.tag(input_window->GetInputButton()));
+				Output::Info("Button {} reset to default", Input::kInputButtonNames.tag(input_window->GetInputButton()));
 				Output::Info("To reset all buttons hold 3 seconds longer");
 				if (input_window->GetActive()) {
 					input_window->SetIndex(0);

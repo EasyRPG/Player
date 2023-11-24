@@ -419,7 +419,7 @@ void Window_Settings::RefreshButtonList() {
 	for (auto b: buttons) {
 		auto button = static_cast<Input::InputButton>(b);
 
-		std::string name = Input::kButtonNames.tag(button);
+		std::string name = Input::kInputButtonNames.tag(button);
 
 		// Improve readability of the names
 		bool first_letter = true;
@@ -436,7 +436,7 @@ void Window_Settings::RefreshButtonList() {
 			}
 		}
 
-		std::string help = Input::kButtonHelp.tag(button);
+		std::string help = Input::kInputButtonHelp.tag(button);
 		std::string value;
 
 		// Append as many buttons as fit on the screen, then add ...
@@ -453,7 +453,7 @@ void Window_Settings::RefreshButtonList() {
 			if (custom_name != custom_names.end()) {
 				cur_value = custom_name->second;
 			} else {
-				cur_value = Input::Keys::kNames.tag(ki->second);
+				cur_value = Input::Keys::kInputKeyNames.tag(ki->second);
 			}
 
 			int cur_value_size = Text::GetSize(*Font::Default(), cur_value + ",").width;

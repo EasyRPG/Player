@@ -88,7 +88,7 @@ namespace Input {
 		BUTTON_COUNT
 	};
 
-	constexpr auto kButtonNames = lcf::makeEnumTags<InputButton>(
+	constexpr auto kInputButtonNames = lcf::makeEnumTags<InputButton>(
 		"UP",
 		"DOWN",
 		"LEFT",
@@ -133,7 +133,7 @@ namespace Input {
 		"TOGGLE_ZOOM",
 		"BUTTON_COUNT");
 
-	constexpr auto kButtonHelp = lcf::makeEnumTags<InputButton>(
+	constexpr auto kInputButtonHelp = lcf::makeEnumTags<InputButton>(
 		"Up Direction",
 		"Down Direction",
 		"Left Direction",
@@ -231,7 +231,7 @@ namespace Input {
 			NUM_DIRECTIONS = 10,
 		};
 
-		static constexpr auto kNames = lcf::makeEnumTags<InputDirection>(
+		static constexpr auto kInputDirectionNames = lcf::makeEnumTags<InputDirection>(
 			"NONE",
 			"DOWNLEFT",
 			"DOWN",
@@ -251,7 +251,7 @@ namespace Input {
 	using ButtonMapping = ButtonMappingArray::pair_type;
 
 	inline std::ostream& operator<<(std::ostream& os, ButtonMapping bm) {
-		os << "{ " << kButtonNames.tag(bm.first) << ", " << Keys::kNames.tag(bm.second) << " }";
+		os << "{ " << kInputButtonNames.tag(bm.first) << ", " << Keys::kInputKeyNames.tag(bm.second) << " }";
 		return os;
 	}
 
@@ -261,7 +261,7 @@ namespace Input {
 	using DirectionMapping = DirectionMappingArray::pair_type;
 
 	inline std::ostream& operator<<(std::ostream& os, DirectionMapping dm) {
-		os << "{ " << Direction::kNames.tag(dm.first) << ", " << kButtonNames.tag(dm.second) << " }";
+		os << "{ " << Direction::kInputDirectionNames.tag(dm.first) << ", " << kInputButtonNames.tag(dm.second) << " }";
 		return os;
 	}
 

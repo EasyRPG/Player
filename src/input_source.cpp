@@ -193,7 +193,7 @@ void Input::Source::Record() {
 					continue;
 				}
 
-				*record_log << ',' << Input::kButtonNames[i];
+				*record_log << ',' << Input::kInputButtonNames[i];
 			}
 
 			*record_log << '\n';
