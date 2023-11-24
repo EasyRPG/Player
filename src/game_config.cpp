@@ -19,6 +19,7 @@
 #include "cmdline_parser.h"
 #include "filefinder.h"
 #include "input_buttons.h"
+#include "keys.h"
 #include "output.h"
 #include "input.h"
 #include <lcf/inireader.h>
@@ -390,9 +391,8 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 			if (Input::IsProtectedButton(button)) {
 				// Check for protected (important) buttons if they have more than zero mappings
 				for (const auto& key: keys) {
-					const auto& kNames = Input::Keys::kNames;
-					auto it = std::find(kNames.begin(), kNames.end(), key);
-					if (it != Input::Keys::kNames.end()) {
+					Input::Keys::InputKey k;
+					if (Input::Keys::kInputKeyNames.etag(key.c_str(), k)) {
 						has_mapping = true;
 						break;
 					}
@@ -406,10 +406,9 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 
 			// Load mappings from ini
 			for (const auto& key: keys) {
-				const auto& kNames = Input::Keys::kNames;
-				auto it = std::find(kNames.begin(), kNames.end(), key);
-				if (it != Input::Keys::kNames.end()) {
-					mappings.Add({button, static_cast<Input::Keys::InputKey>(std::distance(kNames.begin(), it))});
+				Input::Keys::InputKey k;
+				if (Input::Keys::kInputKeyNames.etag(key.c_str(), k)) {
+					mappings.Add({button, k});
 				}
 			}
 		}

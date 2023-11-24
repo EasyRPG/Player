@@ -127,9 +127,9 @@ void Input::LogSource::Update() {
 		}
 		if (Main_Data::game_system->GetFrameCounter() == last_read_frame) {
 			for (const auto& key : keys) {
-				auto it = std::find(Input::kButtonNames.begin(), Input::kButtonNames.end(), key);
-				if (it != Input::kButtonNames.end()) {
-					pressed_buttons[std::distance(Input::kButtonNames.begin(), it)] = true;
+				Input::InputButton btn;
+				if (Input::kInputButtonNames.etag(key.c_str(), btn)) {
+					pressed_buttons[(int)btn] = true;
 				}
 			}
 			last_read_frame = -1;
