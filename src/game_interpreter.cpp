@@ -5504,129 +5504,65 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 
 	return value;
 }
-std::vector<double> parseBezier(const std::string& bezierParams) {
-	std::vector<double> params;
-	std::string temp;
-	size_t startPos = bezierParams.find("(") + 1;
-	size_t endPos = bezierParams.find(")");
-	std::string valuesString = bezierParams.substr(startPos, endPos - startPos);
 
-	size_t commaPos = valuesString.find(",");
-	while (commaPos != std::string::npos) {
-		temp = valuesString.substr(0, commaPos);
-		params.push_back(std::stod(temp));
-		valuesString = valuesString.substr(commaPos + 1);
-		commaPos = valuesString.find(",");
-	}
-	// Push the last value into the vector
-	params.push_back(std::stod(valuesString));
-
-	return params;
-}
-
-//FIXME: cubicBezier is completely Broken
-// references to how it should work:
+// references for cubic bezier:
 // https://matthewlein.com/tools/ceaser
 // https://cubic-bezier.com/
+double cubicBezier(float t, const double& p0,const double& p1, const double& p2, const double& p3) {
 
-double cubicBezier(double t, double p0, double p1, double p2, double p3) {
-	double u = 1 - t;
-	double tt = t * t;
-	double uu = u * u;
-	double uuu = uu * u;
-	double ttt = tt * t;
+	float u = 1 - t;
+	float tt = t * t;
+	float uu = u * u;
+	float uuu = uu * u;
+	float ttt = tt * t;
 
-	double p = uuu * p0; // (1-t)^3
-	double q = 3 * uu * t * p1; // 3t(1-t)^2
-	double r = 3 * u * tt * p2; // 3(1-t)t^2
-	double s = ttt * p3; // t^3
+	//Point2d p = {0,0};
+	//p.x = uuu * 0 + 3 * uu * t * p0 + 3 * u * tt * p2 + ttt * 1;
+	return uuu * 0 + 3 * uu * t * p1 + 3 * u * tt * p3 + ttt * 1;
 
-	return p + q + r + s;
+	//return p.y;
 }
 
-double getEasedT(const std::string& easingType, double t, double b, double c, double d) {
-	if (easingType == "linear") {
-		return c * t / d + b;
-	}
-	else if (easingType == "quadIn") {
-		t /= d;
-		return c * t * t + b;
-	}
-	else if (easingType == "quadOut") {
-		t /= d;
-		return -c * t * (t - 2) + b;
-	}
-	else if (easingType == "quadInOut") {
-		t /= d / 2;
-		if (t < 1) {
-			return c / 2 * t * t + b;
-		}
-		else {
-			t -= 1;
-			return -c / 2 * (t * (t - 2) - 1) + b;
-		}
-	}
-	else if (easingType == "cubicIn") {
-		t /= d;
-		return c * t * t * t + b;
-	}
-	else if (easingType == "cubicOut") {
-		t = (t / d) - 1;
-		return c * (t * t * t + 1) + b;
-	}
-	else if (easingType == "cubicInOut") {
-		t /= d / 2;
-		if (t < 1) {
-			return c / 2 * t * t * t + b;
-		}
-		else {
-			t -= 2;
-			return c / 2 * (t * t * t + 2) + b;
-		}
-	}
-	else if (easingType == "sinIn") {
-		return -c * cos(t / d * (M_PI / 2)) + c + b;
-	}
-	else if (easingType == "sinOut") {
-		return c * sin(t / d * (M_PI / 2)) + b;
-	}
-	else if (easingType == "sinInOut") {
-		return -c / 2 * (cos(M_PI * t / d) - 1) + b;
-	}
-	else if (easingType == "expoIn") {
-		return c * pow(2, 10 * (t / d - 1)) + b;
-	}
-	else if (easingType == "expoOut") {
-		return c * (-pow(2, -10 * t / d) + 1) + b;
-	}
-	else if (easingType == "expoInOut") {
-		t /= d / 2;
-		if (t < 1) {
-			return c / 2 * pow(2, 10 * (t - 1)) + b;
-		}
-		else {
-			t -= 1;
-			return c / 2 * (-pow(2, -10 * t) + 2) + b;
-		}
-	}
-	else if (easingType == "circIn") {
-		t /= d;
-		return -c * (sqrt(1 - t * t) - 1) + b;
-	}
-	else if (easingType == "circOut") {
-		t = (t / d) - 1;
-		return c * sqrt(1 - t * t) + b;
-	}
-	else if (easingType == "circInOut") {
-		t /= d / 2;
-		if (t < 1) {
-			return -c / 2 * (sqrt(1 - t * t) - 1) + b;
-		}
-		else {
-			t -= 2;
-			return c / 2 * (sqrt(1 - t * t) + 1) + b;
-		}
-	}
+double getEasedTime(const std::string& easingType, double t, double b, double c, double d) {
+	if (easingType == "linear")  return cubicBezier(t, 0.250, 0.250, 0.750, 0.750);
+
+	else if (easingType == "ease")  return cubicBezier(t, 0.250, 0.100, 0.250, 1.000);
+	else if (easingType == "easeIn")  return cubicBezier(t, 0.420, 0.000, 1.000, 1.000);
+	else if (easingType == "easeOut")  return cubicBezier(t, 0.000, 0.000, 0.580, 1.000);
+	else if (easingType == "easeInOut")  return cubicBezier(t, 0.420, 0.000, 0.580, 1.000);
+
+	else if (easingType == "quadIn")  return cubicBezier(t, 0.550, 0.085, 0.680, 0.530);
+	else if (easingType == "quadOut")  return cubicBezier(t, 0.250, 0.460, 0.450, 0.940);
+	else if (easingType == "quadInOut")  return cubicBezier(t, 0.455, 0.030, 0.515, 0.955);
+
+	else if (easingType == "cubicIn")  return cubicBezier(t, 0.550, 0.055, 0.675, 0.190);
+	else if (easingType == "cubicOut")  return cubicBezier(t, 0.215, 0.610, 0.355, 1.000);
+	else if (easingType == "cubicInOut")  return cubicBezier(t, 0.645, 0.045, 0.355, 1.000);
+
+	else if (easingType == "quartIn")  return cubicBezier(t, 0.895, 0.030, 0.685, 0.220);
+	else if (easingType == "quartOut")  return cubicBezier(t, 0.165, 0.840, 0.440, 1.000);
+	else if (easingType == "quartInOut")  return cubicBezier(t, 0.770, 0.000, 0.175, 1.000);
+
+	else if (easingType == "quintIn")  return cubicBezier(t, 0.755, 0.050, 0.855, 0.060);
+	else if (easingType == "quintOut")  return cubicBezier(t, 0.230, 1.000, 0.320, 1.000);
+	else if (easingType == "quintInOut")  return cubicBezier(t, 0.860, 0.000, 0.070, 1.000);
+
+	else if (easingType == "sineIn")  return cubicBezier(t, 0.470, 0.000, 0.745, 0.715);
+	else if (easingType == "sineOut")  return cubicBezier(t, 0.390, 0.575, 0.565, 1.000);
+	else if (easingType == "sineInOut")  return cubicBezier(t, 0.445, 0.050, 0.550, 0.950);
+
+	else if (easingType == "ExpoIn")  return cubicBezier(t, 0.950, 0.050, 0.795, 0.035);
+	else if (easingType == "expoOut")  return cubicBezier(t, 0.190, 1.000, 0.220, 1.000);
+	else if (easingType == "expoInOut")  return cubicBezier(t, 1.000, 0.000, 0.000, 1.000);
+
+	else if (easingType == "circIn")  return cubicBezier(t, 0.600, 0.040, 0.980, 0.335);
+	else if (easingType == "circOut")  return cubicBezier(t, 0.075, 0.820, 0.165, 1.000);
+	else if (easingType == "circInOut")  return cubicBezier(t, 0.785, 0.135, 0.150, 0.860);
+
+	else if (easingType == "backIn")  return cubicBezier(t, 0.600, -0.280, 0.735, 0.045);
+	else if (easingType == "backOut")  return cubicBezier(t, 0.175, 0.885, 0.320, 1.275);
+	else if (easingType == "backInOut")  return cubicBezier(t, 0.680, -0.550, 0.265, 1.550);
+
 	else if (easingType == "elasticIn") {
 		if (t == 0) {
 			return b;
@@ -5676,8 +5612,9 @@ double getEasedT(const std::string& easingType, double t, double b, double c, do
 		double postFix = a * pow(2, -10 * (t -= 1)); // this is a fix, again, with post-increment operators
 		return postFix * sin((t * d - s) * (2 * M_PI) / p) * 0.5 + c + b;
 	}
+
 	else if (easingType == "bounceIn") {
-		return c - getEasedT("bounceOut", d - t, 0, c, d) + b;
+		return c - getEasedTime("bounceOut", d - t, 0, c, d) + b;
 	}
 	else if (easingType == "bounceOut") {
 		if ((t /= d) < (1 / 2.75)) {
@@ -5698,65 +5635,30 @@ double getEasedT(const std::string& easingType, double t, double b, double c, do
 	}
 	else if (easingType == "bounceInOut") {
 		if (t < d / 2) {
-			return getEasedT("bounceIn", t * 2, 0, c, d) * 0.5 + b;
+			return getEasedTime("bounceIn", t * 2, 0, c, d) * 0.5 + b;
 		}
 		else {
-			return getEasedT("bounceOut", t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+			return getEasedTime("bounceOut", t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
 		}
 	}
+
 	if (easingType.substr(0, 6) == "bezier") {
-		std::vector < double > bezierParams = parseBezier(easingType.substr(7));
-		if (bezierParams.size() == 4) {
-			return cubicBezier(t / d, bezierParams[0], bezierParams[1], bezierParams[2], bezierParams[3]);
-		}
+		std::vector<double> bezierParams;
+
+		size_t startPos = easingType.find("(") + 1;
+		size_t endPos = easingType.find(")");
+		std::string valuesString = easingType.substr(startPos, endPos - startPos);
+
+		std::istringstream iss(valuesString);
+		double value;
+
+		while (iss >> value) bezierParams.push_back(value), iss.ignore();
+
+		if (bezierParams.size() == 4)
+			return cubicBezier(t, bezierParams[0], bezierParams[1], bezierParams[2], bezierParams[3]);
 	}
 
 	return c * t / d + b; // Default to linear easing if the easing type is not recognized
-}
-
-std::vector<double> interpolate(double start, double end, double duration, const std::string& easingTypeAtStart, const std::string& easingTypeAtEnd) {
-	std::vector<double> interpolatedValues;
-	interpolatedValues.push_back(start);
-
-	// Calculate the number of steps based on the duration
-	int numSteps = static_cast<int>(duration); // Convert duration to an integer
-	double stepSize = 1.0 / numSteps;
-
-	// Calculate the halfway point
-	double halfway = start + (end - start) * 0.5;
-
-	if (easingTypeAtEnd == "null") {
-		// Use easingTypeAtStart for the entire animation
-		for (int step = 1; step <= numSteps; ++step) {
-			double t = step * stepSize;
-			double easedT = getEasedT(easingTypeAtStart, t, 0, 1, 1);  // Call getEasedT with appropriate parameters
-			double interpolatedValue = start + easedT * (end - start);
-			interpolatedValues.push_back(interpolatedValue);
-		}
-	}
-	else {
-		// Generate the first half of the interpolation
-		for (int step = 1; step <= numSteps / 2; ++step) {
-			double t = step * stepSize;
-			double normalizedT = t / 0.5;  // Normalize the time for the first half
-			double easedT = getEasedT(easingTypeAtStart, normalizedT, 0, 1, 1);  // Call getEasedT with appropriate parameters
-			double interpolatedValue = start + easedT * (halfway - start);
-			interpolatedValues.push_back(interpolatedValue);
-		}
-
-		// Generate the second half of the interpolation
-		for (int step = numSteps / 2 + 1; step <= numSteps; ++step) {
-			double t = step * stepSize;
-			double normalizedT = (t - 0.5) / 0.5;  // Normalize the time for the second half
-			double easedT = getEasedT(easingTypeAtEnd, normalizedT, 0, 1, 1);  // Call getEasedT with appropriate parameters
-			double interpolatedValue = halfway + easedT * (end - halfway);
-			interpolatedValues.push_back(interpolatedValue);
-		}
-	}
-
-	interpolatedValues.push_back(end);
-
-	return interpolatedValues;
 }
 
 bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand const& com) {
@@ -5767,6 +5669,17 @@ bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand cons
 	int32_t end = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int32_t duration = ValueOrVariable(com.parameters[6], com.parameters[7]);
 
+	// Extract easing information
+	std::string easingTypeAtStart = ToString(com.string);
+	std::string easingTypeAtEnd = "null";
+
+	std::size_t pos = easingTypeAtStart.find('/');
+
+	if (pos != std::string::npos) {
+		easingTypeAtEnd = easingTypeAtStart.substr(pos + 1);
+		easingTypeAtStart = easingTypeAtStart.substr(0, pos);
+	}
+
 	// Prepare animation-related commands
 	lcf::rpg::EventCommand waitCom;
 	waitCom.code = int(Cmd::Wait);
@@ -5774,35 +5687,49 @@ bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand cons
 	lcf::rpg::EventCommand animatedCom;
 	animatedCom.code = int(Cmd::ControlVars);
 	std::vector<int32_t> animatedVarParams = { 0, static_cast<int32_t>(target), 0, 0, 0, static_cast<int32_t>(end) };
-	animatedCom.parameters = lcf::DBArray<int32_t>(animatedVarParams.begin(), animatedVarParams.end());
 
 	std::vector<lcf::rpg::EventCommand> cmdList;
 
-	// Extract easing information
-	std::string easeStart = ToString(com.string);
-	std::string easeEnd = "null";
+	int numSteps = static_cast<int>(duration);
+	double stepSize = 1.0 / numSteps;
 
-	std::size_t pos = easeStart.find('/');
+	for (int step = 1; step <= numSteps; ++step) {
+		double normalizedTime;
+		double currentTime = step * stepSize;
+		double halfway;
 
-	if (pos != std::string::npos) {
-		easeEnd = easeStart.substr(pos + 1);
-		easeStart = easeStart.substr(0, pos);
-	}
+		std::string easingType;
 
-	// Insert animation commands
-	std::vector<double> interpolatedValues = interpolate(start, end, duration, easeStart, easeEnd);
+		if (easingTypeAtEnd == "null") { // use a single interpolation.
+			normalizedTime = currentTime;
+			easingType = easingTypeAtStart;
+			halfway = (step <= numSteps / 2) ? end : start;
+		}
+		else {
+			if (step <= numSteps / 2) { // use 2 interpolations: start and end.
+				normalizedTime = currentTime / 0.5;
+				easingType = easingTypeAtStart;
+			}
+			else {
+				normalizedTime = (currentTime - 0.5) / 0.5;
+				easingType = easingTypeAtEnd;
+			}
+			halfway = start + 0.5 * (end - start);
+		}
 
-	// Insert animatedCom and waitCom commands for each interpolated value
-	for (int value : interpolatedValues) {
-		animatedVarParams.back() = value;
+		double easedTime = getEasedTime(easingType, normalizedTime, 0, 1, 1);
+
+		double startValue = (step <= numSteps / 2) ? start : halfway;
+		double endValue = (step <= numSteps / 2) ? halfway : end;
+		double interpolatedValue = startValue + easedTime * (endValue - startValue);
+
+		animatedVarParams.back() = interpolatedValue;
 		animatedCom.parameters = lcf::DBArray<int32_t>(animatedVarParams.begin(), animatedVarParams.end());
-		animatedCom.indent = com.indent + 1;
 
 		cmdList.push_back(animatedCom);
 		cmdList.push_back(waitCom);
 	}
 
-	// Update current_command index and return true to indicate success
 	Push(cmdList, 0, false);
 	return true;
 }
