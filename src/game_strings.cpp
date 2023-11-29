@@ -25,6 +25,7 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "output.h"
+#include "utils.h"
 
 void Game_Strings::WarnGet(int id) const {
 	Output::Debug("Invalid read strvar[{}]!", id);
@@ -104,21 +105,43 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 		return -1;
 	}
 
-	size_t index;
-	std::string token;
-
-	// always returns at least 1
-	int splits = 1;
+	int splits = 0;
 	std::string str = ToString(Get(params.string_id));
 
 	params.string_id = string_out_id;
 
-	for (index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
-		token = str.substr(0, index);
-		Set(params, token);
-		params.string_id++;
-		splits++;
-		str.erase(0, index + delimiter.length());
+	if (delimiter.empty()) {
+		const char* iter = str.data();
+		const auto end = str.data() + str.size();
+
+		while (iter != end) {
+			const char* start_copy = iter;
+			auto ret = Utils::UTF8Next(iter, end);
+			iter = ret.next;
+
+			if (iter == end) {
+				break;
+			}
+
+			Set(params, std::string(start_copy, iter - start_copy));
+
+			params.string_id++;
+			splits++;
+		}
+	} else {
+		if (str.find(delimiter) == std::string::npos) {
+			// token not found -> 1 split
+			splits = 1;
+		} else {
+			std::string token;
+			for (auto index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
+				token = str.substr(0, index);
+				Set(params, token);
+				params.string_id++;
+				splits++;
+				str.erase(0, index + delimiter.length());
+			}
+		}
 	}
 
 	// set the remaining string
