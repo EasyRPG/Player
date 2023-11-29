@@ -769,9 +769,6 @@ void Player::CreateGameObjects() {
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
 		Cache::exfont_custom = exe_reader->GetExFont();
-		if (!Cache::exfont_custom.empty()) {
-			Output::Debug("ExFont loaded from RPG_RT");
-		}
 
 		if (engine == EngineNone) {
 			auto version_info = exe_reader->GetFileInfo();

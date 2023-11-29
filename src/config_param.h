@@ -356,7 +356,7 @@ public:
 	EnumConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, E value, std::array<StringView, S> values, std::array<StringView, S> tags, std::array<StringView, S> value_descriptions) :
 		ConfigParamBase<E>(name, description, config_section, config_key, value), _values{ values }, _tags{ tags}, _value_descriptions{ value_descriptions } {
 		for (size_t i = 0; i < S; ++i) {
-			_valid[static_cast<E>(S)] = true;
+			_valid[static_cast<E>(i)] = true;
 		}
 	}
 
@@ -425,7 +425,7 @@ public:
 	}
 
 private:
-	lcf::FlagSet<E> _valid = ~lcf::FlagSet<E>();
+	lcf::FlagSet<E> _valid;
 	std::array<StringView, S> _values;
 	std::array<StringView, S> _tags;
 	std::array<StringView, S> _value_descriptions;

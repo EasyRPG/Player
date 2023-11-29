@@ -425,6 +425,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.settings_autosave.FromIni(ini);
 	player.settings_in_title.FromIni(ini);
 	player.settings_in_menu.FromIni(ini);
+	player.show_startup_logos.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -500,6 +501,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.settings_autosave.ToIni(os);
 	player.settings_in_title.ToIni(os);
 	player.settings_in_menu.ToIni(os);
+	player.show_startup_logos.ToIni(os);
 
 	os << "\n";
 }

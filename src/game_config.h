@@ -51,12 +51,23 @@ enum class GameResolution {
 	Ultrawide
 };
 
+enum class StartupLogos {
+	None,
+	Custom,
+	All
+};
+
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "", "", "", "", "" };
 	StringConfigParam enemyai_algo{ "", "", "", "", "" };
 	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit", "Player", "SettingsAutosave", false };
 	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen", "Player", "SettingsInTitle", false };
 	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen", "Player", "SettingsInMenu", false };
+	EnumConfigParam<StartupLogos, 3> show_startup_logos{
+		"Startup Logos", "Logos that are displayed on startup", "Player", "StartupLogos", StartupLogos::Custom,
+		Utils::MakeSvArray("None", "Custom", "All"),
+		Utils::MakeSvArray("none", "custom", "all"),
+		Utils::MakeSvArray("Do not show any additional logos", "Show custom logos bundled with the game", "Show all logos, including the original from RPG Maker")};
 
 	void Hide();
 };
