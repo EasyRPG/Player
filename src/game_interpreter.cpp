@@ -2173,6 +2173,7 @@ bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) 
 		return true;
 	}
 
+	actor->SetName(ToString(CommandStringOrVariableBitfield(com, 1, 1, 2)));
 	return true;
 }
 
