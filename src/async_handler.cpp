@@ -217,6 +217,15 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 }
 
 void AsyncHandler::ClearRequests() {
+	auto it = async_requests.begin();
+	while (it != async_requests.end()) {
+		auto& req = *it;
+		if (it->second.IsReady()) {
+			it = async_requests.erase(it);
+		} else {
+			++it;
+		}
+	}
 	async_requests.clear();
 }
 
