@@ -77,6 +77,13 @@ void Scene_Settings::CreateMainWindow() {
 	main_window->SetHeight(176);
 	main_window->SetY((Player::screen_height - main_window->GetHeight()) / 2);
 	main_window->SetX((Player::screen_width - main_window->GetWidth()) / 2);
+
+	if (Player::no_audio_flag) {
+		main_window->SetItemEnabled(1, !Player::no_audio_flag);
+	}
+#ifndef SUPPORT_AUDIO
+	main_window->DisableItem(1);
+#endif
 }
 
 void Scene_Settings::CreateOptionsWindow() {
@@ -287,6 +294,13 @@ void Scene_Settings::UpdateMain() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		auto idx = main_window->GetIndex();
+
+		if (main_window->IsItemEnabled(idx)) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+		} else {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+			return;
+		}
 
 		if (modes[idx] == Window_Settings::eSave) {
 			SaveConfig();
@@ -560,7 +574,7 @@ bool Scene_Settings::SaveConfig(bool silent) {
 
 	Game_Config cfg;
 	cfg.video = DisplayUi->GetConfig();
-	cfg.audio = DisplayUi->GetAudio().GetConfig();
+	cfg.audio = Audio().GetConfig();
 	cfg.input = Input::GetInputSource()->GetConfig();
 	cfg.player = Player::player_config;
 

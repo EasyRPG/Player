@@ -175,8 +175,6 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 		audio_ = std::make_unique<SdlAudio>(cfg.audio);
 		return;
 	}
-#else
-	audio_ = std::make_unique<EmptyAudio>(cfg.audio);
 #endif
 }
 

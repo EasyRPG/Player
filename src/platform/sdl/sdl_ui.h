@@ -127,7 +127,9 @@ private:
 	/** SDL_Surface handle to main_surface */
 	SDL_Surface* main_surface_sdl;
 
+#ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
+#endif
 
 	SdlAxis sdl_axis;
 };

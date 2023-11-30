@@ -172,8 +172,8 @@ namespace Input {
 		"Middle mouse key",
 		"Scroll up key",
 		"Scroll down key",
-		"PLACEHOLDER",
-		"PLACEHOLDER",
+		"Run the game at x{} speed",
+		"Run the game at x{} speed",
 		"Toggle Fullscreen mode",
 		"Toggle Window Zoom level",
 		"Total Button Count");

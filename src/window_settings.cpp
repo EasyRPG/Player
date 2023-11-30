@@ -261,10 +261,10 @@ void Window_Settings::RefreshVideo() {
 }
 
 void Window_Settings::RefreshAudio() {
-	auto cfg = DisplayUi->GetAudio().GetConfig();
+	auto cfg = Audio().GetConfig();
 
-	AddOption(cfg.music_volume, [this](){ DisplayUi->GetAudio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
-	AddOption(cfg.sound_volume, [this](){ DisplayUi->GetAudio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
+	AddOption(cfg.music_volume, [this](){ Audio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
+	AddOption(cfg.sound_volume, [this](){ Audio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
 	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
 			[](){},
 			"Which MIDI backend to use");
@@ -276,7 +276,7 @@ void Window_Settings::RefreshAudio() {
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
-	// FIXME: Binding &cfg is not needed and generates a warning but requires it
+	// FIXME: Binding &cfg is not needed and generates a warning but MSVC requires it
 #ifdef _MSC_VER
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
@@ -393,15 +393,6 @@ void Window_Settings::RefreshButtonCategory() {
 		[this]() { Push(eInputListButtonsDeveloper, 2); });
 }
 
-const char * GetFastForwardDescription(int index){
-	Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
-	RangeConfigParam<int> config_arr[] = {cfg.speed_modifier_a, cfg.speed_modifier_b};
-	static char fast_forward_strs[2][64];
-
-	snprintf(fast_forward_strs[index], sizeof(fast_forward_strs[index]), "Run the game at x%i speed", config_arr[index].Get());
-	return fast_forward_strs[index];
-}
-
 void Window_Settings::RefreshButtonList() {
 	auto& mappings = Input::GetInputSource()->GetButtonMappings();
 	auto custom_names = Input::GetInputKeyNames();
@@ -445,8 +436,8 @@ void Window_Settings::RefreshButtonList() {
 			}
 		}
 
-		auto help = Input::kButtonHelp.tag(button);
-		std::string value = "";
+		std::string help = Input::kButtonHelp.tag(button);
+		std::string value;
 
 		// Append as many buttons as fit on the screen, then add ...
 		int contents_w = GetContents()->width();
@@ -479,13 +470,17 @@ void Window_Settings::RefreshButtonList() {
 			value_size += cur_value_size;
 		}
 
-		switch(button){
-			case Input::FAST_FORWARD_A:
-				help = GetFastForwardDescription(0);
+		switch (button) {
+			case Input::FAST_FORWARD_A: {
+				Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
+				help = fmt::format(help, cfg.speed_modifier_a.Get());
 				break;
-			case Input::FAST_FORWARD_B:
-				help = GetFastForwardDescription(1);
+			}
+			case Input::FAST_FORWARD_B: {
+				Game_ConfigInput& cfg = Input::GetInputSource()->GetConfig();
+				help = fmt::format(help, cfg.speed_modifier_b.Get());
 				break;
+			}
 			default:
 				break;
 		}
