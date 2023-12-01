@@ -25,7 +25,7 @@ static std::string get_error_str(MMRESULT res) {
 	return std::string(errMsg);
 }
 
-Win32MidiOutDevice::Win32MidiOutDevice() {
+Win32MidiOutDevice::Win32MidiOutDevice(std::string& status_message) {
 	// TODO: Windows MIDI Mapper was removed in Windows 8.
 	// This means it's impossible to change the default ("0") MIDI device
 	// without third party software. We should allow specifying the MIDI device
@@ -34,7 +34,7 @@ Win32MidiOutDevice::Win32MidiOutDevice() {
 
 	MMRESULT err = midiOutOpen(&midi_out, device_id, 0, 0, CALLBACK_NULL);
 	if (err != MMSYSERR_NOERROR) {
-		Output::Debug("Win32 midiOutOpen {} failed: ({}) {}", 0, err, get_error_str(err));
+		status_message = fmt::format("Win32 midiOutOpen {} failed: ({}) {}", 0, err, get_error_str(err));
 		midi_out = nullptr;
 		return;
 	}

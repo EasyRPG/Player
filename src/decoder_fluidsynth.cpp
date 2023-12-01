@@ -119,10 +119,10 @@ namespace {
 	int instances = 0;
 }
 
-static fluid_synth_t* create_synth(std::string& error_message) {
+static fluid_synth_t* create_synth(std::string& status_message) {
 	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
 	if (!syn) {
-		error_message = "new_fluid_synth failed";
+		status_message = "new_fluid_synth failed";
 		return nullptr;
 	}
 
@@ -168,13 +168,13 @@ static fluid_synth_t* create_synth(std::string& error_message) {
 	for (const auto& sf_name: sf_paths) {
 		if (fluid_synth_sfload(syn, sf_name.c_str(), 1) != FLUID_FAILED) {
 			sf_load_success = true;
-			Output::Debug("Fluidsynth: Using soundfont {}", sf_name);
+			status_message = fmt::format("Using soundfont {}", sf_name);
 			break;
 		}
 	}
 
 	if (!sf_load_success) {
-		error_message = "Fluidsynth: Could not load soundfont.";
+		status_message = "Could not load soundfont.";
 		return nullptr;
 	}
 
@@ -210,7 +210,7 @@ FluidSynthDecoder::~FluidSynthDecoder() {
 	}
 }
 
-bool FluidSynthDecoder::Initialize(std::string& error_message) {
+bool FluidSynthDecoder::Initialize(std::string& status_message) {
 	// only initialize once until a new game starts
 	if (once)
 		return init;
@@ -247,7 +247,7 @@ bool FluidSynthDecoder::Initialize(std::string& error_message) {
 			vio_open, vio_read, vio_seek, vio_tell, vio_close);
 #endif
 
-	global_synth.reset(create_synth(error_message));
+	global_synth.reset(create_synth(status_message));
 	if (!global_synth) {
 		return false;
 	}

@@ -26,7 +26,7 @@
  */
 class CoreAudioMidiOutDevice : public MidiDecoder {
 public:
-	CoreAudioMidiOutDevice();
+	CoreAudioMidiOutDevice(std::string& status_message);
 	~CoreAudioMidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;

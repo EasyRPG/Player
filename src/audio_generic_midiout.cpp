@@ -23,6 +23,7 @@
 #include <chrono>
 #include "filesystem_stream.h"
 #include "game_clock.h"
+#include "output.h"
 
 #ifdef USE_LIBRETRO
 #include "platform/libretro/midiout_device.h"
@@ -43,18 +44,21 @@ static struct {
 	bool alsa = true;
 	bool win32 = true;
 	bool coreaudio = true;
+	std::string status;
 } works;
 
 GenericAudioMidiOut::GenericAudioMidiOut() {
 	stop_thread.store(false);
 
 #ifdef USE_LIBRETRO
+	std::string libretro_status;
 	if (works.libretro) {
-		auto dec = std::make_unique<LibretroMidiOutDevice>();
+		auto dec = std::make_unique<LibretroMidiOutDevice>(libretro_status);
 		if (dec->IsInitialized()) {
 			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 		} else {
 			works.libretro = false;
+			Output::Debug(libretro_status);
 		}
 	}
 
@@ -65,31 +69,38 @@ GenericAudioMidiOut::GenericAudioMidiOut() {
 
 #ifdef HAVE_ALSA
 	if (works.alsa) {
-		auto dec = std::make_unique<AlsaMidiOutDevice>();
+		auto dec = std::make_unique<AlsaMidiOutDevice>(works.status);
 		if (dec->IsInitialized()) {
 			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 		} else {
 			works.alsa = false;
+			Output::Debug(works.status);
 		}
 	}
 #elif _WIN32
 	if (works.win32) {
-		auto dec = std::make_unique<Win32MidiOutDevice>();
+		auto dec = std::make_unique<Win32MidiOutDevice>(works.status);
 		if (dec->IsInitialized()) {
 			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 		} else {
 			works.win32 = false;
+			Output::Debug(works.status);
 		}
 	}
 #elif __APPLE__
 	if (works.coreaudio) {
-		auto dec = std::make_unique<CoreAudioMidiOutDevice>();
+		auto dec = std::make_unique<CoreAudioMidiOutDevice>(works.status);
 		if (dec->IsInitialized()) {
 			midi_out = std::make_unique<AudioDecoderMidi>(std::move(dec));
 		} else {
 			works.coreaudio = false;
+			Output::Debug(works.status);
 		}
 	}
+#endif
+
+#ifdef USE_LIBRETRO
+	works.status = libretro_status + ". " + works.status;
 #endif
 }
 
@@ -145,7 +156,8 @@ void GenericAudioMidiOut::ThreadFunction() {
 	}
 }
 
-bool GenericAudioMidiOut::IsInitialized() const {
+bool GenericAudioMidiOut::IsInitialized(std::string& status_message) const {
+	status_message = works.status;
 	return midi_out != nullptr;
 }
 

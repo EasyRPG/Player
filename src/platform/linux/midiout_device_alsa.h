@@ -27,7 +27,7 @@
  */
 class AlsaMidiOutDevice : public MidiDecoder {
 public:
-	AlsaMidiOutDevice();
+	AlsaMidiOutDevice(std::string& status_message);
 	~AlsaMidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;

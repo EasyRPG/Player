@@ -223,7 +223,8 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		if (!MidiDecoder::CreateFluidsynth(true) && !MidiDecoder::CreateWildMidi(true)) {
 			if (!midi_thread) {
 				midi_thread = std::make_unique<GenericAudioMidiOut>();
-				if (midi_thread->IsInitialized()) {
+				std::string status_message;
+				if (midi_thread->IsInitialized(status_message)) {
 					midi_thread->StartThread();
 				} else {
 					midi_thread.reset();

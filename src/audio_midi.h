@@ -205,6 +205,22 @@ public:
 	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(bool resample);
 
 	/**
+	 * Checks if Fluidsynth works.
+	 *
+	 * @param status_message Current Fluidsynth status
+	 * @return true: Works, false: Not working
+	 */
+	static bool CheckFluidsynth(std::string& status_message);
+
+	/**
+	 * Checks if WildMidi works.
+	 *
+	 * @param status_message Current Fluidsynth status
+	 * @return true: Works, false: Not working
+	 */
+	static bool CheckWildMidi(std::string& status_message);
+
+	/**
 	 * Resets the global state of the midi libraries.
 	 */
 	static void Reset();
