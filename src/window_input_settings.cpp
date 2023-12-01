@@ -82,7 +82,7 @@ void Window_InputSettings::Refresh() {
 		if (custom_name != custom_names.end()) {
 			items.push_back(custom_name->second);
 		} else {
-			items.push_back(Input::Keys::kNames.tag(key));
+			items.push_back(Input::Keys::kInputKeyNames.tag(key));
 		}
 	}
 
