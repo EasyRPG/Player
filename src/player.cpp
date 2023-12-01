@@ -83,13 +83,10 @@
 #include "baseui.h"
 #include "game_clock.h"
 #include "message_overlay.h"
+#include "audio_midi.h"
 
 #ifdef __ANDROID__
 #include "platform/android/android.h"
-#endif
-
-#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-#include "decoder_fluidsynth.h"
 #endif
 
 #ifndef EMSCRIPTEN
@@ -639,14 +636,6 @@ Game_Config Player::ParseCommandLine() {
 			}
 			continue;
 		}
-#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-		if (cp.ParseNext(arg, 1, "--soundfont")) {
-			if (arg.NumValues() > 0) {
-				FluidSynthDecoder::SetSoundfont(arg.Value(0));
-			}
-			continue;
-		}
-#endif
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
 			std::cout << GetFullVersionString() << std::endl;
 			exit(0);
@@ -675,6 +664,9 @@ void Player::CreateGameObjects() {
 	// Parse game specific settings
 	CmdlineParser cp(arguments);
 	game_config = Game_ConfigGame::Create(cp);
+
+	// Reinit MIDI
+	MidiDecoder::Reset();
 
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210

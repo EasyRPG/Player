@@ -87,9 +87,12 @@ void Scene_Settings::CreateMainWindow() {
 }
 
 void Scene_Settings::CreateOptionsWindow() {
-	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(Player::menu_offset_x, 0, MENU_WIDTH, 32);
 	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
+
+	help_window2 = std::make_unique<Window_Help>(Player::menu_offset_x, Player::screen_height - 32, MENU_WIDTH, 32);
+	options_window->help_window2 = help_window2.get();
 
 	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
 	input_window->SetHelpWindow(help_window.get());
@@ -140,6 +143,7 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	input_mode_window->SetVisible(false);
 	input_help_window->SetVisible(false);
 	help_window->SetVisible(false);
+	help_window2->SetVisible(false);
 	about_window->SetVisible(false);
 
 	picker_window.reset();
@@ -244,6 +248,7 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eInput:
 		case Window_Settings::eVideo:
 		case Window_Settings::eAudio:
+		case Window_Settings::eAudioMidi:
 		case Window_Settings::eLicense:
 		case Window_Settings::eEngine:
 		case Window_Settings::eInputButtonCategory:

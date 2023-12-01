@@ -103,6 +103,11 @@ struct Game_ConfigVideo {
 struct Game_ConfigAudio {
 	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", "Audio", "MusicVolume", 100, 0, 100 };
 	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", "Audio", "SoundVolume", 100, 0, 100 };
+	BoolConfigParam fluidsynth_midi { "Fluidsynth (SF2)", "Play MIDI using SF2 soundfonts", "Audio", "Fluidsynth", true };
+	BoolConfigParam wildmidi_midi { "WildMidi (GUS)", "Play MIDI using GUS patches", "Audio", "WildMidi", true };
+	BoolConfigParam native_midi { "Native MIDI", "Play MIDI through the operating system ", "Audio", "NativeMidi", true };
+	BoolConfigParam fmmidi_midi { "FmMidi", "Play MIDI using the built-in MIDI synthesizer", "Audio", "FmMidi", true };
+	StringConfigParam soundfont { "Soundfont", "Soundfont to use for Fluidsynth", "Audio", "Soundfont", "" };
 
 	void Hide();
 };

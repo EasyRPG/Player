@@ -47,14 +47,6 @@ public:
 	static bool Initialize(std::string& status_message);
 	static void ResetState();
 
-	/**
-	 * Sets the name of the preferred soundfont.
-	 * Must be called before the first MIDI is played.
-	 *
-	 * @param sf soundfont to check for first
-	 */
-	static void SetSoundfont(StringView sf);
-
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	void SendMidiMessage(uint32_t message) override;

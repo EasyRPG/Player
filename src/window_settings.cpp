@@ -31,6 +31,8 @@
 #include "player.h"
 #include "system.h"
 #include "audio.h"
+#include "audio_midi.h"
+#include "audio_generic_midiout.h"
 
 class MenuItem final : public ConfigParam<StringView> {
 public:
@@ -51,7 +53,7 @@ void Window_Settings::DrawOption(int index) {
 	auto& option = options[index];
 
 	bool enabled = bool(option.action);
-	Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
+	Font::SystemColor color = enabled ? option.color : Font::ColorDisabled;
 
 	contents->TextDraw(rect, color, option.text);
 	contents->TextDraw(rect, color, option.value_text, Text::AlignRight);
@@ -127,6 +129,9 @@ void Window_Settings::Refresh() {
 		case eAudio:
 			RefreshAudio();
 			break;
+		case eAudioMidi:
+			RefreshAudioMidi();
+			break;
 		case eEngine:
 			RefreshEngine();
 			break;
@@ -163,8 +168,15 @@ void Window_Settings::Refresh() {
 void Window_Settings::UpdateHelp() {
 	if (index >= 0 && index < static_cast<int>(options.size())) {
 		help_window->SetText(options[index].help);
+		if (help_window2) {
+			help_window2->SetText(options[index].help2);
+			help_window2->SetVisible(!options[index].help2.empty());
+		}
 	} else {
 		help_window->SetText("");
+		if (help_window2) {
+			help_window2->SetVisible(false);
+		}
 	}
 }
 
@@ -265,12 +277,59 @@ void Window_Settings::RefreshAudio() {
 
 	AddOption(cfg.music_volume, [this](){ Audio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
 	AddOption(cfg.sound_volume, [this](){ Audio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
-	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
-			[](){},
-			"Which MIDI backend to use");
-	AddOption("Midi Soundfont", LockedConfigParam<std::string>("Default"), "",
-			[](){},
-			"Which MIDI soundfont to use");*/
+	AddOption(MenuItem("MIDI drivers", "Configure MIDI playback", ""), [this](){ Push(eAudioMidi); });
+	AddOption(cfg.soundfont, [this](){ });
+}
+
+void Window_Settings::RefreshAudioMidi() {
+	auto cfg = Audio().GetConfig();
+
+	bool used = false;
+
+	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
+	options.back().help2 = "Changes take effect when a new MIDI file is played";
+
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
+	if (!MidiDecoder::CheckFluidsynth(options.back().help2)) {
+		options.back().text += " [Not working]";
+		options.back().color = Font::ColorKnockout;
+	} else if (cfg.fluidsynth_midi.Get()) {
+		options.back().text += " [In use]";
+		used = true;
+	}
+#endif
+#ifdef HAVE_LIBWILDMIDI
+	AddOption(cfg.wildmidi_midi, [](){ Audio().SetWildMidiEnabled(Audio().GetConfig().wildmidi_midi.Toggle()); });
+	if (!MidiDecoder::CheckWildMidi(options.back().help2)) {
+		options.back().text += " [Not working]";
+		options.back().color = Font::ColorKnockout;
+	} else if (cfg.wildmidi_midi.Get() && !used) {
+		options.back().text += " [In use]";
+		used = true;
+	}
+#endif
+#ifdef HAVE_NATIVE_MIDI
+	AddOption(cfg.native_midi, [](){ Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
+	if (!GenericAudioMidiOut().IsInitialized(options.back().help2)) {
+		options.back().text += " [Not working]";
+		options.back().color = Font::ColorKnockout;
+	} else if (cfg.native_midi.Get() && !used) {
+		options.back().text += " [In use]";
+		used = true;
+	}
+#endif
+#ifdef WANT_FMMIDI
+	AddOption(cfg.fmmidi_midi, [](){ Audio().SetFmMidiEnabled(Audio().GetConfig().fmmidi_midi.Toggle()); });
+	if (cfg.fmmidi_midi.Get() && !used) {
+		options.back().text += " [In use]";
+	}
+#endif
+
+	if (options.size() == 1) {
+		options.pop_back();
+		AddOption(MenuItem("MIDI is unavailable", "EasyRPG Player was not compiled with MIDI support", ""), [](){});
+	}
 }
 
 void Window_Settings::RefreshEngine() {
@@ -333,7 +392,7 @@ void Window_Settings::RefreshLicense() {
 #ifdef HAVE_OPUS
 	AddOption(MenuItem("opus", "Decodes the free OPUS audio codec", "BSD"), [](){});
 #endif
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 	AddOption(MenuItem("WildMidi", "MIDI synthesizer", "LGPLv3+"), [](){});
 #endif
 #ifdef HAVE_FLUIDSYNTH

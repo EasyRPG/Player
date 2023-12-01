@@ -217,10 +217,11 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	if (chan.id == 0 && GenericAudioMidiOut::IsSupported(filestream)) {
 		chan.decoder.reset();
 
-		// FIXME: Try Fluidsynth and WildMidi first
-		// If they work fallback to the normal AudioDecoder handler below
-		// There should be a way to configure the order
-		if (!MidiDecoder::CreateFluidsynth(true) && !MidiDecoder::CreateWildMidi(true)) {
+		// Order is Fluidsynth, WildMidi, Native, FmMidi
+		bool fluidsynth = Audio().GetFluidsynthEnabled() && MidiDecoder::CreateFluidsynth(true);
+		bool wildmidi = Audio().GetWildMidiEnabled() && MidiDecoder::CreateWildMidi(true);
+
+		if (!fluidsynth && !wildmidi && Audio().GetNativeMidiEnabled()) {
 			if (!midi_thread) {
 				midi_thread = std::make_unique<GenericAudioMidiOut>();
 				std::string status_message;

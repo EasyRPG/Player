@@ -89,3 +89,43 @@ int AudioInterface::SE_GetGlobalVolume() const {
 void AudioInterface::SE_SetGlobalVolume(int volume) {
 	cfg.sound_volume.Set(volume);
 }
+
+bool AudioInterface::GetFluidsynthEnabled() const {
+	return cfg.fluidsynth_midi.Get();
+}
+
+void AudioInterface::SetFluidsynthEnabled(bool enable) {
+	cfg.fluidsynth_midi.Set(enable);
+}
+
+bool AudioInterface::GetWildMidiEnabled() const {
+	return cfg.wildmidi_midi.Get();
+}
+
+void AudioInterface::SetWildMidiEnabled(bool enable) {
+	cfg.wildmidi_midi.Set(enable);
+}
+
+bool AudioInterface::GetNativeMidiEnabled() const {
+	return cfg.native_midi.Get();
+}
+
+void AudioInterface::SetNativeMidiEnabled(bool enable) {
+	cfg.native_midi.Set(enable);
+}
+
+bool AudioInterface::GetFmMidiEnabled() const {
+	return cfg.fmmidi_midi.Get();
+}
+
+void AudioInterface::SetFmMidiEnabled(bool enable) {
+	cfg.fmmidi_midi.Set(enable);
+}
+
+std::string AudioInterface::GetFluidsynthSoundfont() const {
+	return cfg.soundfont.Get();
+}
+
+void AudioInterface::SetFluidsynthSoundfont(StringView sf) {
+	cfg.soundfont.Set(ToString(sf));
+}

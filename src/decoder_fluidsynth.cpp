@@ -16,6 +16,7 @@
  */
 
 #include "system.h"
+#include "audio.h"
 #include "decoder_fluidsynth.h"
 
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
@@ -94,8 +95,6 @@ static fluid_fileapi_t fluidlite_vio = {
 #endif
 
 namespace {
-	std::string preferred_soundfont;
-
 	bool once = false;
 	bool init = false;
 }
@@ -132,6 +131,7 @@ static fluid_synth_t* create_synth(std::string& status_message) {
 
 	// Attempt loading a soundfont
 	std::vector<std::string> sf_paths;
+	std::string preferred_soundfont = Audio().GetFluidsynthSoundfont();
 	if (!preferred_soundfont.empty()) {
 		sf_paths.emplace_back(preferred_soundfont);
 	}
@@ -263,10 +263,6 @@ void FluidSynthDecoder::ResetState() {
 
 	global_synth.reset();
 	global_settings.reset();
-}
-
-void FluidSynthDecoder::SetSoundfont(StringView sf) {
-	preferred_soundfont = ToString(sf);
 }
 
 int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {

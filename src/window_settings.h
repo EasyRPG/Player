@@ -42,6 +42,7 @@ public:
 		eInputButtonRemove,
 		eVideo,
 		eAudio,
+		eAudioMidi,
 		eLicense,
 		eEngine,
 		eSave,
@@ -60,8 +61,10 @@ public:
 		std::string text;
 		std::string value_text;
 		std::string help;
+		std::string help2;
 		std::function<void(void)> action;
 		OptionMode mode;
+		Font::SystemColor color = Font::ColorDefault;
 		int current_value;
 		int original_value;
 		int min_value;
@@ -106,6 +109,7 @@ public:
 	 */
 	void Refresh();
 
+	Window_Help* help_window2 = nullptr;
 private:
 
 	/**
@@ -134,6 +138,7 @@ private:
 	void RefreshButtonList();
 	void RefreshVideo();
 	void RefreshAudio();
+	void RefreshAudioMidi();
 	void RefreshEngine();
 	void RefreshLicense();
 

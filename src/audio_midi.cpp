@@ -25,6 +25,8 @@
 
 #ifdef USE_AUDIO_RESAMPLER
 #include "audio_resampler.h"
+#include "audio.h"
+
 #endif
 
 void MidiDecoder::GetFormat(int& freq, AudioDecoderBase::Format& format, int& channels) const {
@@ -50,12 +52,16 @@ static struct {
 std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-	mididec = CreateFluidsynth(resample);
-	if (!mididec) {
+	if (Audio().GetFluidsynthEnabled()) {
+		mididec = CreateFluidsynth(resample);
+	}
+
+	if (!mididec && Audio().GetWildMidiEnabled()) {
 		mididec = CreateWildMidi(resample);
-		if (!mididec) {
-			mididec = CreateFmMidi(resample);
-		}
+	}
+
+	if (!mididec && Audio().GetFmMidiEnabled()) {
+		mididec = CreateFmMidi(resample);
 	}
 
 	return mididec;
@@ -127,14 +133,18 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 }
 
 bool MidiDecoder::CheckFluidsynth(std::string& status_message) {
-	CreateFluidsynth(true);
+	if (works.fluidsynth && works.fluidsynth_status.empty()) {
+		CreateFluidsynth(true);
+	}
 
 	status_message = works.fluidsynth_status;
 	return works.fluidsynth;
 }
 
 bool MidiDecoder::CheckWildMidi(std::string &status_message) {
-	CreateWildMidi(true);
+	if (works.wildmidi && works.wildmidi_status.empty()) {
+		CreateWildMidi(true);
+	}
 
 	status_message = works.wildmidi_status;
 	return works.wildmidi;

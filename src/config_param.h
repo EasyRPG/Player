@@ -337,12 +337,13 @@ public:
 		return true;
 	}
 
-	void Toggle() {
+	bool Toggle() {
 		if (Get()) {
 			Set(false);
 		} else {
 			Set(true);
 		}
+		return Get();
 	}
 
 	std::string ValueToString() const override {

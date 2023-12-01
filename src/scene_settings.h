@@ -72,6 +72,7 @@ private:
 
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window2;
 	std::unique_ptr<Window_About> about_window;
 	std::unique_ptr<Window_Settings> options_window;
 	std::unique_ptr<Window_InputSettings> input_window;

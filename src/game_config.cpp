@@ -321,6 +321,12 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--soundfont")) {
+			if (arg.NumValues() > 0) {
+				audio.soundfont.Set(arg.Value(0));
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -356,6 +362,11 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	/** AUDIO SECTION */
 	audio.music_volume.FromIni(ini);
 	audio.sound_volume.FromIni(ini);
+	audio.fluidsynth_midi.FromIni(ini);
+	audio.wildmidi_midi.FromIni(ini);
+	audio.native_midi.FromIni(ini);
+	audio.fmmidi_midi.FromIni(ini);
+	audio.soundfont.FromIni(ini);
 
 	/** INPUT SECTION */
 	input.buttons = Input::GetDefaultButtonMappings();
@@ -442,6 +453,12 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 
 	audio.music_volume.ToIni(os);
 	audio.sound_volume.ToIni(os);
+	audio.fluidsynth_midi.ToIni(os);
+	audio.wildmidi_midi.ToIni(os);
+	audio.native_midi.ToIni(os);
+	audio.fmmidi_midi.ToIni(os);
+	audio.soundfont.ToIni(os);
+
 	os << "\n";
 
 	/** INPUT SECTION */
