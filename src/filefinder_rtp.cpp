@@ -51,6 +51,9 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 #ifdef GEKKO
 	AddPath("sd:/data/rtp/" + version_str);
 	AddPath("usb:/data/rtp/" + version_str);
+#elif defined(__WIIU__)
+	AddPath("./rtp/" + version_str);
+	AddPath("/data/easyrpg-player/rtp/" + version_str);
 #elif defined(__SWITCH__)
 	AddPath("./rtp/" + version_str);
 	AddPath("/switch/easyrpg-player/rtp/" + version_str);

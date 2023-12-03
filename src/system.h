@@ -67,6 +67,10 @@
 #  include <cstdint>
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#elif defined(__WIIU__)
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
+#  define SUPPORT_TOUCH
 #elif defined(_WIN32)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE

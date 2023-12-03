@@ -30,6 +30,9 @@
 #  include <SDL_system.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(__WIIU__)
+#  include <whb/proc.h>
+#  include <coreinit/debug.h>
 #endif
 #include "icon.h"
 
@@ -137,6 +140,9 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 #ifdef EMSCRIPTEN
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
 #endif
+#ifdef __WIIU__
+	//WHBProcInit();
+#endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
@@ -189,6 +195,10 @@ Sdl2Ui::~Sdl2Ui() {
 		SDL_DestroyWindow(sdl_window);
 	}
 	SDL_Quit();
+
+#ifdef __WIIU__
+	//WHBProcShutdown();
+#endif
 }
 
 bool Sdl2Ui::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
@@ -489,6 +499,16 @@ void Sdl2Ui::ToggleZoom() {
 		current_display_mode.zoom = 1;
 	}
 	EndDisplayModeChange();
+#endif
+}
+
+bool Sdl2Ui::LogMessage(const std::string &message) {
+#ifdef __WIIU__
+	OSReport("%s\n", message.c_str());
+	return true;
+#else
+	// not logged
+	return false;
 #endif
 }
 

@@ -686,11 +686,12 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
+else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
 # Shared by homebrew platforms
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$" OR NINTENDO_WIIU)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
@@ -1067,7 +1068,16 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 endif()
 
 # Executable
-if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1"))
+if(NINTENDO_WIIU)
+	add_executable(easyrpg-player src/platform/sdl/main.cpp)
+	target_link_libraries(easyrpg-player ${PROJECT_NAME})
+	wut_create_rpx(easyrpg-player)
+	wut_create_wuhb(easyrpg-player
+		NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
+		SHORT_NAME "Player"
+		AUTHOR "EasyRPG Team"
+	) # todo icon, splashs
+elseif(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1"))
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
