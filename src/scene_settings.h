@@ -63,6 +63,7 @@ private:
 
 	void UpdateMain();
 	void UpdateOptions();
+	void UpdateFont(bool mincho);
 	void UpdateButtonOption();
 	void UpdateButtonAdd();
 	void UpdateButtonRemove();

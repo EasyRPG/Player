@@ -41,7 +41,12 @@ namespace {
 }
 
 void Game_ConfigPlayer::Hide() {
-	// Game specific settings unsupported
+#ifndef HAVE_FREETYPE
+	font1.SetOptionVisible(false);
+	font1_size.SetOptionVisible(false);
+	font2.SetOptionVisible(false);
+	font2_size.SetOptionVisible(false);
+#endif
 }
 
 void Game_ConfigVideo::Hide() {

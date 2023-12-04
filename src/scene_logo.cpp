@@ -63,6 +63,8 @@ void Scene_Logo::Start() {
 
 void Scene_Logo::vUpdate() {
 	if (current_logo_index == 0 && frame_counter == 0) {
+		Font::ResetDefault();
+
 		if (!DetectGame()) {
 			// async delay for emscripten
 			return;

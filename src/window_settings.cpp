@@ -139,6 +139,12 @@ void Window_Settings::Refresh() {
 		case eEngine:
 			RefreshEngine();
 			break;
+		case eEngineFont1:
+			RefreshEngineFont(false);
+			break;
+		case eEngineFont2:
+			RefreshEngineFont(true);
+			break;
 		case eLicense:
 			RefreshLicense();
 			break;
@@ -372,17 +378,82 @@ void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
 	// FIXME: Binding &cfg is not needed and generates a warning but MSVC requires it
-#ifdef _MSC_VER
+	AddOption(cfg.font1, [this, &cfg]() {
+		font_size.Set(cfg.font1_size.Get());
+		Push(eEngineFont1);
+	});
+	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
+		options.back().text += " [In use]";
+	}
+
+	AddOption(cfg.font2, [this, &cfg]() {
+		font_size.Set(cfg.font2_size.Get());
+		Push(eEngineFont2);
+	});
+	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
+		options.back().text += " [In use]";
+	}
+
+	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
-	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
-#else
-	AddOption(cfg.settings_autosave, [](){ cfg.settings_autosave.Toggle(); });
-	AddOption(cfg.settings_in_title, [](){ cfg.settings_in_title.Toggle(); });
-	AddOption(cfg.settings_in_menu, [](){ cfg.settings_in_menu.Toggle(); });
-	AddOption(cfg.show_startup_logos, [this](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
-#endif
+}
+
+void Window_Settings::RefreshEngineFont(bool mincho) {
+	auto fs = Game_Config::GetFontFilesystem();
+
+	if (!fs) {
+		Pop();
+	}
+
+	fs.ClearCache();
+
+	auto& cfg = Player::player_config;
+
+	auto& setting = mincho ? cfg.font2 : cfg.font1;
+
+	AddOption(MenuItem("<Built-in Font>", "Use the built-in pixel font", setting.Get().empty() ? "[x]" : ""), [this, &setting, mincho]() {
+		Font::SetDefault(nullptr, mincho);
+		setting.Set("");
+		Pop();
+	});
+
+	//std::string font_lower = Utils::LowerCase(Audio().GetFluidsynthSoundfont());
+
+	auto list = fs.ListDirectory();
+	assert(list);
+	for (const auto& item: *list) {
+		bool is_font = std::any_of(FileFinder::FONTS_TYPES.begin(), FileFinder::FONTS_TYPES.end(), [&item](const auto& ext) {
+			return StringView(item.first).ends_with(ext);
+		});
+
+		if (item.second.type == DirectoryTree::FileType::Regular && is_font) {
+			/*AddOption(MenuItem(item.second.name, "Use this custom soundfont", StringView(sf_lower).ends_with(item.first) ? "[x]" : ""), [fs, item]() {
+				Audio().SetFluidsynthSoundfont(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
+			});*/
+			AddOption(MenuItem(item.second.name, "Use this font", ""), [=, &cfg, &setting]() mutable {
+				auto is = fs.OpenInputStream(item.second.name);
+				if (is) {
+					auto font = Font::CreateFtFont(std::move(is), font_size.Get(), false, false);
+					if (font) {
+						setting.Set(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
+						auto& setting_size = mincho ? cfg.font2_size : cfg.font1_size;
+						setting_size.Set(font->GetCurrentStyle().size);
+						Font::SetDefault(font, mincho);
+						Pop();
+					}
+				}
+			});
+		}
+	}
+
+	AddOption(font_size, [this]() mutable {
+		font_size.Set(GetCurrentOption().current_value);
+	});
+
+	AddOption(MenuItem("<Open Font directory>", "Open the font directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
+
 }
 
 void Window_Settings::RefreshLicense() {

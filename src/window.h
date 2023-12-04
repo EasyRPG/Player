@@ -20,6 +20,7 @@
 
 // Headers
 #include "system.h"
+#include "bitmap.h"
 #include "drawable.h"
 #include "rect.h"
 
@@ -61,6 +62,8 @@ public:
 	void SetWidth(int nwidth);
 	int GetHeight() const;
 	void SetHeight(int nheight);
+	int GetRightX() const;
+	int GetBottomY() const;
 	int GetOx() const;
 	void SetOx(int nox);
 	int GetOy() const;
@@ -80,6 +83,9 @@ public:
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
 
+	FontRef GetFont() const;
+	void SetFont(FontRef font);
+
 	bool IsOpening() const;
 	bool IsClosing() const;
 	bool IsOpeningOrClosing() const;
@@ -88,6 +94,7 @@ protected:
 	virtual bool IsSystemGraphicUpdateAllowed() const;
 
 	unsigned long ID;
+	FontRef font;
 	BitmapRef windowskin, contents;
 	bool stretch = true;
 	Rect cursor_rect;
@@ -153,6 +160,7 @@ inline BitmapRef Window::GetContents() const {
 
 inline void Window::SetContents(BitmapRef const& ncontents) {
 	contents = ncontents;
+	contents->SetFont(font);
 }
 
 inline bool Window::GetStretch() const {
@@ -236,6 +244,14 @@ inline int Window::GetHeight() const {
 	return height;
 }
 
+inline int Window::GetRightX() const {
+	return x + width;
+}
+
+inline int Window::GetBottomY() const {
+	return y + height;
+}
+
 inline int Window::GetOx() const {
 	return ox;
 }
@@ -302,6 +318,17 @@ inline void Window::SetContentsOpacity(int ncontents_opacity) {
 
 inline bool Window::IsSystemGraphicUpdateAllowed() const {
 	return !IsClosing();
+}
+
+inline FontRef Window::GetFont() const {
+	return font;
+}
+
+inline void Window::SetFont(FontRef font) {
+	this->font = font;
+	if (contents) {
+		contents->SetFont(font);
+	}
 }
 
 #endif

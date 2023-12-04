@@ -258,6 +258,12 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eInputListButtonsDeveloper:
 			UpdateOptions();
 			break;
+		case Window_Settings::eEngineFont1:
+			UpdateFont(false);
+			break;
+		case Window_Settings::eEngineFont2:
+			UpdateFont(true);
+			break;
 		case Window_Settings::eInputButtonOption:
 			UpdateButtonOption();
 			break;
@@ -440,6 +446,31 @@ void Scene_Settings::UpdateOptions() {
 			options_window->Refresh();
 		}
 	}
+}
+
+void Scene_Settings::UpdateFont(bool mincho) {
+	auto fs = Game_Config::GetFontFilesystem();
+
+	help_window2->SetText("The quick brown fox jumps over the lazy dog 1234567890.");
+
+	int index = options_window->GetIndex();
+	if (index == 0) {
+		help_window2->SetFont(Font::DefaultBitmapFont(mincho));
+		help_window2->SetVisible(true);
+	} else if (index >= options_window->GetRowMax() - 2) {
+		// Size or browse
+	} else {
+		auto is = fs.OpenInputStream(options_window->GetCurrentOption().text);
+		if (is) {
+			auto font = Font::CreateFtFont(std::move(is), options_window->font_size.Get(), false, false);
+			if (font) {
+				help_window2->SetFont(font);
+				help_window2->SetVisible(true);
+			}
+		}
+	}
+
+	UpdateOptions();
 }
 
 void Scene_Settings::UpdateButtonOption() {
