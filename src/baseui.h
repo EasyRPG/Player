@@ -220,6 +220,15 @@ public:
 	 */
 	void SetGameResolution(GameResolution resolution);
 
+	/**
+	 * Opens the specified URL through the operating system.
+	 * Opens a file browser when file:// is provided.
+	 *
+	 * @param url URL to open
+	 * @return true when successful
+	 */
+	virtual bool OpenURL(StringView path) { (void)path; return false; }
+
 	/** Toggles "stretch to screen width" on or off */
 	virtual void ToggleStretch() {};
 

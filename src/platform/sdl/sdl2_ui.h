@@ -70,6 +70,7 @@ public:
 	void ToggleStretch() override;
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
+	bool OpenURL(StringView url) override;
 	Rect GetWindowMetrics() const override;
 
 #ifdef SUPPORT_AUDIO

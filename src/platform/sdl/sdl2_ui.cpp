@@ -749,7 +749,6 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 				break;
 			}
 		}
-#endif
 
 		ShowCursor(last);
 
@@ -1261,4 +1260,22 @@ Rect Sdl2Ui::GetWindowMetrics() const {
 	} else {
 		return window_mode_metrics;
 	}
+}
+
+bool Sdl2Ui::OpenURL(StringView url) {
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+	if (IsFullscreen()) {
+		ToggleFullscreen();
+	}
+
+	if (SDL_OpenURL(ToString(url).c_str()) < 0) {
+		Output::Warning("Open URL {} failed: {}", url, SDL_GetError());
+		return false;
+	}
+
+	return true;
+#else
+	Output::Warning("Cannot Open URL: SDL2 version too old (must be 2.0.14)");
+	return false;
+#endif
 }
