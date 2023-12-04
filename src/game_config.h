@@ -68,6 +68,10 @@ struct Game_ConfigPlayer {
 		Utils::MakeSvArray("None", "Custom", "All"),
 		Utils::MakeSvArray("none", "custom", "all"),
 		Utils::MakeSvArray("Do not show any additional logos", "Show custom logos bundled with the game", "Show all logos, including the original from RPG Maker")};
+	PathConfigParam font1 { "Font 1", "The game chooses whether it wants font 1 or 2", "Player", "Font1", "" };
+	RangeConfigParam<int> font1_size { "Font 1 Size", "", "Player", "Font1Size", 12, 6, 16};
+	PathConfigParam font2 { "Font 2", "The game chooses whether it wants font 1 or 2", "Player", "Font2", "" };
+	RangeConfigParam<int> font2_size { "Font 2 Size", "", "Player", "Font2Size", 12, 6, 16};
 
 	void Hide();
 };
@@ -108,7 +112,7 @@ struct Game_ConfigAudio {
 	BoolConfigParam wildmidi_midi { "WildMidi (GUS)", "Play MIDI using GUS patches", "Audio", "WildMidi", true };
 	BoolConfigParam native_midi { "Native MIDI", "Play MIDI through the operating system ", "Audio", "NativeMidi", true };
 	BoolConfigParam fmmidi_midi { "FmMidi", "Play MIDI using the built-in MIDI synthesizer", "Audio", "FmMidi", true };
-	StringConfigParam soundfont { "Soundfont", "Soundfont to use for Fluidsynth", "Audio", "Soundfont", "" };
+	PathConfigParam soundfont { "Soundfont", "Soundfont to use for Fluidsynth", "Audio", "Soundfont", "" };
 
 	void Hide();
 };
@@ -150,6 +154,19 @@ struct Game_Config {
 	 * Returns the a filesystem view to the global config directory
 	 */
 	static FilesystemView GetGlobalConfigFilesystem();
+
+	/**
+	 * Returns the filesystem view to the soundfont directory
+	 * By default this is config/Soundfont
+	 */
+	static FilesystemView GetSoundfontFilesystem();
+
+	/**
+	 * Returns the filesystem view to the font directory
+	 * By default this is config/Font
+	 */
+	static FilesystemView GetFontFilesystem();
+
 
 	/**
 	 * Returns a handle to the global config file for reading.

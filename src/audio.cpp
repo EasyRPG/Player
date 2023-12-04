@@ -70,6 +70,21 @@ AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) : cfg(cfg) {
 Game_ConfigAudio AudioInterface::GetConfig() const {
 	auto acfg = cfg;
 	acfg.Hide();
+
+#if !defined(HAVE_FLUIDSYNTH) && !defined(HAVE_FLUIDLITE)
+	acfg.fluidsynth_midi.SetOptionVisible(false);
+	acfg.soundfont.SetOptionVisible(false);
+#endif
+#ifndef HAVE_LIBWILDMIDI
+	acfg.wildmidi_midi.SetOptionVisible(false);
+#endif
+#ifndef HAVE_NATIVE_MIDI
+	acfg.native_midi.SetOptionVisible(false);
+#endif
+#ifndef WANT_FMMIDI
+	acfg.fmmidi_midi.SetOptionVisible(false);
+#endif
+
 	vGetConfig(acfg);
 	return acfg;
 }

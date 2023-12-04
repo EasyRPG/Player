@@ -35,6 +35,8 @@
 
 namespace {
 	std::string config_path;
+	std::string soundfont_path;
+	std::string font_path;
 	StringView config_name = "config.ini";
 }
 
@@ -58,6 +60,7 @@ void Game_ConfigVideo::Hide() {
 	scaling_mode.SetOptionVisible(false);
 	stretch.SetOptionVisible(false);
 	touch_ui.SetOptionVisible(false);
+	pause_when_focus_lost.SetOptionVisible(false);
 	game_resolution.SetOptionVisible(false);
 }
 
@@ -201,6 +204,35 @@ Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput() {
 	return Filesystem_Stream::InputStream();
 }
 
+FilesystemView Game_Config::GetSoundfontFilesystem() {
+	std::string path = soundfont_path;
+	if (path.empty()) {
+		path = FileFinder::MakePath(GetGlobalConfigFilesystem().GetFullPath(), "Soundfont");
+	}
+
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		Output::Warning("Could not create soundfont path {}", path);
+		return {};
+	}
+
+	return FileFinder::Root().Create(path);
+}
+
+
+FilesystemView Game_Config::GetFontFilesystem() {
+	std::string path = font_path;
+	if (path.empty()) {
+		path = FileFinder::MakePath(GetGlobalConfigFilesystem().GetFullPath(), "Font");
+	}
+
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		Output::Warning("Could not create fount path {}", path);
+		return {};
+	}
+
+	return FileFinder::Root().Create(path);
+}
+
 Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
 	auto fs = GetGlobalConfigFilesystem();
 
@@ -327,6 +359,18 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--soundfont-path")) {
+			if (arg.NumValues() > 0) {
+				soundfont_path = FileFinder::MakeCanonical(arg.Value(0), 0);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font-path")) {
+			if (arg.NumValues() > 0) {
+				font_path = FileFinder::MakeCanonical(arg.Value(0), 0);
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -423,6 +467,10 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.settings_in_title.FromIni(ini);
 	player.settings_in_menu.FromIni(ini);
 	player.show_startup_logos.FromIni(ini);
+	player.font1.FromIni(ini);
+	player.font1_size.FromIni(ini);
+	player.font2.FromIni(ini);
+	player.font2_size.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -506,6 +554,10 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.settings_in_title.ToIni(os);
 	player.settings_in_menu.ToIni(os);
 	player.show_startup_logos.ToIni(os);
+	player.font1.ToIni(os);
+	player.font1_size.ToIni(os);
+	player.font2.ToIni(os);
+	player.font2_size.ToIni(os);
 
 	os << "\n";
 }

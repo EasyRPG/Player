@@ -23,6 +23,7 @@
 #include "text.h"
 #include "window_settings.h"
 #include "game_config.h"
+#include "game_system.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "output.h"
@@ -131,6 +132,9 @@ void Window_Settings::Refresh() {
 			break;
 		case eAudioMidi:
 			RefreshAudioMidi();
+			break;
+		case eAudioSoundfont:
+			RefreshAudioSoundfont();
 			break;
 		case eEngine:
 			RefreshEngine();
@@ -278,8 +282,10 @@ void Window_Settings::RefreshAudio() {
 
 	AddOption(cfg.music_volume, [this](){ Audio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
 	AddOption(cfg.sound_volume, [this](){ Audio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
-	AddOption(MenuItem("MIDI drivers", "Configure MIDI playback", ""), [this](){ Push(eAudioMidi); });
-	AddOption(cfg.soundfont, [this](){ });
+	if (cfg.fluidsynth_midi.IsOptionVisible() || cfg.wildmidi_midi.IsOptionVisible() || cfg.native_midi.IsOptionVisible() || cfg.fmmidi_midi.IsOptionVisible()) {
+		AddOption(MenuItem("MIDI drivers", "Configure MIDI playback", ""), [this]() { Push(eAudioMidi); });
+	}
+	AddOption(cfg.soundfont, [this](){ Push(eAudioSoundfont); });
 }
 
 void Window_Settings::RefreshAudioMidi() {
@@ -290,47 +296,76 @@ void Window_Settings::RefreshAudioMidi() {
 	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
 	options.back().help2 = "Changes take effect when a new MIDI file is played";
 
-#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-	AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
-	if (!MidiDecoder::CheckFluidsynth(options.back().help2)) {
-		options.back().text += " [Not working]";
-		options.back().color = Font::ColorKnockout;
-	} else if (cfg.fluidsynth_midi.Get()) {
-		options.back().text += " [In use]";
-		used = true;
+	if (cfg.fluidsynth_midi.IsOptionVisible()) {
+		AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
+		if (!MidiDecoder::CheckFluidsynth(options.back().help2)) {
+			options.back().text += " [Not working]";
+			options.back().color = Font::ColorKnockout;
+		} else if (cfg.fluidsynth_midi.Get()) {
+			options.back().text += " [In use]";
+			used = true;
+		}
 	}
-#endif
-#ifdef HAVE_LIBWILDMIDI
-	AddOption(cfg.wildmidi_midi, [](){ Audio().SetWildMidiEnabled(Audio().GetConfig().wildmidi_midi.Toggle()); });
-	if (!MidiDecoder::CheckWildMidi(options.back().help2)) {
-		options.back().text += " [Not working]";
-		options.back().color = Font::ColorKnockout;
-	} else if (cfg.wildmidi_midi.Get() && !used) {
-		options.back().text += " [In use]";
-		used = true;
-	}
-#endif
-#ifdef HAVE_NATIVE_MIDI
-	AddOption(cfg.native_midi, [](){ Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
-	if (!GenericAudioMidiOut().IsInitialized(options.back().help2)) {
-		options.back().text += " [Not working]";
-		options.back().color = Font::ColorKnockout;
-	} else if (cfg.native_midi.Get() && !used) {
-		options.back().text += " [In use]";
-		used = true;
-	}
-#endif
-#ifdef WANT_FMMIDI
-	AddOption(cfg.fmmidi_midi, [](){ Audio().SetFmMidiEnabled(Audio().GetConfig().fmmidi_midi.Toggle()); });
-	if (cfg.fmmidi_midi.Get() && !used) {
-		options.back().text += " [In use]";
-	}
-#endif
 
-	if (options.size() == 1) {
-		options.pop_back();
-		AddOption(MenuItem("MIDI is unavailable", "EasyRPG Player was not compiled with MIDI support", ""), [](){});
+	if (cfg.wildmidi_midi.IsOptionVisible()) {
+		AddOption(cfg.wildmidi_midi, []() { Audio().SetWildMidiEnabled(Audio().GetConfig().wildmidi_midi.Toggle()); });
+		if (!MidiDecoder::CheckWildMidi(options.back().help2)) {
+			options.back().text += " [Not working]";
+			options.back().color = Font::ColorKnockout;
+		} else if (cfg.wildmidi_midi.Get() && !used) {
+			options.back().text += " [In use]";
+			used = true;
+		}
 	}
+
+	if (cfg.native_midi.IsOptionVisible()) {
+		AddOption(cfg.native_midi, []() { Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
+		if (!GenericAudioMidiOut().IsInitialized(options.back().help2)) {
+			options.back().text += " [Not working]";
+			options.back().color = Font::ColorKnockout;
+		} else if (cfg.native_midi.Get() && !used) {
+			options.back().text += " [In use]";
+			used = true;
+		}
+	}
+
+	if (cfg.fmmidi_midi.IsOptionVisible()) {
+		AddOption(cfg.fmmidi_midi, []() { Audio().SetFmMidiEnabled(Audio().GetConfig().fmmidi_midi.Toggle()); });
+		if (cfg.fmmidi_midi.Get() && !used) {
+			options.back().text += " [In use]";
+		}
+	}
+}
+
+void Window_Settings::RefreshAudioSoundfont() {
+	auto fs = Game_Config::GetSoundfontFilesystem();
+
+	if (!fs) {
+		Pop();
+	}
+
+	fs.ClearCache();
+
+	auto acfg = Audio().GetConfig();
+	AddOption(MenuItem("<Autodetect>", "Attempt to find a suitable soundfont automatically", acfg.soundfont.Get().empty() ? "[x]" : ""), [this]() {
+		Audio().SetFluidsynthSoundfont({});
+		Pop();
+	});
+
+	auto list = fs.ListDirectory();
+	assert(list);
+
+	std::string sf_lower = Utils::LowerCase(Audio().GetFluidsynthSoundfont());
+	for (const auto& item: *list) {
+		if (item.second.type == DirectoryTree::FileType::Regular && StringView(item.first).ends_with(".sf2")) {
+			AddOption(MenuItem(item.second.name, "Use this custom soundfont", StringView(sf_lower).ends_with(item.first) ? "[x]" : ""), [this, fs, item]() {
+				Audio().SetFluidsynthSoundfont(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
+				Pop();
+			});
+		}
+	}
+
+	AddOption(MenuItem("<Open Soundfont directory>", "Open the soundfont directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
 }
 
 void Window_Settings::RefreshEngine() {

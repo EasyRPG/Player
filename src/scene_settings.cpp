@@ -91,7 +91,7 @@ void Scene_Settings::CreateOptionsWindow() {
 	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
 
-	help_window2 = std::make_unique<Window_Help>(Player::menu_offset_x, Player::screen_height - 32, MENU_WIDTH, 32);
+	help_window2 = std::make_unique<Window_Help>(Player::menu_offset_x, options_window->GetBottomY(), MENU_WIDTH, 32);
 	options_window->help_window2 = help_window2.get();
 
 	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
@@ -249,6 +249,7 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eVideo:
 		case Window_Settings::eAudio:
 		case Window_Settings::eAudioMidi:
+		case Window_Settings::eAudioSoundfont:
 		case Window_Settings::eLicense:
 		case Window_Settings::eEngine:
 		case Window_Settings::eInputButtonCategory:

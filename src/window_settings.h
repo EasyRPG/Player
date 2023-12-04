@@ -43,8 +43,11 @@ public:
 		eVideo,
 		eAudio,
 		eAudioMidi,
+		eAudioSoundfont,
 		eLicense,
 		eEngine,
+		eEngineFont1,
+		eEngineFont2,
 		eSave,
 		eEnd,
 		eAbout,
@@ -110,6 +113,7 @@ public:
 	void Refresh();
 
 	Window_Help* help_window2 = nullptr;
+	RangeConfigParam<int> font_size { "<Font Size>", "Font size to use. Not supported for the built-in font.", "", "", 12, 6, 16};
 private:
 
 	/**
@@ -139,7 +143,9 @@ private:
 	void RefreshVideo();
 	void RefreshAudio();
 	void RefreshAudioMidi();
+	void RefreshAudioSoundfont();
 	void RefreshEngine();
+	void RefreshEngineFont(bool mincho);
 	void RefreshLicense();
 
 	void UpdateHelp() override;

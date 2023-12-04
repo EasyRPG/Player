@@ -19,6 +19,7 @@
 #define EP_CONFIG_PARAM_H
 
 #include "string_view.h"
+#include "filefinder.h"
 #include <array>
 #include <cstdint>
 #include <lcf/inireader.h>
@@ -428,6 +429,16 @@ private:
 			}
 		}
 		return E{};
+	}
+};
+
+class PathConfigParam : public StringConfigParam {
+public:
+	PathConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, std::string value) :
+			StringConfigParam(name, description, config_section, config_key, value) {}
+
+	std::string ValueToString() const override {
+		return std::get<1>(FileFinder::GetPathAndFilename(Get()));
 	}
 };
 
