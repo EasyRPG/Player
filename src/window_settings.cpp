@@ -268,6 +268,7 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.fps_render_window, [](){ DisplayUi->ToggleShowFpsOnTitle(); });
 	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
 	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
+	AddOption(cfg.pause_when_focus_lost, [cfg]() mutable { DisplayUi->SetPauseWhenFocusLost(cfg.pause_when_focus_lost.Toggle()); });
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
 	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<GameResolution>(GetCurrentOption().current_value)); });
 }

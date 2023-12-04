@@ -478,8 +478,11 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 	int state;
 	state = evnt.active.state;
 
-#if PAUSE_GAME_WHEN_FOCUS_LOST
 	if (state == SDL_APPINPUTFOCUS && !evnt.active.gain) {
+		if (!vcfg.pause_when_focus_lost.Get()) {
+			return;
+		}
+
 		Player::Pause();
 
 		bool last = ShowCursor(true);
@@ -500,7 +503,6 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		return;
 	}
-#endif
 }
 
 void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
@@ -747,6 +749,8 @@ void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
 #endif
 
 	cfg.fullscreen.SetOptionVisible(toggle_fs_available);
+	cfg.pause_when_focus_lost.SetOptionVisible(toggle_fs_available);
+
 #ifdef SUPPORT_ZOOM
 	cfg.window_zoom.SetOptionVisible(true);
 	cfg.window_zoom.Set(current_display_mode.zoom);

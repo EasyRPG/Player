@@ -52,18 +52,6 @@
 /** Targeted screen bits per pixel. */
 #define SCREEN_TARGET_BPP 32
 
-/**
- * Pause the game process when the player window
- * looses its focus.
- */
-#define PAUSE_GAME_WHEN_FOCUS_LOST 1
-
-/**
- * Pause the audio process when the player window
- * looses its focus.
- */
-#define PAUSE_AUDIO_WHEN_FOCUS_LOST 1
-
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
 #define EASYRPG_INI_NAME "EasyRPG.ini"

@@ -350,6 +350,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	video.scaling_mode.FromIni(ini);
 	video.stretch.FromIni(ini);
 	video.touch_ui.FromIni(ini);
+	video.pause_when_focus_lost.FromIni(ini);
 	video.game_resolution.FromIni(ini);
 
 	if (ini.HasValue("Video", "WindowX") && ini.HasValue("Video", "WindowY") && ini.HasValue("Video", "WindowWidth") && ini.HasValue("Video", "WindowHeight")) {
@@ -437,6 +438,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	video.scaling_mode.ToIni(os);
 	video.stretch.ToIni(os);
 	video.touch_ui.ToIni(os);
+	video.pause_when_focus_lost.ToIni(os);
 	video.game_resolution.ToIni(os);
 
 	// only preserve when toggling between window and fullscreen is supported
