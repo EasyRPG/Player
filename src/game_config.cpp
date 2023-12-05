@@ -114,7 +114,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 	std::string path;
 
 	if (config_path.empty()) {
-#ifdef GEKKO
+#ifdef __wii__
 		path = "/data/easyrpg-player";
 #elif defined(__WIIU__)
 		path = "/vol/external01/data/easyrpg-player"; // temp

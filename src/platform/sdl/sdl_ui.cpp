@@ -28,7 +28,7 @@
 #include "player.h"
 #include "bitmap.h"
 
-#ifdef GEKKO
+#ifdef __wii__
 #  include "platform/wii/main.h"
 #endif
 
@@ -61,7 +61,7 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
-#ifndef GEKKO
+#ifndef __wii__
 	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
@@ -115,7 +115,7 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 		format.b.mask,
 		format.a.mask);
 
-#ifdef GEKKO
+#ifdef __wii__
 	// Eliminate debug spew in on-screen console
 	Wii::SetConsole();
 #endif
@@ -349,7 +349,7 @@ bool SdlUi::RefreshDisplayMode() {
 
 	int bpp = current_display_mode.bpp;
 
-#ifdef GEKKO
+#ifdef __wii__
 	// force for SDL-wii, otherwise 16 bit is used
 	bpp = 24;
 #endif
@@ -443,7 +443,7 @@ bool SdlUi::ShowCursor(bool flag) {
 }
 
 bool SdlUi::LogMessage(const std::string &message) {
-#ifdef GEKKO
+#ifdef __wii__
 	return Wii::LogMessage(message);
 #else
 	// not logged
@@ -750,7 +750,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 }
 
 void SdlUi::vGetConfig(Game_ConfigVideo& cfg) const {
-#ifdef GEKKO
+#ifdef __wii__
 	cfg.renderer.Lock("SDL1 (Software, Wii)");
 #else
 	cfg.renderer.Lock("SDL1 (Software)");

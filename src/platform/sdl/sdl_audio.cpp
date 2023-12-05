@@ -78,7 +78,7 @@ SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
 		return;
 	}
 
-#ifdef GEKKO
+#ifdef __wii__
 	// Wii's DSP works at 32kHz natively
 	const int frequency = 32000;
 #elif defined(EMSCRIPTEN)

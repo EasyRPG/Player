@@ -112,7 +112,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 			found = FileFinder::Root().Exists(config_file);
 		}
 	}
-#elif defined(GEKKO)
+#elif defined(__wii__)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
 	found = FileFinder::Root().Exists(config_file);

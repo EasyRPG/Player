@@ -63,7 +63,7 @@
 #elif defined(__vita__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(GEKKO)
+#elif defined(__wii__)
 #  include <cstdint>
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
