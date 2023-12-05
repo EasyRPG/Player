@@ -1209,6 +1209,8 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #ifdef EMSCRIPTEN
 	cfg.renderer.Lock("SDL2 (Software, Emscripten)");
+#elif defined(__WIIU__)
+	cfg.renderer.Lock("SDL2 (Software, Wii U)");
 #else
 	cfg.renderer.Lock("SDL2 (Software)");
 #endif
@@ -1238,6 +1240,11 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fps_render_window.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	// Toggling this freezes the web player
+	cfg.vsync.SetOptionVisible(false);
+#elif defined(__WIIU__)
+	// FIXME: Some options below may crash, better disable for now
+	cfg.fullscreen.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
 	cfg.vsync.SetOptionVisible(false);
 #endif
 }

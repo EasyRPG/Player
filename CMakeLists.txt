@@ -572,6 +572,12 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
 	endif()
+
+	if(NINTENDO_WIIU)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/wiiu/input_buttons.cpp)
+	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl_audio.cpp
@@ -835,7 +841,9 @@ find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows"
+	AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$"
+	AND NOT NINTENDO_WIIU)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -1077,7 +1085,7 @@ if(NINTENDO_WIIU)
 		SHORT_NAME "Player"
 		AUTHOR "EasyRPG Team"
 	) # todo icon, splashs
-elseif(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1"))
+elseif(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$")
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1276,7 +1284,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
 		${PROJECT_NAME}
 		${SDL_LIBRARIES})
 	# FIXME: packaging?
-else()
+else() # library
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
 			src/platform/libretro/audio.cpp

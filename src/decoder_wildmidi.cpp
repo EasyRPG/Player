@@ -140,6 +140,16 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 		config_file = "timidity.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
+#elif defined(__WIIU__)
+	// preferred SD card directory
+	config_file = "/vol/external01/data/easyrpg-player/wildmidi.cfg";
+	found = FileFinder::Root().Exists(config_file);
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+	}
 #elif defined(__3DS__)
 	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
 
