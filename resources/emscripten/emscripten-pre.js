@@ -42,7 +42,7 @@ Module = { ...Module,
     Module.totalDependencies = Math.max(Module.totalDependencies, left);
     Module.setStatus(left ? `Preparing... (${Module.totalDependencies - left}/${Module.totalDependencies})` : 'Downloading game data...');
   }
-});
+};
 
 /**
  * Parses the current location query to setup a specific game

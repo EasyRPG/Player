@@ -173,7 +173,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
-bool Bitmap::WritePNG(Filesystem_Stream::OutputStream& os) const {
+bool Bitmap::WritePNG(std::ostream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 

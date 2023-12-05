@@ -20,7 +20,9 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
 #include <lcf/lsd/reader.h>
+#include <sstream>
 
+#include "async_handler.h"
 #include "filefinder.h"
 #include "player.h"
 #include "scene_save.h"
@@ -38,9 +40,10 @@ bool Emscripten_Interface::DownloadSavegame(int slot) {
 		return false;
 	}
 	auto save_buffer = Utils::ReadStream(is);
+	std::string filename = std::get<1>(FileFinder::GetPathAndFilename(name));
 	EM_ASM_ARGS({
-		Module.api_private.downloadSavegame_js($0, $1, $2);
-	}, save_buffer.data(), save_buffer.size(), slot);
+		Module.api_private.download_js($0, $1, $2);
+	}, save_buffer.data(), save_buffer.size(), filename.c_str());
 	return true;
 }
 
@@ -52,6 +55,17 @@ void Emscripten_Interface::UploadSavegame(int slot) {
 
 void Emscripten_Interface::RefreshScene() {
 	Scene::instance->Refresh();
+}
+
+void Emscripten_Interface::TakeScreenshot() {
+	static int index = 0;
+	std::ostringstream os;
+	Output::TakeScreenshot(os);
+	std::string screenshot = os.str();
+	std::string filename = "screenshot_" + std::to_string(index++) + ".png";
+	EM_ASM_ARGS({
+		Module.api_private.download_js($0, $1, $2);
+	}, screenshot.data(), screenshot.size(), filename.c_str());
 }
 
 bool Emscripten_Interface_Private::UploadSavegameStep2(int slot, int buffer_addr, int size) {
@@ -72,10 +86,7 @@ bool Emscripten_Interface_Private::UploadSavegameStep2(int slot, int buffer_addr
 		os.write(reinterpret_cast<char*>(buffer_addr), size);
 	}
 
-	// Save changed file system
-	EM_ASM({
-		FS.syncfs(function(err) {});
-	});
+	AsyncHandler::SaveFilesystem();
 
 	return true;
 }
@@ -87,6 +98,7 @@ EMSCRIPTEN_BINDINGS(player_interface) {
 		.class_function("downloadSavegame", &Emscripten_Interface::DownloadSavegame)
 		.class_function("uploadSavegame", &Emscripten_Interface::UploadSavegame)
 		.class_function("refreshScene", &Emscripten_Interface::RefreshScene)
+		.class_function("takeScreenshot", &Emscripten_Interface::TakeScreenshot)
 	;
 
 	emscripten::class_<Emscripten_Interface_Private>("api_private")

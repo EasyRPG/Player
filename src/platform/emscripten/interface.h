@@ -23,6 +23,7 @@ public:
 	static bool DownloadSavegame(int slot);
 	static void UploadSavegame(int slot);
 	static void RefreshScene();
+	static void TakeScreenshot();
 	static void Reset();
 };
 

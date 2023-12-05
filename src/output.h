@@ -78,7 +78,7 @@ namespace Output {
 	 * @param os output stream that PNG will be stored.
 	 * @return true if success, otherwise false.
 	 */
-	bool TakeScreenshot(Filesystem_Stream::OutputStream& os);
+	bool TakeScreenshot(std::ostream& os);
 
 	/**
 	 * Shows/Hides the output log overlay.

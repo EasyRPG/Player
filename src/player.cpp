@@ -214,9 +214,8 @@ void Player::Run() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
-#ifdef EMSCRIPTEN
-	emscripten_set_main_loop(Player::MainLoop, 0, 0);
-#elif defined(USE_LIBRETRO)
+#if defined(USE_LIBRETRO) || defined(EMSCRIPTEN)
+	// emscripten implemented in main.cpp
 	// libretro invokes the MainLoop through a retro_run-callback
 #else
 	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
@@ -394,8 +393,6 @@ void Player::Exit() {
 
 	Graphics::UpdateSceneCallback();
 #ifdef EMSCRIPTEN
-	emscripten_cancel_main_loop();
-
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
 	DisplayUi->CleanDisplay();

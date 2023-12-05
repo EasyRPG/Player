@@ -14,14 +14,11 @@ if (Module.saveFs === undefined) {
 }
 
 Module.initApi = function() {
-  Module.api_private.downloadSavegame_js = function(buffer, size, index) {
+  Module.api_private.download_js = function(buffer, size, filename) {
     const blob = new Blob([Module.HEAPU8.slice(buffer, buffer + size)]);
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    if (index < 10) {
-      index = "0" + index;
-    }
-    link.download = "Save" + index + ".lsd";
+    link.download = UTF8ToString(filename);
     link.click();
     link.remove();
   }

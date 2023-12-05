@@ -204,7 +204,7 @@ void Scene_File::vUpdate() {
 #ifdef EMSCRIPTEN
 		extra_commands_window->SetX(SCREEN_TARGET_WIDTH - extra_commands_window->GetWidth() - 8);
 		extra_commands_window->SetY(file_windows[index]->GetY() + 8);
-		extra_commands_window->SetItemEnabled(0, file_windows[index]->IsValid());
+		extra_commands_window->SetItemEnabled(0, file_windows[index]->IsValid() && file_windows[index]->HasParty());
 		extra_commands_window->SetVisible(true);
 		return;
 #endif
