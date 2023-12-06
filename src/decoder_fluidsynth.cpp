@@ -115,20 +115,11 @@ namespace {
 #if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
 	fluid_sfloader_t* global_loader; // owned by global_settings
 #endif
+	int global_synth_id = -1;
 	int instances = 0;
 }
 
-static fluid_synth_t* create_synth(std::string& status_message) {
-	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
-	if (!syn) {
-		status_message = "new_fluid_synth failed";
-		return nullptr;
-	}
-
-#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
-	fluid_synth_add_sfloader(syn, global_loader);
-#endif
-
+static bool load_default_sf(std::string& status_message, fluid_synth_t* syn, int& synth_id) {
 	// Attempt loading a soundfont
 	std::vector<std::string> sf_paths;
 	std::string preferred_soundfont = Audio().GetFluidsynthSoundfont();
@@ -165,8 +156,14 @@ static fluid_synth_t* create_synth(std::string& status_message) {
 	}
 
 	bool sf_load_success = false;
+	int old_synth_id = synth_id;
 	for (const auto& sf_name: sf_paths) {
-		if (fluid_synth_sfload(syn, sf_name.c_str(), 1) != FLUID_FAILED) {
+		int new_synth_id = fluid_synth_sfload(syn, sf_name.c_str(), 1);
+		if (new_synth_id != FLUID_FAILED) {
+			synth_id = new_synth_id;
+			if (old_synth_id > 0) {
+				fluid_synth_sfunload(syn, old_synth_id, 1);
+			}
 			sf_load_success = true;
 			status_message = fmt::format("Using soundfont {}", sf_name);
 			break;
@@ -175,6 +172,24 @@ static fluid_synth_t* create_synth(std::string& status_message) {
 
 	if (!sf_load_success) {
 		status_message = "Could not load soundfont.";
+		return false;
+	}
+
+	return true;
+}
+
+static fluid_synth_t* create_synth(std::string& status_message, int& synth_id) {
+	fluid_synth_t* syn = new_fluid_synth(global_settings.get());
+	if (!syn) {
+		status_message = "new_fluid_synth failed";
+		return nullptr;
+	}
+
+#if defined(HAVE_FLUIDSYNTH) && FLUIDSYNTH_VERSION_MAJOR > 1
+	fluid_synth_add_sfloader(syn, global_loader);
+#endif
+
+	if (!load_default_sf(status_message, syn, synth_id)) {
 		return nullptr;
 	}
 
@@ -190,7 +205,8 @@ FluidSynthDecoder::FluidSynthDecoder() {
 	// Sharing is only not possible when a Midi is played as a SE (unlikely)
 	if (instances > 1) {
 		std::string error_message;
-		local_synth = create_synth(error_message);
+		int unused = -1;
+		local_synth = create_synth(error_message, unused);
 		if (!local_synth) {
 			// unlikely, the SF was already allocated once
 			Output::Debug("FluidSynth failed: {}", error_message);
@@ -247,7 +263,8 @@ bool FluidSynthDecoder::Initialize(std::string& status_message) {
 			vio_open, vio_read, vio_seek, vio_tell, vio_close);
 #endif
 
-	global_synth.reset(create_synth(status_message));
+	global_synth_id = -1;
+	global_synth.reset(create_synth(status_message, global_synth_id));
 	if (!global_synth) {
 		return false;
 	}
@@ -263,6 +280,27 @@ void FluidSynthDecoder::ResetState() {
 
 	global_synth.reset();
 	global_settings.reset();
+}
+
+bool FluidSynthDecoder::ChangeGlobalSoundfont(StringView sf_path, std::string& status_message) {
+	if (!global_synth) {
+		return false;
+	}
+
+	if (sf_path.empty()) {
+		return load_default_sf(status_message, global_synth.get(), global_synth_id);
+	}
+
+	int new_global_id = fluid_synth_sfload(global_synth.get(), ToString(sf_path).c_str(), 1);
+	if (new_global_id != FLUID_FAILED) {
+		assert(fluid_synth_sfunload(global_synth.get(), global_synth_id, 1) == FLUID_OK);
+		global_synth_id = new_global_id;
+		status_message = fmt::format("Using soundfont {}", sf_path);
+		return true;
+	}
+
+	status_message = "Could not load soundfont.";
+	return false;
 }
 
 int FluidSynthDecoder::FillBuffer(uint8_t* buffer, int length) {

@@ -212,10 +212,12 @@ public:
 	 */
 	static bool CheckFluidsynth(std::string& status_message);
 
+	static void ChangeFluidsynthSoundfont(StringView sf_path);
+
 	/**
 	 * Checks if WildMidi works.
 	 *
-	 * @param status_message Current Fluidsynth status
+	 * @param status_message Current WildMidi status
 	 * @return true: Works, false: Not working
 	 */
 	static bool CheckWildMidi(std::string& status_message);

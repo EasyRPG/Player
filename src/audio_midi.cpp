@@ -141,6 +141,18 @@ bool MidiDecoder::CheckFluidsynth(std::string& status_message) {
 	return works.fluidsynth;
 }
 
+void MidiDecoder::ChangeFluidsynthSoundfont(StringView sf_path) {
+	if (!works.fluidsynth || works.fluidsynth_status.empty()) {
+		// Fluidsynth was not initialized yet or failed, will use the path from the config automatically
+		works.fluidsynth = true;
+		CreateFluidsynth(true);
+		return;
+	}
+
+	// Was initialized before
+	works.fluidsynth = FluidSynthDecoder::ChangeGlobalSoundfont(sf_path, works.fluidsynth_status);
+}
+
 bool MidiDecoder::CheckWildMidi(std::string &status_message) {
 	if (works.wildmidi && works.wildmidi_status.empty()) {
 		CreateWildMidi(true);

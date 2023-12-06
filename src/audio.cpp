@@ -17,6 +17,7 @@
 
 // Headers
 #include "audio.h"
+#include "audio_midi.h"
 #include "system.h"
 #include "baseui.h"
 #include "player.h"
@@ -143,4 +144,5 @@ std::string AudioInterface::GetFluidsynthSoundfont() const {
 
 void AudioInterface::SetFluidsynthSoundfont(StringView sf) {
 	cfg.soundfont.Set(ToString(sf));
+	MidiDecoder::ChangeFluidsynthSoundfont(sf);
 }
