@@ -88,10 +88,12 @@ void Scene_Settings::CreateMainWindow() {
 
 void Scene_Settings::CreateOptionsWindow() {
 	help_window = std::make_unique<Window_Help>(Player::menu_offset_x, 0, MENU_WIDTH, 32);
+	help_window->SetAnimation(Window_Help::Animation::Loop);
 	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
 
 	help_window2 = std::make_unique<Window_Help>(Player::menu_offset_x, options_window->GetBottomY(), MENU_WIDTH, 32);
+	help_window2->SetAnimation(Window_Help::Animation::Loop);
 	options_window->help_window2 = help_window2.get();
 
 	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
@@ -200,6 +202,7 @@ void Scene_Settings::vUpdate() {
 
 	main_window->Update();
 	help_window->Update();
+	help_window2->Update();
 	options_window->Update();
 	input_window->Update();
 	input_mode_window->Update();
