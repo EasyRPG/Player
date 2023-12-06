@@ -1076,16 +1076,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 endif()
 
 # Executable
-if(NINTENDO_WIIU)
-	add_executable(easyrpg-player src/platform/sdl/main.cpp)
-	target_link_libraries(easyrpg-player ${PROJECT_NAME})
-	wut_create_rpx(easyrpg-player)
-	wut_create_wuhb(easyrpg-player
-		NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
-		SHORT_NAME "Player"
-		AUTHOR "EasyRPG Team"
-	) # todo icon, splashs
-elseif(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$")
+if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$" AND NOT NINTENDO_WIIU)
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1175,7 +1166,8 @@ elseif(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
+elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO_WIIU)
+	set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
 	if(NINTENDO_3DS)
 		add_executable(easyrpg-player src/platform/3ds/main.cpp)
 		target_link_libraries(easyrpg-player
@@ -1227,6 +1219,19 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		install(FILES resources/wii/icon.png
 			${CMAKE_CURRENT_BINARY_DIR}/resources/wii/meta.xml
 			DESTINATION easyrpg-player COMPONENT wii)
+	elseif(NINTENDO_WIIU)
+		add_executable(easyrpg-player src/platform/sdl/main.cpp)
+		target_link_libraries(easyrpg-player ${PROJECT_NAME})
+		wut_create_rpx(easyrpg-player)
+		wut_create_wuhb(easyrpg-player
+			NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
+			SHORT_NAME "Player"
+			AUTHOR "EasyRPG Team"
+		) # todo icon, splashs)
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx
+				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.wuhb
+			DESTINATION . COMPONENT wiiu)
+		set(CPACK_PLATFORM "wiiu")
 	elseif(VITA)
 		set(CMAKE_EXECUTABLE_SUFFIX .elf)
 		add_executable(easyrpg-player src/platform/psvita/main.cpp)
@@ -1261,7 +1266,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	endif()
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	# debug information
-	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$")
+	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$" OR NINTENDO_WIIU)
 		dkp_target_generate_symbol_list(easyrpg-player)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.map
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
@@ -1275,7 +1280,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	if(PLAYER_VERSIONED_PACKAGES)
 		string(APPEND CPACK_PACKAGE_FILE_NAME "-${PLAYER_VERSION}")
 	endif()
-	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${PLAYER_TARGET_PLATFORM}-debug")
+	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${CPACK_PLATFORM}-debug")
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
 	include(CPack)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
