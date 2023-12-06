@@ -656,6 +656,10 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 	current_style = original_style;
 }
 
+StringView Font::GetName() const {
+	return name;
+}
+
 Rect Font::GetSize(char32_t glyph) const {
 	if (EP_UNLIKELY(Utils::IsControlCharacter(glyph))) {
 		if (glyph == '\n') {

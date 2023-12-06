@@ -454,19 +454,30 @@ void Scene_Settings::UpdateOptions() {
 void Scene_Settings::UpdateFont(bool mincho) {
 	auto fs = Game_Config::GetFontFilesystem();
 
-	help_window2->SetText("The quick brown fox jumps over the lazy dog 1234567890.");
+	auto& last_index = options_window->GetFrame().scratch;
 
 	int index = options_window->GetIndex();
+	if (last_index == index) {
+		UpdateOptions();
+		return;
+	}
+	last_index = index;
+
 	if (index == 0) {
+		help_window2->Clear();
 		help_window2->SetFont(Font::DefaultBitmapFont(mincho));
 		help_window2->SetVisible(true);
-	} else if (index >= options_window->GetRowMax() - 2) {
-		// Size or browse
+	} else if (index >= options_window->GetRowMax() - 3) {
+		// Size, sample or browse
+		help_window2->Clear();
+		help_window2->SetFont(nullptr);
+		help_window2->SetVisible(true);
 	} else {
 		auto is = fs.OpenInputStream(options_window->GetCurrentOption().text);
 		if (is) {
 			auto font = Font::CreateFtFont(std::move(is), options_window->font_size.Get(), false, false);
 			if (font) {
+				help_window2->Clear();
 				help_window2->SetFont(font);
 				help_window2->SetVisible(true);
 			}

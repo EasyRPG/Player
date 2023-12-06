@@ -381,6 +381,7 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.font1, [this, &cfg]() {
 		font_size.Set(cfg.font1_size.Get());
 		Push(eEngineFont1);
+		GetFrame().scratch = -1;
 	});
 	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
 		options.back().text += " [In use]";
@@ -389,6 +390,7 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.font2, [this, &cfg]() {
 		font_size.Set(cfg.font2_size.Get());
 		Push(eEngineFont2);
+		GetFrame().scratch = -1;
 	});
 	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
 		options.back().text += " [In use]";
@@ -413,13 +415,18 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 
 	auto& setting = mincho ? cfg.font2 : cfg.font1;
 
+	auto set_help2 = [this]() {
+		options.back().help2 = ToString(sample_text.GetDescriptions()[static_cast<int>(sample_text.Get())]);
+	};
+
 	AddOption(MenuItem("<Built-in Font>", "Use the built-in pixel font", setting.Get().empty() ? "[x]" : ""), [this, &setting, mincho]() {
 		Font::SetDefault(nullptr, mincho);
 		setting.Set("");
 		Pop();
 	});
+	set_help2();
 
-	//std::string font_lower = Utils::LowerCase(Audio().GetFluidsynthSoundfont());
+	std::string font_lower = Utils::LowerCase(Font::Default(mincho)->GetName());
 
 	auto list = fs.ListDirectory();
 	assert(list);
@@ -429,10 +436,7 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 		});
 
 		if (item.second.type == DirectoryTree::FileType::Regular && is_font) {
-			/*AddOption(MenuItem(item.second.name, "Use this custom soundfont", StringView(sf_lower).ends_with(item.first) ? "[x]" : ""), [fs, item]() {
-				Audio().SetFluidsynthSoundfont(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
-			});*/
-			AddOption(MenuItem(item.second.name, "Use this font", ""), [=, &cfg, &setting]() mutable {
+			AddOption(MenuItem(item.second.name, "Use this font", StringView(font_lower).ends_with(item.first) ? "[x]" : ""), [=, &cfg, &setting]() mutable {
 				auto is = fs.OpenInputStream(item.second.name);
 				if (is) {
 					auto font = Font::CreateFtFont(std::move(is), font_size.Get(), false, false);
@@ -445,6 +449,7 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 					}
 				}
 			});
+			set_help2();
 		}
 	}
 
@@ -452,8 +457,12 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 		font_size.Set(GetCurrentOption().current_value);
 	});
 
-	AddOption(MenuItem("<Open Font directory>", "Open the font directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
+	AddOption(sample_text, [this]() {
+		sample_text.Set(static_cast<SampleText>(GetCurrentOption().current_value));
+	});
+	set_help2();
 
+	AddOption(MenuItem("<Open Font directory>", "Open the font directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
 }
 
 void Window_Settings::RefreshLicense() {
