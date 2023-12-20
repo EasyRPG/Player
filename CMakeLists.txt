@@ -1124,7 +1124,11 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$"
 		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
 		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
 
-		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH -s EXIT_RUNTIME -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT -s MINIFY_HTML=0 --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext','$dynCall']")
+		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS
+			"-sALLOW_MEMORY_GROWTH -sMINIFY_HTML=0 -sMODULARIZE -sEXPORT_NAME=createEasyRpgPlayer \
+			 -sEXIT_RUNTIME --bind --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} \
+			 -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext','$dynCall'] \
+			 -sEXPORTED_FUNCTIONS=_main,_malloc,_free")
 		set_source_files_properties("src/platform/sdl/main.cpp" PROPERTIES
 			OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS};${PLAYER_JS_SHELL}")
 
@@ -1132,6 +1136,13 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$"
 			set_target_properties(${EXE_NAME} PROPERTIES SUFFIX ".html")
 			set_property(TARGET ${EXE_NAME} APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
 		endif()
+
+		target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions)
+
+		target_sources(${PROJECT_NAME} PRIVATE
+				src/platform/emscripten/clock.h
+				src/platform/emscripten/interface.cpp
+				src/platform/emscripten/interface.h)
 
 		target_link_libraries(${EXE_NAME} "idbfs.js")
 
@@ -1413,7 +1424,10 @@ if(PLAYER_ENABLE_TESTS)
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 		target_compile_definitions(test_runner_player PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"/assets\")
+		target_compile_definitions(test_runner_player PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
+
 		target_link_libraries(test_runner_player "nodefs.js")
+		set_property(TARGET test_runner_player PROPERTY LINK_FLAGS "-sALLOW_MEMORY_GROWTH --bind")
 	else()
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	endif()
@@ -1427,10 +1441,6 @@ if(PLAYER_ENABLE_TESTS)
 	endif()
 	add_dependencies(check_player test_runner_player)
 	add_dependencies(check check_player)
-
-	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		set_property(TARGET test_runner_player APPEND_STRING PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH")
-	endif()
 endif()
 
 # Instrumentation framework

@@ -15,16 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_IMAGE_PNG_H
-#define EP_IMAGE_PNG_H
+#ifndef EP_EMSCRIPTEN_INTERFACE_H
+#define EP_EMSCRIPTEN_INTERFACE_H
 
-#include <cstdint>
-#include "filesystem_stream.h"
+class Emscripten_Interface {
+public:
+	static bool DownloadSavegame(int slot);
+	static void UploadSavegame(int slot);
+	static void RefreshScene();
+	static void TakeScreenshot();
+	static void Reset();
+};
 
-namespace ImagePNG {
-	bool ReadPNG(const void* buffer, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadPNG(Filesystem_Stream::InputStream& is, bool transparent, int& width, int& height, void*& pixels);
-	bool WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
-}
+class Emscripten_Interface_Private {
+public:
+	static bool UploadSavegameStep2(int slot, int buffer_addr, int size);
+};
 
 #endif

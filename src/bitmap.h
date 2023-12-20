@@ -198,7 +198,7 @@ public:
 	 * @param os output stream that PNG will be output.
 	 * @return true if success, otherwise false.
 	 */
-	bool WritePNG(Filesystem_Stream::OutputStream&) const;
+	bool WritePNG(std::ostream& os) const;
 
 	/**
 	 * Gets the background color

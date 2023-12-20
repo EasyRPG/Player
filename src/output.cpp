@@ -28,6 +28,7 @@
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#  include "platform/emscripten/interface.h"
 #elif defined(__vita__)
 #  include <psp2/kernel/processmgr.h>
 #endif
@@ -275,12 +276,17 @@ void Output::Quit() {
 }
 
 bool Output::TakeScreenshot() {
+#ifdef EMSCRIPTEN
+	Emscripten_Interface::TakeScreenshot();
+	return true;
+#else
 	int index = 0;
 	std::string p;
 	do {
 		p = "screenshot_" + std::to_string(index++) + ".png";
 	} while(FileFinder::Save().Exists(p));
 	return TakeScreenshot(p);
+#endif
 }
 
 bool Output::TakeScreenshot(StringView file) {
@@ -293,7 +299,7 @@ bool Output::TakeScreenshot(StringView file) {
 	return false;
 }
 
-bool Output::TakeScreenshot(Filesystem_Stream::OutputStream& os) {
+bool Output::TakeScreenshot(std::ostream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 

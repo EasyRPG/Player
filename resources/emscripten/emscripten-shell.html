@@ -156,7 +156,22 @@ const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' 
 const keys = new Map();
 const keysDown = new Map();
 const canvas = document.getElementById('canvas');
+let easyrpgPlayer;
 let lastTouchedId;
+
+// Launch the Player and configure it
+window.addEventListener('load', (event) => {
+    createEasyRpgPlayer({
+      game: undefined,
+      saveFs: undefined
+    }).then(function(Module) {
+      // Module is ready
+      easyrpgPlayer = Module;
+      easyrpgPlayer.initApi();
+
+      // Custom code here
+    });
+});
 
 // Make EasyRPG player embeddable
 canvas.addEventListener('mouseenter', () => window.focus());

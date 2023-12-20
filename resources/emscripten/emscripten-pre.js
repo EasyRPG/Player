@@ -1,8 +1,6 @@
 // Note: The `Module` context is already initialized as an
 // empty object by emscripten even before the pre script
-Module = {
-  EASYRPG_GAME: "",
-
+Module = { ...Module,
   preRun: [onPreRun],
   postRun: [],
 
@@ -67,7 +65,8 @@ function parseArgs () {
 
     // Filesystem is not ready when processing arguments, store path to game
     if (tmp[0] === "game" && tmp.length > 1) {
-      Module.EASYRPG_GAME = tmp[1].toLowerCase();
+      Module.game = tmp[1].toLowerCase();
+      continue;
     }
 
     result.push("--" + tmp[0]);
@@ -91,7 +90,7 @@ function parseArgs () {
 function onPreRun () {
   // Retrieve save directory from persistent storage before using it
   FS.mkdir("Save");
-  FS.mount(Module.EASYRPG_FS, {}, 'Save');
+  FS.mount(Module.saveFs, {}, 'Save');
 
   // For preserving the configuration. Shared across website
   FS.mkdir("/home/web_user/.config");
@@ -102,6 +101,12 @@ function onPreRun () {
 
 Module.setStatus('Downloading...');
 Module.arguments = ["easyrpg-player", ...parseArgs()];
+
+if (Module.game === undefined) {
+  Module.game = "";
+} else {
+  Module.arguments.push("--game", Module.game);
+}
 
 // Catch all errors occuring inside the window
 window.addEventListener('error', (event) => {

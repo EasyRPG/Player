@@ -188,6 +188,15 @@ void Scene_Title::vUpdate() {
 	}
 }
 
+void Scene_Title::Refresh() {
+	// Enable load game if available
+	continue_enabled = FileFinder::HasSavegame();
+	if (continue_enabled) {
+		command_window->SetIndex(1);
+	}
+	command_window->SetItemEnabled(1, continue_enabled);
+}
+
 void Scene_Title::OnTranslationChanged() {
 	Start();
 
@@ -257,12 +266,7 @@ void Scene_Title::CreateCommandWindow() {
 	command_window.reset(new Window_Command(options));
 	RepositionWindow(*command_window, Player::hide_title_flag);
 
-	// Enable load game if available
-	continue_enabled = FileFinder::HasSavegame();
-	if (continue_enabled) {
-		command_window->SetIndex(1);
-	}
-	command_window->SetItemEnabled(1, continue_enabled);
+	Refresh();
 
 	// Set the number of frames for the opening animation to last
 	if (!Player::hide_title_flag) {
