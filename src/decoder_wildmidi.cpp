@@ -112,7 +112,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 			found = FileFinder::Root().Exists(config_file);
 		}
 	}
-#elif defined(GEKKO)
+#elif defined(__wii__)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
 	found = FileFinder::Root().Exists(config_file);
@@ -138,6 +138,16 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 	}
 	if (!found) {
 		config_file = "timidity.cfg";
+		found = FileFinder::Root().Exists(config_file);
+	}
+#elif defined(__WIIU__)
+	// preferred SD card directory
+	config_file = "/vol/external01/data/easyrpg-player/wildmidi.cfg";
+	found = FileFinder::Root().Exists(config_file);
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(__3DS__)

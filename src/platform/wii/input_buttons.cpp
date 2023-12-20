@@ -24,8 +24,8 @@
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
 		// Wiimote
-		{CANCEL, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
-		{DECISION, Keys::JOY_OTHER_1}, // B, shared with CC
+		{DECISION, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
+		{CANCEL, Keys::JOY_OTHER_1}, // B, shared with CC
 		{CANCEL, Keys::JOY_OTHER_2}, // 1
 		{DECISION, Keys::JOY_OTHER_3}, // 2
 		{RESET, Keys::JOY_OTHER_4}, // -, shared with CC

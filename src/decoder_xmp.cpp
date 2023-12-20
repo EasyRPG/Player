@@ -87,7 +87,7 @@ bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 
 	int player_interpolation = 0;
 	int player_effects = 0;
-#if defined(PSP) || defined(__3DS__) || defined(GEKKO)
+#if defined(PSP) || defined(__3DS__) || defined(__wii__)
 	// disable filtering and use low quality interpolation
 	player_interpolation = XMP_INTERP_NEAREST;
 #else
