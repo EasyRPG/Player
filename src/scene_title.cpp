@@ -92,7 +92,6 @@ void Scene_Title::CreateHelpWindow() {
 	translate_window->SetHelpWindow(help_window.get());
 }
 
-
 void Scene_Title::Continue(SceneType prev_scene) {
 	Main_Data::game_system->ResetSystemGraphic();
 

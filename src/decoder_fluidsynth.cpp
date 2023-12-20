@@ -130,7 +130,7 @@ static bool load_default_sf(std::string& status_message, fluid_synth_t* syn, int
 
 #if FLUIDSYNTH_VERSION_MAJOR >= 2
 	char* default_sf = nullptr;
-	if (fluid_settings_dupstr(global_settings.get(), "synth.default-soundfont", &default_sf) == FLUID_OK) {
+	if (fluid_settings_dupstr(global_settings.get(), "synth.default-soundfont", &default_sf) == 0) {
 		if (default_sf != nullptr && default_sf[0] != '\0') {
 			sf_paths.emplace_back(default_sf);
 		}
@@ -299,7 +299,7 @@ bool FluidSynthDecoder::ChangeGlobalSoundfont(StringView sf_path, std::string& s
 
 	int new_global_id = fluid_synth_sfload(global_synth.get(), ToString(sf_path).c_str(), 1);
 	if (new_global_id != FLUID_FAILED) {
-		assert(fluid_synth_sfunload(global_synth.get(), global_synth_id, 1) == FLUID_OK);
+		assert(fluid_synth_sfunload(global_synth.get(), global_synth_id, 1) == 0);
 		global_synth_id = new_global_id;
 		status_message = fmt::format("Using soundfont {}", sf_path);
 		return true;

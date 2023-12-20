@@ -39,6 +39,10 @@ namespace {
 		return std::to_string(i);
 	}
 
+	inline std::string ParamValueToString(double d) {
+		return std::to_string(d);
+	}
+
 	inline std::string ParamValueToString(bool b) {
 		return b ? "[ON]" : "[OFF]";
 	}
