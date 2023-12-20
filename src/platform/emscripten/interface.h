@@ -18,11 +18,15 @@
 #ifndef EP_EMSCRIPTEN_INTERFACE_H
 #define EP_EMSCRIPTEN_INTERFACE_H
 
+#include <string>
+
 class Emscripten_Interface {
 public:
 	static bool DownloadSavegame(int slot);
 	static void UploadSavegame(int slot);
-	static void RefreshScene();
+    static void UploadSoundfont();
+    static void UploadFont();
+    static void RefreshScene();
 	static void TakeScreenshot();
 	static void Reset();
 };
@@ -30,6 +34,8 @@ public:
 class Emscripten_Interface_Private {
 public:
 	static bool UploadSavegameStep2(int slot, int buffer_addr, int size);
+    static bool UploadFontStep2(std::string name, int buffer_addr, int size);
+    static bool UploadSoundfontStep2(std::string name, int buffer_addr, int size);
 };
 
 #endif

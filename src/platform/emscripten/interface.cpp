@@ -53,6 +53,18 @@ void Emscripten_Interface::UploadSavegame(int slot) {
 	}, slot);
 }
 
+void Emscripten_Interface::UploadSoundfont() {
+	EM_ASM_INT({
+		Module.api_private.uploadSoundfont_js($0);
+	});
+}
+
+void Emscripten_Interface::UploadFont() {
+	EM_ASM_INT({
+	   Module.api_private.uploadFont_js($0);
+   });
+}
+
 void Emscripten_Interface::RefreshScene() {
 	Scene::instance->Refresh();
 }
@@ -91,17 +103,79 @@ bool Emscripten_Interface_Private::UploadSavegameStep2(int slot, int buffer_addr
 	return true;
 }
 
+bool Emscripten_Interface_Private::UploadSoundfontStep2(std::string filename, int buffer_addr, int size) {
+	auto fs = Game_Config::GetSoundfontFilesystem();
+	if (!fs) {
+		Output::Warning("Cannot access Soundfont directory");
+		return false;
+	}
+
+	std::string name = std::get<1>(FileFinder::GetPathAndFilename(filename));
+
+	// TODO: Sanitize
+	/*std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
+
+	if (!lcf::LSD_Reader::Load(is)) {
+		Output::Warning("Selected file is not a valid savegame");
+		return false;
+	}*/
+
+	{
+		auto os = fs.OpenOutputStream(name);
+		if (!os)
+			return false;
+		os.write(reinterpret_cast<char*>(buffer_addr), size);
+	}
+
+	AsyncHandler::SaveFilesystem();
+
+	return true;
+}
+
+bool Emscripten_Interface_Private::UploadFontStep2(std::string filename, int buffer_addr, int size) {
+	auto fs = Game_Config::GetFontFilesystem();
+	if (!fs) {
+		Output::Warning("Cannot access Font directory");
+		return false;
+	}
+
+	std::string name = std::get<1>(FileFinder::GetPathAndFilename(filename));
+
+	// TODO: Sanitize
+	/*std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
+
+	if (!lcf::LSD_Reader::Load(is)) {
+		Output::Warning("Selected file is not a valid savegame");
+		return false;
+	}*/
+
+	{
+		auto os = fs.OpenOutputStream(name);
+		if (!os)
+			return false;
+		os.write(reinterpret_cast<char*>(buffer_addr), size);
+	}
+
+	AsyncHandler::SaveFilesystem();
+
+	return true;
+}
+
 // Binding code
 EMSCRIPTEN_BINDINGS(player_interface) {
 	emscripten::class_<Emscripten_Interface>("api")
 		.class_function("requestReset", &Emscripten_Interface::Reset)
 		.class_function("downloadSavegame", &Emscripten_Interface::DownloadSavegame)
 		.class_function("uploadSavegame", &Emscripten_Interface::UploadSavegame)
+		.class_function("uploadSoundfont", &Emscripten_Interface::UploadSoundfont)
+		.class_function("uploadFont", &Emscripten_Interface::UploadFont)
 		.class_function("refreshScene", &Emscripten_Interface::RefreshScene)
 		.class_function("takeScreenshot", &Emscripten_Interface::TakeScreenshot)
 	;
 
 	emscripten::class_<Emscripten_Interface_Private>("api_private")
 		.class_function("uploadSavegameStep2", &Emscripten_Interface_Private::UploadSavegameStep2)
+		.class_function("uploadSoundfontStep2", &Emscripten_Interface_Private::UploadSoundfontStep2)
+		.class_function("uploadFontStep2", &Emscripten_Interface_Private::UploadFontStep2)
 	;
 }

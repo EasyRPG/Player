@@ -734,7 +734,9 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 	int state = evnt.window.event;
 
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
-		if (!vcfg.pause_when_focus_lost.Get()) {
+		auto cfg = vcfg;
+		vGetConfig(cfg);
+		if (!cfg.pause_when_focus_lost.Get()) {
 			return;
 		}
 

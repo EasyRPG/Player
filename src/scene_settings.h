@@ -43,6 +43,7 @@ public:
 	Scene_Settings();
 
 	void Start() override;
+	void Refresh() override;
 	void vUpdate() override;
 
 	/**

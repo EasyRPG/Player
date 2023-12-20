@@ -228,8 +228,14 @@ FluidSynthDecoder::~FluidSynthDecoder() {
 
 bool FluidSynthDecoder::Initialize(std::string& status_message) {
 	// only initialize once until a new game starts
-	if (once)
+	if (once) {
+		if (!init && global_settings && !global_synth) {
+			global_synth.reset(create_synth(status_message, global_synth_id));
+			init = (global_synth != nullptr);
+		}
 		return init;
+	}
+
 	once = true;
 
 #ifdef HAVE_FLUIDLITE

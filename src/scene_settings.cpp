@@ -195,6 +195,10 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	}
 }
 
+void Scene_Settings::Refresh() {
+	options_window->Refresh();
+}
+
 void Scene_Settings::vUpdate() {
 	if (RefreshInputEmergencyReset()) {
 		return;
