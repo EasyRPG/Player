@@ -111,7 +111,7 @@ struct Game_ConfigAudio {
 	BoolConfigParam fluidsynth_midi { "Fluidsynth (SF2)", "Play MIDI using SF2 soundfonts", "Audio", "Fluidsynth", true };
 	BoolConfigParam wildmidi_midi { "WildMidi (GUS)", "Play MIDI using GUS patches", "Audio", "WildMidi", true };
 	BoolConfigParam native_midi { "Native MIDI", "Play MIDI through the operating system ", "Audio", "NativeMidi", true };
-	BoolConfigParam fmmidi_midi { "FmMidi", "Play MIDI using the built-in MIDI synthesizer", "Audio", "FmMidi", true };
+	LockedConfigParam<std::string> fmmidi_midi { "FmMidi", "Play MIDI using the built-in MIDI synthesizer", "[Always ON]" };
 	PathConfigParam soundfont { "Soundfont", "Soundfont to use for Fluidsynth", "Audio", "Soundfont", "" };
 
 	void Hide();

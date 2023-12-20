@@ -60,7 +60,7 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(bool resample) {
 		mididec = CreateWildMidi(resample);
 	}
 
-	if (!mididec && Audio().GetFmMidiEnabled()) {
+	if (!mididec) {
 		mididec = CreateFmMidi(resample);
 	}
 

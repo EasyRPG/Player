@@ -340,8 +340,8 @@ void Window_Settings::RefreshAudioMidi() {
 	}
 
 	if (cfg.fmmidi_midi.IsOptionVisible()) {
-		AddOption(cfg.fmmidi_midi, []() { Audio().SetFmMidiEnabled(Audio().GetConfig().fmmidi_midi.Toggle()); });
-		if (cfg.fmmidi_midi.Get() && !used) {
+		AddOption(cfg.fmmidi_midi, []() {});
+		if (!used) {
 			options.back().text += " [In use]";
 		}
 	}

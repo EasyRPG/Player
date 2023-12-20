@@ -31,16 +31,16 @@
 #include <lcf/flag_set.h>
 
 namespace {
-	inline const std::string& ParamValueToString(const std::string& s) {
-		return s;
-	}
-
 	inline std::string ParamValueToString(StringView s) {
 		return ToString(s);
 	}
 
 	inline std::string ParamValueToString(int i) {
 		return std::to_string(i);
+	}
+
+	inline std::string ParamValueToString(bool b) {
+		return b ? "[ON]" : "[OFF]";
 	}
 }
 
@@ -337,7 +337,7 @@ public:
 	}
 
 	std::string ValueToString() const override {
-		return Get() ? "[ON]" : "[OFF]";
+		return ParamValueToString(Get());
 	}
 };
 

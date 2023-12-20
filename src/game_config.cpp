@@ -415,7 +415,6 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	audio.fluidsynth_midi.FromIni(ini);
 	audio.wildmidi_midi.FromIni(ini);
 	audio.native_midi.FromIni(ini);
-	audio.fmmidi_midi.FromIni(ini);
 	audio.soundfont.FromIni(ini);
 
 	/** INPUT SECTION */
@@ -511,7 +510,6 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	audio.fluidsynth_midi.ToIni(os);
 	audio.wildmidi_midi.ToIni(os);
 	audio.native_midi.ToIni(os);
-	audio.fmmidi_midi.ToIni(os);
 	audio.soundfont.ToIni(os);
 
 	os << "\n";

@@ -142,9 +142,6 @@ struct AudioInterface {
 	bool GetNativeMidiEnabled() const;
 	void SetNativeMidiEnabled(bool enable);
 
-	bool GetFmMidiEnabled() const;
-	void SetFmMidiEnabled(bool enable);
-
 	std::string GetFluidsynthSoundfont() const;
 	void SetFluidsynthSoundfont(StringView sf);
 

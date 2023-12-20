@@ -130,14 +130,6 @@ void AudioInterface::SetNativeMidiEnabled(bool enable) {
 	cfg.native_midi.Set(enable);
 }
 
-bool AudioInterface::GetFmMidiEnabled() const {
-	return cfg.fmmidi_midi.Get();
-}
-
-void AudioInterface::SetFmMidiEnabled(bool enable) {
-	cfg.fmmidi_midi.Set(enable);
-}
-
 std::string AudioInterface::GetFluidsynthSoundfont() const {
 	return cfg.soundfont.Get();
 }
