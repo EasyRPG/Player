@@ -1054,12 +1054,20 @@ void Player::LoadFonts() {
 	// Look for bundled fonts
 	auto gothic = FileFinder::OpenFont("Font");
 	if (gothic) {
-		Font::SetDefault(Font::CreateFtFont(std::move(gothic), 12, false, false), false);
+		auto ft = Font::CreateFtFont(std::move(gothic), 12, false, false);
+		player_config.font1.SetLocked(ft != nullptr);
+		if (ft) {
+			Font::SetDefault(ft, false);
+		}
 	}
 
 	auto mincho = FileFinder::OpenFont("Font2");
 	if (mincho) {
-		Font::SetDefault(Font::CreateFtFont(std::move(mincho), 12, false, false), true);
+		auto ft = Font::CreateFtFont(std::move(mincho), 12, false, false);
+		player_config.font2.SetLocked(ft != nullptr);
+		if (ft) {
+			Font::SetDefault(ft, true);
+		}
 	}
 #endif
 }
