@@ -22,8 +22,10 @@
 #include <lcf/lsd/reader.h>
 #include <sstream>
 
+#include "system.h"
 #include "async_handler.h"
 #include "filefinder.h"
+#include "filesystem_stream.h"
 #include "player.h"
 #include "scene_save.h"
 #include "output.h"
@@ -112,13 +114,11 @@ bool Emscripten_Interface_Private::UploadSoundfontStep2(std::string filename, in
 
 	std::string name = std::get<1>(FileFinder::GetPathAndFilename(filename));
 
-	// TODO: Sanitize
-	/*std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
-
-	if (!lcf::LSD_Reader::Load(is)) {
-		Output::Warning("Selected file is not a valid savegame");
+	// TODO: No good way to sanitize this, would require launching an entire, second fluidsynth session
+	if (!StringView(name).ends_with(".sf2")) {
+		Output::Warning("Selected file is not a valid soundfont");
 		return false;
-	}*/
+	}
 
 	{
 		auto os = fs.OpenOutputStream(name);
@@ -141,13 +141,11 @@ bool Emscripten_Interface_Private::UploadFontStep2(std::string filename, int buf
 
 	std::string name = std::get<1>(FileFinder::GetPathAndFilename(filename));
 
-	// TODO: Sanitize
-	/*std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
-
-	if (!lcf::LSD_Reader::Load(is)) {
-		Output::Warning("Selected file is not a valid savegame");
+	Filesystem_Stream::InputStream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)), filename);
+	if (!Font::CreateFtFont(std::move(is), 12, false, false)) {
+		Output::Warning("Selected file is not a valid font");
 		return false;
-	}*/
+	}
 
 	{
 		auto os = fs.OpenOutputStream(name);
@@ -167,15 +165,23 @@ EMSCRIPTEN_BINDINGS(player_interface) {
 		.class_function("requestReset", &Emscripten_Interface::Reset)
 		.class_function("downloadSavegame", &Emscripten_Interface::DownloadSavegame)
 		.class_function("uploadSavegame", &Emscripten_Interface::UploadSavegame)
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 		.class_function("uploadSoundfont", &Emscripten_Interface::UploadSoundfont)
+#endif
+#if defined(HAVE_FREETYPE)
 		.class_function("uploadFont", &Emscripten_Interface::UploadFont)
+#endif
 		.class_function("refreshScene", &Emscripten_Interface::RefreshScene)
 		.class_function("takeScreenshot", &Emscripten_Interface::TakeScreenshot)
 	;
 
 	emscripten::class_<Emscripten_Interface_Private>("api_private")
 		.class_function("uploadSavegameStep2", &Emscripten_Interface_Private::UploadSavegameStep2)
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 		.class_function("uploadSoundfontStep2", &Emscripten_Interface_Private::UploadSoundfontStep2)
+#endif
+#if defined(HAVE_FREETYPE)
 		.class_function("uploadFontStep2", &Emscripten_Interface_Private::UploadFontStep2)
+#endif
 	;
 }
