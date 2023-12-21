@@ -55,7 +55,7 @@ void Window_Settings::DrawOption(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
 
-	auto& option = options[index];
+	auto& option = GetFrame().options[index];
 
 	bool enabled = bool(option.action);
 	Font::SystemColor color = enabled ? option.color : Font::ColorDisabled;
@@ -119,7 +119,7 @@ Window_Settings::UiMode Window_Settings::GetMode() const {
 }
 
 void Window_Settings::Refresh() {
-	options.clear();
+	GetFrame().options.clear();
 
 	switch (GetFrame().uimode) {
 		case eNone:
@@ -164,9 +164,9 @@ void Window_Settings::Refresh() {
 			break;
 	}
 
-	SetItemMax(options.size());
+	SetItemMax(GetFrame().options.size());
 
-	if (GetFrame().uimode == eNone || options.empty()) {
+	if (GetFrame().uimode == eNone || GetFrame().options.empty()) {
 		SetIndex(-1);
 	}
 
@@ -180,11 +180,11 @@ void Window_Settings::Refresh() {
 }
 
 void Window_Settings::UpdateHelp() {
-	if (index >= 0 && index < static_cast<int>(options.size())) {
-		help_window->SetText(options[index].help);
+	if (index >= 0 && index < static_cast<int>(GetFrame().options.size())) {
+		help_window->SetText(GetFrame().options[index].help);
 		if (help_window2) {
-			help_window2->SetText(options[index].help2);
-			help_window2->SetVisible(!options[index].help2.empty());
+			help_window2->SetText(GetFrame().options[index].help2);
+			help_window2->SetVisible(!GetFrame().options[index].help2.empty());
 		}
 	} else {
 		help_window->SetText("");
@@ -209,7 +209,7 @@ void Window_Settings::AddOption(const Param& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 template <typename T, typename Action>
@@ -231,7 +231,7 @@ void Window_Settings::AddOption(const RangeConfigParam<T>& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 template <typename T, typename Action, size_t S>
@@ -267,7 +267,7 @@ void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 void Window_Settings::RefreshVideo() {
@@ -304,37 +304,37 @@ void Window_Settings::RefreshAudioMidi() {
 	bool used = false;
 
 	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
-	options.back().help2 = "Changes take effect when a new MIDI file is played";
+	GetFrame().options.back().help2 = "Changes take effect when a new MIDI file is played";
 
 	if (cfg.fluidsynth_midi.IsOptionVisible()) {
 		AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
-		if (!MidiDecoder::CheckFluidsynth(options.back().help2)) {
-			options.back().text += " [Not working]";
-			options.back().color = Font::ColorKnockout;
+		if (!MidiDecoder::CheckFluidsynth(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
 		} else if (cfg.fluidsynth_midi.Get()) {
-			options.back().text += " [In use]";
+			GetFrame().options.back().text += " [In use]";
 			used = true;
 		}
 	}
 
 	if (cfg.wildmidi_midi.IsOptionVisible()) {
 		AddOption(cfg.wildmidi_midi, []() { Audio().SetWildMidiEnabled(Audio().GetConfig().wildmidi_midi.Toggle()); });
-		if (!MidiDecoder::CheckWildMidi(options.back().help2)) {
-			options.back().text += " [Not working]";
-			options.back().color = Font::ColorKnockout;
+		if (!MidiDecoder::CheckWildMidi(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
 		} else if (cfg.wildmidi_midi.Get() && !used) {
-			options.back().text += " [In use]";
+			GetFrame().options.back().text += " [In use]";
 			used = true;
 		}
 	}
 
 	if (cfg.native_midi.IsOptionVisible()) {
 		AddOption(cfg.native_midi, []() { Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
-		if (!GenericAudioMidiOut().IsInitialized(options.back().help2)) {
-			options.back().text += " [Not working]";
-			options.back().color = Font::ColorKnockout;
+		if (!GenericAudioMidiOut().IsInitialized(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
 		} else if (cfg.native_midi.Get() && !used) {
-			options.back().text += " [In use]";
+			GetFrame().options.back().text += " [In use]";
 			used = true;
 		}
 	}
@@ -342,7 +342,7 @@ void Window_Settings::RefreshAudioMidi() {
 	if (cfg.fmmidi_midi.IsOptionVisible()) {
 		AddOption(cfg.fmmidi_midi, []() {});
 		if (!used) {
-			options.back().text += " [In use]";
+			GetFrame().options.back().text += " [In use]";
 		}
 	}
 }
@@ -391,8 +391,11 @@ void Window_Settings::RefreshEngine() {
 		Push(eEngineFont1);
 		GetFrame().scratch = -1;
 	});
+	if (cfg.font1.IsLocked()) {
+		GetFrame().options.back().help = "This game uses a custom font";
+	}
 	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
-		options.back().text += " [In use]";
+		GetFrame().options.back().text += " [In use]";
 	}
 
 	AddOption(cfg.font2, [this, &cfg]() {
@@ -400,8 +403,11 @@ void Window_Settings::RefreshEngine() {
 		Push(eEngineFont2);
 		GetFrame().scratch = -1;
 	});
+	if (cfg.font2.IsLocked()) {
+		GetFrame().options.back().help = "This game uses a custom font";
+	}
 	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
-		options.back().text += " [In use]";
+		GetFrame().options.back().text += " [In use]";
 	}
 
 	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
@@ -424,7 +430,7 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 	auto& setting = mincho ? cfg.font2 : cfg.font1;
 
 	auto set_help2 = [this]() {
-		options.back().help2 = ToString(sample_text.GetDescriptions()[static_cast<int>(sample_text.Get())]);
+		GetFrame().options.back().help2 = ToString(sample_text.GetDescriptions()[static_cast<int>(sample_text.Get())]);
 	};
 
 	AddOption(MenuItem("<Built-in Font>", "Use the built-in pixel font", setting.Get().empty() ? "[x]" : ""), [this, &setting, mincho]() {

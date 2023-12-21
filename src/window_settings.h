@@ -82,6 +82,7 @@ public:
 		int arg = -1;
 		int scratch = 0;
 		int scratch2 = 0;
+		std::vector<Option> options;
 	};
 
 	/** Constructor  */
@@ -90,13 +91,13 @@ public:
 	/** @return true if the index points to an enabled action */
 	bool IsCurrentActionEnabled() const {
 		return (index >= 0
-				&& index < static_cast<int>(options.size())
-				&& static_cast<bool>(options[index].action));
+				&& index < static_cast<int>(GetFrame().options.size())
+				&& static_cast<bool>(GetFrame().options[index].action));
 	}
 
 	/** Execute the action pointed to by index */
 	Option& GetCurrentOption() {
-		return options[index];
+		return GetFrame().options[index];
 	}
 
 	UiMode GetMode() const;
@@ -149,8 +150,6 @@ private:
 	void RefreshLicense();
 
 	void UpdateHelp() override;
-
-	std::vector<Option> options;
 
 	struct Memory {
 		int index = 0;
