@@ -275,6 +275,9 @@ std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 }
 
 void Game_Config::LoadFromArgs(CmdlineParser& cp) {
+	font_path.clear();
+	soundfont_path.clear();
+
 	while (!cp.Done()) {
 		CmdlineArg arg;
 		long li_value = 0;
@@ -300,6 +303,14 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 		}
 		if (cp.ParseNext(arg, 0, {"--fps-render-window", "--no-fps-render-window"})) {
 			video.fps_render_window.Set(arg.ArgIsOn());
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--pause-focus-lost")) {
+			video.pause_when_focus_lost.Set(true);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--no-pause-focus-lost")) {
+			video.pause_when_focus_lost.Set(false);
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--window")) {
@@ -361,6 +372,30 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 		if (cp.ParseNext(arg, 1, "--soundfont")) {
 			if (arg.NumValues() > 0) {
 				audio.soundfont.Set(arg.Value(0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font1")) {
+			if (arg.NumValues() > 0) {
+				player.font1.Set(FileFinder::MakeCanonical(arg.Value(0), 0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font1-size")) {
+			if (arg.ParseValue(0, li_value)) {
+				player.font1_size.Set(li_value);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font2")) {
+			if (arg.NumValues() > 0) {
+				player.font2.Set(FileFinder::MakeCanonical(arg.Value(0), 0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font2-size")) {
+			if (arg.ParseValue(0, li_value)) {
+				player.font2_size.Set(li_value);
 			}
 			continue;
 		}

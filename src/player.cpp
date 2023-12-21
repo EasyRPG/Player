@@ -1380,6 +1380,13 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --font1 FILE         Font to use for the first font. The system graphic of the
+                      game determines whether font 1 or 2 is used.
+ --font1-size PX      Size of font 1 in pixel. The default is 12.
+ --font2 FILE         Font to use for the second font.
+ --font2-size PX      Size of font 2 in pixel. The default is 12.
+ --font-path PATH     The path in which the settings scene looks for fonts.
+                      The default is config-path/Font.
  --language LANG      Load the game translation in language/LANG folder.
  --load-game-id N     Skip the title scene and load SaveN.lsd (N is padded to
                       two digits).
@@ -1432,6 +1439,8 @@ Video options:
                        original   - 320x240 (4:3). Recommended
                        widescreen - 416x240 (16:9)
                        ultrawide  - 560x240 (21:9)
+ --pause-focus-lost   Pause the game when the window has no focus.
+                      Disable with --no-pause-focus-lost.
  --scaling S          How the video output is scaled.
                       Options:
                        nearest  - Scale to screen size. Fast, but causes scaling
@@ -1453,6 +1462,8 @@ Audio options:
  --music-volume V     Set volume of background music to V (0-100).
  --sound-volume V     Set volume of sound effects to V (0-100).
  --soundfont FILE     Soundfont in sf2 format to use when playing MIDI files.
+ --soundfont-path P   The path in which the settings scene looks for soundfonts.
+                      The default is config-path/Soundfont.
 
 Debug options:
  --battle-test N...   Start a battle test.
