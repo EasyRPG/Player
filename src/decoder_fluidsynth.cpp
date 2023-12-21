@@ -149,11 +149,13 @@ static bool load_default_sf(std::string& status_message, fluid_synth_t* syn, int
 		sf_paths.insert(sf_paths.end(), sdl_sfs.begin(), sdl_sfs.end());
 	}
 
+#ifdef SYSTEM_DESKTOP_LINUX_BSD_MACOS
 	auto sf_files = {"FluidR3_GM.sf2"};
 	for (const auto& sf_file: sf_files) {
 		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/soundfonts", sf_file));
 		sf_paths.emplace_back(FileFinder::MakePath("/usr/share/sounds/sf2", sf_file));
 	}
+#endif
 
 	bool sf_load_success = false;
 	int old_synth_id = synth_id;

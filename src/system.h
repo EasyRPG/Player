@@ -93,6 +93,7 @@
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define SYSTEM_DESKTOP_LINUX_BSD_MACOS
 #endif
 
 #ifdef USE_SDL
