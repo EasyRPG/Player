@@ -180,6 +180,11 @@ public:
 		return true;
 	}
 
+	/**
+	 * Notifies the sequencer that a new MIDI is about to start.
+	 */
+	virtual void OnNewMidi() {};
+
 	/*
 	 * Does the sequencer need "sound off" messages sent to every channel between
 	 * tracks? NOTE: enabling this can break smooth fade outs between tracks.

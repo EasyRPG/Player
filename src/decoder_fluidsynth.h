@@ -62,6 +62,8 @@ public:
 #endif
 	};
 
+	void OnNewMidi() override;
+
 	bool NeedsSoftReset() override;
 
 private:

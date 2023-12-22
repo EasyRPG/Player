@@ -303,9 +303,6 @@ void Window_Settings::RefreshAudioMidi() {
 
 	bool used = false;
 
-	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
-	GetFrame().options.back().help2 = "Changes take effect when a new MIDI file is played";
-
 	if (cfg.fluidsynth_midi.IsOptionVisible()) {
 		AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
 		if (!MidiDecoder::CheckFluidsynth(GetFrame().options.back().help2)) {
@@ -345,6 +342,9 @@ void Window_Settings::RefreshAudioMidi() {
 			GetFrame().options.back().text += " [In use]";
 		}
 	}
+
+	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
+	GetFrame().options.back().help2 = "Changes take effect when a new MIDI file is played";
 }
 
 void Window_Settings::RefreshAudioSoundfont() {
@@ -373,6 +373,10 @@ void Window_Settings::RefreshAudioSoundfont() {
 				Pop();
 			});
 		}
+	}
+
+	for (auto& opt: GetFrame().options) {
+		opt.help2 = "Changes take effect when a new MIDI file is played";
 	}
 
 #ifdef EMSCRIPTEN

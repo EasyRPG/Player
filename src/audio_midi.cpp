@@ -152,6 +152,7 @@ void MidiDecoder::ChangeFluidsynthSoundfont(StringView sf_path) {
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 	// Was initialized before
 	works.fluidsynth = FluidSynthDecoder::ChangeGlobalSoundfont(sf_path, works.fluidsynth_status);
+	Output::Debug("Fluidsynth: {}", works.fluidsynth_status);
 #endif
 }
 

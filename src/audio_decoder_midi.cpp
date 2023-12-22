@@ -308,6 +308,9 @@ int AudioDecoderMidi::GetTicks() const {
 }
 
 void AudioDecoderMidi::Reset() {
+	// Placed here to avoid reloading of a soundfont on shutdown
+	mididec->OnNewMidi();
+
 	// Generate a MIDI reset event so the device doesn't
 	// leave notes playing or keeps any state
 	reset();
