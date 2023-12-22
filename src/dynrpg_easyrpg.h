@@ -21,7 +21,6 @@
 #include "game_dynrpg.h"
 #include "game_battle.h"
 #include "game_map.h"
-#include "constants.h"
 
 namespace DynRpg {
 	/**

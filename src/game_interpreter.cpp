@@ -825,6 +825,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast <Game_Interpreter::Cmd>(2099): //easyrpg_storeCommands
+			return CommandStoreCommands(com);
 		default:
 			return true;
 	}
@@ -5057,6 +5059,76 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandStoreCommands(lcf::rpg::EventCommand const& com) {
+	//$storeCommands "preffix",[evtType_isVar, evtType, evtId_isVar, evtId, evtPage_isVar, evtPage, targetStrVar_isVar, targetStrVar]
+	// 2099, "@easyrpg_raw", [1,4, 1,5, 1,6, 1,7], 0;
+
+	int evtType = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int evtId = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int evtPage = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int targetStrVar = ValueOrVariable(com.parameters[6], com.parameters[7]); // target string variable
+
+	std::string textPreffix = com.string.empty() ? "" : ToString(com.string) + " ";
+
+	Game_Event* event;
+	const lcf::rpg::EventPage* page;
+	Game_CommonEvent* common_event;
+
+	if (evtType == 0) { // Map Event
+		event = static_cast<Game_Event*>(GetCharacter(evtId));
+		if (!event || evtId == 10001) {
+			Output::Warning("StoreCommands: Can't read non-existent event {}", evtId);
+			return true;
+		}
+		page = event->GetPage(evtPage);
+		if (!page) {
+			Output::Warning("StoreCommands: Can't read non-existent page {} of event {}", evtPage, evtId);
+			return true;
+		}
+	}
+	else if (evtType == 1) { // Common Event
+		common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evtId);
+		if (!common_event) {
+			Output::Warning("StoreCommands: Can't read invalid common event {}", evtId);
+			return true;
+		}
+	}
+
+	std::string rawCommand = " ";
+	Constants constList;
+
+	const auto& list = evtType == 1 ? common_event->GetList() : page->event_commands;
+	int index = 0;
+
+	for (size_t i = index; i < list.size(); ++i) {
+		std::stringstream ss;
+
+		for (size_t j = 0; j < list[i].parameters.size(); ++j) {
+			ss << std::to_string(list[i].parameters[j]);
+			if (j < list[i].parameters.size() - 1) ss << ", ";
+		}
+
+		std::string inputString = ToString(list[i].string);
+		for (size_t j = 0; j < inputString.length(); ++j)
+			if (inputString[j] == '"') {
+				inputString.insert(j, 1, '"');
+				++j;
+			}
+
+		std::string preffix(list[i].indent, '	');
+		std::string suffix = i < list.size() - 1 ? "\n" : "";
+
+		rawCommand += fmt::format("{}${}, \"{}\", [{}], {};{}",
+			preffix, constList.get("EventCode", std::to_string(list[i].code), 1), inputString, ss.str(), list[i].indent, suffix);
+	}
+
+	Game_Strings::Str_Params str_params = { targetStrVar,0, 0 };
+	Main_Data::game_strings->Asg(str_params, textPreffix + rawCommand);
+	//fmt::print(rawCommand);
 
 	return true;
 }
