@@ -17,7 +17,7 @@
 
 #include "utils.h"
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 class Constants {

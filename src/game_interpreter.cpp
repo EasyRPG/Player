@@ -5099,7 +5099,6 @@ bool Game_Interpreter::CommandStoreCommands(lcf::rpg::EventCommand const& com) {
 	}
 
 	std::string rawCommand = " ";
-	Constants constList;
 
 	const auto& list = evtType == 1 ? common_event->GetList() : page->event_commands;
 	int index = 0;
@@ -5122,8 +5121,14 @@ bool Game_Interpreter::CommandStoreCommands(lcf::rpg::EventCommand const& com) {
 		std::string preffix(list[i].indent, '	');
 		std::string suffix = i < list.size() - 1 ? "\n" : "";
 
+		auto cmd_tag = lcf::rpg::EventCommand::kCodeTags.tag(list[i].code);
+		std::string command_id;
+
+		if (!cmd_tag) command_id = std::to_string(list[i].code);
+		else command_id = cmd_tag;
+
 		rawCommand += fmt::format("{}${}, \"{}\", [{}], {};{}",
-			preffix, constList.get("EventCode", std::to_string(list[i].code), 1), inputString, ss.str(), list[i].indent, suffix);
+			preffix, command_id, inputString, ss.str(), list[i].indent, suffix);
 	}
 
 	Game_Strings::Str_Params str_params = { targetStrVar,0, 0 };
