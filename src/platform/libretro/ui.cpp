@@ -511,14 +511,14 @@ RETRO_API unsigned retro_get_region() {
 
 /* Gets region of memory. */
 RETRO_API void* retro_get_memory_data(unsigned id) {
-	if (id = RETRO_MEMORY_SYSTEM_RAM)
+	if (id == RETRO_MEMORY_SYSTEM_RAM)
 		return Game_Variables::GetData().data();
 	else
 		return nullptr;
 }
 
 RETRO_API size_t retro_get_memory_size(unsigned id) {
-	if (id = RETRO_MEMORY_SYSTEM_RAM)
+	if (id == RETRO_MEMORY_SYSTEM_RAM)
 		return Game_Variables::GetData().size() * sizeof(Var_t);
 	else
 		return 0;
