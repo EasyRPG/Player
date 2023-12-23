@@ -25,6 +25,7 @@
 #include "game_system.h"
 #include "game_variables.h"
 #include <lcf/reader_util.h>
+#include "main_data.h"
 #include "output.h"
 #include "player.h"
 #include "game_map.h"
@@ -68,46 +69,71 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 	if (condition.flags.turn && !Game_Battle::CheckTurns(Game_Battle::GetTurn(), condition.turn_b, condition.turn_a))
 		return false;
 
-	if (condition.flags.turn_enemy) {
-		const auto& enemy = (*Main_Data::game_enemyparty)[condition.turn_enemy_id];
-		if (source && source != &enemy)
+	if (Player::IsRPG2k3Commands() && condition.flags.turn_enemy) {
+		const auto* enemy = Main_Data::game_enemyparty->GetEnemy(condition.turn_enemy_id);
+		if (!enemy) {
+			Output::Warning("AreConditionsMet: Invalid enemy ID {}", condition.turn_enemy_id);
 			return false;
-		if (!Game_Battle::CheckTurns(enemy.GetBattleTurn(), condition.turn_enemy_b, condition.turn_enemy_a))
+		}
+
+		if (source && source != enemy)
+			return false;
+		if (!Game_Battle::CheckTurns(enemy->GetBattleTurn(), condition.turn_enemy_b, condition.turn_enemy_a))
 			return false;
 	}
 
-	if (condition.flags.turn_actor) {
+	if (Player::IsRPG2k3Commands() && condition.flags.turn_actor) {
 		const auto* actor = Main_Data::game_actors->GetActor(condition.turn_actor_id);
+		if (!actor) {
+			Output::Warning("AreConditionsMet: Invalid actor ID {}", condition.turn_actor_id);
+			return false;
+		}
+
 		if (source && source != actor)
 			return false;
 		if (!Game_Battle::CheckTurns(actor->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
 			return false;
 	}
 
-	if (condition.flags.fatigue) {
+	if (Player::IsRPG2k3Commands() && condition.flags.fatigue) {
 		int fatigue = Main_Data::game_party->GetFatigue();
 		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
 			return false;
 	}
 
 	if (condition.flags.enemy_hp) {
-		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
-		int result = 100 * enemy.GetHp() / enemy.GetMaxHp();
+		const auto* enemy = Main_Data::game_enemyparty->GetEnemy(condition.enemy_id);
+		if (!enemy) {
+			Output::Warning("AreConditionsMet: Invalid enemy ID {}", condition.enemy_id);
+			return false;
+		}
+
+		int result = 100 * enemy->GetHp() / enemy->GetMaxHp();
 		if (result < condition.enemy_hp_min || result > condition.enemy_hp_max)
 			return false;
 	}
 
 	if (condition.flags.actor_hp) {
-		Game_Actor* actor = Main_Data::game_actors->GetActor(condition.actor_id);
+		const auto* actor = Main_Data::game_actors->GetActor(condition.actor_id);
+		if (!actor) {
+			Output::Warning("AreConditionsMet: Invalid actor ID {}", condition.actor_id);
+			return false;
+		}
+
 		int result = 100 * actor->GetHp() / actor->GetMaxHp();
 		if (result < condition.actor_hp_min || result > condition.actor_hp_max)
 			return false;
 	}
 
-	if (condition.flags.command_actor) {
+	if (Player::IsRPG2k3Commands() && condition.flags.command_actor) {
 		if (!source)
 			return false;
 		const auto* actor = Main_Data::game_actors->GetActor(condition.command_actor_id);
+		if (!actor) {
+			Output::Warning("AreConditionsMet: Invalid actor ID {}", condition.command_actor_id);
+			return false;
+		}
+
 		if (source != actor)
 			return false;
 		if (condition.command_id != actor->GetLastBattleAction())
@@ -246,6 +272,11 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 	case 2:
 		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
 			auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
+			if (!enemy) {
+				Output::Warning("ForceFlee: Invalid enemy ID {}", com.parameters[1]);
+				return true;
+			}
+
 			if (enemy->Exists()) {
 				enemy->SetHidden(true);
 				enemy->SetDeathTimer();
@@ -285,13 +316,17 @@ bool Game_Interpreter_Battle::CommandEnableCombo(lcf::rpg::EventCommand const& c
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand const& com) {
-	int id = com.parameters[0];
-	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[0]);
+	if (!enemy) {
+		Output::Warning("ChangeMonsterHP: Invalid enemy ID {}", com.parameters[0]);
+		return true;
+	}
+
 	bool lose = com.parameters[1] > 0;
 	bool lethal = com.parameters[4] > 0;
-	int hp = enemy.GetHp();
+	int hp = enemy->GetHp();
 
-	if (enemy.IsDead())
+	if (enemy->IsDead())
 		return true;
 
 	int change = 0;
@@ -311,26 +346,30 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(lcf::rpg::EventCommand cons
 		change = -change;
 	}
 
-	enemy.ChangeHp(change, lethal);
+	enemy->ChangeHp(change, lethal);
 
 	auto& scene = Scene::instance;
 	if (scene) {
-		scene->OnEventHpChanged(&enemy, change);
+		scene->OnEventHpChanged(enemy, change);
 	}
 
-	if (enemy.IsDead()) {
+	if (enemy->IsDead()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_EnemyKill));
-		enemy.SetDeathTimer();
+		enemy->SetDeathTimer();
 	}
 
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterMP(lcf::rpg::EventCommand const& com) {
-	int id = com.parameters[0];
-	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[0]);
+	if (!enemy) {
+		Output::Warning("ChangeMonsterMP: Invalid enemy ID {}", com.parameters[0]);
+		return true;
+	}
+
 	bool lose = com.parameters[1] > 0;
-	int sp = enemy.GetSp();
+	int sp = enemy->GetSp();
 
 	int change = 0;
 	switch (com.parameters[2]) {
@@ -347,27 +386,37 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(lcf::rpg::EventCommand cons
 
 	sp += change;
 
-	enemy.SetSp(sp);
+	enemy->SetSp(sp);
 
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterCondition(lcf::rpg::EventCommand const& com) {
-	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[0]);
+	if (!enemy) {
+		Output::Warning("ChangeMonsterCondition: Invalid enemy ID {}", com.parameters[0]);
+		return true;
+	}
+
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove) {
 		// RPG_RT BUG: Monster dissapears immediately and doesn't animate death
-		enemy.RemoveState(state_id, false);
+		enemy->RemoveState(state_id, false);
 	} else {
-		enemy.AddState(state_id, true);
+		enemy->AddState(state_id, true);
 	}
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandShowHiddenMonster(lcf::rpg::EventCommand const& com) {
-	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
-	enemy.SetHidden(false);
+	auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[0]);
+	if (!enemy) {
+		Output::Warning("ShowHiddenMonster: Invalid enemy ID {}", com.parameters[0]);
+		return true;
+	}
+
+	enemy->SetHidden(false);
 	return true;
 }
 
@@ -482,32 +531,35 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(lcf::rpg::EventComm
 			break;
 		case 2: {
 			// Hero can act
-			Game_Actor* actor = Main_Data::game_actors->GetActor(com.parameters[1]);
+			const auto* actor = Main_Data::game_actors->GetActor(com.parameters[1]);
 
 			if (!actor) {
 				Output::Warning("ConditionalBranchBattle: Invalid actor ID {}", com.parameters[1]);
-				// Use Else Branch
-				SetSubcommandIndex(com.indent, 1);
-				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
-				return true;
+			} else {
+				result = actor->CanAct();
 			}
-
-			result = actor->CanAct();
 			break;
 		}
-		case 3:
+		case 3: {
 			// Monster can act
-			if (com.parameters[1] < Main_Data::game_enemyparty->GetBattlerCount()) {
-				result = (*Main_Data::game_enemyparty)[com.parameters[1]].CanAct();
+			const auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
+
+			if (!enemy) {
+				Output::Warning("ConditionalBranchBattle: Invalid enemy ID {}", com.parameters[1]);
+			} else {
+				result = enemy->CanAct();
 			}
 			break;
+		}
 		case 4:
 			// Monster is the current target
-			result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
+			if (Player::IsRPG2k3Commands()) {
+				result = (targets_single_enemy && target_enemy_index == com.parameters[1]);
+			}
 			break;
 		case 5: {
 			// Hero uses the ... command
-			if (current_actor_id == com.parameters[1]) {
+			if (Player::IsRPG2k3Commands() && current_actor_id == com.parameters[1]) {
 				auto *actor = Main_Data::game_actors->GetActor(current_actor_id);
 				if (actor) {
 					result = actor->GetLastBattleAction() == com.parameters[2];

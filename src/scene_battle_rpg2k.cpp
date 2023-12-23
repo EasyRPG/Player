@@ -1828,6 +1828,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	}
 
 	for (auto* enemy : Main_Data::game_enemyparty->GetEnemies()) {
+		if (enemy->IsHidden()) {
+			continue;
+		}
+
 		if (!EnemyAi::SetStateRestrictedAction(*enemy)) {
 			if (enemy->GetEnemyAi() == -1) {
 				enemyai_algos[default_enemyai_algo]->SetEnemyAiAction(*enemy);
