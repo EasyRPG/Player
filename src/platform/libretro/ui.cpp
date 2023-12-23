@@ -21,6 +21,7 @@
 #include "bitmap.h"
 #include "color.h"
 #include "filefinder.h"
+#include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
 #include "keys.h"
@@ -510,11 +511,15 @@ RETRO_API unsigned retro_get_region() {
 
 /* Gets region of memory. */
 RETRO_API void* retro_get_memory_data(unsigned id) {
-	// no-op
-	return nullptr;
+	if (id = RETRO_MEMORY_SYSTEM_RAM)
+		return Game_Variables::GetData().data();
+	else
+		return nullptr;
 }
 
 RETRO_API size_t retro_get_memory_size(unsigned id) {
-	// no-op
-	return 0;
+	if (id = RETRO_MEMORY_SYSTEM_RAM)
+		return Game_Variables::GetData().size() * sizeof(Var_t);
+	else
+		return 0;
 }
