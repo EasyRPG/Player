@@ -535,7 +535,7 @@ void FTFont::SetSize(int height, bool create) {
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
-	baseline_offset = FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64;
+	baseline_offset = static_cast<int>(FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64);
 	if (baseline_offset == 0) {
 		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
 		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
