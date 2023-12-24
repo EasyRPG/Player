@@ -347,8 +347,8 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	advance.x = slot->advance.x / 64;
-	advance.y = slot->advance.y / 64;
+	advance.x = std::ceil(slot->advance.x / 64.0);
+	advance.y = std::ceil(slot->advance.y / 64.0);
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
@@ -427,8 +427,8 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 	Point advance;
 	Point offset;
 
-	advance.x = slot->advance.x / 64;
-	advance.y = slot->advance.y / 64;
+	advance.x = std::ceil(slot->advance.x / 64.0);
+	advance.y = std::ceil(slot->advance.y / 64.0);
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - baseline_offset;
 
@@ -474,8 +474,8 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
-			advance.x = pos.x_advance / 64;
-			advance.y = pos.y_advance / 64;
+			advance.x = std::ceil(pos.x_advance / 64.0);
+			advance.y = std::ceil(pos.y_advance / 64.0);
 			offset.x = pos.x_offset / 64;
 			offset.y = pos.y_offset / 64;
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
@@ -535,7 +535,7 @@ void FTFont::SetSize(int height, bool create) {
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
-	baseline_offset = static_cast<int>(FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64);
+	baseline_offset = FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64;
 	if (baseline_offset == 0) {
 		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
 		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
