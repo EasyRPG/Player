@@ -136,6 +136,7 @@ namespace {
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 		~FTFont() override;
 
+		bool IsOk() const;
 		Rect vGetSize(char32_t glyph) const override;
 		GlyphRet vRender(char32_t glyph) const override;
 		GlyphRet vRenderShaped(char32_t glyph) const override;
@@ -282,6 +283,10 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 
 	FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), 0, &face);
 
+	if (face == nullptr) {
+		return;
+	}
+
 	if (face->num_charmaps > 0) {
 		// Force unicode charmap
 		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0) {
@@ -319,21 +324,33 @@ FTFont::~FTFont() {
 	}
 }
 
+bool FTFont::IsOk() const {
+	return face;
+}
+
 Rect FTFont::vGetSize(char32_t glyph) const {
 	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && fallback_font) {
-		return fallback_font->vGetSize(glyph);
+	if (glyph_index == 0) {
+		if (fallback_font) {
+			return fallback_font->vGetSize(glyph);
+		} else {
+			return {0, 0, 0, current_style.size};
+		}
 	}
 
 	auto load_glyph = [&](auto flags) {
 		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
+		return true;
 	};
 
 	if (FT_HAS_COLOR(face)) {
-		load_glyph(FT_LOAD_COLOR);
+		if (!load_glyph(FT_LOAD_COLOR)) {
+			Output::Error("Broken color font for glyph {:#x}", uint32_t(glyph));
+		}
 
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then reload the glyph monochrome
@@ -341,7 +358,13 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
 		}
 	} else {
-		load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
+		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)) {
+			if (fallback_font) {
+				return fallback_font->vGetSize(glyph);
+			} else {
+				return {0, 0, 0, current_style.size};
+			}
+		}
 	}
 
 	FT_GlyphSlot slot = face->glyph;
@@ -360,30 +383,44 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 Font::GlyphRet FTFont::vRender(char32_t glyph) const {
 	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && fallback_font) {
-		return fallback_font->vRender(glyph);
+	if (glyph_index == 0) {
+		if (fallback_font) {
+			return fallback_font->vRender(glyph);
+		} else {
+			return { {}, {0, current_style.size}, {0, 0}, false };
+		}
 	}
 
 	return vRenderShaped(glyph_index);
 }
 
 Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
-	if (glyph == 0 && fallback_font) {
-		return fallback_font->vRender(glyph);
+	if (glyph == 0) {
+		if (fallback_font) {
+			return fallback_font->vRender(glyph);
+		} else {
+			return { {}, {0, current_style.size}, {0, 0}, false };
+		}
 	}
 
 	auto render_glyph = [&](auto flags, auto mode) {
 		if (FT_Load_Glyph(face, glyph, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
 
 		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
-			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't render FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
+
+		return true;
 	};
 
 	if (FT_HAS_COLOR(face)) {
-		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+		if (!render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL)) {
+			Output::Error("Broken color font for glyph {:#x}", uint32_t(glyph));
+		}
 
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then rerender the glyph monochrome
@@ -392,7 +429,13 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
 		}
 	} else {
-		render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
+		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO)) {
+			if (fallback_font) {
+				return fallback_font->vRender(glyph);
+			} else {
+				return { {}, {0, current_style.size}, {0, 0}, false };
+			}
+		}
 	}
 
 	FT_GlyphSlot slot = face->glyph;
@@ -598,7 +641,7 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 
 	if (it == ft_cache.end()) {
 		auto ft_font = std::make_shared<FTFont>(std::move(is), size, bold, italic);
-		if (!ft_font) {
+		if (!ft_font || !ft_font->IsOk()) {
 			return nullptr;
 		}
 
@@ -609,8 +652,6 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 		it->second.last_access = Game_Clock::GetFrameTime();
 		return it->second.font;
 	}
-
-	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
 #else
 	return nullptr;
 #endif
@@ -688,6 +729,9 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	}
 
 	auto gret = vRender(glyph);
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return {};
+	}
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	if (EP_UNLIKELY(rect.width == 0)) {
@@ -743,6 +787,9 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	}
 
 	auto gret = vRenderShaped(shape.code);
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return {};
+	}
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	if (EP_UNLIKELY(rect.width == 0)) {
@@ -791,6 +838,9 @@ Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyp
 	}
 
 	auto gret = vRender(glyph);
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return {};
+	}
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);

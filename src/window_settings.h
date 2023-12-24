@@ -113,16 +113,16 @@ public:
 	 */
 	void Refresh();
 
-	Window_Help* help_window2 = nullptr;
-	RangeConfigParam<int> font_size { "<Font Size>", "Font size to use. Not supported for the built-in font.", "", "", 12, 6, 16};
-private:
-
 	/**
-	 * Draws an item together with the quantity.
+	 * Draws an item.
 	 *
 	 * @param index index of item to draw.
 	 */
 	void DrawOption(int index);
+
+	Window_Help* help_window2 = nullptr;
+	RangeConfigParam<int> font_size { "<Font Size>", "Font size to use. Not supported for the built-in font.", "", "", 12, 6, 16};
+private:
 
 	template <typename Param, typename Action>
 	void AddOption(const Param& p,

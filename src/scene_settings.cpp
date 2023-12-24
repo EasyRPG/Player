@@ -484,6 +484,12 @@ void Scene_Settings::UpdateFont(bool mincho) {
 				help_window2->Clear();
 				help_window2->SetFont(font);
 				help_window2->SetVisible(true);
+			} else {
+				auto& opt = options_window->GetCurrentOption();
+				opt.action = nullptr;
+				opt.value_text = "[Broken]";
+				opt.help2.clear();
+				options_window->DrawOption(options_window->GetIndex());
 			}
 		}
 	}
