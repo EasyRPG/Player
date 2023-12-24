@@ -169,6 +169,7 @@ private:
 		English,
 		French,
 		German,
+		Spanish,
 		Chinese,
 		Japanese_Hiragana,
 		Japanese_Kanji,
@@ -176,14 +177,15 @@ private:
 		Diacritics
 	};
 
-	EnumConfigParam<SampleText, 8> sample_text{
+	EnumConfigParam<SampleText, 9> sample_text{
 		"<Sample Text>", "Text to show in the preview", "", "", SampleText::English,
-		Utils::MakeSvArray("English", "French", "German", "Chinese", "Japanese (Hiragana)", "Japanese (Kanji)", "Korean", "Various Diacritics"),
-		Utils::MakeSvArray("", "", "", "", "", "", "", ""),
+		Utils::MakeSvArray("English", "French", "German", "Spanish", "Chinese", "Japanese (Hiragana)", "Japanese (Kanji)", "Korean", "Various Diacritics"),
+		Utils::MakeSvArray("", "", "", "", "", "", "", "", ""),
 		Utils::MakeSvArray(
 			"The quick brown fox jumps over the lazy dog 1234567890.?!",
-			"Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis",
+			"Voix ambiguë d'un cœur qui au zéphyr préfère les jattes de kiwis",
 			"Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich",
+			"Jovencillo emponzoñado de whisky, ¡qué figurota exhibe!",
 			"天地玄黃宇宙洪荒。日月盈昃辰宿列張。寒來暑往秋收冬藏。閏餘成歲律呂調陽。雲騰致雨露結為霜。金生麗水玉出崑岡。劍號巨闕珠稱夜光。果珍李柰菜重芥薑。海鹹河淡鱗潛羽翔。",
 			"いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす",
 			"色は匂えど散りぬるを我が世誰ぞ常ならん有為の奥山今日越えて浅き夢見じ酔いもせず",
