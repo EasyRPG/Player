@@ -51,6 +51,7 @@ void SyncCurrentToFinish(lcf::rpg::SavePicture& data) {
 	data.current_blue = data.finish_blue;
 	data.current_sat = data.finish_sat;
 	data.current_magnify = data.finish_magnify;
+	data.maniac_current_magnify_height = data.maniac_finish_magnify_height;
 	data.current_top_trans = data.finish_top_trans;
 	data.current_bot_trans = data.finish_bot_trans;
 	if (do_effect) {
@@ -112,6 +113,11 @@ std::vector<lcf::rpg::SavePicture> Game_Pictures::GetSaveData() const {
 		data.ID = static_cast<int>(save.size()) + 1;
 		if (Player::IsRPG2k3E()) {
 			data.frames = frame_counter;
+		}
+		if (!Player::IsPatchManiac()) {
+			// Default the values so they are not stored in the savegame
+			data.maniac_current_magnify_height = 100;
+			data.maniac_finish_magnify_height = 100;
 		}
 		save.push_back(std::move(data));
 	}
@@ -534,6 +540,7 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		data.current_blue = interpolate(data.current_blue, data.finish_blue);
 		data.current_sat = interpolate(data.current_sat, data.finish_sat);
 		data.current_magnify = interpolate(data.current_magnify, data.finish_magnify);
+		data.maniac_current_magnify_height = interpolate(data.maniac_current_magnify_height, data.maniac_finish_magnify_height);
 		data.current_top_trans = interpolate(data.current_top_trans, data.finish_top_trans);
 		data.current_bot_trans = interpolate(data.current_bot_trans, data.finish_bot_trans);
 	}
@@ -601,7 +608,8 @@ Game_Pictures::ShowParams Game_Pictures::Picture::GetShowParams() const {
 	Game_Pictures::ShowParams params;
 	params.position_x = static_cast<int>(data.finish_x);
 	params.position_y = static_cast<int>(data.finish_y);
-	params.magnify = data.finish_magnify;
+	params.magnify_width = data.finish_magnify;
+	params.magnify_height = data.maniac_finish_magnify_height;
 	params.top_trans = data.finish_top_trans;
 	params.bottom_trans = data.finish_bot_trans;
 	params.red = data.finish_red;
@@ -631,7 +639,8 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 		data.finish_x = params.position_x;
 		data.finish_y = params.position_y;
 	}
-	data.finish_magnify = params.magnify;
+	data.finish_magnify = params.magnify_width;
+	data.maniac_finish_magnify_height = params.magnify_height;
 	data.finish_top_trans = params.top_trans;
 	data.finish_bot_trans = params.bottom_trans;
 	data.finish_red = params.red;
