@@ -32,9 +32,12 @@
 #  define main SDL_main
 #endif
 
-// USBGecko Debugging
-bool usbgecko = false;
-mutex_t usbgecko_mutex = 0;
+namespace {
+	// USBGecko Debugging
+	bool usbgecko = false;
+
+	bool is_emu = false;
+}
 
 // in sdl-wii
 extern "C" void OGC_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
@@ -44,10 +47,15 @@ static void GekkoResetCallback(u32 /* irq */ , void* /* ctx */) {
 }
 
 extern "C" int main(int argc, char* argv[]) {
+	// Enable USBGecko output
+	CON_EnableGecko(CARD_SLOTB, true);
+	usbgecko = usb_isgeckoalive(CARD_SLOTB);
+
+	// cmdline
 	std::vector<std::string> args(argv, argv + argc);
 
 	// dolphin
-	bool is_emu = argc == 0;
+	is_emu = argc == 0;
 	if(is_emu) {
 		// set arbitrary application path
 		args.push_back("/easyrpg-player");
@@ -58,15 +66,20 @@ extern "C" int main(int argc, char* argv[]) {
 	// Eliminate overscan / add 5% borders
 	OGC_ChangeSquare(304, 228, 0, 0);
 
-	// Check if a game directory was provided
-	if (std::none_of(args.cbegin(), args.cend(),
-		[](const std::string& a) { return a == "--project-path"; })) {
+	if (is_emu || strchr(argv[0], '/') == 0) {
+		Output::Debug("USBGecko/Dolphin mode, changing dir to default.");
+		chdir("/apps/easyrpg");
+	} else {
+		// Check if a game directory was provided
+		if (std::none_of(args.cbegin(), args.cend(),
+			[](const std::string& a) { return a == "--project-path"; })) {
 
-		// Working directory not correctly handled, provide it manually
-		char working_dir[256];
-		getcwd(working_dir, 255);
-		args.push_back("--project-path");
-		args.push_back(working_dir);
+			// Working directory not correctly handled, provide it manually
+			char working_dir[256];
+			getcwd(working_dir, 255);
+			args.push_back("--project-path");
+			args.push_back(working_dir);
+		}
 	}
 
 	// Run Player
@@ -76,50 +89,17 @@ extern "C" int main(int argc, char* argv[]) {
 	return EXIT_SUCCESS;
 }
 
-static ssize_t __usbgecko_write(struct _reent * /* r */, void* /* fd */, const char *ptr, size_t len) {
-	uint32_t level;
-
-	if (!ptr || !len || !usbgecko)
-		return 0;
-
-	LWP_MutexLock(usbgecko_mutex);
-	level = IRQ_Disable();
-	usb_sendbuffer(1, ptr, len);
-	IRQ_Restore(level);
-	LWP_MutexUnlock(usbgecko_mutex);
-
-	return len;
-}
-
-const devoptab_t dotab_geckoout = {
-	"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL
-};
-
-extern const devoptab_t dotab_stdnull;
-
-void Wii::SetConsole() {
-	LWP_MutexInit(&usbgecko_mutex, false);
-	usbgecko = usb_isgeckoalive(1);
-
-	if (usbgecko) {
-		devoptab_list[STD_OUT] = &dotab_geckoout;
-		devoptab_list[STD_ERR] = &dotab_geckoout;
-	} else {
-		devoptab_list[STD_OUT] = &dotab_stdnull;
-		devoptab_list[STD_ERR] = &dotab_stdnull;
-	}
-}
-
 bool Wii::LogMessage(const std::string &message) {
-	if (usbgecko) return false;
+	if (is_emu) {
+		std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
 
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
+		// Write to OSReport uart in dolphin emulator
+		SYS_Report("%s", m.c_str());
 
-	// HLE in dolphin emulator
-	printf("%s", m.c_str());
+		// additional usbgecko output not needed
+		return true;
+	}
 
-	// additional usbgecko output not needed
-	return true;
+	// let Output class write to USBGecko or eat message if not present
+	return !usbgecko;
 }

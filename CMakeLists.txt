@@ -671,11 +671,11 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/audio.cpp
+		src/platform/wii/audio.h
 		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
 		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)

@@ -15,11 +15,18 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_PLATFORM_WII_AUDIO_H
+#define EP_PLATFORM_WII_AUDIO_H
 
-namespace Wii {
-	bool LogMessage(const std::string &message);
+#include "audio_generic.h"
+
+class WiiAudio : public GenericAudio {
+public:
+	WiiAudio(const Game_ConfigAudio& cfg);
+	~WiiAudio();
+
+	void LockMutex() const override;
+	void UnlockMutex() const override;
 };
 
 #endif
