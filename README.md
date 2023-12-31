@@ -17,11 +17,11 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 ### minimal / required
 
 - [liblcf] for RPG Maker data reading.
-- SDL2 for screen backend support.
+- SDL2 >= 2.0.5 for screen backend support.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image and ZIP archive support.
-- fmtlib for text formatting and interal logging.
+- fmtlib >= 6 for text formatting/coloring and interal logging.
 
 ### extended / recommended
 
@@ -36,7 +36,8 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - SpeexDSP or libsamplerate for proper audio resampling.
 - lhasa for LHA (.lzh) archive support.
 
-SDL 1.2 is still supported, but deprecated.
+The older SDL version 1.2 is still supported, but deprecated.
+Please do not add new platform code for this library.
 
 
 ## Daily builds
