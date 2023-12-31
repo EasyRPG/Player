@@ -97,7 +97,6 @@ EasyRPG Player makes use of the following 3rd party software:
   under public domain or MIT-0
 * [PicoJSON] JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
   Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
-* [rang] terminal color library - by Abhinav Gauniyal, provided under Unlicense
 
 ### 3rd party resources
 
@@ -123,7 +122,6 @@ EasyRPG Player makes use of the following 3rd party software:
 [FMMidi]: http://unhaut.epizy.com/fmmidi
 [dr_wav]: https://github.com/mackron/dr_libs
 [PicoJSON]: https://github.com/kazuho/picojson
-[rang]: https://github.com/agauniyal/rang
 [baekmuk]: https://kldp.net/baekmuk
 [Shinonome]: http://openlab.ring.gr.jp/efont/shinonome
 [ttyp0]: https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0

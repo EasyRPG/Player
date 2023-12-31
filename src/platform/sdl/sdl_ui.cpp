@@ -28,10 +28,6 @@
 #include "player.h"
 #include "bitmap.h"
 
-#ifdef __wii__
-#  include "platform/wii/main.h"
-#endif
-
 #ifdef SUPPORT_AUDIO
 #  ifdef __wii__
 #    include "platform/wii/audio.h"
@@ -443,15 +439,6 @@ bool SdlUi::ShowCursor(bool flag) {
 	cursor_visible = flag;
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
-}
-
-bool SdlUi::LogMessage(const std::string &message) {
-#ifdef __wii__
-	return Wii::LogMessage(message);
-#else
-	// not logged
-	return false;
-#endif
 }
 
 void SdlUi::ProcessEvent(SDL_Event &evnt) {

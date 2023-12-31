@@ -24,20 +24,12 @@
 #include <fstream>
 #include <thread>
 #include <chrono>
-#ifdef __ANDROID__
-#  include <android/log.h>
-#elif defined(EMSCRIPTEN)
-#  include <emscripten.h>
+#include <fmt/color.h>
+#include <fmt/ostream.h>
+#ifdef EMSCRIPTEN
 #  include "platform/emscripten/interface.h"
 #elif defined(__vita__)
 #  include <psp2/kernel/processmgr.h>
-#endif
-
-// Use system rang header if available
-#if __has_include(<rang.hpp>)
-#  include <rang.hpp>
-#else
-#  include "external/rang.hpp"
 #endif
 
 #include "output.h"
@@ -54,28 +46,10 @@
 using namespace std::chrono_literals;
 
 namespace {
-	constexpr const char* const log_prefix[4] = {
-		"Error: ",
-		"Warning: ",
-		"Info: ",
-		"Debug: "
+	constexpr const char* const log_prefix[] = {
+		"Error", "Warning", "Info", "Debug"
 	};
 	LogLevel log_level = LogLevel::Debug;
-
-	const char* GetLogPrefix(LogLevel lvl) {
-		return log_prefix[static_cast<int>(lvl)];
-	}
-
-	// Inject colors
-	std::ostream& operator<<(std::ostream& os, const LogLevel lvl)
-	{
-		if (lvl == LogLevel::Error) return os << rang::fg::red;
-		if (lvl == LogLevel::Warning) return os << rang::fg::yellow;
-		if (lvl == LogLevel::Debug) return os << rang::fg::gray;
-
-		// Default (info)
-		return os;
-	}
 
 	Filesystem_Stream::OutputStream LOG_FILE;
 	bool output_recurse = false;
@@ -91,6 +65,7 @@ namespace {
 	}
 
 	bool ignore_pause = false;
+	bool colored_log = true;
 
 	std::vector<std::string> log_buffer;
 	// pair of repeat count + message
@@ -99,54 +74,59 @@ namespace {
 		std::string msg;
 		LogLevel lvl = {};
 	} last_message;
+
+	void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+		// terminal output
+		std::string prefix = Output::LogLevelToString(lvl) + ":";
+
+		if (colored_log) {
+			fmt::detail::color_type log_color =
+				(lvl == LogLevel::Error) ? fmt::terminal_color::red :
+				(lvl == LogLevel::Warning) ? fmt::terminal_color::yellow :
+				(lvl == LogLevel::Debug) ? fmt::terminal_color::white :
+				fmt::terminal_color::bright_white;
+
+			fmt::print(std::cerr, "{} {}\n",
+				fmt::styled(prefix, fmt::fg(log_color) | fmt::emphasis::bold),
+				fmt::styled(msg, fmt::fg(log_color)));
+		} else {
+			std::cerr << prefix << " " << msg << std::endl;
+		}
+	}
+
+	LogCallbackFn log_cb = LogCallback;
+	LogCallbackUserData log_cb_udata = nullptr;
+}
+
+std::string Output::LogLevelToString(LogLevel lvl) {
+	return log_prefix[static_cast<int>(lvl)];
 }
 
 LogLevel Output::GetLogLevel() {
 	return log_level;
 }
 
-void Output::SetLogLevel(LogLevel ll) {
-	log_level = ll;
+void Output::SetLogLevel(LogLevel lvl) {
+	log_level = lvl;
 }
 
 void Output::SetTermColor(bool colored) {
-	rang::setControlMode(colored ? rang::control::Auto : rang::control::Off);
+	colored_log = colored;
 }
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
+void Output::SetLogCallback(LogCallbackFn fn, LogCallbackUserData userdata) {
+	log_cb = fn;
+	log_cb_udata = userdata;
+}
+
 static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
-#ifdef EMSCRIPTEN
-
-// Allow pretty log output and filtering in browser console
-EM_ASM({
-  lvl = $0;
-  msg = UTF8ToString($1);
-
-  switch (lvl) {
-	case 0:
-	  console.error(msg);
-	  break;
-	case 1:
-	  console.warn(msg);
-	  break;
-	case 2:
-	  console.info(msg);
-	  break;
-	case 3:
-	  console.debug(msg);
-	  break;
-	default:
-	  console.log(msg);
-	  break;
-  }
-}, static_cast<int>(lvl), msg.c_str());
-
-#else
-
-	const char* prefix = GetLogPrefix(lvl);
+// skip writing log file
+#ifndef EMSCRIPTEN
+	std::string prefix = Output::LogLevelToString(lvl) + ": ";
 	bool add_to_buffer = true;
 
 	// Prevent recursion when the Save filesystem writes to the logfile on startup before it is ready
@@ -172,11 +152,10 @@ EM_ASM({
 				last_message.repeat++;
 			} else {
 				if (last_message.repeat > 0) {
-					output_time() << GetLogPrefix(last_message.lvl) << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
-					output_time() << prefix << msg << '\n';
-				} else {
-					output_time() << prefix << msg << '\n';
+					output_time() << Output::LogLevelToString(last_message.lvl) << ": " << last_message.msg << " [" << last_message.repeat + 1 << "x]" << std::endl;
 				}
+				output_time() << prefix << msg << '\n';
+
 				last_message.repeat = 0;
 				last_message.msg = msg;
 				last_message.lvl = lvl;
@@ -189,26 +168,12 @@ EM_ASM({
 		// buffer log messages until file system is ready
 		log_buffer.push_back(prefix + msg);
 	}
-
-#  ifdef __ANDROID__
-	__android_log_print(lvl == LogLevel::Error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, GAME_TITLE, "%s", msg.c_str());
-#  else
-	bool message_eaten = false;
-	// try custom logger
-	if (DisplayUi) {
-		std::string m = prefix + msg;
-		message_eaten = DisplayUi->LogMessage(m);
-	}
-
-	// terminal output
-	if (!message_eaten) {
-		std::cerr << rang::style::bold << lvl << prefix << rang::style::reset
-		<< lvl << msg << rang::fg::reset << std::endl;
-	}
-#  endif
-
 #endif
 
+	// output to custom logger or terminal
+	log_cb(lvl, msg, log_cb_udata);
+
+	// output to overlay
 	if (lvl != LogLevel::Debug && lvl != LogLevel::Error) {
 		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}

@@ -488,19 +488,6 @@ void NxUi::UpdateDisplay() {
 	eglSwapBuffers(eglDisplay, eglSurface);
 }
 
-bool NxUi::LogMessage(const std::string &message) {
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
-
-	// HLE in yuzu emulator
-	svcOutputDebugString(m.c_str(), m.length());
-
-	// additional to nxlink server
-	if(envHasArgv())
-		return false;
-	else
-		return true;
-}
-
 void NxUi::ToggleStretch() {
 	vcfg.stretch.Toggle();
 	vcfg.touch_ui.SetLocked(vcfg.stretch.Get());

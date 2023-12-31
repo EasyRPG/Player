@@ -50,7 +50,6 @@ public:
 	 */
 	/** @{ */
 	void UpdateDisplay() override;
-	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 	void ToggleStretch() override;
 	void ToggleTouchUi() override;

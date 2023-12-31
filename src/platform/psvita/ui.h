@@ -49,7 +49,6 @@ public:
 	 */
 	/** @{ */
 	void UpdateDisplay() override;
-	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 	void SetScalingMode(ScalingMode) override;
 	void ToggleStretch() override;

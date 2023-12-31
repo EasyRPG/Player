@@ -458,7 +458,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_teleport.h
 	src/window_varlist.cpp
 	src/window_varlist.h
-	src/external/rang.hpp
 )
 
 # These are actually unused when building in CMake
@@ -1212,9 +1211,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
-		add_executable(easyrpg-player
-			src/platform/wii/main.h
-			src/platform/wii/main.cpp)
+		add_executable(easyrpg-player src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			${SDL_LIBRARIES}

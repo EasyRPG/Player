@@ -63,7 +63,6 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-	bool LogMessage(const std::string &message) override;
 	void ProcessEvents() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 

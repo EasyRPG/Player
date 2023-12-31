@@ -20,6 +20,7 @@
 #include <vector>
 #include "player.h"
 #include "utils.h"
+#include "output.h"
 
 #ifdef USE_SDL // This is needed on Windows, SDL wraps main()
 #  include <SDL.h>
@@ -27,6 +28,33 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shellapi.h>
+#elif defined(__ANDROID__)
+#  include <android/log.h>
+#elif defined(__WIIU__)
+#  include <coreinit/debug.h>
+#endif
+
+#if defined(__ANDROID__) || defined(__WIIU__)
+static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+#  if defined(__ANDROID__)
+#    ifdef NDEBUG
+	// docs say debugging logs should be disabled for release builds
+	if (lvl == LogLevel::Debug || lvl == LogLevel::Info) return;
+#    endif
+
+	int prio = (lvl == LogLevel::Error) ? ANDROID_LOG_ERROR :
+		(lvl == LogLevel::Warning) ? ANDROID_LOG_WARN :
+		(lvl == LogLevel::Debug) ? ANDROID_LOG_DEBUG :
+		ANDROID_LOG_INFO;
+
+	__android_log_write(prio, GAME_TITLE, msg.c_str());
+#  elif defined(__WIIU__)
+	std::string m = std::string("[" GAME_TITLE "] ") +
+		Output::LogLevelToString(lvl) + ": " + msg;
+
+	OSReport("%s\n", m.c_str());
+#  endif
+}
 #endif
 
 /**
@@ -49,6 +77,10 @@ extern "C" int main(int argc, char* argv[]) {
 	LocalFree(argv_w);
 #else
 	args.assign(argv, argv + argc);
+#endif
+
+#if defined(__WIIU__) || defined(__ANDROID__)
+	Output::SetLogCallback(LogCallback);
 #endif
 
 	Player::Init(std::move(args));
