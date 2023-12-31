@@ -43,6 +43,13 @@
 #include "font.h"
 #include "baseui.h"
 
+// fmt 7 has renamed the namespace
+#if FMT_VERSION < 70000
+#  define FMT_COLOR_TYPE fmt::internal::color_type
+#else
+#  define FMT_COLOR_TYPE fmt::detail::color_type
+#endif
+
 using namespace std::chrono_literals;
 
 namespace {
@@ -79,19 +86,30 @@ namespace {
 		// terminal output
 		std::string prefix = Output::LogLevelToString(lvl) + ":";
 
+		// only support colors with a "recent" fmt 6
+	#if FMT_VERSION >= 60000
 		if (colored_log) {
-			fmt::detail::color_type log_color =
+			FMT_COLOR_TYPE log_color =
 				(lvl == LogLevel::Error) ? fmt::terminal_color::red :
 				(lvl == LogLevel::Warning) ? fmt::terminal_color::yellow :
 				(lvl == LogLevel::Debug) ? fmt::terminal_color::white :
 				fmt::terminal_color::bright_white;
 
+	#  if FMT_VERSION < 90000
+			// format using temporary strings
+			fmt::print(std::cerr, "{} {}\n",
+				fmt::format(fmt::fg(log_color) | fmt::emphasis::bold, prefix),
+				fmt::format(fmt::fg(log_color), msg));
+	#  else
+			// fmt 9 has styled arguments
 			fmt::print(std::cerr, "{} {}\n",
 				fmt::styled(prefix, fmt::fg(log_color) | fmt::emphasis::bold),
 				fmt::styled(msg, fmt::fg(log_color)));
-		} else {
-			std::cerr << prefix << " " << msg << std::endl;
+	#  endif
+			return;
 		}
+	#endif
+		std::cerr << prefix << " " << msg << std::endl;
 	}
 
 	LogCallbackFn log_cb = LogCallback;
