@@ -142,8 +142,15 @@ bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpr
 
 			//	Output::Debug("code ----> {}", args[i]);
 
-				if (args[i].front() == '$')
-					args[i] = constList.get("EventCode", args[i].substr(1));
+				if (args[i].front() == '$') {
+					args[i] = args[i].substr(1);
+					for (const auto& pair : lcf::rpg::EventCommand::kCodeTags.tags()) {	
+						if (Utils::StrICmp(pair.name, args[i]) == 0) {
+							args[i] = std::to_string(pair.value);
+							break;
+						}
+					}
+				};
 				std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
 			}
 			else if (i == stringArgIndex)
