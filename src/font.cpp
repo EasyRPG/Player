@@ -347,8 +347,8 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	advance.x = std::ceil(slot->advance.x / 64.0);
-	advance.y = std::ceil(slot->advance.y / 64.0);
+	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
+	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
@@ -427,8 +427,8 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 	Point advance;
 	Point offset;
 
-	advance.x = std::ceil(slot->advance.x / 64.0);
-	advance.y = std::ceil(slot->advance.y / 64.0);
+	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
+	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - baseline_offset;
 
@@ -474,10 +474,10 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
-			advance.x = std::ceil(pos.x_advance / 64.0);
-			advance.y = std::ceil(pos.y_advance / 64.0);
-			offset.x = pos.x_offset / 64;
-			offset.y = pos.y_offset / 64;
+			advance.x = Utils::RoundTo<int>(pos.x_advance / 64.0);
+			advance.y = Utils::RoundTo<int>(pos.y_advance / 64.0);
+			offset.x = Utils::RoundTo<int>(pos.x_offset / 64.0);
+			offset.y = Utils::RoundTo<int>(pos.y_offset / 64.0);
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
 		}
 	}
