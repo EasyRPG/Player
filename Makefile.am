@@ -437,8 +437,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_teleport.cpp \
 	src/window_teleport.h \
 	src/window_varlist.cpp \
-	src/window_varlist.h \
-	src/external/rang.hpp
+	src/window_varlist.h
 
 SOURCEFILES_SDL2 = \
 	src/platform/sdl/sdl2_ui.cpp \
@@ -567,7 +566,6 @@ EXTRA_DIST += \
 	src/platform/wii/clock.h \
 	src/platform/wii/input_buttons.cpp \
 	src/platform/wii/main.cpp \
-	src/platform/wii/main.h \
 	src/platform/windows/midiout_device_win32.cpp \
 	src/platform/windows/midiout_device_win32.h \
 	src/platform/windows/utils.cpp \

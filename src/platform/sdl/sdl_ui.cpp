@@ -28,12 +28,12 @@
 #include "player.h"
 #include "bitmap.h"
 
-#ifdef __wii__
-#  include "platform/wii/main.h"
-#endif
-
 #ifdef SUPPORT_AUDIO
-#  include "sdl_audio.h"
+#  ifdef __wii__
+#    include "platform/wii/audio.h"
+#  else
+#    include "sdl_audio.h"
+#  endif
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -115,11 +115,6 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 		format.b.mask,
 		format.a.mask);
 
-#ifdef __wii__
-	// Eliminate debug spew in on-screen console
-	Wii::SetConsole();
-#endif
-
 	SetTitle(GAME_TITLE);
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS))
@@ -172,7 +167,11 @@ SdlUi::SdlUi(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 
 #ifdef SUPPORT_AUDIO
 	if (!Player::no_audio_flag) {
+#  ifdef __wii__
+		audio_ = std::make_unique<WiiAudio>(cfg.audio);
+#  else
 		audio_ = std::make_unique<SdlAudio>(cfg.audio);
+#  endif
 		return;
 	}
 #endif
@@ -440,15 +439,6 @@ bool SdlUi::ShowCursor(bool flag) {
 	cursor_visible = flag;
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
-}
-
-bool SdlUi::LogMessage(const std::string &message) {
-#ifdef __wii__
-	return Wii::LogMessage(message);
-#else
-	// not logged
-	return false;
-#endif
 }
 
 void SdlUi::ProcessEvent(SDL_Event &evnt) {

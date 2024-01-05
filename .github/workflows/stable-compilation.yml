@@ -9,6 +9,10 @@ on:
         description: Git Ref (Optional)
         required: false
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     shell: bash
@@ -24,15 +28,14 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - debian:10     # oldstable | CMake 3.13.4 | G++ 8.3.0  | SDL 2.0.9
-          - ubuntu:20.04  # LTS       | CMake 3.16.3 | G++ 9.3.0  | SDL 2.0.10
-          - debian:11     # stable    | CMake 3.18.4 | G++ 10.2.1 | SDL 2.0.14
-          - ubuntu:22.04  # LTS       | CMake 3.22.1 | G++ 11.2.0 | SDL 2.0.20
+          #   version of: # CMake  | g++    | SDL    |     support end  #
+          # -------------------------------------------------------------
+          - ubuntu:20.04  # 3.16.3 |  9.3.0 | 2.0.10 | LTS       (4/25) #
+          - debian:11     # 3.18.4 | 10.2.1 | 2.0.14 | oldstable (8/24) #
+          - ubuntu:22.04  # 3.22.1 | 11.2.0 | 2.0.20 | LTS       (6/27) #
+          - debian:12     # 3.25.1 | 12.2.0 | 2.26.5 | stable    (6/26) #
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.8.0
-
       - name: Install dependencies
         run: |
           export DEBIAN_FRONTEND="noninteractive"
@@ -45,10 +48,10 @@ jobs:
             libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
 
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         if: github.event.inputs.git-ref == ''
       - name: Clone Repository (with custom ref)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         if: github.event.inputs.git-ref != ''
         with:
           ref: ${{ github.event.inputs.git-ref }}
@@ -63,8 +66,7 @@ jobs:
 
       - name: Install
         run: |
-          # cmake < 3.16 does not support '--install'
-          cmake --build build --target install
+          cmake --install build
 
       - name: Test
         run: |

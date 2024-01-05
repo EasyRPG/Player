@@ -405,20 +405,6 @@ void CtrUi::UpdateDisplay() {
 	C3D_FrameEnd(0);
 }
 
-bool CtrUi::LogMessage(const std::string &message) {
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
-
-	// HLE in citra emulator
-	svcOutputDebugString(m.c_str(), m.length());
-
-#ifdef _DEBUG
-	// log additionally to bottom console
-	return false;
-#else
-	return true;
-#endif
-}
-
 void CtrUi::ToggleStretch() {
 	vcfg.stretch.Toggle();
 

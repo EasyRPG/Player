@@ -15,17 +15,18 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_PLATFORM_WII_MAIN_H
-#define EP_PLATFORM_WII_MAIN_H
+#ifndef EP_PLATFORM_WII_AUDIO_H
+#define EP_PLATFORM_WII_AUDIO_H
 
-namespace Wii {
-	/**
-	 * Helper function to disable the console on Wii
-	 * and redirect to USB Gekko, if present.
-	 */
-	void SetConsole();
+#include "audio_generic.h"
 
-	bool LogMessage(const std::string &message);
+class WiiAudio : public GenericAudio {
+public:
+	WiiAudio(const Game_ConfigAudio& cfg);
+	~WiiAudio();
+
+	void LockMutex() const override;
+	void UnlockMutex() const override;
 };
 
 #endif

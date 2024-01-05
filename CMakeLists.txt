@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.24 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16...3.28 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
@@ -22,9 +22,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
-	option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
-endif()
+option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
 # Source Files
 add_library(${PROJECT_NAME} OBJECT
@@ -458,7 +456,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_teleport.h
 	src/window_varlist.cpp
 	src/window_varlist.h
-	src/external/rang.hpp
 )
 
 # These are actually unused when building in CMake
@@ -671,11 +668,11 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/audio.cpp
+		src/platform/wii/audio.h
 		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
 		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
@@ -741,8 +738,10 @@ endif()
 
 if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 	# Need fPIC when compiling a shared library (e.g. libretro.so)
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+	include(CheckPIESupported)
+	check_pie_supported()
+	set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 endif()
 
 if(ANDROID)
@@ -759,6 +758,7 @@ if(WIN32)
 endif()
 
 if(APPLE)
+	enable_language(OBJCXX)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/macos_utils.mm
 		src/platform/macos/macos_utils.h
@@ -912,11 +912,9 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 	if(WIN32 OR APPLE)
 		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(UNIX)
-		if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.12)
-			find_package(ALSA)
-			if(ALSA_FOUND)
-				set(SUPPORT_NATIVE_MIDI ON)
-			endif()
+		find_package(ALSA)
+		if(ALSA_FOUND)
+			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
 	endif()
 
@@ -1212,9 +1210,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
-		add_executable(easyrpg-player
-			src/platform/wii/main.h
-			src/platform/wii/main.cpp)
+		add_executable(easyrpg-player src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			${SDL_LIBRARIES}

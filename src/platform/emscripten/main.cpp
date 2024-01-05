@@ -28,6 +28,32 @@ namespace {
 	int counter = 0;
 }
 
+static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+// Allow pretty log output and filtering in browser console
+EM_ASM({
+  lvl = $0;
+  msg = UTF8ToString($1);
+
+  switch (lvl) {
+	case 0:
+	  console.error(msg);
+	  break;
+	case 1:
+	  console.warn(msg);
+	  break;
+	case 2:
+	  console.info(msg);
+	  break;
+	case 3:
+	  console.debug(msg);
+	  break;
+	default:
+	  console.log(msg);
+	  break;
+  }
+}, static_cast<int>(lvl), msg.c_str());
+}
+
 void main_loop() {
 	if (counter < 5) {
 		++counter;
@@ -57,6 +83,7 @@ extern "C" int main(int argc, char* argv[]) {
 	args.assign(argv, argv + argc);
 
 	Output::IgnorePause(true);
+	Output::SetLogCallback(LogCallback);
 
 	emscripten_set_main_loop(main_loop, 0, 0);
 

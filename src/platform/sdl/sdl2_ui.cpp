@@ -32,7 +32,6 @@
 #  include <emscripten.h>
 #elif defined(__WIIU__)
 #  include <whb/proc.h>
-#  include <coreinit/debug.h>
 #endif
 #include "icon.h"
 
@@ -499,16 +498,6 @@ void Sdl2Ui::ToggleZoom() {
 		current_display_mode.zoom = 1;
 	}
 	EndDisplayModeChange();
-#endif
-}
-
-bool Sdl2Ui::LogMessage(const std::string &message) {
-#ifdef __WIIU__
-	OSReport("%s\n", message.c_str());
-	return true;
-#else
-	// not logged
-	return false;
 #endif
 }
 

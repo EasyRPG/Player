@@ -20,8 +20,27 @@
 #include <string>
 #include <vector>
 #include "player.h"
+#include "output.h"
 
-static int nxlinkSocket = -1;
+namespace {
+	int nxlinkSocket = -1;
+	bool is_nro = true;
+}
+
+static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+	if (!is_nro) {
+		std::string m = std::string("[" GAME_TITLE "] ") +
+			Output::LogLevelToString(lvl) + ": " + msg;
+
+		// HLE in yuzu emulator
+		svcOutputDebugString(m.c_str(), m.length());
+	}
+
+	// additional to nxlink server
+	if(nxlinkSocket >= 0) {
+		printf("%s: %s\n", prefix.c_str(), message.c_str());
+	}
+}
 
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
@@ -29,8 +48,12 @@ int main(int argc, char* argv[]) {
 	appletLockExit();
 
 	// yuzu/nso
-	bool is_nro = envHasArgv();
+	is_nro = envHasArgv();
+	Output::SetLogCallback(LogCallback);
+
 	if(!is_nro) {
+		Output::Debug("Running inside emulator or as NSO.");
+
 		// set arbitrary application path
 		args.push_back("none:/easyrpg-player");
 	}
@@ -46,6 +69,8 @@ int main(int argc, char* argv[]) {
 
 	// Check if romfs has some files inside or not
 	if(::access("romfs:/RPG_RT.lmt", F_OK) == 0) {
+		Output::Debug("Running packaged game from RomFS.");
+
 		args.push_back("--project-path");
 		args.push_back("romfs:/");
 

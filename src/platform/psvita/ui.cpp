@@ -35,7 +35,6 @@
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
-#include <psp2/kernel/clib.h>
 #include <vita2d.h>
 #include <cstring>
 #include <stdio.h>
@@ -270,14 +269,6 @@ void Psp2Ui::UpdateDisplay() {
 		vita2d_texture_get_datap(main_texture),
 		vita2d_texture_get_stride(main_texture)*240);
 	sceKernelSignalSema(GPU_Mutex, 1);
-}
-
-bool Psp2Ui::LogMessage(const std::string &message) {
-	// HLE in psp2shell
-	sceClibPrintf("[%s] %s\n", GAME_TITLE, message.c_str());
-
-	// skip useless stderr output
-	return true;
 }
 
 void Psp2Ui::SetScalingMode(ScalingMode mode) {
