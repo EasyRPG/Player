@@ -2822,7 +2822,12 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 	if (param_size > 16 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
 		// Handling of RPG2k3 1.12 chunks
-		pic_id = ValueOrVariable(com.parameters[17], pic_id);
+		if (Player::IsPatchManiac()) {
+			pic_id = ValueOrVariableBitfield(com.parameters[17], 0, pic_id);
+			params.name = ToString(CommandStringOrVariableBitfield(com, 17, 2, 30));
+		} else {
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+		}
 		if (com.parameters[19] != 0) {
 			int var = 0;
 			if (Main_Data::game_variables->IsValid(com.parameters[19])) {
