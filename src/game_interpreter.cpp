@@ -2833,6 +2833,13 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
+		if (com.parameters[17] >= 4096 && Player::IsPatchManiac()) {
+			// Color tint using variables
+			params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+			params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+			params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+			params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+		}
 		params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 		params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 		if (com.parameters[22] > 0) {
@@ -2947,6 +2954,14 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
+
+		if (com.parameters[17] >= 4096 && Player::IsPatchManiac()) {
+			// Color tint using variables
+			params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+			params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+			params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+			params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+		}
 
 		if (Player::IsPatchManiac() && param_size > 16) {
 			int flags = com.parameters[16] >> 8;
