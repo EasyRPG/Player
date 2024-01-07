@@ -2836,6 +2836,14 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
 
+		if (Player::IsPatchManiac()) {
+			// Color tint using variables
+			params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+			params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+			params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+			params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+		}
+
 		params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
 		if (Player::IsPatchManiac() && com.parameters.size() > 31 && com.parameters[20] >= 16 && params.effect_mode == 0) {
 			// The >= 16 check is needed because this bit is set when independent width/height scaling is used
@@ -2954,6 +2962,14 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			// Currently unused by RPG Maker
 			//int chars_to_replace = com.parameters[18];
 			//int replace_with = com.parameters[19];
+
+			if (com.parameters[17] >= 4096 && Player::IsPatchManiac()) {
+				// Color tint using variables
+				params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+				params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+				params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+				params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+			}
 
 			params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
 			if (Player::IsPatchManiac() && com.parameters.size() > 18 && com.parameters[20] >= 16 && params.effect_mode == 0) {
