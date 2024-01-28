@@ -28,10 +28,11 @@
 #include "main_data.h"
 
 #ifdef HAVE_FREETYPE
-#	include <ft2build.h>
-#	include FT_FREETYPE_H
-#	include FT_BITMAP_H
-#	include FT_MODULE_H
+#  include <ft2build.h>
+#  include FT_FREETYPE_H
+#  include FT_BITMAP_H
+#  include FT_MODULE_H
+#  include FT_TRUETYPE_TABLES_H
 #endif
 
 #ifdef HAVE_HARFBUZZ
@@ -145,6 +146,8 @@ namespace {
 		void vApplyStyle(const Style& style) override;
 
 	private:
+		void SetSize(int height, bool create);
+
 		FT_Face face = nullptr;
 		std::vector<uint8_t> ft_buffer;
 		// Freetype uses the baseline as 0 and the built-in fonts the top
@@ -287,20 +290,7 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 		}
 	}
 
-	if (FT_HAS_COLOR(face)) {
-		// FIXME: Find the best size
-		FT_Select_Size(face, 0);
-	} else {
-		FT_Set_Pixel_Sizes(face, 0, size);
-	}
-
-#ifdef HAVE_HARFBUZZ
-	hb_buffer = hb_buffer_create();
-	hb_font = hb_ft_font_create_referenced(face);
-	hb_ft_font_set_funcs(hb_font);
-#endif
-
-	baseline_offset = static_cast<int>(size * (10.0 / 12.0));
+	SetSize(size, true);
 
 	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
 		// Workaround for bad kerning in RM2000 and RMG2000 fonts
@@ -357,8 +347,8 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	advance.x = slot->advance.x / 64;
-	advance.y = slot->advance.y / 64;
+	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
+	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
@@ -437,8 +427,8 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 	Point advance;
 	Point offset;
 
-	advance.x = slot->advance.x / 64;
-	advance.y = slot->advance.y / 64;
+	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
+	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - baseline_offset;
 
@@ -484,10 +474,10 @@ std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
 			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
-			advance.x = pos.x_advance / 64;
-			advance.y = pos.y_advance / 64;
-			offset.x = pos.x_offset / 64;
-			offset.y = pos.y_offset / 64;
+			advance.x = Utils::RoundTo<int>(pos.x_advance / 64.0);
+			advance.y = Utils::RoundTo<int>(pos.y_advance / 64.0);
+			offset.x = Utils::RoundTo<int>(pos.x_offset / 64.0);
+			offset.y = Utils::RoundTo<int>(pos.y_offset / 64.0);
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
 		}
 	}
@@ -501,21 +491,56 @@ void FTFont::vApplyStyle(const Style& style) {
 		return;
 	}
 
+	SetSize(style.size, false);
+}
+
+void FTFont::SetSize(int height, bool create) {
 	if (FT_HAS_COLOR(face)) {
 		// FIXME: Find the best size
 		FT_Select_Size(face, 0);
+	} else if (FT_IS_SCALABLE(face)) {
+		// Calculate the pt size from px
+		auto table_os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(face, ft_sfnt_os2));
+		auto table_hori = static_cast<TT_HoriHeader*>(FT_Get_Sfnt_Table(face, ft_sfnt_hhea));
+
+		if (table_os2 && table_hori) {
+			int units;
+			if (table_os2->usWinAscent + table_os2->usWinDescent == 0) {
+				units = table_hori->Ascender - table_hori->Descender;
+			} else {
+				units = table_os2->usWinAscent + table_os2->usWinDescent;
+			}
+
+			int pt = FT_MulDiv(face->units_per_EM, height, units);
+			if (FT_MulDiv(units, pt, face->units_per_EM) > height) {
+				--pt;
+			}
+
+			height = std::max<int>(1, pt);
+		}
+
+		FT_Set_Pixel_Sizes(face, 0, height);
 	} else {
-		FT_Set_Pixel_Sizes(face, 0, style.size);
+		FT_Set_Pixel_Sizes(face, 0, face->available_sizes->height);
 	}
 
 #ifdef HAVE_HARFBUZZ
-	// Without this the sizes become desynchronized
-	hb_font_destroy(hb_font);
+	if (create) {
+		hb_buffer = hb_buffer_create();
+	} else {
+		// Without this the sizes become desynchronized
+		hb_font_destroy(hb_font);
+	}
 	hb_font = hb_ft_font_create_referenced(face);
 	hb_ft_font_set_funcs(hb_font);
 #endif
-}
 
+	baseline_offset = FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64;
+	if (baseline_offset == 0) {
+		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
+		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
+	}
+}
 #endif
 
 FontRef Font::Default() {
@@ -567,7 +592,7 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 
 	FreeFontMemory();
 
-	std::string key = ToString(is.GetName()) + ":" + (bold ? "T" : "F") + (italic ? "T" : "F");
+	std::string key = ToString(is.GetName()) + ":" + std::to_string(size) + ":" + (bold ? "T" : "F") + (italic ? "T" : "F");
 
 	auto it = ft_cache.find(key);
 

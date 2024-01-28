@@ -380,7 +380,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		auto style_guard = apply_style(font, text);
 
 		int x = text.position_x;
-		int y = text.position_y;
+		int y = text.position_y + 2; // +2 to match the offset RPG_RT uses
 		int text_color = 0;
 		for (const auto& line: pm.GetLines()) {
 			std::u32string line32;
