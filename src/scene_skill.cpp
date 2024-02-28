@@ -18,6 +18,7 @@
 // Headers
 #include "scene_skill.h"
 #include "algo.h"
+#include "game_actors.h"
 #include "game_map.h"
 #include "game_party.h"
 #include "game_player.h"
@@ -28,8 +29,8 @@
 #include "scene_teleport.h"
 #include "transition.h"
 
-Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
-	actor_index(actor_index), skill_index(skill_index) {
+Scene_Skill::Scene_Skill(int actor_index, int skill_index, bool is_db_actor) :
+	actor_index(actor_index), skill_index(skill_index), is_db_actor(is_db_actor) {
 	Scene::type = Scene::Skill;
 }
 
@@ -41,9 +42,16 @@ void Scene_Skill::Start() {
 	skillstatus_window.reset(new Window_SkillStatus(Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_skillstatus_height));
 	skill_window.reset(new Window_Skill(Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_skillstatus_height, MENU_WIDTH, MENU_HEIGHT - (window_help_height + window_skillstatus_height)));
 
+	Game_Actor* actor;
+	if (!is_db_actor) {
+		actor = Main_Data::game_party->GetActors()[actor_index];
+	}
+	else {
+		actor = Main_Data::game_actors->GetActor(actor_index);
+	}
 	// Assign actors and help to windows
-	skill_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
-	skillstatus_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
+	skill_window->SetActor(actor->GetId());
+	skillstatus_window->SetActor(actor->GetId());
 	skill_window->SetIndex(skill_index);
 	skill_window->SetHelpWindow(help_window.get());
 }
@@ -65,7 +73,13 @@ void Scene_Skill::vUpdate() {
 		const lcf::rpg::Skill* skill = skill_window->GetSkill();
 		int skill_id = skill ? skill->ID : 0;
 
-		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
+		Game_Actor* actor;
+		if (!is_db_actor) {
+			actor = Main_Data::game_party->GetActors()[actor_index];
+		}
+		else {
+			actor = Main_Data::game_actors->GetActor(actor_index);
+		}
 
 		if (skill && skill_window->CheckEnable(skill_id)) {
 			if (skill->type == lcf::rpg::Skill::Type_switch) {
@@ -74,6 +88,10 @@ void Scene_Skill::vUpdate() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (Algo::IsNormalOrSubskill(*skill)) {
+				int actor_target_index = actor_index;
+				if (is_db_actor) {
+					actor_index = 0;
+				}
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
 				skill_index = skill_window->GetIndex();

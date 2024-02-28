@@ -825,9 +825,7 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: easyrpg={} dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
-		Player::HasEasyRpgExtensions(), Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(),
-		game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
+	game_config.PrintActivePatches();
 
 	ResetGameObjects();
 
@@ -1394,11 +1392,14 @@ Engine options:
  --new-game           Skip the title scene and start a new game directly.
  --no-log-color       Disable colors in terminal log.
  --no-rtp             Disable support for the Runtime Package (RTP).
- --patch-anti-lag-switch SWITCH
+ --patch-antilag-switch SWITCH
                       Disables event page refreshing when the switch SWITCH is
                       enabled.
  --patch-common-this  Enable usage of "This Event" in common events in any
                       version of the engine.
+ --patch-direct-menu VAR
+                      Directly access subscreens of the default menu by setting
+                      VAR.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
