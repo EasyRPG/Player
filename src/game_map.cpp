@@ -38,6 +38,7 @@
 #include "game_message.h"
 #include "game_screen.h"
 #include "game_pictures.h"
+#include "game_variables.h"
 #include "scene_battle.h"
 #include "scene_map.h"
 #include <lcf/lmu/reader.h>
@@ -1635,6 +1636,14 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 	}
 
 	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
+
+	if (Player::game_config.patch_encounter_random_alert.Get()) {
+		int var_id = Player::game_config.patch_encounter_random_alert.Get();
+		Main_Data::game_variables->Set(var_id, args.troop_id);
+		Game_Map::SetNeedRefresh(true);
+		Game_Map::Refresh();
+		return false;
+	}
 
 	if (Feature::HasRpg2kBattleSystem()) {
 		if (Rand::ChanceOf(1, 32)) {
