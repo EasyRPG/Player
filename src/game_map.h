@@ -73,6 +73,14 @@ class MapUpdateAsyncContext {
 		bool message = false;
 };
 
+class MapEventCache {
+	public:
+		void AddEvent(lcf::rpg::Event& ev);
+
+	private:
+		std::vector<lcf::rpg::Event> events;
+};
+
 /**
  * Game_Map namespace
  */
@@ -678,6 +686,12 @@ namespace Game_Map {
 	std::string ConstructMapName(int map_id, bool isEasyRpg);
 
 	FileRequestAsync* RequestMap(int map_id);
+
+	void SetNeedRefreshForSwitchChange(int switch_id);
+	void SetNeedRefreshForVarChange(int var_id);
+
+	void AddEventToSwitchCache(lcf::rpg::Event& ev, int switch_id);
+	void AddEventToVariableCache(lcf::rpg::Event& ev, int var_id);
 
 	namespace Parallax {
 		struct Params {
