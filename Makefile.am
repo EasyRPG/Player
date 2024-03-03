@@ -287,6 +287,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_gameover.h \
 	src/scene_item.cpp \
 	src/scene_item.h \
+	src/scene_language.cpp \
+	src/scene_language.h \
 	src/scene_load.cpp \
 	src/scene_load.h \
 	src/scene_logo.cpp \

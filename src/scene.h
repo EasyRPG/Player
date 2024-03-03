@@ -59,6 +59,7 @@ public:
 		GameBrowser,
 		Teleport,
 		Settings,
+		Translation,
 		SceneMax
 	};
 
