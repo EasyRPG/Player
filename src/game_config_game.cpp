@@ -87,6 +87,7 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_common_this_event.Lock(false);
 			patch_key_patch.Lock(false);
 			patch_rpg2k3_commands.Lock(false);
+			patch_anti_lag_switch.Lock(false);
 			patch_override = true;
 			continue;
 		}
@@ -105,6 +106,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 					patch_key_patch.Set(true);
 				} else if (v == "rpg2k3-cmds" || v == "rpg2k3-commands") {
 					patch_rpg2k3_commands.Set(true);
+				} else if (v.rfind("anti-lag-switch=") == 0) {
+					int num = static_cast<int>(std::strtol(v.substr(16).c_str(), nullptr, 0));
+					if (num > 0) {
+						patch_anti_lag_switch.Set(num);
+					}
 				}
 			}
 			patch_override = true;
@@ -149,6 +155,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_rpg2k3_commands.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_anti_lag_switch.FromIni(ini)) {
 		patch_override = true;
 	}
 }
