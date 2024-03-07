@@ -16,15 +16,16 @@
  */
 
 #include <3ds.h>
-#include <3dslink.h>
 #include <cstdio>
 
 #include "player.h"
 #include <string>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <malloc.h>
 #include <string>
 #include <vector>
+#include "lcf/scope_guard.h"
 #include "output.h"
 
 /* 8 MB required for booting and need extra linear memory for the sound
@@ -35,7 +36,52 @@ u32 __ctru_linear_heap_size = 12*1024*1024;
 namespace {
 	u32 old_time_limit;
 	int n3dslinkSocket = -1;
+	u32* n3dsSocBuf = nullptr;
 	bool is_emu = false;
+
+	constexpr int SOC_BUFFERSIZE = 0x100000;
+}
+
+static void start3DSLink() {
+	// only do socket stuff, if sent by 3dslink
+	if (!__3dslink_host.s_addr) return;
+
+	n3dsSocBuf = (u32*)memalign(0x1000, SOC_BUFFERSIZE);
+	if(n3dsSocBuf == nullptr) {
+		printf("failed to allocate SOC buffer\n");
+		return;
+	}
+	auto buff_sg = lcf::makeScopeGuard([&]() {
+		free(n3dsSocBuf);
+		n3dsSocBuf = nullptr;
+	});
+
+	int ret = socInit(n3dsSocBuf, SOC_BUFFERSIZE);
+	if (ret != 0) {
+		printf("socInit failed: 0x%08X\n", (unsigned int)ret);
+		return;
+	}
+	auto serv_sg = lcf::makeScopeGuard([&]() {
+		socExit();
+	});
+
+	n3dslinkSocket = link3dsStdio();
+	if(n3dslinkSocket < 0) {
+		printf("failed to link stdio\n");
+		return;
+	}
+
+	serv_sg.Dismiss();
+	buff_sg.Dismiss();
+}
+
+static void stop3DSLink() {
+	if (n3dslinkSocket < 0) return;
+
+	close(n3dslinkSocket);
+	n3dslinkSocket = -1;
+	socExit();
+	free(n3dsSocBuf);
 }
 
 static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
@@ -54,12 +100,19 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
 	want_log = true;
 #endif
 	if (want_log) {
-		printf("%s: %s\n", prefix.c_str(), message.c_str());
+		printf("%s: %s\n", prefix.c_str(), msg.c_str());
 	}
 }
 
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
+
+	gfxInitDefault();
+#ifdef _DEBUG
+	consoleInit(GFX_BOTTOM, nullptr);
+#endif
+	start3DSLink();
+	Output::SetLogCallback(LogCallback);
 
 	APT_GetAppCpuTimeLimit(&old_time_limit);
 	APT_SetAppCpuTimeLimit(30);
@@ -70,13 +123,6 @@ int main(int argc, char* argv[]) {
 	if (isN3DS) {
 		osSetSpeedupEnable(true);
 	}
-
-	gfxInitDefault();
-	n3dslinkSocket = link3dsStdio();
-#ifdef _DEBUG
-	consoleInit(GFX_BOTTOM, nullptr);
-#endif
-	Output::SetCustomMsgOut(LogMessage);
 
 	// cia/citra
 	is_emu = !envIsHomebrew();
@@ -113,6 +159,14 @@ int main(int argc, char* argv[]) {
 	} else if(is_cia) {
 		// No RomFS -> load games from hardcoded path
 		ctr_dir = tmp_path;
+		Output::Debug("CIA: Using hard-coded path.");
+	} else if(args[0].rfind("3dslink:/", 0) == 0) {
+		// Check if a game directory was provided, otherwise use default
+		if (std::none_of(args.cbegin(), args.cend(),
+			[](const std::string& a) { return a == "--project-path"; })) {
+			ctr_dir = tmp_path;
+			Output::Debug("3dslink: Using hard-coded path.");
+		}
 	}
 	// otherwise uses cwd by default or 3dslink argument
 	if (!ctr_dir.empty()) {
@@ -125,13 +179,7 @@ int main(int argc, char* argv[]) {
 	Player::Run();
 
 	romfsExit();
-
-	// Close debug log
-	if (n3dslinkSocket >= 0) {
-		close(n3dslinkSocket);
-		n3dslinkSocket = -1;
-	}
-
+	stop3DSLink();
 	gfxExit();
 
 	if (old_time_limit != UINT32_MAX) {
