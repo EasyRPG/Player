@@ -367,7 +367,7 @@ void Window_Settings::RefreshAudioSoundfont() {
 
 	std::string sf_lower = Utils::LowerCase(Audio().GetFluidsynthSoundfont());
 	for (const auto& item: *list) {
-		if (item.second.type == DirectoryTree::FileType::Regular && StringView(item.first).ends_with(".sf2")) {
+		if (item.second.type == DirectoryTree::FileType::Regular && (StringView(item.first).ends_with(".sf2") || StringView(item.first).ends_with(".soundfont"))) {
 			AddOption(MenuItem(item.second.name, "Use this custom soundfont", StringView(sf_lower).ends_with(item.first) ? "[x]" : ""), [this, fs, item]() {
 				Audio().SetFluidsynthSoundfont(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
 				Pop();

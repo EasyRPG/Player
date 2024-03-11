@@ -1254,6 +1254,7 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	cfg.vsync.SetOptionVisible(false);
+	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #endif
 }
 

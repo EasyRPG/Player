@@ -468,6 +468,7 @@ void Scene_Settings::UpdateFont(bool mincho) {
 	last_index = index;
 
 	if (index == 0) {
+		// Built-In font
 		help_window2->Clear();
 		help_window2->SetFont(Font::DefaultBitmapFont(mincho));
 		help_window2->SetVisible(true);
