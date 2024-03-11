@@ -381,7 +381,7 @@ void Window_Settings::RefreshAudioSoundfont() {
 
 #ifdef EMSCRIPTEN
 	AddOption(MenuItem("<Upload Soundfont>", "Provide a soundfont from your system", ""), [fs]() { Emscripten_Interface::UploadSoundfont(); });
-#else
+#elif defined(SUPPORT_FILE_BROWSER)
 	AddOption(MenuItem("<Open Soundfont directory>", "Open the soundfont directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
 #endif
 }
@@ -482,7 +482,7 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 
 #ifdef EMSCRIPTEN
 	AddOption(MenuItem("<Upload Font>", "Provide a font from your system", ""), [fs]() { Emscripten_Interface::UploadFont(); });
-#else
+#elif defined(SUPPORT_FILE_BROWSER)
 	AddOption(MenuItem("<Open Font directory>", "Open the font directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
 #endif
 }
