@@ -176,6 +176,7 @@ private:
 	float pitch = 1.0f;
 	bool paused = false;
 	float volume = 0.0f;
+	float global_volume = 1.0f; // only used by midiout
 	float log_volume = 0.0f; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
