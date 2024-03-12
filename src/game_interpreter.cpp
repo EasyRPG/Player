@@ -450,6 +450,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				// 10 per second
 				Main_Data::game_variables->Set(_keyinput.time_variable,
 						(_keyinput.wait_frames * 10) / Game_Clock::GetTargetGameFps());
+				Game_Map::SetNeedRefreshForVarChange(_keyinput.time_variable);
 			}
 			_keyinput.wait = false;
 		}
@@ -2287,9 +2288,7 @@ bool Game_Interpreter::CommandMemorizeLocation(lcf::rpg::EventCommand const& com
 	Main_Data::game_variables->Set(var_map_id, Game_Map::GetMapId());
 	Main_Data::game_variables->Set(var_x, player->GetX());
 	Main_Data::game_variables->Set(var_y, player->GetY());
-	Game_Map::SetNeedRefreshForVarChange(var_map_id);
-	Game_Map::SetNeedRefreshForVarChange(var_x);
-	Game_Map::SetNeedRefreshForVarChange(var_y);
+	Game_Map::SetNeedRefreshForVarChange({var_map_id, var_x, var_y});
 	return true;
 }
 
