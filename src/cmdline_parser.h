@@ -65,6 +65,24 @@ public:
 	}
 
 	/**
+	 * Use this with boolean arguments of structure --option and --no-option
+	 * to decide if the --no- prefix was used or not.
+	 *
+	 * @return Whether the command line argument does not start with --no-
+	 */
+	bool ArgIsOn() const {
+		return !ArgIsOff();
+	}
+
+	/**
+	 * @see ArgIsOn
+	 * @return Whether the command line argument starts with --no-
+	 */
+	bool ArgIsOff() const {
+		return Arg().substr(0, 5) == "--no-";
+	}
+
+	/**
 	 * Gets an argument value to an integer
 	 *
 	 * @param i the index to the value.
@@ -89,7 +107,7 @@ private:
 /** Commandline parser class which is used to search through command line arguments.  */
 class CmdlineParser {
 public:
-	/** 
+	/**
 	 * Construct with given arguments
 	 *
 	 * @param arguments main() argv as vector of strings

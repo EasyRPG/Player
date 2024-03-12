@@ -243,12 +243,8 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 		long li_value = 0;
 		std::string str_value;
 
-		if (cp.ParseNext(arg, 0, "--vsync")) {
-			video.vsync.Set(true);
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--no-vsync")) {
-			video.vsync.Set(false);
+		if (cp.ParseNext(arg, 0, {"--vsync", "--no-vsync"})) {
+			video.vsync.Set(arg.ArgIsOn());
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--fps-limit")) {
@@ -261,20 +257,12 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			video.fps_limit.Set(0);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--show-fps")) {
-			video.show_fps.Set(true);
+		if (cp.ParseNext(arg, 0, {"--show-fps", "--no-show-fps"})) {
+			video.show_fps.Set(arg.ArgIsOn());
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
-			video.show_fps.Set(false);
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--fps-render-window")) {
-			video.fps_render_window.Set(true);
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--no-fps-render-window")) {
-			video.fps_render_window.Set(false);
+		if (cp.ParseNext(arg, 0, {"--fps-render-window", "--no-fps-render-window"})) {
+			video.fps_render_window.Set(arg.ArgIsOn());
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--window")) {
@@ -291,12 +279,8 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--stretch")) {
-			video.stretch.Set(true);
-			continue;
-		}
-		if (cp.ParseNext(arg, 0, "--no-stretch")) {
-			video.stretch.Set(false);
+		if (cp.ParseNext(arg, 0, {"--stretch", "--no-stretch"})) {
+			video.stretch.Set(arg.ArgIsOn());
 			continue;
 		}
 		if (cp.ParseNext(arg, 1, "--scaling")) {
