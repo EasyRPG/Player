@@ -149,6 +149,7 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	about_window->SetVisible(false);
 
 	picker_window.reset();
+	font_size_window.reset();
 
 	switch (mode) {
 		case Window_Settings::eNone:
@@ -461,20 +462,38 @@ void Scene_Settings::UpdateFont(bool mincho) {
 
 	auto& last_index = options_window->GetFrame().scratch;
 
+	if (font_size_window) {
+		font_size_window->SetY(options_window->GetY() + options_window->GetCursorRect().y);
+		font_size_window->Update();
+	}
+
 	int index = options_window->GetIndex();
 	if (last_index == index) {
-		UpdateOptions();
-		return;
+		if (index == 0 || !help_window2->GetFont() || help_window2->GetFont()->GetCurrentStyle().size == options_window->font_size.Get()) {
+			// Same index or font size did not change
+			UpdateOptions();
+			return;
+		}
 	}
 	last_index = index;
+
+	if (!font_size_window) {
+		font_size_window = std::make_unique<Window_Help>(options_window->GetRightX(), 0, 32, 32);
+		font_size_window->SetLeftArrow(true);
+		font_size_window->SetRightArrow(true);
+		font_size_window->SetAnimateArrows(true);
+	}
+
+	font_size_window->SetVisible(false);
+	font_size_window->SetText(std::to_string(options_window->font_size.Get()));
 
 	if (index == 0) {
 		// Built-In font
 		help_window2->Clear();
 		help_window2->SetFont(Font::DefaultBitmapFont(mincho));
 		help_window2->SetVisible(true);
-	} else if (index >= options_window->GetRowMax() - 3) {
-		// Size, sample or browse
+	} else if (index >= options_window->GetRowMax() - 2) {
+		// Sample or browse
 		help_window2->Clear();
 		help_window2->SetFont(nullptr);
 		help_window2->SetVisible(true);
@@ -486,6 +505,7 @@ void Scene_Settings::UpdateFont(bool mincho) {
 				help_window2->Clear();
 				help_window2->SetFont(font);
 				help_window2->SetVisible(true);
+				font_size_window->SetVisible(true);
 			} else {
 				auto& opt = options_window->GetCurrentOption();
 				opt.action = nullptr;

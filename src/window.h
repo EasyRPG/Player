@@ -54,6 +54,8 @@ public:
 	void SetLeftArrow(bool nleft_arrow);
 	bool GetRightArrow() const;
 	void SetRightArrow(bool nright_arrow);
+	bool GetAnimateArrows() const;
+	void SetAnimateArrows(bool nanimate_arrows);
 	int GetX() const;
 	void SetX(int nx);
 	int GetY() const;
@@ -104,6 +106,7 @@ protected:
 	bool down_arrow = false;
 	bool left_arrow = false;
 	bool right_arrow = false;
+	bool animate_arrows = false;
 	int x = 0;
 	int y = 0;
 	int width = 0;
@@ -132,7 +135,7 @@ private:
 	bool pause = false;
 
 	int cursor_frame = 0;
-	int pause_frame = 0;
+	int arrow_animation_frame = 0;
 	int animation_frames = 0;
 	double animation_count = 0.0;
 	double animation_increment = 0.0;
@@ -185,7 +188,7 @@ inline bool Window::GetPause() const {
 
 inline void Window::SetPause(bool npause) {
 	pause = npause;
-	pause_frame = 0;
+	arrow_animation_frame = 0;
 }
 
 inline bool Window::GetUpArrow() const {
@@ -218,6 +221,14 @@ inline bool Window::GetRightArrow() const {
 
 inline void Window::SetRightArrow(bool nright_arrow) {
 	right_arrow = nright_arrow;
+}
+
+inline bool Window::GetAnimateArrows() const {
+	return animate_arrows;
+}
+
+inline void Window::SetAnimateArrows(bool nanimate_arrows) {
+	animate_arrows = nanimate_arrows;
 }
 
 inline int Window::GetX() const {

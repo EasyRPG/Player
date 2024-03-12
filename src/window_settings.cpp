@@ -455,6 +455,22 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 
 		if (item.second.type == DirectoryTree::FileType::Regular && is_font) {
 			AddOption(MenuItem(item.second.name, "Use this font", StringView(font_lower).ends_with(item.first) ? "[x]" : ""), [=, &cfg, &setting]() mutable {
+				if (Input::IsTriggered(Input::LEFT) || Input::IsRepeated(Input::LEFT)) {
+					if (font_size.Get() == font_size.GetMin()) {
+						font_size.Set(font_size.GetMax());
+					} else {
+						font_size.Set(font_size.Get() - 1);
+					}
+					return;
+				} else if (Input::IsTriggered(Input::RIGHT) || Input::IsRepeated(Input::RIGHT)) {
+					if (font_size.Get() == font_size.GetMax()) {
+						font_size.Set(font_size.GetMin());
+					} else {
+						font_size.Set(font_size.Get() + 1);
+					}
+					return;
+				}
+
 				auto is = fs.OpenInputStream(item.second.name);
 				if (is) {
 					auto font = Font::CreateFtFont(std::move(is), font_size.Get(), false, false);
@@ -471,9 +487,9 @@ void Window_Settings::RefreshEngineFont(bool mincho) {
 		}
 	}
 
-	AddOption(font_size, [this]() mutable {
+	/*AddOption(font_size, [this]() mutable {
 		font_size.Set(GetCurrentOption().current_value);
-	});
+	});*/
 
 	AddOption(sample_text, [this]() {
 		sample_text.Set(static_cast<SampleText>(GetCurrentOption().current_value));
