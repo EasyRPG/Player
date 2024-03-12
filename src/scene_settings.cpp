@@ -236,6 +236,7 @@ void Scene_Settings::vUpdate() {
 			return;
 		}
 
+		help_window2->SetFont(nullptr);
 		options_window->Pop();
 		SetMode(options_window->GetMode());
 		if (mode == Window_Settings::eNone) {
