@@ -291,10 +291,10 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					TurnRandom();
 					break;
 				case Code::move_towards_hero:
-					TurnTowardHero();
+					TurnTowardCharacter(CharPlayer);
 					break;
 				case Code::move_away_from_hero:
-					TurnAwayFromHero();
+					TurnAwayFromCharacter(CharPlayer);
 					break;
 				case Code::move_forward:
 					break;
@@ -348,10 +348,10 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					TurnRandom();
 					break;
 				case Code::face_hero:
-					TurnTowardHero();
+					TurnTowardCharacter(CharPlayer);
 					break;
 				case Code::face_away_from_hero:
-					TurnAwayFromHero();
+					TurnAwayFromCharacter(CharPlayer);
 					break;
 				default:
 					break;
@@ -543,20 +543,21 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	}
 }
 
-int Game_Character::GetDirectionToHero() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+int Game_Character::GetDirectionToCharacter(const Game_Character* target) {
+	int sx = DistanceXfromCharacter(target);
+	int sy = DistanceYfromCharacter(target);
 
-	if ( std::abs(sx) > std::abs(sy) ) {
+	if (std::abs(sx) > std::abs(sy)) {
 		return (sx > 0) ? Left : Right;
-	} else {
+	}
+	else {
 		return (sy > 0) ? Up : Down;
 	}
 }
 
-int Game_Character::GetDirectionAwayHero() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+int Game_Character::GetDirectionAwayCharacter(const Game_Character* target) {
+	int sx = DistanceXfromCharacter(target);
+	int sy = DistanceYfromCharacter(target);
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		return (sx > 0) ? Right : Left;
@@ -565,12 +566,18 @@ int Game_Character::GetDirectionAwayHero() {
 	}
 }
 
-void Game_Character::TurnTowardHero() {
-	SetDirection(GetDirectionToHero());
+void Game_Character::TurnTowardCharacter(int targetID) {
+    Game_Character* target = GetCharacter(targetID, targetID);
+    if (target) {
+        SetDirection(GetDirectionToCharacter(target));
+    }
 }
 
-void Game_Character::TurnAwayFromHero() {
-	SetDirection(GetDirectionAwayHero());
+void Game_Character::TurnAwayFromCharacter(int targetID) {
+	Game_Character* target = GetCharacter(targetID, targetID);
+	if (target) {
+		SetDirection(GetDirectionAwayCharacter(target));
+	}
 }
 
 void Game_Character::TurnRandom() {
@@ -606,10 +613,10 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 					TurnRandom();
 					break;
 				case Code::move_towards_hero:
-					TurnTowardHero();
+					TurnTowardCharacter(CharPlayer);
 					break;
 				case Code::move_away_from_hero:
-					TurnAwayFromHero();
+					TurnAwayFromCharacter(CharPlayer);
 					break;
 				case Code::move_forward:
 					break;
@@ -650,10 +657,10 @@ bool Game_Character::BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::
 					TurnRandom();
 					break;
 				case Code::face_hero:
-					TurnTowardHero();
+					TurnTowardCharacter(CharPlayer);
 					break;
 				case Code::face_away_from_hero:
-					TurnAwayFromHero();
+					TurnAwayFromCharacter(CharPlayer);
 					break;
 				default:
 					break;
@@ -739,31 +746,38 @@ bool Game_Character::Jump(int x, int y) {
 	return true;
 }
 
-int Game_Character::DistanceXfromPlayer() const {
-	int sx = GetX() - Main_Data::game_player->GetX();
-	if (Game_Map::LoopHorizontal()) {
-		if (std::abs(sx) > Game_Map::GetTilesX() / 2) {
-			if (sx > 0)
-				sx -= Game_Map::GetTilesX();
-			else
-				sx += Game_Map::GetTilesX();
+int Game_Character::DistanceXfromCharacter(const Game_Character* target) const {
+	if (target) {
+		int sx = GetX() - target->GetX();
+		if (Game_Map::LoopHorizontal()) {
+			if (std::abs(sx) > Game_Map::GetTilesX() / 2) {
+				if (sx > 0)
+					sx -= Game_Map::GetTilesX();
+				else
+					sx += Game_Map::GetTilesX();
+			}
 		}
+		return sx;
 	}
-	return sx;
+	return 0;  // Return a default value or handle the case where target is nullptr.
 }
 
-int Game_Character::DistanceYfromPlayer() const {
-	int sy = GetY() - Main_Data::game_player->GetY();
-	if (Game_Map::LoopVertical()) {
-		if (std::abs(sy) > Game_Map::GetTilesY() / 2) {
-			if (sy > 0)
-				sy -= Game_Map::GetTilesY();
-			else
-				sy += Game_Map::GetTilesY();
+int Game_Character::DistanceYfromCharacter(const Game_Character* target) const {
+	if (target) {
+		int sy = GetY() - target->GetY();
+		if (Game_Map::LoopVertical()) {
+			if (std::abs(sy) > Game_Map::GetTilesY() / 2) {
+				if (sy > 0)
+					sy -= Game_Map::GetTilesY();
+				else
+					sy += Game_Map::GetTilesY();
+			}
 		}
+		return sy;
 	}
-	return sy;
+	return 0;  // Return a default value or handle the case where target is nullptr.
 }
+
 
 void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 									int frequency) {
@@ -795,6 +809,23 @@ void Game_Character::CancelMoveRoute() {
 	}
 	SetMoveRouteOverwritten(false);
 	SetMoveRouteFinished(false);
+}
+
+bool Game_Character::isStuck(int i) {
+	if(i == 0 ) i =1;
+    int currentPose = 500;
+    if (GetMoveRouteIndex() < GetMoveRoute().move_commands.size()) {
+        if (IsStopping() && GetMoveRoute().move_commands[GetMoveRouteIndex()].command_id < 12) {
+            failsMove++;
+        } else {
+            failsMove = 0;
+        }
+    } else {
+        failsMove = 0;
+    }
+
+    //Output::Warning("stuck? - {} {} {} -- {}", failsMove, IsPaused(), i, GetMaxStopCount());
+	return failsMove > i && (GetStopCount() == 0 || GetStopCount() > GetMaxStopCount());
 }
 
 int Game_Character::GetSpriteX() const {

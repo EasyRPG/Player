@@ -825,6 +825,10 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(2050): //Cmd::EasyRpg_CallMovement
+			return CommandCallMovement(com);
+		case static_cast<Game_Interpreter::Cmd>(2051): //Cmd::EasyRpg_WaitForMovement
+			return CommandWaitForMovement(com);
 		default:
 			return true;
 	}
@@ -5050,6 +5054,101 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	Push({ cmd }, GetCurrentEventId(), false);
 
 	return true;
+}
+
+bool Game_Interpreter::CommandCallMovement(lcf::rpg::EventCommand const& com) {
+	// CommandSetMovement("moveCommand",[useVarID, ID, useVarOutput, output])
+
+	int eventID = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int outputParam = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int outputParamB = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	Game_Character* event = GetCharacter(eventID);
+	Game_Character* target;
+
+	std::string moveCommand = ToString(com.string);
+	std::string outputString = event->GetSpriteName();
+
+	std::size_t pos = moveCommand.find('/');
+
+	if (pos != std::string::npos) {
+		outputString = moveCommand.substr(pos + 1);
+		moveCommand = moveCommand.substr(0, pos);
+	}
+
+	if (moveCommand == "SetMoveSpeed")event->SetMoveSpeed(outputParam);
+	if (moveCommand == "SetMoveFrequency")event->SetMoveFrequency(outputParam);
+	if (moveCommand == "SetTransparency")event->SetTransparency(outputParam);
+	if (moveCommand == "SetAnimationType")event->SetAnimationType(static_cast<Game_Character::AnimType>(outputParam));
+	
+
+	if (moveCommand == "Event2Event") {
+		target = GetCharacter(outputParam);
+		event->SetFacing(target->GetFacing());
+		event->SetDirection(target->GetDirection());
+		event->SetX(target->GetX());
+		event->SetY(target->GetY());
+	}
+
+	if (moveCommand == "FaceTowards"){
+		if(!event->IsMoving()) {
+			event->TurnTowardCharacter(outputParam);
+			event->UpdateFacing();
+		}
+}
+	if (moveCommand == "FaceAway"){
+		if (!event->IsMoving()) {
+			event->TurnAwayFromCharacter(outputParam);
+			event->UpdateFacing();
+		}
+	}
+
+	if (moveCommand == "SetFacingLocked")event->SetFacingLocked(outputParam);
+	if (moveCommand == "SetLayer")event->SetLayer(outputParam);
+	if (moveCommand == "SetFlying")event->SetFlying(outputParam); //FIXME: I wish any event could imitate an airship, lacks more work.
+	if (moveCommand == "ChangeCharset")event->SetSpriteGraphic(outputString,outputParam); // syntax ChangeCharset/actor1
+
+	if (moveCommand == "JumpTo")event->Game_Character::Jump(outputParam, outputParamB);
+
+	if (moveCommand == "StopMovement")event->CancelMoveRoute();
+
+	return true;
+}
+
+bool Game_Interpreter::CommandWaitForMovement(lcf::rpg::EventCommand const& com) {
+	// CommandWaitForMovement(useVarID, ID, useVarTargetVariable, targetVariable, useVarFailuresAmount, failuresAmount)
+
+	int eventID = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (eventID == 0) eventID = GetCurrentEventId();
+
+	int outputVariable = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int failuresAmount = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	// Get the character associated with the event ID
+	Game_Character* ev = GetCharacter(eventID);
+
+	// Check if movement exists and if it's currently running
+	bool movementExists = !ev->GetMoveRoute().move_commands.empty();
+	bool movementIsRunning = movementExists && (ev->IsMoveRouteOverwritten() && !ev->IsMoveRouteFinished());
+
+	// failed to move X times (0 = wait till finish)
+	if (failuresAmount > 0)
+		if (ev->isStuck(failuresAmount)) {
+			ev->failsMove = 0;
+			ev->CancelMoveRoute();
+			Main_Data::game_variables->Set(outputVariable, 0);
+			Game_Map::SetNeedRefresh(true);
+			return true;
+		}
+
+	// Return false if movement is still in progress
+	if (!movementIsRunning) {
+		ev->failsMove = 0;
+		Main_Data::game_variables->Set(outputVariable, 1);
+		Game_Map::SetNeedRefresh(true);
+		return true;
+	}
+	return false;
 }
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {

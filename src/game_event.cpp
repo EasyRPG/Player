@@ -349,7 +349,7 @@ bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_pla
 	}
 
 	if (face_player && !(IsFacingLocked() || IsSpinning())) {
-		SetFacing(GetDirectionToHero());
+		SetFacing(GetDirectionToCharacter(GetCharacter(CharPlayer, CharPlayer)));
 	}
 
 	data()->waiting_execution = true;
@@ -570,8 +570,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 			dir = Rand::GetRandomNumber(0, 3);
 		} else {
 			dir = towards
-				? GetDirectionToHero()
-				: GetDirectionAwayHero();
+				? GetDirectionToCharacter(GetCharacter(CharPlayer, CharPlayer))
+			: GetDirectionAwayCharacter(GetCharacter(CharPlayer, CharPlayer));
 		}
 	}
 
