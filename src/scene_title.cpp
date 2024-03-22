@@ -206,6 +206,11 @@ void Scene_Title::OnTranslationChanged() {
 	Scene::OnTranslationChanged();
 }
 
+Span<Window_Selectable*> Scene_Title::GetWindowSelectables() {
+	auto arr = Utils::MakeArray<Window_Selectable*>(command_window.get());
+	return MakeSpan(arr);
+}
+
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!lcf::Data::system.title_name.empty()) {

@@ -266,6 +266,17 @@ void Scene_Settings::vUpdate() {
 	}
 }
 
+Span<Window_Selectable*> Scene_Settings::GetWindowSelectables() {
+	auto arr = Utils::MakeArray<Window_Selectable*>(
+		main_window.get(),
+		options_window.get(),
+		input_window.get(),
+		input_mode_window.get(),
+		picker_window.get()
+	);
+	return MakeSpan(arr);
+}
+
 void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 	BitmapRef bitmapRef = Cache::Title(result->file);
 

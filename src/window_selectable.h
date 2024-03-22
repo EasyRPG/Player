@@ -74,10 +74,27 @@ public:
 	 * @param nhelp_window the help window.
 	 */
 	void SetHelpWindow(Window_Help* nhelp_window);
+
+
+	/**
+	 * Returns a rectangle indicating the cursor location for the passed index.
+	 *
+	 * @param index cursor index
+	 * @return cursor rectangle
+	 */
+	virtual Rect GetCursorRect(int index) const;
 	virtual void UpdateCursorRect();
 	void Update() override;
 
 	virtual void UpdateHelp();
+
+	/**
+	 * Returns the index of the item that is at the passed position or -1 if there is nothing.
+	 *
+	 * @param position Position to check. Relative to the content.
+	 * @return index of the item or -1 if nothing was found.
+	 */
+	virtual int CursorHitTest(Point position) const;
 
 	/**
 	 * Sets if endless scrolling is enabled.

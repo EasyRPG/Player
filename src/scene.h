@@ -22,12 +22,15 @@
 #include "system.h"
 #include "async_op.h"
 #include "drawable_list.h"
+#include "span.h"
+#include "window_selectable.h"
 #include <vector>
 #include <functional>
 #include <lcf/rpg/savesystem.h>
 
 class Game_Battler;
 class Game_Actor;
+class Window_Selectable;
 
 /**
  * Scene virtual class.
@@ -287,6 +290,9 @@ protected:
 	 * @param value whether to use shared drawables.
 	 */
 	void SetUseSharedDrawables(bool value);
+
+	/** @return A list of window selectables suitable for mouse cursor selection */
+	virtual Span<Window_Selectable*> GetWindowSelectables() { return {}; };
 
 	/**
 	 * If no async operation is pending, call f() now. Otherwise

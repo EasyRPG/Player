@@ -85,6 +85,14 @@ void Scene_GameBrowser::vUpdate() {
 	}
 }
 
+Span<Window_Selectable*> Scene_GameBrowser::GetWindowSelectables() {
+	auto arr = Utils::MakeArray<Window_Selectable*>(
+		command_window.get(),
+		gamelist_window.get()
+	);
+	return MakeSpan(arr);
+}
+
 void Scene_GameBrowser::CreateWindows() {
 	// Create Options Window
 	std::vector<std::string> options;

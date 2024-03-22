@@ -39,6 +39,8 @@ public:
 	void Continue(SceneType prev_scene) override;
 	void vUpdate() override;
 
+	Span<Window_Selectable*> GetWindowSelectables() override;
+
 	/**
 	 * Creates the window displaying the options.
 	 */

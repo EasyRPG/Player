@@ -262,6 +262,18 @@ void Scene::Update() {
 			Scene::Push(std::make_shared<Scene_Settings>());
 	}
 
+	Point mouse_pos = Input::GetMousePosition();
+	for (auto* window: GetWindowSelectables()) {
+		if (!window || !window->GetActive()) {
+			continue;
+		}
+		int index = window->CursorHitTest({mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY()});
+		if (index >= 0 && index != window->GetIndex()) {
+			// Index changed callback?
+			window->SetIndex(index);
+		}
+	}
+
 	vUpdate();
 }
 

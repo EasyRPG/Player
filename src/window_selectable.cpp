@@ -103,7 +103,27 @@ void Window_Selectable::UpdateHelp() {
 	}
 }
 
-// Update Cursor Rect
+Rect Window_Selectable::GetCursorRect(int index) const {
+	int cursor_width = 0;
+	int x = 0;
+	if (index < 0) {
+		return {};
+	}
+	int row = index / column_max;
+	if (row < GetTopRow()) {
+		return {};
+	} else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
+		return {};
+	}
+
+	cursor_width = (width / column_max - 16) + 8;
+	x = (index % column_max * (cursor_width + 8)) - 4;
+
+	int y = index / column_max * menu_item_height - oy;
+
+	return {x, y, cursor_width, menu_item_height};
+}
+
 void Window_Selectable::UpdateCursorRect() {
 	int cursor_width = 0;
 	int x = 0;
@@ -365,6 +385,26 @@ void Window_Selectable::Update() {
 		}
 	}
 }
+
+#include "output.h"
+int Window_Selectable::CursorHitTest(Point position) const {
+	Output::Debug("{} {}", position.x, position.y);
+	for (int i = 0; i < item_max; ++i) {
+		Rect cursor_rect = GetCursorRect(i);
+		cursor_rect.x += GetBorderX();
+		cursor_rect.y += GetBorderY();
+		Output::Debug("{} {} {} {}", cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height);
+		if (cursor_rect != Rect()) {
+			if (position.x >= cursor_rect.x && position.x <= cursor_rect.x + cursor_rect.width &&
+				position.y >= cursor_rect.y && position.y <= cursor_rect.y + cursor_rect.height) {
+
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
 
 // Set endless scrolling state
 void Window_Selectable::SetEndlessScrolling(bool state) {

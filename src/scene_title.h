@@ -42,6 +42,8 @@ public:
 	void vUpdate() override;
 	void Refresh() override;
 
+	Span<Window_Selectable*> GetWindowSelectables() override;
+
 	void OnTranslationChanged() override;
 
 	/**
