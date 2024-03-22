@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopParty(int ix, int iy, int iwidth, int iheight);
+	Window_ShopParty(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current party on the window.

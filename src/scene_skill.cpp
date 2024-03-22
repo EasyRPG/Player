@@ -37,9 +37,9 @@ void Scene_Skill::Start() {
 	// Create the windows
 	int window_help_height = 32;
 	int window_skillstatus_height = 32;
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height));
-	skillstatus_window.reset(new Window_SkillStatus(Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_skillstatus_height));
-	skill_window.reset(new Window_Skill(Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_skillstatus_height, MENU_WIDTH, MENU_HEIGHT - (window_help_height + window_skillstatus_height)));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height);
+	skillstatus_window = std::make_unique<Window_SkillStatus>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_skillstatus_height);
+	skill_window = std::make_unique<Window_Skill>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_skillstatus_height, MENU_WIDTH, MENU_HEIGHT - (window_help_height + window_skillstatus_height));
 
 	// Assign actors and help to windows
 	skill_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());

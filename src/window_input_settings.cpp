@@ -22,8 +22,8 @@
 #include "window_selectable.h"
 
 
-Window_InputSettings::Window_InputSettings(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_InputSettings::Window_InputSettings(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 2;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));

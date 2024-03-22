@@ -27,8 +27,8 @@
 constexpr int arrow_animation_frames = 20;
 
 // Constructor
-Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) { }
+Window_Selectable::Window_Selectable(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, WindowType::Selectable, ix, iy, iwidth, iheight) { }
 
 void Window_Selectable::CreateContents() {
 	int w = std::max(0, width - border_x * 2);

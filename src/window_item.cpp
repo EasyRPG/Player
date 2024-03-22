@@ -26,8 +26,8 @@
 #include "game_battle.h"
 #include "output.h"
 
-Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_Item::Window_Item(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 2;
 }
 

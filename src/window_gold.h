@@ -29,7 +29,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Gold(int ix, int iy, int iwidth, int iheight);
+	Window_Gold(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current gold amount on the window.

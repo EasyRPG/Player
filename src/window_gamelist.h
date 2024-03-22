@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_GameList(int ix, int iy, int iwidth, int iheight);
+	Window_GameList(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Refreshes the game list.

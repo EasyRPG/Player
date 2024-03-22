@@ -36,7 +36,7 @@ public:
 	 * @param iwidth width of the window
 	 * @param iheight height of the window
 	 */
-	Window_ImportProgress(int ix, int iy, int iwidth, int iheight);
+	Window_ImportProgress(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Update to display scanning progress and the directory currently being scanned
@@ -44,7 +44,7 @@ public:
 	 * @param path current directory being scanned
 	 */
 	void SetProgress(int pct, const std::string& path);
-	
+
 private:
 	void Refresh();
 

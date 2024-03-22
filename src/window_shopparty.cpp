@@ -25,8 +25,8 @@
 #include <lcf/reader_util.h>
 #include "sprite_character.h"
 
-Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_ShopParty::Window_ShopParty(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight) {
 
 	SetBorderX(4);
 	SetBorderY(4);

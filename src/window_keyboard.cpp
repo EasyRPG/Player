@@ -198,8 +198,8 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 	}
 };
 
-Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight, const char* ndone_text)
-		: Window_Base(ix, iy, iwidth, iheight)
+Window_Keyboard::Window_Keyboard(Scene* parent, int ix, int iy, int iwidth, int iheight, const char* ndone_text)
+		: Window_Base(parent, ix, iy, iwidth, iheight)
 		, done_text(ndone_text)
 		, play_cursor(false)
 {

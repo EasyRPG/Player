@@ -26,7 +26,7 @@
  */
 class Window_MenuStatus : public Window_Selectable {
 public:
-	Window_MenuStatus(int ix, int iy, int iwidth, int iheight);
+	Window_MenuStatus(Scene* parent, int ix, int iy, int iwidth, int iheight);
 	void Refresh();
 	void UpdateCursorRect() override;
 

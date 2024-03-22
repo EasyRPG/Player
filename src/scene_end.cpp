@@ -81,7 +81,7 @@ void Scene_End::CreateCommandWindow() {
 	options.push_back(term_yes);
 	options.push_back(term_no);
 
-	command_window.reset(new Window_Command(options));
+	command_window = std::make_unique<Window_Command>(this, options);
 	command_window->SetX((Player::screen_width / 2) - (command_window->GetWidth() / 2));
 	command_window->SetY(Player::menu_offset_y + 72 + 48);
 	command_window->SetIndex(1);
@@ -97,8 +97,8 @@ void Scene_End::CreateHelpWindow() {
 
 	int window_width = text_size + 16;
 
-	help_window.reset(new Window_Help(Player::menu_offset_x + (MENU_WIDTH / 2) - (window_width / 2),
-									  Player::menu_offset_y + 72, window_width, 32));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x + (MENU_WIDTH / 2) - (window_width / 2),
+									  Player::menu_offset_y + 72, window_width, 32);
 	help_window->SetText(term_exit_message, Font::ColorDefault, Text::AlignLeft, false);
 
 	command_window->SetHelpWindow(help_window.get());

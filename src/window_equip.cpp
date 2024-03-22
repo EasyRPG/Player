@@ -22,8 +22,8 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Selectable(ix, iy, iwidth, iheight),
+Window_Equip::Window_Equip(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight),
 	actor_id(actor_id) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));

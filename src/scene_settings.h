@@ -45,8 +45,6 @@ public:
 	void Start() override;
 	void vUpdate() override;
 
-	Span<Window_Selectable*> GetWindowSelectables() override;
-
 	/**
 	 * Saves the configuration to the global config file.
 	 * @param silent When true only log messages instead of displaying them

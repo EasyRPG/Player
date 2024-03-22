@@ -27,7 +27,7 @@
 class Window_BattleMessage : public Window_Base {
 
 public:
-	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
+	Window_BattleMessage(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Adds message to be displayed.

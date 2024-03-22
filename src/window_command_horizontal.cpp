@@ -31,8 +31,8 @@ static int CalculateWidth(const std::vector<std::string>& commands, int width) {
 	return width;
 }
 
-Window_Command_Horizontal::Window_Command_Horizontal(std::vector<std::string> in_commands, int width) :
-	Window_Command(in_commands, -1)
+Window_Command_Horizontal::Window_Command_Horizontal(Scene* parent, std::vector<std::string> in_commands, int width) :
+	Window_Command(parent, in_commands, -1)
 {
 	SetWidth(CalculateWidth(in_commands, width));
 	SetHeight(32);

@@ -37,7 +37,7 @@ public:
 	 * @param iheight window height.
 	 * @param actor_id actor whose stats are displayed.
 	 */
-	Window_ParamStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
+	Window_ParamStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id);
 
 	/**
 	 * Refreshes screen.

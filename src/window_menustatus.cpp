@@ -23,8 +23,8 @@
 #include "bitmap.h"
 #include "feature.h"
 
-Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_MenuStatus::Window_MenuStatus(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 
 	if (Player::IsRPG2k3()) {
 		SetContents(Bitmap::Create(width - 12, height - 16));

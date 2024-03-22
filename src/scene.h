@@ -22,7 +22,6 @@
 #include "system.h"
 #include "async_op.h"
 #include "drawable_list.h"
-#include "span.h"
 #include "window_selectable.h"
 #include <vector>
 #include <functional>
@@ -268,6 +267,9 @@ public:
 	/** @return true if this scene uses shared drawables */
 	bool UsesSharedDrawables() const;
 
+	void RegisterWindow(Window* window);
+	void RemoveWindow(Window* window);
+
 	virtual void OnPartyChanged(Game_Actor* actor, bool add);
 	virtual void OnEventHpChanged(Game_Battler* battler, int hp);
 	virtual void OnTranslationChanged();
@@ -290,9 +292,6 @@ protected:
 	 * @param value whether to use shared drawables.
 	 */
 	void SetUseSharedDrawables(bool value);
-
-	/** @return A list of window selectables suitable for mouse cursor selection */
-	virtual Span<Window_Selectable*> GetWindowSelectables() { return {}; };
 
 	/**
 	 * If no async operation is pending, call f() now. Otherwise
@@ -321,6 +320,8 @@ private:
 
 	std::shared_ptr<Scene> request_scene;
 	int delay_frames = 0;
+
+	std::vector<Window*> windows;
 };
 
 inline bool Scene::IsInitialized() const {

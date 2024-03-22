@@ -43,7 +43,7 @@ public:
 	 * @param actor_id actor whos equipment is displayed.
 	 * @param equip_type type of equipment to show.
 	 */
-	Window_EquipItem(int ix, int iy, int iwidth, int iheight, int actor_id, int equip_type);
+	Window_EquipItem(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id, int equip_type);
 
 	/**
 	 * Checks if the item should be in the list based on

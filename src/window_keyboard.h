@@ -37,7 +37,7 @@ public:
 	 * @param iheight window height.
 	 * @param ndone_text text for the "Done" button.
 	 */
-	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80, const char* ndone_text = DONE);
+	Window_Keyboard(Scene* parent, int ix, int iy, int iwidth = 320, int iheight = 80, const char* ndone_text = DONE);
 
 	enum Mode {
 		Hiragana,

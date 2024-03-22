@@ -112,17 +112,17 @@ void Scene_Order::CreateCommandWindow() {
 	options_confirm.push_back(lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_order_scene_confirm, "Confirm"));
 	options_confirm.push_back(lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_order_scene_redo, "Redo"));
 
-	window_left.reset(new Window_Command(options_left, 88, 4));
+	window_left = std::make_unique<Window_Command>(this, options_left, 88, 4);
 	window_left->SetX(Player::menu_offset_x + 68);
 	window_left->SetY(Player::menu_offset_y + 48);
 
-	window_right.reset(new Window_Command(options_right, 88, 4));
+	window_right = std::make_unique<Window_Command>(this, options_right, 88, 4);
 	window_right->SetX(Player::menu_offset_x + 164);
 	window_right->SetY(Player::menu_offset_y + 48);
 	window_right->SetActive(false);
 	window_right->SetIndex(-1);
 
-	window_confirm.reset(new Window_Command(options_confirm, 80));
+	window_confirm = std::make_unique<Window_Command>(this, options_confirm, 80);
 	window_confirm->SetX(Player::menu_offset_x + 120);
 	window_confirm->SetY(Player::menu_offset_y + 144);
 	window_confirm->SetActive(false);

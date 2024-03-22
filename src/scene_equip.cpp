@@ -40,14 +40,14 @@ void Scene_Equip::Start() {
 	int menu_equip_status_height = 96;
 	int menu_equip_height = 96;
 
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, menu_help_height));
-	equipstatus_window.reset(new Window_EquipStatus(Player::menu_offset_x, Player::menu_offset_y + menu_help_height, menu_equip_status_width, menu_equip_status_height, actor.GetId()));
-	equip_window.reset(new Window_Equip(Player::menu_offset_x + menu_equip_status_width, Player::menu_offset_y + menu_help_height, (MENU_WIDTH - menu_equip_status_width), menu_equip_height, actor.GetId()));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, menu_help_height);
+	equipstatus_window = std::make_unique<Window_EquipStatus>(this, Player::menu_offset_x, Player::menu_offset_y + menu_help_height, menu_equip_status_width, menu_equip_status_height, actor.GetId());
+	equip_window = std::make_unique<Window_Equip>(this, Player::menu_offset_x + menu_equip_status_width, Player::menu_offset_y + menu_help_height, (MENU_WIDTH - menu_equip_status_width), menu_equip_height, actor.GetId());
 
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(std::make_shared<Window_EquipItem>(Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height,actor.GetId(), i));
+		item_windows.push_back(std::make_shared<Window_EquipItem>(this, Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height,actor.GetId(), i));
 	}
 
 	// Assign the help windows

@@ -59,12 +59,12 @@ void Scene_Battle_Rpg2k::Start() {
 void Scene_Battle_Rpg2k::CreateUi() {
 	Scene_Battle::CreateUi();
 
-	status_window.reset(new Window_BattleStatus(Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH - option_command_mov, 80));
+	status_window = std::make_unique<Window_BattleStatus>(this, Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH - option_command_mov, 80);
 
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
-	battle_message_window.reset(new Window_BattleMessage(Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH, 80));
+	battle_message_window = std::make_unique<Window_BattleMessage>(this, Player::menu_offset_x, (Player::screen_height - Player::menu_offset_y - 80), MENU_WIDTH, 80);
 
 	if (!IsEscapeAllowed()) {
 		auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
@@ -102,7 +102,7 @@ static std::vector<std::string> GetEnemyTargetNames() {
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	auto commands = GetEnemyTargetNames();
-	target_window.reset(new Window_Command(std::move(commands), 136, 4));
+	target_window = std::make_unique<Window_Command>(this, std::move(commands), 136, 4);
 	target_window->SetHeight(80);
 	target_window->SetX(Player::menu_offset_x);
 	target_window->SetY(Player::screen_height - Player::menu_offset_y - 80);
@@ -136,7 +136,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 		ToString(lcf::Data::terms.command_item)
 	};
 
-	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
+	command_window = std::make_unique<Window_Command>(this, std::move(commands), option_command_mov);
 	command_window->SetHeight(80);
 	command_window->SetY(Player::screen_height - Player::menu_offset_y - 80);
 }

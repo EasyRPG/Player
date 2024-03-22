@@ -82,7 +82,7 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::CreateHelpWindow() {
-	help_window.reset(new Window_Help(0, 0, Player::screen_width, 32));
+	help_window = std::make_unique<Window_Help>(this, 0, 0, Player::screen_width, 32);
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		help_window->SetBackOpacity(160);
@@ -206,11 +206,6 @@ void Scene_Title::OnTranslationChanged() {
 	Scene::OnTranslationChanged();
 }
 
-Span<Window_Selectable*> Scene_Title::GetWindowSelectables() {
-	auto arr = Utils::MakeArray<Window_Selectable*>(command_window.get());
-	return MakeSpan(arr);
-}
-
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!lcf::Data::system.title_name.empty()) {
@@ -268,7 +263,7 @@ void Scene_Title::CreateCommandWindow() {
 
 	options.push_back(ToString(lcf::Data::terms.exit_game));
 
-	command_window.reset(new Window_Command(options));
+	command_window = std::make_unique<Window_Command>(this, options);
 	RepositionWindow(*command_window, Player::hide_title_flag);
 
 	Refresh();
@@ -308,7 +303,7 @@ void Scene_Title::CreateTranslationWindow() {
 		lang_helps.front() = def.lang_desc;
 	}
 
-	translate_window = std::make_unique<Window_Command>(lang_names, -1, lang_names.size() > 9 ? 9 : lang_names.size());
+	translate_window = std::make_unique<Window_Command>(this, lang_names, -1, lang_names.size() > 9 ? 9 : lang_names.size());
 	translate_window->UpdateHelpFn = [this](Window_Help& win, int index) {
 		if (index >= 0 && index < static_cast<int>(lang_helps.size())) {
 			win.SetText(lang_helps[index]);

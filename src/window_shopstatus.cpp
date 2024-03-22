@@ -23,8 +23,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), item_id(0) {
+Window_ShopStatus::Window_ShopStatus(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight), item_id(0) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 

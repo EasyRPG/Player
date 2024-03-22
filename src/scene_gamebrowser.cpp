@@ -85,14 +85,6 @@ void Scene_GameBrowser::vUpdate() {
 	}
 }
 
-Span<Window_Selectable*> Scene_GameBrowser::GetWindowSelectables() {
-	auto arr = Utils::MakeArray<Window_Selectable*>(
-		command_window.get(),
-		gamelist_window.get()
-	);
-	return MakeSpan(arr);
-}
-
 void Scene_GameBrowser::CreateWindows() {
 	// Create Options Window
 	std::vector<std::string> options;
@@ -102,25 +94,25 @@ void Scene_GameBrowser::CreateWindows() {
 	options.push_back("About");
 	options.push_back("Exit");
 
-	command_window = std::make_unique<Window_Command_Horizontal>(options, Player::screen_width);
+	command_window = std::make_unique<Window_Command_Horizontal>(this, options, Player::screen_width);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window = std::make_unique<Window_GameList>(0, 64, Player::screen_width, Player::screen_height - 64);
+	gamelist_window = std::make_unique<Window_GameList>(this, 0, 64, Player::screen_width, Player::screen_height - 64);
 	gamelist_window->Refresh(stack.back().filesystem, false);
 
 	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
 
-	help_window = std::make_unique<Window_Help>(0, 0, Player::screen_width, 32);
+	help_window = std::make_unique<Window_Help>(this, 0, 0, Player::screen_width, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
 
-	load_window = std::make_unique<Window_Help>(Player::screen_width / 4, Player::screen_height / 2 - 16, Player::screen_width / 2, 32);
+	load_window = std::make_unique<Window_Help>(this, Player::screen_width / 4, Player::screen_height / 2 - 16, Player::screen_width / 2, 32);
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
 
-	about_window = std::make_unique<Window_About>(0, 64, Player::screen_width, Player::screen_height - 64);
+	about_window = std::make_unique<Window_About>(this, 0, 64, Player::screen_width, Player::screen_height - 64);
 	about_window->Refresh();
 	about_window->SetVisible(false);
 }

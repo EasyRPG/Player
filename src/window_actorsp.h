@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ActorSp(int ix, int iy, int iwidth, int iheight);
+	Window_ActorSp(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Sets the battler whose SP will be shown.

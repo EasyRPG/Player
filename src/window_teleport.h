@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Teleport(int ix, int iy, int iwidth, int iheight);
+	Window_Teleport(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Gets target.

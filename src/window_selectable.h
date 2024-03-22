@@ -28,7 +28,7 @@
  */
 class Window_Selectable: public Window_Base {
 public:
-	Window_Selectable(int ix, int iy, int iwidth, int iheight);
+	Window_Selectable(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Creates the contents based on how many items
@@ -142,7 +142,7 @@ protected:
 	int mouseOldIndex = 0;
 };
 
-inline void Window_Selectable::SetItemMax(int value) {
+inline void	Window_Selectable::SetItemMax(int value) {
 	item_max = value;
 }
 

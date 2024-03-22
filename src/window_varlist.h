@@ -42,12 +42,12 @@ public:
 	 *
 	 * @param commands commands to display.
 	 */
-	Window_VarList(std::vector<std::string> commands);
+	Window_VarList(Scene* parent, std::vector<std::string> commands);
 	~Window_VarList() override;
 
 	/**
 	 * UpdateList.
-	 * 
+	 *
 	 * @param first_value starting value.
 	 */
 	void UpdateList(int first_value);

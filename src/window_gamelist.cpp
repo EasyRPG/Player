@@ -23,8 +23,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_GameList::Window_GameList(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 1;
 }
 

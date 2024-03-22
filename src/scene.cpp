@@ -263,14 +263,15 @@ void Scene::Update() {
 	}
 
 	Point mouse_pos = Input::GetMousePosition();
-	for (auto* window: GetWindowSelectables()) {
-		if (!window || !window->GetActive()) {
+	for (auto* window: windows) {
+		if (window->GetType() != Window::WindowType::Selectable || !window->GetActive()) {
 			continue;
 		}
-		int index = window->CursorHitTest({mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY()});
-		if (index >= 0 && index != window->GetIndex()) {
-			// Index changed callback?
-			window->SetIndex(index);
+		auto* sel_window = static_cast<Window_Selectable*>(window);
+		int index = sel_window->CursorHitTest({mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY()});
+		if (index >= 0 && index != sel_window->GetIndex()) {
+			// FIXME: Index changed callback?
+			sel_window->SetIndex(index);
 		}
 	}
 
@@ -426,4 +427,14 @@ void Scene::OnTranslationChanged() {
 		Main_Data::game_actors->ReloadActors();
 	}
 	Game_Map::OnTranslationChanged();
+}
+
+void Scene::RegisterWindow(Window* window) {
+	windows.push_back(window);
+}
+
+void Scene::RemoveWindow(Window* window) {
+	auto it = std::find(windows.begin(), windows.end(), window);
+	assert(it != windows.end());
+	windows.erase(it);
 }

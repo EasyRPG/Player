@@ -23,8 +23,8 @@
 #include "output.h"
 #include <lcf/reader_util.h>
 
-Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
-	Window_Item(ix, iy, iwidth, iheight) {}
+Window_ShopSell::Window_ShopSell(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Item(parent, ix, iy, iwidth, iheight) {}
 
 bool Window_ShopSell::CheckEnable(int item_id) {
 	// Items are guaranteed to be valid

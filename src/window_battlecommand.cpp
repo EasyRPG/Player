@@ -27,8 +27,8 @@
 #include "bitmap.h"
 #include "feature.h"
 
-Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
-	Window_Base(x, y, width, height) {
+Window_BattleCommand::Window_BattleCommand(Scene* parent, int x, int y, int width, int height) :
+	Window_Base(parent, x, y, width, height) {
 
 	SetActor(0);
 

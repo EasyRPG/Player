@@ -544,7 +544,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	int width = (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) ? 104 : 136;
 	int height = 80;
 
-	target_window.reset(new Window_Command(std::move(commands), width, 4));
+	target_window = std::make_unique<Window_Command>(this, std::move(commands), width, 4);
 	target_window->SetHeight(height);
 	target_window->SetX(Player::menu_offset_x);
 	target_window->SetY(Player::screen_height - Player::menu_offset_y - height);
@@ -590,7 +590,7 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 			break;
 	}
 
-	status_window.reset(new Window_BattleStatus(x, y, w, h));
+	status_window = std::make_unique<Window_BattleStatus>(this, x, y, w, h);
 	status_window->SetZ(Priority_Window + 1);
 }
 
@@ -626,7 +626,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	auto* actor = Main_Data::game_party->GetActor(0);
 	auto commands = GetBattleCommandNames(actor);
 
-	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
+	command_window = std::make_unique<Window_Command>(this, std::move(commands), option_command_mov);
 
 	SetBattleCommandsDisable(*command_window, actor);
 
@@ -3028,7 +3028,7 @@ void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
 	if (battler && battler->MaxSpValue() >= 1000) {
 		spwindow_size = 72;
 	}
-	sp_window = std::make_unique<Window_ActorSp>(Player::screen_width - Player::menu_offset_x - spwindow_size, (small_window ? Player::menu_offset_y + 154 : Player::menu_offset_y + 136), spwindow_size, spwindow_height);
+	sp_window = std::make_unique<Window_ActorSp>(this, Player::screen_width - Player::menu_offset_x - spwindow_size, (small_window ? Player::menu_offset_y + 154 : Player::menu_offset_y + 136), spwindow_size, spwindow_height);
 	sp_window->SetVisible(false);
 	sp_window->SetBorderY(small_window ? 2 : 8);
 	sp_window->SetContents(Bitmap::Create(sp_window->GetWidth() - sp_window->GetBorderX() / 2, sp_window->GetHeight() - sp_window->GetBorderY() * 2));

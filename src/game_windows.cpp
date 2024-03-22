@@ -164,7 +164,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	if (async_wait) {
 		// Create fake window to prevent crashes
 		if (!window) {
-			window = std::make_unique<Window_Selectable>(0, 0, 0, 0);
+			window = std::make_unique<Window_Selectable>(nullptr, 0, 0, 0, 0);
 		}
 		return;
 	}
@@ -345,7 +345,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		}
 	}
 
-	window = std::make_unique<Window_Selectable>(0, 0, data.width, data.height);
+	window = std::make_unique<Window_Selectable>(nullptr, 0, 0, data.width, data.height);
 	if (!data.flags.border_margin) {
 		window->SetBorderX(0);
 		// FIXME: Figure out why 0 does not work here (bug in Window class)

@@ -30,7 +30,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight);
+	Window_Shop(Scene* parent, int shop_type, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current shop on the window.

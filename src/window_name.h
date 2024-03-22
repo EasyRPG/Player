@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Name(int ix, int iy, int iwidth, int iheight);
+	Window_Name(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current name on the window.

@@ -39,8 +39,8 @@ Scene_Item::Scene_Item(int item_index) :
 void Scene_Item::Start() {
 	// Create the windows
 	int menu_help_height = 32;
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, menu_help_height));
-	item_window.reset(new Window_Item(Player::menu_offset_x, Player::menu_offset_y + menu_help_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, menu_help_height);
+	item_window = std::make_unique<Window_Item>(this, Player::menu_offset_x, Player::menu_offset_y + menu_help_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height);
 	item_window->SetHelpWindow(help_window.get());
 	item_window->Refresh();
 	item_window->SetIndex(item_index);

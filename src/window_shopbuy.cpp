@@ -27,9 +27,9 @@
 #include "output.h"
 #include <lcf/reader_util.h>
 
-Window_ShopBuy::Window_ShopBuy(const std::vector<int>& goods,
+Window_ShopBuy::Window_ShopBuy(Scene* parent, const std::vector<int>& goods,
 		int ix, int iy, int iwidth, int iheight)
-	: Window_Selectable(ix, iy, iwidth, iheight)
+	: Window_Selectable(parent, ix, iy, iwidth, iheight)
 	  , data(goods)
 {
 	index = 0;

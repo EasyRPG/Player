@@ -50,11 +50,11 @@ void Scene_Name::Start() {
 	int window_keyboard_width = 256;
 	int window_keyboard_height = 160;
 
-	face_window.reset(new Window_Face(Player::menu_offset_x + margin_x, Player::menu_offset_y + margin_y, window_face_width, window_face_height));
+	face_window = std::make_unique<Window_Face>(this, Player::menu_offset_x + margin_x, Player::menu_offset_y + margin_y, window_face_width, window_face_height);
 	face_window->Set(actor_id);
 	face_window->Refresh();
 
-	name_window.reset(new Window_Name(Player::menu_offset_x + window_face_width + margin_x, Player::menu_offset_y + margin_y + 32, window_name_width, window_name_height));
+	name_window = std::make_unique<Window_Name>(this, Player::menu_offset_x + window_face_width + margin_x, Player::menu_offset_y + margin_y + 32, window_name_width, window_name_height);
 	name_window->Set(use_default_name ? ToString(actor->GetName()) : "");
 	name_window->Refresh();
 
@@ -88,7 +88,7 @@ void Scene_Name::Start() {
 	// Letter and symbol pages are used everywhere
 	layouts.push_back(Window_Keyboard::Letter);
 	layouts.push_back(Window_Keyboard::Symbol);
-	kbd_window.reset(new Window_Keyboard(Player::menu_offset_x + margin_x, Player::menu_offset_y + window_face_height + margin_y, window_keyboard_width, window_keyboard_height, done));
+	kbd_window = std::make_unique<Window_Keyboard>(this, Player::menu_offset_x + margin_x, Player::menu_offset_y + window_face_height + margin_y, window_keyboard_width, window_keyboard_height, done);
 
 	auto next_index = layout_index + 1;
 	if (next_index >= static_cast<int>(layouts.size())) {

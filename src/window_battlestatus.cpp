@@ -32,8 +32,8 @@
 #include "feature.h"
 #include <baseui.h>
 
-Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
-	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
+Window_BattleStatus::Window_BattleStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, bool enemy) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
 
 	SetBorderX(4);
 

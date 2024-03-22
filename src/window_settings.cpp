@@ -39,8 +39,8 @@ public:
 	}
 };
 
-Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_Settings::Window_Settings(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 1;
 }
 

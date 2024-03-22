@@ -41,9 +41,9 @@ Scene_ActorTarget::Scene_ActorTarget(
 
 void Scene_ActorTarget::Start() {
 	// Create the windows
-	help_window.reset(new Window_Help(0, 0, 136, 32));
-	target_window.reset(new Window_ActorTarget(136, 0, 184, Player::screen_height));
-	status_window.reset(new Window_TargetStatus(0, 32, 136, 32));
+	help_window = std::make_unique<Window_Help>(this, 0, 0, 136, 32);
+	target_window = std::make_unique<Window_ActorTarget>(this, 136, 0, 184, Player::screen_height);
+	status_window = std::make_unique<Window_TargetStatus>(this, 0, 32, 136, 32);
 
 	target_window->SetActive(true);
 	target_window->SetIndex(0);

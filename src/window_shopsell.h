@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopSell(int ix, int iy, int iwidth, int iheight);
+	Window_ShopSell(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Chechs if item should be enabled.

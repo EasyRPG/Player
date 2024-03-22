@@ -36,7 +36,7 @@ Scene_Teleport::Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill
 }
 
 void Scene_Teleport::Start() {
-	teleport_window.reset(new Window_Teleport(0, Player::screen_height - 80, Player::screen_width, 80));
+	teleport_window = std::make_unique<Window_Teleport>(this, 0, Player::screen_height - 80, Player::screen_width, 80);
 	teleport_window->SetActive(true);
 	teleport_window->SetIndex(0);
 }

@@ -23,8 +23,8 @@
 #include "game_map.h"
 #include "game_targets.h"
 
-Window_Teleport::Window_Teleport(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_Teleport::Window_Teleport(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 2;
 
 	Refresh();

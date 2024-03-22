@@ -32,8 +32,8 @@
 #include <input.h>
 #include <baseui.h>
 
-Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight),
+Window_NumberInput::Window_NumberInput(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight),
 	digits_max(10) {
 	number = 0;
 	plus = true;

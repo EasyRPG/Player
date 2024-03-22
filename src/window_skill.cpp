@@ -29,8 +29,8 @@
 #include <lcf/reader_util.h>
 #include "game_battle.h"
 
-Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
+Window_Skill::Window_Skill(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
 	column_max = 2;
 }
 

@@ -478,7 +478,7 @@ void Scene_Debug::CreateRangeWindow() {
 	std::vector<std::string> ranges;
 	for (int i = 0; i < 10; i++)
 		ranges.push_back("");
-	range_window.reset(new Window_Command(ranges, 96));
+	range_window = std::make_unique<Window_Command>(this, ranges, 96);
 
 	int height = 176;
 	range_window->SetHeight(height);
@@ -610,7 +610,7 @@ void Scene_Debug::CreateVarListWindow() {
 	std::vector<std::string> vars;
 	for (int i = 0; i < 10; i++)
 		vars.push_back("");
-	var_window.reset(new Window_VarList(vars));
+	var_window = std::make_unique<Window_VarList>(this, vars);
 	var_window->SetX(Player::menu_offset_x + range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->SetVisible(false);
@@ -620,8 +620,8 @@ void Scene_Debug::CreateVarListWindow() {
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
-	numberinput_window.reset(new Window_NumberInput(Player::menu_offset_x + 160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, Player::menu_offset_y + 104,
-		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16, 32));
+	numberinput_window = std::make_unique<Window_NumberInput>(this, Player::menu_offset_x + 160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, Player::menu_offset_y + 104,
+		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16, 32);
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);

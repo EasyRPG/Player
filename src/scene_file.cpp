@@ -71,7 +71,7 @@ std::unique_ptr<Sprite> Scene_File::MakeArrowSprite(bool down) {
 }
 
 void Scene_File::CreateHelpWindow() {
-	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, 0, MENU_WIDTH, 32);
 	help_window->SetText(message);
 	help_window->SetZ(Priority_Window + 1);
 }
@@ -125,7 +125,7 @@ void Scene_File::Start() {
 
 	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
 		std::shared_ptr<Window_SaveFile>
-			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
+			w = std::make_unique<Window_SaveFile>(this, Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64);
 		w->SetIndex(i);
 		w->SetZ(Priority_Window);
 		PopulateSaveWindow(*w, i);
@@ -154,7 +154,7 @@ void Scene_File::Start() {
 	commands.emplace_back("Download Savegame");
 	commands.emplace_back("Upload Savegame");
 #endif
-	extra_commands_window = std::make_unique<Window_Command>(commands);
+	extra_commands_window = std::make_unique<Window_Command>(this, commands);
 	extra_commands_window->SetZ(Priority_Window + 100);
 	extra_commands_window->SetVisible(false);
 }

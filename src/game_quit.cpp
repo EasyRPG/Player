@@ -28,7 +28,7 @@ constexpr int window_width = SCREEN_TARGET_WIDTH / 2;
 constexpr int window_height = 32;
 
 Game_Quit::Game_Quit()
-	: window(0, 0, window_width, window_height, Drawable::Flags::Global)
+	: window(nullptr, 0, 0, window_width, window_height, Drawable::Flags::Global)
 {
 	window.SetBackOpacity(128);
 	window.SetZ(Priority_Overlay - 20);

@@ -28,8 +28,8 @@
 #include "game_party.h"
 #include "game_map.h"
 
-Window_VarList::Window_VarList(std::vector<std::string> commands) :
-Window_Command(commands, 224, 10) {
+Window_VarList::Window_VarList(Scene* parent, std::vector<std::string> commands) :
+	Window_Command(parent, commands, 224, 10) {
 	SetX(0);
 	SetY(32);
 	SetHeight(176);

@@ -20,8 +20,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flags flags) :
-	Window_Base(ix, iy, iwidth, iheight, flags),
+Window_Help::Window_Help(Scene* parent, int ix, int iy, int iwidth, int iheight, Drawable::Flags flags) :
+	Window_Base(parent, ix, iy, iwidth, iheight, flags),
 	align(Text::AlignLeft) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));

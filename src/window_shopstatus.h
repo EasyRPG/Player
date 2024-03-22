@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopStatus(int ix, int iy, int iwidth, int iheight);
+	Window_ShopStatus(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current total on the window.

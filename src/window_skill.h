@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Skill(int ix, int iy, int iwidth, int iheight);
+	Window_Skill(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Sets the actor whose skills are displayed.
