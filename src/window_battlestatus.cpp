@@ -293,9 +293,9 @@ void Window_BattleStatus::Update() {
 
 				int h = 1;
 				int w = 1;
-				if (!GetCursorRect().IsEmpty()) {
-					h = GetCursorRect().height;
-					w = GetCursorRect().width;
+				if (!GetCursorRect(0).IsEmpty()) {
+					h = GetCursorRect(0).height;
+					w = GetCursorRect(0).width;
 				}
 				else if (!GetItemRect(0).IsEmpty()) {
 					h = GetItemRect(0).height + 4;

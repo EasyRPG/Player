@@ -171,9 +171,9 @@ void Window_Selectable::Update() {
 			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 			int h = 1;
 			int w = 1;
-			if (!GetCursorRect().IsEmpty()) {
-				h = GetCursorRect().height;
-				w = GetCursorRect().width;
+			if (!GetCursorRect(0).IsEmpty()) {
+				h = GetCursorRect(0).height;
+				w = GetCursorRect(0).width;
 			}
 			else if (!GetItemRect(0).IsEmpty()) {
 				h = GetItemRect(0).height + 4;
@@ -242,9 +242,9 @@ void Window_Selectable::Update() {
 
 				int w = 1;
 				int h = 1;
-				if (!GetCursorRect().IsEmpty()) {
-					h = GetCursorRect().height;
-					w = GetCursorRect().width;
+				if (!GetCursorRect(0).IsEmpty()) {
+					h = GetCursorRect(0).height;
+					w = GetCursorRect(0).width;
 				}
 				else if (!GetItemRect(0).IsEmpty()) {
 					h = GetItemRect(0).height;
