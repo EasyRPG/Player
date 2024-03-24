@@ -1291,4 +1291,6 @@ void Sdl2Ui::ChangeCursor(int curs_type) {
 		SDL_SetCursor(cursorArrow);
 	else
 		SDL_SetCursor(cursorHand);
+	
+	SetTimeMouseCursor(5);
 }

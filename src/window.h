@@ -95,6 +95,10 @@ public:
 	bool IsClosing() const;
 	bool IsOpeningOrClosing() const;
 
+	virtual bool ExcludeForMouse() const {
+		return false;
+	}
+
 protected:
 	virtual bool IsSystemGraphicUpdateAllowed() const;
 

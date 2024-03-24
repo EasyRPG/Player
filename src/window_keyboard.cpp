@@ -292,6 +292,10 @@ void Window_Keyboard::Update() {
 					DisplayUi->ChangeCursor(1);
 
 					if (Input::IsPressed(Input::MOUSE_LEFT)) {
+						mouseOutside = false;
+						break;
+					}
+					if (Input::MouseMoved()) {
 						if (GetKey(j, i) != "") {
 							if (i != col || j != row) {
 								play_cursor = true;

@@ -73,6 +73,12 @@ public:
 	void SetMouseOutside(bool b);
 	bool mouseOutside = false;
 
+	bool UpdateMouse(bool activeAllies);
+
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
+
 protected:
 	/**
 	 * Updates the cursor rectangle.

@@ -377,5 +377,3 @@ void Window::SetHeight(int nheight) {
 	}
 	height = nheight;
 }
-
-

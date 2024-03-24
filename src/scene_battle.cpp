@@ -355,6 +355,10 @@ Game_Enemy* Scene_Battle::EnemySelected() {
 }
 
 Game_Actor* Scene_Battle::AllySelected() {
+	
+	//if (status_window->GetIndex() >= (*Main_Data::game_party).GetActors().size()) {
+	//	return Main_Data::game_party->GetActor(0);
+	//}
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill) {

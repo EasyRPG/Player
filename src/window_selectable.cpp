@@ -163,119 +163,119 @@ void Window_Selectable::Update() {
 
 	int old_index = index;
 
-	if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
+	//if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
 
-		Point mouseP = Input::GetMousePosition();
+	//	Point mouseP = Input::GetMousePosition();
 
-		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-			int h = 1;
-			int w = 1;
-			if (!GetCursorRect(0).IsEmpty()) {
-				h = GetCursorRect(0).height;
-				w = GetCursorRect(0).width;
-			}
-			else if (!GetItemRect(0).IsEmpty()) {
-				h = GetItemRect(0).height + 4;
-				w = GetItemRect(0).width;
-			}
+	//	if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+	//		mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+	//		int h = 1;
+	//		int w = 1;
+	//		if (!GetCursorRect(0).IsEmpty()) {
+	//			h = GetCursorRect(0).height;
+	//			w = GetCursorRect(0).width;
+	//		}
+	//		else if (!GetItemRect(0).IsEmpty()) {
+	//			h = GetItemRect(0).height + 4;
+	//			w = GetItemRect(0).width;
+	//		}
 
-			//Output::Debug("Cursor height {}", h);
+	//		//Output::Debug("Cursor height {}", h);
 
-			int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h + startCursorY * 16) / h * column_max;
-			new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+	//		int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h + startCursorY * 16) / h * column_max;
+	//		new_index += (mouseP.x - GetBorderX() - GetX()) / w;
 
-			if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+	//		if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
 
-				if (new_index < GetItemMax() && new_index >= 0) {
-					// Change cursor (Hand)
-					DisplayUi->ChangeCursor(1);
-				}
-			}
-		}
+	//			if (new_index < GetItemMax() && new_index >= 0) {
+	//				// Change cursor (Hand)
+	//				DisplayUi->ChangeCursor(1);
+	//			}
+	//		}
+	//	}
 
-		if (Input::IsPressed(Input::MOUSE_LEFT)) {
-		//if (Input::mouseHover()) {
+	//	if (Input::IsPressed(Input::MOUSE_LEFT)) {
+	//	//if (Input::mouseHover()) {
 
-			mouseTimeArrow++;
+	//		mouseTimeArrow++;
 
-			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+	//		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+	//			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-				if (index != -999 && index != -1)
-					mouseOldIndex = index;
-				else
-					index = GetTopRow();
-				UpdateCursorRect();
+	//			if (index != -999 && index != -1)
+	//				mouseOldIndex = index;
+	//			else
+	//				index = GetTopRow();
+	//			UpdateCursorRect();
 
-			}
-			else {
-				if (index != -999 && index != -1)
-					mouseOldIndex = index;
-				index = -999;
-				if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
-					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
-						mouseP.y >= GetY() + GetHeight() - GetBorderY() && mouseP.y < GetY() + GetHeight()) {
-						if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
-							SetTopRow(GetTopRow() + 1);
-						}
-					}
-				if (GetTopRow() > 0)
-					if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
-						mouseP.y >= GetY() && mouseP.y < GetY() + GetBorderY()) {
-						if (mouseTimeArrow == 1 || (mouseTimeArrow >= Input::start_repeat_time && mouseTimeArrow % Input::repeat_time == 1)) {
-							SetTopRow(GetTopRow() - 1);
-						}
-					}
-			}
-		}
-		else {
-			mouseTimeArrow = 0;
-		}
+	//		}
+	//		else {
+	//			if (index != -999 && index != -1)
+	//				mouseOldIndex = index;
+	//			index = -999;
+	//			if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
+	//				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
+	//					mouseP.y >= GetY() + GetHeight() - GetBorderY() && mouseP.y < GetY() + GetHeight()) {
+	//					if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
+	//						SetTopRow(GetTopRow() + 1);
+	//					}
+	//				}
+	//			if (GetTopRow() > 0)
+	//				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
+	//					mouseP.y >= GetY() && mouseP.y < GetY() + GetBorderY()) {
+	//					if (mouseTimeArrow == 1 || (mouseTimeArrow >= Input::start_repeat_time && mouseTimeArrow % Input::repeat_time == 1)) {
+	//						SetTopRow(GetTopRow() - 1);
+	//					}
+	//				}
+	//		}
+	//	}
+	//	else {
+	//		mouseTimeArrow = 0;
+	//	}
 
-		//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
-		//Output::Debug("Mouse : {}", GetItemMax());
-		//if (Input::IsPressed(Input::DECISION)) {
-		if (Input::mouseHover()) {
-			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
+	//	//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
+	//	//Output::Debug("Mouse : {}", GetItemMax());
+	//	//if (Input::IsPressed(Input::DECISION)) {
+	//	if (Input::mouseHover()) {
+	//		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+	//			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
 
-				int w = 1;
-				int h = 1;
-				if (!GetCursorRect(0).IsEmpty()) {
-					h = GetCursorRect(0).height;
-					w = GetCursorRect(0).width;
-				}
-				else if (!GetItemRect(0).IsEmpty()) {
-					h = GetItemRect(0).height;
-					w = GetItemRect(0).width;
-				}
-				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
-				new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+	//			int w = 1;
+	//			int h = 1;
+	//			if (!GetCursorRect(0).IsEmpty()) {
+	//				h = GetCursorRect(0).height;
+	//				w = GetCursorRect(0).width;
+	//			}
+	//			else if (!GetItemRect(0).IsEmpty()) {
+	//				h = GetItemRect(0).height;
+	//				w = GetItemRect(0).width;
+	//			}
+	//			int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
+	//			new_index += (mouseP.x - GetBorderX() - GetX()) / w;
 
-				// Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
-				
-				if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-					if (new_index < GetItemMax() && !IsOpeningOrClosing()) {
-						if (new_index != mouseOldIndex)
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-						if (index != -999 && index != -1)
-							mouseOldIndex = new_index;
-						SetIndex(new_index);
-					}
-					else if (!IsOpeningOrClosing()) {
-						if (index != -999 && index != -1)
-							mouseOldIndex = index;
-						index = -999;
-					}
-				}
-				
-			}
-		}
-	}
-	else {
-		mouseTimeArrow = 0;
-	}
+	//			// Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
+	//			
+	//			if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+	//				if (new_index < GetItemMax() && !IsOpeningOrClosing()) {
+	//					if (new_index != mouseOldIndex)
+	//						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+	//					if (index != -999 && index != -1)
+	//						mouseOldIndex = new_index;
+	//					SetIndex(new_index);
+	//				}
+	//				else if (!IsOpeningOrClosing()) {
+	//					if (index != -999 && index != -1)
+	//						mouseOldIndex = index;
+	//					index = -999;
+	//				}
+	//			}
+	//			
+	//		}
+	//	}
+	//}
+	//else {
+	//	mouseTimeArrow = 0;
+	//}
 
 	if (active && item_max > 0 && index >= 0) {
 		if (scroll_dir != 0) {
@@ -388,12 +388,12 @@ void Window_Selectable::Update() {
 
 #include "output.h"
 int Window_Selectable::CursorHitTest(Point position) const {
-	Output::Debug("{} {}", position.x, position.y);
+	// Output::Debug("{} {}", position.x, position.y);
 	for (int i = 0; i < item_max; ++i) {
 		Rect cursor_rect = GetCursorRect(i);
 		cursor_rect.x += GetBorderX();
 		cursor_rect.y += GetBorderY();
-		Output::Debug("{} {} {} {}", cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height);
+		// Output::Debug("{} {} {} {}", cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height);
 		if (cursor_rect != Rect()) {
 			if (position.x >= cursor_rect.x && position.x <= cursor_rect.x + cursor_rect.width &&
 				position.y >= cursor_rect.y && position.y <= cursor_rect.y + cursor_rect.height) {

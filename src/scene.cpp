@@ -186,8 +186,9 @@ void Scene::MainFunction() {
 
 			init = true;
 			return;
-		} else {
-			Player::Update();
+		}
+ else {
+	 Player::Update();
 		}
 	}
 
@@ -250,7 +251,13 @@ bool Scene::IsAsyncPending() {
 void Scene::Update() {
 	if (Input::GetUseMouseButton()) {
 		// Reset cursor (Arrow)
-		DisplayUi->ChangeCursor(0);
+		int i = DisplayUi->GetTimeMouseCursor();
+		if (i == 0)
+			DisplayUi->ChangeCursor(0);
+		else {
+			i--;
+			DisplayUi->SetTimeMouseCursor(i);
+		}
 	}
 
 	// Allow calling of settings scene everywhere except from Logo (Player is currently starting up)
@@ -259,19 +266,32 @@ void Scene::Update() {
 		instance->type != Scene::Map &&
 		Input::IsTriggered(Input::SETTINGS_MENU) &&
 		!Scene::Find(Scene::Settings)) {
-			Scene::Push(std::make_shared<Scene_Settings>());
+		Scene::Push(std::make_shared<Scene_Settings>());
 	}
+	if (Input::GetUseMouseButton()) {
+		Point mouse_pos = Input::GetMousePosition();
+		for (auto* window : windows) {
+			if (window->GetType() != Window::WindowType::Selectable || !window->GetActive() || !window->IsVisible() || window->ExcludeForMouse()) {
+				continue;
+			}
+			auto* sel_window = static_cast<Window_Selectable*>(window);
+			int index = sel_window->CursorHitTest({ mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY() });
+			if (index >= 0)
+				DisplayUi->ChangeCursor(1);
+			if (index >= 0 && index != sel_window->GetIndex() && Input::MouseMoved()) {
+				// FIXME: Index changed callback?
+				sel_window->SetIndex(index);
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			}
+			if (index == -1 && Input::MouseMoved() && sel_window->GetIndex() != -999) {
+				sel_window->SetMouseOldIndex(sel_window->GetIndex());
+				sel_window->SetIndex(-999);
+			}
 
-	Point mouse_pos = Input::GetMousePosition();
-	for (auto* window: windows) {
-		if (window->GetType() != Window::WindowType::Selectable || !window->GetActive()) {
-			continue;
-		}
-		auto* sel_window = static_cast<Window_Selectable*>(window);
-		int index = sel_window->CursorHitTest({mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY()});
-		if (index >= 0 && index != sel_window->GetIndex()) {
-			// FIXME: Index changed callback?
-			sel_window->SetIndex(index);
+			if (sel_window->GetIndex() == -999 && (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN) ||
+				Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::LEFT) || Input::IsTriggered(Input::SCROLL_UP))) {
+				sel_window->SetIndex(sel_window->GetMouseOldIndex());
+			}
 		}
 	}
 

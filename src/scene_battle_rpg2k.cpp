@@ -102,7 +102,7 @@ static std::vector<std::string> GetEnemyTargetNames() {
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	auto commands = GetEnemyTargetNames();
-	target_window = std::make_unique<Window_Command>(this, std::move(commands), 136, 4);
+	target_window = std::make_unique<Window_Target>(this, std::move(commands), 136, 4);
 	target_window->SetHeight(80);
 	target_window->SetX(Player::menu_offset_x);
 	target_window->SetY(Player::screen_height - Player::menu_offset_y - 80);

@@ -43,6 +43,10 @@ namespace Input {
 	bool wait_input = false;
 }
 
+int mouseOldX = 0;
+int mouseOldY = 0;
+bool mouseMove = false;
+
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
@@ -159,6 +163,18 @@ void Input::Update() {
 		raw_released[i] = !raw_pressed_now[i] && raw_pressed[i];
 	}
 	raw_pressed = raw_pressed_now;
+
+	Point mouseP = Input::GetMousePosition();
+	// Output::Debug("{} {} {} {}", mouseP.x , mouseOldX , mouseP.y , mouseOldY);
+	if (mouseP.x != mouseOldX || mouseP.y != mouseOldY || Input::IsTriggered(Input::MOUSE_LEFT))
+	{
+		mouseOldX = mouseP.x;
+		mouseOldY = mouseP.y;
+		mouseMove = true;
+	}
+	else {
+		mouseMove = false;
+	}
 }
 
 void Input::UpdateSystem() {
@@ -246,17 +262,33 @@ bool Input::GetUseMouseButton() {
 	return useMouseButton;
 }
 
-int oldMouseX;
-int oldMouseY;
-bool Input::mouseHover() {
-	Point mouseP = Input::GetMousePosition();
-	if (mouseP.x != oldMouseX || mouseP.y != oldMouseY ||Input::IsPressed(Input::DECISION)) {
-		oldMouseX = mouseP.x;
-		oldMouseY = mouseP.y;
-		return true;
-	}
-	return false;
+
+bool Input::MouseMoved() {
+	return mouseMove;
+	//Point mouseP = Input::GetMousePosition();
+
+	//// Output::Debug("{} {} {} {}", mouseP.x , mouseOldX , mouseP.y , mouseOldY);
+
+	//if (mouseP.x != mouseOldX || mouseP.y != mouseOldY)
+	//{
+	//	mouseOldX = mouseP.x;
+	//	mouseOldY = mouseP.y;
+	//	return true;
+	//}
+	//return false;
 }
+
+//int oldMouseX;
+//int oldMouseY;
+//bool Input::mouseHover() {
+//	Point mouseP = Input::GetMousePosition();
+//	if (mouseP.x != oldMouseX || mouseP.y != oldMouseY || Input::IsPressed(Input::DECISION)) {
+//		oldMouseX = mouseP.x;
+//		oldMouseY = mouseP.y;
+//		return true;
+//	}
+//	return false;
+//}
 
 
 bool Input::IsTriggered(InputButton button) {

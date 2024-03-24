@@ -238,6 +238,9 @@ public:
 	virtual void ChangeCursor(int curs_type);
 	virtual void Load_Cursor(std::string s, int curs_type);
 
+	void BaseUi::SetTimeMouseCursor(int i);
+	int BaseUi::GetTimeMouseCursor();
+
 protected:
 	/**
 	 * Protected Constructor. Use CreateUi instead.
@@ -298,6 +301,9 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
+
+
+	int TimeMouseCursor = 0;
 };
 
 /** Global DisplayUi variable. */

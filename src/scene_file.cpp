@@ -238,7 +238,7 @@ void Scene_File::vUpdate() {
 						DisplayUi->ChangeCursor(1);
 
 						//if (Input::IsPressed(Input::MOUSE_LEFT)) {
-						if (Input::mouseHover()) {
+						if (Input::MouseMoved()) {
 							mouseOutside = false;
 							if (oldIndex != i)
 								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
@@ -255,7 +255,7 @@ void Scene_File::vUpdate() {
 		}
 
 		//if (Input::IsPressed(Input::MOUSE_LEFT) && mouseOutside) {
-		if (Input::mouseHover() && mouseOutside) {
+		if (Input::MouseMoved() && mouseOutside) {
 			disabledByMouse = true;
 			Refresh();
 		}

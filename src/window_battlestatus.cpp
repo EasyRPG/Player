@@ -285,46 +285,8 @@ void Window_BattleStatus::Update() {
 
 	if (Input::GetUseMouseButton() && active && IsVisible() && lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
 
-		Point mouseP = Input::GetMousePosition();
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge) {
-				
-			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-				mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-
-				int h = 1;
-				int w = 1;
-				if (!GetCursorRect(0).IsEmpty()) {
-					h = GetCursorRect(0).height;
-					w = GetCursorRect(0).width;
-				}
-				else if (!GetItemRect(0).IsEmpty()) {
-					h = GetItemRect(0).height + 4;
-					w = GetItemRect(0).width;
-				}
-
-				int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
-				new_index += (mouseP.x - GetBorderX() - GetX()) / w;
-
-				if (new_index >= 0 && new_index < GetItemMax()) {
-					// Change cursor (Hand)
-					DisplayUi->ChangeCursor(1);
-				}
-				// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
-				//if (Input::IsPressed(Input::MOUSE_LEFT)) {
-				if (Input::mouseHover()) {
-					mouseOutside = true;
-					if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-						if (new_index != mouseOldIndex)
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-						SetIndex(new_index);
-						mouseOldIndex = new_index;
-						mouseOutside = false;
-					}
-				}
-			}
-			else if (Input::IsPressed(Input::MOUSE_LEFT)) {
-				mouseOutside = true;
-			}
+			//UpdateMouse();
 		}
 		else if (!(Input::IsPressed(Input::MOUSE_LEFT) || !Input::IsReleased(Input::MOUSE_LEFT)) && Input::IsTriggered(Input::DECISION))
 		{
@@ -334,7 +296,8 @@ void Window_BattleStatus::Update() {
 
 	if (active && index >= 0) {
 
-		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+			SetMouseOutside(false);
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			for (int i = 1; i < item_max; i++) {
 				int new_index = (index + i) % item_max;
@@ -345,6 +308,7 @@ void Window_BattleStatus::Update() {
 			}
 		}
 		if (Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::LEFT) || Input::IsTriggered(Input::SCROLL_UP)) {
+			SetMouseOutside(false);
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			for (int i = item_max - 1; i > 0; i--) {
 				int new_index = (index + i) % item_max;
@@ -355,11 +319,13 @@ void Window_BattleStatus::Update() {
 			}
 		}
 	}
-	if (mouseOutside) {
+	if (index == -999) {
 		Rect r;
 		SetCursorRect(r);
 	} else
 		UpdateCursorRect();
+
+	// Output::Debug("{} {} {}", GetActive(), GetIndex(), mouseOutside);
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
@@ -418,4 +384,71 @@ void Window_BattleStatus::RefreshActiveFromValid() {
 
 void Window_BattleStatus::SetMouseOutside(bool b) {
 	mouseOutside = b;
+	if (mouseOutside)
+		SetIndex(-999);
+}
+
+bool Window_BattleStatus::UpdateMouse(bool activeAllies) {
+	bool hover = false;
+
+	int dy = 0;
+	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge)
+		dy = 24;
+
+	Point mouseP = Input::GetMousePosition();
+	bool hoverAlly = (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
+		mouseP.y >= GetY() + dy + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY());
+
+	if (hoverAlly) {
+
+		int h = 1;
+		int w = 1;
+		if (!GetCursorRect(0).IsEmpty()) {
+			h = GetCursorRect(0).height;
+			w = GetCursorRect(0).width;
+		}
+		else if (!GetItemRect(0).IsEmpty()) {
+			h = GetItemRect(0).height + 4;
+			w = GetItemRect(0).width;
+		}
+
+		int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
+		new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+
+
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
+			w = actor_face_height * 2 + 32;
+			h = actor_face_height * 2;
+			new_index = (mouseP.x - GetBorderX() - GetX()) / w;
+			//new_index += (mouseP.x - GetBorderX() - GetX()) / w;
+
+			// DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, actor_face_height);
+		}
+
+		auto e = Main_Data::game_party->GetActor(new_index);
+		if ((e && e->CanAct() && e->GetAtbGauge() == e->GetMaxAtbGauge()) || !activeAllies) {
+
+			if (new_index >= 0 && new_index < GetItemMax()) {
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+			}
+			// Output::Debug("Index : {} {} {}", new_index, 0, GetIndex());
+			if (Input::MouseMoved()) {
+				mouseOutside = true;
+				if (new_index < GetItemMax() && new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
+					if (new_index != mouseOldIndex)
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					SetIndex(new_index);
+					mouseOldIndex = new_index;
+					mouseOutside = false;
+					hover = true;
+				}
+			}
+		}
+	}
+	else if (Input::IsPressed(Input::MOUSE_LEFT)) {
+		mouseOutside = true;
+	}
+
+	return hover;
 }

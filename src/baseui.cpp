@@ -119,3 +119,13 @@ bool BaseUi::ChangeDisplaySurfaceResolution(int new_width, int new_height) {
 
 	return vChangeDisplaySurfaceResolution(new_width, new_height);
 }
+
+void BaseUi::SetTimeMouseCursor(int i) {
+	if (i < 0)
+		i = 0;
+	TimeMouseCursor = i;
+}
+
+int BaseUi::GetTimeMouseCursor() {
+	return TimeMouseCursor;
+}
