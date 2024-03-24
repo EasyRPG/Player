@@ -508,7 +508,7 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		return;
 	}
 
-	if (Player::IsRPG2k3E()) {
+	if (Player::IsRPG2k3ECommands()) {
 		++data.frames;
 	}
 
@@ -574,7 +574,7 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 	}
 
 	// RPG Maker 2k3 1.12: Animated spritesheets
-	if (Player::IsRPG2k3E()
+	if (Player::IsRPG2k3ECommands()
 			&& data.spritesheet_speed > 0
 			&& data.frames > data.spritesheet_speed)
 	{
