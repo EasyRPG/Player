@@ -238,8 +238,8 @@ public:
 	virtual void ChangeCursor(int curs_type);
 	virtual void Load_Cursor(std::string s, int curs_type);
 
-	void BaseUi::SetTimeMouseCursor(int i);
-	int BaseUi::GetTimeMouseCursor();
+	virtual void SetTimeMouseCursor(int i);
+	virtual int GetTimeMouseCursor();
 
 protected:
 	/**
