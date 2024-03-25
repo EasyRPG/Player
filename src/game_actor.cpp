@@ -21,7 +21,6 @@
 #include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
-#include "game_message.h"
 #include "game_party.h"
 #include "sprite_actor.h"
 #include "main_data.h"
@@ -32,7 +31,6 @@
 #include "util_macro.h"
 #include "utils.h"
 #include "pending_message.h"
-#include "compiler.h"
 #include "attribute.h"
 #include "rand.h"
 #include "algo.h"
@@ -293,7 +291,12 @@ int Game_Actor::LearnLevelSkills(int min_level, int max_level, PendingMessage* p
 	for (const lcf::rpg::Learning& learn : skills) {
 		// Skill learning, up to current level
 		if (learn.level >= min_level && learn.level <= max_level) {
-			count += LearnSkill(learn.skill_id, pm);
+			const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, learn.skill_id);
+			if (!skill) {
+				Output::Debug("Actor {}: Level up (level={}). Ignoring invalid skill {}", GetId(), learn.level, learn.skill_id);
+			} else {
+				count += LearnSkill(learn.skill_id, pm);
+			}
 		}
 	}
 	return count;

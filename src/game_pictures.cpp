@@ -395,7 +395,7 @@ void Game_Pictures::OnPictureSpriteReady(FileRequestResult*, int id) {
 }
 
 void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
-	if (origin == 0 || !sprite) {
+	if (origin == 0 || !sprite || !sprite->GetBitmap()) {
 		return;
 	}
 
