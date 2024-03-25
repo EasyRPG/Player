@@ -44,6 +44,7 @@
 #include "fileext_guesser.h"
 #include "game_actors.h"
 #include "game_battle.h"
+#include "game_destiny.h"
 #include "game_map.h"
 #include "game_message.h"
 #include "game_enemyparty.h"
@@ -823,10 +824,14 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
 			game_config.patch_maniac.Set(true);
 		}
+
+		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
+			game_config.patch_destiny.Set(true);
+		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} destiny={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), Player::IsPatchDestiny());
 
 	ResetGameObjects();
 
@@ -834,6 +839,10 @@ void Player::CreateGameObjects() {
 
 	if (Player::IsPatchKeyPatch()) {
 		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	}
+
+	if (Player::IsPatchDestiny()) {
+		Main_Data::game_destiny->Load();
 	}
 }
 
@@ -917,6 +926,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
 	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
+	Main_Data::game_destiny = std::make_unique<Game_Destiny>();
 
 	DynRpg::Reset();
 
