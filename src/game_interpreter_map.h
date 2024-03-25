@@ -51,6 +51,8 @@ public:
 	 */
 	void OnMapChange();
 
+	bool RequestMainMenuScene(int subscreen_id = -1, int actor_index = 0, bool is_db_actor = false);
+
 	bool ExecuteCommand(lcf::rpg::EventCommand const& com) override;
 
 private:

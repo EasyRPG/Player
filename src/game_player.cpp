@@ -295,7 +295,7 @@ void Game_Player::UpdateNextMovementAction() {
 
 		ResetAnimation();
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-		Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
+		Game_Map::GetInterpreter().RequestMainMenuScene();
 		return;
 	}
 

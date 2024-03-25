@@ -37,13 +37,15 @@ public:
 	 *
 	 * @param actor_index party index of the actor.
 	 */
-	Scene_Status(int actor_index);
+	Scene_Status(int actor_index, bool is_db_actor = false);
 
 	void Start() override;
 	void vUpdate() override;
 
 private:
 	int actor_index;
+	/** Given actor index refers to a database actor instead of a party member index. */
+	bool is_db_actor;
 
 	std::unique_ptr<Window_ActorInfo> actorinfo_window;
 	std::unique_ptr<Window_ActorStatus> actorstatus_window;

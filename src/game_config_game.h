@@ -44,6 +44,7 @@ struct Game_ConfigGame {
 	BoolConfigParam patch_unlock_pics{ "Unlock Pictures", "Allow picture commands while a message is shown", "Patch", "PicUnlock", false };
 	BoolConfigParam patch_key_patch{ "Ineluki Key Patch", "Support \"Ineluki Key Patch\"", "Patch", "KeyPatch", false };
 	BoolConfigParam patch_rpg2k3_commands{ "RPG2k3 Event Commands", "Enable support for RPG2k3 event commands", "Patch", "RPG2k3Commands", false };
+	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
 
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };

@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Skill(int actor_index, int skill_index = 0);
+	Scene_Skill(int actor_index, int skill_index = 0, bool is_db_actor = false);
 
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
@@ -45,6 +45,8 @@ private:
 	int actor_index;
 	/** Skill to select at startup. */
 	int skill_index;
+	/** Given actor index refers to a database actor instead of a party member index. */
+	bool is_db_actor;
 	/** Displays available skills. */
 	std::unique_ptr<Window_Skill> skill_window;
 	/** Displays information about the actor. */

@@ -825,8 +825,8 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} direct-menu={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_direct_menu.Get());
 
 	ResetGameObjects();
 
@@ -1403,6 +1403,8 @@ Engine options:
                        pic-unlock  - Pictures are not blocked by messages
                        rpg2k3-cmds - Support all RPG Maker 2003 event commands
                                      in any version of the engine
+                       direct-menu=[var-id]
+								   - Directly access subscreens of default menu
  --no-patch           Disable all engine patches.
  --project-path PATH  Instead of using the working directory, the game in PATH
                       is used.
