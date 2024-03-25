@@ -17,8 +17,10 @@
 
 // Headers
 #include <map>
+#include <numeric>
 
 #include "dynrpg_easyrpg.h"
+#include "string_view.h"
 #include "main_data.h"
 #include "game_variables.h"
 #include "utils.h"
@@ -48,23 +50,23 @@ static bool EasyOput(dyn_arg_list args) {
 	return true;
 }
 
-static bool EasyCall(dyn_arg_list args) {
-	auto token = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
+bool DynRpg::EasyRpgPlugin::EasyCall(Game_DynRpg& dynrpg_instance, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+	auto func_name = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
 
-	if (token.empty()) {
+	if (func_name.empty()) {
 		// empty function name
 		Output::Warning("call: Empty RPGSS function name");
 
 		return true;
 	}
 
-	if (!DynRpg::HasFunction(token)) {
-		// Not a supported function
-		Output::Warning("Unsupported RPGSS function: {}", token);
-		return true;
+	for (auto& plugin: dynrpg_instance.plugins) {
+		if (plugin->Invoke(dynrpg_instance, func_name, args.subspan(1), do_yield, interpreter)) {
+			return true;
+		}
 	}
 
-	return DynRpg::Invoke(token, args.subspan(1));
+	return false;
 }
 
 static bool EasyAdd(dyn_arg_list args) {
@@ -87,11 +89,124 @@ static bool EasyAdd(dyn_arg_list args) {
 
 	return true;
 }
+bool DynRpg::EasyRpgPlugin::EasyRaw(dyn_arg_list args, Game_Interpreter* interpreter) {
+	if (!interpreter) return true;
 
-void DynRpg::EasyRpgPlugin::RegisterFunctions() {
-	DynRpg::RegisterFunction("call", EasyCall);
-	DynRpg::RegisterFunction("easyrpg_output", EasyOput);
-	DynRpg::RegisterFunction("easyrpg_add", EasyAdd);
+	if (args.empty()) {
+		Output::Warning("easyrpg_raw: Command too short");
+		return true;
+	}
+
+	Constants constList;
+
+	const std::string func = "easyrpg_raw";
+	
+	int codeArgIndex = 0;
+	int stringArgIndex = 1;
+	int indentArgIndex = -1;
+
+	bool endOfLine = false;
+	bool okay = false;
+
+	lcf::rpg::EventCommand cmd;
+	lcf::rpg::EventCommand _cmd;
+	std::vector<int32_t> outputArgs;
+	std::vector<lcf::rpg::EventCommand> cmdList;
+
+	for (size_t i = 0; i < args.size(); ++i) {
+		
+		bool valid = !args[i].empty();
+
+		if (valid && args[i].front() == '[') args[i] = args[i].substr(1);
+		if (valid && args[i].back() == ']') {
+			args[i] = args[i].substr(0, args[i].length() - 1);
+			indentArgIndex = i + 1;
+		}
+
+		valid = !args[i].empty();
+
+		if (i == args.size() - 1) endOfLine = true;
+		
+
+		else if (args[i] == ";") {
+			endOfLine = !args[i + 1].empty();
+			valid = 0;
+		}
+
+		if (valid) {
+			if (i == codeArgIndex)
+			{
+				size_t start_pos = args[i].find_first_not_of(" \t\r\n");
+				if (start_pos != std::string::npos)
+					args[i] = args[i].substr(start_pos);
+
+			//	Output::Debug("code ----> {}", args[i]);
+
+				if (args[i].front() == '$') {
+					args[i] = args[i].substr(1);
+					for (const auto& pair : lcf::rpg::EventCommand::kCodeTags.tags()) {	
+						if (Utils::StrICmp(pair.name, args[i]) == 0) {
+							args[i] = std::to_string(pair.value);
+							break;
+						}
+					}
+				};
+				std::tie(cmd.code) = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+			}
+			else if (i == stringArgIndex)
+			{
+			//	Output::Debug("str ----> {}", args[i]);
+				auto [stringArg] = DynRpg::ParseArgs<std::string>(func, args.subspan(i), &okay);
+				cmd.string = lcf::DBString(stringArg);
+			}
+			else
+			{
+				if (args[i].front() == '$')
+					args[i] = constList.get("DestinyScript", args[i].substr(1));
+				auto [intArg] = DynRpg::ParseArgs<int>(func, args.subspan(i), &okay);
+
+				if (indentArgIndex == i) {
+				//	Output::Debug("idt ----> {}", args[i]);
+					indentArgIndex = -1;
+					cmd.indent = intArg;
+				}
+				else
+				//	Output::Debug("pls ----> {}", args[i]),
+					outputArgs.push_back(intArg);
+			}
+		}
+		if (endOfLine) {
+		//	Output::Debug("com ----> {}\n\n", cmd.code);
+			cmd.parameters = lcf::DBArray<int32_t>(outputArgs.begin(), outputArgs.end());
+			cmdList.push_back(cmd);
+			outputArgs.clear();
+
+			cmd = _cmd;
+
+			codeArgIndex = i + 1;
+			stringArgIndex = i + 2;
+			
+			endOfLine = false;
+		}
+
+		if (!okay) return true;
+	}
+
+	interpreter->Push(cmdList, 0, false);
+	return true;
+}
+
+bool DynRpg::EasyRpgPlugin::Invoke(Game_DynRpg& dynrpg_instance, StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+	if (func == "call") {
+		return EasyCall(dynrpg_instance, args, do_yield, interpreter);
+	} else if (func == "easyrpg_output") {
+		return EasyOput(args);
+	} else if (func == "easyrpg_add") {
+		return EasyAdd(args);
+	} else if (func == "easyrpg_raw") {
+		return EasyRaw(args, interpreter);
+	}
+	return false;
 }
 
 void DynRpg::EasyRpgPlugin::Load(const std::vector<uint8_t>& buffer) {

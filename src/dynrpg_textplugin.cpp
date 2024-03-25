@@ -399,14 +399,23 @@ static bool RemoveAll(dyn_arg_list) {
 	return true;
 }
 
-void DynRpg::TextPlugin::RegisterFunctions() {
-	DynRpg::RegisterFunction("write_text", WriteText);
-	DynRpg::RegisterFunction("append_line", AppendLine);
-	DynRpg::RegisterFunction("append_text", AppendText);
-	DynRpg::RegisterFunction("change_text", ChangeText);
-	DynRpg::RegisterFunction("change_position", ChangePosition);
-	DynRpg::RegisterFunction("remove_text", RemoveText);
-	DynRpg::RegisterFunction("remove_all", RemoveAll);
+bool DynRpg::TextPlugin::Invoke(Game_DynRpg&, StringView func, dyn_arg_list args, bool&, Game_Interpreter*) {
+	if (func == "write_text") {
+		return WriteText(args);
+	} else if (func == "append_line") {
+		return AppendLine(args);
+	} else if (func == "append_text") {
+		return AppendText(args);
+	} else if (func == "change_text") {
+		return ChangeText(args);
+	} else if (func == "change_position") {
+		return ChangePosition(args);
+	} else if (func == "remove_text") {
+		return RemoveText(args);
+	} else if (func == "remove_all") {
+		return RemoveAll(args);
+	}
+	return false;
 }
 
 void DynRpg::TextPlugin::Update() {
