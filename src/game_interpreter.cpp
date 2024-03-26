@@ -441,7 +441,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 			const int key = _keyinput.CheckInput();
 			Main_Data::game_variables->Set(_keyinput.variable, key);
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefreshForVarChange(_keyinput.variable);
 			if (key == 0) {
 				++_keyinput.wait_frames;
 				break;
@@ -1066,15 +1066,15 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 			} else {
 				Main_Data::game_switches->Flip(start);
 			}
+			Game_Map::SetNeedRefreshForSwitchChange(start);
 		} else {
 			if (val < 2) {
 				Main_Data::game_switches->SetRange(start, end, val == 0);
 			} else {
 				Main_Data::game_switches->FlipRange(start, end);
 			}
+			Game_Map::SetNeedRefresh(true);
 		}
-
-		Game_Map::SetNeedRefresh(true);
 	}
 
 	return true;
@@ -1338,6 +1338,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					Main_Data::game_variables->BitShiftRight(start, value);
 					break;
 			}
+			Game_Map::SetNeedRefreshForVarChange(start);
 		} else if (com.parameters[4] == 1) {
 			// Multiple variables - Direct variable lookup
 			int var_id = com.parameters[5];
@@ -1376,6 +1377,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					Main_Data::game_variables->BitShiftRightRangeVariable(start, end, var_id);
 					break;
 			}
+			Game_Map::SetNeedRefresh(true);
 		} else if (com.parameters[4] == 2) {
 			// Multiple variables - Indirect variable lookup
 			int var_id = com.parameters[5];
@@ -1414,6 +1416,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					Main_Data::game_variables->BitShiftRightRangeVariableIndirect(start, end, var_id);
 					break;
 			}
+			Game_Map::SetNeedRefresh(true);
 		} else if (com.parameters[4] == 3) {
 			// Multiple variables - random
 			int rmax = max(com.parameters[5], com.parameters[6]);
@@ -1453,6 +1456,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					Main_Data::game_variables->BitShiftRightRangeRandom(start, end, rmin, rmax);
 					break;
 			}
+			Game_Map::SetNeedRefresh(true);
 		} else {
 			// Multiple variables - constant
 			switch (operation) {
@@ -1490,9 +1494,8 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					Main_Data::game_variables->BitShiftRightRange(start, end, value);
 					break;
 			}
+			Game_Map::SetNeedRefresh(true);
 		}
-
-		Game_Map::SetNeedRefresh(true);
 	}
 
 	return true;
@@ -2284,7 +2287,9 @@ bool Game_Interpreter::CommandMemorizeLocation(lcf::rpg::EventCommand const& com
 	Main_Data::game_variables->Set(var_map_id, Game_Map::GetMapId());
 	Main_Data::game_variables->Set(var_x, player->GetX());
 	Main_Data::game_variables->Set(var_y, player->GetY());
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefreshForVarChange(var_map_id);
+	Game_Map::SetNeedRefreshForVarChange(var_x);
+	Game_Map::SetNeedRefreshForVarChange(var_y);
 	return true;
 }
 
@@ -2394,7 +2399,7 @@ bool Game_Interpreter::CommandStoreTerrainID(lcf::rpg::EventCommand const& com) 
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	Main_Data::game_variables->Set(var_id, Game_Map::GetTerrainTag(x, y));
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefreshForVarChange(var_id);
 	return true;
 }
 
@@ -2404,7 +2409,7 @@ bool Game_Interpreter::CommandStoreEventID(lcf::rpg::EventCommand const& com) { 
 	int var_id = com.parameters[3];
 	auto* ev = Game_Map::GetEventAt(x, y, false);
 	Main_Data::game_variables->Set(var_id, ev ? ev->GetId() : 0);
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefreshForVarChange(var_id);
 	return true;
 }
 
@@ -3200,7 +3205,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	if (wait) {
 		// While waiting the variable is reset to 0 each frame.
 		Main_Data::game_variables->Set(var_id, 0);
-		Game_Map::SetNeedRefresh(true);
+		Game_Map::SetNeedRefreshForVarChange(var_id);
 	}
 
 	if (wait && Game_Message::IsMessageActive()) {
@@ -3315,7 +3320,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 
 	int key = _keyinput.CheckInput();
 	Main_Data::game_variables->Set(_keyinput.variable, key);
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefreshForVarChange(_keyinput.variable);
 
 	return true;
 }
@@ -3757,7 +3762,7 @@ bool Game_Interpreter::CommandLoop(lcf::rpg::EventCommand const& com) { // code 
 	int loop_count_var = com.parameters[4];
 	if (loop_count_var > 0) {
 		Main_Data::game_variables->Set(loop_count_var, begin_loop_val);
-		Game_Map::SetNeedRefresh(true);
+		Game_Map::SetNeedRefreshForVarChange(loop_count_var);
 	}
 
 	return true;
@@ -3844,7 +3849,7 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 		int loop_count_var = com.parameters[4];
 		if (loop_count_var > 0) {
 			Main_Data::game_variables->Set(loop_count_var, cur_loop_val);
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefreshForVarChange(loop_count_var);
 		}
 	}
 
