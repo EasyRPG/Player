@@ -327,7 +327,8 @@ void Window_Settings::RefreshAudioMidi() {
 
 	if (cfg.native_midi.IsOptionVisible()) {
 		AddOption(cfg.native_midi, []() { Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
-		if (!GenericAudioMidiOut().IsInitialized(GetFrame().options.back().help2)) {
+		auto midi_out = Audio().CreateAndGetMidiOut();
+		if (!midi_out || !midi_out->IsInitialized(GetFrame().options.back().help2)) {
 			GetFrame().options.back().text += " [Not working]";
 			GetFrame().options.back().color = Font::ColorKnockout;
 		} else if (cfg.native_midi.Get() && !used) {

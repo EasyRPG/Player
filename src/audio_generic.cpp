@@ -198,6 +198,19 @@ void GenericAudio::Update() {
 	// no-op, handled by the Decode function called through a thread
 }
 
+GenericAudioMidiOut* GenericAudio::CreateAndGetMidiOut() {
+	if (!midi_thread) {
+		midi_thread = std::make_unique<GenericAudioMidiOut>();
+		std::string status_message;
+		if (midi_thread->IsInitialized(status_message)) {
+			midi_thread->StartThread();
+		} else {
+			midi_thread.reset();
+		}
+	}
+	return midi_thread.get();
+}
+
 void GenericAudio::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
 	output_format.frequency = frequency;
 	output_format.format = format;
@@ -222,15 +235,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 		bool wildmidi = Audio().GetWildMidiEnabled() && MidiDecoder::CreateWildMidi(true);
 
 		if (!fluidsynth && !wildmidi && Audio().GetNativeMidiEnabled()) {
-			if (!midi_thread) {
-				midi_thread = std::make_unique<GenericAudioMidiOut>();
-				std::string status_message;
-				if (midi_thread->IsInitialized(status_message)) {
-					midi_thread->StartThread();
-				} else {
-					midi_thread.reset();
-				}
-			}
+			CreateAndGetMidiOut();
 
 			if (midi_thread) {
 				midi_thread->LockMutex();

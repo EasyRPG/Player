@@ -79,7 +79,8 @@ AlsaMidiOutDevice::AlsaMidiOutDevice(std::string& status_message) {
 		return;
 	}
 
-	Output::Debug("ALSA MIDI: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+	status_message = fmt::format("ALSA MIDI: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+	Output::DebugStr(status_message);
 
 	status = snd_seq_create_simple_port(midi_out, "Harmony",
 		SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
