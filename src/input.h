@@ -349,6 +349,7 @@ namespace Input {
 	void WaitInput(bool val);
 
 	void SetUseMouse(bool b);
+	void SetForceUseMouse(int i);
 	bool GetUseMouseButton();
 	bool MouseMoved();
 

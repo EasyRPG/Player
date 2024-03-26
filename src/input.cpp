@@ -46,6 +46,8 @@ namespace Input {
 int mouseOldX = 0;
 int mouseOldY = 0;
 bool mouseMove = false;
+bool useMouseButton = false;
+int useForceMouseButton = 0;
 
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
@@ -72,6 +74,8 @@ void Input::Init(
 
 	cfg.Hide();
 	Input::GetSupportedConfig(cfg);
+
+	useMouseButton = cfg.mouse_control.Get();
 
 	source = Source::Create(cfg, std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
@@ -254,12 +258,14 @@ bool Input::IsPressed(InputButton button) {
 	return press_time[button] > 0;
 }
 
-bool useMouseButton = false;
 void Input::SetUseMouse(bool b) {
 	useMouseButton = b;
 }
+void Input::SetForceUseMouse(int i) {
+	useForceMouseButton = i;
+}
 bool Input::GetUseMouseButton() {
-	return useMouseButton;
+	return (useMouseButton && useForceMouseButton == 0) || useForceMouseButton == 1;
 }
 
 
@@ -294,7 +300,7 @@ bool Input::MouseMoved() {
 bool Input::IsTriggered(InputButton button) {
 	assert(!IsSystemButton(button));
 	WaitInput(true);
-		if (useMouseButton) {
+	if (GetUseMouseButton()) {
 		if (button == Input::DECISION) {
 			if (IsReleased(Input::MOUSE_LEFT)) {
 				return true;

@@ -98,7 +98,7 @@ void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 }
 
 void Window_Selectable::UpdateHelp() {
-	if (UpdateHelpFn && help_window != nullptr) {
+	if (UpdateHelpFn && help_window != nullptr && index != -999) {
 		UpdateHelpFn(*help_window, index);
 	}
 }

@@ -292,7 +292,7 @@ void Scene_Settings::UpdateMain() {
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		if (main_window->GetIndex() > 0) {
+		if (main_window->GetIndex() >= 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			auto idx = main_window->GetIndex();
 
@@ -380,7 +380,7 @@ void Scene_Settings::UpdateOptions() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		}
 		return;
-	} else if (picker_window) {
+	} else if (picker_window && picker_window->GetIndex() != -999) {
 		picker_window->Update();
 		auto& option = options_window->GetCurrentOption();
 		option.current_value = option.options_index[picker_window->GetIndex()];
@@ -403,7 +403,7 @@ void Scene_Settings::UpdateOptions() {
 				option.action();
 				options_window->Refresh();
 			} else if (option.mode == Window_Settings::eOptionRangeInput) {
-				number_window = std::make_unique<Window_NumberInput>(this, 0, 0, 128, 32);
+				number_window = std::make_unique<Window_NumberInput>(this, 0, 0, 128 + 16, 32);
 				number_window->SetNumber(option.current_value);
 				number_window->SetMaxDigits(std::log10(option.max_value) + 1);
 				number_window->SetX(options_window->GetX() + options_window->GetWidth() / 2 - number_window->GetWidth() / 2);

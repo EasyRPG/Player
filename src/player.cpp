@@ -725,9 +725,13 @@ void Player::CreateGameObjects() {
 					Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
 					Player::has_custom_resolution = true;
 				}
-				std::string s = ini.Get("RPG_RT", "MouseButton", "false");
-				bool b = s == "true";
-				Input::SetUseMouse(b);
+				if (ini.HasValue("RPG_RT", "MouseButton") || ini.HasValue("RPG_RT", "MouseButton")) {
+					bool b = ini.GetBoolean("RPG_RT", "MouseButton", "false");
+					if (b)
+						Input::SetForceUseMouse(1);
+					else
+						Input::SetForceUseMouse(-1);
+				}
 			}
 		}
 	}

@@ -32,6 +32,7 @@
 #include "bitmap.h"
 #include "audio.h"
 #include "output.h"
+#include <baseui.h>
 
 Scene_GameBrowser::Scene_GameBrowser() {
 	type = Scene::GameBrowser;
@@ -44,6 +45,8 @@ void Scene_GameBrowser::Start() {
 	stack.push_back({ FileFinder::Game(), 0 });
 	CreateWindows();
 	Game_Clock::ResetFrame(Game_Clock::now());
+
+	DisplayUi->Load_Cursor("mouseCursor", -1);
 }
 
 void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
@@ -66,6 +69,10 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Main_Data::game_system->SetSystemGraphic(CACHE_DEFAULT_BITMAP, lcf::rpg::System::Stretch_stretch, lcf::rpg::System::Font_gothic);
 
 	Player::debug_flag = initial_debug_flag;
+
+	Input::SetForceUseMouse(0);
+	DisplayUi->Load_Cursor("mouseCursor", -1);
+	DisplayUi->ChangeCursor(0);
 }
 
 void Scene_GameBrowser::vUpdate() {
@@ -73,7 +80,7 @@ void Scene_GameBrowser::vUpdate() {
 		BootGame();
 		return;
 	}
-	Input::SetUseMouse(false);
+	
 	command_window->Update();
 	gamelist_window->Update();
 
@@ -100,6 +107,7 @@ void Scene_GameBrowser::CreateWindows() {
 
 	gamelist_window = std::make_unique<Window_GameList>(this, 0, 64, Player::screen_width, Player::screen_height - 64);
 	gamelist_window->Refresh(stack.back().filesystem, false);
+	gamelist_window->SetActive(false);
 
 	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
@@ -136,7 +144,7 @@ void Scene_GameBrowser::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && menu_index != -999) {
 
 		switch (menu_index) {
 			case GameList:
@@ -166,7 +174,7 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 		gamelist_window->SetActive(false);
 		old_gamelist_index = gamelist_window->GetIndex();
 		gamelist_window->SetIndex(-1);
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && gamelist_window->GetIndex() != -999) {
 		load_window->SetVisible(true);
 		game_loading = true;
 	} else if (Input::IsTriggered(Input::DEBUG_MENU) || Input::IsTriggered(Input::SHIFT)) {

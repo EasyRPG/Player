@@ -72,6 +72,7 @@ void Game_ConfigInput::Hide() {
 	gamepad_swap_ab_and_xy.SetOptionVisible(false);
 	gamepad_swap_analog.SetOptionVisible(false);
 	gamepad_swap_dpad_with_buttons.SetOptionVisible(false);
+	mouse_control.SetOptionVisible(false);
 }
 
 Game_Config Game_Config::Create(CmdlineParser& cp) {
@@ -421,6 +422,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	input.gamepad_swap_ab_and_xy.FromIni(ini);
 	input.speed_modifier_a.FromIni(ini);
 	input.speed_modifier_b.FromIni(ini);
+	input.mouse_control.FromIni(ini);
 
 	/** PLAYER SECTION */
 	player.settings_autosave.FromIni(ini);
@@ -491,6 +493,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	input.gamepad_swap_ab_and_xy.ToIni(os);
 	input.speed_modifier_a.ToIni(os);
 	input.speed_modifier_b.ToIni(os);
+	input.mouse_control.ToIni(os);
 
 	os << "\n";
 

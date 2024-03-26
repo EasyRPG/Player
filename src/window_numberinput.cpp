@@ -65,7 +65,7 @@ void Window_NumberInput::Refresh() {
 	}
 
 	if (Input::GetUseMouseButton()) {
-		int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
+		int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12) + 16;
 
 		Rect src_rectUp(40, 8, 16, 8);
 		contents->Blit(x, 0, *windowskin, src_rectUp, 255);
@@ -74,7 +74,7 @@ void Window_NumberInput::Refresh() {
 		contents->Blit(x, 8, *windowskin, src_rectDown, 255);
 
 
-		contents->TextDraw(x + 32, 2, Font::ColorDefault, "OK");
+		contents->TextDraw(x + 16, 2, Font::ColorDefault, "OK");
 	}
 }
 
@@ -144,7 +144,8 @@ void Window_NumberInput::Update() {
 			
 			Point mouseP = Input::GetMousePosition();
 
-			int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12);
+			int x = digits_max * (cursor_width - 2) + (show_operator ? 2 : 12) + 16;
+
 			if (mouseP.x >= GetX() + GetBorderX() + x && mouseP.x <= GetX() + GetBorderX() + x + 14 &&
 				mouseP.y >= GetY() + GetBorderY() - 2 && mouseP.y < GetY() + 32 - GetBorderY() + 2) {
 
@@ -249,8 +250,11 @@ void Window_NumberInput::ResetIndex() {
 
 void Window_NumberInput::SetIndex(int nindex) {
 	mouseOldIndex = index;
-	index = min(nindex, digits_max - 1);
-	index = max(index, 0);
-	//index = nindex;
+	//int i = 1;
+	//if (show_operator)
+	//	i++;
+	//index = min(nindex, digits_max - i);
+	//index = max(index, 0);
+	index = nindex;
 	UpdateCursorRect();
 }

@@ -99,6 +99,10 @@ public:
 
 	void SetIndex(int nindex);
 
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
+
 protected:
 	int64_t number;
 	int digits_max;
