@@ -107,6 +107,9 @@ namespace Player {
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 	bool has_custom_resolution = false;
 
+	int32_t iniVars_min = 0;
+	int32_t iniVars_max = 0;
+
 	bool exit_flag;
 	bool reset_flag;
 	bool debug_flag;
@@ -725,6 +728,10 @@ void Player::CreateGameObjects() {
 					Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
 					Player::has_custom_resolution = true;
 				}
+				if (ini.HasValue("RPG_RT", "VarMin")) Player::iniVars_min = ini.GetInteger("RPG_RT", "VarMin", 0);
+				else Player::iniVars_min = 0;
+				if (ini.HasValue("RPG_RT", "VarMax")) Player::iniVars_max = ini.GetInteger("RPG_RT", "VarMax", 0);
+				else Player::iniVars_max = 0;
 			}
 		}
 	}
@@ -877,7 +884,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
-	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
+	auto min_var = (iniVars_min != 0) ? iniVars_min : lcf::Data::system.easyrpg_variable_min_value;
 	if (min_var == 0) {
 		if (Player::IsPatchManiac()) {
 			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
@@ -885,7 +892,7 @@ void Player::ResetGameObjects() {
 			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
 		}
 	}
-	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
+	auto max_var = (iniVars_max != 0) ? iniVars_max : lcf::Data::system.easyrpg_variable_max_value;
 	if (max_var == 0) {
 		if (Player::IsPatchManiac()) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
@@ -893,6 +900,8 @@ void Player::ResetGameObjects() {
 			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
 		}
 	}
+
+	Output::Debug("\n\nVariables Range: min {}, max {}\n", min_var, max_var);
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
