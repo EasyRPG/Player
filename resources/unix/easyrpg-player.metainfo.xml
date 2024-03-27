@@ -43,10 +43,8 @@
 	<url type="contact">https://easyrpg.org/contact</url>
 	<url type="bugtracker">https://github.com/EasyRPG/Player/issues</url>
 	<url type="translate">https://translate.easyrpg.org</url>
-	<!-- these tags are reported as invalid currently, old appstream-util: https://github.com/ximion/appstream/blob/v0.15.4/NEWS#L31
-		<url type="contribute">https://easyrpg.org/contribute</url>
-		<url type="vcs-browser">https://github.com/EasyRPG/Player</url>
-	-->
+	<url type="contribute">https://easyrpg.org/contribute</url>
+	<url type="vcs-browser">https://github.com/EasyRPG/Player</url>
 
 	<launchable type="desktop-id">easyrpg-player.desktop</launchable>
 	<screenshots>
