@@ -57,6 +57,15 @@ namespace ConfigEnum {
 		Custom,
 		All
 	};
+
+	enum class ShowFps {
+		/** Do not show */
+		OFF,
+		/** When windowed: Title bar, fullscreen: Overlay */
+		ON,
+		/** Always overlay */
+		Overlay
+	};
 };
 
 #ifdef HAVE_FLUIDLITE
@@ -88,8 +97,11 @@ struct Game_ConfigVideo {
 	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
 	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", "Video", "Vsync", true };
 	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", "Video", "Fullscreen", true };
-	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", "Video", "ShowFps", false };
-	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", "Video", "FpsRenderWindow", false };
+	EnumConfigParam<ConfigEnum::ShowFps, 3> fps{
+		"FPS counter", "How to display the FPS counter", "Video", "Fps", ConfigEnum::ShowFps::OFF,
+		Utils::MakeSvArray("[OFF]", "[ON]", "Overlay"),
+		Utils::MakeSvArray("off", "on", "overlay"),
+		Utils::MakeSvArray("Do not show the FPS counter", "Show the FPS counter", "Always show the FPS counter inside the window")};
 	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", "Video", "FpsLimit", DEFAULT_FPS, 0, 99999 };
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", "Video", "WindowZoom", 2 };
 	EnumConfigParam<ConfigEnum::ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode", ConfigEnum::ScalingMode::Nearest,

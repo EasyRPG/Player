@@ -1439,9 +1439,6 @@ Video options:
  --fps-limit          In combination with --no-vsync sets a custom frames per
                       second limit. The default is 60 FPS. Use --no-fps-limit
                       to run with unlimited frames per second.
- --fps-render-window  Render the frames per second counter in both fullscreen
-                      and windowed mode.
-                      Disable with --no-fps-render-window.
  --fullscreen         Start in fullscreen mode.
  --game-resolution R  Force a different game resolution. This is experimental
                       and can cause glitches or break games!
@@ -1459,6 +1456,10 @@ Video options:
                        bilinear - Like nearest, but applies a bilinear filter to
                                   avoid artifacts.
  --show-fps           Enable display of the frames per second counter.
+                      When in windowed mode it is shown inside the window.
+                      When in fullscreen mode it is shown in the titlebar.
+                      Use --fps-render-window to always show the counter inside
+                      the window.
                       Disable with --no-show-fps.
  --stretch            Ignore the aspect ratio and stretch video output to the
                       entire width of the screen.

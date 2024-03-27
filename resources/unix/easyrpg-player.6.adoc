@@ -198,8 +198,10 @@ NOTE: When using the game browser all games will share the same save directory!
    - 'bilinear'   - Like 'nearest' but apply a bilinear filter to avoid the
                     artifacts.
 *--show-fps*::
-  Enable display of the frames per second counter. Can be disabled with
-  *--no-show-fps*.
+  Enable display of the frames per second counter. When in windowed mode it is
+  shown inside the window. When in fullscreen mode it is shown in the titlebar.
+  Use *--fps-render-window* to always show the counter inside the window. Can be
+  disabled with *--no-show-fps*.
 
 *--stretch*::
   Ignore the aspect ratio and stretch video output to the entire width of the

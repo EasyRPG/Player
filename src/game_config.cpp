@@ -55,12 +55,10 @@ void Game_ConfigVideo::Hide() {
 
 	// Always enabled by default:
 	// - renderer (name of the renderer)
-	// - show_fps (Rendering of FPS, engine feature)
 
 	vsync.SetOptionVisible(false);
 	fullscreen.SetOptionVisible(false);
 	fps_limit.SetOptionVisible(false);
-	fps_render_window.SetOptionVisible(false);
 	window_zoom.SetOptionVisible(false);
 	scaling_mode.SetOptionVisible(false);
 	stretch.SetOptionVisible(false);
@@ -297,12 +295,16 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			video.fps_limit.Set(0);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, {"--show-fps", "--no-show-fps"})) {
-			video.show_fps.Set(arg.ArgIsOn());
+		if (cp.ParseNext(arg, 0, "--show-fps")) {
+			video.fps.Set(ConfigEnum::ShowFps::ON);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, {"--fps-render-window", "--no-fps-render-window"})) {
-			video.fps_render_window.Set(arg.ArgIsOn());
+		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
+			video.fps.Set(ConfigEnum::ShowFps::OFF);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--fps-render-window")) {
+			video.fps.Set(ConfigEnum::ShowFps::Overlay);
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--pause-focus-lost")) {
@@ -427,8 +429,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	/** VIDEO SECTION */
 	video.vsync.FromIni(ini);
 	video.fullscreen.FromIni(ini);
-	video.show_fps.FromIni(ini);
-	video.fps_render_window.FromIni(ini);
+	video.fps.FromIni(ini);
 	video.fps_limit.FromIni(ini);
 	video.window_zoom.FromIni(ini);
 	video.scaling_mode.FromIni(ini);
@@ -518,8 +519,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	os << "[Video]\n";
 	video.vsync.ToIni(os);
 	video.fullscreen.ToIni(os);
-	video.show_fps.ToIni(os);
-	video.fps_render_window.ToIni(os);
+	video.fps.ToIni(os);
 	video.fps_limit.ToIni(os);
 	video.window_zoom.ToIni(os);
 	video.scaling_mode.ToIni(os);

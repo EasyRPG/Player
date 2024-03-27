@@ -188,11 +188,11 @@ public:
 	/** @return true if we should render the fps counter to the title bar */
 	bool ShowFpsOnTitle() const;
 
-	/** Toggle whether we should show fps */
+	/** Toggle between showing FPS or not showing FPS */
 	void ToggleShowFps();
 
-	/** Toggle whether we should show fps on the titlebar */
-	void ToggleShowFpsOnTitle();
+	/** Whether we should show fps */
+	void SetShowFps(ConfigEnum::ShowFps fps);
 
 	/**
 	 * Set whether the program pauses the execution when the program focus is lost.
@@ -292,7 +292,7 @@ protected:
 	/** Touch inputs for up to five finger */
 	std::array<Input::TouchInput, 5> touch_input;
 
-	/** */
+	/** State of the 5 fingers (true touched, false not) */
 	std::array<bool, 5> finger_input;
 
 	/** Color for display background. */
@@ -309,6 +309,9 @@ protected:
 
 	/** Ui manages frame rate externally */
 	bool external_frame_rate = false;
+
+	/** Used by the F2 toggle: Remembers which configuration (ON or Overlay) was used */
+	ConfigEnum::ShowFps original_fps_show_state = ConfigEnum::ShowFps::OFF;
 };
 
 /** Global DisplayUi variable. */
@@ -377,19 +380,29 @@ inline std::array<Input::TouchInput, 5>& BaseUi::GetTouchInput() {
 }
 
 inline bool BaseUi::RenderFps() const {
-	return vcfg.show_fps.Get() && (IsFullscreen() || vcfg.fps_render_window.Get());
+	return vcfg.fps.Get() == ConfigEnum::ShowFps::Overlay || (IsFullscreen() && vcfg.fps.Get() == ConfigEnum::ShowFps::ON);
 }
 
 inline bool BaseUi::ShowFpsOnTitle() const {
-	return vcfg.show_fps.Get();
+	return vcfg.fps.Get() == ConfigEnum::ShowFps::ON;
 }
 
 inline void BaseUi::ToggleShowFps() {
-	vcfg.show_fps.Toggle();
+	if (vcfg.fps.Get() != ConfigEnum::ShowFps::OFF) {
+		original_fps_show_state = vcfg.fps.Get();
+		vcfg.fps.Set(ConfigEnum::ShowFps::OFF);
+	} else {
+		if (original_fps_show_state == ConfigEnum::ShowFps::OFF) {
+			vcfg.fps.Set(ConfigEnum::ShowFps::ON);
+		} else {
+			vcfg.fps.Set(original_fps_show_state);
+		}
+	}
 }
 
-inline void BaseUi::ToggleShowFpsOnTitle() {
-	vcfg.fps_render_window.Toggle();
+inline void BaseUi::SetShowFps(ConfigEnum::ShowFps fps) {
+	vcfg.fps.Set(fps);
+	original_fps_show_state = fps;
 }
 
 inline void BaseUi::SetPauseWhenFocusLost(bool value) {

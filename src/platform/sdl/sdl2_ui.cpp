@@ -1225,7 +1225,6 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #endif
 	cfg.fullscreen.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
-	cfg.fps_render_window.SetOptionVisible(true);
 #if defined(SUPPORT_ZOOM) && !defined(__ANDROID__)
 	// An initial zoom level is needed on Android however changing it looks awful
 	cfg.window_zoom.SetOptionVisible(true);
@@ -1243,7 +1242,6 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	// Fullscreen is handled by the browser
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.fps_limit.SetOptionVisible(false);
-	cfg.fps_render_window.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	// Toggling this freezes the web player
 	cfg.vsync.SetOptionVisible(false);
