@@ -281,10 +281,10 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
 	AddOption(cfg.fps_render_window, [](){ DisplayUi->ToggleShowFpsOnTitle(); });
 	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
-	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
+	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ConfigEnum::ScalingMode>(GetCurrentOption().current_value)); });
 	AddOption(cfg.pause_when_focus_lost, [cfg]() mutable { DisplayUi->SetPauseWhenFocusLost(cfg.pause_when_focus_lost.Toggle()); });
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
-	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<GameResolution>(GetCurrentOption().current_value)); });
+	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<ConfigEnum::GameResolution>(GetCurrentOption().current_value)); });
 }
 
 void Window_Settings::RefreshAudio() {
@@ -415,7 +415,7 @@ void Window_Settings::RefreshEngine() {
 		GetFrame().options.back().text += " [In use]";
 	}
 
-	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
+	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<ConfigEnum::StartupLogos>(GetCurrentOption().current_value)); });
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });

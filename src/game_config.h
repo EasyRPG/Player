@@ -33,28 +33,30 @@
 
 class CmdlineParser;
 
-enum class ScalingMode {
-	/** Nearest neighbour to fit screen */
-	Nearest,
-	/** Like NN but only scales to integers */
-	Integer,
-	/** Integer followed by Bilinear downscale to fit screen */
-	Bilinear,
-};
+namespace ConfigEnum {
+	enum class ScalingMode {
+		/** Nearest neighbour to fit screen */
+		Nearest,
+		/** Like NN but only scales to integers */
+		Integer,
+		/** Integer followed by Bilinear downscale to fit screen */
+		Bilinear,
+	};
 
-enum class GameResolution {
-	/** 320x240 */
-	Original,
-	/** 416x240 */
-	Widescreen,
-	/** 560x240 */
-	Ultrawide
-};
+	enum class GameResolution {
+		/** 320x240 */
+		Original,
+		/** 416x240 */
+		Widescreen,
+		/** 560x240 */
+		Ultrawide
+	};
 
-enum class StartupLogos {
-	None,
-	Custom,
-	All
+	enum class StartupLogos {
+		None,
+		Custom,
+		All
+	};
 };
 
 #ifdef HAVE_FLUIDLITE
@@ -69,8 +71,8 @@ struct Game_ConfigPlayer {
 	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit", "Player", "SettingsAutosave", false };
 	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen", "Player", "SettingsInTitle", false };
 	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen", "Player", "SettingsInMenu", false };
-	EnumConfigParam<StartupLogos, 3> show_startup_logos{
-		"Startup Logos", "Logos that are displayed on startup", "Player", "StartupLogos", StartupLogos::Custom,
+	EnumConfigParam<ConfigEnum::StartupLogos, 3> show_startup_logos{
+		"Startup Logos", "Logos that are displayed on startup", "Player", "StartupLogos", ConfigEnum::StartupLogos::Custom,
 		Utils::MakeSvArray("None", "Custom", "All"),
 		Utils::MakeSvArray("none", "custom", "all"),
 		Utils::MakeSvArray("Do not show any additional logos", "Show custom logos bundled with the game", "Show all logos, including the original from RPG Maker")};
@@ -90,14 +92,14 @@ struct Game_ConfigVideo {
 	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", "Video", "FpsRenderWindow", false };
 	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", "Video", "FpsLimit", DEFAULT_FPS, 0, 99999 };
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", "Video", "WindowZoom", 2 };
-	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode", ScalingMode::Nearest,
+	EnumConfigParam<ConfigEnum::ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode", ConfigEnum::ScalingMode::Nearest,
 		Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
 		Utils::MakeSvArray("nearest", "integer", "bilinear"),
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
 	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", "Video", "Stretch", false };
 	BoolConfigParam pause_when_focus_lost{ "Pause when focus lost", "Pause the program when it is in the background", "Video", "PauseWhenFocusLost", true };
 	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", "Video", "TouchUi", true };
-	EnumConfigParam<GameResolution, 3> game_resolution{ "Resolution", "Game resolution. Changes require a restart.", "Video", "GameResolution", GameResolution::Original,
+	EnumConfigParam<ConfigEnum::GameResolution, 3> game_resolution{ "Resolution", "Game resolution. Changes require a restart.", "Video", "GameResolution", ConfigEnum::GameResolution::Original,
 		Utils::MakeSvArray("Original (Recommended)", "Widescreen (Experimental)", "Ultrawide (Experimental)"),
 		Utils::MakeSvArray("original", "widescreen", "ultrawide"),
 		Utils::MakeSvArray("The default resolution (320x240, 4:3)", "Can cause glitches (416x240, 16:9)", "Can cause glitches (560x240, 21:9)")};

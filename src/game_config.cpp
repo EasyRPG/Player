@@ -86,7 +86,7 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 
 #if USE_SDL >= 2
-	cfg.video.scaling_mode.Set(ScalingMode::Bilinear);
+	cfg.video.scaling_mode.Set(ConfigEnum::ScalingMode::Bilinear);
 #endif
 
 	cp.Rewind();

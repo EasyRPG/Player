@@ -68,7 +68,7 @@ void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
 
-void BaseUi::SetGameResolution(GameResolution resolution) {
+void BaseUi::SetGameResolution(ConfigEnum::GameResolution resolution) {
 	vcfg.game_resolution.Set(resolution);
 }
 

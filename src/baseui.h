@@ -215,7 +215,7 @@ public:
 	void SetFrameLimit(int fps_limit);
 
 	/** Sets the scaling mode of the window */
-	virtual void SetScalingMode(ScalingMode) {};
+	virtual void SetScalingMode(ConfigEnum::ScalingMode) {};
 
 	/**
 	 * Sets the game resolution settings.
@@ -224,7 +224,7 @@ public:
 	 *
 	 * @param resolution new resolution
 	 */
-	void SetGameResolution(GameResolution resolution);
+	void SetGameResolution(ConfigEnum::GameResolution resolution);
 
 	/**
 	 * Opens the specified URL through the operating system.

@@ -66,7 +66,7 @@ public:
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
 	void ProcessEvents() override;
-	void SetScalingMode(ScalingMode) override;
+	void SetScalingMode(ConfigEnum::ScalingMode) override;
 	void ToggleStretch() override;
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;

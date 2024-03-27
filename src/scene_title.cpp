@@ -56,14 +56,14 @@ void Scene_Title::Start() {
 		Player::ChangeResolution(Player::screen_width, Player::screen_height);
 	} else {
 		switch (DisplayUi->GetConfig().game_resolution.Get()) {
-			case GameResolution::Original:
+			case ConfigEnum::GameResolution::Original:
 				Player::ChangeResolution(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 				break;
-			case GameResolution::Widescreen:
+			case ConfigEnum::GameResolution::Widescreen:
 				Player::ChangeResolution(416, SCREEN_TARGET_HEIGHT);
 				Player::game_config.fake_resolution.Set(true);
 				break;
-			case GameResolution::Ultrawide:
+			case ConfigEnum::GameResolution::Ultrawide:
 				Player::ChangeResolution(560, SCREEN_TARGET_HEIGHT);
 				Player::game_config.fake_resolution.Set(true);
 				break;
