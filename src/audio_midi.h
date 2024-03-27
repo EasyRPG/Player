@@ -180,6 +180,11 @@ public:
 		return true;
 	}
 
+	/**
+	 * Notifies the sequencer that a new MIDI is about to start.
+	 */
+	virtual void OnNewMidi() {};
+
 	/*
 	 * Does the sequencer need "sound off" messages sent to every channel between
 	 * tracks? NOTE: enabling this can break smooth fade outs between tracks.
@@ -203,6 +208,24 @@ public:
 	static std::unique_ptr<AudioDecoderBase> CreateWildMidi(bool resample);
 
 	static std::unique_ptr<AudioDecoderBase> CreateFmMidi(bool resample);
+
+	/**
+	 * Checks if Fluidsynth works.
+	 *
+	 * @param status_message Current Fluidsynth status
+	 * @return true: Works, false: Not working
+	 */
+	static bool CheckFluidsynth(std::string& status_message);
+
+	static void ChangeFluidsynthSoundfont(StringView sf_path);
+
+	/**
+	 * Checks if WildMidi works.
+	 *
+	 * @param status_message Current WildMidi status
+	 * @return true: Works, false: Not working
+	 */
+	static bool CheckWildMidi(std::string& status_message);
 
 	/**
 	 * Resets the global state of the midi libraries.

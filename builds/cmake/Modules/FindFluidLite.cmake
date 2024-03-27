@@ -9,7 +9,7 @@
 #
 # This module defines the following :prop_tgt:`IMPORTED` targets:
 #
-# ``FluidLite::fluidlite``
+# ``fluidlite::fluidlite``
 #   The ``FluidLite`` library, if found.
 #
 # Result Variables
@@ -53,9 +53,9 @@ if(FLUIDLITE_FOUND)
 		set(FLUIDLITE_LIBRARIES ${FLUIDLITE_LIBRARIES})
 	endif()
 
-	if(NOT TARGET FluidLite::fluidlite)
-		add_library(FluidLite::fluidlite UNKNOWN IMPORTED)
-		set_target_properties(FluidLite::fluidlite PROPERTIES
+	if(NOT TARGET fluidlite::fluidlite)
+		add_library(fluidlite::fluidlite UNKNOWN IMPORTED)
+		set_target_properties(fluidlite::fluidlite PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${FLUIDLITE_INCLUDE_DIRS}"
 			IMPORTED_LOCATION "${FLUIDLITE_LIBRARY}")
 	endif()

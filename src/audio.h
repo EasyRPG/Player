@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "audio_generic_midiout.h"
 #include "filesystem_stream.h"
 #include "audio_secache.h"
 #include "game_config.h"
@@ -38,6 +39,15 @@ struct AudioInterface {
 	Game_ConfigAudio GetConfig() const;
 
 	virtual void vGetConfig(Game_ConfigAudio& cfg) const = 0;
+
+	/**
+	 * Instantiates and returns the Native Midi Out device.
+	 * The Midi Out device is usually an exclusive resource.
+	 * Implementing classes should only create one Midi Out and return the
+	 * shared instance.
+	 * @return Native Midi Out Device or nullptr on error
+	 */
+	virtual GenericAudioMidiOut* CreateAndGetMidiOut() { return nullptr; }
 
 	/**
 	 * Update audio. Must be called each frame.
@@ -132,6 +142,18 @@ struct AudioInterface {
 
 	int SE_GetGlobalVolume() const;
 	void SE_SetGlobalVolume(int volume);
+
+	bool GetFluidsynthEnabled() const;
+	void SetFluidsynthEnabled(bool enable);
+
+	bool GetWildMidiEnabled() const;
+	void SetWildMidiEnabled(bool enable);
+
+	bool GetNativeMidiEnabled() const;
+	void SetNativeMidiEnabled(bool enable);
+
+	std::string GetFluidsynthSoundfont() const;
+	void SetFluidsynthSoundfont(StringView sf);
 
 protected:
 	Game_ConfigAudio cfg;

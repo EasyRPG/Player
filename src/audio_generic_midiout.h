@@ -52,7 +52,7 @@ public:
 	void StartThread();
 	void StopThread();
 	void ThreadFunction();
-	bool IsInitialized() const;
+	bool IsInitialized(std::string& status_message) const;
 
 	static bool IsSupported(Filesystem_Stream::InputStream& stream);
 private:
@@ -79,7 +79,7 @@ public:
 
 	void StartThread() {};
 	void StopThread() {};
-	bool IsInitialized() const {
+	bool IsInitialized(std::string&) const {
 		return false;
 	}
 

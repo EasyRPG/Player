@@ -179,6 +179,8 @@ protected:
 	bool prev_char_waited = true;
 	/** Was the previous character printable? */
 	bool prev_char_printable = false;
+	/** Active font for the current page */
+	FontRef page_font;
 
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;

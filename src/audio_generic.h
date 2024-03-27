@@ -61,6 +61,8 @@ public:
 
 	void vGetConfig(Game_ConfigAudio&) const override {}
 
+	GenericAudioMidiOut* CreateAndGetMidiOut() override;
+
 	void SetFormat(int frequency, AudioDecoder::Format format, int channels);
 
 	virtual void LockMutex() const = 0;

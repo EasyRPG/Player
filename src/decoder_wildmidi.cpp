@@ -84,7 +84,7 @@ WildMidiDecoder::~WildMidiDecoder() {
 		WildMidi_Close(handle);
 }
 
-bool WildMidiDecoder::Initialize(std::string& error_message) {
+bool WildMidiDecoder::Initialize(std::string& status_message) {
 	std::string config_file;
 	bool found = false;
 
@@ -282,10 +282,11 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 
 	// bail, if nothing found
 	if (!found) {
-		error_message = "WildMidi: Could not find configuration file.";
+		status_message = "Could not find configuration file.";
 		return false;
 	}
-	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
+
+	status_message = fmt::format("Using {} as configuration file...", config_file);
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 	init = (WildMidi_InitVIO(&vio, config_file.c_str(), EP_MIDI_FREQ, WILDMIDI_OPTS) == 0);
@@ -294,7 +295,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 #endif
 
 	if (!init) {
-		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
+		status_message = std::string("WildMidi_Init() failed: ") + WildMidi_GetError();
 		return false;
 	}
 

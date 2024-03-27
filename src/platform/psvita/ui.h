@@ -50,14 +50,14 @@ public:
 	/** @{ */
 	void UpdateDisplay() override;
 	void ProcessEvents() override;
-	void SetScalingMode(ScalingMode) override;
+	void SetScalingMode(ConfigEnum::ScalingMode) override;
 	void ToggleStretch() override;
 	void ToggleTouchUi() override;
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
-	AudioInterface& GetAudio();
+	AudioInterface& GetAudio() override;
 #endif
 	/** @} */
 

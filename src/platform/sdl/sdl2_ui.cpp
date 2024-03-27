@@ -519,7 +519,7 @@ void Sdl2Ui::ProcessEvents() {
 	}
 }
 
-void Sdl2Ui::SetScalingMode(ScalingMode mode) {
+void Sdl2Ui::SetScalingMode(ConfigEnum::ScalingMode mode) {
 	window.size_changed = true;
 	vcfg.scaling_mode.Set(mode);
 }
@@ -566,7 +566,7 @@ void Sdl2Ui::UpdateDisplay() {
 			}
 		};
 
-		if (vcfg.scaling_mode.Get() == ScalingMode::Integer) {
+		if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
 				window.scale = static_cast<float>(window.width / main_surface->width());
@@ -611,7 +611,7 @@ void Sdl2Ui::UpdateDisplay() {
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		}
 
-		if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
+		if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
 			if (sdl_texture_scaled) {
 				SDL_DestroyTexture(sdl_texture_scaled);
 			}
@@ -626,7 +626,7 @@ void Sdl2Ui::UpdateDisplay() {
 	}
 
 	SDL_RenderClear(sdl_renderer);
-	if (vcfg.scaling_mode.Get() == ScalingMode::Bilinear && window.scale > 0.f) {
+	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
 		// Render game texture on the scaled texture
 		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
 		SDL_RenderClear(sdl_renderer);
@@ -714,16 +714,19 @@ void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 
 void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 	int state = evnt.window.event;
-#if PAUSE_GAME_WHEN_FOCUS_LOST
+
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
+		auto cfg = vcfg;
+		vGetConfig(cfg);
+		if (!cfg.pause_when_focus_lost.Get()) {
+			return;
+		}
 
 		Player::Pause();
 
 		bool last = ShowCursor(true);
 
-#ifndef EMSCRIPTEN
 		// Filter SDL events until focus is regained
-
 		SDL_Event wait_event;
 
 		while (SDL_WaitEvent(&wait_event)) {
@@ -731,7 +734,6 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 				break;
 			}
 		}
-#endif
 
 		ShowCursor(last);
 
@@ -740,7 +742,7 @@ void Sdl2Ui::ProcessWindowEvent(SDL_Event &evnt) {
 
 		return;
 	}
-#endif
+
 #if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	if (state == SDL_WINDOWEVENT_ENTER) {
 		mouse_focus = true;
@@ -1209,7 +1211,6 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #endif
 	cfg.fullscreen.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
-	cfg.fps_render_window.SetOptionVisible(true);
 #if defined(SUPPORT_ZOOM) && !defined(__ANDROID__)
 	// An initial zoom level is needed on Android however changing it looks awful
 	cfg.window_zoom.SetOptionVisible(true);
@@ -1217,6 +1218,7 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.scaling_mode.SetOptionVisible(true);
 	cfg.stretch.SetOptionVisible(true);
 	cfg.game_resolution.SetOptionVisible(true);
+	cfg.pause_when_focus_lost.SetOptionVisible(true);
 
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);
@@ -1226,15 +1228,17 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	// Fullscreen is handled by the browser
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.fps_limit.SetOptionVisible(false);
-	cfg.fps_render_window.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	// Toggling this freezes the web player
 	cfg.vsync.SetOptionVisible(false);
+	cfg.pause_when_focus_lost.Lock(false);
+	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #elif defined(__WIIU__)
 	// FIXME: Some options below may crash, better disable for now
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
 	cfg.vsync.SetOptionVisible(false);
+	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #endif
 }
 
@@ -1247,4 +1251,22 @@ Rect Sdl2Ui::GetWindowMetrics() const {
 	} else {
 		return window_mode_metrics;
 	}
+}
+
+bool Sdl2Ui::OpenURL(StringView url) {
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+	if (IsFullscreen()) {
+		ToggleFullscreen();
+	}
+
+	if (SDL_OpenURL(ToString(url).c_str()) < 0) {
+		Output::Warning("Open URL {} failed: {}", url, SDL_GetError());
+		return false;
+	}
+
+	return true;
+#else
+	Output::Warning("Cannot Open URL: SDL2 version too old (must be 2.0.14)");
+	return false;
+#endif
 }

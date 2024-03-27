@@ -185,7 +185,7 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 		return {};
 	}
 
-	if (Player::player_config.show_startup_logos.Get() == StartupLogos::None) {
+	if (Player::player_config.show_startup_logos.Get() == ConfigEnum::StartupLogos::None) {
 		return {};
 	}
 
@@ -199,7 +199,7 @@ std::vector<std::vector<uint8_t>> EXEReader::GetLogos() {
 			uint16_t xyz_logos = std::min<uint16_t>(GetU16(xyz_base + 0x0C), 9);
 			uint32_t xyz_logo_base = xyz_base + 0x10;
 
-			bool only_custom_logos = (Player::player_config.show_startup_logos.Get() == StartupLogos::Custom);
+			bool only_custom_logos = (Player::player_config.show_startup_logos.Get() == ConfigEnum::StartupLogos::Custom);
 			std::string res_name = "LOGOX";
 
 			for (int i = 0; i <= xyz_logos; ++i) {

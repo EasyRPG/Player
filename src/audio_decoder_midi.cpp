@@ -17,6 +17,7 @@
 
 #include <array>
 #include <algorithm>
+#include "audio.h"
 #include "audio_decoder_midi.h"
 #include "midisequencer.h"
 #include "output.h"
@@ -142,6 +143,9 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 		error_message = "Midi: Error reading file";
 		return false;
 	}
+
+	global_volume = Audio().BGM_GetGlobalVolume() / 100.0f;
+
 	seq->rewind();
 	tempo.clear();
 	tempo.emplace_back(this, midi_default_tempo);
@@ -171,7 +175,7 @@ void AudioDecoderMidi::Pause() {
 void AudioDecoderMidi::Resume() {
 	paused = false;
 	for (int i = 0; i < 16; i++) {
-		uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume));
+		uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume * global_volume));
 		mididec->SendMidiMessage(msg);
 	}
 }
@@ -192,7 +196,7 @@ void AudioDecoderMidi::SetVolume(int new_volume) {
 
 	volume = static_cast<float>(new_volume) / 100.0f;
 	for (int i = 0; i < 16; i++) {
-		uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume));
+		uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume * global_volume));
 		mididec->SendMidiMessage(msg);
 	}
 
@@ -256,7 +260,7 @@ void AudioDecoderMidi::Update(std::chrono::microseconds delta) {
 			log_volume = AdjustVolume(volume * 100.0f);
 		}
 		for (int i = 0; i < 16; i++) {
-			uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume));
+			uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume * global_volume));
 			mididec->SendMidiMessage(msg);
 		}
 		last_fade_mtime = mtime;
@@ -271,6 +275,15 @@ void AudioDecoderMidi::UpdateMidi(std::chrono::microseconds delta) {
 
 	mtime += std::chrono::microseconds(static_cast<int>(delta.count() * pitch / 100));
 	Update(delta);
+
+	if (Audio().BGM_GetGlobalVolume() / 100.0f != global_volume) {
+		global_volume = Audio().BGM_GetGlobalVolume() / 100.0f;
+		for (int i = 0; i < 16; i++) {
+			uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume * global_volume));
+			mididec->SendMidiMessage(msg);
+		}
+	}
+
 	seq->play(mtime, this);
 
 	if (IsFinished() && looping) {
@@ -308,6 +321,9 @@ int AudioDecoderMidi::GetTicks() const {
 }
 
 void AudioDecoderMidi::Reset() {
+	// Placed here to avoid reloading of a soundfont on shutdown
+	mididec->OnNewMidi();
+
 	// Generate a MIDI reset event so the device doesn't
 	// leave notes playing or keeps any state
 	reset();
@@ -377,7 +393,7 @@ void AudioDecoderMidi::midi_message(int, uint_least32_t message) {
 		// Adjust channel volume
 		channel_volumes[channel] = value2;
 		// Send the modified volume to midiout
-		message = midimsg_volume(channel, static_cast<uint8_t>(value2 * volume));
+		message = midimsg_volume(channel, static_cast<uint8_t>(value2 * volume * global_volume));
 	}
 	if (midimsg_validate(message)) {
 		mididec->SendMidiMessage(message);

@@ -77,6 +77,7 @@
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define SUPPORT_FILE_BROWSER
 #elif defined(__SWITCH__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
@@ -93,6 +94,8 @@
 #  define SUPPORT_TOUCH
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define SUPPORT_FILE_BROWSER
+#  define SYSTEM_DESKTOP_LINUX_BSD_MACOS
 #endif
 
 #ifdef USE_SDL

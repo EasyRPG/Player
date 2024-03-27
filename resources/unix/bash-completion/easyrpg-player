@@ -14,7 +14,7 @@ _easyrpg-player ()
 
   # all possible options
   ouropts='--autobattle-algo --battle-test --disable-audio --disable-rtp \
-           --encoding --enemyai-algo --engine --fps-limit --fps-render-window --fullscreen -h --help \
+           --encoding --enemyai-algo --engine --fps-limit --fullscreen -h --help \
            --hide-title --load-game-id --new-game --no-vsync --project-path --rtp-path --record-input \
            --replay-input --save-path --seed --show-fps --start-map-id --start-party --no-log-color \
            --start-position --test-play --window -v --version'

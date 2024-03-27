@@ -30,6 +30,15 @@
 class Window_Help : public Window_Base {
 
 public:
+	enum class Animation {
+		/** Never scroll */
+		None,
+		/** Scroll left and when the end of the text is reached scroll right, then repeat */
+		BackAndForth,
+		/** Scroll left and repeat the text in an endless loop (also known as marquee) */
+		Loop
+	};
+
 	/**
 	 * Constructor.
 	 */
@@ -43,6 +52,18 @@ public:
 	 * @param halfwidthspace if half width spaces should be used.
 	 */
 	void SetText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft, bool halfwidthspace = true);
+
+	/**
+	 * Sets the scrolling animation when the text is larger than the help window.
+	 *
+	 * @param animation
+	 */
+	void SetAnimation(Animation animation);
+
+	/**
+	 * Updates the scrolling animation if set.
+	 */
+	void Update() override;
 
 	/**
 	 * Clears the window
@@ -60,6 +81,8 @@ public:
 	void AddText(std::string text, int color = Font::ColorDefault, Text::Alignment align = Text::AlignLeft, bool halfwidthspace = true);
 
 private:
+	void UpdateScroll();
+
 	/** Text to draw. */
 	std::string text;
 	/** Color of Text to draw. */
@@ -68,6 +91,13 @@ private:
 	Text::Alignment align;
 	/** Current text position */
 	int text_x_offset = 0;
+	/** Width of the text */
+	int text_x_width = 0;
+	/** Current scroll position of the animation */
+	int text_x_scroll = 0;
+	bool text_x_scroll_dir = false;
+
+	Animation animation = Animation::None;
 };
 
 #endif

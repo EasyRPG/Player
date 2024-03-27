@@ -198,6 +198,19 @@ void GenericAudio::Update() {
 	// no-op, handled by the Decode function called through a thread
 }
 
+GenericAudioMidiOut* GenericAudio::CreateAndGetMidiOut() {
+	if (!midi_thread) {
+		midi_thread = std::make_unique<GenericAudioMidiOut>();
+		std::string status_message;
+		if (midi_thread->IsInitialized(status_message)) {
+			midi_thread->StartThread();
+		} else {
+			midi_thread.reset();
+		}
+	}
+	return midi_thread.get();
+}
+
 void GenericAudio::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
 	output_format.frequency = frequency;
 	output_format.format = format;
@@ -217,18 +230,12 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	if (chan.id == 0 && GenericAudioMidiOut::IsSupported(filestream)) {
 		chan.decoder.reset();
 
-		// FIXME: Try Fluidsynth and WildMidi first
-		// If they work fallback to the normal AudioDecoder handler below
-		// There should be a way to configure the order
-		if (!MidiDecoder::CreateFluidsynth(true) && !MidiDecoder::CreateWildMidi(true)) {
-			if (!midi_thread) {
-				midi_thread = std::make_unique<GenericAudioMidiOut>();
-				if (midi_thread->IsInitialized()) {
-					midi_thread->StartThread();
-				} else {
-					midi_thread.reset();
-				}
-			}
+		// Order is Fluidsynth, WildMidi, Native, FmMidi
+		bool fluidsynth = Audio().GetFluidsynthEnabled() && MidiDecoder::CreateFluidsynth(true);
+		bool wildmidi = Audio().GetWildMidiEnabled() && MidiDecoder::CreateWildMidi(true);
+
+		if (!fluidsynth && !wildmidi && Audio().GetNativeMidiEnabled()) {
+			CreateAndGetMidiOut();
 
 			if (midi_thread) {
 				midi_thread->LockMutex();
