@@ -163,119 +163,6 @@ void Window_Selectable::Update() {
 
 	int old_index = index;
 
-	//if (Input::GetUseMouseButton() && IsVisible() && active && GetItemMax() > 0) {
-
-	//	Point mouseP = Input::GetMousePosition();
-
-	//	if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-	//		mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-	//		int h = 1;
-	//		int w = 1;
-	//		if (!GetCursorRect(0).IsEmpty()) {
-	//			h = GetCursorRect(0).height;
-	//			w = GetCursorRect(0).width;
-	//		}
-	//		else if (!GetItemRect(0).IsEmpty()) {
-	//			h = GetItemRect(0).height + 4;
-	//			w = GetItemRect(0).width;
-	//		}
-
-	//		//Output::Debug("Cursor height {}", h);
-
-	//		int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h + startCursorY * 16) / h * column_max;
-	//		new_index += (mouseP.x - GetBorderX() - GetX()) / w;
-
-	//		if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-
-	//			if (new_index < GetItemMax() && new_index >= 0) {
-	//				// Change cursor (Hand)
-	//				DisplayUi->ChangeCursor(1);
-	//			}
-	//		}
-	//	}
-
-	//	if (Input::IsPressed(Input::MOUSE_LEFT)) {
-	//	//if (Input::mouseHover()) {
-
-	//		mouseTimeArrow++;
-
-	//		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-	//			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-
-	//			if (index != -999 && index != -1)
-	//				mouseOldIndex = index;
-	//			else
-	//				index = GetTopRow();
-	//			UpdateCursorRect();
-
-	//		}
-	//		else {
-	//			if (index != -999 && index != -1)
-	//				mouseOldIndex = index;
-	//			index = -999;
-	//			if (GetTopRow() < (GetRowMax() - GetPageRowMax()))
-	//				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
-	//					mouseP.y >= GetY() + GetHeight() - GetBorderY() && mouseP.y < GetY() + GetHeight()) {
-	//					if (mouseTimeArrow == 1 || (mouseTimeArrow >= 15 && mouseTimeArrow % 5 == 1)) {
-	//						SetTopRow(GetTopRow() + 1);
-	//					}
-	//				}
-	//			if (GetTopRow() > 0)
-	//				if (mouseP.x >= GetX() + GetBorderX() && mouseP.x < GetX() + GetWidth() - GetBorderX() &&
-	//					mouseP.y >= GetY() && mouseP.y < GetY() + GetBorderY()) {
-	//					if (mouseTimeArrow == 1 || (mouseTimeArrow >= Input::start_repeat_time && mouseTimeArrow % Input::repeat_time == 1)) {
-	//						SetTopRow(GetTopRow() - 1);
-	//					}
-	//				}
-	//		}
-	//	}
-	//	else {
-	//		mouseTimeArrow = 0;
-	//	}
-
-	//	//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
-	//	//Output::Debug("Mouse : {}", GetItemMax());
-	//	//if (Input::IsPressed(Input::DECISION)) {
-	//	if (Input::mouseHover()) {
-	//		if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-	//			mouseP.y >= GetY() + GetBorderY() && mouseP.y < GetY() + GetHeight() - GetBorderY()) {
-
-	//			int w = 1;
-	//			int h = 1;
-	//			if (!GetCursorRect(0).IsEmpty()) {
-	//				h = GetCursorRect(0).height;
-	//				w = GetCursorRect(0).width;
-	//			}
-	//			else if (!GetItemRect(0).IsEmpty()) {
-	//				h = GetItemRect(0).height;
-	//				w = GetItemRect(0).width;
-	//			}
-	//			int new_index = (mouseP.y - GetBorderY() - GetY() + GetTopRow() * h - startCursorY * 16) / h * column_max;
-	//			new_index += (mouseP.x - GetBorderX() - GetX()) / w;
-
-	//			// Output::Debug("Index : {} {} {}", new_index, old_index, GetIndex());
-	//			
-	//			if (new_index >= GetTopRow() && new_index < GetTopRow() + GetPageRowMax() * column_max) {
-	//				if (new_index < GetItemMax() && !IsOpeningOrClosing()) {
-	//					if (new_index != mouseOldIndex)
-	//						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-	//					if (index != -999 && index != -1)
-	//						mouseOldIndex = new_index;
-	//					SetIndex(new_index);
-	//				}
-	//				else if (!IsOpeningOrClosing()) {
-	//					if (index != -999 && index != -1)
-	//						mouseOldIndex = index;
-	//					index = -999;
-	//				}
-	//			}
-	//			
-	//		}
-	//	}
-	//}
-	//else {
-	//	mouseTimeArrow = 0;
-	//}
 
 	if (active && item_max > 0 && index >= 0) {
 		if (scroll_dir != 0) {
@@ -300,7 +187,7 @@ void Window_Selectable::Update() {
 				index = (index + column_max) % item_max;
 			}
 		};
-		if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+		if (Input::IsTriggered(Input::DOWN) || (Input::IsTriggered(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())) {
 			move_down();
 		} else if (Input::IsRepeated(Input::DOWN)) {
 			if (endless_scrolling || (index + column_max) % item_max > index) {
@@ -314,7 +201,7 @@ void Window_Selectable::Update() {
 				index = (index - column_max + item_max) % item_max;
 			}
 		};
-		if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+		if (Input::IsTriggered(Input::UP) || (Input::IsTriggered(Input::SCROLL_UP) && !Input::GetUseMouseButton())) {
 			move_up();
 		} else if (Input::IsRepeated(Input::UP)) {
 			if (endless_scrolling || (index - column_max + item_max) % item_max < index) {
@@ -359,6 +246,70 @@ void Window_Selectable::Update() {
 			}
 		}
 	}
+	if (Input::GetUseMouseButton()) {
+		if (index == -999)
+			if (scroll_dir != 0) {
+				scroll_progress++;
+				SetOy(GetOy() + (menu_item_height * scroll_progress / 4 - menu_item_height * (scroll_progress - 1) / 4) * scroll_dir);
+				UpdateArrows();
+				if (scroll_progress < 4) {
+					return;
+				}
+				else {
+					scroll_dir = 0;
+					scroll_progress = 0;
+					if (active && help_window != NULL) {
+						UpdateHelp();
+					}
+					UpdateCursorRect();
+				}
+			}
+		bool show_down_arrow = (GetTopRow() < (GetRowMax() - GetPageRowMax()));
+		if (show_down_arrow) {
+			bool b = false;
+			Point mouseP = Input::GetMousePosition();
+			int dx = x + width / 2 - 8;
+			int dy = y + height - 8;
+			if (mouseP.x > dx && mouseP.x < dx + 16 && mouseP.y > dy && mouseP.y < dy + 8) {
+				b = true;
+				DisplayUi->ChangeCursor(1);
+			}
+			if (Input::IsRepeated(Input::MOUSE_LEFT) && b) {
+				scroll_dir = 1;
+				//index++;
+				return;
+			}
+			else if (Input::IsRepeated(Input::SCROLL_DOWN) && Input::GetUseMouseButton()) {
+				scroll_dir = 1;
+				index++;
+				return;
+			}
+		}
+
+		bool show_up_arrow = (GetTopRow() > 0);
+		if (show_up_arrow) {
+			bool b = false;
+			Point mouseP = Input::GetMousePosition();
+			int dx = x + width / 2 - 8;
+			int dy = y;
+			if (mouseP.x > dx && mouseP.x < dx + 16 && mouseP.y > dy && mouseP.y < dy + 8) {
+				b = true;
+				DisplayUi->ChangeCursor(1);
+			}
+			if (Input::IsRepeated(Input::MOUSE_LEFT) && b) {
+				Output::Debug("{} {} {} {}", dx, mouseP.x, dy, mouseP.y);
+				scroll_dir = -1;
+				//index++;
+				return;
+			}
+			else if (Input::IsRepeated(Input::SCROLL_UP) && Input::GetUseMouseButton()) {
+				scroll_dir = -1;
+				index--;
+				return;
+			}
+		}
+	}
+
 	if (active && help_window != NULL) {
 		UpdateHelp();
 	}

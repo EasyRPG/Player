@@ -138,6 +138,10 @@ public:
 	 **/
 	void SetMaxLinesPerPage(int lines);
 
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
+
 protected:
 	/** Async operation */
 	AsyncOp aop;

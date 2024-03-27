@@ -86,8 +86,7 @@ void Scene_GameBrowser::vUpdate() {
 
 	if (command_window->GetActive()) {
 		UpdateCommand();
-	}
-	else if (gamelist_window->GetActive()) {
+	} else 	if (gamelist_window->GetActive()) {
 		UpdateGameListSelection();
 	}
 }
@@ -177,7 +176,7 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 	} else if (Input::IsTriggered(Input::DECISION) && gamelist_window->GetIndex() != -999) {
 		load_window->SetVisible(true);
 		game_loading = true;
-	} else if (Input::IsTriggered(Input::DEBUG_MENU) || Input::IsTriggered(Input::SHIFT)) {
+	} else if ((Input::IsTriggered(Input::DEBUG_MENU) || Input::IsTriggered(Input::SHIFT)) && gamelist_window->GetIndex() != -999) {
 		Player::debug_flag = true;
 		load_window->SetVisible(true);
 		game_loading = true;

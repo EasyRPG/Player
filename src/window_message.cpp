@@ -412,17 +412,30 @@ void Window_Message::Update() {
 				}
 				if (!(mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() * 2 &&
 					mouseP.y >= GetY() + GetBorderY() + startChoiceY && mouseP.y < GetY() + GetHeight() - GetBorderY() + startChoiceY - maxChoiceY)) {
-					if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					if (!this->IsOpeningOrClosing() && this->GetPause()) {
 						if (index != -999 && index != -1)
 							mouseOldIndex = index;
 						index = -999;
 					}
 				}
 				else {
-					if (Input::IsPressed(Input::MOUSE_LEFT)) {
+
+					if (pending_message.HasChoices()) {
+
+						Output::Debug("{}", this->IsOpening());
+
 						if (index != -999 && index != -1)
 							mouseOldIndex = index;
-						//index = -1;
+						int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() });
+
+						// Bug is here. We need to wait until all text is draw
+						if (i != index) {
+							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+							index = i;
+						}
+					}
+					else {
+						index = -1;
 					}
 					// Change cursor (Hand)
 					DisplayUi->ChangeCursor(1);
@@ -956,11 +969,12 @@ void Window_Message::InputNumber() {
 				number_input_window->SetActive(false);
 
 				index = -1;
+				return;
 			}
 		}
-		return;
 	}
-	if (Input::IsTriggered(Input::DECISION)) {
+
+	if (Input::IsTriggered(Input::DECISION) && index != -999) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(true);
