@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 android {
+    namespace "org.easyrpg.player"
     compileSdkVersion 33
     buildToolsVersion '33.0.0'
     ndkVersion '21.4.7075529'

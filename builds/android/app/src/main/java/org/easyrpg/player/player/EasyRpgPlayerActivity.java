@@ -85,6 +85,14 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     SurfaceView surface;
 
     @Override
+    protected String[] getLibraries() {
+        return new String[] {
+            "SDL2",
+            "easyrpg_android"
+        };
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (mBrokenLibraries) {
