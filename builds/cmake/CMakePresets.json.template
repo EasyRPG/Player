@@ -112,6 +112,15 @@
 			"inherits": "dkp-user"
 		},
 		{
+			"name": "wiiu",
+			"displayName": "Nintendo WiiU",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/WiiU.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
+			},
+			"inherits": "dkp-user"
+		},
+		{
 			"name": "psvita",
 			"displayName": "PlayStation Vita",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",

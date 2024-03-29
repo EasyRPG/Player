@@ -657,6 +657,66 @@
 			]
 		},
 		{
+			"name": "wiiu-parent",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/WiiU.cmake",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
+			},
+			"inherits": "dkp-user",
+			"hidden": true
+		},
+		{
+			"name": "wiiu-debug",
+			"displayName": "Nintendo WiiU (Debug)",
+			"inherits": [
+				"wiiu-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wiiu-relwithdebinfo",
+			"displayName": "Nintendo WiiU (RelWithDebInfo)",
+			"inherits": [
+				"wiiu-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wiiu-release",
+			"displayName": "Nintendo WiiU (Release)",
+			"inherits": [
+				"wiiu-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wiiu-libretro-debug",
+			"displayName": "Nintendo WiiU (libretro core) (Debug)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wiiu-libretro-relwithdebinfo",
+			"displayName": "Nintendo WiiU (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wiiu-libretro-release",
+			"displayName": "Nintendo WiiU (libretro core) (Release)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "psvita-parent",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
 			"cacheVariables": {
@@ -970,6 +1030,30 @@
 		{
 			"name": "wii-libretro-release",
 			"configurePreset": "wii-libretro-release"
+		},
+		{
+			"name": "wiiu-debug",
+			"configurePreset": "wiiu-debug"
+		},
+		{
+			"name": "wiiu-relwithdebinfo",
+			"configurePreset": "wiiu-relwithdebinfo"
+		},
+		{
+			"name": "wiiu-release",
+			"configurePreset": "wiiu-release"
+		},
+		{
+			"name": "wiiu-libretro-debug",
+			"configurePreset": "wiiu-libretro-debug"
+		},
+		{
+			"name": "wiiu-libretro-relwithdebinfo",
+			"configurePreset": "wiiu-libretro-relwithdebinfo"
+		},
+		{
+			"name": "wiiu-libretro-release",
+			"configurePreset": "wiiu-libretro-release"
 		},
 		{
 			"name": "psvita-debug",
