@@ -62,7 +62,6 @@ public:
 
 private:
 	C3D_RenderTarget *top_screen, *bottom_screen;
-	C2D_Image top_image, bottom_image;
 	void ToggleBottomScreen(bool state);
 
 #ifdef SUPPORT_AUDIO
