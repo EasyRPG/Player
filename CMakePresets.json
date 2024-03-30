@@ -76,7 +76,7 @@
 			"name": "linux-parent",
 			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
 			},
 			"hidden": true,
 			"inherits": "base-user"
@@ -316,7 +316,7 @@
 		{
 			"name": "macos-parent",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/osx",
 				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
 			},
 			"condition": {
@@ -382,7 +382,7 @@
 			"name": "emscripten-parent",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"PLAYER_JS_BUILD_SHELL": "ON"
 			},
@@ -418,7 +418,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "3ds",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -479,7 +479,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "switch",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -540,7 +540,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "wii",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -600,7 +600,7 @@
 			"name": "wiiu-parent",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/WiiU.cmake",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
