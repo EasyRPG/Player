@@ -98,6 +98,10 @@ void Main_Data::Init() {
 				project_path = Utils::FromWideString(working_dir);
 			}
 #else
+
+#  ifndef PATH_MAX
+#    define PATH_MAX 256
+#  endif
 			char working_dir[PATH_MAX];
 			if (getcwd(working_dir, sizeof(working_dir))) {
 				project_path = std::string(working_dir);
