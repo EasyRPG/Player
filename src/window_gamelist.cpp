@@ -111,6 +111,12 @@ void Window_GameList::DrawItem(int index) {
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
 }
 
+#ifdef HAVE_LHASA
+#define LZH_STR "/LZH"
+#else
+#define LZH_STR ""
+#endif
+
 void Window_GameList::DrawErrorText(bool show_dotdot) {
 	std::vector<std::string> error_msg = {
 #ifdef EMSCRIPTEN
@@ -128,7 +134,7 @@ void Window_GameList::DrawErrorText(bool show_dotdot) {
 		"with RPG Maker 2000 and RPG Maker 2003.",
 		"",
 		"These games have an RPG_RT.ldb and they can be",
-		"extracted or in ZIP archives.",
+		"extracted or in ZIP" LZH_STR " archives.",
 		"",
 		"Newer engines such as RPG Maker XP, VX, MV and MZ",
 		"are not supported."

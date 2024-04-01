@@ -8,8 +8,6 @@
 TEST_SUITE_BEGIN("FileFinder");
 
 TEST_CASE("IsRPG2kProject") {
-	Main_Data::Init();
-
 	Player::escape_symbol = "\\";
 
 	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/game");
@@ -19,8 +17,6 @@ TEST_CASE("IsRPG2kProject") {
 }
 
 TEST_CASE("IsNotRPG2kProject") {
-	Main_Data::Init();
-
 	auto fs = FileFinder::Root().Subtree(EP_TEST_PATH "/notagame");
 	CHECK(!FileFinder::IsRPG2kProject(fs));
 }

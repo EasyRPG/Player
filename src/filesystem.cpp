@@ -382,6 +382,20 @@ FilesystemView FilesystemView::Subtree(StringView sub_path) const {
 	return FilesystemView(fs, MakePath(sub_path));
 }
 
+bool FilesystemView::CanGoUp() const {
+	return static_cast<bool>(GoUp());
+}
+
+FilesystemView FilesystemView::GoUp() const {
+	if (GetSubPath().empty() || GetSubPath() == "/") {
+		return fs->GetParent();
+	}
+
+	auto [path, file] = FileFinder::GetPathAndFilename(GetSubPath());
+
+	return FilesystemView(fs, path);
+}
+
 std::string FilesystemView::Describe() const {
 	assert(fs);
 	if (GetSubPath().empty()) {

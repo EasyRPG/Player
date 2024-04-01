@@ -475,6 +475,19 @@ public:
 	 */
 	FilesystemView Subtree(StringView sub_path) const;
 
+	/**
+	 * @return Whether it is possible to go up from the current view
+	 */
+	bool CanGoUp() const;
+
+	/**
+	 * From the current view goes up by one.
+	 * Returns an invalid view when going up is not possible (no parent).
+	 *
+	 * @return View that is rooted at the parent.
+	 */
+	FilesystemView GoUp() const;
+
 	/** @return human readable representation of this filesystem for debug purposes */
 	std::string Describe() const;
 
