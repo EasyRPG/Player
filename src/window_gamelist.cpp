@@ -84,6 +84,10 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		}
 	}
 	else {
+#ifdef EMSCRIPTEN
+	show_dotdot = false;
+#endif
+
 		item_max = 1;
 
 		SetContents(Bitmap::Create(width - 16, height - 16));
@@ -102,12 +106,7 @@ void Window_GameList::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
 
-	StringView text;
-
-	if (HasValidEntry()) {
-		text = game_directories[index].GetReadableName();
-	}
-
+	StringView text = game_directories[index].GetReadableName();
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, text);
 }
 

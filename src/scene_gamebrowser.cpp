@@ -105,6 +105,10 @@ void Scene_GameBrowser::CreateWindows() {
 		command_window->DisableItem(0);
 	}
 
+#ifdef EMSCRIPTEN
+	command_window->DisableItem(0);
+#endif
+
 	help_window = std::make_unique<Window_Help>(0, 0, Player::screen_width, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
 
