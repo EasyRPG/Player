@@ -217,9 +217,11 @@ public:
 	/** @{ */
 	virtual bool IsFile(StringView path) const = 0;
 	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
+	virtual bool IsFilesystemNode(StringView path) const;
 	virtual bool Exists(StringView path) const = 0;
 	virtual int64_t GetFilesize(StringView path) const = 0;
 	virtual bool MakeDirectory(StringView dir, bool follow_symlinks) const;
+	virtual FilesystemView CreateFromNode(StringView path) const;
 	virtual bool IsFeatureSupported(Feature f) const;
 	virtual std::string Describe() const = 0;
 	/** @} */
@@ -371,6 +373,12 @@ public:
 
 	/**
 	 * @param path Path to check
+	 * @return True when path is pointing to a virtual filesystem
+	 */
+	bool IsFilesystemNode(StringView path) const;
+
+	/**
+	 * @param path Path to check
 	 * @return True when a file exists at the path
 	 */
 	bool Exists(StringView path) const;
@@ -460,6 +468,14 @@ public:
 	 * @return true when the path was created
 	 */
 	bool MakeDirectory(StringView dir, bool follow_symlinks) const;
+
+	/**
+	 * Create a filesystem view from the passed in path.
+	 * The path must point to a virtual filesystem entry (type Filesystem).
+	 * @param path Path to create filesystem from
+	 * @return view pointing at the new fs
+	 */
+	FilesystemView CreateFromNode(StringView path) const;
 
 	/**
 	 * @param f Filesystem feature to check

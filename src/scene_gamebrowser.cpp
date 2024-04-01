@@ -194,9 +194,7 @@ void Scene_GameBrowser::BootGame() {
 		return;
 	}
 
-	FilesystemView fs;
-	std::string entry;
-	std::tie(fs, entry) = gamelist_window->GetGameFilesystem();
+	FilesystemView fs = gamelist_window->GetGameFilesystem();
 
 	if (!fs) {
 		Output::Warning("The selected file or directory cannot be opened");

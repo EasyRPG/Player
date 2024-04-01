@@ -55,21 +55,21 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular) {
 			if (FileFinder::IsSupportedArchiveExtension(dir.second.name)) {
-				game_directories.emplace_back(dir.second.name);
+				game_directories.emplace_back(dir.second);
 			}
-		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
-			game_directories.emplace_back(dir.second.name);
+		} else if (dir.second.type == DirectoryTree::FileType::Directory || dir.second.type == DirectoryTree::FileType::Filesystem) {
+			game_directories.emplace_back(dir.second);
 		}
 	}
 
 	// Sort game list in place
 	std::sort(game_directories.begin(), game_directories.end(),
-			  [](const std::string& s, const std::string& s2) {
-				  return strcmp(Utils::LowerCase(s).c_str(), Utils::LowerCase(s2).c_str()) <= 0;
+			  [](DirectoryTree::Entry& s, DirectoryTree::Entry& s2) {
+				  return strcmp(Utils::LowerCase(s.GetReadableName()).c_str(), Utils::LowerCase(s2.GetReadableName()).c_str()) <= 0;
 			  });
 
 	if (show_dotdot) {
-		game_directories.insert(game_directories.begin(), "..");
+		game_directories.insert(game_directories.begin(), { "..", DirectoryTree::FileType::Directory });
 	}
 
 	if (HasValidEntry()) {
@@ -102,13 +102,13 @@ void Window_GameList::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
 
-	std::string text;
+	StringView text;
 
 	if (HasValidEntry()) {
-		text = game_directories[index];
+		text = game_directories[index].GetReadableName();
 	}
 
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
+	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, text);
 }
 
 #ifdef HAVE_LHASA
@@ -160,6 +160,6 @@ bool Window_GameList::HasValidEntry() {
 	return game_directories.size() > minval;
 }
 
-std::pair<FilesystemView, std::string> Window_GameList::GetGameFilesystem() const {
-	return { base_fs.Create(game_directories[GetIndex()]), game_directories[GetIndex()] };
+FilesystemView Window_GameList::GetGameFilesystem() const {
+	return base_fs.Create(game_directories[GetIndex()].name);
 }

@@ -43,6 +43,8 @@ public:
 		Regular,
 		/** Directory */
 		Directory,
+		/** A virtual directory that will access a different virtual filesystem */
+		Filesystem,
 		/** Anything of no interest such as block devices */
 		Other
 	};
@@ -53,8 +55,15 @@ public:
 		std::string name;
 		/** File type */
 		FileType type;
+		/** Human readable name shown in the Game Browser (if different to the filename) */
+		std::string human_name;
 
 		Entry(std::string name, FileType type) : name(std::move(name)), type(type) {}
+		Entry(std::string name, FileType type, std::string human_name) : name(std::move(name)), type(type), human_name(std::move(human_name)) {}
+
+		StringView GetReadableName() const {
+			return human_name.empty() ? name : human_name;
+		}
 	};
 
 	/** Argument struct for more complex find operations */
