@@ -67,6 +67,16 @@
 	</content_rating>
 
 	<releases>
+		<release version="0.8" date="2023-04-29">
+			<description>
+				<p>
+					"Paralyze"
+				</p>
+				<p>
+					https://blog.easyrpg.org/2023/04/easyrpg-player-0-8-paralyze/
+				</p>
+			</description>
+		</release>
 		<release version="0.7.0" date="2021-10-29" />
 		<release version="0.6.2.3" date="2020-10-03" />
 		<release version="0.6.2.2" date="2020-09-08" />
