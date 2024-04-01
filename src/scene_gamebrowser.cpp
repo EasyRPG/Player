@@ -103,10 +103,12 @@ void Scene_GameBrowser::CreateWindows() {
 	command_window = std::make_unique<Window_Command_Horizontal>(this, options, Player::screen_width);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
+	command_window->SetHalfActive(true);
 
 	gamelist_window = std::make_unique<Window_GameList>(this, 0, 64, Player::screen_width, Player::screen_height - 64);
 	gamelist_window->Refresh(stack.back().filesystem, false);
 	gamelist_window->SetActive(false);
+	gamelist_window->SetHalfActive(true);
 
 	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);

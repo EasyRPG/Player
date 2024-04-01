@@ -99,6 +99,13 @@ public:
 		return false;
 	}
 
+	bool GetHalfActive();
+	void SetHalfActive(bool nactive);
+	int GetHalfIndex();
+	void SetHalfIndex(int i);
+	bool GetMouseOutside();
+	void SetMouseOutside(bool nactive);
+
 protected:
 	virtual bool IsSystemGraphicUpdateAllowed() const;
 
@@ -125,6 +132,10 @@ protected:
 	int back_opacity = 255;
 	int contents_opacity = 255;
 	Scene* scene = nullptr;
+
+	bool half_active = false;
+	int half_index = -999;
+	bool mouseOutside = false;
 
 private:
 	BitmapRef

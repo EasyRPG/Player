@@ -377,3 +377,26 @@ void Window::SetHeight(int nheight) {
 	}
 	height = nheight;
 }
+
+bool Window::GetHalfActive() {
+	return half_active;
+}
+
+void Window::SetHalfActive(bool nactive) {
+	half_active = nactive;
+}
+
+int Window::GetHalfIndex() {
+	return half_index;
+}
+
+void Window::SetHalfIndex(int i) {
+	half_index = i;
+}
+
+bool Window::GetMouseOutside() {
+	return mouseOutside;
+}
+void Window::SetMouseOutside(bool nactive) {
+	mouseOutside = nactive;
+}

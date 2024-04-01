@@ -283,13 +283,13 @@ void Scene_File::vUpdate() {
 	}
 
 	if (disabledByMouse) {
-		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::SCROLL_DOWN)) {
+		if (Input::IsRepeated(Input::DOWN) || (Input::IsRepeated(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				disabledByMouse = false;
 				index = oldIndex;
 				Refresh();
 		}
-		if (Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::SCROLL_UP)) {
+		if (Input::IsRepeated(Input::UP) || (Input::IsRepeated(Input::SCROLL_UP) && !Input::GetUseMouseButton())) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				disabledByMouse = false;
 				index = oldIndex;
@@ -297,8 +297,8 @@ void Scene_File::vUpdate() {
 		}
 	}
 	else {
-		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
-			if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)
+		if (Input::IsRepeated(Input::DOWN) || (Input::IsTriggered(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())) {
+			if (Input::IsTriggered(Input::DOWN) || (Input::IsTriggered(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())
 				|| index < max_index) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index = (index + 1) % file_windows.size();
@@ -306,8 +306,8 @@ void Scene_File::vUpdate() {
 
 			//top_index = std::max(top_index, index - 3 + 1);
 		}
-		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
-			if (Input::IsTriggered(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)
+		if (Input::IsRepeated(Input::UP) || (Input::IsTriggered(Input::SCROLL_UP) && !Input::GetUseMouseButton())) {
+			if (Input::IsTriggered(Input::UP) || (Input::IsTriggered(Input::SCROLL_UP) && !Input::GetUseMouseButton())
 				|| index >= 1) {
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				index = (index + max_index) % file_windows.size();
@@ -323,6 +323,28 @@ void Scene_File::vUpdate() {
 		if (Input::IsRepeated(Input::PAGE_UP) && index >= 1) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 			index = (index > 3) ? index - 3 : 0;
+		}
+	}
+
+	if (Input::GetUseMouseButton()) {
+
+		bool show_up_arrow = (top_index > 0);
+		bool show_down_arrow = (top_index < max_index - 2);
+
+		if (Input::IsTriggered(Input::SCROLL_DOWN) && show_down_arrow) {
+
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = (index + 1) % file_windows.size();
+			top_index += 1;
+
+			//top_index = std::max(top_index, index - 3 + 1);
+		}
+		if (Input::IsTriggered(Input::SCROLL_UP) && show_up_arrow) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			index = (index + max_index) % file_windows.size();
+			top_index -= 1;
+
+			//top_index = std::min(top_index, index);
 		}
 	}
 

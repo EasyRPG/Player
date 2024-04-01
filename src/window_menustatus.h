@@ -30,6 +30,8 @@ public:
 	void Refresh();
 	void UpdateCursorRect() override;
 
+	Rect GetCursorRect(int i) const override;
+
 	Game_Actor* GetActor() const;
 
 protected:

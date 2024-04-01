@@ -35,6 +35,7 @@
 #include "scene_status.h"
 #include "bitmap.h"
 #include "feature.h"
+#include <output.h>
 
 constexpr int menu_command_width = 88;
 constexpr int gold_window_width = 88;
@@ -162,6 +163,7 @@ void Scene_Menu::CreateCommandWindow() {
 	command_window->SetX(Player::menu_offset_x);
 	command_window->SetY(Player::menu_offset_y);
 	command_window->SetIndex(menu_index);
+	//command_window->SetHalfActive(true);
 
 	// Disable items
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
@@ -258,6 +260,20 @@ void Scene_Menu::UpdateCommand() {
 }
 
 void Scene_Menu::UpdateActorSelection() {
+
+	Point mouse_pos = Input::GetMousePosition();
+	int index = command_window->CursorHitTest({ mouse_pos.x - command_window->GetX(), mouse_pos.y - command_window->GetY() });
+	if (index == -1) {
+		isOutSideCommands = true;
+	}
+	else if (isOutSideCommands){
+		command_window->SetActive(true);
+		menustatus_window->SetActive(false);
+		menustatus_window->SetIndex(-1);
+		command_window->SetIndex(index);
+		isOutSideCommands = false;
+	}
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		command_window->SetActive(true);

@@ -75,6 +75,8 @@ private:
 	/** Selected index on startup. */
 	int menu_index;
 
+	bool isOutSideCommands = false;
+
 	/** Window displaying the commands. */
 	std::unique_ptr<Window_Command> command_window;
 

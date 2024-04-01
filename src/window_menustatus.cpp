@@ -80,6 +80,28 @@ void Window_MenuStatus::UpdateCursorRect()
 	}
 }
 
+Rect Window_MenuStatus::GetCursorRect(int index) const {
+	int cursor_width = 0;
+	int x = 0;
+	if (index < 0) {
+		return {};
+	}
+	int row = index / column_max;
+	if (row < GetTopRow()) {
+		return {};
+	}
+	else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
+		return {};
+	}
+
+	cursor_width = (width / column_max - 16) + 8;
+	x = (index % column_max * (cursor_width + 8)) - 4;
+
+	int y = index / column_max * (menu_item_height + 10) - oy;
+
+	return { x, y, cursor_width, menu_item_height };
+}
+
 Game_Actor* Window_MenuStatus::GetActor() const {
 	return &(*Main_Data::game_party)[GetIndex()];
 }

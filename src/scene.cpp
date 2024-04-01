@@ -271,7 +271,7 @@ void Scene::Update() {
 	if (Input::GetUseMouseButton()) {
 		Point mouse_pos = Input::GetMousePosition();
 		for (auto* window : windows) {
-			if (window->GetType() != Window::WindowType::Selectable || !window->GetActive() || !window->IsVisible() || window->ExcludeForMouse()) {
+			if (window->GetType() != Window::WindowType::Selectable || (!window->GetActive() && !window->GetHalfActive()) || !window->IsVisible() || window->ExcludeForMouse()) {
 				continue;
 			}
 			auto* sel_window = static_cast<Window_Selectable*>(window);
@@ -282,6 +282,15 @@ void Scene::Update() {
 				// FIXME: Index changed callback?
 				sel_window->SetIndex(index);
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				if (window->GetHalfActive()) {
+					for (auto* w : windows) {
+						if (window->GetType() != Window::WindowType::Selectable || (!window->GetActive() && !window->GetHalfActive()) || !window->IsVisible() || window->ExcludeForMouse()) {
+							continue;
+						}
+						w->SetActive(false);
+					}
+					window->SetActive(true);
+				}
 			}
 			if (index == -1 && Input::MouseMoved() && sel_window->GetIndex() != -999) {
 				sel_window->SetMouseOldIndex(sel_window->GetIndex());

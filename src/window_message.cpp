@@ -410,35 +410,57 @@ void Window_Message::Update() {
 					startChoiceY = pending_message.GetChoiceStartLine() * 16;
 					maxChoiceY = pending_message.GetNumChoices() * 16;
 				}
-				if (!(mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() * 2 &&
-					mouseP.y >= GetY() + GetBorderY() + startChoiceY && mouseP.y < GetY() + GetHeight() - GetBorderY() + startChoiceY - maxChoiceY)) {
-					if (!this->IsOpeningOrClosing() && this->GetPause()) {
-						if (index != -999 && index != -1)
-							mouseOldIndex = index;
-						index = -999;
-					}
+				int minX = GetX() + GetBorderX();
+				int maxX = GetX() + GetWidth() - GetBorderX() * 2;
+				int minY = GetY() + GetBorderY() + startChoiceY;
+				int maxY = GetY() + GetHeight() + startChoiceY + maxChoiceY;
+				if (!(mouseP.x >= minX && mouseP.x <= maxX &&
+					mouseP.y >= minY && mouseP.y < maxY)) {
+					if (Input::MouseMoved()) {
+						const auto* end = text.data() + text.size();
+
+						auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+						auto text_prev = text_index;
+						const auto ch = tret.ch;
+
+						if (ch == '\f') {
+							if (index != -999 && index != -1)
+								mouseOldIndex = index;
+							index = -999;
+						}
+					} 
 				}
 				else {
-
 					if (pending_message.HasChoices()) {
-
-						Output::Debug("{}", this->IsOpening());
 
 						if (index != -999 && index != -1)
 							mouseOldIndex = index;
 						int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() });
+						if (i == -1)
+							i = -999;
 
-						// Bug is here. We need to wait until all text is draw
-						if (i != index) {
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-							index = i;
+						const auto* end = text.data() + text.size();
+						auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+						auto text_prev = text_index;
+						const auto ch = tret.ch;
+
+						if (ch == '\f') {
+							// Change cursor (Hand)
+							if (i != -999)
+								DisplayUi->ChangeCursor(1);
+							if (Input::MouseMoved()) {
+								if (i != index) {
+									if (i != -999)
+										Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+									index = i;
+								}
+							}
 						}
 					}
 					else {
 						index = -1;
 					}
-					// Change cursor (Hand)
-					DisplayUi->ChangeCursor(1);
+					
 				}
 				UpdateCursorRect();
 			}
@@ -519,6 +541,32 @@ void Window_Message::Update() {
 				//Window_Base::Update();
 				Window_Selectable::Update();
 				return;
+			}
+		}
+		else if ( number_input_window->GetActive())
+		{
+			if (index == -999) {
+				if (Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = -1;
+				}
+				if (Input::IsTriggered(Input::DOWN)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = -1;
+				}
+				if (Input::IsTriggered(Input::UP)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = -1;
+				}
+				if (Input::IsTriggered(Input::RIGHT)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = -1;
+				}
+				if (Input::IsTriggered(Input::LEFT)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = -1;
+				}
+
 			}
 		}
 		else {
