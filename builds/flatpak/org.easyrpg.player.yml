@@ -1,6 +1,6 @@
 app-id: org.easyrpg.player
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
 command: easyrpg-player
 rename-desktop-file: easyrpg-player.desktop
@@ -11,26 +11,29 @@ finish-args:
   - --socket=wayland
   - --socket=fallback-x11
   - --socket=pulseaudio
-  - --filesystem=host # insecure
-#  - --filesystem=home # more secure
-  - --device=all # needed for gamepad
+  - --filesystem=host # insecure, next is more secure
+#  - --filesystem=home # user can store games anywhere
+  - --device=all # needed for gamepad access
   - --allow=devel
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/pkgconfig
+  - /lib/*.so
 modules:
-  - name: liblcf
+  # external libraries
+  # this is copied from shared-modules to not add the dependency on it
+  - name: libfluidsynth
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -DLIBLCF_ENABLE_TOOLS=OFF
-      - -DLIBLCF_WITH_XML=OFF
-      - -DLIBLCF_ENABLE_TESTS=OFF
     sources:
       - type: git
-        url: https://github.com/EasyRPG/liblcf.git
-        #tag: '0.7.0'
+        url: https://github.com/FluidSynth/fluidsynth.git
+        tag: v2.3.4
+        commit: 5ecdc4568e45123216c6888892caad07918ef127
     cleanup:
-      - /include
-      - /lib/pkgconfig
-      - /lib/cmake
+      - /bin
       - /share
   - name: libfmt
     buildsystem: cmake-ninja
@@ -41,60 +44,43 @@ modules:
     sources:
       - type: git
         url: https://github.com/fmtlib/fmt.git
-        tag: '8.1.1'
-    cleanup:
-      - /include
-      - /lib/pkgconfig
-      - /lib/cmake
-  # this is copied from shared-modules
-  - name: libfluidsynth
+        tag: '9.1.0'
+        commit: a33701196adfad74917046096bf5a2aa0ab0bb50
+  - name: libxmp
     buildsystem: cmake-ninja
     config-opts:
-      - -DLIB_SUFFIX=
-    sources:
-      - type: git
-        url: https://github.com/FluidSynth/fluidsynth.git
-        tag: v2.2.7
-    cleanup:
-      - /bin
-      - /include
-      - /lib/pkgconfig
-      - /share
-  - name: libxmp
-    # use cmake when 4.5.1 is ready
-    #buildsystem: cmake-ninja
-    #config-opts:
-    #  - -DBUILD_STATIC=OFF
-    #  - -DLIBXMP_DISABLE_DEPACKERS=ON
-    #  - -DLIBXMP_DISABLE_PROWIZARD=ON
-    buildsystem: autotools
-    config-opts:
-      - --disable-depackers
-      - --disable-prowizard
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DBUILD_STATIC=OFF
+      - -DLIBXMP_DISABLE_DEPACKERS=ON
+      - -DLIBXMP_DISABLE_PROWIZARD=ON
     sources:
       - type: git
         url: https://github.com/libxmp/libxmp.git
-        tag: libxmp-4.5.0
-      # hack, see https://github.com/flatpak/flatpak-builder/issues/111
-      - type: script
-        dest-filename: autogen.sh
-        commands:
-          - "autoreconf -fi"
+        tag: libxmp-4.6.0
+        commit: 8201d26cf933688a8be64292457c429fd8e654ab
+  # own libraries
+  - name: liblcf
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DLIBLCF_ENABLE_TOOLS=OFF
+      - -DLIBLCF_WITH_XML=OFF
+      - -DLIBLCF_ENABLE_TESTS=OFF
+      - -DLIBLCF_UPDATE_MIMEDB=OFF
+    sources:
+      - type: git
+        url: https://github.com/EasyRPG/liblcf.git
     cleanup:
-      - /include
-      - /lib/pkgconfig
+      - /share
   - name: player
     buildsystem: cmake-ninja
     config-opts:
-    # remove this line after switching to 22.08 or newer
-      - -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=OFF
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DPLAYER_VERSION_APPEND='(Flatpak)'
     sources:
       - type: git
         url: https://github.com/EasyRPG/Player.git
     cleanup:
       - /share/bash-completion
       - /share/pixmaps
-    post-install:
-      # Fixup for app id (since rename-* options leave out things)
-      - sed -i 's|easyrpg-player.desktop|org.easyrpg.player.desktop|' /app/share/metainfo/easyrpg-player.metainfo.xml
