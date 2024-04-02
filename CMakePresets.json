@@ -76,7 +76,7 @@
 			"name": "linux-parent",
 			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
 			},
 			"hidden": true,
 			"inherits": "base-user"
@@ -133,61 +133,61 @@
 			]
 		},
 		{
-			"name": "windows-x86-parent",
+			"name": "windows-parent",
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
+				"VCPKG_TARGET_TRIPLET": "$env{VSCMD_ARG_TGT_ARCH}-windows-static"
 			},
 			"inherits": "win-user",
 			"hidden": true
 		},
 		{
-			"name": "windows-x86-debug",
-			"displayName": "Windows (x86) (Debug)",
+			"name": "windows-debug",
+			"displayName": "Windows (Debug)",
 			"inherits": [
-				"windows-x86-parent",
+				"windows-parent",
 				"type-debug"
 			]
 		},
 		{
-			"name": "windows-x86-relwithdebinfo",
-			"displayName": "Windows (x86) (RelWithDebInfo)",
+			"name": "windows-relwithdebinfo",
+			"displayName": "Windows (RelWithDebInfo)",
 			"inherits": [
-				"windows-x86-parent",
+				"windows-parent",
 				"type-relwithdebinfo"
 			]
 		},
 		{
-			"name": "windows-x86-release",
-			"displayName": "Windows (x86) (Release)",
+			"name": "windows-release",
+			"displayName": "Windows (Release)",
 			"inherits": [
-				"windows-x86-parent",
+				"windows-parent",
 				"type-release"
 			]
 		},
 		{
-			"name": "windows-x86-libretro-debug",
-			"displayName": "Windows (x86) (libretro core) (Debug)",
+			"name": "windows-libretro-debug",
+			"displayName": "Windows (libretro core) (Debug)",
 			"inherits": [
 				"build-libretro",
-				"windows-x86-parent",
+				"windows-parent",
 				"type-debug"
 			]
 		},
 		{
-			"name": "windows-x86-libretro-relwithdebinfo",
-			"displayName": "Windows (x86) (libretro core) (RelWithDebInfo)",
+			"name": "windows-libretro-relwithdebinfo",
+			"displayName": "Windows (libretro core) (RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
-				"windows-x86-parent",
+				"windows-parent",
 				"type-relwithdebinfo"
 			]
 		},
 		{
-			"name": "windows-x86-libretro-release",
-			"displayName": "Windows (x86) (libretro core) (Release)",
+			"name": "windows-libretro-release",
+			"displayName": "Windows (libretro core) (Release)",
 			"inherits": [
 				"build-libretro",
-				"windows-x86-parent",
+				"windows-parent",
 				"type-release"
 			]
 		},
@@ -249,66 +249,6 @@
 			"inherits": [
 				"build-libretro",
 				"windows-x86-vs2022-parent",
-				"type-release"
-			]
-		},
-		{
-			"name": "windows-x64-parent",
-			"architecture": "x64",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
-			},
-			"inherits": "win-user",
-			"hidden": true
-		},
-		{
-			"name": "windows-x64-debug",
-			"displayName": "Windows (x64) (Debug)",
-			"inherits": [
-				"windows-x64-parent",
-				"type-debug"
-			]
-		},
-		{
-			"name": "windows-x64-relwithdebinfo",
-			"displayName": "Windows (x64) (RelWithDebInfo)",
-			"inherits": [
-				"windows-x64-parent",
-				"type-relwithdebinfo"
-			]
-		},
-		{
-			"name": "windows-x64-release",
-			"displayName": "Windows (x64) (Release)",
-			"inherits": [
-				"windows-x64-parent",
-				"type-release"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-debug",
-			"displayName": "Windows (x64) (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent",
-				"type-debug"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-relwithdebinfo",
-			"displayName": "Windows (x64) (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent",
-				"type-relwithdebinfo"
-			]
-		},
-		{
-			"name": "windows-x64-libretro-release",
-			"displayName": "Windows (x64) (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
-				"windows-x64-parent",
 				"type-release"
 			]
 		},
@@ -376,7 +316,7 @@
 		{
 			"name": "macos-parent",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/osx",
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/osx",
 				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
 			},
 			"condition": {
@@ -442,7 +382,7 @@
 			"name": "emscripten-parent",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 			"cacheVariables": {
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"PLAYER_JS_BUILD_SHELL": "ON"
 			},
@@ -478,7 +418,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "3ds",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -539,7 +479,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "switch",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/switch"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -600,7 +540,7 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
 				"PLAYER_TARGET_PLATFORM": "wii",
-				"CMAKE_PREFIX_PATH": "$env{EASYRPG_BUILDSCRIPTS}/wii"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user",
 			"hidden": true
@@ -653,6 +593,66 @@
 			"inherits": [
 				"build-libretro",
 				"wii-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wiiu-parent",
+			"toolchainFile": "$env{DEVKITPRO}/cmake/WiiU.cmake",
+			"cacheVariables": {
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
+			},
+			"inherits": "dkp-user",
+			"hidden": true
+		},
+		{
+			"name": "wiiu-debug",
+			"displayName": "Nintendo WiiU (Debug)",
+			"inherits": [
+				"wiiu-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wiiu-relwithdebinfo",
+			"displayName": "Nintendo WiiU (RelWithDebInfo)",
+			"inherits": [
+				"wiiu-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wiiu-release",
+			"displayName": "Nintendo WiiU (Release)",
+			"inherits": [
+				"wiiu-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wiiu-libretro-debug",
+			"displayName": "Nintendo WiiU (libretro core) (Debug)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wiiu-libretro-relwithdebinfo",
+			"displayName": "Nintendo WiiU (libretro core) (RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wiiu-libretro-release",
+			"displayName": "Nintendo WiiU (libretro core) (Release)",
+			"inherits": [
+				"build-libretro",
+				"wiiu-parent",
 				"type-release"
 			]
 		},
@@ -768,28 +768,28 @@
 			"configurePreset": "linux-libretro-release"
 		},
 		{
-			"name": "windows-x86-debug",
-			"configurePreset": "windows-x86-debug"
+			"name": "windows-debug",
+			"configurePreset": "windows-debug"
 		},
 		{
-			"name": "windows-x86-relwithdebinfo",
-			"configurePreset": "windows-x86-relwithdebinfo"
+			"name": "windows-relwithdebinfo",
+			"configurePreset": "windows-relwithdebinfo"
 		},
 		{
-			"name": "windows-x86-release",
-			"configurePreset": "windows-x86-release"
+			"name": "windows-release",
+			"configurePreset": "windows-release"
 		},
 		{
-			"name": "windows-x86-libretro-debug",
-			"configurePreset": "windows-x86-libretro-debug"
+			"name": "windows-libretro-debug",
+			"configurePreset": "windows-libretro-debug"
 		},
 		{
-			"name": "windows-x86-libretro-relwithdebinfo",
-			"configurePreset": "windows-x86-libretro-relwithdebinfo"
+			"name": "windows-libretro-relwithdebinfo",
+			"configurePreset": "windows-libretro-relwithdebinfo"
 		},
 		{
-			"name": "windows-x86-libretro-release",
-			"configurePreset": "windows-x86-libretro-release"
+			"name": "windows-libretro-release",
+			"configurePreset": "windows-libretro-release"
 		},
 		{
 			"name": "windows-x86-vs2022-debug",
@@ -814,30 +814,6 @@
 		{
 			"name": "windows-x86-vs2022-libretro-release",
 			"configurePreset": "windows-x86-vs2022-libretro-release"
-		},
-		{
-			"name": "windows-x64-debug",
-			"configurePreset": "windows-x64-debug"
-		},
-		{
-			"name": "windows-x64-relwithdebinfo",
-			"configurePreset": "windows-x64-relwithdebinfo"
-		},
-		{
-			"name": "windows-x64-release",
-			"configurePreset": "windows-x64-release"
-		},
-		{
-			"name": "windows-x64-libretro-debug",
-			"configurePreset": "windows-x64-libretro-debug"
-		},
-		{
-			"name": "windows-x64-libretro-relwithdebinfo",
-			"configurePreset": "windows-x64-libretro-relwithdebinfo"
-		},
-		{
-			"name": "windows-x64-libretro-release",
-			"configurePreset": "windows-x64-libretro-release"
 		},
 		{
 			"name": "windows-x64-vs2022-debug",
@@ -970,6 +946,30 @@
 		{
 			"name": "wii-libretro-release",
 			"configurePreset": "wii-libretro-release"
+		},
+		{
+			"name": "wiiu-debug",
+			"configurePreset": "wiiu-debug"
+		},
+		{
+			"name": "wiiu-relwithdebinfo",
+			"configurePreset": "wiiu-relwithdebinfo"
+		},
+		{
+			"name": "wiiu-release",
+			"configurePreset": "wiiu-release"
+		},
+		{
+			"name": "wiiu-libretro-debug",
+			"configurePreset": "wiiu-libretro-debug"
+		},
+		{
+			"name": "wiiu-libretro-relwithdebinfo",
+			"configurePreset": "wiiu-libretro-relwithdebinfo"
+		},
+		{
+			"name": "wiiu-libretro-release",
+			"configurePreset": "wiiu-libretro-release"
 		},
 		{
 			"name": "psvita-debug",
