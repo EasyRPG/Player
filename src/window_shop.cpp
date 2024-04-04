@@ -181,38 +181,28 @@ void Window_Shop::Update() {
 
 		if (Input::GetUseMouseButton() && IsVisible() && leave_index > 0 && GetCursorRect().height > 0) {
 			Point mouseP = Input::GetMousePosition();
-			//Output::Debug("Mouse : {} {} {} {} {} {}", mouseP.x, mouseP.y, GetX() +  GetBorderX(), GetY() + GetBorderY(), GetX() +  GetBorderX() + GetWidth(), GetY() + GetBorderY() + GetHeight());
-			//Output::Debug("Mouse : {}", GetItemMax());
 
-			if (mouseP.x >= GetX() + GetBorderX() && mouseP.x <= GetX() + GetWidth() - GetBorderX() &&
-				mouseP.y >= GetY() + GetBorderY() + 16 && mouseP.y < GetY() + GetHeight() - GetBorderY() + 16) {
+			int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() });
 
-				int new_index = (mouseP.y - GetBorderY() - GetY()) / GetCursorRect().height;
-
-				//Output::Debug("Index : {} {}", new_index, leave_index);
-
-				if (new_index <= leave_index && new_index >= 0) {
-
-					// Change cursor (Hand)
-					DisplayUi->ChangeCursor(1);
-
-					//if (Input::IsPressed(Input::MOUSE_LEFT)) {
-					if (Input::MouseMoved()) {
-						if (index != new_index)
-							Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-						index = new_index;
-					}
+			if (i >= 0) {
+				DisplayUi->ChangeCursor(1);
+				if (Input::MouseMoved()) {
+					if (index != i)
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = i;
 				}
+			}
+			else {
+				if (Input::MouseMoved()) {
+					index = -999;
+				}
+			}
 
-			}
-			else if (Input::IsPressed(Input::MOUSE_LEFT)) {
-				index = -999;
-			}
 		}
 		switch (mode) {
 			case Scene_Shop::BuySellLeave:
 			case Scene_Shop::BuySellLeave2:
-				if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+				if (Input::IsRepeated(Input::DOWN) || (Input::IsTriggered(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())) {
 					if (index < leave_index) {
 						if (index == -999)
 							index = 1;
@@ -224,7 +214,7 @@ void Window_Shop::Update() {
 					}
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
-				if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+				if (Input::IsRepeated(Input::UP) || (Input::IsTriggered(Input::SCROLL_UP) && !Input::GetUseMouseButton())) {
 					if (index > 1) {
 						index--;
 					}
@@ -251,4 +241,24 @@ void Window_Shop::Update() {
 
 int Window_Shop::GetIndex() const {
 	return index;
+}
+
+int Window_Shop::CursorHitTest(Point position) const {
+	// Output::Debug("{} {}", position.x, position.y);
+	for (int i = 1; i < 4; ++i) {
+		Rect cursor_rect = GetCursorRect();
+		cursor_rect.x += GetBorderX();
+		cursor_rect.y  = GetBorderY();
+		cursor_rect.y += (i) * 16;
+
+		// Output::Debug("{} {} {} {}", cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height);
+		if (cursor_rect != Rect()) {
+			if (position.x >= cursor_rect.x && position.x <= cursor_rect.x + cursor_rect.width &&
+				position.y >= cursor_rect.y && position.y <= cursor_rect.y + cursor_rect.height) {
+
+				return i;
+			}
+		}
+	}
+	return -1;
 }

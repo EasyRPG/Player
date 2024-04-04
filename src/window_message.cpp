@@ -435,7 +435,7 @@ void Window_Message::Update() {
 
 						if (index != -999 && index != -1)
 							mouseOldIndex = index;
-						int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() });
+						int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() - startChoiceY});
 						if (i == -1)
 							i = -999;
 
@@ -543,7 +543,7 @@ void Window_Message::Update() {
 				return;
 			}
 		}
-		else if ( number_input_window->GetActive())
+		else if (number_input_window->GetActive())
 		{
 			if (index == -999) {
 				if (Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT)) {

@@ -48,6 +48,14 @@ public:
 	int GetChoice() const;
 	void SetChoice(int nchoice);
 
+	/**
+	 * Returns the index of the item that is at the passed position or -1 if there is nothing.
+	 *
+	 * @param position Position to check. Relative to the content.
+	 * @return index of the item or -1 if nothing was found.
+	 */
+	virtual int CursorHitTest(Point position) const;
+
 	enum WindowMessageValues {
 		LeftMargin = 8,
 		FaceSize = 48,

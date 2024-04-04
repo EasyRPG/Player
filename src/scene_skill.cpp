@@ -67,29 +67,35 @@ void Scene_Skill::vUpdate() {
 
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
-		if (skill && skill_window->CheckEnable(skill_id)) {
-			if (skill->type == lcf::rpg::Skill::Type_switch) {
-				Main_Data::game_system->SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
-				Scene::PopUntil(Scene::Map);
-				Game_Map::SetNeedRefresh(true);
-			} else if (Algo::IsNormalOrSubskill(*skill)) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
-				skill_index = skill_window->GetIndex();
-			} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
-			} else if (skill->type == lcf::rpg::Skill::Type_escape) {
-				Main_Data::game_system->SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
-				Main_Data::game_player->ForceGetOffVehicle();
-				Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
+		if (skill) {
+			if (skill_window->CheckEnable(skill_id)) {
+				if (skill->type == lcf::rpg::Skill::Type_switch) {
+					Main_Data::game_system->SePlay(skill->sound_effect);
+					Main_Data::game_party->UseSkill(skill_id, actor, actor);
+					Scene::PopUntil(Scene::Map);
+					Game_Map::SetNeedRefresh(true);
+				}
+				else if (Algo::IsNormalOrSubskill(*skill)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
+					skill_index = skill_window->GetIndex();
+				}
+				else if (skill->type == lcf::rpg::Skill::Type_teleport) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
+				}
+				else if (skill->type == lcf::rpg::Skill::Type_escape) {
+					Main_Data::game_system->SePlay(skill->sound_effect);
+					Main_Data::game_party->UseSkill(skill_id, actor, actor);
+					Main_Data::game_player->ForceGetOffVehicle();
+					Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
 
-				Scene::PopUntil(Scene::Map);
+					Scene::PopUntil(Scene::Map);
+				}
 			}
-		} else {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			else {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			}
 		}
 	}
 }

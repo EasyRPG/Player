@@ -111,7 +111,7 @@ void Scene_ActorTarget::vUpdate() {
 }
 
 void Scene_ActorTarget::UpdateItem() {
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && target_window->GetIndex() >= 0) {
 		if (Main_Data::game_party->GetItemCount(id) <= 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;

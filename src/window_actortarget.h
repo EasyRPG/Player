@@ -38,6 +38,8 @@ public:
 	void UpdateCursorRect() override;
 
 	Game_Actor* GetActor();
+
+	Rect GetCursorRect(int i) const override;
 private:
 
 };

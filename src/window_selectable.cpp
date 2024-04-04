@@ -337,7 +337,6 @@ void Window_Selectable::Update() {
 	}
 }
 
-#include "output.h"
 int Window_Selectable::CursorHitTest(Point position) const {
 	// Output::Debug("{} {}", position.x, position.y);
 	for (int i = 0; i < item_max; ++i) {
