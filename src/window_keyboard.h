@@ -37,7 +37,7 @@ public:
 	 * @param iheight window height.
 	 * @param ndone_text text for the "Done" button.
 	 */
-	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80, const char* ndone_text = DONE);
+	Window_Keyboard(Scene* parent, int ix, int iy, int iwidth = 320, int iheight = 80, const char* ndone_text = DONE);
 
 	enum Mode {
 		Hiragana,
@@ -74,6 +74,8 @@ public:
 	static const int row_max = 9;
 	static const int col_max = 10;
 	static Keyboard_Layout layouts[MODE_END];
+
+	bool mouseOutside = false;
 
 protected:
 	static const int border_x = 8;

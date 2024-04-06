@@ -41,7 +41,8 @@ public:
 	 * @param height window height.
 	 * @param flags flags to pass to drawable base class
 	 */
-	Window_Base(int x, int y, int width, int height, Drawable::Flags flags = Drawable::Flags::Default);
+	Window_Base(Scene* parent, WindowType type, int x, int y, int width, int height, Drawable::Flags flags = Drawable::Flags::Default);
+	Window_Base(Scene* parent, int x, int y, int width, int height, Drawable::Flags flags = Drawable::Flags::Default);
 
 	/**
 	 * Updates the window.

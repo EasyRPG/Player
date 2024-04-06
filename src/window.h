@@ -23,12 +23,20 @@
 #include "drawable.h"
 #include "rect.h"
 
+class Scene;
+
 /**
  * Window class.
  */
 class Window : public Drawable {
 public:
-	Window(Drawable::Flags flags = Drawable::Flags::Default);
+	enum class WindowType {
+		Selectable, // Currently the only type that matters (for mouse selection)
+		Unknown
+	};
+
+	Window(Scene* parent, WindowType type = WindowType::Unknown, Drawable::Flags flags = Drawable::Flags::Default);
+	virtual ~Window();
 
 	void Draw(Bitmap& dst) override;
 
@@ -79,10 +87,24 @@ public:
 	void SetContentsOpacity(int ncontents_opacity);
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
+	Scene* GetScene() const;
+	void SetScene(Scene* scene);
+	WindowType GetType() const;
 
 	bool IsOpening() const;
 	bool IsClosing() const;
 	bool IsOpeningOrClosing() const;
+
+	virtual bool ExcludeForMouse() const {
+		return false;
+	}
+
+	bool GetHalfActive();
+	void SetHalfActive(bool nactive);
+	int GetHalfIndex();
+	void SetHalfIndex(int i);
+	bool GetMouseOutside();
+	void SetMouseOutside(bool nactive);
 
 protected:
 	virtual bool IsSystemGraphicUpdateAllowed() const;
@@ -109,6 +131,11 @@ protected:
 	int frame_opacity = 255;
 	int back_opacity = 255;
 	int contents_opacity = 255;
+	Scene* scene = nullptr;
+
+	bool half_active = false;
+	int half_index = -999;
+	bool mouseOutside = false;
 
 private:
 	BitmapRef
@@ -129,6 +156,7 @@ private:
 	int animation_frames = 0;
 	double animation_count = 0.0;
 	double animation_increment = 0.0;
+	WindowType type = WindowType::Unknown;
 };
 
 inline bool Window::IsOpening() const {
@@ -302,6 +330,10 @@ inline void Window::SetContentsOpacity(int ncontents_opacity) {
 
 inline bool Window::IsSystemGraphicUpdateAllowed() const {
 	return !IsClosing();
+}
+
+inline Window::WindowType Window::GetType() const {
+	return type;
 }
 
 #endif

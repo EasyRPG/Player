@@ -165,6 +165,16 @@ private:
 
 	TeleportTarget teleport_target;
 	int last_encounter_idx = 0;
+
+	int targetMX = -999;
+	int targetMY = -999;
+
+	void ResetTargetMXY();
+
+	std::vector<Game_Character::SearchNode> listMoveMouse;
+	int indexMoveMouse = -1;
+
+	bool clickOnEvent = false;
 };
 
 inline bool Game_Player::IsPendingTeleport() const {

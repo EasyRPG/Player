@@ -24,8 +24,8 @@
 #include "font.h"
 #include "version.h"
 
-Window_About::Window_About(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_About::Window_About(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 }

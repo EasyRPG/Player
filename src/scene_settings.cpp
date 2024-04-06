@@ -73,7 +73,7 @@ void Scene_Settings::CreateMainWindow() {
 		options.push_back("<Exit Game>");
 	}
 
-	main_window = std::make_unique<Window_Command>(std::move(options));
+	main_window = std::make_unique<Window_Command>(this, std::move(options));
 	main_window->SetHeight(176);
 	main_window->SetY((Player::screen_height - main_window->GetHeight()) / 2);
 	main_window->SetX((Player::screen_width - main_window->GetWidth()) / 2);
@@ -87,15 +87,15 @@ void Scene_Settings::CreateMainWindow() {
 }
 
 void Scene_Settings::CreateOptionsWindow() {
-	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
-	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, 0, MENU_WIDTH, 32);
+	options_window = std::make_unique<Window_Settings>(this, Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
 
-	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
+	input_window = std::make_unique<Window_InputSettings>(this, Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
 	input_window->SetHelpWindow(help_window.get());
 
 	std::vector<std::string> input_mode_items = {"Add", "Remove", "Reset"};
-	input_mode_window = std::make_unique<Window_Command_Horizontal>(input_mode_items, MENU_WIDTH - 32 * 2);
+	input_mode_window = std::make_unique<Window_Command_Horizontal>(this, input_mode_items, MENU_WIDTH - 32 * 2);
 	input_mode_window->SetX(Player::menu_offset_x + 32);
 	input_mode_window->SetY(Player::screen_height - 32);
 	input_mode_window->SetHelpWindow(help_window.get());
@@ -109,9 +109,9 @@ void Scene_Settings::CreateOptionsWindow() {
 		}
 	};
 
-	input_help_window = std::make_unique<Window_Help>(Player::menu_offset_x, Player::screen_height - 64, MENU_WIDTH, 32);
+	input_help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::screen_height - 64, MENU_WIDTH, 32);
 
-	about_window = std::make_unique<Window_About>(Player::menu_offset_x, Player::menu_offset_y + 32, MENU_WIDTH, MENU_HEIGHT - 64);
+	about_window = std::make_unique<Window_About>(this, Player::menu_offset_x, Player::menu_offset_y + 32, MENU_WIDTH, MENU_HEIGHT - 64);
 	about_window->Refresh();
 }
 
@@ -292,30 +292,35 @@ void Scene_Settings::UpdateMain() {
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-		auto idx = main_window->GetIndex();
-
-		if (main_window->IsItemEnabled(idx)) {
+		if (main_window->GetIndex() >= 0) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-		} else {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
-			return;
-		}
+			auto idx = main_window->GetIndex();
 
-		if (modes[idx] == Window_Settings::eSave) {
-			SaveConfig();
-			return;
-		} else if (modes[idx] == Window_Settings::eEnd) {
-			if (Scene::Find(Scene::GameBrowser)) {
-				Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
+			if (main_window->IsItemEnabled(idx)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			} else {
-				Scene::Push(std::make_unique<Scene_End>(Scene::Null));
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Buzzer));
+				return;
 			}
-			return;
-		}
 
-		SetMode(modes[idx]);
-		options_window->Push(modes[idx]);
+
+			if (modes[idx] == Window_Settings::eSave) {
+				SaveConfig();
+				return;
+			}
+			else if (modes[idx] == Window_Settings::eEnd) {
+				if (Scene::Find(Scene::GameBrowser)) {
+					Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
+				}
+				else {
+					Scene::Push(std::make_unique<Scene_End>(Scene::Null));
+				}
+				return;
+			}
+
+			SetMode(modes[idx]);
+			options_window->Push(modes[idx]);
+		}
 	}
 }
 
@@ -326,14 +331,56 @@ void Scene_Settings::UpdateOptions() {
 		option.current_value = Utils::Clamp(number_window->GetNumber(), option.min_value, option.max_value);
 		option.action();
 
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::GetUseMouseButton()) {
+			Point mouseP = Input::GetMousePosition();
+
+			int new_index = (mouseP.x - number_window->GetX() - number_window->GetBorderX() - number_window->GetItemRect(0).x + 4) / (12) - 1;
+
+			if (new_index >= 0 && new_index < number_window->GetMaxDigits()) {
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+
+					number_window->SetIndex(-999);
+					// Output::Debug("{} {} {}", new_index, number_input_window->GetIndex(), number_input_window->GetMouseOldIndex());
+
+					if (new_index != number_window->GetMouseOldIndex())
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+
+					if (number_window->GetIndex() != -999 && number_window->GetIndex() != -1)
+						number_window->SetMouseOldIndex(number_window->GetIndex());
+
+					number_window->SetIndex(new_index);
+
+				}
+			}
+
+			number_window->UpdateCursorRect();
+
+			int dx = number_window->GetMaxDigits() * 12 + 32 + 12;
+			if ((mouseP.x >= number_window->GetX() + number_window->GetBorderX() + dx && mouseP.x <= number_window->GetX() + number_window->GetBorderX() + dx + 14 &&
+				mouseP.y >= number_window->GetY() + number_window->GetBorderY() && mouseP.y < number_window->GetY() + number_window->GetBorderY() + number_window->GetItemRect(0).height)) {
+
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+
+				if (Input::IsReleased(Input::MOUSE_LEFT)) {
+					options_window->Refresh();
+					number_window.reset();
+					options_window->SetActive(true);
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+				}
+			}
+		}
+
+		if (Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT)) {
 			options_window->Refresh();
 			number_window.reset();
 			options_window->SetActive(true);
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		}
 		return;
-	} else if (picker_window) {
+	} else if (picker_window && picker_window->GetIndex() != -999) {
 		picker_window->Update();
 		auto& option = options_window->GetCurrentOption();
 		option.current_value = option.options_index[picker_window->GetIndex()];
@@ -348,7 +395,7 @@ void Scene_Settings::UpdateOptions() {
 		return;
 	}
 
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && options_window->GetIndex() >= 0) {
 		if (options_window->IsCurrentActionEnabled()) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 			auto& option = options_window->GetCurrentOption();
@@ -356,7 +403,7 @@ void Scene_Settings::UpdateOptions() {
 				option.action();
 				options_window->Refresh();
 			} else if (option.mode == Window_Settings::eOptionRangeInput) {
-				number_window.reset(new Window_NumberInput(0, 0, 128, 32));
+				number_window = std::make_unique<Window_NumberInput>(this, 0, 0, 128 + 16, 32);
 				number_window->SetNumber(option.current_value);
 				number_window->SetMaxDigits(std::log10(option.max_value) + 1);
 				number_window->SetX(options_window->GetX() + options_window->GetWidth() / 2 - number_window->GetWidth() / 2);
@@ -367,7 +414,7 @@ void Scene_Settings::UpdateOptions() {
 				help_window->SetText(fmt::format("Input a value from {} to {}", option.min_value, option.max_value));
 				options_window->SetActive(false);
 			} else if (option.mode == Window_Settings::eOptionPicker) {
-				picker_window.reset(new Window_Command(option.options_text));
+				picker_window = std::make_unique<Window_Command>(this, option.options_text);
 				picker_window->SetX(options_window->GetX() + options_window->GetWidth() / 2 - picker_window->GetWidth() / 2);
 				picker_window->SetY(options_window->GetY() + options_window->GetHeight() / 2 - picker_window->GetHeight() / 2);
 				picker_window->SetZ(options_window->GetZ() + 1);

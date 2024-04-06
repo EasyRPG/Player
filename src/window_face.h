@@ -30,7 +30,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Face(int ix, int iy, int iwidth, int iheight);
+	Window_Face(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current face on the window.

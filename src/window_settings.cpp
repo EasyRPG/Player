@@ -39,8 +39,8 @@ public:
 	}
 };
 
-Window_Settings::Window_Settings(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_Settings::Window_Settings(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 	column_max = 1;
 }
 
@@ -382,6 +382,7 @@ void Window_Settings::RefreshInput() {
 	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); Input::ResetTriggerKeys(); });
 	AddOption(cfg.speed_modifier_a, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_a = tmp; cfg.speed_modifier_a.Set(tmp); });
 	AddOption(cfg.speed_modifier_b, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_b = tmp; cfg.speed_modifier_b.Set(tmp); });
+	AddOption(cfg.mouse_control, [this, &cfg]() {cfg.mouse_control.Toggle(); bool tmp = cfg.mouse_control.Get(); Input::SetUseMouse(tmp); });
 }
 
 void Window_Settings::RefreshButtonCategory() {

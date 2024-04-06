@@ -32,19 +32,6 @@
 #include <cassert>
 
 namespace Input {
-	/**
-	 * Start repeat time (in frames) a key has
-	 * to be maintained pressed before being
-	 * repeated for fist time.
-	 */
-	constexpr int start_repeat_time = 23;
-
-	/**
-	 * Repeat time (in frames) a key has to be
-	 * maintained pressed after the start repeat time
-	 * has passed for being repeated again.
-	 */
-	constexpr int repeat_time = 4;
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
@@ -54,7 +41,23 @@ namespace Input {
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
+
+
+	/*
+	*	Used for call common event for Mouse control
+	*/
+	int MouseShowEventID = -1;
+	int MouseHideEventID = -1;
+	int MouseVarX = -1;
+	int MouseVarY = -1;
+	int MouseSwitchID = -1;
 }
+
+int mouseOldX = 0;
+int mouseOldY = 0;
+bool mouseMove = false;
+bool useMouseButton = false;
+int useForceMouseButton = 0;
 
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
@@ -81,6 +84,8 @@ void Input::Init(
 
 	cfg.Hide();
 	Input::GetSupportedConfig(cfg);
+
+	useMouseButton = cfg.mouse_control.Get();
 
 	source = Source::Create(cfg, std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
@@ -172,6 +177,18 @@ void Input::Update() {
 		raw_released[i] = !raw_pressed_now[i] && raw_pressed[i];
 	}
 	raw_pressed = raw_pressed_now;
+
+	Point mouseP = Input::GetMousePosition();
+	// Output::Debug("{} {} {} {}", mouseP.x , mouseOldX , mouseP.y , mouseOldY);
+	if (mouseP.x != mouseOldX || mouseP.y != mouseOldY || Input::IsTriggered(Input::MOUSE_LEFT))
+	{
+		mouseOldX = mouseP.x;
+		mouseOldY = mouseP.y;
+		mouseMove = true;
+	}
+	else {
+		mouseMove = false;
+	}
 }
 
 void Input::UpdateSystem() {
@@ -251,9 +268,59 @@ bool Input::IsPressed(InputButton button) {
 	return press_time[button] > 0;
 }
 
+void Input::SetUseMouse(bool b) {
+	useMouseButton = b;
+}
+void Input::SetForceUseMouse(int i) {
+	useForceMouseButton = i;
+}
+bool Input::GetUseMouseButton() {
+	return (useMouseButton && useForceMouseButton == 0) || useForceMouseButton == 1;
+}
+
+
+bool Input::MouseMoved() {
+	return mouseMove;
+	//Point mouseP = Input::GetMousePosition();
+
+	//// Output::Debug("{} {} {} {}", mouseP.x , mouseOldX , mouseP.y , mouseOldY);
+
+	//if (mouseP.x != mouseOldX || mouseP.y != mouseOldY)
+	//{
+	//	mouseOldX = mouseP.x;
+	//	mouseOldY = mouseP.y;
+	//	return true;
+	//}
+	//return false;
+}
+
+//int oldMouseX;
+//int oldMouseY;
+//bool Input::mouseHover() {
+//	Point mouseP = Input::GetMousePosition();
+//	if (mouseP.x != oldMouseX || mouseP.y != oldMouseY || Input::IsPressed(Input::DECISION)) {
+//		oldMouseX = mouseP.x;
+//		oldMouseY = mouseP.y;
+//		return true;
+//	}
+//	return false;
+//}
+
+
 bool Input::IsTriggered(InputButton button) {
 	assert(!IsSystemButton(button));
 	WaitInput(true);
+	if (GetUseMouseButton()) {
+		if (button == Input::DECISION) {
+			if (IsReleased(Input::MOUSE_LEFT)) {
+				return true;
+			}
+		}
+		if (button == Input::CANCEL) {
+			if (IsTriggered(Input::MOUSE_RIGHT))
+				return true;
+		}
+	}
 	return triggered[button];
 }
 

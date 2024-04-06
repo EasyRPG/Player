@@ -49,6 +49,7 @@
 #include <algorithm>
 #include <memory>
 #include "feature.h"
+#include <baseui.h>
 
 //#define EP_DEBUG_BATTLE2K3_STATE_MACHINE
 
@@ -543,7 +544,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	int width = (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional) ? 104 : 136;
 	int height = 80;
 
-	target_window.reset(new Window_Command(std::move(commands), width, 4));
+	target_window = std::make_unique<Window_Target>(this, std::move(commands), width, 4);
 	target_window->SetHeight(height);
 	target_window->SetX(Player::menu_offset_x);
 	target_window->SetY(Player::screen_height - Player::menu_offset_y - height);
@@ -589,7 +590,7 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 			break;
 	}
 
-	status_window.reset(new Window_BattleStatus(x, y, w, h));
+	status_window = std::make_unique<Window_BattleStatus>(this, x, y, w, h);
 	status_window->SetZ(Priority_Window + 1);
 }
 
@@ -625,7 +626,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	auto* actor = Main_Data::game_party->GetActor(0);
 	auto commands = GetBattleCommandNames(actor);
 
-	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
+	command_window = std::make_unique<Window_Command>(this, std::move(commands), option_command_mov);
 
 	SetBattleCommandsDisable(*command_window, actor);
 
@@ -1194,7 +1195,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 	}
 
 	if (scene_action_substate == eWaitInput) {
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::IsTriggered(Input::DECISION) && options_window->GetIndex() < battle_options.size()) {
 			if (message_window->IsVisible()) {
 				return SceneActionReturn::eWaitTillNextFrame;
 			}
@@ -1264,18 +1265,44 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	if (scene_action_substate == eWaitInput) {
 		UpdateReadyActors();
 
-		auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
-		if (selected_actor == nullptr || !BattlerReadyToAct(selected_actor)) {
-			// If current selection is no longer valid, force a new selection
-			const auto idx = GetNextReadyActor();
-			if (idx != status_window->GetIndex()) {
-				SetActiveActor(idx);
+		if (status_window->GetIndex() != -999) {
+			auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
+			if (selected_actor == nullptr || !BattlerReadyToAct(selected_actor)) {
+				// If current selection is no longer valid, force a new selection
+				const auto idx = GetNextReadyActor();
+				if (idx != status_window->GetIndex()) {
+					SetActiveActor(idx);
+				}
 			}
-		} else if (selected_actor != active_actor) {
-			// If selection changed due to player input
-			SetActiveActor(status_window->GetIndex());
+			else if (selected_actor != active_actor) {
+				// If selection changed due to player input
+				SetActiveActor(status_window->GetIndex());
+			}
+			status_window->SetActive(active_actor != nullptr);
 		}
-		status_window->SetActive(active_actor != nullptr);
+		else {
+
+			if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN) ||
+				(Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::LEFT) || Input::IsTriggered(Input::SCROLL_UP))) {
+				auto* selected_actor = Main_Data::game_party->GetActor(status_window->GetIndex());
+				if (selected_actor == nullptr || !BattlerReadyToAct(selected_actor)) {
+					// If current selection is no longer valid, force a new selection
+					const auto idx = GetNextReadyActor();
+					if (idx != status_window->GetIndex()) {
+						SetActiveActor(idx);
+					}
+				}
+				else if (selected_actor != active_actor) {
+					// If selection changed due to player input
+					SetActiveActor(status_window->GetIndex());
+				}
+				status_window->SetActive(active_actor != nullptr);
+				status_window->SetMouseOutside(false);
+			}
+			else if (Input::GetUseMouseButton()) {
+				status_window->UpdateMouse(true);
+			}
+		}
 
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_alternative) {
 			command_window->SetVisible(status_window->GetActive());
@@ -1296,6 +1323,56 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 	}
 
 	if (scene_action_substate == eWaitInput) {
+
+		if (Input::GetUseMouseButton()) {
+
+			bool actorHover = status_window->UpdateMouse(true);
+
+			if (!actorHover) {
+				Point mouseP = Input::GetMousePosition();
+				if (!(mouseP.x >= status_window->GetX() + status_window->GetBorderX() && mouseP.x < status_window->GetX() + status_window->GetBorderX() + status_window->GetWidth() &&
+					mouseP.y >= status_window->GetY() + status_window->GetBorderY() && mouseP.y < status_window->GetY() + status_window->GetBorderY() + status_window->GetHeight()) ||
+					lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
+
+
+
+					std::vector<Game_Battler*> allies;
+					Main_Data::game_party->GetActiveBattlers(allies);
+
+					int i = 0;
+					for (auto e : allies) {
+						if (e->CanAct() && e->GetAtbGauge() == e->GetMaxAtbGauge()) {
+							if (mouseP.x >= e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 && mouseP.x < e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 + e->GetBattleSprite()->GetWidth() &&
+								mouseP.y >= e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 && mouseP.y < e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 + e->GetBattleSprite()->GetHeight()) {
+
+								// Change cursor (Hand)
+								DisplayUi->ChangeCursor(1);
+								actorHover = true;
+
+								if (Input::MouseMoved() || Input::IsReleased(Input::MOUSE_LEFT)) {
+									// Output::Debug("{} {}", status_window->GetIndex(), i);
+									if (status_window->GetIndex() != i)
+										Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+									status_window->SetIndex(i);
+									status_window->SetMouseOutside(false);
+									break;
+								}
+							}
+						}
+						i++;
+					}
+
+					if (!actorHover && Input::MouseMoved()) {
+						status_window->SetMouseOutside(true);
+					}
+
+				}
+				else {
+					status_window->SetMouseOutside(false);
+				}
+			}
+		}
+
 		if (Input::IsTriggered(Input::CANCEL)) {
 			SetActiveActor(-1);
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
@@ -1305,9 +1382,14 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAc
 
 		if (status_window->GetActive() && status_window->GetIndex() >= 0) {
 			if (Input::IsTriggered(Input::DECISION)) {
-				command_window->SetIndex(0);
-				SetState(State_SelectCommand);
-				return SceneActionReturn::eWaitTillNextFrame;
+				if (!status_window->mouseOutside) {
+					command_window->SetIndex(0);
+					SetState(State_SelectCommand);
+					return SceneActionReturn::eWaitTillNextFrame;
+				}
+				else {
+					status_window->SetMouseOutside(false);
+				}
 			}
 		}
 
@@ -1586,7 +1668,46 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEn
 	}
 
 	if (scene_action_substate == eWaitInput) {
-		if (Input::IsTriggered(Input::DECISION)) {
+		if (Input::GetUseMouseButton()) {
+
+			Point mouseP = Input::GetMousePosition();
+			if (!(mouseP.x >= target_window->GetX() + target_window->GetBorderX() && mouseP.x < target_window->GetX() + target_window->GetBorderX() + target_window->GetWidth() &&
+				mouseP.y >= target_window->GetY() + target_window->GetBorderY() && mouseP.y < target_window->GetY() + target_window->GetBorderY() + target_window->GetHeight())) {
+
+				std::vector<Game_Battler*> enemies;
+				Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+				bool enemyHover = false;
+				int i = 0;
+				for (auto e : enemies) {
+					if (mouseP.x >= e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 && mouseP.x < e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 + e->GetBattleSprite()->GetWidth() &&
+						mouseP.y >= e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 && mouseP.y < e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 + e->GetBattleSprite()->GetHeight()) {
+
+						enemyHover = true;
+						// Change cursor (Hand)
+						DisplayUi->ChangeCursor(1);
+
+						//if (Input::IsPressed(Input::MOUSE_LEFT)) {
+						if (Input::MouseMoved()) {
+							// Output::Debug("{} {}", target_window->GetIndex(), i);
+							if (target_window->GetIndex() != i)
+								Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+							target_window->SetIndex(i);
+							break;
+						}
+					}
+					i++;
+				}
+
+				if (!enemyHover && Input::MouseMoved()) {
+					target_window->SetIndex(-999);
+				}
+
+			}
+			
+		}
+
+		if (Input::IsTriggered(Input::DECISION) && target_window->GetIndex() >= 0) {
 			auto* actor = active_actor;
 			// active_actor gets reset after the next call, so save it.
 			auto* enemy = EnemySelected();
@@ -1637,9 +1758,71 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAl
 	}
 
 	if (scene_action_substate == eWaitInput) {
-		if (Input::IsTriggered(Input::DECISION)) {
-			AllySelected();
-			return SceneActionReturn::eWaitTillNextFrame;
+
+		if (Input::GetUseMouseButton()) {
+
+			bool actorHover = status_window->UpdateMouse(false);
+
+			if (!actorHover) {
+				Point mouseP = Input::GetMousePosition();
+				if (!(mouseP.x >= status_window->GetX() + status_window->GetBorderX() && mouseP.x < status_window->GetX() + status_window->GetBorderX() + status_window->GetWidth() &&
+					mouseP.y >= status_window->GetY() + status_window->GetBorderY() && mouseP.y < status_window->GetY() + status_window->GetBorderY() + status_window->GetHeight()) ||
+					lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
+
+
+
+					std::vector<Game_Battler*> allies;
+					Main_Data::game_party->GetActiveBattlers(allies);
+
+					int i = 0;
+					for (auto e : allies) {
+						if (mouseP.x >= e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 && mouseP.x < e->GetBattleSprite()->GetX() - e->GetBattleSprite()->GetWidth() / 2 + e->GetBattleSprite()->GetWidth() &&
+							mouseP.y >= e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 && mouseP.y < e->GetBattleSprite()->GetY() - e->GetBattleSprite()->GetHeight() / 2 + e->GetBattleSprite()->GetHeight()) {
+
+							// Change cursor (Hand)
+							DisplayUi->ChangeCursor(1);
+							actorHover = true;
+
+							//if (Input::IsPressed(Input::MOUSE_LEFT)) {
+							if (Input::MouseMoved()) {
+
+								// Output::Debug("{} {}", status_window->GetIndex(), i);
+								if (status_window->GetIndex() != i)
+									Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+								status_window->SetIndex(i);
+								status_window->SetMouseOutside(false);
+								break;
+							}
+						}
+						i++;
+					}
+
+					if (!actorHover && Input::MouseMoved()) {
+						status_window->SetMouseOutside(true);
+					}
+				}
+			}
+
+			if (status_window->mouseOutside && (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN) ||
+				Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::LEFT) || Input::IsTriggered(Input::SCROLL_UP))) {
+				status_window->SetMouseOutside(false);
+				status_window->SetIndex(0);
+			}
+
+		}
+
+		if (Input::IsTriggered(Input::DECISION) && status_window->GetIndex() != -999) {
+			if (!status_window->mouseOutside) {
+				AllySelected();
+				return SceneActionReturn::eWaitTillNextFrame;
+			}
+			else {
+				status_window->SetMouseOutside(false);
+				AllySelected();
+				return SceneActionReturn::eWaitTillNextFrame;
+				/*status_window->SetMouseOutside(false);
+				status_window->SetIndex(0);*/
+			}
 		}
 		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
@@ -2902,7 +3085,7 @@ void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
 	if (battler && battler->MaxSpValue() >= 1000) {
 		spwindow_size = 72;
 	}
-	sp_window = std::make_unique<Window_ActorSp>(Player::screen_width - Player::menu_offset_x - spwindow_size, (small_window ? Player::menu_offset_y + 154 : Player::menu_offset_y + 136), spwindow_size, spwindow_height);
+	sp_window = std::make_unique<Window_ActorSp>(this, Player::screen_width - Player::menu_offset_x - spwindow_size, (small_window ? Player::menu_offset_y + 154 : Player::menu_offset_y + 136), spwindow_size, spwindow_height);
 	sp_window->SetVisible(false);
 	sp_window->SetBorderY(small_window ? 2 : 8);
 	sp_window->SetContents(Bitmap::Create(sp_window->GetWidth() - sp_window->GetBorderX() / 2, sp_window->GetHeight() - sp_window->GetBorderY() * 2));

@@ -31,6 +31,7 @@
 #include "main_data.h"
 #include "scene_settings.h"
 #include "game_map.h"
+#include <baseui.h>
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -185,8 +186,9 @@ void Scene::MainFunction() {
 
 			init = true;
 			return;
-		} else {
-			Player::Update();
+		}
+ else {
+	 Player::Update();
 		}
 	}
 
@@ -220,6 +222,11 @@ void Scene::TransitionIn(SceneType) {
 
 void Scene::TransitionOut(SceneType) {
 	Transition::instance().InitErase(Transition::TransitionFadeOut, this, 6);
+	if (Input::GetUseMouseButton()) {
+
+		// Reset cursor (Arrow)
+		DisplayUi->ChangeCursor(0);
+	}
 }
 
 void Scene::Suspend(SceneType /* next_scene */) {
@@ -242,13 +249,59 @@ bool Scene::IsAsyncPending() {
 }
 
 void Scene::Update() {
+	if (Input::GetUseMouseButton()) {
+		// Reset cursor (Arrow)
+		int i = DisplayUi->GetTimeMouseCursor();
+		if (i == 0)
+			DisplayUi->ChangeCursor(0);
+		else {
+			i--;
+			DisplayUi->SetTimeMouseCursor(i);
+		}
+	}
+
 	// Allow calling of settings scene everywhere except from Logo (Player is currently starting up)
 	// and from Map (has own handling to prevent breakage)
 	if (instance->type != Scene::Logo &&
 		instance->type != Scene::Map &&
 		Input::IsTriggered(Input::SETTINGS_MENU) &&
 		!Scene::Find(Scene::Settings)) {
-			Scene::Push(std::make_shared<Scene_Settings>());
+		Scene::Push(std::make_shared<Scene_Settings>());
+	}
+	if (Input::GetUseMouseButton()) {
+		Point mouse_pos = Input::GetMousePosition();
+		for (auto* window : windows) {
+			if (window->GetType() != Window::WindowType::Selectable || (!window->GetActive() && !window->GetHalfActive()) || !window->IsVisible() || window->ExcludeForMouse()) {
+				continue;
+			}
+			auto* sel_window = static_cast<Window_Selectable*>(window);
+			int index = sel_window->CursorHitTest({ mouse_pos.x - window->GetX(), mouse_pos.y - window->GetY() });
+			if (index >= 0)
+				DisplayUi->ChangeCursor(1);
+			if (index >= 0 && index != sel_window->GetIndex() && Input::MouseMoved()) {
+				// FIXME: Index changed callback?
+				sel_window->SetIndex(index);
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+				if (window->GetHalfActive()) {
+					for (auto* w : windows) {
+						if (window->GetType() != Window::WindowType::Selectable || (!window->GetActive() && !window->GetHalfActive()) || !window->IsVisible() || window->ExcludeForMouse()) {
+							continue;
+						}
+						w->SetActive(false);
+					}
+					window->SetActive(true);
+				}
+			}
+			if (index == -1 && Input::MouseMoved() && sel_window->GetIndex() != -999) {
+				sel_window->SetMouseOldIndex(sel_window->GetIndex());
+				sel_window->SetIndex(-999);
+			}
+
+			if (sel_window->GetIndex() == -999 && (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::RIGHT) || Input::IsTriggered(Input::SCROLL_DOWN) ||
+				Input::IsRepeated(Input::UP) || Input::IsRepeated(Input::LEFT) || Input::IsTriggered(Input::SCROLL_UP))) {
+				sel_window->SetIndex(sel_window->GetMouseOldIndex());
+			}
+		}
 	}
 
 	vUpdate();
@@ -403,4 +456,14 @@ void Scene::OnTranslationChanged() {
 		Main_Data::game_actors->ReloadActors();
 	}
 	Game_Map::OnTranslationChanged();
+}
+
+void Scene::RegisterWindow(Window* window) {
+	windows.push_back(window);
+}
+
+void Scene::RemoveWindow(Window* window) {
+	auto it = std::find(windows.begin(), windows.end(), window);
+	assert(it != windows.end());
+	windows.erase(it);
 }

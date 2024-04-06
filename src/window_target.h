@@ -15,27 +15,32 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_MENUSTATUS_H
-#define EP_WINDOW_MENUSTATUS_H
+#ifndef EP_WINDOW_ACTORINFO_H
+#define EP_WINDOW_ACTORINFO_H
 
 // Headers
-#include "window_selectable.h"
+#include "window_command.h"
 
 /**
- * Window MenuStatus Class
+ * Window ActorInfo Class.
+ * Displays the left hand information window in the status
+ * scene.
  */
-class Window_MenuStatus : public Window_Selectable {
+class Window_Target : public Window_Command {
 public:
-	Window_MenuStatus(Scene* parent, int ix, int iy, int iwidth, int iheight);
-	void Refresh();
-	void UpdateCursorRect() override;
+	/**
+	 * Constructor.
+	 */
+	Window_Target(Scene* parent, std::vector<std::string> commands, int width = -1, int max_item = -1);
 
-	Rect GetCursorRect(int i) const override;
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
 
-	Game_Actor* GetActor() const;
-
-protected:
-	int text_offset = 0;
+	/**
+	 * Updates the window state.
+	 */
+	void Update() override;
 };
 
 #endif

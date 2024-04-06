@@ -22,12 +22,14 @@
 #include "system.h"
 #include "async_op.h"
 #include "drawable_list.h"
+#include "window_selectable.h"
 #include <vector>
 #include <functional>
 #include <lcf/rpg/savesystem.h>
 
 class Game_Battler;
 class Game_Actor;
+class Window_Selectable;
 
 /**
  * Scene virtual class.
@@ -265,6 +267,9 @@ public:
 	/** @return true if this scene uses shared drawables */
 	bool UsesSharedDrawables() const;
 
+	void RegisterWindow(Window* window);
+	void RemoveWindow(Window* window);
+
 	virtual void OnPartyChanged(Game_Actor* actor, bool add);
 	virtual void OnEventHpChanged(Game_Battler* battler, int hp);
 	virtual void OnTranslationChanged();
@@ -315,6 +320,8 @@ private:
 
 	std::shared_ptr<Scene> request_scene;
 	int delay_frames = 0;
+
+	std::vector<Window*> windows;
 };
 
 inline bool Scene::IsInitialized() const {

@@ -32,12 +32,14 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ActorTarget(int ix, int iy, int iwidth, int iheight);
+	Window_ActorTarget(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	void Refresh();
 	void UpdateCursorRect() override;
 
 	Game_Actor* GetActor();
+
+	Rect GetCursorRect(int i) const override;
 private:
 
 };

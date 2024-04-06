@@ -882,6 +882,48 @@ public:
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
 
+	struct SearchNode {  // Used by Game_Interpreter_Map::CommandSearchPath.
+		SearchNode(int a, int b, int c, int d) {
+			x = a;
+			y = b;
+			cost = c;
+			direction = d;
+		}
+		SearchNode() { }
+		int x = 0;
+		int y = 0;
+		int cost = 0;
+		int id = 0;
+
+		int parentID = -1;
+		int parentX = -1;
+		int parentY = -1;
+		int direction = 0;
+
+		friend bool operator==(const SearchNode& n1, const SearchNode& n2)
+		{
+			return n1.x == n2.x && n1.y == n2.y;
+		}
+
+		bool operator()(SearchNode const& a, SearchNode const& b)
+		{
+			return a.id > b.id;
+		}
+	};
+
+	struct SearchNodeHash {
+		size_t operator()(const SearchNode& p) const {
+			return (p.x ^ (p.y + (p.y >> 12)));
+		}
+	};
+
+	std::vector<SearchNode> CommandSmartMoveRoute(
+		int maxRouteStepsDefault, int maxSearchStepsDefault,
+		int abortIfAlreadyMovingDefault,
+		int destX,
+		int destY
+	);  // Internal generic path finder function.
+
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	/** Check for and fix incorrect data after loading save game */

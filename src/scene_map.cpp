@@ -74,7 +74,7 @@ Scene_Map::~Scene_Map() {
 void Scene_Map::Start() {
 	Scene_Debug::ResetPrevIndices();
 	spriteset.reset(new Spriteset_Map());
-	message_window.reset(new Window_Message(Player::message_box_offset_x, Player::screen_height - MESSAGE_BOX_HEIGHT, MESSAGE_BOX_WIDTH, MESSAGE_BOX_HEIGHT));
+	message_window = std::make_unique<Window_Message>(this, Player::message_box_offset_x, Player::screen_height - MESSAGE_BOX_HEIGHT, MESSAGE_BOX_WIDTH, MESSAGE_BOX_HEIGHT);
 
 	Game_Message::SetWindow(message_window.get());
 

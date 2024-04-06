@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopBuy(const std::vector<int>& goods,
+	Window_ShopBuy(Scene* parent, const std::vector<int>& goods,
 			int ix, int iy, int iwidth = Player::screen_width, int iheight = 80);
 
 	/**

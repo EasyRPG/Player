@@ -36,8 +36,8 @@ public:
 	 * @param iwidth window width.
 	 * @param iheight window height.
 	 */
-	Window_ShopNumber(int ix, int iy, int iwidth, int iheight);
-	
+	Window_ShopNumber(Scene* parent, int ix, int iy, int iwidth, int iheight);
+
 	/**
 	 * Updates the Windows contents.
 	 */
@@ -47,7 +47,7 @@ public:
 	 * Updates number value according to user input.
 	 */
 	void Update() override;
-	
+
 	/**
 	 * Returns the number value.
 	 *
@@ -71,6 +71,8 @@ public:
 	 * @return total costs to buy the item.
 	 */
 	int GetTotal() const;
+
+	int disabledByMouse = false;
 
 protected:
 	int item_max;

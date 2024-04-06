@@ -20,8 +20,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ActorSp::Window_ActorSp(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_ActorSp::Window_ActorSp(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 

@@ -24,8 +24,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Base(ix, iy, iwidth, iheight),
+Window_ActorStatus::Window_ActorStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Base(parent, ix, iy, iwidth, iheight),
 	actor_id(actor_id) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));

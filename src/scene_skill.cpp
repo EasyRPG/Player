@@ -37,9 +37,9 @@ void Scene_Skill::Start() {
 	// Create the windows
 	int window_help_height = 32;
 	int window_skillstatus_height = 32;
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height));
-	skillstatus_window.reset(new Window_SkillStatus(Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_skillstatus_height));
-	skill_window.reset(new Window_Skill(Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_skillstatus_height, MENU_WIDTH, MENU_HEIGHT - (window_help_height + window_skillstatus_height)));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height);
+	skillstatus_window = std::make_unique<Window_SkillStatus>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_skillstatus_height);
+	skill_window = std::make_unique<Window_Skill>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_skillstatus_height, MENU_WIDTH, MENU_HEIGHT - (window_help_height + window_skillstatus_height));
 
 	// Assign actors and help to windows
 	skill_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
@@ -67,29 +67,35 @@ void Scene_Skill::vUpdate() {
 
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
-		if (skill && skill_window->CheckEnable(skill_id)) {
-			if (skill->type == lcf::rpg::Skill::Type_switch) {
-				Main_Data::game_system->SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
-				Scene::PopUntil(Scene::Map);
-				Game_Map::SetNeedRefresh(true);
-			} else if (Algo::IsNormalOrSubskill(*skill)) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
-				skill_index = skill_window->GetIndex();
-			} else if (skill->type == lcf::rpg::Skill::Type_teleport) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
-			} else if (skill->type == lcf::rpg::Skill::Type_escape) {
-				Main_Data::game_system->SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
-				Main_Data::game_player->ForceGetOffVehicle();
-				Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
+		if (skill) {
+			if (skill_window->CheckEnable(skill_id)) {
+				if (skill->type == lcf::rpg::Skill::Type_switch) {
+					Main_Data::game_system->SePlay(skill->sound_effect);
+					Main_Data::game_party->UseSkill(skill_id, actor, actor);
+					Scene::PopUntil(Scene::Map);
+					Game_Map::SetNeedRefresh(true);
+				}
+				else if (Algo::IsNormalOrSubskill(*skill)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
+					skill_index = skill_window->GetIndex();
+				}
+				else if (skill->type == lcf::rpg::Skill::Type_teleport) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
+				}
+				else if (skill->type == lcf::rpg::Skill::Type_escape) {
+					Main_Data::game_system->SePlay(skill->sound_effect);
+					Main_Data::game_party->UseSkill(skill_id, actor, actor);
+					Main_Data::game_player->ForceGetOffVehicle();
+					Main_Data::game_player->ReserveTeleport(Main_Data::game_targets->GetEscapeTarget());
 
-				Scene::PopUntil(Scene::Map);
+					Scene::PopUntil(Scene::Map);
+				}
 			}
-		} else {
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			else {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			}
 		}
 	}
 }

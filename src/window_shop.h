@@ -30,7 +30,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight);
+	Window_Shop(Scene* parent, int shop_type, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current shop on the window.
@@ -42,9 +42,19 @@ public:
 	 */
 	void Update() override;
 
+	int GetIndex() const;
+
 	void SetMode(int nmode);
 	int GetChoice() const;
 	void SetChoice(int nchoice);
+
+	/**
+	 * Returns the index of the item that is at the passed position or -1 if there is nothing.
+	 *
+	 * @param position Position to check. Relative to the content.
+	 * @return index of the item or -1 if nothing was found.
+	 */
+	virtual int CursorHitTest(Point position) const;
 
 	enum WindowMessageValues {
 		LeftMargin = 8,

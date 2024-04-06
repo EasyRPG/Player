@@ -725,6 +725,13 @@ void Player::CreateGameObjects() {
 					Player::screen_height = ini.GetInteger("RPG_RT", "WinH", SCREEN_TARGET_HEIGHT);
 					Player::has_custom_resolution = true;
 				}
+				if (ini.HasValue("RPG_RT", "MouseButton") || ini.HasValue("RPG_RT", "MouseButton")) {
+					bool b = ini.GetBoolean("RPG_RT", "MouseButton", "false");
+					if (b)
+						Input::SetForceUseMouse(1);
+					else
+						Input::SetForceUseMouse(-1);
+				}
 			}
 		}
 	}
@@ -925,6 +932,9 @@ void Player::ResetGameObjects() {
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	Input::ResetMask();
+
+	DisplayUi->Load_Cursor("mouseCursor", 0);
+	DisplayUi->Load_Cursor("mouseCursorHand", 1);
 }
 
 static bool DefaultLmuStartFileExists(const FilesystemView& fs) {

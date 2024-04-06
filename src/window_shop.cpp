@@ -25,9 +25,11 @@
 #include "window_shop.h"
 #include "bitmap.h"
 #include "font.h"
+#include <output.h>
+#include <baseui.h>
 
-Window_Shop::Window_Shop(int shop_type, int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_Shop::Window_Shop(Scene* parent, int shop_type, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -176,19 +178,43 @@ void Window_Shop::Update() {
 	Window_Base::Update();
 
 	if (active) {
+
+		if (Input::GetUseMouseButton() && IsVisible() && leave_index > 0 && GetCursorRect().height > 0) {
+			Point mouseP = Input::GetMousePosition();
+
+			int i = CursorHitTest({ mouseP.x - GetX(), mouseP.y - GetY() });
+
+			if (i >= 0) {
+				DisplayUi->ChangeCursor(1);
+				if (Input::MouseMoved()) {
+					if (index != i)
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+					index = i;
+				}
+			}
+			else {
+				if (Input::MouseMoved()) {
+					index = -999;
+				}
+			}
+
+		}
 		switch (mode) {
 			case Scene_Shop::BuySellLeave:
 			case Scene_Shop::BuySellLeave2:
-				if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
+				if (Input::IsRepeated(Input::DOWN) || (Input::IsTriggered(Input::SCROLL_DOWN) && !Input::GetUseMouseButton())) {
 					if (index < leave_index) {
-						index++;
+						if (index == -999)
+							index = 1;
+						else
+							index++;
 					}
 					else {
 						index = 1;
 					}
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
-				if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
+				if (Input::IsRepeated(Input::UP) || (Input::IsTriggered(Input::SCROLL_UP) && !Input::GetUseMouseButton())) {
 					if (index > 1) {
 						index--;
 					}
@@ -197,7 +223,7 @@ void Window_Shop::Update() {
 					}
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 				}
-				if (Input::IsTriggered(Input::DECISION)) {
+				if (Input::IsTriggered(Input::DECISION) && index >= 0) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					if (index == buy_index)
 						choice = Scene_Shop::Buy;
@@ -211,4 +237,28 @@ void Window_Shop::Update() {
 	}
 
 	UpdateCursorRect();
+}
+
+int Window_Shop::GetIndex() const {
+	return index;
+}
+
+int Window_Shop::CursorHitTest(Point position) const {
+	// Output::Debug("{} {}", position.x, position.y);
+	for (int i = 1; i < 4; ++i) {
+		Rect cursor_rect = GetCursorRect();
+		cursor_rect.x += GetBorderX();
+		cursor_rect.y  = GetBorderY();
+		cursor_rect.y += (i) * 16;
+
+		// Output::Debug("{} {} {} {}", cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height);
+		if (cursor_rect != Rect()) {
+			if (position.x >= cursor_rect.x && position.x <= cursor_rect.x + cursor_rect.width &&
+				position.y >= cursor_rect.y && position.y <= cursor_rect.y + cursor_rect.height) {
+
+				return i;
+			}
+		}
+	}
+	return -1;
 }

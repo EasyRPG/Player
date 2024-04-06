@@ -1248,3 +1248,55 @@ Rect Sdl2Ui::GetWindowMetrics() const {
 		return window_mode_metrics;
 	}
 }
+
+void Sdl2Ui::Load_Cursor(std::string s, int curs_type) {
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+	uint32_t Rmask = 0x000000FF;
+	uint32_t Gmask = 0x0000FF00;
+	uint32_t Bmask = 0x00FF0000;
+	uint32_t Amask = 0xFF000000;
+#else
+	uint32_t Rmask = 0xFF000000;
+	uint32_t Gmask = 0x00FF0000;
+	uint32_t Bmask = 0x0000FF00;
+	uint32_t Amask = 0x000000FF;
+#endif
+
+	if (curs_type == -1)
+	{
+		cursorArrow = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+		cursorHand = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+	}
+	else { 
+		if (curs_type == 0)
+			cursorArrow = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+		else
+			cursorHand = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+
+		auto mouse_stream = FileFinder::OpenImage("Picture", s);
+		if (mouse_stream) {
+			auto c = Utils::ReadStream(mouse_stream);
+			BitmapRef mouse_img;
+			if (!c.empty()) {
+				mouse_img = Bitmap::Create(c.data(), c.size(), true);
+				if (mouse_img) {
+					SDL_Surface* icon = SDL_CreateRGBSurfaceFrom(mouse_img->pixels(), mouse_img->GetWidth(), mouse_img->GetHeight(), 32, mouse_img->GetWidth() * 4, Bmask, Gmask, Rmask, Amask);
+					if (icon)
+						if (curs_type == 0)
+							cursorArrow = SDL_CreateColorCursor(icon, 0, 0);
+						else
+							cursorHand = SDL_CreateColorCursor(icon, 0, 0);
+				}
+			}
+		} 
+	}
+}
+
+void Sdl2Ui::ChangeCursor(int curs_type) {
+	if (curs_type == 0)	
+		SDL_SetCursor(cursorArrow);
+	else
+		SDL_SetCursor(cursorHand);
+	
+	SetTimeMouseCursor(5);
+}

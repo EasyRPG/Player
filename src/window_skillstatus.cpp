@@ -23,8 +23,8 @@
 #include "font.h"
 #include "player.h"
 
-Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), actor_id(-1) {
+Window_SkillStatus::Window_SkillStatus(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight), actor_id(-1) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 }

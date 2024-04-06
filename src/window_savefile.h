@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_SaveFile(int ix, int iy, int iwidth, int iheight);
+	Window_SaveFile(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current save on the window.

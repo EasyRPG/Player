@@ -24,8 +24,8 @@
 #include "font.h"
 #include "player.h"
 
-Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Base(ix, iy, iwidth, iheight),
+Window_EquipStatus::Window_EquipStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Base(parent, ix, iy, iwidth, iheight),
 	actor_id(actor_id),
 	draw_params(false),
 	dirty(true) {

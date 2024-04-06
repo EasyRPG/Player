@@ -26,8 +26,8 @@
 #include "output.h"
 #include "feature.h"
 
-Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight)
+Window_BattleMessage::Window_BattleMessage(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight)
 {
 	SetContents(Bitmap::Create(width - 20, height - 16));
 

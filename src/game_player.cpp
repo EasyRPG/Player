@@ -43,6 +43,8 @@
 #include <cmath>
 #include "scene_gameover.h"
 
+#include "game_variables.h"
+
 Game_Player::Game_Player(): Game_PlayerBase(Player)
 {
 	SetDirection(lcf::rpg::EventPage::Direction_down);
@@ -320,6 +322,57 @@ void Game_Player::UpdateNextMovementAction() {
 			move_dir = Up;
 			break;
 	}
+
+	if (Input::GetUseMouseButton()) {
+		if (move_dir >= 0) {
+			listMoveMouse.clear();
+			indexMoveMouse = -1;
+		}
+		else {
+			if (listMoveMouse.size() > 0) {
+				if (IsStopping()) {
+
+					if (indexMoveMouse < listMoveMouse.size()) {
+						if (listMoveMouse[indexMoveMouse].direction >= 0)
+							Move(listMoveMouse[indexMoveMouse].direction);
+
+						indexMoveMouse++;
+					}
+					else {
+
+						listMoveMouse.clear();
+						indexMoveMouse = -1;
+
+						if (GetX() != targetMX || GetY() != targetMY) {
+
+							int direction = -1;
+							if (GetX() < targetMX)
+								direction = 1;
+							else if (GetX() > targetMX)
+								direction = 3;
+
+							if (GetY() < targetMY)
+								direction = 2;
+							else if (GetY() > targetMY)
+								direction = 0;
+
+							if (direction != -1) {
+								SetDirection(direction);
+								UpdateFacing();
+							}
+						}
+						
+						if (!GetOnOffVehicle() && clickOnEvent) {
+							CheckActionEvent();
+						}
+
+						ResetTargetMXY();
+					}
+				}
+			}
+		}
+	}
+
 	if (move_dir >= 0) {
 		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->move_route_through);
 		Move(move_dir);
@@ -329,10 +382,102 @@ void Game_Player::UpdateNextMovementAction() {
 			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
 		}
+
+		// Reset targetMXY if player use keyboard
+		if ((targetMX != -999 || targetMY != -999) && Input::GetUseMouseButton()) {
+			ResetTargetMXY();
+		}
+	}
+
+	// Is Mouse control is active, 
+	if (Input::GetUseMouseButton()) {
+		if (Input::IsPressed(Input::MOUSE_LEFT)) {
+
+			if (listMoveMouse.size() > 0) {
+				listMoveMouse.clear();
+				indexMoveMouse = 0;
+				ResetTargetMXY();
+				return;
+			}
+			Point mouseP = Input::GetMousePosition();
+			targetMX = mouseP.x / 16;
+			targetMY = mouseP.y / 16;
+
+			int varX = Input::MouseVarX;
+			int varY = Input::MouseVarY;
+			int eventID = Input::MouseShowEventID;
+			int switchID = Input::MouseSwitchID;
+
+			bool got_action = false;
+
+			TriggerSet triggers = { lcf::rpg::EventPage::Trigger_action };
+			for (auto& ev : Game_Map::GetEvents()) {
+				const auto trigger = ev.GetTrigger();
+				if (ev.IsActive()
+					&& ev.GetX() == targetMX
+					&& ev.GetY() == targetMY
+					&& trigger >= 0
+					&& triggers[trigger]) {
+					got_action |= true;
+				}
+			}
+
+			// If an event should be called
+			if (eventID > 0) {
+
+				// Set up XY var
+				Main_Data::game_variables->Set(varX, targetMX);
+				Main_Data::game_variables->Set(varY, targetMY);
+
+				// Set up if there's an event or not
+				if (got_action) {
+					Main_Data::game_switches->Set(switchID, true);
+				}
+				else {
+					Main_Data::game_switches->Set(switchID, false);
+				}
+
+				// Call common event
+				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), eventID);
+				if (!common_event) {
+					Output::Warning("CallEvent: Can't call invalid common event {}", eventID);
+				}
+
+				Game_Map::GetInterpreter().Push(common_event);
+			}
+
+			clickOnEvent = got_action;
+
+			return;
+		} else if (Input::IsReleased(Input::MOUSE_LEFT)) {
+
+			listMoveMouse.clear();
+
+			// Search best path
+			auto listMove = CommandSmartMoveRoute(-1,
+				500,
+				1,
+				targetMX,
+				targetMY);
+
+			listMoveMouse = listMove;
+			indexMoveMouse = 0;
+
+			if (listMove.size() == 0) {
+
+				if (!GetOnOffVehicle() && clickOnEvent) {
+					CheckActionEvent();
+				}
+
+				ResetTargetMXY();
+			}
+
+		}
 	}
 
 	if (IsStopping()) {
-		if (Input::IsTriggered(Input::DECISION)) {
+		if ((Input::IsTriggered(Input::DECISION) && !Input::GetUseMouseButton()) ||
+			(Input::IsTriggered(Input::DECISION) && !Input::IsReleased(Input::MOUSE_LEFT) && Input::GetUseMouseButton())) {
 			if (!GetOnOffVehicle()) {
 				CheckActionEvent();
 			}
@@ -345,6 +490,33 @@ void Game_Player::UpdateNextMovementAction() {
 		Main_Data::game_screen->FlashMapStepDamage();
 	}
 	UpdateEncounterSteps();
+}
+
+void Game_Player::ResetTargetMXY() {
+
+	int varX = Input::MouseVarX;
+	int varY = Input::MouseVarY;
+	int eventID = Input::MouseHideEventID;
+
+	if (eventID > 0) {
+
+		// Set up XY var
+		Main_Data::game_variables->Set(varX, targetMX);
+		Main_Data::game_variables->Set(varY, targetMY);
+
+		// Call common event
+		Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), eventID);
+		if (!common_event) {
+			Output::Warning("CallEvent: Can't call invalid common event {}", eventID);
+		}
+
+		Game_Map::GetInterpreter().Push(common_event);
+	}
+
+
+	// Reset targetMXY 
+	targetMX = -999;
+	targetMY = -999;
 }
 
 void Game_Player::UpdateMovement(int amount) {

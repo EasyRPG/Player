@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flags flags = Drawable::Flags::Default);
+	Window_Help(Scene* parent, int ix, int iy, int iwidth, int iheight, Drawable::Flags flags = Drawable::Flags::Default);
 
 	/**
 	 * Sets the text that will be shown.

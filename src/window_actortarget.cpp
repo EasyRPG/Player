@@ -22,10 +22,12 @@
 #include "bitmap.h"
 #include "player.h"
 
-Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_ActorTarget::Window_ActorTarget(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(parent, ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
+
+	menu_item_height = 48;
 
 	Refresh();
 }
@@ -53,7 +55,9 @@ void Window_ActorTarget::Refresh() {
 }
 
 void Window_ActorTarget::UpdateCursorRect() {
-	if (index < -10) { // Entire Party
+	if (index <= -999) {
+		cursor_rect = { 0, 0, 0, 0 }; // None
+	} else if (index < -10) { // Entire Party
 		cursor_rect = { 48 + 4, 0, 120, item_max * (48 + 10) - 10 };
 	} else if (index < 0) { // Fixed to one
 		cursor_rect = { 48 + 4, (-index - 1) * (48 + 10), 120, 48 };
@@ -72,4 +76,26 @@ Game_Actor* Window_ActorTarget::GetActor() {
 	}
 
 	return &(*Main_Data::game_party)[ind];
+}
+
+Rect Window_ActorTarget::GetCursorRect(int index) const {
+	int cursor_width = 0;
+	int x = 0;
+	if (index < 0) {
+		return {};
+	}
+	int row = index / column_max;
+	if (row < GetTopRow()) {
+		return {};
+	}
+	else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
+		return {};
+	}
+
+	cursor_width = (width / column_max - 16) + 8;
+	x = (index % column_max * (cursor_width + 8)) - 4;
+
+	int y = index / column_max * (menu_item_height + 10) - oy;
+
+	return { x, y, cursor_width, menu_item_height };
 }

@@ -82,6 +82,9 @@ private:
 	bool CommandOpenLoadMenu(lcf::rpg::EventCommand const& com);
 	bool CommandToggleAtbMode(lcf::rpg::EventCommand const& com);
 
+	// Custom command for changing mouse control events
+	bool CommandSetMouseMoveSprite(lcf::rpg::EventCommand const& com);
+
 	AsyncOp ContinuationShowInnStart(int indent, int choice_result, int price);
 
 	static std::vector<Game_Character*> pending;

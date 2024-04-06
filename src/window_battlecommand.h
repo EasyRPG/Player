@@ -33,7 +33,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_BattleCommand(int x, int y, int width, int height);
+	Window_BattleCommand(Scene* parent, int x, int y, int width, int height);
 
 	/**
 	 * Refreshes the window contents.

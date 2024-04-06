@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_Item(int ix, int iy, int iwidth, int iheight);
+	Window_Item(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Gets item.

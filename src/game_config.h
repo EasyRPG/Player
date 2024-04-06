@@ -113,6 +113,7 @@ struct Game_ConfigInput {
 	BoolConfigParam gamepad_swap_analog{ "Gamepad: Swap Analog Sticks", "Swap left and right stick", "Input", "GamepadSwapAnalog", false };
 	BoolConfigParam gamepad_swap_dpad_with_buttons{ "Gamepad: Swap D-Pad with buttons", "Swap D-Pad with ABXY-Buttons", "Input", "GamepadSwapDpad", false };
 	BoolConfigParam gamepad_swap_ab_and_xy{ "Gamepad: Swap AB and XY", "Swap A and B with X and Y", "Input", "GamepadSwapAbxy", false };
+	BoolConfigParam mouse_control{ "Mouse control", "Use mouse control", "Input", "MouseControl", false };
 	Input::ButtonMappingArray buttons;
 
 	void Hide();

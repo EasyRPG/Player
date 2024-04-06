@@ -44,7 +44,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy = false);
+	Window_BattleStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, bool enemy = false);
 
 	/**
 	 * Renders the current status on the window.
@@ -70,6 +70,15 @@ public:
 
 	void RefreshActiveFromValid();
 
+	void SetMouseOutside(bool b);
+	bool mouseOutside = false;
+
+	bool UpdateMouse(bool activeAllies);
+
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
+
 protected:
 	/**
 	 * Updates the cursor rectangle.
@@ -87,7 +96,7 @@ protected:
 	/**
 	 * Tests whether actor is selectable in current ChoiceMode.
 	 *
-	 * @return true: selection possible 
+	 * @return true: selection possible
 	 */
 	bool IsChoiceValid(const Game_Battler& battler) const;
 

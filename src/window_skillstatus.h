@@ -30,7 +30,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_SkillStatus(int ix, int iy, int iwidth, int iheight);
+	Window_SkillStatus(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Sets the actor whose stats are displayed.

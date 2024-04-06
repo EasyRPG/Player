@@ -23,8 +23,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Base(ix, iy, iwidth, iheight),
+Window_ParamStatus::Window_ParamStatus(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Base(parent, ix, iy, iwidth, iheight),
 	actor_id(actor_id)
 {
 

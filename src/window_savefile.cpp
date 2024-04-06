@@ -26,8 +26,8 @@
 #include "font.h"
 #include "player.h"
 
-Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_SaveFile::Window_SaveFile(Scene* parent, int ix, int iy, int iwidth, int iheight) :
+	Window_Base(parent, ix, iy, iwidth, iheight) {
 
 	SetBorderX(4);
 	SetContents(Bitmap::Create(width - 8, height - 16));

@@ -142,6 +142,9 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandOpenLoadMenu(com);
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
+		// TODO : Replace =>
+		case 9999:
+			return CommandSetMouseMoveSprite(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -672,5 +675,25 @@ bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /*
 	}
 
 	Main_Data::game_system->ToggleAtbMode();
+	return true;
+}
+
+/*
+* Change parameters for mouse control events
+*/
+
+bool Game_Interpreter_Map::CommandSetMouseMoveSprite(lcf::rpg::EventCommand const&  com) {
+
+	if (com.parameters.size() > 0)
+		Input::MouseShowEventID = com.parameters[0];
+	if (com.parameters.size() > 1)
+		Input::MouseHideEventID = com.parameters[1];
+	if (com.parameters.size() > 2)
+		Input::MouseVarX = com.parameters[2];
+	if (com.parameters.size() > 3)
+		Input::MouseVarY = com.parameters[3];
+	if (com.parameters.size() > 4)
+		Input::MouseSwitchID = com.parameters[4];
+
 	return true;
 }

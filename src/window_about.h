@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_About(int ix, int iy, int iwidth, int iheight);
+	Window_About(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	void Refresh();
 };

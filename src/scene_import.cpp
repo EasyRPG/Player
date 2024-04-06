@@ -58,7 +58,7 @@ void Scene_Import::Start() {
 	// We don't populate them until later (once we've loaded all potential importable files).
 	for (int i = 0; i < 15; i++) {
 		std::shared_ptr<Window_SaveFile>
-			w(new Window_SaveFile(0, 40 + i * 64, Player::screen_width, 64));
+			w = std::make_unique<Window_SaveFile>(this, 0, 40 + i * 64, Player::screen_width, 64);
 		w->SetIndex(i);
 		w->SetVisible(false);
 		w->SetZ(Priority_Window);
@@ -67,7 +67,7 @@ void Scene_Import::Start() {
 	}
 
 	// Create a window to show scanning progress, since this can take a while.
-	progress_window.reset(new Window_ImportProgress(Player::screen_width/4, 40 + 64, Player::screen_width/2, 64));
+	progress_window = std::make_unique<Window_ImportProgress>(this, Player::screen_width/4, 40 + 64, Player::screen_width/2, 64);
 	progress_window->SetZ(Priority_Window + 1);
 
 	border_bottom = Scene_File::MakeBorderSprite(232);

@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id);
+	Window_ActorInfo(Scene* parent, int ix, int iy, int iwidth, int iheight, int actor_id);
 
 	/**
 	 * Renders the stats on the window.

@@ -211,23 +211,23 @@ void Scene_Battle::CreateUi() {
 		}
 	}
 
-	options_window.reset(new Window_Command(commands, option_command_mov));
+	options_window = std::make_unique<Window_Command>(this, commands, option_command_mov);
 	options_window->SetHeight(80);
 	options_window->SetX(Player::menu_offset_x);
 	options_window->SetY(Player::menu_offset_y + MENU_HEIGHT - 80);
 
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, 32);
 	help_window->SetVisible(false);
 
-	item_window.reset(new Window_Item(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	item_window = std::make_unique<Window_Item>(this, Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80);
 	item_window->SetHelpWindow(help_window.get());
 	item_window->Refresh();
 	item_window->SetIndex(0);
 
-	skill_window.reset(new Window_BattleSkill(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	skill_window = std::make_unique<Window_BattleSkill>(this, Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80);
 	skill_window->SetHelpWindow(help_window.get());
 
-	message_window.reset(new Window_Message(Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80));
+	message_window = std::make_unique<Window_Message>(this, Player::menu_offset_x, (Player::menu_offset_y + MENU_HEIGHT - 80), MENU_WIDTH, 80);
 	Game_Message::SetWindow(message_window.get());
 }
 
@@ -355,6 +355,10 @@ Game_Enemy* Scene_Battle::EnemySelected() {
 }
 
 Game_Actor* Scene_Battle::AllySelected() {
+	
+	//if (status_window->GetIndex() >= (*Main_Data::game_party).GetActors().size()) {
+	//	return Main_Data::game_party->GetActor(0);
+	//}
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill) {
@@ -410,7 +414,8 @@ void Scene_Battle::ItemSelected() {
 	const lcf::rpg::Item* item = item_window->GetItem();
 
 	if (!item || !item_window->CheckEnable(item->ID)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		if (item_window->GetIndex() >= 0)
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 
@@ -456,7 +461,8 @@ void Scene_Battle::SkillSelected() {
 	const lcf::rpg::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !skill_window->CheckEnable(skill->ID)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		if (skill_window->GetIndex() >= 0)
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}
 

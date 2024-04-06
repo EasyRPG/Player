@@ -61,16 +61,16 @@ void Scene_Shop::Start() {
 	int window_gold_height = 32;
 	int window_shop_height = 80;
 
-	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height));
-	buy_window.reset(new Window_ShopBuy(goods, Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height));
-	number_window.reset(new Window_ShopNumber(Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height));
-	party_window.reset(new Window_ShopParty(Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height, window_party_width, window_party_height));
-	status_window.reset(new Window_ShopStatus(Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height + window_party_height, window_status_width, window_status_height));
-	gold_window.reset(new Window_Gold(Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height + window_party_height + window_status_height, window_gold_width, window_gold_height));
-	shop_window.reset(new Window_Shop(shop_type, Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_party_height + window_status_height + window_gold_height, MENU_WIDTH, window_shop_height));
-	sell_window.reset(new Window_ShopSell(Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_buy_height));
-	empty_window.reset(new Window_Base(Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_buy_height));
-	empty_window2.reset(new Window_Base(Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height));
+	help_window = std::make_unique<Window_Help>(this, Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, window_help_height);
+	buy_window = std::make_unique<Window_ShopBuy>(this, goods, Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height);
+	number_window = std::make_unique<Window_ShopNumber>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height);
+	party_window = std::make_unique<Window_ShopParty>(this, Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height, window_party_width, window_party_height);
+	status_window = std::make_unique<Window_ShopStatus>(this, Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height + window_party_height, window_status_width, window_status_height);
+	gold_window = std::make_unique<Window_Gold>(this, Player::menu_offset_x + window_buy_width, Player::menu_offset_y + window_help_height + window_party_height + window_status_height, window_gold_width, window_gold_height);
+	shop_window = std::make_unique<Window_Shop>(this, shop_type, Player::menu_offset_x, Player::menu_offset_y + window_help_height + window_party_height + window_status_height + window_gold_height, MENU_WIDTH, window_shop_height);
+	sell_window = std::make_unique<Window_ShopSell>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_buy_height);
+	empty_window = std::make_unique<Window_Base>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, MENU_WIDTH, window_buy_height);
+	empty_window2 = std::make_unique<Window_Base>(this, Player::menu_offset_x, Player::menu_offset_y + window_help_height, window_buy_width, window_buy_height);
 
 	buy_window->SetActive(false);
 	buy_window->SetVisible(false);
@@ -230,7 +230,7 @@ void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && shop_window->GetIndex() >= 0) {
 		switch (shop_window->GetChoice()) {
 			case Buy:
 			case Sell:
@@ -244,8 +244,14 @@ void Scene_Shop::UpdateCommandSelection() {
 }
 
 void Scene_Shop::UpdateBuySelection() {
-	status_window->SetItemId(buy_window->GetItemId());
-	party_window->SetItemId(buy_window->GetItemId());
+	if (buy_window->GetIndex() >= 0) {
+		status_window->SetItemId(buy_window->GetItemId());
+		party_window->SetItemId(buy_window->GetItemId());
+	}
+	else {
+		status_window->SetItemId(-1);
+		party_window->SetItemId(-1);
+	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
@@ -254,7 +260,7 @@ void Scene_Shop::UpdateBuySelection() {
 		} else {
 			Scene::Pop();
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && buy_window->GetIndex() >= 0) {
 		int item_id = buy_window->GetItemId();
 
 		// checks the money and number of items possessed before buy
@@ -286,7 +292,7 @@ void Scene_Shop::UpdateSellSelection() {
 		} else {
 			Scene::Pop();
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && sell_window->GetIndex() >= 0) {
 		const lcf::rpg::Item* item = sell_window->GetItem();
 		int item_id = (item != nullptr) ? item->ID : 0;
 		status_window->SetItemId(item_id);
@@ -296,9 +302,11 @@ void Scene_Shop::UpdateSellSelection() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);
-		} else {
+		}
+		else {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
+		
 	}
 }
 
@@ -311,7 +319,7 @@ void Scene_Shop::UpdateNumberInput() {
 		case Sell:
 			SetMode(Sell); break;
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && !number_window->disabledByMouse) {
 		int item_id;
 		switch (shop_window->GetChoice()) {
 		case Buy:

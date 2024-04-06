@@ -28,7 +28,7 @@
  */
 class Window_Selectable: public Window_Base {
 public:
-	Window_Selectable(int ix, int iy, int iwidth, int iheight);
+	Window_Selectable(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Creates the contents based on how many items
@@ -36,6 +36,7 @@ public:
 	 */
 	void CreateContents();
 
+	int GetItemMax() const;
 	int GetIndex() const;
 	void SetIndex(int nindex);
 	int GetColumnMax() const;
@@ -73,10 +74,27 @@ public:
 	 * @param nhelp_window the help window.
 	 */
 	void SetHelpWindow(Window_Help* nhelp_window);
+
+
+	/**
+	 * Returns a rectangle indicating the cursor location for the passed index.
+	 *
+	 * @param index cursor index
+	 * @return cursor rectangle
+	 */
+	virtual Rect GetCursorRect(int index) const;
 	virtual void UpdateCursorRect();
 	void Update() override;
 
 	virtual void UpdateHelp();
+
+	/**
+	 * Returns the index of the item that is at the passed position or -1 if there is nothing.
+	 *
+	 * @param position Position to check. Relative to the content.
+	 * @return index of the item or -1 if nothing was found.
+	 */
+	virtual int CursorHitTest(Point position) const;
 
 	/**
 	 * Sets if endless scrolling is enabled.
@@ -99,6 +117,8 @@ public:
 	 * @param wrap enable/disable single column wrap
 	 */
 	void SetSingleColumnWrapping(bool wrap);
+	void SetMouseOldIndex(int i);
+	int GetMouseOldIndex();
 
 protected:
 	void UpdateArrows();
@@ -117,9 +137,12 @@ protected:
 	int scroll_progress = 0;
 
 	int wrap_limit = 2;
+	int mouseTimeArrow;
+	int startCursorY = 0;
+	int mouseOldIndex = 0;
 };
 
-inline void Window_Selectable::SetItemMax(int value) {
+inline void	Window_Selectable::SetItemMax(int value) {
 	item_max = value;
 }
 

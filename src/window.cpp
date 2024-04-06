@@ -24,12 +24,21 @@
 #include "window.h"
 #include "bitmap.h"
 #include "drawable_mgr.h"
+#include "scene.h"
 
 constexpr int pause_animation_frames = 20;
 
-Window::Window(Drawable::Flags flags): Drawable(Priority_Window, flags)
+Window::Window(Scene* parent, WindowType type, Drawable::Flags flags):
+	type(type), Drawable(Priority_Window, flags)
 {
 	DrawableMgr::Register(this);
+	SetScene(parent);
+}
+
+Window::~Window() {
+	if (scene) {
+		scene->RemoveWindow(this);
+	}
 }
 
 void Window::SetOpenAnimation(int frames) {
@@ -54,6 +63,21 @@ void Window::SetCloseAnimation(int frames) {
 		animation_increment = - animation_count / frames;
 	} else {
 		SetVisible(false);
+	}
+}
+
+Scene* Window::GetScene() const {
+	return scene;
+}
+
+void Window::SetScene(Scene* scene) {
+	if (this->scene) {
+		this->scene->RemoveWindow(this);
+	}
+
+	this->scene = nullptr;
+	if (scene) {
+		scene->RegisterWindow(this);
 	}
 }
 
@@ -354,4 +378,25 @@ void Window::SetHeight(int nheight) {
 	height = nheight;
 }
 
+bool Window::GetHalfActive() {
+	return half_active;
+}
 
+void Window::SetHalfActive(bool nactive) {
+	half_active = nactive;
+}
+
+int Window::GetHalfIndex() {
+	return half_index;
+}
+
+void Window::SetHalfIndex(int i) {
+	half_index = i;
+}
+
+bool Window::GetMouseOutside() {
+	return mouseOutside;
+}
+void Window::SetMouseOutside(bool nactive) {
+	mouseOutside = nactive;
+}

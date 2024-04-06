@@ -36,7 +36,7 @@ Scene_Teleport::Scene_Teleport(const lcf::rpg::Item& item, const lcf::rpg::Skill
 }
 
 void Scene_Teleport::Start() {
-	teleport_window.reset(new Window_Teleport(0, Player::screen_height - 80, Player::screen_width, 80));
+	teleport_window = std::make_unique<Window_Teleport>(this, 0, Player::screen_height - 80, Player::screen_width, 80);
 	teleport_window->SetActive(true);
 	teleport_window->SetIndex(0);
 }
@@ -44,7 +44,7 @@ void Scene_Teleport::Start() {
 void Scene_Teleport::vUpdate() {
 	teleport_window->Update();
 
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (Input::IsTriggered(Input::DECISION) && teleport_window->GetIndex() >= 0) {
 		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
 		} else {

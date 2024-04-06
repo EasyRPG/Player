@@ -207,7 +207,6 @@ void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operat
 	numberinput_window->SetActive(true);
 	numberinput_window->SetMaxDigits(digits);
 	numberinput_window->Refresh();
-
 	var_window->Refresh();
 	UpdateRangeListWindow();
 }
@@ -274,21 +273,85 @@ void Scene_Debug::vUpdate() {
 	}
 	var_window->Update();
 
-	if (numberinput_window->GetActive())
+
+	bool validate = false;
+	if (numberinput_window->GetActive()) {
+
+		if (Input::GetUseMouseButton()) {
+			Point mouseP = Input::GetMousePosition();
+
+			int min = 0;
+			int max = numberinput_window->GetMaxDigits();
+			int ddx = 4;
+			if (numberinput_window->GetShowOperator()) {
+				ddx = 11;
+				min = 1;
+				max++;
+			}
+			int new_index = (mouseP.x - numberinput_window->GetX() - numberinput_window->GetBorderX() - numberinput_window->GetItemRect(0).x + ddx) / (12) - 1;
+
+			if (new_index >= min && new_index < max) {
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+				if (Input::IsPressed(Input::MOUSE_LEFT)) {
+					
+					// Output::Debug("{} {} {}", new_index, number_input_window->GetIndex(), number_input_window->GetMouseOldIndex());
+
+					if (new_index != numberinput_window->GetMouseOldIndex())
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+
+					if (numberinput_window->GetIndex() != -999 && numberinput_window->GetIndex() != -1)
+						numberinput_window->SetMouseOldIndex(numberinput_window->GetIndex());
+
+					numberinput_window->SetIndex(new_index);
+				}
+			}
+
+			numberinput_window->UpdateCursorRect();
+
+			ddx = 32;
+			if (numberinput_window->GetShowOperator())
+				ddx = 22;
+
+			int dx = numberinput_window->GetMaxDigits() * 12 + ddx + 12;
+			if ((mouseP.x >= numberinput_window->GetX() + numberinput_window->GetBorderX() + dx && mouseP.x <= numberinput_window->GetX() + numberinput_window->GetBorderX() + dx + 14 &&
+				mouseP.y >= numberinput_window->GetY() + numberinput_window->GetBorderY() && mouseP.y < numberinput_window->GetY() + numberinput_window->GetBorderY() + numberinput_window->GetItemRect(0).height)) {
+
+				// Change cursor (Hand)
+				DisplayUi->ChangeCursor(1);
+
+				if (Input::IsReleased(Input::MOUSE_LEFT)) {
+
+					validate = true;
+					//options_window->Refresh();
+					//numberinput_window.reset();
+					//options_window->SetActive(true);
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+				}
+			}
+		}
+
 		numberinput_window->Update();
+	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		UpdateFrameValueFromUi();
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Pop();
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) || validate) {
+		if (numberinput_window->GetActive() && Input::IsReleased(Input::MOUSE_LEFT) && !validate || range_index == -999)
+		{
+			return;
+		}
+		
 		UpdateFrameValueFromUi();
 		if (mode == eMain) {
 			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
 			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
 				if (!range_window->IsItemEnabled(range_window->GetIndex())) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-				} else {
+				}
+				else {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 					mode = next_mode;
 				}
@@ -478,7 +541,7 @@ void Scene_Debug::CreateRangeWindow() {
 	std::vector<std::string> ranges;
 	for (int i = 0; i < 10; i++)
 		ranges.push_back("");
-	range_window.reset(new Window_Command(ranges, 96));
+	range_window = std::make_unique<Window_Command>(this, ranges, 96);
 
 	int height = 176;
 	range_window->SetHeight(height);
@@ -610,7 +673,7 @@ void Scene_Debug::CreateVarListWindow() {
 	std::vector<std::string> vars;
 	for (int i = 0; i < 10; i++)
 		vars.push_back("");
-	var_window.reset(new Window_VarList(vars));
+	var_window = std::make_unique<Window_VarList>(this, vars);
 	var_window->SetX(Player::menu_offset_x + range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->SetVisible(false);
@@ -620,8 +683,8 @@ void Scene_Debug::CreateVarListWindow() {
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
-	numberinput_window.reset(new Window_NumberInput(Player::menu_offset_x + 160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, Player::menu_offset_y + 104,
-		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16, 32));
+	numberinput_window = std::make_unique<Window_NumberInput>(this, Player::menu_offset_x + 160 - (Main_Data::game_variables->GetMaxDigits() + 1) * 6 - 8, Player::menu_offset_y + 104,
+		(Main_Data::game_variables->GetMaxDigits() + 1) * 12 + 16 + 32+8, 32);
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);

@@ -36,7 +36,7 @@ public:
 	 * @param iwidth window width.
 	 * @param iheight window height.
 	 */
-	Window_NumberInput(int ix, int iy, int iwidth = 320, int iheight = 80);
+	Window_NumberInput(Scene* parent, int ix, int iy, int iwidth = 320, int iheight = 80);
 
 	/**
 	 * Updates the Window's contents.
@@ -97,6 +97,12 @@ public:
 	 */
 	void Update() override;
 
+	void SetIndex(int nindex);
+
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
+
 protected:
 	int64_t number;
 	int digits_max;
@@ -106,6 +112,8 @@ protected:
 	bool plus;
 
 	void ResetIndex();
+
+	int waitMouseControl = 0;
 };
 
 #endif

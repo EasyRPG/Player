@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_TargetStatus(int ix, int iy, int iwidth, int iheight);
+	Window_TargetStatus(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current item quantity/spell costs on

@@ -35,6 +35,7 @@
 #include "scene_status.h"
 #include "bitmap.h"
 #include "feature.h"
+#include <output.h>
 
 constexpr int menu_command_width = 88;
 constexpr int gold_window_width = 88;
@@ -49,10 +50,10 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window.reset(new Window_Gold(Player::menu_offset_x, (Player::screen_height - gold_window_height - Player::menu_offset_y), gold_window_width, gold_window_height));
+	gold_window = std::make_unique<Window_Gold>(this, Player::menu_offset_x, (Player::screen_height - gold_window_height - Player::menu_offset_y), gold_window_width, gold_window_height);
 
 	// Status Window
-	menustatus_window.reset(new Window_MenuStatus(Player::menu_offset_x + menu_command_width, Player::menu_offset_y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT));
+	menustatus_window = std::make_unique<Window_MenuStatus>(this, Player::menu_offset_x + menu_command_width, Player::menu_offset_y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT);
 	menustatus_window->SetActive(false);
 }
 
@@ -158,10 +159,11 @@ void Scene_Menu::CreateCommandWindow() {
 		}
 	}
 
-	command_window.reset(new Window_Command(options, menu_command_width));
+	command_window = std::make_unique<Window_Command>(this, options, menu_command_width);
 	command_window->SetX(Player::menu_offset_x);
 	command_window->SetY(Player::menu_offset_y);
 	command_window->SetIndex(menu_index);
+	//command_window->SetHalfActive(true);
 
 	// Disable items
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
@@ -196,74 +198,88 @@ void Scene_Menu::UpdateCommand() {
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		menu_index = command_window->GetIndex();
-
-		switch (command_options[menu_index]) {
-		case Item:
-			if (Main_Data::game_party->GetActors().empty()) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-			} else {
+		if (menu_index >= 0 && menu_index < command_options.size())
+			switch (command_options[menu_index]) {
+			case Item:
+				if (Main_Data::game_party->GetActors().empty()) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_Item>());
+				}
+				break;
+			case Skill:
+			case Equipment:
+			case Status:
+			case Row:
+				if (Main_Data::game_party->GetActors().empty()) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					command_window->SetActive(false);
+					menustatus_window->SetActive(true);
+					menustatus_window->SetIndex(0);
+				}
+				break;
+			case Save:
+				if (!Main_Data::game_system->GetAllowSave()) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_Save>());
+				}
+				break;
+			case Order:
+				if (Main_Data::game_party->GetActors().size() <= 1) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+				} else {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					Scene::Push(std::make_shared<Scene_Order>());
+				}
+				break;
+			case Wait:
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_Item>());
-			}
-			break;
-		case Skill:
-		case Equipment:
-		case Status:
-		case Row:
-			if (Main_Data::game_party->GetActors().empty()) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-			} else {
+				Main_Data::game_system->ToggleAtbMode();
+				command_window->SetItemText(menu_index,
+					Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
+				break;
+			case Settings:
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
+				Scene::Push(std::make_shared<Scene_Settings>());
+				break;
+			case Debug:
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				command_window->SetActive(false);
-				menustatus_window->SetActive(true);
-				menustatus_window->SetIndex(0);
-			}
-			break;
-		case Save:
-			if (!Main_Data::game_system->GetAllowSave()) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-			} else {
+				Scene::Push(std::make_shared<Scene_Debug>());
+				break;
+			case Quit:
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_Save>());
+				Scene::Push(std::make_shared<Scene_End>());
+				break;
 			}
-			break;
-		case Order:
-			if (Main_Data::game_party->GetActors().size() <= 1) {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-			} else {
-				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-				Scene::Push(std::make_shared<Scene_Order>());
-			}
-			break;
-		case Wait:
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Main_Data::game_system->ToggleAtbMode();
-			command_window->SetItemText(menu_index,
-				Main_Data::game_system->GetAtbMode() == lcf::rpg::SaveSystem::AtbMode_atb_wait ? lcf::Data::terms.wait_on : lcf::Data::terms.wait_off);
-			break;
-		case Settings:
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
-			Scene::Push(std::make_shared<Scene_Settings>());
-			break;
-		case Debug:
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Scene::Push(std::make_shared<Scene_Debug>());
-			break;
-		case Quit:
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Scene::Push(std::make_shared<Scene_End>());
-			break;
-		}
 	}
 }
 
 void Scene_Menu::UpdateActorSelection() {
+
+	Point mouse_pos = Input::GetMousePosition();
+	int index = command_window->CursorHitTest({ mouse_pos.x - command_window->GetX(), mouse_pos.y - command_window->GetY() });
+	if (index == -1) {
+		isOutSideCommands = true;
+	}
+	else if (isOutSideCommands){
+		command_window->SetActive(true);
+		menustatus_window->SetActive(false);
+		menustatus_window->SetIndex(-1);
+		command_window->SetIndex(index);
+		isOutSideCommands = false;
+	}
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		command_window->SetActive(true);
 		menustatus_window->SetActive(false);
 		menustatus_window->SetIndex(-1);
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION) && command_window->GetIndex() < command_options.size() && command_window->GetIndex() >= 0 && menustatus_window->GetIndex() >= 0) {
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
 			if (!menustatus_window->GetActor()->CanAct()) {

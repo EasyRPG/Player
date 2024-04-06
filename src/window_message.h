@@ -33,7 +33,7 @@
  */
 class Window_Message: public Window_Selectable {
 public:
-	Window_Message(int ix, int iy, int iwidth, int iheight);
+	Window_Message(Scene* parent, int ix, int iy, int iwidth, int iheight);
 	~Window_Message() override;
 
 	enum WindowMessageValues {
@@ -137,6 +137,10 @@ public:
 	 * @param lines the number of lines
 	 **/
 	void SetMaxLinesPerPage(int lines);
+
+	virtual bool ExcludeForMouse() const {
+		return true;
+	}
 
 protected:
 	/** Async operation */

@@ -26,8 +26,21 @@
 #include "font.h"
 #include "player.h"
 
-Window_Base::Window_Base(int x, int y, int width, int height, Drawable::Flags flags)
-	: Window(flags)
+Window_Base::Window_Base(Scene* parent, WindowType type, int x, int y, int width, int height, Drawable::Flags flags)
+	: Window(parent, type, flags)
+{
+	SetWindowskin(Cache::SystemOrBlack());
+
+	SetX(x);
+	SetY(y);
+	SetWidth(width);
+	SetHeight(height);
+	SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
+	SetZ(Priority_Window);
+}
+
+Window_Base::Window_Base(Scene* parent, int x, int y, int width, int height, Drawable::Flags flags)
+	: Window(parent, WindowType::Unknown, flags)
 {
 	SetWindowskin(Cache::SystemOrBlack());
 

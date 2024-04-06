@@ -33,8 +33,8 @@ static int CalculateWidth(const std::vector<std::string>& commands, int width) {
 	}
 }
 
-Window_Command::Window_Command(std::vector<std::string> in_commands, int width, int max_item) :
-	Window_Selectable(0, 0, CalculateWidth(in_commands, width), (max_item < 0 ? in_commands.size() : max_item) * 16 + 16)
+Window_Command::Window_Command(Scene* parent, std::vector<std::string> in_commands, int width, int max_item) :
+	Window_Selectable(parent, 0, 0, CalculateWidth(in_commands, width), (max_item < 0 ? in_commands.size() : max_item) * 16 + 16)
 {
 	ReplaceCommands(std::move(in_commands));
 }

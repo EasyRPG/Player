@@ -79,7 +79,7 @@ public:
 	};
 
 	/** Constructor  */
-	Window_Settings(int ix, int iy, int iwidth, int iheight);
+	Window_Settings(Scene* parent, int ix, int iy, int iwidth, int iheight);
 
 	/** @return true if the index points to an enabled action */
 	bool IsCurrentActionEnabled() const {
