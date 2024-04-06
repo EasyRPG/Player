@@ -353,6 +353,15 @@ namespace Input {
 	bool GetUseMouseButton();
 	bool MouseMoved();
 
+
+	/*
+	*	Used for call common event for Mouse control
+	*/
+	extern int MouseShowEventID;
+	extern int MouseHideEventID;
+	extern int MouseVarX;
+	extern int MouseVarY;
+	extern int MouseSwitchID;
 }
 
 #endif

@@ -932,3 +932,311 @@ void Game_Character::UpdateFacing() {
 		SetFacing(dir);
 	}
 }
+
+/*
+* Following function are made by @Ell1e
+* I changed them to return a list instead of setting up MoveRoute.
+*/
+
+/* (You might want to check the CommandSmartMoveRoute() alternate
+ * variant with less parameters, or CommandStepToward(), for the
+ * actual description of the end-user facing commadns.)
+ *
+ * This is the generic version of the path finding command.
+ *
+ * Parameter string advanced options:
+ *   Use the string to specify advanced options, like "maxRouteSteps=5" to
+ *   limit the resulting movement route to a maximum of steps (if the
+ *   target is further away, it simply won't be fully reached), or
+ *   like "maxSearchSteps=100" where a larger number gives better results
+ *   for further away targets but causes more lag, or like
+ *   "ignoreEventID=93" where some event can be specified by ID to be
+ *   treated as passable by the path search, so it won't try to find
+ *   a path around it. The "ignoreEventID" option can be used multiple
+ *   times to ignore multiple events.
+ *   Example string: "maxSearchSteps=50 ignoreEventID=5 ignoreEventId=6"
+ */
+std::vector<Game_Character::SearchNode> Game_Character::CommandSmartMoveRoute(
+	int maxRouteStepsDefault, int maxSearchStepsDefault,
+	int abortIfAlreadyMovingDefault,
+	int destX,
+	int destY
+) {
+	std::unordered_set<int> ignoreEventIDs;
+	bool outputDebugInfo = 0;
+	int maxRouteSteps = maxRouteStepsDefault;
+	int maxSearchSteps = maxSearchStepsDefault;
+	int abortIfAlreadyMoving = abortIfAlreadyMovingDefault;
+
+	
+
+	// Extract search source:
+	Game_Character* event = this;
+	
+	std::vector<SearchNode> listNull;
+	// Set up helper variables:
+	SearchNode start = SearchNode(event->GetX(), event->GetY(), 0, -1);
+	if ((start.x == destX && start.y == destY) ||
+		maxRouteSteps == 0)
+		return listNull;
+	std::vector<SearchNode> list;
+	std::unordered_map<int, SearchNode> closedList;
+	std::map<std::pair<int, int>, SearchNode> closedListByCoord;
+	list.push_back(start);
+	int id = 0;
+	int idd = 0;
+	int stepsTaken = 0; // Initialize steps taken to 0.
+	SearchNode closestNode = SearchNode(destX, destY, INT_MAX, -1); // Initialize with a very high cost.
+	int closestDistance = INT_MAX; // Initialize with a very high distance.
+	std::unordered_set<SearchNode, SearchNodeHash> seen;
+
+	if (outputDebugInfo >= 2) {
+		Output::Debug("Game_Interpreter::CommandSearchPath: "
+			"start search, character x{} y{}, to x{}, y{}, "
+			"ignored event ids count: {}",
+			start.x, start.y, destX, destY, ignoreEventIDs.size());
+	}
+
+	bool GameMapLoopsHorizontal = Game_Map::LoopHorizontal();
+	bool GameMapLoopsVertical = Game_Map::LoopVertical();
+	std::vector<SearchNode> neighbour;
+	neighbour.reserve(8);
+	while (!list.empty() && stepsTaken < maxSearchSteps) {
+		SearchNode n = list[0];
+		list.erase(list.begin());
+		stepsTaken++;
+		closedList[n.id] = n;
+		closedListByCoord.insert({ {n.x, n.y}, n });
+
+		if (n.x == destX && n.y == destY) {
+			// Reached the destination.
+			closestNode = n;
+			closestDistance = 0;
+			break;	// Exit the loop to build final route.
+		}
+		else {
+			neighbour.clear();
+			SearchNode nn = SearchNode(n.x + 1, n.y, n.cost + 1, 1); // Right
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x, n.y - 1, n.cost + 1, 0); // Up
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x - 1, n.y, n.cost + 1, 3); // Left
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x, n.y + 1, n.cost + 1, 2); // Down
+			neighbour.push_back(nn);
+
+			nn = SearchNode(n.x - 1, n.y + 1, n.cost + 1, 6); // Down Left
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x + 1, n.y - 1, n.cost + 1, 4); // Up Right
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x - 1, n.y - 1, n.cost + 1, 7); // Up Left
+			neighbour.push_back(nn);
+			nn = SearchNode(n.x + 1, n.y + 1, n.cost + 1, 5); // Down Right
+			neighbour.push_back(nn);
+
+			for (SearchNode a : neighbour) {
+				idd++;
+				a.parentX = n.x;
+				a.parentY = n.y;
+				a.id = idd;
+				a.parentID = n.id;
+
+				// Adjust neighbor coordinates for map looping
+				if (GameMapLoopsHorizontal) {
+					if (a.x >= Game_Map::GetTilesX())
+						a.x -= Game_Map::GetTilesX();
+					else if (a.x < 0)
+						a.x += Game_Map::GetTilesX();
+				}
+
+				if (GameMapLoopsVertical) {
+					if (a.y >= Game_Map::GetTilesY())
+						a.y -= Game_Map::GetTilesY();
+					else if (a.y < 0)
+						a.y += Game_Map::GetTilesY();
+				}
+
+				std::unordered_set<SearchNode, SearchNodeHash>::const_iterator
+					check = seen.find(a);
+				if (check != seen.end()) {
+					SearchNode oldEntry = closedList[(*check).id];
+					if (a.cost < oldEntry.cost) {
+						// Found a shorter path to previous node, update & reinsert:
+						if (outputDebugInfo >= 2) {
+							Output::Debug("Game_Interpreter::CommandSearchPath: "
+								"found shorter path to x:{} y:{}"
+								"from x:{} y:{} direction: {}",
+								a.x, a.y, n.x, n.y, a.direction);
+						}
+						closedList.erase(oldEntry.id);
+						oldEntry.cost = a.cost;
+						oldEntry.parentID = n.id;
+						oldEntry.parentX = n.x;
+						oldEntry.parentY = n.y;
+						oldEntry.direction = a.direction;
+						closedList[oldEntry.id] = oldEntry;
+					}
+					continue;
+				}
+				else if (a.x == start.x && a.y == start.y) {
+					continue;
+				}
+				bool added = false;
+				if (event->CheckWay(n.x, n.y, a.x, a.y, true, &ignoreEventIDs) ||
+					(a.x == destX && a.y == destY &&
+						event->CheckWay(n.x, n.y, a.x, a.y, false, NULL))) {
+					if (a.direction == 4) {
+						if (event->CheckWay(n.x, n.y, n.x + 1, n.y,
+							true, &ignoreEventIDs) ||
+							event->CheckWay(n.x, n.y, n.x, n.y - 1,
+								true, &ignoreEventIDs)) {
+							added = true;
+							list.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 5) {
+						if (event->CheckWay(n.x, n.y, n.x + 1, n.y,
+							true, &ignoreEventIDs) ||
+							event->CheckWay(n.x, n.y, n.x, n.y + 1,
+								true, &ignoreEventIDs)) {
+							added = true;
+							list.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 6) {
+						if (event->CheckWay(n.x, n.y, n.x - 1, n.y,
+							true, &ignoreEventIDs) ||
+							event->CheckWay(n.x, n.y, n.x, n.y + 1,
+								true, &ignoreEventIDs)) {
+							added = true;
+							list.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 7) {
+						if (event->CheckWay(n.x, n.y, n.x - 1, n.y,
+							true, &ignoreEventIDs) ||
+							event->CheckWay(n.x, n.y, n.x, n.y - 1,
+								true, &ignoreEventIDs)) {
+							added = true;
+							list.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else {
+						added = true;
+						list.push_back(a);
+						seen.insert(a);
+					}
+				}
+				if (added && outputDebugInfo >= 2) {
+					Output::Debug("Game_Interpreter::CommandSearchPath: "
+						"discovered id:{} x:{} y:{} parentX:{} parentY:{}"
+						"parentID:{} direction: {}",
+						list[list.size() - 1].id,
+						list[list.size() - 1].x, list[list.size() - 1].y,
+						list[list.size() - 1].parentX,
+						list[list.size() - 1].parentY,
+						list[list.size() - 1].parentID,
+						list[list.size() - 1].direction);
+				}
+			}
+		}
+		id++;
+		// Calculate the Manhattan distance between the current node and the destination
+		int manhattanDist = abs(destX - n.x) + abs(destY - n.y);
+
+		// Check if this node is closer to the destination
+		if (manhattanDist < closestDistance) {
+			closestNode = n;
+			closestDistance = manhattanDist;
+			if (outputDebugInfo >= 2) {
+				Output::Debug("Game_Interpreter::CommandSearchPath: "
+					"new closest node at x:{} y:{} id:{}",
+					closestNode.x, closestNode.y,
+					closestNode.id);
+			}
+		}
+	}
+
+	// Check if a path to the closest node was found.
+	if (closestDistance != INT_MAX) {
+		// Build a route to the closest reachable node.
+		if (outputDebugInfo >= 2) {
+			Output::Debug("Game_Interpreter::CommandSearchPath: "
+				"trying to return route from x:{} y:{} to "
+				"x:{} y:{} (id:{})",
+				start.x, start.y, closestNode.x, closestNode.y,
+				closestNode.id);
+		}
+		std::vector<SearchNode> listMove;
+
+		//Output::Debug("Chemin :");
+		SearchNode node = closestNode;
+		while (maxRouteSteps < 0 ||
+			listMove.size() < maxRouteSteps) {
+			listMove.push_back(node);
+			bool foundParent = false;
+			if (closedListByCoord.find({ node.parentX,
+					node.parentY }) == closedListByCoord.end())
+				break;
+			SearchNode node2 = closedListByCoord[
+			{node.parentX, node.parentY}
+			];
+			if (outputDebugInfo >= 2) {
+				Output::Debug(
+					"Game_Interpreter::CommandSearchPath: "
+					"found parent leading to x:{} y:{}, "
+					"it's at x:{} y:{} dir:{}",
+					node.x, node.y,
+					node2.x, node2.y, node2.direction);
+			}
+			node = node2;
+		}
+
+		std::reverse(listMove.rbegin(), listMove.rend());
+
+		std::string debug_output_path("");
+		if (listMove.size() > 0) {
+			//lcf::rpg::MoveRoute route;
+			//// route.skippable = true;
+			//route.repeat = false;
+
+			//for (SearchNode node2 : listMove) {
+			//	if (node2.direction >= 0) {
+			//		lcf::rpg::MoveCommand cmd;
+			//		cmd.command_id = node2.direction;
+			//		route.move_commands.push_back(cmd);
+			//		if (outputDebugInfo >= 1) {
+			//			if (debug_output_path.length() > 0)
+			//				debug_output_path += ",";
+			//			std::ostringstream dirnum;
+			//			dirnum << node2.direction;
+			//			debug_output_path += std::string(dirnum.str());
+			//		}
+			//	}
+			//}
+
+			//lcf::rpg::MoveCommand cmd;
+			//cmd.command_id = 23;
+			//route.move_commands.push_back(cmd);
+
+			//event->ForceMoveRoute(route, 8);
+		}
+		if (outputDebugInfo >= 1) {
+			Output::Debug(
+				"Game_Interpreter::CommandSearchPath: "
+				"setting route {} for character x{} y{}",
+				" (ignored event ids count: {})",
+				debug_output_path, start.x, start.y,
+				ignoreEventIDs.size()
+			);
+		}
+		return listMove;
+	}
+
+	// No path to the destination, return failure.
+	return listNull;
+}

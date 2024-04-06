@@ -41,6 +41,16 @@ namespace Input {
 	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
+
+
+	/*
+	*	Used for call common event for Mouse control
+	*/
+	int MouseShowEventID = -1;
+	int MouseHideEventID = -1;
+	int MouseVarX = -1;
+	int MouseVarY = -1;
+	int MouseSwitchID = -1;
 }
 
 int mouseOldX = 0;
