@@ -459,6 +459,7 @@ void Window_Message::Update() {
 					}
 					else {
 						index = -1;
+						DisplayUi->ChangeCursor(1);
 					}
 					
 				}
