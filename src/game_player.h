@@ -60,7 +60,7 @@ public:
 	TeleportTarget GetTeleportTarget() const;
 	void ResetTeleportTarget(TeleportTarget tt = {});
 
-	bool ActivateEventAt(int x, int y);
+	bool TriggerEventAt(int x, int y);
 
 	/**
 	 * Sets the map, position and direction that the game player must have after the teleport is over
