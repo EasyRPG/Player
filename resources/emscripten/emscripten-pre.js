@@ -65,7 +65,7 @@ function parseArgs () {
 
     // Filesystem is not ready when processing arguments, store path to game
     if (tmp[0] === "game" && tmp.length > 1) {
-      Module.game = tmp[1].toLowerCase();
+      Module.game = tmp[1];
       continue;
     }
 
@@ -106,6 +106,7 @@ if (Module.game === undefined) {
   Module.game = "";
 } else {
   Module.arguments.push("--game", Module.game);
+  Module.game = Module.game.toLowerCase();
 }
 
 // Catch all errors occuring inside the window

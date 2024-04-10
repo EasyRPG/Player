@@ -138,6 +138,8 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 #endif
 #ifdef EMSCRIPTEN
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
+	// Only handle keyboard events when the canvas has focus
+	SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #endif
 #ifdef __WIIU__
 	//WHBProcInit();
