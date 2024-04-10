@@ -142,6 +142,8 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandOpenLoadMenu(com);
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
+		case static_cast <Game_Interpreter::Cmd>(2002): // Cmd::EasyRpg_TriggerEventAt
+			return CommandEasyRpgTriggerEventAt(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -672,5 +674,14 @@ bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /*
 	}
 
 	Main_Data::game_system->ToggleAtbMode();
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand const& com) {
+	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
+
+	Main_Data::game_player->TriggerEventAt(x, y);
+
 	return true;
 }

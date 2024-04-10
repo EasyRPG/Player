@@ -82,6 +82,8 @@ private:
 	bool CommandOpenLoadMenu(lcf::rpg::EventCommand const& com);
 	bool CommandToggleAtbMode(lcf::rpg::EventCommand const& com);
 
+	bool CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand const& com);
+
 	AsyncOp ContinuationShowInnStart(int indent, int choice_result, int price);
 
 	static std::vector<Game_Character*> pending;

@@ -835,3 +835,6 @@ void Game_Player::UpdatePan() {
 	data()->pan_current_y -= dy;
 }
 
+bool Game_Player::TriggerEventAt(int x, int y) {
+	return CheckEventTriggerThere({ lcf::rpg::EventPage::Trigger_action }, x, y, true);
+}
