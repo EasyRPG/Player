@@ -2707,10 +2707,11 @@ namespace PicPointerPatch {
 	}
 
 	static void AdjustParams(Game_Pictures::Params& params) {
-		if (params.magnify > 10000) {
-			int new_magnify = Main_Data::game_variables->Get(params.magnify - 10000);
-			Output::Debug("PicPointer: Zoom {} replaced with {}", params.magnify, new_magnify);
-			params.magnify = new_magnify;
+		if (params.magnify_width > 10000) {
+			int new_magnify = Main_Data::game_variables->Get(params.magnify_width - 10000);
+			Output::Debug("PicPointer: Zoom {} replaced with {}", params.magnify_width, new_magnify);
+			params.magnify_width = new_magnify;
+			params.magnify_height = new_magnify;
 		}
 
 		if (params.top_trans > 10000) {
@@ -2795,7 +2796,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
 	params.position_y = ValueOrVariable(pos_mode, com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
-	params.magnify = com.parameters[5];
+	params.magnify_width = com.parameters[5];
+	params.magnify_height = params.magnify_width;
 	params.use_transparent_color = com.parameters[7] > 0;
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
@@ -2820,7 +2822,12 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 	if (param_size > 16 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
 		// Handling of RPG2k3 1.12 chunks
-		pic_id = ValueOrVariable(com.parameters[17], pic_id);
+		if (Player::IsPatchManiac()) {
+			pic_id = ValueOrVariableBitfield(com.parameters[17], 0, pic_id);
+			params.name = ToString(CommandStringOrVariableBitfield(com, 17, 2, 30));
+		} else {
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+		}
 		if (com.parameters[19] != 0) {
 			int var = 0;
 			if (Main_Data::game_variables->IsValid(com.parameters[19])) {
@@ -2828,7 +2835,24 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
-		params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+
+		if (Player::IsPatchManiac()) {
+			// Color tint using variables
+			params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+			params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+			params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+			params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+		}
+
+		params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
+		if (Player::IsPatchManiac() && com.parameters.size() > 31 && com.parameters[20] >= 16 && params.effect_mode == 0) {
+			// The >= 16 check is needed because this bit is set when independent width/height scaling is used
+			// When using special effects on Maniacs, Height is set to Width
+			params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[31]);
+		} else {
+			params.magnify_height = params.magnify_width;
+		}
+
 		params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 		if (com.parameters[22] > 0) {
 			// If spritesheet is enabled
@@ -2877,7 +2901,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	PicPointerPatch::AdjustShowParams(pic_id, params);
 
 	// Sanitize input
-	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.magnify_width = std::max(0, std::min(params.magnify_width, 2000));
+	params.magnify_height = std::max(0, std::min(params.magnify_height, 2000));
 	params.top_trans = std::max(0, std::min(params.top_trans, 100));
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 
@@ -2914,7 +2939,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	int pos_mode = ManiacBitmask(com.parameters[1], 0xFF);
 	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
 	params.position_y = ValueOrVariable(pos_mode, com.parameters[3]);
-	params.magnify = com.parameters[5];
+	params.magnify_width = com.parameters[5];
+	params.magnify_height = params.magnify_width;
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
 	params.green = com.parameters[9];
@@ -2936,7 +2962,23 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			// Currently unused by RPG Maker
 			//int chars_to_replace = com.parameters[18];
 			//int replace_with = com.parameters[19];
-			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+
+			if (com.parameters[17] >= 4096 && Player::IsPatchManiac()) {
+				// Color tint using variables
+				params.red = ValueOrVariableBitfield(com.parameters[17], 3, params.red);
+				params.green = ValueOrVariableBitfield(com.parameters[17], 3,  params.green);
+				params.blue = ValueOrVariableBitfield(com.parameters[17], 3, params.blue);
+				params.saturation = ValueOrVariableBitfield(com.parameters[17], 3,  params.saturation);
+			}
+
+			params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
+			if (Player::IsPatchManiac() && com.parameters.size() > 18 && com.parameters[20] >= 16 && params.effect_mode == 0) {
+				// The >= 16 check is needed because this bit is set when independent width/height scaling is used
+				// When using special effects on Maniacs, Height is set to Width
+				params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[18]);
+			} else {
+				params.magnify_height = params.magnify_width;
+			}
 			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 		}
 
@@ -2962,8 +3004,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
-				params.effect_power = ValueOrVariableBitfield(com.parameters[16], 0, params.effect_power);
-				int divisor = ValueOrVariableBitfield(com.parameters[16], 1, com.parameters[15]);
+				params.effect_power = ValueOrVariableBitfield(com.parameters[4], 0, params.effect_power);
+				int divisor = ValueOrVariableBitfield(com.parameters[4], 1, com.parameters[7]);
 				if (divisor == 0) {
 					divisor = 1;
 				}
@@ -2978,7 +3020,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	PicPointerPatch::AdjustMoveParams(pic_id, params);
 
 	// Sanitize input
-	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.magnify_width = std::max(0, std::min(params.magnify_width, 2000));
+	params.magnify_height = std::max(0, std::min(params.magnify_height, 2000));
 	params.top_trans = std::max(0, std::min(params.top_trans, 100));
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 	params.duration = std::max(Player::IsPatchManiac() ? -10000 : 0, std::min(params.duration, 10000));
@@ -4258,7 +4301,7 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 
 	params.position_x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
 	params.position_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
-	params.magnify = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+	params.magnify_width = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
 	params.top_trans = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
 	params.red = com.parameters[6];
 	params.green = com.parameters[7];
@@ -4270,6 +4313,15 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	params.map_layer = com.parameters[15];
 	params.battle_layer = com.parameters[16];
 	params.flags = com.parameters[17];
+
+	params.magnify_width = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+	if (com.parameters.size() > 23 && com.parameters[0] >= 0x10000000 && params.effect_mode == 0) {
+		// The >= 0x10000000 check is needed because this bit is set when independent width/height scaling is used
+		// When using special effects on Maniacs, Height is set to Width
+		params.magnify_height = ValueOrVariableBitfield((com.parameters[0] >> 1), 7, com.parameters[23]);
+	} else {
+		params.magnify_height = params.magnify_width;
+	}
 
 	int flags = com.parameters[12];
 	int blend_mode = flags & 0xF;
@@ -4403,13 +4455,13 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			x = Utils::RoundTo<int>(data.current_x);
 			y = Utils::RoundTo<int>(data.current_y);
 			width = Utils::RoundTo<int>(width * data.current_magnify / 100.0);
-			height = Utils::RoundTo<int>(height * data.current_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.maniac_current_magnify_height / 100.0);
 			break;
 		case 2:
 			x = Utils::RoundTo<int>(data.finish_x);
 			y = Utils::RoundTo<int>(data.finish_y);
 			width = Utils::RoundTo<int>(width * data.finish_magnify / 100.0);
-			height = Utils::RoundTo<int>(height * data.finish_magnify / 100.0);
+			height = Utils::RoundTo<int>(height * data.maniac_finish_magnify_height / 100.0);
 			break;
 	}
 
