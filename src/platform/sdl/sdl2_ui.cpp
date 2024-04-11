@@ -25,6 +25,7 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <SDL_syswm.h>
+#  include <dwmapi.h>
 #elif defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
@@ -117,6 +118,19 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 	}
 	return current_fmt;
 }
+
+#ifdef _WIN32
+HWND GetWindowHandle(SDL_Window* window) {
+	SDL_SysWMinfo wminfo;
+	SDL_VERSION(&wminfo.version)
+		SDL_bool success = SDL_GetWindowWMInfo(window, &wminfo);
+
+	if (success < 0)
+		Output::Error("Wrong SDL version");
+
+	return wminfo.info.win.window;
+}
+#endif
 
 static int FilterUntilFocus(const SDL_Event* evnt);
 
@@ -354,8 +368,8 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		window.size_changed = true;
 
 		auto window_sg = lcf::makeScopeGuard([&]() {
-				SDL_DestroyWindow(sdl_window);
-				sdl_window = nullptr;
+			SDL_DestroyWindow(sdl_window);
+			sdl_window = nullptr;
 		});
 
 		SetAppIcon();
@@ -414,6 +428,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
+
+#ifdef _WIN32
+		HWND window = GetWindowHandle(sdl_window);
+		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+		int window_rounding = 1; // DWMWCP_DONOTROUND
+		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
 
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
@@ -973,14 +994,6 @@ void Sdl2Ui::SetAppIcon() {
 #if defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
-	SDL_SysWMinfo wminfo;
-	SDL_VERSION(&wminfo.version)
-	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
-
-	if (success < 0)
-		Output::Error("Wrong SDL version");
-
-	HWND window;
 	HINSTANCE handle = GetModuleHandle(NULL);
 	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
 	HICON icon_small = (HICON) LoadImage(handle, MAKEINTRESOURCE(23456), IMAGE_ICON,
@@ -989,7 +1002,7 @@ void Sdl2Ui::SetAppIcon() {
 	if (icon == NULL || icon_small == NULL)
 		Output::Warning("Could not load window icon.");
 
-	window = wminfo.info.win.window;
+	HWND window = GetWindowHandle(sdl_window);
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
