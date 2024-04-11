@@ -647,15 +647,10 @@ void Sdl2Ui::SetTitle(const std::string &title) {
 }
 
 bool Sdl2Ui::ShowCursor(bool flag) {
-#ifdef __WINRT__
-	// Prevent cursor hide in WinRT because it is hidden everywhere while the app runs...
-	return flag;
-#else
 	bool temp_flag = cursor_visible;
 	cursor_visible = flag;
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
-#endif
 }
 
 void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
@@ -975,7 +970,7 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#if defined(__WINRT__) || defined(__MORPHOS__)
+#if defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
 	SDL_SysWMinfo wminfo;
