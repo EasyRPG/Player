@@ -59,10 +59,13 @@ namespace Input {
 	};
 
 	struct TouchInput {
-		bool pressed = false;
-		Point position;
+		void Down(int id, int x, int y);
+		void Up();
 
-		// Fields for use by InputSource. Do not modify in Ui!
+		// Do not alter the fields from the Ui class, use Down and Up
+		int id = -1;
+		Point position;
+		bool pressed = false;
 		bool prev_frame_pressed = false;
 		Game_Clock::time_point touch_begin;
 		Game_Clock::time_point touch_end;

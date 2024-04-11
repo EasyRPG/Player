@@ -940,29 +940,33 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 	// We currently ignore swipe gestures
 	// A finger touch is detected when the fingers go up a brief delay after going down
 	if (evnt.type == SDL_FINGERDOWN) {
-		int finger = evnt.tfinger.fingerId;
-		if (finger < static_cast<int>(finger_input.size())) {
-			auto& fi = touch_input[finger];
-			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+		auto fi = std::find_if(touch_input.begin(), touch_input.end(), [&](const auto& input) {
+			return input.id == -1;
+		});
+		if (fi == touch_input.end()) {
+			// already tracking 5 fingers
+			return;
+		}
 
 #ifdef EMSCRIPTEN
-			double display_ratio = emscripten_get_device_pixel_ratio();
-			fi.position.x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
+		double display_ratio = emscripten_get_device_pixel_ratio();
+		int x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
+		int y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
 #else
-			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+		int x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+		int y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
 #endif
 
-			fi.pressed = true;
-		}
+		fi->Down(evnt.tfinger.fingerId, x, y);
 	} else if (evnt.type == SDL_FINGERUP) {
-		int finger = evnt.tfinger.fingerId;
-		if (finger < static_cast<int>(finger_input.size())) {
-			auto& fi = touch_input[finger];
-			fi.pressed = false;
+		auto fi = std::find_if(touch_input.begin(), touch_input.end(), [&](const auto& input) {
+			return input.id == evnt.tfinger.fingerId;
+		});
+		if (fi == touch_input.end()) {
+			// Finger is not tracked
+			return;
 		}
+		fi->Up();
 	}
 #else
 	/* unused */
