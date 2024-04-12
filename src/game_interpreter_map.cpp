@@ -475,6 +475,8 @@ bool Game_Interpreter_Map::CommandEnterHeroName(lcf::rpg::EventCommand const& co
 
 bool Game_Interpreter_Map::CommandTeleport(lcf::rpg::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
+	if (com.string != "") Game_Map::SetCustomMapName(com.string);
+
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}

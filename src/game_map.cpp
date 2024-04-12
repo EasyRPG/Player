@@ -57,6 +57,8 @@
 #include "feature.h"
 
 namespace {
+	std::string customMapName = "";
+
 	// Intended bad value, Game_Map::Init sets them correctly
 	int screen_width = -1;
 	int screen_height = -1;
@@ -327,6 +329,8 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 	}
 
 	Output::Debug("Loaded Map {}", map_name);
+	Output::Warning("{}", map_name);
+	customMapName = "";
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());
@@ -1281,6 +1285,16 @@ int Game_Map::GetMapId() {
 	return Main_Data::game_player->GetMapId();
 }
 
+std::string Game_Map::GetCustomMapName() {
+	return customMapName;
+}
+
+void Game_Map::SetCustomMapName(lcf::DBString mapName) {
+	customMapName = mapName.c_str();
+
+	return;
+}
+
 void Game_Map::PrintPathToMap() {
 	const auto* current_info = &GetMapInfo();
 	std::ostringstream ss;
@@ -1682,7 +1696,13 @@ int Game_Map::SubstituteUp(int old_id, int new_id) {
 
 std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 	std::stringstream ss;
-	ss << "Map" << std::setfill('0') << std::setw(4) << map_id;
+	
+	if (customMapName == "") {
+		ss << "Map" << std::setfill('0') << std::setw(4) << map_id;
+	} else {
+		ss << customMapName;
+	}
+
 	if (is_easyrpg) {
 		return Player::fileext_map.MakeFilename(ss.str(), SUFFIX_EMU);
 	} else {
@@ -1694,8 +1714,8 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 #ifdef EMSCRIPTEN
 	Player::translation.RequestAndAddMap(map_id);
 #endif
-
-	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	auto map_name = Game_Map::ConstructMapName(map_id, false);
+	return AsyncHandler::RequestFile(map_name);
 }
 
 // Parallax
