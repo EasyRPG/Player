@@ -833,7 +833,7 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
-		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
+		case Cmd::EasyRpg_SetInterpreterFlag: //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
 		default:
 			return true;
