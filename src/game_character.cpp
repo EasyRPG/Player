@@ -309,6 +309,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					SetDirection(prev_direction);
 					SetFacing(prev_facing);
 				} else {
+					SetMoveFailureCount(GetMoveFailureCount() + 1);
 					return;
 				}
 			}
@@ -373,6 +374,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 							SetFacing(prev_facing);
 						} else {
 							current_index = saved_index;
+							SetMoveFailureCount(GetMoveFailureCount() + 1);
 							return;
 						}
 					}
@@ -457,6 +459,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 					break;
 			}
 		}
+		SetMoveFailureCount(0);
 		++current_index;
 
 		if (current_index == start_index) {
@@ -778,6 +781,7 @@ void Game_Character::ForceMoveRoute(const lcf::rpg::MoveRoute& new_route,
 	SetMoveFrequency(frequency);
 	SetMoveRouteOverwritten(true);
 	SetMoveRoute(new_route);
+	SetMoveFailureCount(0);
 	if (frequency != original_move_frequency) {
 		SetMaxStopCountForStep();
 	}
