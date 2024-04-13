@@ -243,6 +243,18 @@ public:
 	void SetMoveRouteFinished(bool finished);
 
 	/**
+	 * @return How often the current move action failed.
+	 */
+	int GetMoveFailureCount() const;
+
+	/**
+	 * Sets how often the current move action failed.
+	 *
+	 * @param count amount
+	 */
+	void SetMoveFailureCount(int count);
+
+	/**
 	 * Gets sprite name. Usually the name of the graphic file.
 	 *
 	 * @return sprite name
@@ -1057,6 +1069,14 @@ inline bool Game_Character::IsMoveRouteFinished() const {
 
 inline void Game_Character::SetMoveRouteFinished(bool finished) {
 	data()->move_route_finished = finished;
+}
+
+inline int Game_Character::GetMoveFailureCount() const {
+	return data()->easyrpg_move_failure_count;
+}
+
+inline void Game_Character::SetMoveFailureCount(int count) {
+	data()->easyrpg_move_failure_count = count;
 }
 
 inline const std::string& Game_Character::GetSpriteName() const {

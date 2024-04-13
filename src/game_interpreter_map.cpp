@@ -229,8 +229,10 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandOpenLoadMenu(com);
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
-		case static_cast <Game_Interpreter::Cmd>(2002): // Cmd::EasyRpg_TriggerEventAt
+		case Cmd::EasyRpg_TriggerEventAt:
 			return CommandEasyRpgTriggerEventAt(com);
+		case Cmd::EasyRpg_WaitForSingleMovement:
+			return CommandEasyRpgWaitForSingleMovement(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -778,6 +780,52 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
 
 	Main_Data::game_player->TriggerEventAt(x, y);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCommand const& com) {
+	int event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	Game_Character* chara = GetCharacter(event_id);
+	if (chara == nullptr) {
+		return true;
+	}
+
+	int failure_limit = 0;
+	if (com.parameters.size() >= 4) {
+		failure_limit = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	}
+
+	int output_var = 0;
+	if (com.parameters.size() >= 6) {
+		failure_limit = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	}
+
+	bool exists = chara->IsMoveRouteOverwritten();
+	bool finished = chara->IsMoveRouteFinished();
+
+	if (!exists || (exists && finished)) {
+		if (output_var > 0) {
+			// Move route inexistant or ended: Report success (1)
+			Main_Data::game_variables->Set(output_var, 1);
+			Game_Map::SetNeedRefresh(true);
+		}
+		return true;
+	}
+
+	// !finished
+	if (failure_limit == 0 || chara->GetMoveFailureCount() < failure_limit) {
+		// Below threshold: Yield
+		return false;
+	}
+
+	// Cancel move route and report abort (0)
+	chara->CancelMoveRoute();
+	if (output_var > 0) {
+		Main_Data::game_variables->Set(output_var, 0);
+		Game_Map::SetNeedRefresh(true);
+	}
 
 	return true;
 }
