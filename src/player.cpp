@@ -612,11 +612,11 @@ Game_Config Player::ParseCommandLine() {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-audio") || cp.ParseNext(arg, 0, "--disable-audio")) {
+		if (cp.ParseNext(arg, 0, {"--no-audio", "--disable-audio"})) {
 			no_audio_flag = true;
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-rtp") || cp.ParseNext(arg, 0, "--disable-rtp")) {
+		if (cp.ParseNext(arg, 0, {"--no-rtp", "--disable-rtp"})) {
 			no_rtp_flag = true;
 			continue;
 		}
@@ -825,8 +825,8 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get());
+	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
+		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
 
 	ResetGameObjects();
 
@@ -1393,17 +1393,20 @@ Engine options:
  --new-game           Skip the title scene and start a new game directly.
  --no-log-color       Disable colors in terminal log.
  --no-rtp             Disable support for the Runtime Package (RTP).
- --patch PATCH...     Instead of autodetecting patches used by this game, force
-                      emulation of certain patches.
-                      Options:
-                       common-this - "This Event" in common events
-                       dynrpg      - DynRPG patch by Cherry
-                       key-patch   - Key Patch by Ineluki
-                       maniac      - Maniac Patch by BingShan
-                       pic-unlock  - Pictures are not blocked by messages
-                       rpg2k3-cmds - Support all RPG Maker 2003 event commands
-                                     in any version of the engine
- --no-patch           Disable all engine patches.
+ --patch-anti-lag-switch SWITCH
+                      Disables event page refreshing when the switch SWITCH is
+                      enabled.
+ --patch-common-this  Enable usage of "This Event" in common events in any
+                      version of the engine.
+ --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
+ --patch-key-patch    Enable Key Patch by Ineluki.
+ --patch-maniac       Enable Maniac Patch by BingShan.
+ --patch-pic-unlock   Picture movement is not interrupted by messages in any
+                      version of the engine.
+ --patch-rpg2k3-cmds  Support all RPG Maker 2003 event commands in any version
+                      of the engine.
+ --no-patch           Disable all engine patches. To disable a single patch,
+                      prefix any of the patch options with --no-
  --project-path PATH  Instead of using the working directory, the game in PATH
                       is used.
  --record-input FILE  Record all button inputs to FILE.
@@ -1415,6 +1418,8 @@ Engine options:
                       store them in PATH. When using the game browser all games
                       will share the same save directory!
  --seed N             Seeds the random number generator with N.
+
+Providing any patch option disables the patch autodetection of the engine.
 
 Video options:
  --fps-limit          In combination with --no-vsync sets a custom frames per

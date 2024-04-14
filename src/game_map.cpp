@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <initializer_list>
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
@@ -72,6 +73,8 @@ namespace {
 	std::vector<unsigned char> passages_up;
 	std::vector<Game_Event> events;
 	std::vector<Game_CommonEvent> common_events;
+	std::unordered_map<int, MapEventCache> events_cache_by_switch;
+	std::unordered_map<int, MapEventCache> events_cache_by_variable;
 
 	std::unique_ptr<lcf::rpg::Map> map;
 
@@ -132,6 +135,8 @@ void Game_Map::InitCommonEvents() {
 
 void Game_Map::Dispose() {
 	events.clear();
+	events_cache_by_switch.clear();
+	events_cache_by_variable.clear();
 	map.reset();
 	map_info = {};
 	panorama = {};
@@ -356,9 +361,29 @@ void Game_Map::SetupCommon() {
 
 	// Create the map events
 	events.reserve(map->events.size());
-	for (const auto& ev : map->events) {
+	for (auto& ev : map->events) {
 		events.emplace_back(GetMapId(), &ev);
+
+		for (const auto& pg : ev.pages) {
+			if (pg.condition.flags.switch_a) {
+				AddEventToSwitchCache(ev, pg.condition.switch_a_id);
+			}
+			if (pg.condition.flags.switch_b) {
+				AddEventToSwitchCache(ev, pg.condition.switch_b_id);
+			}
+			if (pg.condition.flags.variable) {
+				AddEventToVariableCache(ev, pg.condition.variable_id);
+			}
+		}
 	}
+}
+
+void Game_Map::AddEventToSwitchCache(lcf::rpg::Event& ev, int switch_id) {
+	events_cache_by_switch[switch_id].AddEvent(ev);
+}
+
+void Game_Map::AddEventToVariableCache(lcf::rpg::Event& ev, int var_id) {
+	events_cache_by_variable[var_id].AddEvent(ev);
 }
 
 void Game_Map::PrepareSave(lcf::rpg::Save& save) {
@@ -1512,11 +1537,50 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 }
 
 bool Game_Map::GetNeedRefresh() {
+	int anti_lag_switch = Player::game_config.patch_anti_lag_switch.Get();
+	if (anti_lag_switch > 0 && Main_Data::game_switches->Get(anti_lag_switch)) {
+		return false;
+	}
+
 	return need_refresh;
 }
 
 void Game_Map::SetNeedRefresh(bool refresh) {
 	need_refresh = refresh;
+}
+
+void MapEventCache::AddEvent(lcf::rpg::Event& ev) {
+	auto id = ev.ID;
+
+	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
+		event_ids.emplace_back(id);
+	}
+}
+
+void Game_Map::SetNeedRefreshForSwitchChange(int switch_id) {
+	if (need_refresh)
+		return;
+	if (events_cache_by_switch.find(switch_id) != events_cache_by_switch.end())
+		SetNeedRefresh(true);
+}
+
+void Game_Map::SetNeedRefreshForVarChange(int var_id) {
+	if (need_refresh)
+		return;
+	if (events_cache_by_variable.find(var_id) != events_cache_by_variable.end())
+		SetNeedRefresh(true);
+}
+
+void Game_Map::SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids) {
+	for (auto switch_id: switch_ids) {
+		SetNeedRefreshForSwitchChange(switch_id);
+	}
+}
+
+void Game_Map::SetNeedRefreshForVarChange(std::initializer_list<int> var_ids) {
+	for (auto var_id: var_ids) {
+		SetNeedRefreshForVarChange(var_id);
+	}
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

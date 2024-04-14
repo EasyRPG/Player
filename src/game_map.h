@@ -20,6 +20,7 @@
 
 // Headers
 #include <cstdint>
+#include <initializer_list>
 #include <vector>
 #include <string>
 #include <unordered_set>
@@ -47,30 +48,38 @@ struct BattleArgs;
 constexpr int SCREEN_TILE_SIZE = 256;
 
 class MapUpdateAsyncContext {
-	public:
-		MapUpdateAsyncContext() = default;
+public:
+	MapUpdateAsyncContext() = default;
 
-		static MapUpdateAsyncContext FromCommonEvent(int ce, AsyncOp aop);
-		static MapUpdateAsyncContext FromMapEvent(int ce, AsyncOp aop);
-		static MapUpdateAsyncContext FromForegroundEvent(AsyncOp aop);
-		static MapUpdateAsyncContext FromMessage(AsyncOp aop);
+	static MapUpdateAsyncContext FromCommonEvent(int ce, AsyncOp aop);
+	static MapUpdateAsyncContext FromMapEvent(int ce, AsyncOp aop);
+	static MapUpdateAsyncContext FromForegroundEvent(AsyncOp aop);
+	static MapUpdateAsyncContext FromMessage(AsyncOp aop);
 
-		AsyncOp GetAsyncOp() const;
+	AsyncOp GetAsyncOp() const;
 
-		int GetParallelCommonEvent() const;
-		int GetParallelMapEvent() const;
+	int GetParallelCommonEvent() const;
+	int GetParallelMapEvent() const;
 
-		bool IsForegroundEvent() const;
-		bool IsParallelCommonEvent() const;
-		bool IsParallelMapEvent() const;
-		bool IsMessage() const;
-		bool IsActive() const;
-	private:
-		AsyncOp async_op = {};
-		int common_event = 0;
-		int map_event = 0;
-		bool foreground_event = false;
-		bool message = false;
+	bool IsForegroundEvent() const;
+	bool IsParallelCommonEvent() const;
+	bool IsParallelMapEvent() const;
+	bool IsMessage() const;
+	bool IsActive() const;
+private:
+	AsyncOp async_op = {};
+	int common_event = 0;
+	int map_event = 0;
+	bool foreground_event = false;
+	bool message = false;
+};
+
+class MapEventCache {
+public:
+	void AddEvent(lcf::rpg::Event& ev);
+
+private:
+	std::vector<int> event_ids;
 };
 
 /**
@@ -678,6 +687,14 @@ namespace Game_Map {
 	std::string ConstructMapName(int map_id, bool isEasyRpg);
 
 	FileRequestAsync* RequestMap(int map_id);
+
+	void SetNeedRefreshForSwitchChange(int switch_id);
+	void SetNeedRefreshForVarChange(int var_id);
+	void SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids);
+	void SetNeedRefreshForVarChange(std::initializer_list<int> var_ids);
+
+	void AddEventToSwitchCache(lcf::rpg::Event& ev, int switch_id);
+	void AddEventToVariableCache(lcf::rpg::Event& ev, int var_id);
 
 	namespace Parallax {
 		struct Params {
