@@ -293,6 +293,11 @@ namespace Player {
 	bool IsPatchKeyPatch();
 
 	/**
+	 * @return True when EasyRpg extensions are on
+	 */
+	bool HasEasyRpgExtensions();
+
+	/**
 	 * @return Running engine version. 2000 for RPG2k and 2003 for RPG2k3
 	 */
 	int EngineVersion();
@@ -478,6 +483,10 @@ inline bool Player::IsPatchManiac() {
 
 inline bool Player::IsPatchKeyPatch() {
 	return game_config.patch_key_patch.Get();
+}
+
+inline bool Player::HasEasyRpgExtensions() {
+	return game_config.patch_easyrpg.Get();
 }
 
 #endif

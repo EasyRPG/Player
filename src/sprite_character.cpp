@@ -20,6 +20,7 @@
 #include "cache.h"
 #include "game_map.h"
 #include "bitmap.h"
+#include "output.h"
 
 Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
 	character(character),
@@ -124,16 +125,20 @@ void Sprite_Character::ChipsetUpdated() {
 
 Rect Sprite_Character::GetCharacterRect(StringView name, int index, const Rect bitmap_rect) {
 	Rect rect;
+	rect.width = 24 * (TILE_SIZE / 16) * 3;
+	rect.height = 32 * (TILE_SIZE / 16) * 4;
+
 	// Allow large 4x2 spriteset of 3x4 sprites
 	// when the character name starts with a $ sign.
 	// This is not exactly the VX Ace way because
 	// VX Ace uses a single 1x1 spriteset of 3x4 sprites.
 	if (!name.empty() && name.front() == '$') {
-		rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
-		rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
-	} else {
-		rect.width = 24 * (TILE_SIZE / 16) * 3;;
-		rect.height = 32 * (TILE_SIZE / 16) * 4;
+		if (!Player::HasEasyRpgExtensions()) {
+			Output::Debug("Ignoring large charset {}. EasyRPG Extension not enabled.");
+		} else {
+			rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
+			rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
+		}
 	}
 	rect.x = (index % 4) * rect.width;
 	rect.y = (index / 4) * rect.height;

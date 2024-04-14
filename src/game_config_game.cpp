@@ -89,6 +89,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_override = true;
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, {"--patch-easyrpg", "--no-patch-easyrpg"})) {
+			patch_easyrpg.Set(arg.ArgIsOn());
+			patch_override = true;
+			continue;
+		}
 		if (cp.ParseNext(arg, 0, {"--patch-dynrpg", "--no-patch-dynrpg"})) {
 			patch_dynrpg.Set(arg.ArgIsOn());
 			patch_override = true;
@@ -169,6 +174,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	new_game.FromIni(ini);
 	engine_str.FromIni(ini);
 	fake_resolution.FromIni(ini);
+
+	if (patch_easyrpg.FromIni(ini)) {
+		patch_override = true;
+	}
 
 	if (patch_dynrpg.FromIni(ini)) {
 		patch_override = true;

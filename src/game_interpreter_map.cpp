@@ -678,6 +678,10 @@ bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /*
 }
 
 bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
 

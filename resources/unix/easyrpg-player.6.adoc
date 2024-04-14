@@ -89,6 +89,9 @@ NOTE: For games that only use ASCII (English games) use '1252'.
   Enable limited support for the DynRPG patch from Cherry. The patches are not
   loaded from DLL files, but re-implemented by the engine.
 
+*--patch-easyrpg*::
+  Enable EasyRPG extensions such as support for 32 bit images and large charsets.
+
 *--patch-key-patch*::
   Enable support for the Key Patch by Ineluki.
 

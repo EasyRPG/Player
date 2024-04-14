@@ -825,8 +825,9 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
+	Output::Debug("Patch configuration: easyrpg={} dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
+		Player::HasEasyRpgExtensions(), Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(),
+		game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
 
 	ResetGameObjects();
 
@@ -1399,6 +1400,7 @@ Engine options:
  --patch-common-this  Enable usage of "This Event" in common events in any
                       version of the engine.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
+ --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
  --patch-maniac       Enable Maniac Patch by BingShan.
  --patch-pic-unlock   Picture movement is not interrupted by messages in any
@@ -1549,4 +1551,3 @@ std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
 }
-
