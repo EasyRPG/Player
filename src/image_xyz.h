@@ -20,11 +20,12 @@
 
 #include <cstdio>
 #include <cstdint>
+#include "bitmap.h"
 #include "filesystem_stream.h"
 
 namespace ImageXYZ {
-	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadXYZ(Filesystem_Stream::InputStream& stream, bool transparent, int& width, int& height, void*& pixels);
+	bool Read(const uint8_t* data, unsigned len, bool transparent, ImageOut& output);
+	bool Read(Filesystem_Stream::InputStream& stream, bool transparent, ImageOut& output);
 }
 
 #endif

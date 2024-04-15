@@ -19,12 +19,13 @@
 #define EP_IMAGE_PNG_H
 
 #include <cstdint>
+#include "bitmap.h"
 #include "filesystem_stream.h"
 
 namespace ImagePNG {
-	bool ReadPNG(const void* buffer, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadPNG(Filesystem_Stream::InputStream& is, bool transparent, int& width, int& height, void*& pixels);
-	bool WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
+	bool Read(const void* buffer, bool transparent, ImageOut& output);
+	bool Read(Filesystem_Stream::InputStream& is, bool transparent, ImageOut& output);
+	bool Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
 }
 
 #endif

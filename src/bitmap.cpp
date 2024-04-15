@@ -99,9 +99,7 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 		return;
 	}
 
-	int w = 0;
-	int h = 0;
-	void* pixels = nullptr;
+	ImageOut image_out;
 
 	uint8_t data[4] = {};
 	size_t bytes = stream.read(reinterpret_cast<char*>(data),  4).gcount();
@@ -109,26 +107,27 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 
 	bool img_okay = false;
 
-	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
-		img_okay = ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
-		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
-	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
-	else
+	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0) {
+		img_okay = ImageXYZ::Read(stream, transparent, image_out);
+	} else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0) {
+		img_okay = ImageBMP::Read(stream, transparent, image_out);
+	} else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0) {
+		img_okay = ImagePNG::Read(stream, transparent, image_out);
+	} else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", stream.GetName(), *reinterpret_cast<uint32_t*>(data));
 
 	if (!img_okay) {
-		free(pixels);
-		pixels = nullptr;
+		free(image_out.pixels);
 		return;
 	}
 
-	Init(w, h, nullptr);
+	Init(image_out.width, image_out.height, nullptr);
 
-	ConvertImage(w, h, pixels, transparent);
+	ConvertImage(image_out.width, image_out.height, image_out.pixels, transparent);
 
 	CheckPixels(flags);
+
+	original_bpp = image_out.bpp;
 
 	filename = ToString(stream.GetName());
 }
@@ -137,29 +136,29 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	int w = 0, h = 0;
-	void* pixels = nullptr;
+	ImageOut image_out;
 
 	bool img_okay = false;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		img_okay = ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageXYZ::Read(data, bytes, transparent, image_out);
 	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
-		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageBMP::Read(data, bytes, transparent, image_out);
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG((const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::Read((const void*) data, transparent, image_out);
 	else
 		Output::Warning("Unsupported image (Magic: {:02X})", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
 	if (!img_okay) {
-		free(pixels);
-		pixels = nullptr;
+		free(image_out.pixels);
 		return;
 	}
 
-	Init(w, h, nullptr);
+	Init(image_out.width, image_out.height, nullptr);
 
-	ConvertImage(w, h, pixels, transparent);
+	ConvertImage(image_out.width, image_out.height, image_out.pixels, transparent);
+
+	original_bpp = image_out.bpp;
 
 	CheckPixels(flags);
 }
@@ -183,7 +182,7 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap.get(), NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
 
-	return ImagePNG::WritePNG(os, width, height, &data.front());
+	return ImagePNG::Write(os, width, height, &data.front());
 }
 
 size_t Bitmap::GetSize() const {
