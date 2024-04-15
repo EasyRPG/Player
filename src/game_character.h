@@ -693,27 +693,26 @@ public:
 	/**
 	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
 	 *
-	 * @param apply_shift When true the coordinate is shifted by the map width (for looping maps)
 	 * @return screen x coordinate in pixels.
 	 */
-	virtual int GetScreenX(bool apply_shift = false) const;
+	virtual int GetScreenX() const;
 
 	/**
 	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
-	 * @param apply_shift When true the coordinate is shifted by the map height (for looping maps)
 	 * @param apply_jump Apply jump height modifier if character is jumping
 	 * @return screen y coordinate in pixels.
 	 */
-	virtual int GetScreenY(bool apply_shift = false, bool apply_jump = true) const;
+	virtual int GetScreenY(bool apply_jump = true) const;
 
 	/**
 	 * Gets screen z coordinate
 	 *
-	 * @param apply_shift Forwarded to GetScreenY
+	 * @param x_offset Offset to apply to the X coordinate
+	 * @param y_offset Offset to apply to the Y coordinate
 	 * @return screen z coordinate
 	 */
-	virtual Drawable::Z_t GetScreenZ(bool apply_shift = false) const;
+	virtual Drawable::Z_t GetScreenZ(int x_offset, int y_offset) const;
 
 	/**
 	 * Gets tile graphic ID.

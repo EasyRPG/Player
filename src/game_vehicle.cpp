@@ -147,8 +147,8 @@ int Game_Vehicle::GetAltitude() const {
 		return SCREEN_TILE_SIZE / (SCREEN_TILE_SIZE / TILE_SIZE);
 }
 
-int Game_Vehicle::GetScreenY(bool apply_shift, bool apply_jump) const {
-	return Game_Character::GetScreenY(apply_shift, apply_jump) - GetAltitude();
+int Game_Vehicle::GetScreenY(bool apply_jump) const {
+	return Game_Character::GetScreenY(apply_jump) - GetAltitude();
 }
 
 bool Game_Vehicle::CanLand() const {

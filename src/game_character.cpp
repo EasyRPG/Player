@@ -71,7 +71,7 @@ int Game_Character::GetJumpHeight() const {
 	return 0;
 }
 
-int Game_Character::GetScreenX(bool apply_shift) const {
+int Game_Character::GetScreenX() const {
 	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + TILE_SIZE;
 
 	if (Game_Map::LoopHorizontal()) {
@@ -79,14 +79,10 @@ int Game_Character::GetScreenX(bool apply_shift) const {
 	}
 	x -= TILE_SIZE / 2;
 
-	if (apply_shift) {
-		x += Game_Map::GetTilesX() * TILE_SIZE;
-	}
-
 	return x;
 }
 
-int Game_Character::GetScreenY(bool apply_shift, bool apply_jump) const {
+int Game_Character::GetScreenY(bool apply_jump) const {
 	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
 
 	if (apply_jump) {
@@ -97,14 +93,10 @@ int Game_Character::GetScreenY(bool apply_shift, bool apply_jump) const {
 		y = Utils::PositiveModulo(y, Game_Map::GetTilesY() * TILE_SIZE);
 	}
 
-	if (apply_shift) {
-		y += Game_Map::GetTilesY() * TILE_SIZE;
-	}
-
 	return y;
 }
 
-Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
+Drawable::Z_t Game_Character::GetScreenZ(int x_offset, int y_offset) const {
 	Drawable::Z_t z = 0;
 
 	if (IsFlying()) {
@@ -118,8 +110,8 @@ Drawable::Z_t Game_Character::GetScreenZ(bool apply_shift) const {
 	}
 
 	// 0x8000 (32768) is added to shift negative numbers into the positive range
-	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(apply_shift, false) + 0x8000);
-	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX(apply_shift) + 0x8000);
+	Drawable::Z_t y = static_cast<Drawable::Z_t>(GetScreenY(false) + y_offset + 0x8000);
+	Drawable::Z_t x = static_cast<Drawable::Z_t>(GetScreenX() + x_offset + 0x8000);
 
 	// The rendering order of characters is: Highest Y-coordinate, Highest X-coordinate, Highest ID
 	// To encode this behaviour all of them get 16 Bit in the Z value

@@ -22,15 +22,14 @@
 #include "bitmap.h"
 #include "output.h"
 
-Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
+Sprite_Character::Sprite_Character(Game_Character* character, int x_offset, int y_offset) :
 	character(character),
 	tile_id(-1),
 	character_index(0),
 	chara_width(0),
-	chara_height(0) {
-
-	x_shift = ((type & XClone) == XClone);
-	y_shift = ((type & YClone) == YClone);
+	chara_height(0),
+	x_offset(x_offset),
+	y_offset(y_offset) {
 
 	Update();
 }
@@ -76,10 +75,9 @@ void Sprite_Character::Update() {
 	SetOpacity(character->GetOpacity());
 	SetVisible(character->IsVisible());
 
-	SetX(character->GetScreenX(x_shift));
-	SetY(character->GetScreenY(y_shift));
-	// y_shift because Z is calculated via the screen Y position
-	SetZ(character->GetScreenZ(y_shift));
+	SetX(character->GetScreenX() + x_offset);
+	SetY(character->GetScreenY() + y_offset);
+	SetZ(character->GetScreenZ(x_offset, y_offset));
 
 	int bush_split = 4 - character->GetBushDepth();
 	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
@@ -134,7 +132,7 @@ Rect Sprite_Character::GetCharacterRect(StringView name, int index, const Rect b
 	// VX Ace uses a single 1x1 spriteset of 3x4 sprites.
 	if (!name.empty() && name.front() == '$') {
 		if (!Player::HasEasyRpgExtensions()) {
-			Output::Debug("Ignoring large charset {}. EasyRPG Extension not enabled.");
+			Output::Debug("Ignoring large charset {}. EasyRPG Extension not enabled.", name);
 		} else {
 			rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
 			rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
