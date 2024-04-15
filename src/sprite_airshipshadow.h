@@ -38,6 +38,7 @@ public:
 	};
 
 	Sprite_AirshipShadow(int x_offset = 0, int y_offset = 0);
+	void Draw(Bitmap& dst) override;
 	void Update();
 	void RecreateShadow();
 
