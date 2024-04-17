@@ -262,6 +262,9 @@ class Font {
 	Style original_style;
 	Style current_style;
 	FontRef fallback_font;
+
+private:
+	bool RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const GlyphRet& gret) const;
 };
 
 #endif

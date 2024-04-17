@@ -729,13 +729,39 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 	}
 
 	auto gret = vRender(glyph);
-	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+
+	if (EP_UNLIKELY(!RenderImpl(dest, x, y, sys, color, gret))) {
 		return {};
+	}
+
+	gret.advance.x += current_style.letter_spacing;
+
+	return gret.advance;
+}
+
+Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const Font::ShapeRet& shape) const {
+	if (shape.not_found) {
+		return Render(dest, x, y, sys, color, shape.code);
+	}
+
+	auto gret = vRenderShaped(shape.code);
+
+	if (EP_UNLIKELY(!RenderImpl(dest, x, y, sys, color, gret))) {
+		return {};
+	}
+
+	Point advance = { shape.advance.x + current_style.letter_spacing, shape.advance.y };
+	return advance;
+}
+
+bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const GlyphRet& gret) const {
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return false;
 	}
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	if (EP_UNLIKELY(rect.width == 0)) {
-		return {};
+		return false;
 	}
 
 	rect.x += gret.offset.x;
@@ -776,60 +802,7 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
 
-	gret.advance.x += current_style.letter_spacing;
-
-	return gret.advance;
-}
-
-Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const Font::ShapeRet& shape) const {
-	if (shape.not_found) {
-		return Render(dest, x, y, sys, color, shape.code);
-	}
-
-	auto gret = vRenderShaped(shape.code);
-	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
-		return {};
-	}
-
-	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
-	if (EP_UNLIKELY(rect.width == 0)) {
-		return {};
-	}
-
-	rect.x += shape.offset.x + gret.offset.x;
-	rect.y -= shape.offset.y + gret.offset.y;
-
-	unsigned src_x;
-	unsigned src_y;
-
-	if (color != ColorShadow) {
-		if (!gret.has_color && current_style.draw_shadow) {
-			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
-			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
-		}
-
-		src_x = color % 10 * 16 + 2;
-		src_y = color / 10 * 16 + 48 + 16 - 12 - shape.offset.y - gret.offset.y;
-
-		// When the glyph is large the system graphic color mask will be outside the rectangle
-		// Move the mask slightly up to avoid this
-		int offset = gret.bitmap->height() - shape.offset.y - gret.offset.y;
-		if (offset > 12) {
-			src_y -= offset - 12;
-		}
-	} else {
-		src_x = 16;
-		src_y = 32;
-	}
-
-	if (!gret.has_color) {
-		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
-	} else {
-		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
-	}
-
-	Point advance = { shape.advance.x + current_style.letter_spacing, shape.advance.y };
-	return advance;
+	return true;
 }
 
 Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const {
