@@ -764,13 +764,65 @@ bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys,
 		return false;
 	}
 
+	// Drawing position of the glyph
 	rect.x += gret.offset.x;
 	rect.y -= gret.offset.y;
 
-	unsigned src_x;
-	unsigned src_y;
+	unsigned src_x = 0;
+	unsigned src_y = 0;
 
+	int glyph_height = gret.bitmap->height() - gret.offset.y;
+
+	// Adjust how the mask is applied depending on the glyph size to prevent that
+	// pixels from outside of the mask color are read
+	// When <= 12: Will work fine
+	// When <= 16: Slightly adjusted (see ~20 lines below)
+	if (glyph_height > 16) {
+		// Too large for the existing mask: Resize the masks (slow)
+		// The mask is too small and the system graphic must be resized
+		// This is usually an exception and requires a custom font
+		const Rect shadow_color_rect = { 16, 32, 16, 16 };
+		const Rect mask_color_rect = { color % 10 * 16, color / 10 * 16 + 48, 16, 16 };
+		auto sys_large = Bitmap::Create(current_style.size * 2, current_style.size, false);
+		double zoom = current_style.size / 16.0;
+		// Left half of the image is the shadow, right half the mask
+		if (color != ColorShadow && current_style.draw_shadow) {
+			sys_large->ZoomOpacityBlit(0, 0, 0, 0, sys, shadow_color_rect, zoom, zoom, Opacity::Opaque());
+		}
+		if (!gret.has_color) {
+			sys_large->ZoomOpacityBlit(current_style.size, 0, 0, 0, sys, mask_color_rect, zoom, zoom, Opacity::Opaque());
+		}
+
+		if (color != ColorShadow) {
+			// First draw the shadow, offset by one
+			if (!gret.has_color && current_style.draw_shadow) {
+				auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+				dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, *sys_large, 0, 0);
+			}
+
+			src_x = current_style.size;
+			src_y -= gret.offset.y;
+		}
+
+		if (!gret.has_color) {
+			if (current_style.draw_gradient) {
+				dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *sys_large, src_x, src_y);
+			} else {
+				auto col = sys.GetColorAt(current_style.color_offset.x + src_x, current_style.color_offset.y + src_y);
+				auto col_bm = Bitmap::Create(gret.bitmap->width(), gret.bitmap->height(), col);
+				dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
+			}
+		} else {
+			// Color glyphs, emojis etc.
+			dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
+		}
+
+		return true;
+	}
+
+	// Glyph fits in the mask
 	if (color != ColorShadow) {
+		// First draw the shadow, offset by one
 		if (!gret.has_color && current_style.draw_shadow) {
 			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
 			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
@@ -779,6 +831,7 @@ bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys,
 		src_x = color % 10 * 16 + 2;
 		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
 	} else {
+		// When the color is the shadow color do not render twice
 		src_x = 16;
 		src_y = 32;
 	}
@@ -787,9 +840,9 @@ bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys,
 		if (current_style.draw_gradient) {
 			// When the glyph is large the system graphic color mask will be outside the rectangle
 			// Move the mask slightly up to avoid this
-			int offset = gret.bitmap->height() - gret.offset.y;
-			if (offset > 12) {
-				src_y -= offset - 12;
+ 			if (glyph_height > 12) {
+				// Slightly too large -> Apply an offset
+				src_y -= glyph_height - 12;
 			}
 
 			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
@@ -799,6 +852,7 @@ bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys,
 			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
 		}
 	} else {
+		// Color glyphs, emojis etc.
 		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
 
