@@ -355,6 +355,8 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	window->SetVisible(false);
 
 	BitmapRef system;
+	// FIXME: Transparency setting is currently not applied to the system graphic
+	// Disabling transparency breaks the rendering of the system graphic
 	if (!data.system_name.empty()) {
 		system = Cache::System(data.system_name);
 	} else {
