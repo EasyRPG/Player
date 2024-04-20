@@ -183,19 +183,27 @@ StringView Game_Strings::ToFile(Str_Params params, std::string filename, int enc
 	}
 
 	// Maniacs forces the File in Text/ folder with .txt extension
-	// TODO: Maybe relax this?
-	filename = "Text/" + filename + ".txt";
+	filename = "Text/" + filename;
+	
+	// EasyRPG Extension: When "*" is at the end of filename, ".txt" is not appended
+	if (filename.back() == '*') {
+		filename.pop_back();
+	} else {
+		filename += ".txt";
+	}
 
 	auto txt_out = FileFinder::Save().OpenOutputStream(filename);
+	auto txt_dir = FileFinder::GetPathAndFilename(filename).first;
+
 	if (!txt_out) {
-		if (!FileFinder::Save().MakeDirectory("Text", false)) {
-			Output::Warning("Maniac String Op ToFile failed: Cannot create Text directory");
+		if (!FileFinder::Save().MakeDirectory(txt_dir, false)) {
+			Output::Warning("Maniac String Op ToFile failed. Cannot create directory {}", txt_dir);
 			return {};
 		}
 
 		txt_out = FileFinder::Save().OpenOutputStream(filename);
 		if (!txt_out) {
-			Output::Warning("Maniac String Op ToFile failed: Cannot write to {}", filename);
+			Output::Warning("Maniac String Op ToFile failed. Cannot write to {}", filename);
 			return {};
 		}
 	}
