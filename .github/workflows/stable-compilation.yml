@@ -42,9 +42,10 @@ jobs:
           apt-get update
           apt-get install -yqq --no-install-recommends --no-install-suggests \
             ca-certificates build-essential cmake ninja-build git \
-            libicu-dev libexpat1-dev libsdl2-dev libpng-dev libpixman-1-dev \
-            libfmt-dev libfreetype6-dev libharfbuzz-dev libmpg123-dev \
-            libsndfile-dev libvorbis-dev libopusfile-dev libspeexdsp-dev \
+            libicu-dev libexpat1-dev libinih-dev \
+            libsdl2-dev libpng-dev libpixman-1-dev libfmt-dev \
+            libfreetype6-dev libharfbuzz-dev libmpg123-dev libsndfile-dev \
+            libvorbis-dev libopusfile-dev libspeexdsp-dev \
             libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
 
       - name: Clone Repository
