@@ -578,6 +578,10 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/platform/wiiu/input_buttons.cpp)
 	endif()
+
+	if(WIN32)
+		target_link_libraries(${PROJECT_NAME} "Dwmapi")
+	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl_audio.cpp

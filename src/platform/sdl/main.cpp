@@ -64,7 +64,7 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
 extern "C" int main(int argc, char* argv[]) {
 	std::vector<std::string> args;
 
-#if defined(_WIN32) && !defined(__WINRT__)
+#if defined(_WIN32)
 	// Use widestring args
 	int argc_w;
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);

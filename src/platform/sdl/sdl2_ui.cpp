@@ -25,6 +25,7 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <SDL_syswm.h>
+#  include <dwmapi.h>
 #elif defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
@@ -117,6 +118,19 @@ static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
 	}
 	return current_fmt;
 }
+
+#ifdef _WIN32
+HWND GetWindowHandle(SDL_Window* window) {
+	SDL_SysWMinfo wminfo;
+	SDL_VERSION(&wminfo.version)
+		SDL_bool success = SDL_GetWindowWMInfo(window, &wminfo);
+
+	if (success < 0)
+		Output::Error("Wrong SDL version");
+
+	return wminfo.info.win.window;
+}
+#endif
 
 static int FilterUntilFocus(const SDL_Event* evnt);
 
@@ -354,8 +368,8 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		window.size_changed = true;
 
 		auto window_sg = lcf::makeScopeGuard([&]() {
-				SDL_DestroyWindow(sdl_window);
-				sdl_window = nullptr;
+			SDL_DestroyWindow(sdl_window);
+			sdl_window = nullptr;
 		});
 
 		SetAppIcon();
@@ -414,6 +428,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
 			return false;
 		}
+
+#ifdef _WIN32
+		HWND window = GetWindowHandle(sdl_window);
+		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+		int window_rounding = 1; // DWMWCP_DONOTROUND
+		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
 
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
@@ -647,15 +668,10 @@ void Sdl2Ui::SetTitle(const std::string &title) {
 }
 
 bool Sdl2Ui::ShowCursor(bool flag) {
-#ifdef __WINRT__
-	// Prevent cursor hide in WinRT because it is hidden everywhere while the app runs...
-	return flag;
-#else
 	bool temp_flag = cursor_visible;
 	cursor_visible = flag;
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
-#endif
 }
 
 void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
@@ -940,29 +956,33 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 	// We currently ignore swipe gestures
 	// A finger touch is detected when the fingers go up a brief delay after going down
 	if (evnt.type == SDL_FINGERDOWN) {
-		int finger = evnt.tfinger.fingerId;
-		if (finger < static_cast<int>(finger_input.size())) {
-			auto& fi = touch_input[finger];
-			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+		auto fi = std::find_if(touch_input.begin(), touch_input.end(), [&](const auto& input) {
+			return input.id == -1;
+		});
+		if (fi == touch_input.end()) {
+			// already tracking 5 fingers
+			return;
+		}
 
 #ifdef EMSCRIPTEN
-			double display_ratio = emscripten_get_device_pixel_ratio();
-			fi.position.x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
+		double display_ratio = emscripten_get_device_pixel_ratio();
+		int x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
+		int y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
 #else
-			fi.position.x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
-			fi.position.y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
+		int x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
+		int y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
 #endif
 
-			fi.pressed = true;
-		}
+		fi->Down(evnt.tfinger.fingerId, x, y);
 	} else if (evnt.type == SDL_FINGERUP) {
-		int finger = evnt.tfinger.fingerId;
-		if (finger < static_cast<int>(finger_input.size())) {
-			auto& fi = touch_input[finger];
-			fi.pressed = false;
+		auto fi = std::find_if(touch_input.begin(), touch_input.end(), [&](const auto& input) {
+			return input.id == evnt.tfinger.fingerId;
+		});
+		if (fi == touch_input.end()) {
+			// Finger is not tracked
+			return;
 		}
+		fi->Up();
 	}
 #else
 	/* unused */
@@ -971,17 +991,9 @@ void Sdl2Ui::ProcessFingerEvent(SDL_Event& evnt) {
 }
 
 void Sdl2Ui::SetAppIcon() {
-#if defined(__WINRT__) || defined(__MORPHOS__)
+#if defined(__MORPHOS__)
 	// do nothing
 #elif defined(_WIN32)
-	SDL_SysWMinfo wminfo;
-	SDL_VERSION(&wminfo.version)
-	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
-
-	if (success < 0)
-		Output::Error("Wrong SDL version");
-
-	HWND window;
 	HINSTANCE handle = GetModuleHandle(NULL);
 	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
 	HICON icon_small = (HICON) LoadImage(handle, MAKEINTRESOURCE(23456), IMAGE_ICON,
@@ -990,7 +1002,7 @@ void Sdl2Ui::SetAppIcon() {
 	if (icon == NULL || icon_small == NULL)
 		Output::Warning("Could not load window icon.");
 
-	window = wminfo.info.win.window;
+	HWND window = GetWindowHandle(sdl_window);
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
