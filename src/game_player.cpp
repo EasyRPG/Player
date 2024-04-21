@@ -400,8 +400,8 @@ void Game_Player::UpdateNextMovementAction() {
 				return;
 			}
 			Point mouseP = Input::GetMousePosition();
-			targetMX = mouseP.x / 16;
-			targetMY = mouseP.y / 16;
+			targetMX = (mouseP.x + Game_Map::GetDisplayX() / 16) / 16;
+			targetMY = (mouseP.y + Game_Map::GetDisplayY() / 16) / 16;
 
 			int varX = Input::MouseVarX;
 			int varY = Input::MouseVarY;
