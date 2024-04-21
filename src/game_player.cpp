@@ -403,6 +403,9 @@ void Game_Player::UpdateNextMovementAction() {
 			targetMX = (mouseP.x + Game_Map::GetDisplayX() / 16) / 16;
 			targetMY = (mouseP.y + Game_Map::GetDisplayY() / 16) / 16;
 
+			targetVMX = mouseP.x/ 16;
+			targetVMY = mouseP.y/ 16;
+
 			int varX = Input::MouseVarX;
 			int varY = Input::MouseVarY;
 			int eventID = Input::MouseShowEventID;
@@ -426,8 +429,8 @@ void Game_Player::UpdateNextMovementAction() {
 			if (eventID > 0) {
 
 				// Set up XY var
-				Main_Data::game_variables->Set(varX, targetMX);
-				Main_Data::game_variables->Set(varY, targetMY);
+				Main_Data::game_variables->Set(varX, targetVMX);
+				Main_Data::game_variables->Set(varY, targetVMY);
 
 				// Set up if there's an event or not
 				if (got_action) {
@@ -501,8 +504,8 @@ void Game_Player::ResetTargetMXY() {
 	if (eventID > 0) {
 
 		// Set up XY var
-		Main_Data::game_variables->Set(varX, targetMX);
-		Main_Data::game_variables->Set(varY, targetMY);
+		Main_Data::game_variables->Set(varX, targetVMX);
+		Main_Data::game_variables->Set(varY, targetVMY);
 
 		// Call common event
 		Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), eventID);

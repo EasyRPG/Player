@@ -168,6 +168,8 @@ private:
 
 	int targetMX = -999;
 	int targetMY = -999;
+	int targetVMX;
+	int targetVMY;
 
 	void ResetTargetMXY();
 
