@@ -68,6 +68,7 @@
 #include "baseui.h"
 #include "algo.h"
 #include "rand.h"
+#include <variant>
 
 enum BranchSubcommand {
 	eOptionBranchElse = 1
@@ -826,6 +827,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast <Game_Interpreter::Cmd>(2054) : // Easyrpg_GetIdByName
+			return CommandGetIdByName(com);
 		default:
 			return true;
 	}
@@ -5105,6 +5108,49 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
 
+	return true;
+}
+bool Game_Interpreter::CommandGetVarByName(lcf::rpg::EventCommand const& com) {
+	auto& targetData = lcf::Data::variables;
+
+	int stringVarParam = 6; // string var is detected at com.parameters[n]
+	const std::string targetName = ToString(CommandStringOrVariable(com, stringVarParam, stringVarParam + 1));
+	if (targetName.empty()) {
+		Output::Warning("The variable name to search is empty.");
+		return true;
+	}
+
+	const int outputVar = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (outputVar <= 0) {
+		Output::Warning("This command requires a valid variable.");
+		return true;
+	}
+
+	int rangeMin = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int rangeMax = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	if (rangeMin <= 0) rangeMin = 1;
+	if (rangeMin > static_cast<int>(targetData.size())) rangeMin = static_cast<int>(targetData.size());
+	if (rangeMax <= 0 || rangeMax >= static_cast<int>(targetData.size())) rangeMax = static_cast<int>(targetData.size());
+
+	if (rangeMax < rangeMin) std::swap(rangeMin, rangeMax);
+
+	auto it = std::find_if(targetData.begin() + rangeMin - 1, targetData.begin() + rangeMax,
+		[&](const auto& entry) { return entry.name == targetName; });
+
+	if (it != targetData.end()) {
+		const int id = std::distance(targetData.begin(), it) + 1;
+
+		if (id >= rangeMin && id <= rangeMax) {
+			Output::Debug(" Variable \"{}\" found at ID: {}. Storing ID in variable {}.", targetName, id, outputVar);
+
+			Main_Data::game_variables->Set(outputVar, id);
+			Game_Map::SetNeedRefresh(true);
+			return true;
+		}
+	}
+
+	Output::Warning("Variable \"{}\" not found within the range of variables {} to {}.", targetName, rangeMin, rangeMax);
 	return true;
 }
 
