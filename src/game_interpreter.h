@@ -290,7 +290,7 @@ protected:
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 
-	bool CommandGetVarByName(lcf::rpg::EventCommand const& com);
+	bool CommandGetIdByName(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
 	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
