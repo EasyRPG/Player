@@ -46,6 +46,7 @@
 #include "game_screen.h"
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
+#include "json_helper.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
@@ -789,9 +790,11 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
-		case static_cast<Cmd>(2056): //EasyRPG_CloneMapEvent
+		case Cmd::EasyRpg_ProcessJson:
+			return CommandEasyRpgProcessJson(com);
+		case Cmd::EasyRpg_CloneMapEvent:
 			return CommandEasyRpgCloneMapEvent(com);
-		case static_cast<Cmd>(2057): //EasyRPG_DestroyMapEvent
+		case Cmd::EasyRpg_DestroyMapEvent:
 			return CommandEasyRpgDestroyMapEvent(com);
 		default:
 			return true;
@@ -5058,6 +5061,45 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	int operation = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int sourceVarId = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int targetVarId = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	std::string jsonPath = ToString(CommandStringOrVariable(com, 6, 7));
+	std::string jsonData = ToString(Main_Data::game_strings->Get(sourceVarId));
+
+	int assignVarId = 0;
+	std::string result;
+	std::string newValue;
+
+	switch (operation) {
+	case 0: // Get operation: Extract a value from JSON data
+		result = Json_Helper::GetValue(jsonData, jsonPath);
+		assignVarId = targetVarId;
+		break;
+
+	case 1: // Set operation: Update JSON data with a new value
+		newValue = ToString(Main_Data::game_strings->Get(targetVarId));
+		result = Json_Helper::SetValue(jsonData, jsonPath, newValue);
+		assignVarId = sourceVarId;
+		break;
+
+	default:
+		Output::Warning("Process JSON - Invalid Operation: {}", operation);
+		result = "<<INVALID_OUTPUT>>";
+		break;
+	}
+
+	if (result != "<<INVALID_OUTPUT>>") Main_Data::game_strings->Asg({ assignVarId }, result);
 
 	return true;
 }
