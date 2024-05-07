@@ -341,41 +341,41 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 
 void Game_Map::SetupCommon() {
 	if (!Tr::GetCurrentTranslationId().empty()) {
-		// Build our map translation id.
-		std::stringstream ss;
-		ss << "map" << std::setfill('0') << std::setw(4) << GetMapId() << ".po";
-
-		// Translate all messages for this map
-		Player::translation.RewriteMapMessages(ss.str(), *map);
+		TranslateMapMessages(GetMapId(), *map);
 	}
 	SetNeedRefresh(true);
 
 	PrintPathToMap();
 
-	// Restart all common events after translation change
-	// Otherwise new strings are not applied
 	if (translation_changed) {
 		InitCommonEvents();
 	}
 
 	map_cache->Clear();
-	using Op = Caching::ObservedVarOps;
 
-	// Create the map events
+	CreateMapEvents();
+}
+
+void Game_Map::CreateMapEvents() {
 	events.reserve(map->events.size());
 	for (auto& ev : map->events) {
 		events.emplace_back(GetMapId(), &ev);
+		AddEventToCache(ev);
+	}
+}
 
-		for (const auto& pg : ev.pages) {
-			if (pg.condition.flags.switch_a) {
-				map_cache->AddEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_a_id, ev);
-			}
-			if (pg.condition.flags.switch_b) {
-				map_cache->AddEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_b_id, ev);
-			}
-			if (pg.condition.flags.variable) {
-				map_cache->AddEventAsRefreshTarget<Op::VarSet>(pg.condition.variable_id, ev);
-			}
+void Game_Map::AddEventToCache(lcf::rpg::Event& ev) {
+	using Op = Caching::ObservedVarOps;
+
+	for (const auto& pg : ev.pages) {
+		if (pg.condition.flags.switch_a) {
+			map_cache->AddEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_a_id, ev);
+		}
+		if (pg.condition.flags.switch_b) {
+			map_cache->AddEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_b_id, ev);
+		}
+		if (pg.condition.flags.variable) {
+			map_cache->AddEventAsRefreshTarget<Op::VarSet>(pg.condition.variable_id, ev);
 		}
 	}
 }
@@ -384,6 +384,72 @@ void Game_Map::Caching::MapCache::Clear() {
 	for (int i = 0; i < static_cast<int>(ObservedVarOps_END); i++) {
 		refresh_targets_by_varid[i].clear();
 	}
+}
+
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y) {
+	auto source_map = Game_Map::loadMapFile(src_map_id);
+	if (source_map == nullptr) {
+		Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
+		return true;
+	}
+
+	if (!Tr::GetCurrentTranslationId().empty()) {
+		TranslateMapMessages(src_map_id, *source_map);
+	}
+
+	const lcf::rpg::Event* source_event = FindEventById(source_map->events, src_event_id);
+	if (source_event == nullptr) {
+		Output::Warning("CloneMapEvent: Event ID {} not found on source map {}", src_event_id, src_map_id);
+		return true;
+	}
+
+	lcf::rpg::Event new_event = *source_event;
+	new_event.ID = GetNextAvailableEventId();
+	new_event.x = target_x;
+	new_event.y = target_y;
+
+	map->events.push_back(new_event);
+
+	events.emplace_back(GetMapId(), &map->events.back());
+	FixUnderlyingEventReferences();
+
+	AddEventToCache(new_event);
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	scene->spriteset->Refresh();
+
+	return true;
+}
+
+void Game_Map::TranslateMapMessages(int mapId, lcf::rpg::Map& map) {
+	std::stringstream ss;
+	ss << "map" << std::setfill('0') << std::setw(4) << mapId << ".po";
+	Player::translation.RewriteMapMessages(ss.str(), map);
+}
+
+
+inline void Game_Map::FixUnderlyingEventReferences() {
+	size_t idx = 0;
+	for (auto& ev : events) {
+		ev.SetUnderlyingEvent(&map->events.at(idx++));
+	}
+}
+
+const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event>& events, int eventId) {
+	for (const auto& ev : events) {
+		if (ev.ID == eventId) {
+			return &ev;
+		}
+	}
+	return nullptr;
+}
+
+int Game_Map::GetNextAvailableEventId() {
+	int maxEventId = 0;
+	for (const auto& ev : map->events) {
+		maxEventId = std::max(maxEventId, ev.ID);
+	}
+	return maxEventId + 1;
 }
 
 void Game_Map::PrepareSave(lcf::rpg::Save& save) {
