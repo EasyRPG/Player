@@ -826,6 +826,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Cmd>(2056): //EasyRPG_SpawnMapEvent
+			return CommandSpawnMapEvent(com);
 		default:
 			return true;
 	}
@@ -5105,6 +5107,16 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
 
+	return true;
+}
+
+bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
+	int src_map = ValueOrVariable(com.parameters[0], com.parameters[1]);	
+	int src_event = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int target_x = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int target_y = ValueOrVariable(com.parameters[6], com.parameters[7]);
+
+	Game_Map::CloneMapEvent(src_map, src_event, target_x, target_y);
 	return true;
 }
 
