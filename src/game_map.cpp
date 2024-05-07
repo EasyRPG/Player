@@ -356,14 +356,20 @@ void Game_Map::SetupCommon() {
 }
 
 bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y) {
-	auto source_map = Game_Map::loadMapFile(src_map_id);
-	if (source_map == nullptr) {
-		Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
-		return true;
-	}
+	std::unique_ptr<lcf::rpg::Map> source_map;
 
-	if (!Tr::GetCurrentTranslationId().empty()) {
-		TranslateMapMessages(src_map_id, *source_map);
+	if (src_map_id == GetMapId()) source_map = std::make_unique<lcf::rpg::Map>(GetMap());
+	else {
+		source_map = Game_Map::loadMapFile(src_map_id);
+
+		if (source_map == nullptr) {
+			Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
+			return true;
+		}
+
+		if (!Tr::GetCurrentTranslationId().empty()) {
+			TranslateMapMessages(src_map_id, *source_map);
+		}
 	}
 
 	const lcf::rpg::Event* source_event = FindEventById(source_map->events, src_event_id);
