@@ -42,7 +42,7 @@ private:
 	std::string display_data_raw;
 
 	std::vector<std::string> lines;
-	std::vector<bool> lines_numbered;
+	std::vector<int> line_numbers;
 
 	int line_count = 0, line_no_max_digits = 0;
 };

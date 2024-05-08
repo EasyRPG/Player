@@ -45,7 +45,7 @@ std::string Window_StringView::GetDisplayData(bool eval_cmds) {
 
 void Window_StringView::Refresh() {
 	lines.clear();
-	lines_numbered.clear();
+	line_numbers.clear();
 	line_count = 0;
 
 	std::string value = GetDisplayData(cmd_eval);
@@ -68,13 +68,14 @@ void Window_StringView::Refresh() {
 
 	//create vector of display lines
 	pos = 0;
+	int c = 0;
 	while ((pos = value.find("\n", pos)) != std::string::npos) {
 		std::string new_line = value.substr(0, pos);
-		lines_numbered.push_back(true);
+		line_numbers.push_back(++c);
 
 		while (auto_linebreak && new_line.size() > (max_str_length - line_no_max_digits)) {
 			lines.push_back(new_line.substr(0, (max_str_length - line_no_max_digits)));
-			lines_numbered.push_back(false);
+			line_numbers.push_back(0);
 			new_line = new_line.substr((max_str_length - line_no_max_digits));
 		}
 		lines.push_back(new_line);
@@ -83,7 +84,7 @@ void Window_StringView::Refresh() {
 	}
 	if (!value.empty()) {
 		lines.push_back(value);
-		lines_numbered.push_back(true);
+		line_numbers.push_back(++c);
 	}
 
 	item_max = lines.size() + top_lines_reserved;
@@ -131,8 +132,8 @@ void Window_StringView::DrawLine(int index) {
 	std::string line = lines[index];
 
 	if (!line.empty()) {
-		if (lines_numbered[index]) {
-			contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format("{:0" + std::to_string(line_no_max_digits) + "d}", index + 1));
+		if (line_numbers[index]) {
+			contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format("{:0" + std::to_string(line_no_max_digits) + "d}", line_numbers[index]));
 		}
 		contents->TextDraw(rect.x + line_no_max_digits * 6 + 6, rect.y, Font::ColorDefault, line);
 	}
