@@ -104,7 +104,9 @@ namespace Game_Map {
 	/** Disposes Game_Map. */
 	void Dispose();
 
-	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y);
+	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id);
+	bool DestroyMapEvent(const int event_id);
+
 	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
 	void CreateMapEvents();
 	inline void FixUnderlyingEventReferences();

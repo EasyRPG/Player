@@ -355,7 +355,7 @@ void Game_Map::SetupCommon() {
 	CreateMapEvents();
 }
 
-bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y) {
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id = 0) {
 	std::unique_ptr<lcf::rpg::Map> source_map;
 
 	if (src_map_id == GetMapId()) source_map = std::make_unique<lcf::rpg::Map>(GetMap());
@@ -379,7 +379,11 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 	}
 
 	lcf::rpg::Event new_event = *source_event;
-	new_event.ID = GetNextAvailableEventId();
+	if (target_event_id > 0) {
+		DestroyMapEvent(target_event_id);
+		new_event.ID = target_event_id;
+	}
+	else new_event.ID = GetNextAvailableEventId();
 	new_event.x = target_x;
 	new_event.y = target_y;
 
@@ -392,6 +396,58 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 	scene->spriteset->Refresh();
+	SetNeedRefresh(true);
+
+	return true;
+}
+
+bool Game_Map::DestroyMapEvent(const int event_id) {
+	const lcf::rpg::Event* event = FindEventById(map->events, event_id);
+
+	if (event == nullptr) {
+		Output::Warning("DestroyMapEvent: Event ID {} not found on current map", event_id);
+		return true;
+	}
+
+	// Remove event from cache
+	//	for (auto& pg : event->pages) {
+	//		if (pg.condition.flags.switch_a) {
+	//			events_cache_by_switch[pg.condition.switch_a_id].RemoveEvent(*event);
+	//		}
+	//		if (pg.condition.flags.switch_b) {
+	//			events_cache_by_switch[pg.condition.switch_b_id].RemoveEvent(*event);
+	//		}
+	//		if (pg.condition.flags.variable) {
+	//			events_cache_by_variable[pg.condition.variable_id].RemoveEvent(*event);
+	//		}
+	//	}
+
+
+	// Remove event from events vector
+	auto it = events.end();
+	for (auto iter = events.begin(); iter != events.end(); ++iter) {
+		if (iter->GetId() == event_id) {
+			it = iter;
+			break;
+		}
+	}
+	if (it != events.end()) {
+		events.erase(it);
+	}
+
+	// Remove event from map
+	for (auto it = map->events.begin(); it != map->events.end(); ++it) {
+		if (it->ID == event_id) {
+			map->events.erase(it);
+			break;
+		}
+	}
+
+	FixUnderlyingEventReferences();
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	scene->spriteset->Refresh();
+	SetNeedRefresh(true);
 
 	return true;
 }
