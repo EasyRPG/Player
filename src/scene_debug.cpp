@@ -451,23 +451,31 @@ void Scene_Debug::vUpdate() {
 		}
 		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
+		int range_page_prev = range_page;
 		if (range_page < GetLastPage()) {
 			++range_page;
 		} else {
 			range_page = 0;
 		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
+		if (range_page != range_page_prev) {
+			var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+			UpdateRangeListWindow();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			var_window->Refresh();
+		}
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::LEFT)) {
+		int range_page_prev = range_page;
 		if (range_page > 0) {
 			--range_page;
 		} else {
 			range_page = GetLastPage();
 		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
+		if (range_page != range_page_prev) {
+			var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			UpdateRangeListWindow();
+			var_window->Refresh();
+		}
 	}
 
 	UpdateArrows();
