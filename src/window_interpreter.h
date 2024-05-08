@@ -15,36 +15,43 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_STRINGVIEW_H
-#define EP_WINDOW_STRINGVIEW_H
+#ifndef EP_WINDOW_INTERPRETER_H
+#define EP_WINDOW_INTERPRETER_H
 
 // Headers
 #include "window_command.h"
+#include "lcf/rpg/saveeventexecstate.h"
 
-class Window_StringView : public Window_Selectable {
+class Window_Interpreter : public Window_Selectable {
 public:
-	Window_StringView(int ix, int iy, int iwidth, int iheight);
-	~Window_StringView() override;
+	Window_Interpreter(int ix, int iy, int iwidth, int iheight);
+	~Window_Interpreter() override;
 
 	void Update() override;
 
-	void SetDisplayData(StringView data);
-	std::string GetDisplayData(bool eval_cmds);
-
+	void SetStackState(bool is_ce, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
 	void Refresh();
 protected:
-	void DrawCmdLines();
-	void DrawLine(int index);
+	void DrawDescriptionLines();
+	void DrawStackLine(int index);
 private:
-	const int top_lines_reserved = 2, max_str_length = 42;
-	bool auto_linebreak = false, cmd_eval = false;
+	struct StackItem {
+		bool is_ce;
+		int evt_id;
+		std::string name;
+		int cmd_current, cmd_count;
+	};
 
-	std::string display_data_raw;
+	const int lines_without_stack_fixed = 3;
+	
+	bool is_ce = false;
+	lcf::rpg::SaveEventExecState state;
+	std::string interpreter_desc;
+	int lines_without_stack = 0;
 
-	std::vector<std::string> lines;
-	std::vector<bool> lines_numbered;
-
-	int line_count = 0, line_no_max_digits = 0;
+	int digits_stackitemno = 0, digits_cmdcount = 0;
+	
+	std::vector<StackItem> stack_display_items;
 };
 
 #endif

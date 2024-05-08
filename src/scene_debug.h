@@ -25,6 +25,7 @@
 #include "window_numberinput.h"
 #include "window_varlist.h"
 #include "window_stringview.h"
+#include "window_interpreter.h"
 
 /**
  * Scene Equip class.
@@ -70,6 +71,7 @@ public:
 		eCallMapEvent,
 		eCallBattleEvent,
 		eString,
+		eInterpreter,
 		eOpenMenu,
 		eLastMainMenuOption,
 	};
@@ -79,7 +81,8 @@ public:
 		eUiRangeList,
 		eUiVarList,
 		eUiNumberInput,
-		eUiStringView
+		eUiStringView,
+		eUiInterpreterView
 	};
 private:
 	Mode mode = eMain;
@@ -101,8 +104,15 @@ private:
 	/** Creates string view window. */
 	void CreateStringViewWindow();
 
+	/** Creates interpreter window. */
+	void CreateInterpreterWindow();
+
+
 	/** Get the last page for the current mode */
 	int GetLastPage();
+
+	/* Get the first item number for the selected range */
+	int GetSelectedIndexFromRange() const;
 
 	int GetNumMainMenuItems() const;
 
@@ -128,6 +138,8 @@ private:
 	std::unique_ptr<Window_NumberInput> numberinput_window;
 	/** Windows for displaying multiline strings. */
 	std::unique_ptr<Window_StringView> stringview_window;
+	/** Displays the currently running inteprreters. */
+	std::unique_ptr<Window_Interpreter> interpreter_window;
 
 	struct StackFrame {
 		UiMode uimode = eUiMain;
@@ -149,9 +161,11 @@ private:
 	void PushUiVarList();
 	void PushUiNumberInput(int init_value, int digits, bool show_operator);
 	void PushUiStringView();
+	void PushUiInterpreterView();
 
 	Window_VarList::Mode GetWindowMode() const;
 	void UpdateFrameValueFromUi();
+	void UpdateDetailWindow();
 
 	bool IsValidMapId(int map_id) const;
 
@@ -160,6 +174,15 @@ private:
 
 	bool strings_cached = false;
 	std::vector<lcf::DBString> strings;
+
+	bool interpreter_states_cached = false;
+
+	void UpdateInterpreterWindow(int index);
+	void GetBackgroundInterpreters();
+	std::vector<int> interpreters_ev;
+	std::vector<int> interpreters_ce;
+	std::vector<lcf::rpg::SaveEventExecState> interpreters_state_ev;
+	std::vector<lcf::rpg::SaveEventExecState> interpreters_state_ce;
 };
 
 #endif

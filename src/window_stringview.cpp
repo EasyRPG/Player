@@ -63,7 +63,6 @@ void Window_StringView::Refresh() {
 
 	//compute how many digits there are needed for the line numbers
 	line_no_max_digits = std::log10(line_count) + 1;
-	line_no_tpl = fmt::format("{{:0{}d}}:", line_no_max_digits);
 
 	value = GetDisplayData(cmd_eval);
 
@@ -133,8 +132,8 @@ void Window_StringView::DrawLine(int index) {
 
 	if (!line.empty()) {
 		if (lines_numbered[index]) {
-			contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format(line_no_tpl, index + 1));
+			contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format("{:0" + std::to_string(line_no_max_digits) + "d}", index + 1));
 		}
-		contents->TextDraw(rect.x + line_no_max_digits * 8 + 8, rect.y, Font::ColorDefault, line);
+		contents->TextDraw(rect.x + line_no_max_digits * 6 + 6, rect.y, Font::ColorDefault, line);
 	}
 }

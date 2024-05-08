@@ -419,6 +419,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_input_settings.h
 	src/window_item.cpp
 	src/window_item.h
+	src/window_interpreter.cpp
+	src/window_interpreter.h
 	src/window_keyboard.cpp
 	src/window_keyboard.h
 	src/window_menustatus.cpp
