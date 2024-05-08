@@ -5018,10 +5018,11 @@ bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
 	int src_event = ValueOrVariable(com.parameters[2], com.parameters[3]);
 	int target_x = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int target_y = ValueOrVariable(com.parameters[6], com.parameters[7]);
+	int target_event = ValueOrVariable(com.parameters[8], com.parameters[9]);
 
 	if (src_map == 0) src_map = Game_Map::GetMapId();
 
-	Game_Map::CloneMapEvent(src_map, src_event, target_x, target_y);
+	Game_Map::CloneMapEvent(src_map, src_event, target_x, target_y, target_event);
 	return true;
 }
 
