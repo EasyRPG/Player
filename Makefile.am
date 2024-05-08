@@ -398,6 +398,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_input_settings.h \
 	src/window_item.cpp \
 	src/window_item.h \
+	src/window_interpreter.cpp \
+	src/window_interpreter.h \
 	src/window_keyboard.cpp \
 	src/window_keyboard.h \
 	src/window_menustatus.cpp \
@@ -432,6 +434,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_skill.h \
 	src/window_skillstatus.cpp \
 	src/window_skillstatus.h \
+	src/window_stringview.cpp \
+	src/window_stringview.h \
 	src/window_targetstatus.cpp \
 	src/window_targetstatus.h \
 	src/window_teleport.cpp \
