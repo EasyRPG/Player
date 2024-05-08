@@ -21,6 +21,7 @@
 #include "window_varlist.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_strings.h"
 #include "bitmap.h"
 #include <lcf/data.h>
 #include "output.h"
@@ -93,6 +94,25 @@ void Window_VarList::DrawItemValue(int index){
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 			}
 			break;
+		case eString:
+		{
+			auto value = ToString(Main_Data::game_strings->Get(first_var + index));
+			DrawItem(index, Font::ColorDefault);
+			if (value.empty()) {
+				contents->TextDraw(34, 16 * index + 2, Font::ColorDisabled, "undefined", Text::AlignLeft);
+			} else {
+				size_t pos = 0;
+				while ((pos = value.find("\n", pos)) != std::string::npos) {
+					value.replace(pos, 1, "\\n");
+					pos += 3;
+				}
+				if (value.length() > 28) {
+					value = value.substr(0, 25) + "...";
+				}
+				contents->TextDraw(34, 16 * index + 2, Font::ColorDefault, value, Text::AlignLeft);
+			}
+		}
+		break;
 		case eNone:
 			break;
 	}
@@ -155,6 +175,7 @@ void Window_VarList::UpdateList(int first_value){
 			case eMapEvent:
 				ss << Game_Map::GetEvent(first_value+i)->GetName();
 				break;
+			case eString:
 			default:
 				break;
 		}
@@ -162,8 +183,9 @@ void Window_VarList::UpdateList(int first_value){
 	}
 }
 
-void Window_VarList::SetMode(Mode mode) {
+void Window_VarList::SetMode(Mode mode, int max_length_strings) {
 	this->mode = mode;
+	this->max_length_strings = max_length_strings;
 	SetVisible((mode != eNone));
 	Refresh();
 }
@@ -188,6 +210,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= static_cast<int>(lcf::Data::commonevents.size());
 		case eMapEvent:
 			return Game_Map::GetEvent(range_index) != nullptr;
+		case eString:
+			return range_index > 0 && range_index <= max_length_strings;
 		default:
 			break;
 	}

@@ -24,6 +24,7 @@
 #include "window_command.h"
 #include "window_numberinput.h"
 #include "window_varlist.h"
+#include "window_stringview.h"
 
 /**
  * Scene Equip class.
@@ -68,6 +69,7 @@ public:
 		eCallCommonEvent,
 		eCallMapEvent,
 		eCallBattleEvent,
+		eString,
 		eOpenMenu,
 		eLastMainMenuOption,
 	};
@@ -76,7 +78,8 @@ public:
 		eUiMain,
 		eUiRangeList,
 		eUiVarList,
-		eUiNumberInput
+		eUiNumberInput,
+		eUiStringView
 	};
 private:
 	Mode mode = eMain;
@@ -94,6 +97,9 @@ private:
 
 	/** Creates number input window. */
 	void CreateNumberInputWindow();
+
+	/** Creates string view window. */
+	void CreateStringViewWindow();
 
 	/** Get the last page for the current mode */
 	int GetLastPage();
@@ -120,6 +126,8 @@ private:
 	std::unique_ptr<Window_VarList> var_window;
 	/** Number Editor. */
 	std::unique_ptr<Window_NumberInput> numberinput_window;
+	/** Windows for displaying multiline strings. */
+	std::unique_ptr<Window_StringView> stringview_window;
 
 	struct StackFrame {
 		UiMode uimode = eUiMain;
@@ -140,6 +148,7 @@ private:
 	void PushUiRangeList();
 	void PushUiVarList();
 	void PushUiNumberInput(int init_value, int digits, bool show_operator);
+	void PushUiStringView();
 
 	Window_VarList::Mode GetWindowMode() const;
 	void UpdateFrameValueFromUi();
@@ -148,6 +157,9 @@ private:
 
 	void UpdateArrows();
 	int arrow_frame = 0;
+
+	bool strings_cached = false;
+	std::vector<lcf::DBString> strings;
 };
 
 #endif

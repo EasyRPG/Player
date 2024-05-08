@@ -25,6 +25,7 @@
 #include "input.h"
 #include "game_variables.h"
 #include "game_switches.h"
+#include "game_strings.h"
 #include "game_map.h"
 #include "game_system.h"
 #include "game_battle.h"
@@ -69,14 +70,18 @@ void Scene_Debug::Start() {
 	CreateRangeWindow();
 	CreateVarListWindow();
 	CreateNumberInputWindow();
+	CreateStringViewWindow();
 
 	SetupUiRangeList();
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
+	stringview_window->SetActive(false);
 
 	UpdateRangeListWindow();
 	var_window->Refresh();
+
+	strings_cached = false;
 }
 
 Scene_Debug::StackFrame& Scene_Debug::GetFrame(int n) {
@@ -115,6 +120,8 @@ Window_VarList::Mode Scene_Debug::GetWindowMode() const {
 			return Window_VarList::eCommonEvent;
 		case eCallMapEvent:
 			return Window_VarList::eMapEvent;
+		case eString:
+			return Window_VarList::eString;
 		default:
 			return Window_VarList::eNone;
 	}
@@ -140,6 +147,9 @@ void Scene_Debug::UpdateFrameValueFromUi() {
 		case eUiNumberInput:
 			frame.value = numberinput_window->GetNumber();
 			break;
+		eUiStringView:
+			frame.value = stringview_window->GetIndex();
+			break;
 	}
 }
 
@@ -152,6 +162,8 @@ void Scene_Debug::Push(UiMode ui) {
 	var_window->SetActive(false);
 	numberinput_window->SetActive(false);
 	numberinput_window->SetVisible(false);
+	stringview_window->SetActive(false);
+	stringview_window->SetVisible(false);
 }
 
 void Scene_Debug::SetupUiRangeList() {
@@ -161,7 +173,7 @@ void Scene_Debug::SetupUiRangeList() {
 	range_index = idx.range_index;
 	range_page = idx.range_page;
 
-	var_window->SetMode(vmode);
+	var_window->SetMode(vmode, mode == eString ? strings.size() : 0);
 	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
 
 	range_window->SetIndex(range_index);
@@ -212,6 +224,28 @@ void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operat
 	UpdateRangeListWindow();
 }
 
+void Scene_Debug::PushUiStringView() {
+	const auto str_id = GetFrame().value;
+
+	auto value = ToString(Main_Data::game_strings->Get(str_id));
+
+	if (value.empty()) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+	Push(eUiStringView);
+
+	var_window->SetActive(false);
+	stringview_window->SetActive(true);
+	stringview_window->SetVisible(true);
+
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+	stringview_window->SetDisplayData(value);
+	stringview_window->SetIndex(0);
+	stringview_window->Refresh();
+}
+
+
 void Scene_Debug::Pop() {
 	auto pui = GetFrame().uimode;
 
@@ -223,6 +257,8 @@ void Scene_Debug::Pop() {
 	var_window->SetActive(false);
 	numberinput_window->SetActive(false);
 	numberinput_window->SetVisible(false);
+	stringview_window->SetActive(false);
+	stringview_window->SetVisible(false);
 
 	if (stack_index == 0) {
 		Scene::Pop();
@@ -255,6 +291,10 @@ void Scene_Debug::Pop() {
 			numberinput_window->SetActive(true);
 			numberinput_window->SetVisible(true);
 			break;
+		case eUiStringView:
+			stringview_window->SetActive(true);
+			stringview_window->SetVisible(true);
+			break;
 	}
 
 	if (stack_index == 0) {
@@ -273,6 +313,9 @@ void Scene_Debug::vUpdate() {
 		var_window->Refresh();
 	}
 	var_window->Update();
+
+	if (stringview_window->GetActive())
+		stringview_window->Update();
 
 	if (numberinput_window->GetActive())
 		numberinput_window->Update();
@@ -445,6 +488,21 @@ void Scene_Debug::vUpdate() {
 					}
 				}
 				break;
+			case eString:
+				if (sz > 3) {
+					//TODO
+				} else if (sz > 2) {
+					PushUiStringView();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else if (sz > 0) {
+					if (!strings_cached) {
+						strings = Main_Data::game_strings->GetLcfData();
+						strings_cached = true;
+					}
+					PushUiRangeList();
+				}
+				break;
 			case eOpenMenu:
 				DoOpenMenu();
 				break;
@@ -529,6 +587,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Call ComEvent");
 				addItem("Call MapEvent", Scene::Find(Scene::Map) != nullptr);
 				addItem("Call BtlEvent", is_battle);
+				addItem("Strings", Player::IsPatchManiac());
 				addItem("Open Menu", !is_battle);
 			}
 			break;
@@ -605,6 +664,8 @@ void Scene_Debug::UpdateRangeListWindow() {
 				}
 			}
 			break;
+		case eString:
+			fillRange("St");
 		default:
 			break;
 	}
@@ -633,6 +694,12 @@ void Scene_Debug::CreateNumberInputWindow() {
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);
+}
+
+void Scene_Debug::CreateStringViewWindow() {
+	stringview_window.reset(new Window_StringView(Player::menu_offset_x + 15, Player::menu_offset_y + 16, 288, 208));
+	stringview_window->SetVisible(false);
+	stringview_window->SetIndex(-1);
 }
 
 int Scene_Debug::GetNumMainMenuItems() const {
@@ -670,6 +737,9 @@ int Scene_Debug::GetLastPage() {
 			break;
 		case eCallMapEvent:
 			num_elements = Game_Map::GetHighestEventId();
+			break;
+		case eString:
+			num_elements = strings.size();
 			break;
 		default:
 			break;

@@ -35,6 +35,7 @@ public:
 		eLevel,
 		eCommonEvent,
 		eMapEvent,
+		eString
 	};
 
 	/**
@@ -61,8 +62,9 @@ public:
 	 * Indicate what to display.
 	 *
 	 * @param mode the mode to set.
+	 * @param max_length_strings maximum size for items (Used for Strings)
 	 */
-	void SetMode(Mode mode);
+	void SetMode(Mode mode, int max_length_strings = 0);
 
 	/**
 	 * Returns the current mode.
@@ -79,7 +81,7 @@ private:
 	void DrawItemValue(int index);
 
 	Mode mode = eNone;
-	int first_var = 0;
+	int first_var = 0, max_length_strings = 0;
 
 	bool DataIsValid(int range_index);
 

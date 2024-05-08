@@ -453,6 +453,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_skill.h
 	src/window_skillstatus.cpp
 	src/window_skillstatus.h
+	src/window_stringview.cpp
+	src/window_stringview.h
 	src/window_targetstatus.cpp
 	src/window_targetstatus.h
 	src/window_teleport.cpp
