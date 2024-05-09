@@ -25,6 +25,7 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "output.h"
+#include "player.h"
 #include "utils.h"
 
 void Game_Strings::WarnGet(int id) const {
@@ -186,7 +187,7 @@ StringView Game_Strings::ToFile(Str_Params params, std::string filename, int enc
 	filename = "Text/" + filename;
 	
 	// EasyRPG Extension: When "*" is at the end of filename, ".txt" is not appended
-	if (filename.back() == '*') {
+	if (Player::HasEasyRpgExtensions() && filename.back() == '*') {
 		filename.pop_back();
 	} else {
 		filename += ".txt";
