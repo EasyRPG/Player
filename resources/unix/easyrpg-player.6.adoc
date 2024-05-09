@@ -95,8 +95,14 @@ NOTE: For games that only use ASCII (English games) use '1252'.
 *--patch-key-patch*::
   Enable support for the Key Patch by Ineluki.
 
-*--patch-maniac*::
+*--patch-maniac*:: _[N]_
   Enable support for the Maniac Patch by BingShan.
+  Values for N:
+   - 1: Enable the patch (default)
+   - 2: Enable the patch but do not adjust variable ranges to 32 bit.
+
+  Not adjusting the variable ranges is useful if you are adding the patch to an
+  existing game, as this reduces the likelihood that the game will stop working.
 
 *--patch-pic-unlock*::
   Picture movement is not interrupted by messages in any version of the engine.

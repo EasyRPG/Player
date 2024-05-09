@@ -99,8 +99,13 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_override = true;
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, {"--patch-maniac", "--no-patch-maniac"})) {
+		if (cp.ParseNext(arg, 1, {"--patch-maniac", "--no-patch-maniac"})) {
 			patch_maniac.Set(arg.ArgIsOn());
+
+			if (arg.ArgIsOn() && arg.ParseValue(0, li_value)) {
+				patch_maniac.Set(li_value);
+			}
+
 			patch_override = true;
 			continue;
 		}

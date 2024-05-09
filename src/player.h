@@ -478,7 +478,7 @@ inline bool Player::IsPatchDynRpg() {
 }
 
 inline bool Player::IsPatchManiac() {
-	return game_config.patch_maniac.Get();
+	return game_config.patch_maniac.Get() > 0;
 }
 
 inline bool Player::IsPatchKeyPatch() {
