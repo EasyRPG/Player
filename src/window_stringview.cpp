@@ -69,16 +69,23 @@ void Window_StringView::Refresh() {
 	//create vector of display lines
 	pos = 0;
 	int c = 0;
+	int limit = 6 * (max_str_length - line_no_max_digits);
+
 	while ((pos = value.find("\n", pos)) != std::string::npos) {
 		std::string new_line = value.substr(0, pos);
-		line_numbers.push_back(++c);
 
-		while (auto_linebreak && new_line.size() > (max_str_length - line_no_max_digits)) {
-			lines.push_back(new_line.substr(0, (max_str_length - line_no_max_digits)));
-			line_numbers.push_back(0);
-			new_line = new_line.substr((max_str_length - line_no_max_digits));
+		line_numbers.push_back(++c);
+		if (auto_linebreak) {
+			bool skipFirstNo = true;
+			Game_Message::WordWrap(new_line, limit, [&](StringView line) {
+				if (!skipFirstNo)
+					line_numbers.push_back(0);
+				skipFirstNo = false;
+				lines.push_back(std::string(line));
+			}, *Font::DefaultBitmapFont());
+		} else {
+			lines.push_back(new_line);
 		}
-		lines.push_back(new_line);
 		value = value.substr(pos + 1);
 		pos = 0;
 	}
