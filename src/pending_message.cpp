@@ -159,12 +159,25 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 			return ToString(actor->GetName());
 		}
 	} else if (ch == 'V' || ch == 'v') {
-		auto parse_ret = Game_Message::ParseVariable(*iter, end, escape_char, true);
-		*iter = parse_ret.next;
-		int value = parse_ret.value;
+		if (!Player::HasEasyRpgExtensions()) {
+			auto parse_ret = Game_Message::ParseVariable(*iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
 
-		int variable_value = Main_Data::game_variables->Get(value);
-		return std::to_string(variable_value);
+			int variable_value = Main_Data::game_variables->Get(value);
+			return std::to_string(variable_value);
+		} else {
+			auto parse_ret = Game_Message::ParseFormattedVariable(*iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
+			int variable_value = Main_Data::game_variables->Get(value);
+
+			if (!parse_ret.format_string.empty()) {
+				return fmt::format(parse_ret.format_string, variable_value);
+			}
+
+			return std::to_string(variable_value);
+		}
 	}
 
 	return std::nullopt;

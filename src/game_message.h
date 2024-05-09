@@ -122,6 +122,16 @@ namespace Game_Message {
 		std::string value;
 	};
 
+	/** Struct returned by parameter parsing methods */
+	struct ParseFormattedParamResult {
+		/** iterator to the next character after parsed content */
+		const char* next = nullptr;
+		/** value that was parsed */
+		int value = 0;
+		/** the format string according to fmt::format specifications */
+		std::string format_string;
+	};
+
 	/** Parse a \v[] variable string
 	 *
 	 * @param iter start of utf8 string
@@ -133,6 +143,18 @@ namespace Game_Message {
 	 * @return \refer ParseParamResult
 	 */
 	ParseParamResult ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	/** Parse a \v[] variable string with format specifiers
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseFormattedParamResult
+	 */
+	ParseFormattedParamResult ParseFormattedVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 
 	/** Parse a \t[] variable string
 	 *
@@ -185,6 +207,10 @@ namespace Game_Message {
 	Game_Message::ParseParamResult ParseParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 	// same as ParseParam but the parameter is of structure \x[some_word] instead of \x[1]
 	Game_Message::ParseParamStringResult ParseStringParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	Game_Message::ParseFormattedParamResult ParseFormattedParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	const char* ParseNumberFormat(const char* iter, const char* end);
 }
 
 #endif

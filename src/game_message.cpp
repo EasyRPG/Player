@@ -185,6 +185,239 @@ std::optional<std::string> Game_Message::CommandCodeInserter(char ch, const char
 	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
 }
 
+namespace {
+	template<typename R>
+	inline R DefaultEmpty(const char* begin) {
+		if constexpr (std::is_same<R, Game_Message::ParseParamResult>::value) {
+			return { begin, 0 };
+		} else if constexpr (std::is_same<R, Game_Message::ParseParamStringResult>::value) {
+			return { begin, "" };
+		} else {
+			return { begin, 0, "" };
+		}
+	}
+
+	// Note: this function doesn't consider any floating types or precision arguments as those are relevant for EasyRPG
+	// If used, the format string is considered invalid
+	inline const char* ParseNumberFormat(const char* iter, const char* end) {
+		int step = 0;
+
+		while (iter != end && *iter != ']') {
+			auto ch = *iter;
+
+			switch (step) {
+				case 0: //expect 'fill' character
+					if (!(ch == '{' || ch == '}')) {
+						++iter;
+						if (iter == end || *iter == ']') {
+							--iter;
+							step++;
+							continue;
+						}
+						ch = *iter;
+						//expect 'align'
+						if (!(ch == '<' || ch == '>' || ch == '^')) {
+							step++;
+							--iter;
+							continue;
+						}
+						step += 2;
+					}
+					break;
+				case 1: //expect 'align'
+					if (!(ch == '<' || ch == '>' || ch == '^')) {
+						step++;
+						continue;
+					}
+					break;
+				case 2: //expect 'sign'
+					if (!(ch == '+' || ch == '-' || ch == ' ')) {
+						step++;
+						continue;
+					}
+					break;
+				case 3: //expect '#'
+					if (ch != '#') {
+						step++;
+						continue;
+					}
+					break;
+				case 4: //expect '0'
+					if (ch != '0') {
+						step++;
+						continue;
+					}
+				case 5: //expect number 'width'
+					// Fast inline isdigit()
+					if (ch >= '0' && ch <= '9') {
+						++iter;
+						continue;
+					} else {
+						step++;
+						continue;
+					}
+					break;
+				case 6: //expect 'type'
+					if (!(ch == 'b' || ch == 'B' || ch == 'c' || ch == 'C' || ch == 'd' || ch == 'D' || ch == 'o' || ch == 'O' || ch == 'x' || ch == 'X'))
+						return end;
+					break;
+			}
+			++iter;
+		}
+		return iter;
+	}
+
+	template<typename R, typename V>
+	R ParseParamImpl(char upper,
+		char lower,
+		const char* iter,
+		const char* end,
+		uint32_t escape_char,
+		bool skip_prefix,
+		int max_recursion) {
+
+		if (!skip_prefix) {
+			const auto begin = iter;
+			if (iter == end) {
+				return DefaultEmpty<R>(begin);
+			}
+			auto ret = Utils::UTF8Next(iter, end);
+			// Invalid commands
+			if (ret.ch != escape_char) {
+				return DefaultEmpty<R>(begin);
+			}
+			iter = ret.next;
+			if (iter == end || (*iter != upper && *iter != lower)) {
+				return DefaultEmpty<R>(begin);
+			}
+			++iter;
+		}
+
+		if (iter == end || *iter != '[') {
+			// If no bracket, RPG_RT will return 0.
+			return DefaultEmpty<R>(iter);
+		}
+
+		V value;
+		if constexpr (std::is_same<V, int>::value) {
+			value = 0;
+		} else if constexpr (std::is_same<V, std::string>::value) {
+			value = "";
+		}
+
+		++iter;
+		bool stop_parsing = false;
+		bool got_valid_number = false;
+
+		while (iter != end && *iter != ']') {
+			if (stop_parsing) {
+				++iter;
+				continue;
+			}
+
+			if constexpr (std::is_same<V, int>::value) {
+				// Fast inline isdigit()
+				if (*iter >= '0' && *iter <= '9') {
+					value *= 10;
+					value += (*iter - '0');
+					++iter;
+					got_valid_number = true;
+					continue;
+				}
+			} else if constexpr (std::is_same<V, std::string>::value) {
+				value += *iter;
+			}
+
+			if constexpr (std::is_same<R, Game_Message::ParseFormattedParamResult>::value) {
+				if (upper == 'V' && *iter == ':' && got_valid_number) {
+					++iter;
+					// validate, if everything after ':' is according to fmt specifications
+					// (see https://fmt.dev/latest/syntax.html)
+					const char* fmt_end = ParseNumberFormat(iter, end);
+					if (fmt_end != end && (fmt_end - iter) > 0) {
+						int l = (fmt_end - iter);
+
+						char* number_format = new char[l + 4];
+						number_format[0] = '{';
+						number_format[1] = ':';
+						for (int i = 0; i < l; i++)
+							number_format[i + 2] = *iter++;
+						number_format[l + 2] = '}';
+						number_format[l + 3] = '\0';
+						auto result = std::string(number_format);
+						delete[] number_format;
+
+						iter = fmt_end;
+						if (iter != end) {
+							++iter;
+						}
+						return { iter, value, result };
+					}
+					continue;
+				}
+			}
+
+			if (max_recursion > 0) {
+				auto ret = Utils::UTF8Next(iter, end);
+				auto ch = ret.ch;
+				iter = ret.next;
+
+				// Recursive variable case.
+				if (ch == escape_char) {
+					if (iter != end && (*iter == 'V' || *iter == 'v')) {
+						++iter;
+
+						auto ret = Game_Message::ParseParam('V', 'v', iter, end, escape_char, true, max_recursion - 1);
+						iter = ret.next;
+						int var_val = Main_Data::game_variables->Get(ret.value);
+
+						if constexpr (std::is_same<V, int>::value) {
+							got_valid_number = true;
+
+							// RPG_RT concatenates the variable value.
+							int m = 10;
+							if (value != 0) {
+								while (m < var_val) {
+									m *= 10;
+								}
+							}
+							value = value * m + var_val;
+						} else if constexpr (std::is_same<V, std::string>::value) {
+							value += std::to_string(var_val);
+						}
+						continue;
+					}
+				}
+			}
+
+			if constexpr (std::is_same<V, int>::value) {
+				// If we hit a non-digit, RPG_RT will stop parsing until the next closing bracket.
+				stop_parsing = true;
+			}
+		}
+
+		if (iter != end) {
+			++iter;
+		}
+
+		if constexpr (std::is_same<V, int>::value) {
+			// Actor 0 references the first party member
+			if (upper == 'N' && value == 0 && got_valid_number) {
+				auto* party = Main_Data::game_party.get();
+				if (party->GetBattlerCount() > 0) {
+					value = (*party)[0].GetId();
+				}
+			}
+		}
+
+		if constexpr (std::is_same<R, Game_Message::ParseFormattedParamResult>::value) {
+			return { iter, value, "" };
+		}
+
+		return { iter, value };
+	}
+}
+
 Game_Message::ParseParamResult Game_Message::ParseParam(
 		char upper,
 		char lower,
@@ -194,164 +427,39 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		bool skip_prefix,
 		int max_recursion)
 {
-	if (!skip_prefix) {
-		const auto begin = iter;
-		if (iter == end) {
-			return { begin, 0 };
-		}
-		auto ret = Utils::UTF8Next(iter, end);
-		// Invalid commands
-		if (ret.ch != escape_char) {
-			return { begin, 0 };
-		}
-		iter = ret.next;
-		if (iter == end || (*iter != upper && *iter != lower)) {
-			return { begin, 0 };
-		}
-		++iter;
-	}
-
-	// If no bracket, RPG_RT will return 0.
-	if (iter == end || *iter != '[') {
-		return { iter, 0 };
-	}
-
-	int value = 0;
-	++iter;
-	bool stop_parsing = false;
-	bool got_valid_number = false;
-
-	while (iter != end && *iter != ']') {
-		if (stop_parsing) {
-			++iter;
-			continue;
-		}
-
-		// Fast inline isdigit()
-		if (*iter >= '0' && *iter <= '9') {
-			value *= 10;
-			value += (*iter - '0');
-			++iter;
-			got_valid_number = true;
-			continue;
-		}
-
-		if (max_recursion > 0) {
-			auto ret = Utils::UTF8Next(iter, end);
-			auto ch = ret.ch;
-			iter = ret.next;
-
-			// Recursive variable case.
-			if (ch == escape_char) {
-				if (iter != end && (*iter == 'V' || *iter == 'v')) {
-					++iter;
-
-					auto ret = ParseParam('V', 'v', iter, end, escape_char, true, max_recursion - 1);
-					iter = ret.next;
-					int var_val = Main_Data::game_variables->Get(ret.value);
-
-					got_valid_number = true;
-
-					// RPG_RT concatenates the variable value.
-					int m = 10;
-					if (value != 0) {
-						while (m < var_val) {
-							m *= 10;
-						}
-					}
-					value = value * m + var_val;
-					continue;
-				}
-			}
-		}
-
-		// If we hit a non-digit, RPG_RT will stop parsing until the next closing bracket.
-		stop_parsing = true;
-	}
-
-	if (iter != end) {
-		++iter;
-	}
-
-	// Actor 0 references the first party member
-	if (upper == 'N' && value == 0 && got_valid_number) {
-		auto* party = Main_Data::game_party.get();
-		if (party->GetBattlerCount() > 0) {
-			value = (*party)[0].GetId();
-		}
-	}
-
-	return { iter, value };
+	return ParseParamImpl<ParseParamResult, int>(upper, lower, iter, end, escape_char, skip_prefix, max_recursion);
 }
 
 Game_Message::ParseParamStringResult Game_Message::ParseStringParam(
-		char upper,
-		char lower,
-		const char* iter,
-		const char* end,
-		uint32_t escape_char,
-		bool skip_prefix,
-		int max_recursion)
+	char upper,
+	char lower,
+	const char* iter,
+	const char* end,
+	uint32_t escape_char,
+	bool skip_prefix,
+	int max_recursion)
 {
-	if (!skip_prefix) {
-		const auto begin = iter;
-		if (iter == end) {
-			return { begin, "" };
-		}
-		auto ret = Utils::UTF8Next(iter, end);
-		// Invalid commands
-		if (ret.ch != escape_char) {
-			return { begin, "" };
-		}
-		iter = ret.next;
-		if (iter == end || (*iter != upper && *iter != lower)) {
-			return { begin, "" };
-		}
-		++iter;
-	}
+	return ParseParamImpl<ParseParamStringResult, std::string>(upper, lower, iter, end, escape_char, skip_prefix, max_recursion);
+}
 
-	// If no bracket, return empty string
-	if (iter == end || *iter != '[') {
-		return { iter, "" };
-	}
-
-	std::string value;
-	++iter;
-
-	while (iter != end && *iter != ']') {
-		// Fast inline isdigit()
-		value += *iter;
-
-		if (max_recursion > 0) {
-			auto ret = Utils::UTF8Next(iter, end);
-			auto ch = ret.ch;
-			iter = ret.next;
-
-			// Recursive variable case.
-			if (ch == escape_char) {
-				if (iter != end && (*iter == 'V' || *iter == 'v')) {
-					++iter;
-
-					auto ret = ParseParam('V', 'v', iter, end, escape_char, true, max_recursion - 1);
-					iter = ret.next;
-					int var_val = Main_Data::game_variables->Get(ret.value);
-
-					value += std::to_string(var_val);
-					continue;
-				}
-			}
-		}
-	}
-
-	if (iter != end) {
-		++iter;
-	}
-
-	return { iter, value };
+Game_Message::ParseFormattedParamResult Game_Message::ParseFormattedParam(
+	char upper,
+	char lower,
+	const char* iter,
+	const char* end,
+	uint32_t escape_char,
+	bool skip_prefix,
+	int max_recursion)
+{
+	return ParseParamImpl<ParseFormattedParamResult, int>(upper, lower, iter, end, escape_char, skip_prefix, max_recursion);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
 	return ParseParam('V', 'v', iter, end, escape_char, skip_prefix, max_recursion - 1);
+}
+
+Game_Message::ParseFormattedParamResult Game_Message::ParseFormattedVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseFormattedParam('V', 'v', iter, end, escape_char, skip_prefix, max_recursion - 1);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseString(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
