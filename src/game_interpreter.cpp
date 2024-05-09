@@ -977,7 +977,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(lcf::rpg::EventCommand const& co
 		return false;
 	}
 
-	Main_Data::game_system->SetMessageFaceName(ToString(CommandStringOrVariableBitfield(com, 3, 0, 4)));
+	Main_Data::game_system->SetMessageFaceName(CommandStringOrVariableBitfield(com, 3, 0, 4));
 	Main_Data::game_system->SetMessageFaceIndex(ValueOrVariableBitfield(com, 3, 1, 0));
 	Main_Data::game_system->SetMessageFaceRightPosition(com.parameters[1] != 0);
 	Main_Data::game_system->SetMessageFaceFlipped(com.parameters[2] != 0);
@@ -1785,33 +1785,41 @@ int Game_Interpreter::ValueOrVariableBitfield(lcf::rpg::EventCommand const& com,
 	return com.parameters[val_idx];
 }
 
-StringView Game_Interpreter::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
+std::string Game_Interpreter::CommandString(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions() || !lcf::Data::system.easyrpg_var_substitution_in_commands) {
+		return ToString(com.string);
+	}
+	return PendingMessage::ApplyTextInsertingCommands(ToString(com.string), Player::escape_char, Game_Message::CommandCodeInserter);
+}
+
+
+std::string Game_Interpreter::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
 	if (!Player::IsPatchManiac()) {
-		return com.string;
+		return CommandString(com);
 	}
 
 	assert(mode_idx != val_idx);
 
 	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
-		return Main_Data::game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx], *Main_Data::game_variables);
+		return ToString(Main_Data::game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx], *Main_Data::game_variables));
 	}
 
-	return com.string;
+	return CommandString(com);
 }
 
-StringView Game_Interpreter::CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
+std::string Game_Interpreter::CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
 	if (!Player::IsPatchManiac()) {
-		return com.string;
+		return CommandString(com);
 	}
 
 	assert(mode_idx != val_idx);
 
 	if (com.parameters.size() >= std::max(mode_idx, val_idx) + 1) {
 		int mode = com.parameters[mode_idx];
-		return Main_Data::game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *Main_Data::game_variables);
+		return ToString(Main_Data::game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *Main_Data::game_variables));
 	}
 
-	return com.string;
+	return CommandString(com);
 }
 
 bool Game_Interpreter::CommandChangeParameters(lcf::rpg::EventCommand const& com) { // Code 10430
@@ -2088,7 +2096,7 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
-	music.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
+	music.name = CommandStringOrVariableBitfield(com, 4, 0, 5);
 
 	music.fadein = ValueOrVariableBitfield(com, 4, 1, 0);
 	music.volume = ValueOrVariableBitfield(com, 4, 2, 1);
@@ -2107,7 +2115,7 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
-	sound.name = ToString(CommandStringOrVariableBitfield(com, 3, 0, 4));
+	sound.name = CommandStringOrVariableBitfield(com, 3, 0, 4);
 
 	sound.volume = ValueOrVariableBitfield(com, 3, 1, 0);
 	sound.tempo = ValueOrVariableBitfield(com, 3, 2, 1);
@@ -2179,7 +2187,7 @@ bool Game_Interpreter::CommandChangeHeroName(lcf::rpg::EventCommand const& com) 
 		return true;
 	}
 
-	actor->SetName(ToString(CommandStringOrVariableBitfield(com, 1, 1, 2)));
+	actor->SetName(CommandStringOrVariableBitfield(com, 1, 1, 2));
 	return true;
 }
 
@@ -2192,7 +2200,7 @@ bool Game_Interpreter::CommandChangeHeroTitle(lcf::rpg::EventCommand const& com)
 		return true;
 	}
 
-	actor->SetTitle(ToString(CommandStringOrVariableBitfield(com, 1, 1, 2)));
+	actor->SetTitle(CommandStringOrVariableBitfield(com, 1, 1, 2));
 	return true;
 }
 
@@ -2205,7 +2213,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 		return true;
 	}
 
-	auto file = ToString(CommandStringOrVariableBitfield(com, 3, 1, 4));
+	auto file = CommandStringOrVariableBitfield(com, 3, 1, 4);
 	int idx = ValueOrVariableBitfield(com, 3, 2, 1);
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
@@ -2223,7 +2231,7 @@ bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com)
 	}
 
 	actor->SetFace(
-			ToString(CommandStringOrVariableBitfield(com, 2, 1, 3)),
+			CommandStringOrVariableBitfield(com, 2, 1, 3),
 			ValueOrVariableBitfield(com, 2, 2, 1));
 	return true;
 }
@@ -2237,7 +2245,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	const std::string& name = ToString(com.string);
+	std::string& name = CommandString(com);
 	int vehicle_index = com.parameters[1];
 
 	vehicle->SetSpriteGraphic(name, vehicle_index);
@@ -2249,7 +2257,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com) { //code 10660
 	lcf::rpg::Music music;
 	int context = com.parameters[0];
-	music.name = ToString(com.string);
+	music.name = CommandString(com);
 	music.fadein = com.parameters[1];
 	music.volume = com.parameters[2];
 	music.tempo = com.parameters[3];
@@ -2261,7 +2269,7 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com) { //code 10670
 	lcf::rpg::Sound sound;
 	int context = com.parameters[0];
-	sound.name = ToString(com.string);
+	sound.name = CommandString(com);
 	sound.volume = com.parameters[1];
 	sound.tempo = com.parameters[2];
 	sound.balance = com.parameters[3];
@@ -2270,7 +2278,7 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Main_Data::game_system->SetSystemGraphic(ToString(CommandStringOrVariable(com, 2, 3)),
+	Main_Data::game_system->SetSystemGraphic(CommandStringOrVariable(com, 2, 3),
 			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
 			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
@@ -2796,7 +2804,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	int pic_id = com.parameters[0];
 
 	Game_Pictures::ShowParams params = {};
-	params.name = ToString(com.string);
+	params.name = CommandString(com);
 	// Maniac Patch uses the upper bits for X/Y origin, mask it away
 	int pos_mode = ManiacBitmask(com.parameters[1], 0xFF);
 	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
@@ -2830,7 +2838,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		// Handling of RPG2k3 1.12 chunks
 		if (Player::IsPatchManiac()) {
 			pic_id = ValueOrVariableBitfield(com.parameters[17], 0, pic_id);
-			params.name = ToString(CommandStringOrVariableBitfield(com, 17, 2, 30));
+			params.name = CommandStringOrVariableBitfield(com, 17, 2, 30);
 		} else {
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 		}
@@ -3390,7 +3398,7 @@ bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com
 
 bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
-	params.name = ToString(com.string);
+	params.name = CommandString(com);
 	params.scroll_horz = com.parameters[0] != 0;
 	params.scroll_vert = com.parameters[1] != 0;
 	params.scroll_horz_auto = com.parameters[2] != 0;
@@ -3552,9 +3560,12 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			result = Main_Data::game_party->IsActorInParty(actor_id);
 			break;
 		case 1:
+		{
 			// Name
-			result = (actor->GetName() == com.string);
+			std::string& name = CommandString(com);
+			result = (actor->GetName() == name);
 			break;
+		}
 		case 2:
 			// Higher or equal level
 			result = (actor->GetLevel() >= com.parameters[3]);

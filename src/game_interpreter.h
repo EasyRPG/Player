@@ -172,8 +172,11 @@ protected:
 	static int ValueOrVariableBitfield(int mode, int shift, int val);
 	// Range checked, conditional version (slower) of ValueOrVariableBitfield
 	static int ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
-	static StringView CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
-	static StringView CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
+
+	static std::string CommandString(lcf::rpg::EventCommand const& com);
+	static std::string CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
+	static std::string CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
+
 
 	/**
 	 * When current frame finishes executing we pop the stack
