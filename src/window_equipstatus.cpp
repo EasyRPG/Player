@@ -24,9 +24,9 @@
 #include "font.h"
 #include "player.h"
 
-Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
+Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor) :
 	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id),
+	actor(actor),
 	draw_params(false),
 	dirty(true) {
 
@@ -43,7 +43,7 @@ void Window_EquipStatus::Refresh() {
 
 		y_offset = 18;
 		// Actor data is guaranteed to be valid
-		DrawActorName(*Main_Data::game_actors->GetActor(actor_id), 0, 2);
+		DrawActorName(actor, 0, 2);
 
 		for (int i = 0; i < 4; ++i) {
 			DrawParameter(0, y_offset + ((12 + 4) * i), i);
@@ -87,27 +87,26 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	StringView name;
 	int value;
 	int new_value;
-	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	switch (type) {
 	case 0:
 		name = lcf::Data::terms.attack;
-		value = actor->GetAtk();
+		value = actor.GetAtk();
 		new_value = atk;
 		break;
 	case 1:
 		name = lcf::Data::terms.defense;
-		value = actor->GetDef();
+		value = actor.GetDef();
 		new_value = def;
 		break;
 	case 2:
 		name = lcf::Data::terms.spirit;
-		value = actor->GetSpi();
+		value = actor.GetSpi();
 		new_value = spi;
 		break;
 	case 3:
 		name = lcf::Data::terms.agility;
-		value = actor->GetAgi();
+		value = actor.GetAgi();
 		new_value = agi;
 		break;
 	default:
@@ -115,7 +114,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	}
 
 	// Check if 4 digits are needed instead of 3
-	int limit = actor->MaxStatBaseValue();
+	int limit = actor.MaxStatBaseValue();
 	bool more_space_needed = (Player::IsRPG2k3() && limit >= 500) || limit >= 1000;
 
 	// Draw Term

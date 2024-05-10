@@ -53,7 +53,7 @@ public:
 	 */
 	void SetEnabled(int index, bool enabled);
 
-	void SetActor(int actor_id);
+	void SetActor(const Game_Actor* actor);
 
 	int GetIndex();
 	void SetIndex(int index);
@@ -62,7 +62,7 @@ public:
 	int GetSkillSubset();
 
 protected:
-	int actor_id;
+	const Game_Actor* actor = nullptr;
 	std::vector<std::string> commands;
 	int index;
 	int num_rows;

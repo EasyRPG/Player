@@ -242,7 +242,6 @@ void Game_ConfigGame::PrintActivePatches() {
 
 	add_bool(patch_easyrpg);
 	add_bool(patch_dynrpg);
-	add_bool(patch_maniac);
 	add_bool(patch_common_this_event);
 	add_bool(patch_unlock_pics);
 	add_bool(patch_key_patch);
@@ -254,6 +253,7 @@ void Game_ConfigGame::PrintActivePatches() {
 		}
 	};
 
+	add_int(patch_maniac);
 	add_int(patch_anti_lag_switch);
 	add_int(patch_direct_menu);
 
@@ -261,10 +261,14 @@ void Game_ConfigGame::PrintActivePatches() {
 		Output::Debug("Patch configuration: None");
 	} else {
 		std::string out = "Patch configuration: ";
+		bool first = true;
 		for (const auto& s: patches) {
-			out += s + " ";
+			if (!first) {
+				out += ", ";
+			}
+			out += s;
+			first = false;
 		}
-		out.pop_back();
 		Output::DebugStr(out);
 	}
 }

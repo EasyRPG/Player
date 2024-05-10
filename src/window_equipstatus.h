@@ -22,7 +22,7 @@
 #include "window_base.h"
 
 /**
- * Window_EquipLeft class.
+ * Window_EquipStatus class.
  * Displays stats of the hero/item.
  */
 class Window_EquipStatus : public Window_Base {
@@ -35,9 +35,9 @@ public:
 	 * @param iy window y position.
 	 * @param iwidth window width.
 	 * @param iheight window height.
-	 * @param actor_id actor whose stats are displayed.
+	 * @param actor actor whose stats are displayed.
 	 */
-	Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
+	Window_EquipStatus(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor);
 
 	/**
 	 * Refreshes screen.
@@ -78,7 +78,8 @@ public:
 	void DrawParameter(int cx, int cy, int type);
 
 private:
-	int actor_id;
+ 	const Game_Actor& actor;
+
 	/** Draws the params if true. */
 	bool draw_params;
 

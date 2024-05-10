@@ -90,13 +90,15 @@ void Game_Interpreter_Map::OnMapChange() {
 }
 
 bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_index, bool is_db_actor) {
-
 	if (Player::game_config.patch_direct_menu.Get() && subscreen_id == -1) {
 		subscreen_id = Main_Data::game_variables->Get(Player::game_config.patch_direct_menu.Get());
 		actor_index = Main_Data::game_variables->Get(Player::game_config.patch_direct_menu.Get() + 1);
+		// When true refers to the index of an actor, instead of a party index
 		is_db_actor = (actor_index < 0);
 		actor_index = std::abs(actor_index);
 	}
+
+	std::vector<Game_Actor*> actors;
 
 	switch (subscreen_id)
 	{
@@ -106,33 +108,36 @@ bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_inde
 	case 2: // Skills
 	case 3: // Equipment
 	case 4: // Status
-		if (!is_db_actor) {
+		if (is_db_actor) {
+			Game_Actor* actor = Main_Data::game_actors->GetActor(actor_index);
+			if (!actor) {
+				Output::Warning("RequestMainMenu: Invalid actor ID {}", actor_index);
+				return false;
+			}
+			actors = std::vector{actor};
+			actor_index = 0;
+		} else {
+			// 0, 1 and 5+ refer to the first actor
 			if (actor_index == 0 || actor_index > 4) {
 				actor_index = 1;
 			}
 			actor_index--;
-		}
+			actors = Main_Data::game_party->GetActors();
 
-		if (is_db_actor && !Main_Data::game_actors->GetActor(actor_index)) {
-			Output::Warning("Invalid actor ID {}", actor_index);
-			return false;
+			if (actor_index < 0 || actor_index >= actors.size()) {
+				Output::Warning("RequestMainMenu: Invalid actor party member {}", actor_index);
+				return false;
+			}
 		}
 
 		if (subscreen_id == 2) {
-			Scene::instance->SetRequestedScene(std::make_shared<Scene_Skill>(actor_index, 0, is_db_actor));
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Skill>(actors, actor_index));
 		}
 		else if (subscreen_id == 3) {
-			Game_Actor* actor;
-			if (!is_db_actor) {
-				actor = Main_Data::game_party->GetActors()[actor_index];
-			}
-			else {
-				actor = Main_Data::game_actors->GetActor(actor_index);
-			}
-			Scene::instance->SetRequestedScene(std::make_shared<Scene_Equip>(*actor));
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Equip>(actors, actor_index));
 		}
 		else if (subscreen_id == 4) {
-			Scene::instance->SetRequestedScene(std::make_shared<Scene_Status>(actor_index, is_db_actor));
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Status>(actors, actor_index));
 		}
 		return true;
 	case 5: // Order
