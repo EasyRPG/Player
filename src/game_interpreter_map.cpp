@@ -785,21 +785,29 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 }
 
 bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCommand const& com) {
-	int event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	_state.easyrpg_parameters.resize(3);
+
+	int& event_id = _state.easyrpg_parameters[0];
+	int& failure_limit = _state.easyrpg_parameters[1];
+	int& output_var = _state.easyrpg_parameters[2];
+
+	if (!_state.easyrpg_active) {
+		event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+		if (com.parameters.size() >= 4) {
+			failure_limit = ValueOrVariable(com.parameters[2], com.parameters[3]);
+		}
+
+		if (com.parameters.size() >= 6) {
+			output_var = ValueOrVariable(com.parameters[4], com.parameters[5]);
+		}
+	}
+
+	_state.easyrpg_active = false;
 
 	Game_Character* chara = GetCharacter(event_id);
 	if (chara == nullptr) {
 		return true;
-	}
-
-	int failure_limit = 0;
-	if (com.parameters.size() >= 4) {
-		failure_limit = ValueOrVariable(com.parameters[2], com.parameters[3]);
-	}
-
-	int output_var = 0;
-	if (com.parameters.size() >= 6) {
-		failure_limit = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	}
 
 	bool exists = chara->IsMoveRouteOverwritten();
@@ -817,6 +825,7 @@ bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCo
 	// !finished
 	if (failure_limit == 0 || chara->GetMoveFailureCount() < failure_limit) {
 		// Below threshold: Yield
+		_state.easyrpg_active = true;
 		return false;
 	}
 
