@@ -31,7 +31,7 @@
 /* 8 MB required for booting and need extra linear memory for the sound
  * effect cache and frame buffers
  */
-u32 __ctru_linear_heap_size = 12*1024*1024;
+u32 __ctru_linear_heap_size = 22*1024*1024;
 
 namespace {
 	u32 old_time_limit;
