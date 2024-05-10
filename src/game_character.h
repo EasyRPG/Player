@@ -628,10 +628,10 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/** @return the direction we would need to face the hero. */
-	int GetDirectionToHero();
+	int GetDirectionToCharacter(const Game_Character* target);
 
 	/** @return the direction we would need to face away from hero. */
-	int GetDirectionAwayHero();
+	int GetDirectionAwayCharacter(const Game_Character* target);
 
 	/**
 	 * @param dir input direction
@@ -662,13 +662,12 @@ public:
 	/**
 	 * Character looks towards the hero.
 	 */
-	void TurnTowardHero();
+	void TurnTowardCharacter(int targetID);
 
 	/**
 	 * Character looks away from the hero.
 	 */
-	void TurnAwayFromHero();
-
+	void TurnAwayFromCharacter(int targetID);
 	/**
 	 * Character waits for 20 frames more.
 	 */
@@ -764,8 +763,8 @@ public:
 	 */
 	void SetAnimationType(AnimType anim_type);
 
-	int DistanceXfromPlayer() const;
-	int DistanceYfromPlayer() const;
+	int DistanceXfromCharacter(const Game_Character* target)  const;
+	int DistanceYfromCharacter(const Game_Character* target)  const;
 
 	/**
 	 * Tests if the character is currently on the tile at x/y or moving
@@ -881,6 +880,9 @@ public:
 
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
+
+	int failsMove = 0;
+	bool isStuck(int i);
 
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
