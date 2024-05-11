@@ -826,6 +826,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(2049) : //Cmd::Easy_SetGameSpeed
+			return CommandSetGameSpeed(com);
 		default:
 			return true;
 	}
@@ -5105,6 +5107,25 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
 
+	return true;
+}
+
+bool Game_Interpreter::CommandSetGameSpeed(lcf::rpg::EventCommand const& com) {
+	// #SetGameSpeed, "",[speedIsVar, speed, speedLimitIsVar,speedLimit, hideSpeedMultiplierIsVar, hideSpeedMultiplier ];
+
+	int32_t speed = ValueOrVariable(com.parameters[0], com.parameters[1]) * Game_Clock::GetGameSpeedFactor();
+	int32_t speedLimit = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	bool hideSpeedMultiplier = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	if (speedLimit == 0) speedLimit = 100;
+	if (speed > speedLimit) speed = speedLimit;
+
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_A) || Input::IsSystemPressed(Input::FAST_FORWARD_B))
+		Game_Clock::setSpeedOverlayMode(0);
+	else
+		Game_Clock::setSpeedOverlayMode(hideSpeedMultiplier);
+
+	Game_Clock::SetGameSpeedFactor(speed);
 	return true;
 }
 
