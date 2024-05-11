@@ -503,12 +503,12 @@ if(NOT GIT_TAG)
 			list(GET GIT_DESCRIPTION 2 GIT_HASH)
 			string(APPEND GIT_MESSAGE "${GIT_COMMITS} commits since tag \"${GIT_TAG}\", ")
 			string(PREPEND GIT_COMMITS "+")
+			# strip the g prefix
+			string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
 		else()
 			# no tags found, only hash
 			list(GET GIT_DESCRIPTION 0 GIT_HASH)
 		endif()
-		# strip the g prefix
-		string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
 		set(PLAYER_VERSION_GIT "git${GIT_COMMITS}@${GIT_HASH}")
 		string(APPEND GIT_MESSAGE "object hash is ${GIT_HASH}")
 		git_local_changes(GIT_DIRTY)
