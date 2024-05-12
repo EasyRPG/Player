@@ -26,8 +26,8 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
-#include "dynrpg.h"
 #include "filefinder.h"
+#include "game_dynrpg.h"
 #include "game_map.h"
 #include "game_event.h"
 #include "game_enemyparty.h"
@@ -826,6 +826,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast <Game_Interpreter::Cmd>(2099): //easyrpg_storeCommands
+			return CommandStoreCommands(com);
 		default:
 			return true;
 	}
@@ -2121,7 +2123,9 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
-	if (Player::IsPatchDynRpg()) {
+	std::string command = ToString(com.string);
+
+	if (Player::IsPatchDynRpg() || Main_Data::game_dynrpg->Whitelist(command)) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
 			return true;
@@ -2131,7 +2135,6 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 		const auto& list = frame.commands;
 		auto& index = frame.current_command;
 
-		std::string command = ToString(com.string);
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
 			const auto& cmd = list[i];
@@ -2143,7 +2146,7 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 			}
 		}
 
-		return DynRpg::Invoke(command);
+		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
 	return true;
 }
@@ -5104,6 +5107,81 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandStoreCommands(lcf::rpg::EventCommand const& com) {
+	//$storeCommands "preffix",[evtType_isVar, evtType, evtId_isVar, evtId, evtPage_isVar, evtPage, targetStrVar_isVar, targetStrVar]
+	// 2099, "@easyrpg_raw", [1,4, 1,5, 1,6, 1,7], 0;
+
+	int evtType = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int evtId = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int evtPage = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int targetStrVar = ValueOrVariable(com.parameters[6], com.parameters[7]); // target string variable
+
+	std::string textPreffix = com.string.empty() ? "" : ToString(com.string) + " ";
+
+	Game_Event* event;
+	const lcf::rpg::EventPage* page;
+	Game_CommonEvent* common_event;
+
+	if (evtType == 0) { // Map Event
+		event = static_cast<Game_Event*>(GetCharacter(evtId));
+		if (!event || evtId == 10001) {
+			Output::Warning("StoreCommands: Can't read non-existent event {}", evtId);
+			return true;
+		}
+		page = event->GetPage(evtPage);
+		if (!page) {
+			Output::Warning("StoreCommands: Can't read non-existent page {} of event {}", evtPage, evtId);
+			return true;
+		}
+	}
+	else if (evtType == 1) { // Common Event
+		common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evtId);
+		if (!common_event) {
+			Output::Warning("StoreCommands: Can't read invalid common event {}", evtId);
+			return true;
+		}
+	}
+
+	std::string rawCommand = " ";
+
+	const auto& list = evtType == 1 ? common_event->GetList() : page->event_commands;
+	int index = 0;
+
+	for (size_t i = index; i < list.size(); ++i) {
+		std::stringstream ss;
+
+		for (size_t j = 0; j < list[i].parameters.size(); ++j) {
+			ss << std::to_string(list[i].parameters[j]);
+			if (j < list[i].parameters.size() - 1) ss << ", ";
+		}
+
+		std::string inputString = ToString(list[i].string);
+		for (size_t j = 0; j < inputString.length(); ++j)
+			if (inputString[j] == '"') {
+				inputString.insert(j, 1, '"');
+				++j;
+			}
+
+		std::string preffix(list[i].indent, '	');
+		std::string suffix = i < list.size() - 1 ? "\n" : "";
+
+		auto cmd_tag = lcf::rpg::EventCommand::kCodeTags.tag(list[i].code);
+		std::string command_id;
+
+		if (!cmd_tag) command_id = std::to_string(list[i].code);
+		else command_id = cmd_tag;
+
+		rawCommand += fmt::format("{}${}, \"{}\", [{}], {};{}",
+			preffix, command_id, inputString, ss.str(), list[i].indent, suffix);
+	}
+
+	Game_Strings::Str_Params str_params = { targetStrVar,0, 0 };
+	Main_Data::game_strings->Asg(str_params, textPreffix + rawCommand);
+	//fmt::print(rawCommand);
 
 	return true;
 }

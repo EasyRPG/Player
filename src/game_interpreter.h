@@ -32,6 +32,7 @@
 #include <lcf/rpg/saveeventexecstate.h>
 #include <lcf/flag_set.h>
 #include "async_op.h"
+#include "constants.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -64,9 +65,9 @@ public:
 	void Update(bool reset_loop_count=true);
 
 	void Push(
-			std::vector<lcf::rpg::EventCommand> _list,
-			int _event_id,
-			bool started_by_decision_key = false
+		std::vector<lcf::rpg::EventCommand> _list,
+		int _event_id,
+		bool started_by_decision_key = false
 	);
 	void Push(Game_Event* ev);
 	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
@@ -77,7 +78,6 @@ public:
 
 	bool ExecuteCommand();
 	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
-
 
 	/**
 	 * Returns a SaveEventExecState needed for the savefile.
@@ -289,6 +289,8 @@ protected:
 	bool CommandManiacSetGameOption(lcf::rpg::EventCommand const& com);
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
+
+	bool CommandStoreCommands(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
 	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
