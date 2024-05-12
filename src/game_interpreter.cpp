@@ -25,6 +25,7 @@
 #include <string>
 #include <cassert>
 #include "game_interpreter.h"
+#include "animation_helper.h"
 #include "audio.h"
 #include "dynrpg.h"
 #include "filefinder.h"
@@ -826,6 +827,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast<Game_Interpreter::Cmd>(2052)://Cmd:: EasyRpg_InterpolateVariable
+			return CommandAnimateVariable(com);
 		default:
 			return true;
 	}
@@ -5108,6 +5111,79 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	return true;
 }
 
+bool Game_Interpreter::CommandAnimateVariable(lcf::rpg::EventCommand const& com) {
+	// $InterpolateVariable("typeStart/typeEnd",[useVarTarget, target, useVarStart, start, useVarEnd, end, useVarDuration, duration])
+
+	int32_t target = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int32_t start = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int32_t end = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int32_t duration = ValueOrVariable(com.parameters[6], com.parameters[7]);
+
+	// Extract easing information
+	std::string easing_type_at_start = ToString(com.string);
+	std::string easing_type_at_end = "null";
+
+	std::size_t pos = easing_type_at_start.find('/');
+
+	if (pos != std::string::npos) {
+		easing_type_at_end = easing_type_at_start.substr(pos + 1);
+		easing_type_at_start = easing_type_at_start.substr(0, pos);
+	}
+
+	// Prepare animation-related commands
+	lcf::rpg::EventCommand wait_com;
+	wait_com.code = int(Cmd::Wait);
+
+	lcf::rpg::EventCommand animated_com;
+	animated_com.code = int(Cmd::ControlVars);
+	std::vector<int32_t> animated_var_params = { 0, static_cast<int32_t>(target), 0, 0, 0, static_cast<int32_t>(end) };
+
+	std::vector<lcf::rpg::EventCommand> cmd_list;
+
+	int num_steps = static_cast<int>(duration);
+	double step_size = 1.0 / num_steps;
+
+	for (int step = 1; step <= num_steps; ++step) {
+		double normalized_time;
+		double current_time = step * step_size;
+		double half_way;
+
+		std::string easing_type;
+
+		if (easing_type_at_end == "null") { // use a single interpolation.
+			normalized_time = current_time;
+			easing_type = easing_type_at_start;
+			half_way = (step <= num_steps / 2) ? end : start;
+		}
+		else {
+			if (step <= num_steps / 2) { // use 2 interpolations: start and end.
+				normalized_time = current_time / 0.5;
+				easing_type = easing_type_at_start;
+			}
+			else {
+				normalized_time = (current_time - 0.5) / 0.5;
+				easing_type = easing_type_at_end;
+			}
+			half_way = start + 0.5 * (end - start);
+		}
+
+		double eased_time = Animation_Helper::GetEasedTime(easing_type, normalized_time, 0, 1, 1);
+
+		double start_value = (step <= num_steps / 2) ? start : half_way;
+		double end_value = (step <= num_steps / 2) ? half_way : end;
+		double interpolated_value = start_value + eased_time * (end_value - start_value);
+
+		animated_var_params.back() = interpolated_value;
+		animated_com.parameters = lcf::DBArray<int32_t>(animated_var_params.begin(), animated_var_params.end());
+
+		cmd_list.push_back(animated_com);
+		cmd_list.push_back(wait_com);
+	}
+
+	Push(cmd_list, 0, false);
+	return true;
+}
+
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
@@ -5161,3 +5237,4 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 
 	return value;
 }
+
