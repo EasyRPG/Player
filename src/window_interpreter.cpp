@@ -113,11 +113,19 @@ void Window_Interpreter::Refresh() {
 
 	CreateContents();
 	contents->Clear();
+
+	if (!IsValid())
+		return;
+
 	DrawDescriptionLines();
 
 	for (int i = 0; i < stack_display_items.size(); ++i) {
 		DrawStackLine(i);
 	}
+}
+
+bool Window_Interpreter::IsValid() {
+	return !interpreter_desc.empty();
 }
 
 void Window_Interpreter::Update() {

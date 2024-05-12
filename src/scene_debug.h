@@ -111,8 +111,10 @@ private:
 	/** Get the last page for the current mode */
 	int GetLastPage();
 
-	/* Get the first item number for the selected range */
+	/** Get the first item number for the selected range */
 	int GetSelectedIndexFromRange() const;
+
+	void RestoreRangeSelectionFromSelectedValue(int value);
 
 	int GetNumMainMenuItems() const;
 
@@ -166,6 +168,7 @@ private:
 	Window_VarList::Mode GetWindowMode() const;
 	void UpdateFrameValueFromUi();
 	void UpdateDetailWindow();
+	void RefreshDetailWindow();
 
 	bool IsValidMapId(int map_id) const;
 

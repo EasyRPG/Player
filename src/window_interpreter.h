@@ -31,6 +31,7 @@ public:
 
 	void SetStackState(bool is_ce, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
 	void Refresh();
+	bool IsValid();
 protected:
 	void DrawDescriptionLines();
 	void DrawStackLine(int index);

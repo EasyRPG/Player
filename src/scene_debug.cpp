@@ -82,7 +82,7 @@ void Scene_Debug::Start() {
 	interpreter_window->SetActive(false);
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
+	RefreshDetailWindow();
 
 	strings_cached = false;
 	interpreter_states_cached = false;
@@ -184,6 +184,18 @@ int Scene_Debug::GetSelectedIndexFromRange() const {
 	return range_page * 100 + range_index * 10 + 1;
 }
 
+void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
+	switch (mode) {
+		case eInterpreter:
+			range_index = value % 10;
+			range_page = value / 10;
+			break;
+		default:
+			range_index = (value % 100) / 10;
+			range_page = value / 100;
+			break;
+	}
+} 
 
 void Scene_Debug::SetupUiRangeList() {
 	auto& idx = prev[mode];
@@ -206,7 +218,7 @@ void Scene_Debug::PushUiRangeList() {
 	range_window->SetActive(true);
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
+	RefreshDetailWindow();
 }
 
 void Scene_Debug::PushUiVarList() {
@@ -245,7 +257,7 @@ void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operat
 	numberinput_window->SetMaxDigits(digits);
 	numberinput_window->Refresh();
 
-	var_window->Refresh();
+	UpdateDetailWindow();
 	UpdateRangeListWindow();
 }
 
@@ -272,6 +284,11 @@ void Scene_Debug::PushUiStringView() {
 
 void Scene_Debug::PushUiInterpreterView() {
 	const bool was_range_list = (GetFrame().uimode == eUiRangeList);
+
+	if (!interpreter_window->IsValid()) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
 
 	Push(eUiInterpreterView);
 
@@ -308,7 +325,6 @@ void Scene_Debug::Pop() {
 	stringview_window->SetActive(false);
 	stringview_window->SetVisible(false);
 	interpreter_window->SetActive(false);
-	interpreter_window->SetVisible(false);
 
 	if (stack_index == 0) {
 		Scene::Pop();
@@ -317,7 +333,8 @@ void Scene_Debug::Pop() {
 
 	--stack_index;
 
-	auto nui = GetFrame().uimode;
+	auto& frame = GetFrame();
+	auto nui = frame.uimode;
 	switch (nui) {
 		case eUiMain:
 			var_window->SetMode(Window_VarList::eNone);
@@ -328,13 +345,12 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiRangeList:
 			range_window->SetActive(true);
-			range_index = (GetFrame().value % 100) / 10;
-			range_page = GetFrame().value / 100;
+			RestoreRangeSelectionFromSelectedValue(frame.value);
 			range_window->SetIndex(range_index);
 			break;
 		case eUiVarList:
 			var_window->SetActive(true);
-			var_window->SetIndex((GetFrame().value - 1) % 10);
+			var_window->SetIndex((frame.value - 1) % 10);
 			break;
 		case eUiNumberInput:
 			numberinput_window->SetNumber(GetFrame().value);
@@ -347,7 +363,7 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiInterpreterView:
 			interpreter_window->SetActive(true);
-			interpreter_window->SetIndex((GetFrame().value - 1) % 10);
+			numberinput_window->SetNumber(frame.value);
 			var_window->SetVisible(false);
 			interpreter_window->SetVisible(true);
 			break;
@@ -358,8 +374,7 @@ void Scene_Debug::Pop() {
 	}
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
-	interpreter_window->Refresh();
+	RefreshDetailWindow();
 }
 
 void Scene_Debug::vUpdate() {
@@ -367,6 +382,7 @@ void Scene_Debug::vUpdate() {
 	if (range_index != range_window->GetIndex()){
 		range_index = range_window->GetIndex();
 		UpdateDetailWindow();
+		RefreshDetailWindow();
 	}
 	var_window->Update();
 
@@ -387,7 +403,7 @@ void Scene_Debug::vUpdate() {
 		UpdateFrameValueFromUi();
 		if (mode == eMain) {
 			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
-			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
+			if (next_mode > eMain && next_mode <= GetNumMainMenuItems()) {
 				if (!range_window->IsItemEnabled(range_window->GetIndex())) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 				} else {
@@ -587,6 +603,7 @@ void Scene_Debug::vUpdate() {
 		}
 		if (range_page != range_page_prev) {
 			UpdateDetailWindow();
+			RefreshDetailWindow();
 			UpdateRangeListWindow();
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		}
@@ -599,8 +616,9 @@ void Scene_Debug::vUpdate() {
 		}
 		if (range_page != range_page_prev) {
 			UpdateDetailWindow();
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+			RefreshDetailWindow();
 			UpdateRangeListWindow();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		}
 	}
 
@@ -778,9 +796,15 @@ void Scene_Debug::UpdateRangeListWindow() {
 void Scene_Debug::UpdateDetailWindow() {
 	if (mode != eInterpreter) {
 		var_window->UpdateList(GetSelectedIndexFromRange());
-		var_window->Refresh();
 	} else {
 		UpdateInterpreterWindow(GetSelectedIndexFromRange());
+	}
+}
+
+void Scene_Debug::RefreshDetailWindow() {
+	if (mode != eInterpreter) {
+		var_window->Refresh();
+	} else {
 		interpreter_window->Refresh();
 	}
 }
@@ -885,7 +909,7 @@ void Scene_Debug::DoSwitch() {
 		Main_Data::game_switches->Flip(sw_id);
 		Game_Map::SetNeedRefresh(true);
 
-		var_window->Refresh();
+		RefreshDetailWindow();
 	}
 }
 
@@ -1142,7 +1166,7 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 
 	if (valid) {
 		interpreter_window->SetStackState(index > interpreters_ev.size(), first_line, state);
-	} else if (interpreter_window->GetContents()) {
-		interpreter_window->GetContents()->Clear();
+	} else {
+		interpreter_window->SetStackState(0, "", {});
 	}
 }
