@@ -58,6 +58,15 @@ modules:
         url: https://github.com/libxmp/libxmp.git
         tag: libxmp-4.6.0
         commit: 8201d26cf933688a8be64292457c429fd8e654ab
+  - name: libinih
+    buildsystem: meson
+    config-opts:
+      - --buildtype=debugoptimized
+    sources:
+      - type: git
+        url: https://github.com/benhoyt/inih.git
+        tag: 58
+        commit: 5cc5e2c24642513aaa5b19126aad42d0e4e0923e
   # own libraries
   - name: liblcf
     buildsystem: cmake-ninja
