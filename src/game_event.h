@@ -49,7 +49,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	Drawable::Z_t GetScreenZ(bool apply_shift = false) const override;
+	Drawable::Z_t GetScreenZ(int x_offset, int y_offset) const override;
 	bool Move(int dir) override;
 	void UpdateNextMovementAction() override;
 	bool IsVisible() const override;

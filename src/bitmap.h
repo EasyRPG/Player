@@ -224,6 +224,13 @@ public:
 	 */
 	StringView GetFilename() const;
 
+	/**
+	 * Gets bpp of the source image.
+	 *
+	 * @return Bpp
+	 */
+	int GetOriginalBpp() const;
+
 	void CheckPixels(uint32_t flags);
 
 	/**
@@ -599,6 +606,9 @@ protected:
 
 	std::string filename;
 
+	/** Bpp of the source image */
+	int original_bpp;
+
 	/** Bitmap data. */
 	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;
@@ -636,6 +646,13 @@ protected:
 	bool read_only = false;
 };
 
+struct ImageOut {
+	int width = 0;
+	int height = 0;
+	void* pixels = nullptr;
+	int bpp = 0;
+};
+
 inline ImageOpacity Bitmap::GetImageOpacity() const {
 	return image_opacity;
 }
@@ -670,6 +687,10 @@ inline bool Bitmap::GetTransparent() const {
 
 inline StringView Bitmap::GetFilename() const {
 	return filename;
+}
+
+inline int Bitmap::GetOriginalBpp() const {
+	return original_bpp;
 }
 
 #endif

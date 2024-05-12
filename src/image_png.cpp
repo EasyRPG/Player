@@ -47,26 +47,23 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Warning("libpng: {}", error_msg);
 }
 
-static bool ReadPNGWithReadFunction(png_voidp,png_rw_ptr, bool, int&, int&, void*&);
+static bool ReadPNGWithReadFunction(png_voidp,png_rw_ptr, bool, ImageOut&);
 static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
 static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
 static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 
-bool ImagePNG::ReadPNG(const void* buffer, bool transparent,
-	int& width, int& height, void*& pixels) {
-	return ReadPNGWithReadFunction((png_voidp)&buffer, read_data, transparent, width, height, pixels);
+bool ImagePNG::Read(const void* buffer, bool transparent, ImageOut& output) {
+	return ReadPNGWithReadFunction((png_voidp)&buffer, read_data, transparent, output);
 }
 
-bool ImagePNG::ReadPNG(Filesystem_Stream::InputStream& stream, bool transparent,
-	int& width, int& height, void*& pixels) {
-	return ReadPNGWithReadFunction(&stream, read_data_istream, transparent, width, height, pixels);
+bool ImagePNG::Read(Filesystem_Stream::InputStream& stream, bool transparent, ImageOut& output) {
+	return ReadPNGWithReadFunction(&stream, read_data_istream, transparent, output);
 }
 
-static bool ReadPNGWithReadFunction(png_voidp user_data, png_rw_ptr fn, bool transparent,
-					   int& width, int& height, void*& pixels) {
-	pixels = nullptr;
+static bool ReadPNGWithReadFunction(png_voidp user_data, png_rw_ptr fn, bool transparent, ImageOut& output) {
+	output.pixels = nullptr;
 
 	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, on_png_error, on_png_warning);
 	if (png_ptr == NULL) {
@@ -94,35 +91,40 @@ static bool ReadPNGWithReadFunction(png_voidp user_data, png_rw_ptr fn, bool tra
 	png_get_IHDR(png_ptr, info_ptr, &w, &h,
 				 &bit_depth, &color_type, NULL, NULL, NULL);
 
-	pixels = malloc(w * h * 4);
-	if (!pixels) {
+	output.pixels = malloc(w * h * 4);
+	if (!output.pixels) {
 		Output::Warning("Error allocating PNG pixel buffer.");
 		return false;
 	}
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
-			ReadPalettedData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)pixels);
+			ReadPalettedData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)output.pixels);
+			output.bpp = 8;
 			break;
 		case PNG_COLOR_TYPE_GRAY:
-			ReadGrayData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)pixels);
+			ReadGrayData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)output.pixels);
+			output.bpp = 8;
 			break;
 		case PNG_COLOR_TYPE_GRAY_ALPHA:
-			ReadGrayAlphaData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
+			ReadGrayAlphaData(png_ptr, info_ptr, w, h, (uint32_t*)output.pixels);
+			output.bpp = 8;
 			break;
 		case PNG_COLOR_TYPE_RGB:
-			ReadRGBData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
+			ReadRGBData(png_ptr, info_ptr, w, h, (uint32_t*)output.pixels);
+			output.bpp = 24;
 			break;
 		case PNG_COLOR_TYPE_RGB_ALPHA:
-			ReadRGBAData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
+			ReadRGBAData(png_ptr, info_ptr, w, h, (uint32_t*)output.pixels);
+			output.bpp = 32;
 			break;
 	}
 
 	png_read_end(png_ptr, NULL);
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
-	width = w;
-	height = h;
+	output.width = w;
+	output.height = h;
 	return true;
 }
 
@@ -251,7 +253,7 @@ static void flush_stream(png_structp out_ptr) {
 	reinterpret_cast<Filesystem_Stream::OutputStream*>(png_get_io_ptr(out_ptr))->flush();
 }
 
-bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
+bool ImagePNG::Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
 	png_structp write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!write) {
 		Output::Warning("Bitmap::WritePNG: error in png_create_write");

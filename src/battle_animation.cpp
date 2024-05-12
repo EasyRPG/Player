@@ -264,7 +264,7 @@ void BattleAnimationMap::DrawSingle(Bitmap& dst) {
 	}
 	const int character_height = 24;
 	int x_off = target.GetScreenX();
-	int y_off = target.GetScreenY(false, false);
+	int y_off = target.GetScreenY(false);
 	if (Scene::instance->type == Scene::Map) {
 		x_off += static_cast<Scene_Map*>(Scene::instance.get())->spriteset->GetRenderOx();
 		y_off += static_cast<Scene_Map*>(Scene::instance.get())->spriteset->GetRenderOy();

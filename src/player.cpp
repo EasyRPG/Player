@@ -825,8 +825,9 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
+	Output::Debug("Patch configuration: easyrpg={} dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} anti-lag-switch={}",
+		Player::HasEasyRpgExtensions(), Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(),
+		game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), game_config.patch_anti_lag_switch.Get());
 
 	ResetGameObjects();
 
@@ -879,7 +880,7 @@ void Player::ResetGameObjects() {
 
 	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
 	if (min_var == 0) {
-		if (Player::IsPatchManiac()) {
+		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
 			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
 		} else {
 			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
@@ -887,7 +888,7 @@ void Player::ResetGameObjects() {
 	}
 	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
 	if (max_var == 0) {
-		if (Player::IsPatchManiac()) {
+		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
 		} else {
 			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
@@ -1399,8 +1400,12 @@ Engine options:
  --patch-common-this  Enable usage of "This Event" in common events in any
                       version of the engine.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
+ --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
- --patch-maniac       Enable Maniac Patch by BingShan.
+ --patch-maniac [N]   Enable Maniac Patch by BingShan. Values for N:
+                       - 1: Enable the patch (default)
+                       - 2: Enable the patch but do not adjust variable ranges
+                            to 32 bit.
  --patch-pic-unlock   Picture movement is not interrupted by messages in any
                       version of the engine.
  --patch-rpg2k3-cmds  Support all RPG Maker 2003 event commands in any version
@@ -1549,4 +1554,3 @@ std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
 }
-

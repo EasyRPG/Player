@@ -38,8 +38,9 @@ struct Game_ConfigGame {
 	BoolConfigParam new_game{ "Start new game", "Skips the title screen and starts a new game directly", "Game", "NewGame", false };
 	StringConfigParam engine_str{ "Engine", "", "Game", "Engine", std::string() };
 	BoolConfigParam fake_resolution{ "Fake Metrics", "Makes games run on higher resolutions (with some success)", "Game", "FakeResolution", false };
+	BoolConfigParam patch_easyrpg{ "EasyRPG", "EasyRPG Engine Extensions", "Patch", "EasyRPG", false };
 	BoolConfigParam patch_dynrpg{ "DynRPG", "", "Patch", "DynRPG", false };
-	BoolConfigParam patch_maniac{ "Maniac Patch", "", "Patch", "Maniac", false };
+	ConfigParam<int> patch_maniac{ "Maniac Patch", "", "Patch", "Maniac", 0 };
 	BoolConfigParam patch_common_this_event{ "Common This Event", "Support \"This Event\" in Common Events", "Patch", "CommonThisEvent", false };
 	BoolConfigParam patch_unlock_pics{ "Unlock Pictures", "Allow picture commands while a message is shown", "Patch", "PicUnlock", false };
 	BoolConfigParam patch_key_patch{ "Ineluki Key Patch", "Support \"Ineluki Key Patch\"", "Patch", "KeyPatch", false };

@@ -20,18 +20,39 @@
 #include "cache.h"
 #include "game_map.h"
 #include "bitmap.h"
+#include "output.h"
 
-Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
+Sprite_Character::Sprite_Character(Game_Character* character, int x_offset, int y_offset) :
 	character(character),
 	tile_id(-1),
 	character_index(0),
 	chara_width(0),
-	chara_height(0) {
-
-	x_shift = ((type & XClone) == XClone);
-	y_shift = ((type & YClone) == YClone);
+	chara_height(0),
+	x_offset(x_offset),
+	y_offset(y_offset) {
 
 	Update();
+}
+
+void Sprite_Character::Draw(Bitmap &dst) {
+	if (UsesCharset()) {
+		int row = character->GetFacing();
+		auto frame = character->GetAnimFrame();
+		if (frame >= lcf::rpg::EventPage::Frame_middle2) frame = lcf::rpg::EventPage::Frame_middle;
+		SetSrcRect({frame * chara_width, row * chara_height, chara_width, chara_height});
+	}
+
+	SetFlashEffect(character->GetFlashColor());
+
+	SetOpacity(character->GetOpacity());
+
+	SetX(character->GetScreenX() + x_offset);
+	SetY(character->GetScreenY() + y_offset);
+
+	int bush_split = 4 - character->GetBushDepth();
+	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
+
+	Sprite::Draw(dst);
 }
 
 void Sprite_Character::Update() {
@@ -63,30 +84,14 @@ void Sprite_Character::Update() {
 		}
 	}
 
-	if (UsesCharset()) {
-		int row = character->GetFacing();
-		auto frame = character->GetAnimFrame();
-		if (frame >= lcf::rpg::EventPage::Frame_middle2) frame = lcf::rpg::EventPage::Frame_middle;
-		SetSrcRect({frame * chara_width, row * chara_height, chara_width, chara_height});
-	}
-
-	SetFlashEffect(character->GetFlashColor());
-
-	SetOpacity(character->GetOpacity());
 	SetVisible(character->IsVisible());
-
-	SetX(character->GetScreenX(x_shift));
-	SetY(character->GetScreenY(y_shift));
-	// y_shift because Z is calculated via the screen Y position
-	SetZ(character->GetScreenZ(y_shift));
-
-	int bush_split = 4 - character->GetBushDepth();
-	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
+	SetZ(character->GetScreenZ(x_offset, y_offset));
 }
 
 Game_Character* Sprite_Character::GetCharacter() {
 	return character;
 }
+
 void Sprite_Character::SetCharacter(Game_Character* new_character) {
 	character = new_character;
 }
@@ -124,16 +129,20 @@ void Sprite_Character::ChipsetUpdated() {
 
 Rect Sprite_Character::GetCharacterRect(StringView name, int index, const Rect bitmap_rect) {
 	Rect rect;
+	rect.width = 24 * (TILE_SIZE / 16) * 3;
+	rect.height = 32 * (TILE_SIZE / 16) * 4;
+
 	// Allow large 4x2 spriteset of 3x4 sprites
 	// when the character name starts with a $ sign.
 	// This is not exactly the VX Ace way because
 	// VX Ace uses a single 1x1 spriteset of 3x4 sprites.
 	if (!name.empty() && name.front() == '$') {
-		rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
-		rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
-	} else {
-		rect.width = 24 * (TILE_SIZE / 16) * 3;;
-		rect.height = 32 * (TILE_SIZE / 16) * 4;
+		if (!Player::HasEasyRpgExtensions()) {
+			Output::Debug("Ignoring large charset {}. EasyRPG Extension not enabled.", name);
+		} else {
+			rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
+			rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
+		}
 	}
 	rect.x = (index % 4) * rect.width;
 	rect.y = (index / 4) * rect.height;

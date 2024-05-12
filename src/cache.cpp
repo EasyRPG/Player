@@ -35,6 +35,7 @@
 #include "player.h"
 #include <lcf/data.h>
 #include "game_clock.h"
+#include "translation.h"
 
 using namespace std::chrono_literals;
 
@@ -272,6 +273,14 @@ namespace {
 					bmp = Bitmap::Create(std::move(is), transparent, flags);
 					if (!bmp) {
 						Output::Warning("Invalid image: {}/{}", s.directory, filename);
+					} else {
+						if (bmp->GetOriginalBpp() > 8) {
+							if (!Player::HasEasyRpgExtensions() && !Player::IsPatchManiac() && !Tr::HasActiveTranslation()) {
+								Output::Warning("Image {}/{} has a bit depth of {} that is not supported by RPG_RT. Enable EasyRPG Extensions or Maniac Patch to load such images.", s.directory, filename, bmp->GetOriginalBpp());
+							}
+
+							bmp.reset();
+						}
 					}
 				}
 			}
