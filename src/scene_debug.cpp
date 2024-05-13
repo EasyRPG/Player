@@ -363,7 +363,7 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiInterpreterView:
 			interpreter_window->SetActive(true);
-			numberinput_window->SetNumber(frame.value);
+			interpreter_window->SetIndex(frame.value - 1);
 			var_window->SetVisible(false);
 			interpreter_window->SetVisible(true);
 			break;
