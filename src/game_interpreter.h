@@ -80,11 +80,17 @@ public:
 
 
 	/**
+	 * Returns the interpreters current state information.
+	 * For saving state into a save file, use GetSaveState instead.
+	 */
+	const lcf::rpg::SaveEventExecState& GetState() const;
+
+	/**
 	 * Returns a SaveEventExecState needed for the savefile.
 	 *
 	 * @return interpreter commands stored in SaveEventCommands
 	 */
-	lcf::rpg::SaveEventExecState GetState() const;
+	lcf::rpg::SaveEventExecState GetSaveState();
 
 	/** @return Game_Character of the passed event_id */
 	Game_Character* GetCharacter(int event_id) const;

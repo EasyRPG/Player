@@ -274,7 +274,11 @@ void Game_Interpreter::KeyInputState::toSave(lcf::rpg::SaveEventExecState& save)
 }
 
 
-lcf::rpg::SaveEventExecState Game_Interpreter::GetState() const {
+const lcf::rpg::SaveEventExecState& Game_Interpreter::GetState() const {
+	return _state;
+}
+
+lcf::rpg::SaveEventExecState Game_Interpreter::GetSaveState() {
 	auto save = _state;
 	_keyinput.toSave(save);
 	return save;
