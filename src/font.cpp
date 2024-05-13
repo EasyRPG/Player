@@ -662,7 +662,7 @@ void Font::ResetDefault() {
 	SetDefault(nullptr, false);
 
 #ifdef HAVE_FREETYPE
-	const auto& cfg = Player::player_config;
+	auto& cfg = Player::player_config;
 	if (!cfg.font1.Get().empty()) {
 		auto is = FileFinder::Root().OpenInputStream(cfg.font1.Get());
 		SetDefault(CreateFtFont(std::move(is), cfg.font1_size.Get(), false, false), false);
@@ -672,6 +672,9 @@ void Font::ResetDefault() {
 		auto is = FileFinder::Root().OpenInputStream(cfg.font2.Get());
 		SetDefault(CreateFtFont(std::move(is), cfg.font2_size.Get(), false, false), true);
 	}
+
+	cfg.font1.SetLocked(false);
+	cfg.font2.SetLocked(false);
 #endif
 }
 
