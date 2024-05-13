@@ -826,6 +826,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case static_cast <Game_Interpreter::Cmd>(2054) : // Easyrpg_GetIdByName
+			return CommandGetIdByName(com);
 		default:
 			return true;
 	}
@@ -5104,6 +5106,150 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false);
+
+	return true;
+}
+bool Game_Interpreter::CommandGetIdByName(lcf::rpg::EventCommand const& com) {
+	const int dataType = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	const int outputVar = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	if (outputVar <= 0) {
+		Output::Warning("This command requires a valid variable.");
+		return true;
+	}
+
+	int rangeMin = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int rangeMax = ValueOrVariable(com.parameters[6], com.parameters[7]);
+
+	const std::string targetName = ToString(CommandStringOrVariable(com, 8, 9));
+	if (targetName.empty()) {
+		Output::Warning("The name to search is empty.");
+		return true;
+	}
+
+	auto GetName = [](const auto& obj) -> std::string {
+		using T = std::decay_t<decltype(obj)>;
+
+		if constexpr (std::is_same_v<T, Game_Event>) {
+			return ToString(obj.GetName());
+		}
+		else if constexpr (std::is_same_v<T, Game_Actor*>) {
+			return ToString(obj->GetName());
+		}
+		else {
+			return ToString(obj.name);
+		}
+	};
+
+	auto find_by_name = [&](const auto& vec) -> int {
+		if (rangeMin <= 0) rangeMin = 1;
+		if (rangeMin > static_cast<int>(vec.size())) rangeMin = static_cast<int>(vec.size());
+
+		if (rangeMax <= 0 || rangeMax >= static_cast<int>(vec.size())) rangeMax = static_cast<int>(vec.size());
+		if (rangeMax < rangeMin) std::swap(rangeMin, rangeMax);
+
+		for (int i = rangeMin - 1; i < rangeMax; ++i) {
+			if (GetName(vec[i]) == targetName) {
+				return i + 1;
+			}
+		}
+		return 0;
+		};
+
+	std::string typeName = "Unknown"; 
+	int id = 0;
+	switch (dataType) {
+	case 0:
+		typeName = "Actor"; 
+		id = find_by_name(lcf::Data::actors);
+		break;
+	case 1:
+		typeName = "Skill";
+		id = find_by_name(lcf::Data::skills);
+		break;
+	case 2:
+		typeName = "Item";
+		id = find_by_name(lcf::Data::items);
+		break;
+	case 3:
+		typeName = "Enemy";
+		id = find_by_name(lcf::Data::enemies);
+		break;
+	case 4:
+		typeName = "Troop";
+		id = find_by_name(lcf::Data::troops);
+		break;
+	case 5:
+		typeName = "Terrain";
+		id = find_by_name(lcf::Data::terrains);
+		break;
+	case 6:
+		typeName = "Attribute";
+		id = find_by_name(lcf::Data::attributes);
+		break;
+	case 7:
+		typeName = "State";
+		id = find_by_name(lcf::Data::states);
+		break;
+	case 8:
+		typeName = "Animation";
+		id = find_by_name(lcf::Data::animations);
+		break;
+	case 9:
+		typeName = "Tileset";
+		id = find_by_name(lcf::Data::chipsets);
+		break;
+	case 10:
+		typeName = "Switch";
+		id = find_by_name(lcf::Data::switches);
+		break;
+	case 11:
+		typeName = "Variable";
+		id = find_by_name(lcf::Data::variables);
+		break;
+	case 12:
+		typeName = "String Variable";  
+		Output::Warning("{} names are not supported yet.", typeName); // FIXME: .t[a].name? - String variables don't support name yet
+		return true;
+		// Main_Data::game_strings->GetLcfData();
+		// break;
+	case 13:
+		typeName = "Common Event";
+		id = find_by_name(lcf::Data::commonevents);
+		break;
+	case 14:
+		typeName = "Class";
+		id = find_by_name(lcf::Data::classes);
+		break;
+	case 15:
+		typeName = "Battler Animation";
+		id = find_by_name(lcf::Data::battleranimations);
+		break;
+	case 16:
+		typeName = "Map";
+		id = find_by_name(lcf::Data::treemap.maps);
+		break;
+	case 17:
+		typeName = "Map Event";
+		id = find_by_name(Game_Map::GetEvents());
+		break;
+	case 18:
+		typeName = "Party Member";
+		id = find_by_name(Main_Data::game_party.get()->GetActors());
+		break;
+	default:
+		Output::Warning("Unsupported data type: {}({})", typeName, dataType);
+		return true;
+	}
+
+	if (id > 0) {
+		Output::Debug(" {} \"{}\" found at ID: {}. Storing ID in variable {}.", typeName, targetName, id, outputVar);
+		Main_Data::game_variables->Set(outputVar, id);
+		Game_Map::SetNeedRefresh(true);
+	}
+	else {
+		Output::Warning("{} \"{}\" not found within the range {} to {}.", typeName, targetName, rangeMin, rangeMax);
+	}
 
 	return true;
 }
