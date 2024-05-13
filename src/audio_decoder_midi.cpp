@@ -148,7 +148,6 @@ bool AudioDecoderMidi::Open(Filesystem_Stream::InputStream stream) {
 	tempo.clear();
 	tempo.emplace_back(this, midi_default_tempo);
 	mtime = seq->get_start_skipping_silence();
-	seq->play(mtime, this);
 
 	if (!mididec->SupportsMidiMessages()) {
 		if (!mididec->Open(file_buffer)) {
