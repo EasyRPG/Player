@@ -82,6 +82,7 @@ public:
 		eUiVarList,
 		eUiNumberInput,
 		eUiStringView,
+		eUiChoices,
 		eUiInterpreterView
 	};
 private:
@@ -100,6 +101,9 @@ private:
 
 	/** Creates number input window. */
 	void CreateNumberInputWindow();
+
+	/** Creates choices window. */
+	void CreateChoicesWindow();
 
 	/** Creates string view window. */
 	void CreateStringViewWindow();
@@ -132,12 +136,16 @@ private:
 	void DoCallBattleEvent();
 	void DoOpenMenu();
 
+	const int choice_window_width = 120;
+
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
 	std::unique_ptr<Window_VarList> var_window;
 	/** Number Editor. */
 	std::unique_ptr<Window_NumberInput> numberinput_window;
+	/** Choices window. */
+	std::unique_ptr<Window_Command> choices_window;
 	/** Windows for displaying multiline strings. */
 	std::unique_ptr<Window_StringView> stringview_window;
 	/** Displays the currently running inteprreters. */
@@ -162,6 +170,7 @@ private:
 	void PushUiRangeList();
 	void PushUiVarList();
 	void PushUiNumberInput(int init_value, int digits, bool show_operator);
+	void PushUiChoices(std::vector<std::string> choices, std::vector<bool> choices_enabled);
 	void PushUiStringView();
 	void PushUiInterpreterView();
 
@@ -181,11 +190,20 @@ private:
 	bool interpreter_states_cached = false;
 
 	void UpdateInterpreterWindow(int index);
-	void GetBackgroundInterpreters();
-	std::vector<int> interpreters_ev;
-	std::vector<int> interpreters_ce;
-	std::vector<lcf::rpg::SaveEventExecState> interpreters_state_ev;
-	std::vector<lcf::rpg::SaveEventExecState> interpreters_state_ce;
+	lcf::rpg::SaveEventExecFrame& GetSelectedInterpreterFrameFromUiState() const;
+	void CacheBackgroundInterpreterStates();
+	struct {
+		std::vector<int> ev;
+		std::vector<int> ce;
+		std::vector<lcf::rpg::SaveEventExecState> state_ev;
+		std::vector<lcf::rpg::SaveEventExecState> state_ce;
+
+		// Frame-scoped data types introduced in 'ScopedVars' branch
+		// bool show_frame_switches = false;
+		// bool show_frame_vars = false;
+		int selected_state = -1;
+		int selected_frame = -1;
+	} state_interpreter;
 };
 
 #endif

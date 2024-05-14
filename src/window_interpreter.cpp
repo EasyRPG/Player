@@ -172,3 +172,10 @@ void Window_Interpreter::DrawStackLine(int index) {
 	contents->TextDraw(rect.x + (digits_stackitemno * 6) + 56, rect.y, Font::ColorDefault, name, Text::AlignLeft);
 	contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorDefault, fmt::format("{:0" + std::to_string(digits_cmdcount) + "d}/{:0" + std::to_string(digits_cmdcount) + "d}", item.cmd_current, item.cmd_count), Text::AlignRight);
 }
+
+int Window_Interpreter::GetSelectedStackFrameLine() {
+	if (GetIndex() < lines_without_stack) {
+		return -1;
+	}
+	return state.stack.size() - (GetIndex() - lines_without_stack) - 1;
+}
