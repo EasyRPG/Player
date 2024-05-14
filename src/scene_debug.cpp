@@ -325,7 +325,7 @@ void Scene_Debug::PushUiInterpreterView() {
 	var_window->SetVisible(false);
 
 	interpreter_window->SetActive(true);
-	interpreter_window->SetIndex(idx.range_page_index);
+	interpreter_window->SetIndex(0);
 
 	UpdateRangeListWindow();
 	interpreter_window->Refresh();
