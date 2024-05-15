@@ -275,11 +275,12 @@ namespace {
 						Output::Warning("Invalid image: {}/{}", s.directory, filename);
 					} else {
 						if (bmp->GetOriginalBpp() > 8) {
+							// FIXME: This HasActiveTranslation check will also load 32 bit images in the game directory when
+							// a translation is active and our API does not expose whether the asset was redirected or not.
 							if (!Player::HasEasyRpgExtensions() && !Player::IsPatchManiac() && !Tr::HasActiveTranslation()) {
 								Output::Warning("Image {}/{} has a bit depth of {} that is not supported by RPG_RT. Enable EasyRPG Extensions or Maniac Patch to load such images.", s.directory, filename, bmp->GetOriginalBpp());
+								bmp.reset();
 							}
-
-							bmp.reset();
 						}
 					}
 				}
