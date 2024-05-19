@@ -1,159 +1,118 @@
 #include "json_helper.h"
-#include "external/picojson.h"
 #include "output.h"
-#include <vector>
+#include <nlohmann/json.hpp>
 
 namespace Json_Helper {
-	const std::string kInvalidOutput = "<<INVALID_OUTPUT>>";
+	std::string invalid_str = "<<INVALID_OUTPUT>>";
+	std::string GetValue(const std::string& jsonData, const std::string& jsonPath) {
+		try {
+			nlohmann::json jsonObj = nlohmann::json::parse(jsonData);
+			nlohmann::json* currentObj = &jsonObj;
 
-	std::vector<std::string> SplitPath(const std::string& jsonPath) {
-		std::istringstream iss(jsonPath);
-		std::vector<std::string> pathParts;
-		std::string part;
-		while (std::getline(iss, part, '.')) {
-			pathParts.push_back(part);
-		}
-		return pathParts;
-	}
-
-	picojson::value* GetValuePointer(picojson::value& jsonValue, const std::vector<std::string>& pathParts, bool allowCreation) {
-		picojson::value* currentValue = &jsonValue;
-
-		for (const auto& part : pathParts) {
-			std::string arrayName;
-			int arrayIndex = -1;
-			bool inArray = false;
-
-			for (char c : part) {
-				if (!inArray) {
-					if (c == '[') {
-						inArray = true;
-						arrayIndex = 0;
+			std::string mutableJsonPath = jsonPath;
+			size_t pos = 0;
+			std::string token;
+			while ((pos = mutableJsonPath.find('.')) != std::string::npos) {
+				token = mutableJsonPath.substr(0, pos);
+				if (token.back() == ']') {
+					size_t bracketPos = token.find('[');
+					std::string arrayName = token.substr(0, bracketPos);
+					int index = std::stoi(token.substr(bracketPos + 1, token.length() - bracketPos - 2));
+					if (currentObj->find(arrayName) == currentObj->end() || !(*currentObj)[arrayName].is_array() || index >= (*currentObj)[arrayName].size()) {
+						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
+						return invalid_str;
 					}
-					else {
-						arrayName += c;
-					}
+					currentObj = &((*currentObj)[arrayName][index]);
 				}
 				else {
-					if (c == ']') {
-						break;
+					if (currentObj->find(token) == currentObj->end()) {
+						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
+						return invalid_str;
 					}
-					else {
-						arrayIndex = arrayIndex * 10 + (c - '0');
+					currentObj = &((*currentObj)[token]);
+				}
+				mutableJsonPath.erase(0, pos + 1);
+			}
+
+			if (!mutableJsonPath.empty()) {
+				if (mutableJsonPath.back() == ']') {
+					size_t bracketPos = mutableJsonPath.find('[');
+					std::string arrayName = mutableJsonPath.substr(0, bracketPos);
+					int index = std::stoi(mutableJsonPath.substr(bracketPos + 1, mutableJsonPath.length() - bracketPos - 2));
+					if (currentObj->find(arrayName) == currentObj->end() || !(*currentObj)[arrayName].is_array() || index >= (*currentObj)[arrayName].size()) {
+						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
+						return invalid_str;
 					}
+					currentObj = &((*currentObj)[arrayName][index]);
+				}
+				else {
+					if (currentObj->find(mutableJsonPath) == currentObj->end()) {
+						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
+						return invalid_str;
+					}
+					currentObj = &((*currentObj)[mutableJsonPath]);
 				}
 			}
 
-			if (inArray) {
-				if (!currentValue->is<picojson::object>()) {
-					if (allowCreation) {
-						*currentValue = picojson::value(picojson::object());
-					}
-					else {
-						Output::Warning("JSON_ERROR - Invalid JSON type for array: {}", arrayName);
-						return nullptr;
-					}
-				}
-
-				auto& obj = currentValue->get<picojson::object>();
-				auto arrayIt = obj.find(arrayName);
-
-				if (arrayIt == obj.end()) {
-					if (allowCreation) {
-						obj.emplace(arrayName, picojson::value(picojson::array()));
-						arrayIt = obj.find(arrayName);
-					}
-					else {
-						Output::Warning("JSON_ERROR - Array not found: {}", arrayName);
-						return nullptr;
-					}
-				}
-
-				auto& arr = arrayIt->second.get<picojson::array>();
-
-				if (arrayIndex >= static_cast<int>(arr.size())) {
-					if (allowCreation) {
-						arr.resize(arrayIndex + 1);
-					}
-					else {
-						Output::Warning("JSON_ERROR - Array index out of bounds: {}", part);
-						return nullptr;
-					}
-				}
-
-				currentValue = &arr[arrayIndex];
+			if (currentObj->is_string()) {
+				return currentObj->get<std::string>();
+			}
+			else if (currentObj->is_number_integer()) {
+				return std::to_string(currentObj->get<int>());
+			}
+			else if (currentObj->is_number_float()) {
+				return std::to_string(currentObj->get<float>());
+			}
+			else if (currentObj->is_boolean()) {
+				return currentObj->get<bool>() ? "true" : "false";
 			}
 			else {
-				if (!currentValue->is<picojson::object>()) {
-					if (allowCreation) {
-						*currentValue = picojson::value(picojson::object());
-					}
-					else {
-						Output::Warning("JSON_ERROR - Invalid JSON type for path: {}", part);
-						return nullptr;
-					}
-				}
-
-				auto& obj = currentValue->get<picojson::object>();
-				auto objIt = obj.find(arrayName);
-
-				if (objIt == obj.end()) {
-					if (allowCreation) {
-						obj.emplace(arrayName, picojson::value(picojson::object()));
-						objIt = obj.find(arrayName);
-					}
-					else {
-						Output::Warning("JSON_ERROR - Object key not found: {}", part);
-						return nullptr;
-					}
-				}
-
-				currentValue = &objIt->second;
+				return currentObj->dump();
 			}
 		}
-
-		return currentValue;
-	}
-
-	std::string GetValue(const std::string& jsonData, const std::string& jsonPath) {
-		picojson::value jsonValue;
-		std::string err = picojson::parse(jsonValue, jsonData);
-
-		if (!err.empty()) {
-			Output::Warning("JSON_ERROR - JSON parsing error: {}", err);
-			return kInvalidOutput;
+		catch (const std::exception& e) {
+			Output::Warning("JSON_ERROR - {}", e.what());
+			return invalid_str;
 		}
-
-		auto pathParts = SplitPath(jsonPath);
-		auto valuePtr = GetValuePointer(jsonValue, pathParts, false);
-
-		if (valuePtr == nullptr || !valuePtr->is<std::string>()) {
-			Output::Warning("JSON_ERROR - Value not found or not a string");
-			return kInvalidOutput;
-		}
-
-		return valuePtr->get<std::string>();
 	}
 
 	std::string SetValue(const std::string& jsonData, const std::string& jsonPath, const std::string& value) {
-		picojson::value jsonValue;
-		std::string err = picojson::parse(jsonValue, jsonData);
+		try {
+			nlohmann::json jsonObj = nlohmann::json::parse(jsonData);
+			nlohmann::json* currentObj = &jsonObj;
 
-		if (!err.empty()) {
-			Output::Warning("JSON_ERROR - JSON parsing error: {}", err);
-			return kInvalidOutput;
+			std::string mutableJsonPath = jsonPath;
+			size_t pos = 0;
+			std::string token;
+			while ((pos = mutableJsonPath.find('.')) != std::string::npos) {
+				token = mutableJsonPath.substr(0, pos);
+				if (token.back() == ']') {
+					size_t bracketPos = token.find('[');
+					std::string arrayName = token.substr(0, bracketPos);
+					int index = std::stoi(token.substr(bracketPos + 1, token.length() - bracketPos - 2));
+					currentObj = &((*currentObj)[arrayName][index]);
+				}
+				else {
+					currentObj = &((*currentObj)[token]);
+				}
+				mutableJsonPath.erase(0, pos + 1);
+			}
+
+			if (mutableJsonPath.back() == ']') {
+				size_t bracketPos = mutableJsonPath.find('[');
+				std::string arrayName = mutableJsonPath.substr(0, bracketPos);
+				int index = std::stoi(mutableJsonPath.substr(bracketPos + 1, mutableJsonPath.length() - bracketPos - 2));
+				(*currentObj)[arrayName][index] = value;
+			}
+			else {
+				(*currentObj)[mutableJsonPath] = value;
+			}
+
+			return jsonObj.dump();
 		}
-
-		auto pathParts = SplitPath(jsonPath);
-		auto valuePtr = GetValuePointer(jsonValue, pathParts, true);
-
-		if (valuePtr == nullptr) {
-			Output::Warning("JSON_ERROR - Unable to create value");
-			return kInvalidOutput;
+		catch (const std::exception& e) {
+			Output::Warning("JSON_ERROR - {}", e.what());
+			return jsonData;
 		}
-
-		*valuePtr = picojson::value(value);
-
-		return picojson::value(jsonValue).serialize();
 	}
 }
