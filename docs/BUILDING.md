@@ -9,32 +9,7 @@ In case you want to compile the dependencies yourself, you can find them,
 except for [liblcf], in our [buildscripts] repository.
 
 
-## Autotools Makefile method:
-
-Building requirements:
-
-- pkg-config
-- GNU make
-
-Step-by-step instructions:
-
-    tar xf easyrpg-player-0.8.1.tar.xz # unpack the tarball
-    cd easyrpg-player-0.8.1            # enter in the package directory
-    ./configure                        # find libraries, set options
-    make                               # compile the executable
-
-Additional building requirements when using the source tree (git):
-
-- autoconf >= 2.69
-- automake >= 1.11.4
-- libtool
-
-To generate the "configure" script, run before following the above section:
-
-    autoreconf -i
-
-
-## CMake method:
+## Standard build with CMake
 
 Building requirements:
 
@@ -49,13 +24,11 @@ Step-by-step instructions:
     cmake --build .                       # compile the executable
     sudo cmake --build . --target install # install system-wide
 
-CMake is the only supported way to build Player for Windows. All dependencies
+CMake is the only supported way to build Player. On Windows all dependencies
 must be installed with [vcpkg].
 
 
 ## libretro core:
-
-Building for libretro is based on the CMake method.
 
 Additional commands required before building:
 
@@ -95,8 +68,6 @@ The unsigned APK is stored in:
 
 
 ## Nintendo and Sony Homebrew ports (Wii (U), 3DS, Switch, PSVita/PSTV)
-
-This is based on the CMake method.
 
 Building requirements:
 

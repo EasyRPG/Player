@@ -1532,14 +1532,7 @@ find_package(Doxygen)
 set(DOXYGEN_STATUS "Unavailable")
 if(DOXYGEN_FOUND)
 	set(DOXYGEN_STATUS "Available (target \"doc\")")
-	# fake autotools variables
-	set(PACKAGE_VERSION ${PLAYER_VERSION})
-	set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
-	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 	configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
-	unset(PACKAGE_VERSION)
-	unset(DX_DOCDIR)
-	unset(srcdir)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
