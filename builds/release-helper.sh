@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # release-helper.sh - maintainer utility script to change the release version
-# by carstene1ns 2021, released under the MIT license
+# by carstene1ns 2021-2024, released under the MIT license
 
 set -e
 
@@ -18,7 +18,7 @@ fi
 if [[ ! $version =~ ^[0-9](\.[0-9]){1,3}$ ]]; then
 
   echo "Invalid version argument. Only digits and dots allowed."
-  echo "Example: 0.8 or 0.7.0.1"
+  echo "Example: 0.9 or 0.8.0.1"
   exit 1
 
 fi
@@ -64,16 +64,6 @@ print_file
 sed -i "/EasyRPG_Player VERSION/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$version/" $file
 sed -i "/liblcf VERSION/,1 s/[0-9]\(.[0-9]\)\{1,3\}/$lcfversion/" $file
 print_verbose " VERSION " $file
-
-file=configure.ac
-print_file
-sed -i -e "/ep_version_major/,1 s/\[[0-9]\+\]/[$_maj]/" \
-       -e "/ep_version_minor/,1 s/\[[0-9]\+\]/[$_min]/" \
-       -e "/ep_version_patch/,1 s/\[[0-9]\+\]/[$_pat]/" \
-       -e "/ep_version_tweak/,1 s/\[[0-9]\+\]/[$_twk]/" $file
-sed -i "/liblcf >= /,1 s/[0-9]\(.[0-9]\)\{1,3\}/$lcfversion/" $file
-print_verbose 'm4_define(\[ep_version_' $file
-print_verbose "liblcf >= [0-9]" $file
 
 # + 2 because of two extra commits: version commit itself & merge commit
 file="builds/android/gradle.properties"
