@@ -1,118 +1,150 @@
 #include "json_helper.h"
 #include "output.h"
-#include <nlohmann/json.hpp>
+#include <sstream>
+#include <unordered_map>
 
 namespace Json_Helper {
-	std::string invalid_str = "<<INVALID_OUTPUT>>";
-	std::string GetValue(const std::string& jsonData, const std::string& jsonPath) {
-		try {
-			nlohmann::json jsonObj = nlohmann::json::parse(jsonData);
-			nlohmann::json* currentObj = &jsonObj;
 
-			std::string mutableJsonPath = jsonPath;
-			size_t pos = 0;
-			std::string token;
-			while ((pos = mutableJsonPath.find('.')) != std::string::npos) {
-				token = mutableJsonPath.substr(0, pos);
-				if (token.back() == ']') {
-					size_t bracketPos = token.find('[');
-					std::string arrayName = token.substr(0, bracketPos);
-					int index = std::stoi(token.substr(bracketPos + 1, token.length() - bracketPos - 2));
-					if (currentObj->find(arrayName) == currentObj->end() || !(*currentObj)[arrayName].is_array() || index >= (*currentObj)[arrayName].size()) {
-						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
-						return invalid_str;
-					}
-					currentObj = &((*currentObj)[arrayName][index]);
-				}
-				else {
-					if (currentObj->find(token) == currentObj->end()) {
-						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
-						return invalid_str;
-					}
-					currentObj = &((*currentObj)[token]);
-				}
-				mutableJsonPath.erase(0, pos + 1);
-			}
+	const std::string k_invalid_str = "<<INVALID_OUTPUT>>";
 
-			if (!mutableJsonPath.empty()) {
-				if (mutableJsonPath.back() == ']') {
-					size_t bracketPos = mutableJsonPath.find('[');
-					std::string arrayName = mutableJsonPath.substr(0, bracketPos);
-					int index = std::stoi(mutableJsonPath.substr(bracketPos + 1, mutableJsonPath.length() - bracketPos - 2));
-					if (currentObj->find(arrayName) == currentObj->end() || !(*currentObj)[arrayName].is_array() || index >= (*currentObj)[arrayName].size()) {
-						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
-						return invalid_str;
-					}
-					currentObj = &((*currentObj)[arrayName][index]);
-				}
-				else {
-					if (currentObj->find(mutableJsonPath) == currentObj->end()) {
-						Output::Warning("JSON_ERROR - Invalid path: {}", jsonPath);
-						return invalid_str;
-					}
-					currentObj = &((*currentObj)[mutableJsonPath]);
-				}
-			}
+	std::unordered_map<std::string, nlohmann::json> json_cache;
 
-			if (currentObj->is_string()) {
-				return currentObj->get<std::string>();
-			}
-			else if (currentObj->is_number_integer()) {
-				return std::to_string(currentObj->get<int>());
-			}
-			else if (currentObj->is_number_float()) {
-				return std::to_string(currentObj->get<float>());
-			}
-			else if (currentObj->is_boolean()) {
-				return currentObj->get<bool>() ? "true" : "false";
+	nlohmann::json* GetObjectAtPath(nlohmann::json& json_obj, std::string_view json_path, bool allow_path_creation = false) {
+		nlohmann::json* current_obj = &json_obj;
+
+		std::stringstream path_stream(json_path.data());
+		std::string token;
+
+		while (std::getline(path_stream, token, '.')) {
+			if (token.back() == ']') {
+				size_t bracket_pos = token.find('[');
+				std::string array_name = token.substr(0, bracket_pos);
+				int index = std::stoi(token.substr(bracket_pos + 1, token.length() - bracket_pos - 2));
+
+				if (!current_obj->contains(array_name)) {
+					if (allow_path_creation) {
+						(*current_obj)[array_name] = nlohmann::json::array();
+					}
+					else {
+						return nullptr;
+					}
+				}
+
+				nlohmann::json& array_obj = (*current_obj)[array_name];
+
+				if (index >= array_obj.size()) {
+					if (allow_path_creation) {
+						array_obj.get_ref<nlohmann::json::array_t&>().resize(index + 1);
+					}
+					else {
+						return nullptr;
+					}
+				}
+
+				current_obj = &(array_obj[index]);
 			}
 			else {
-				return currentObj->dump();
+				if (!current_obj->contains(token)) {
+					if (allow_path_creation) {
+						(*current_obj)[token] = nlohmann::json::object();
+					}
+					else {
+						return nullptr;
+					}
+				}
+
+				current_obj = &((*current_obj)[token]);
 			}
+		}
+
+		return current_obj;
+	}
+
+	std::string GetValueAsString(const nlohmann::json& json_obj) {
+		std::string result;
+
+		if (json_obj.is_string()) {
+			result = json_obj.get<std::string>();
+		}
+		else if (json_obj.is_number_integer()) {
+			result = std::to_string(json_obj.get<int>());
+		}
+		else if (json_obj.is_number_float()) {
+			result = std::to_string(json_obj.get<float>());
+		}
+		else if (json_obj.is_boolean()) {
+			result = json_obj.get<bool>() ? "true" : "false";
+		}
+		else {
+			result = json_obj.dump();
+		}
+
+		return result;
+	}
+
+	std::string GetValue(std::string_view json_data, std::string_view json_path) {
+		try {
+			nlohmann::json json_obj;
+			auto it = json_cache.find(json_data.data());
+
+			if (it != json_cache.end()) {
+				json_obj = it->second;
+			}
+			else {
+				json_obj = nlohmann::json::parse(json_data);
+				json_cache[json_data.data()] = json_obj;
+			}
+
+			nlohmann::json* current_obj = GetObjectAtPath(json_obj, json_path);
+
+			if (current_obj == nullptr) {
+				Output::Warning("JSON_ERROR - Invalid path: {}", json_path);
+				return k_invalid_str;
+			}
+
+			return GetValueAsString(*current_obj);
 		}
 		catch (const std::exception& e) {
 			Output::Warning("JSON_ERROR - {}", e.what());
-			return invalid_str;
+			return k_invalid_str;
 		}
 	}
 
-	std::string SetValue(const std::string& jsonData, const std::string& jsonPath, const std::string& value) {
+	std::string SetValue(std::string_view json_data, std::string_view json_path, std::string_view value) {
 		try {
-			nlohmann::json jsonObj = nlohmann::json::parse(jsonData);
-			nlohmann::json* currentObj = &jsonObj;
+			nlohmann::json json_obj;
+			auto it = json_cache.find(json_data.data());
 
-			std::string mutableJsonPath = jsonPath;
-			size_t pos = 0;
-			std::string token;
-			while ((pos = mutableJsonPath.find('.')) != std::string::npos) {
-				token = mutableJsonPath.substr(0, pos);
-				if (token.back() == ']') {
-					size_t bracketPos = token.find('[');
-					std::string arrayName = token.substr(0, bracketPos);
-					int index = std::stoi(token.substr(bracketPos + 1, token.length() - bracketPos - 2));
-					currentObj = &((*currentObj)[arrayName][index]);
-				}
-				else {
-					currentObj = &((*currentObj)[token]);
-				}
-				mutableJsonPath.erase(0, pos + 1);
-			}
-
-			if (mutableJsonPath.back() == ']') {
-				size_t bracketPos = mutableJsonPath.find('[');
-				std::string arrayName = mutableJsonPath.substr(0, bracketPos);
-				int index = std::stoi(mutableJsonPath.substr(bracketPos + 1, mutableJsonPath.length() - bracketPos - 2));
-				(*currentObj)[arrayName][index] = value;
+			if (it != json_cache.end()) {
+				json_obj = it->second;
 			}
 			else {
-				(*currentObj)[mutableJsonPath] = value;
+				json_obj = nlohmann::json::parse(json_data);
+				json_cache[json_data.data()] = json_obj;
 			}
 
-			return jsonObj.dump();
+			nlohmann::json* current_obj = GetObjectAtPath(json_obj, json_path, true);
+
+			if (current_obj == nullptr) {
+				Output::Warning("JSON_ERROR - Invalid path: {}", json_path);
+				return std::string(json_data);
+			}
+
+			// Parse the value string and set the appropriate JSON type
+			try {
+				*current_obj = nlohmann::json::parse(value);
+			}
+			catch (const nlohmann::json::parse_error&) {
+				// If parsing fails, treat it as a string value
+				*current_obj = value;
+			}
+
+			return json_obj.dump();
 		}
 		catch (const std::exception& e) {
 			Output::Warning("JSON_ERROR - {}", e.what());
-			return jsonData;
+			return std::string(json_data);
 		}
 	}
+
 }

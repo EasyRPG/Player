@@ -5071,35 +5071,66 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	}
 
 	int operation = ValueOrVariable(com.parameters[0], com.parameters[1]);
-	int sourceVarId = ValueOrVariable(com.parameters[2], com.parameters[3]);
-	int targetVarId = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int source_var_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int target_var_type = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
+	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
+	std::string json_data = ToString(Main_Data::game_strings->Get(source_var_id));
 
-	std::string jsonPath = ToString(CommandStringOrVariable(com, 6, 7));
-	std::string jsonData = ToString(Main_Data::game_strings->Get(sourceVarId));
-
-	int assignVarId = 0;
 	std::string result;
-	std::string newValue;
 
-	switch (operation) {
-	case 0: // Get operation: Extract a value from JSON data
-		result = Json_Helper::GetValue(jsonData, jsonPath);
-		assignVarId = targetVarId;
-		break;
+	if (operation == 0) { // Get operation: Extract a value from JSON data
+		result = Json_Helper::GetValue(json_data, json_path);
 
-	case 1: // Set operation: Update JSON data with a new value
-		newValue = ToString(Main_Data::game_strings->Get(targetVarId));
-		result = Json_Helper::SetValue(jsonData, jsonPath, newValue);
-		assignVarId = sourceVarId;
-		break;
+		if (result != "<<INVALID_OUTPUT>>") {
+			int output_value = 0;
 
-	default:
-		Output::Warning("Process JSON - Invalid Operation: {}", operation);
-		result = "<<INVALID_OUTPUT>>";
-		break;
+			std::istringstream iss(result);
+			int temp;
+			if (iss >> temp) {
+				output_value = temp;
+			}
+			else {
+				output_value = 0;
+			}
+
+			switch (target_var_type) {
+			case 0: // Switch
+				Main_Data::game_switches->Set({ target_var_id }, output_value);
+				break;
+			case 1: // Variable
+				Main_Data::game_variables->Set({ target_var_id }, output_value);
+				break;
+			default: // String
+				Main_Data::game_strings->Asg({ target_var_id }, result);
+				break;
+			}
+		}
 	}
+	else if (operation == 1) { // Set operation: Update JSON data with a new value
+		std::string new_value;
 
-	if (result != "<<INVALID_OUTPUT>>") Main_Data::game_strings->Asg({ assignVarId }, result);
+		switch (target_var_type) {
+		case 0: // Switch
+			new_value = std::to_string(Main_Data::game_switches->Get(target_var_id));
+			break;
+		case 1: // Variable
+			new_value = std::to_string(Main_Data::game_variables->Get(target_var_id));
+			break;
+		default: // String
+			new_value = ToString(Main_Data::game_strings->Get(target_var_id));
+			break;
+		}
+
+		result = Json_Helper::SetValue(json_data, json_path, new_value);
+
+		if (result != "<<INVALID_OUTPUT>>") {
+			Main_Data::game_strings->Asg({ source_var_id }, result);
+		}
+	}
+	else {
+		Output::Warning("Process JSON - Invalid Operation: {}", operation);
+	}
 
 	return true;
 }
