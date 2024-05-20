@@ -884,6 +884,21 @@ player_find_package(NAME lhasa
 	TARGET LHASA::liblhasa
 )
 
+# json support
+option(PLAYER_WITH_NLOHMANN_JSON "Support processing of JSON files" ON)
+
+set(NLOHMANN_JSON_REQUIRED "")
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+	set(NLOHMANN_JSON_REQUIRED "REQUIRED")
+endif()
+
+player_find_package(NAME nlohmann_json
+	CONDITION PLAYER_WITH_NLOHMANN_JSON
+	DEFINITION HAVE_NLOHMANN_JSON
+	TARGET nlohmann_json::nlohmann_json
+	${NLOHMANN_JSON_REQUIRED}
+)
+
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
@@ -1574,6 +1589,12 @@ if(TARGET LHASA::liblhasa)
 	message(STATUS "LZH archive support: lhasa")
 else()
 	message(STATUS "LZH archive support: No")
+endif()
+
+if(TARGET nlohmann_json::nlohmann_json)
+	message(STATUS "JSON support: nlohmann_json")
+else()
+	message(STATUS "JSON support: No")
 endif()
 
 message(STATUS "")
