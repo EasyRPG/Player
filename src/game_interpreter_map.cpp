@@ -23,6 +23,7 @@
 #include <sstream>
 #include <cassert>
 #include "audio.h"
+#include "feature.h"
 #include "game_map.h"
 #include "game_battle.h"
 #include "game_event.h"
@@ -38,8 +39,13 @@
 #include "sprite_character.h"
 #include "scene_map.h"
 #include "scene_battle.h"
+#include "scene_equip.h"
+#include "scene_item.h"
 #include "scene_menu.h"
+#include "scene_order.h"
 #include "scene_save.h"
+#include "scene_status.h"
+#include "scene_skill.h"
 #include "scene_load.h"
 #include "scene_name.h"
 #include "scene_shop.h"
@@ -81,6 +87,87 @@ void Game_Interpreter_Map::OnMapChange() {
 	for (auto& frame: _state.stack) {
 		frame.event_id = 0;
 	}
+}
+
+bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_index, bool is_db_actor) {
+	if (Player::game_config.patch_direct_menu.Get() && subscreen_id == -1) {
+		subscreen_id = Main_Data::game_variables->Get(Player::game_config.patch_direct_menu.Get());
+		actor_index = Main_Data::game_variables->Get(Player::game_config.patch_direct_menu.Get() + 1);
+		// When true refers to the index of an actor, instead of a party index
+		is_db_actor = (actor_index < 0);
+		actor_index = std::abs(actor_index);
+	}
+
+	std::vector<Game_Actor*> actors;
+
+	switch (subscreen_id)
+	{
+	case 1: // Inventory
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Item>());
+		return true;
+	case 2: // Skills
+	case 3: // Equipment
+	case 4: // Status
+		if (is_db_actor) {
+			Game_Actor* actor = Main_Data::game_actors->GetActor(actor_index);
+			if (!actor) {
+				Output::Warning("RequestMainMenu: Invalid actor ID {}", actor_index);
+				return false;
+			}
+			actors = std::vector{actor};
+			actor_index = 0;
+		} else {
+			// 0, 1 and 5+ refer to the first actor
+			if (actor_index == 0 || actor_index > 4) {
+				actor_index = 1;
+			}
+			actor_index--;
+			actors = Main_Data::game_party->GetActors();
+
+			if (actor_index < 0 || actor_index >= actors.size()) {
+				Output::Warning("RequestMainMenu: Invalid actor party member {}", actor_index);
+				return false;
+			}
+		}
+
+		if (subscreen_id == 2) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Skill>(actors, actor_index));
+		}
+		else if (subscreen_id == 3) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Equip>(actors, actor_index));
+		}
+		else if (subscreen_id == 4) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Status>(actors, actor_index));
+		}
+		return true;
+	case 5: // Order
+		if (!Feature::HasRow()) {
+			break;
+		}
+
+		if (Main_Data::game_party->GetActors().size() <= 1) {
+			Output::Warning("Party size must exceed '1' for 'Order' subscreen to be opened");
+			return false;
+		}
+		else {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Order>());
+			return true;
+		}
+	/*
+	case 6: // Settings
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Settings>());
+		return true;
+	case 7: // Language
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Language>());
+		return true;
+	case 8: // Debug
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Debug>());
+		return true;
+		*/
+	}
+
+	Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
+	return true;
 }
 
 /**
@@ -638,7 +725,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& /* 
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& /* com */) { // code 11950
+bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& com) { // code 11950
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
@@ -646,9 +733,14 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& /* 
 		return false;
 	}
 
-	Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
-	++index;
-	return false;
+	int subscreen_id = -1, actor_index = 0;
+	bool is_db_actor = false;
+
+	if (RequestMainMenuScene(subscreen_id, actor_index, is_db_actor)) {
+		++index;
+		return false;
+	}
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* com */) {

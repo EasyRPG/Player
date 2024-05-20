@@ -36,10 +36,11 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor actor in the party.
+	 * @param actors Vector containing all the actors
+	 * @param actor_index actor whose equipment is shown.
 	 * @param equip_index selected equipment.
 	 */
-	Scene_Equip(Game_Actor& actor, int equip_index = 0);
+	Scene_Equip(std::vector<Game_Actor*> actors, int actor_index, int equip_index = 0);
 
 	void Start() override;
 	void vUpdate() override;
@@ -70,8 +71,9 @@ public:
 	void UpdateItemSelection();
 
 private:
-	/** Actor in the party whose equipment is displayed. */
-	Game_Actor& actor;
+	std::vector<Game_Actor*> actors;
+	/** Index of the actor in the party whose equipment is displayed. */
+	int actor_index;
 	/** Selected equipment on startup. */
 	int equip_index;
 

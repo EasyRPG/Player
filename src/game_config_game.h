@@ -46,6 +46,7 @@ struct Game_ConfigGame {
 	BoolConfigParam patch_key_patch{ "Ineluki Key Patch", "Support \"Ineluki Key Patch\"", "Patch", "KeyPatch", false };
 	BoolConfigParam patch_rpg2k3_commands{ "RPG2k3 Event Commands", "Enable support for RPG2k3 event commands", "Patch", "RPG2k3Commands", false };
 	ConfigParam<int> patch_anti_lag_switch{ "Anti-Lag Switch", "Disable event page refreshes when switch is set", "Patch", "AntiLagSwitch", 0 };
+	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
 
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
@@ -75,6 +76,9 @@ struct Game_ConfigGame {
 	 * @post values of this are updated with values found in command line args.
 	 */
 	void LoadFromArgs(CmdlineParser& cp);
+
+	/** Outputs a list of active patches */
+	void PrintActivePatches();
 };
 
 #endif

@@ -34,9 +34,9 @@ public:
 
 	/**
 	 * Sets the actor whose stats are displayed.
-	 * @param actor_id ID of the actor.
+	 * @param actor actor.
 	 */
-	void SetActor(int actor_id);
+	void SetActor(const Game_Actor& actor);
 
 	/**
 	 * Renders the stats of the actor.
@@ -44,7 +44,7 @@ public:
 	void Refresh();
 
 private:
-	int actor_id;
+	const Game_Actor* actor = nullptr;
 };
 
 #endif

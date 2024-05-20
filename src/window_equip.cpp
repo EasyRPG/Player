@@ -22,9 +22,9 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
+Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+	actor(actor) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -42,16 +42,15 @@ void Window_Equip::Refresh() {
 
 	// Add the equipment of the actor to data
 	data.clear();
-	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 	for (int i = 1; i <= 5; ++i) {
-		const lcf::rpg::Item* item = actor->GetEquipment(i);
+		const lcf::rpg::Item* item = actor.GetEquipment(i);
 		data.push_back(item ? item->ID : 0);
 	}
 	item_max = data.size();
 
 	// Draw equipment text
 	for (int i = 0; i < 5; ++i) {
-		DrawEquipmentType(*actor, 0, (12 + 4) * i + 2, i);
+		DrawEquipmentType(actor, 0, (12 + 4) * i + 2, i);
 		if (data[i] > 0) {
 			// Equipment and items are guaranteed to be valid
 			DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, data[i]), 60, (12 + 4) * i + 2);

@@ -32,7 +32,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
+	Window_ActorStatus(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor);
 
 	/**
 	 * Renders the stats on the window.
@@ -50,7 +50,7 @@ public:
 	void DrawMinMax(int cx, int cy, int min, int max, int color = Font::ColorDefault);
 
 private:
-	int actor_id;
+	const Game_Actor& actor;
 };
 
 #endif

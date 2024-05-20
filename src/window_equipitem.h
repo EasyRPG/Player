@@ -40,10 +40,10 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor_id actor whos equipment is displayed.
+	 * @param actor actor whos equipment is displayed.
 	 * @param equip_type type of equipment to show.
 	 */
-	Window_EquipItem(int ix, int iy, int iwidth, int iheight, int actor_id, int equip_type);
+	Window_EquipItem(int ix, int iy, int iwidth, int iheight,  const Game_Actor& actor, int equip_type);
 
 	/**
 	 * Checks if the item should be in the list based on
@@ -61,8 +61,8 @@ public:
 	bool CheckEnable(int item_id) override;
 
 private:
-	int actor_id;
-	int equip_type;
+	const Game_Actor& actor;
+ 	int equip_type;
 };
 
 #endif

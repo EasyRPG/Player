@@ -78,16 +78,21 @@ NOTE: For games that only use ASCII (English games) use '1252'.
   Disable support for the Runtime Package (RTP). Will lead to checkerboard
   graphics and silent music/sound effects in games depending on the RTP.
 
-*--patch-anti-lag-switch*:: _SWITCH_
+*--patch-antilag-switch*:: _SWITCH_
   Disables event page refreshing when the switch 'SWITCH' is set to 'ON'.
 
 *--patch-common-this*::
   Enable usage of __This Event__ in common events in any version of the engine.
   By default, this behaviour is only enabled for RPG Maker 2003 v1.12.
 
+*--patch-direct-menu*:: _VAR_
+  Directly access subscreens of the default menu by setting VAR.
+  See also: https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=direct_menu
+
 *--patch-dynrpg*::
   Enable limited support for the DynRPG patch from Cherry. The patches are not
-  loaded from DLL files, but re-implemented by the engine.
+  loaded from DLL files, but re-implemented by the engine. See also:
+  https://rpg-maker.cherrytree.at/dynrpg/getting_started.html
 
 *--patch-easyrpg*::
   Enable EasyRPG extensions such as support for 32 bit images and large charsets.

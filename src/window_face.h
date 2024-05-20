@@ -37,10 +37,10 @@ public:
 	 */
 	void Refresh();
 
-	void Set(int actor_id);
+	void Set(const Game_Actor& actor);
 
 protected:
-	int actor_id;
+	const Game_Actor* actor = nullptr;
 };
 
 #endif

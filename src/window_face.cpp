@@ -21,7 +21,7 @@
 #include "window_face.h"
 
 Window_Face::Window_Face(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), actor_id(1) {
+	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 }
@@ -29,10 +29,10 @@ Window_Face::Window_Face(int ix, int iy, int iwidth, int iheight) :
 void Window_Face::Refresh() {
 	contents->Clear();
 	// Actor data is guaranteed to be valid
-	DrawActorFace(*Main_Data::game_actors->GetActor(actor_id), 0, 0);
+	DrawActorFace(*actor, 0, 0);
 }
 
-void Window_Face::Set(int id) {
-	actor_id = id;
+void Window_Face::Set(const Game_Actor& actor) {
+	this->actor = &actor;
 	Refresh();
 }

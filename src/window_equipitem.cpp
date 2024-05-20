@@ -22,16 +22,16 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight, int actor_id, int equip_type) :
+Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight,  const Game_Actor& actor, int equip_type) :
 	Window_Item(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+	actor(actor) {
 	this->equip_type = equip_type;
 	if (equip_type > 4 || equip_type < 0) {
 		this->equip_type = Window_EquipItem::other;
 	}
 
 	if (this->equip_type == Window_EquipItem::shield &&
-		Main_Data::game_actors->GetActor(actor_id)->HasTwoWeapons()) {
+		actor.HasTwoWeapons()) {
 
 		this->equip_type = Window_EquipItem::weapon;
 	}
@@ -39,7 +39,7 @@ Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight, int 
 
 bool Window_EquipItem::CheckInclude(int item_id) {
 	// Do not show equippable items if the actor has its equipment fixed
-	if (Main_Data::game_actors->GetActor(actor_id)->IsEquipmentFixed(false)) {
+	if (actor.IsEquipmentFixed(false)) {
 		return false;
 	}
 
@@ -78,7 +78,7 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 		if (Main_Data::game_party->GetItemCount(item_id) == 0) {
 			return false;
 		} else {
-			return Main_Data::game_actors->GetActor(actor_id)->IsEquippable(item_id);
+			return actor.IsEquippable(item_id);
 		}
 	} else {
 		return false;
