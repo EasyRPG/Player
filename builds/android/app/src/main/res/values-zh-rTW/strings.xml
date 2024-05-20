@@ -18,7 +18,7 @@
     <string name="vietnamese">越南語</string>
     <string name="ok">完成</string>
     <string name="cancel">取消</string>
-    <string name="do_want_quit">確定要退出？</string>
+    <string name="do_want_quit">確定要退出嗎？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="creating_dir_failed">建立 $PATH 路徑失敗</string>
@@ -36,12 +36,12 @@
     <!--Ingame menu-->
     <string name="toggle_ui">隱藏 / 顯示虛擬按鈕</string>
     <string name="end_game">結束遊戲</string>
-    <string name="report_bug">回報問題</string>
-    <string name="report_bug_msg">這將會開啟您的 e-mail 程式 (如Gmail) 來寄錯誤回報給我們。
+    <string name="report_bug">報告問題</string>
+    <string name="report_bug_msg">這將會開啟您的 E-mail 程式 (如Gmail) 來將錯誤報告給我們。
 \n
-\n如果不想要寄信或是沒有可用的 e-mail 程式的話，可以到 https://github.com/EasyRPG/Player/issues 來開一個新的 issue。</string>
+\n如果不想發送E-mail或是沒有可用的 E-mail 程式的話，可以到 https://github.com/EasyRPG/Player/issues 來開啟一個新的 Issue。</string>
     <string name="report_bug_mail">謝謝您支持 EasyRPG Player。
-\n 一個紀錄 (logfile) 以及您的存檔已經附加到此 e-mail 上。
+\n 一個紀錄 (logfile) 以及您的存檔已經附加到此 E-mail 上。
 \n 請不要移除它們！我們需要存檔以便知道是在遊戲中何處出錯。
 \n 請詳細地告訴我們發生了什麼事。
 \n
@@ -83,11 +83,15 @@
     <string name="navigation_drawer_open">開啟側邊欄</string>
     <string name="navigation_drawer_close">關閉側邊欄</string>
     <string name="menu">開啟 Android 選單</string>
-    <string name="no_games_found_and_explanation_android_30">沒有找到 RPG Maker 2000/2003 的遊戲。請將它們放在遊戲資料夾下的子目錄內。
-\nEasyRPG 的資料夾可以在設定裡變更。</string>
-    <string name="open_games_folder">開啟遊戲資料夾</string>
+    <string name="no_games_found_and_explanation_android_30">沒有找到基於RPG Maker 2000/2003 的遊戲。
+\n
+\n您選擇的EasyRPG資料夾下有一個「games」資料夾。使用一個檔案管理器來向這個資料夾添加遊戲。
+\n遊戲可以放在子目錄下，也可以讀取使用ZIP壓縮檔案壓縮的遊戲。
+\n
+\nEasyRPG資料夾的位置可以在設定中變更。</string>
+    <string name="open_games_folder">開啟「games」資料夾</string>
     <string name="easyrpg_folders">EasyRPG 資料夾</string>
-    <string name="screen_size">螢幕大小：</string>
+    <string name="screen_size">遊戲分辨率大小：</string>
     <string name="select_the_games_folder">選取 EasyRPG 資料夾</string>
     <string name="id_select_games_folder_explanation">使用 EasyRPG Player 必須先選取一個資料夾。
 \n這個資料夾應該要是只給 EasyRPG Player 使用的。
@@ -104,4 +108,45 @@
     <string name="vertical_input_layout">縱向按鍵配置方案</string>
     <string name="settings_edit_layout_explanation">編輯按鍵配置方案時可以新增如 Shift 鈕的按鈕。
 \n要新增一個按鈕，點擊「返回」鍵後選擇「新增按鈕」。</string>
+    <string name="settings_soundfont_restart_app">當你選擇了一個音樂聲庫以後，請退出並重新啟動應用程式。</string>
+    <string name="settings_resolution_widescreen">寬屏（416x240，16:9比例，實驗性）</string>
+    <string name="error_saf_folder_not_empty">選擇的資料夾裡面包括了其他的檔案，不能用作EasyRPG的默認資料夾。當你移除了裡面的其他檔案時，就可以使用這個資料夾了。</string>
+    <string name="open_the_sound_fonts_folder">打開音樂聲庫資料夾</string>
+    <string name="error_saf_bad_content_provider">所選資料夾不能用作EasyRPG資料夾。 此問題可能由於各種原因而發生，例如，如果您選擇了根目錄或者是一個雲盤中的位置。
+\n
+\n</string>
+    <string name="sound_volume">音效音量</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">將你的RPG Maker 2000/2003遊戲放在「games」資料夾的子目錄下。
+\n
+\n你需要解壓你的遊戲，或者確保遊戲被打包在ZIP壓縮檔案裡面。
+\n不支持RAR壓縮文件，LZH文件，還有EXE可執行文件。
+\n
+\n可選的功能（請參考設定）：
+\n-可以選擇提供RTP（某些遊戲所需的共享檔案包）。
+\n-自定義音樂聲庫，以決定MIDI音樂的播放效果。</string>
+    <string name="settings_soundfont_found">已找到的音樂聲庫：</string>
+    <string name="visit_website">瀏覽我們的網站</string>
+    <string name="settings_custom_soundfont">自定義音樂聲庫（MIDI）：</string>
+    <string name="scale_bilinear">縮放到荧幕大小並應用雙線性濾波器（慢，效果好）</string>
+    <string name="settings_resolution_desc">切換遊戲的分辨率可能導致圖像錯誤或者使得遊戲崩潰，特此警告！</string>
+    <string name="scale_nearest">通過拉伸畫面來達到屏幕大小（快，效果差）</string>
+    <string name="settings_resolution">遊戲分辨率：</string>
+    <string name="launch_debug_mode">以測試模式啟動</string>
+    <string name="watch_explanation_video">開始上手並添加遊戲（視頻教程）</string>
+    <string name="error_saf_download_selected">「Download」資料夾不能被用作EasyRPG的默認資料夾。</string>
+    <string name="error_saf_select_easyrpg">請創建一個空的資料夾並且選擇它，以作為EasyRPG的默認目錄。</string>
+    <string name="error_saf_title">指定了無效的資料夾</string>
+    <string name="music_volume">音樂音量</string>
+    <string name="settings_resolution_original">正常（320x240，4:3比例，默認）</string>
+    <string name="key_debug_menu">打開測試菜單（需要測試模式）</string>
+    <string name="settings_resolution_ultrawide">超寬屏（560x240，21:9，實驗性）</string>
+    <string name="scale_integer">通過放大到遊戲分辨率大小的倍數來適應屏幕（快，更小的畫面，效果好）</string>
+    <string name="settings_soundfont_explanation">將SF2格式的音樂聲庫檔案放置在「soundfonts」資料夾下。音樂聲庫決定MIDI音樂的播放效果。</string>
+    <string name="fast_forward_mode_tap">點擊</string>
+    <string name="settings_default_soundfont">默認音樂聲庫</string>
+    <string name="fast_forward_mode_hold">按住</string>
+    <string name="key_debug_walk_through_walls">穿過牆壁（需要測試模式）</string>
+    <string name="error_games_no_rw">無法對「games」資料夾進行讀寫操作。請為EasyRPG提供另一個位置作為默認資料夾。可以在設定中對EasyRPG的默認資料夾進行更改。</string>
+    <string name="stretch">忽略縱橫比（拉伸到荧幕寬度）</string>
+    <string name="error_no_games_folder">「games」資料夾不存在或者不是資料夾。 請手動創建或為EasyRPG資料夾選擇其他位置。 EasyRPG的默認資料夾可以在設定中更改。</string>
 </resources>
