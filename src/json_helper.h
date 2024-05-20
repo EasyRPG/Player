@@ -2,10 +2,11 @@
 #define JSON_HELPER_H
 
 #include <string>
+#include <nlohmann/json.hpp>
 
 namespace Json_Helper {
-	std::string GetValue(const std::string& jsonData, const std::string& jsonPath);
-	std::string SetValue(const std::string& jsonData, const std::string& jsonPath, const std::string& value);
+	std::string GetValue(std::string_view json_data, std::string_view json_path);
+	std::string SetValue(std::string_view json_data, std::string_view json_path, std::string_view value);
 }
 
 #endif // JSON_HELPER_H
