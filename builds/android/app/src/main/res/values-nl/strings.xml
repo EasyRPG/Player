@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_soundfont_restart_app">Sluit de app af en start deze opnieuw nadat u een soundfont heeft geselecteerd.</string>
+    <string name="baltic">Baltisch</string>
+    <string name="settings_resolution_widescreen">Breedbeeld (416x240, 16:9, Experimenteel)</string>
+    <string name="choose_layout">Kies een lay-out</string>
+    <string name="error_saf_folder_not_empty">De geselecteerde folder bevat andere bestanden en kan niet worden gebruikt als de EasyRPG-folder. Wanneer u alle bestanden in de folder verwijdert, kunt u deze gebruiken als de EasyRPG-folder.</string>
+    <string name="exit_without_saving">Afsluiten zonder op te slaan</string>
+    <string name="open_the_sound_fonts_folder">Op de soundfonts-folder</string>
+    <string name="vibrate_when_sliding_direction">Trillen tijdens het glijden naar een andere richting</string>
+    <string name="error_saf_bad_content_provider">De geselecteerde folder kan niet worden gebruikt als de EasyRPG-folder. Dit probleem kan verschillende oorzaken hebben, bijvoorbeeld als u de hoofdfolder of een opslaglocatie in de cloud heeft geselecteerd.
+\n
+\n</string>
+    <string name="sound_volume">Geluidseffectvolume</string>
+    <string name="korean">Koreaans</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Plaats uw RPG Maker 2000/2003-spellen in submappen van de spellenfolder (games).
+\nSpellen moeten ongecomprimeerd zijn of in een ZIP-archief staan.
+\nRAR-, LZH- en EXE-bestanden worden NIET ondersteund.
+\n
+\nOptionele functies (zie de instellingen):
+\n- De RTP (gedeelde middelen die door sommige spellen worden gebruikt) kan worden verstrekt
+\n- Een aangepast soundfont om te wijzigen hoe MIDI-muziekgeluiden kunnen worden verstrekt</string>
+    <string name="no_external_storage">Geen externe opslag (bv. SD-kaart) gevonden</string>
+    <string name="settings_soundfont_found">Soundfonts gevonden:</string>
+    <string name="visit_website">Bezoek onze website</string>
+    <string name="id_select_games_folder_explanation">EasyRPG Player vereist een speciale folder. Nadat u de knop heeft aangeraakt, wordt u gevraagd een folder te selecteren.
+\n
+\nAls u deze app voor de eerste keer gebruikt, is er geen EasyRPG-folder. Maak een nieuwe EasyRPG-folder en selecteer deze.
+\n
+\nAls u deze app eerder gebruikt heeft, selecteer dan de bestaande EasyRPG-folder.</string>
+    <string name="add_a_button">Knop toevoegen</string>
+    <string name="open_rtp_folder">Open de RTP-folder</string>
+    <string name="edit_layout">Lay-out bewerken</string>
+    <string name="manage_input_layouts">Invoerlay-outs beheren:</string>
+    <string name="no_read_access_on_dir">Geen leestoegang op %1$s</string>
+    <string name="settings_custom_soundfont">Aangepast soundfont:</string>
+    <string name="chinese_simple">Chinees (Vereenvoudigd)</string>
+    <string name="rtp_explanation">De RTP biedt gedeelde middelen die door sommige spellen worden gebruikt.
+\nZet de RPG Maker 2000 RTP in \"rtp/2000\" en de RPG Maker 2003 RTP in \"rtp/2003\".
+\nHoud er rekening mee dat het inschakelen van RTP-ondersteuning de initiële laadtijd van een spel aanzienlijk zal verlengen.</string>
+    <string name="turkish">Turks</string>
+    <string name="select_game_region">Selecteer spelregio</string>
+    <string name="chinese_traditional">Chinees (Traditioneel)</string>
+    <string name="scale_bilinear">Schaal naar schermgrootte en pas een bilineaire filter toe (Langzaam, goede kwaliteit)</string>
+    <string name="input_layout_transparency">Transparantie van de invoerlay-out:</string>
+    <string name="hebrew">Hebreeuws</string>
+    <string name="settings_resolution_desc">Het wijzigen van de resolutie kan grafische storingen veroorzaken of het spel kapot maken. U bent gewaarschuwd!</string>
+    <string name="no">Nee</string>
+    <string name="creating_dir_failed">Het maken van de $PATH-map is mislukt</string>
+    <string name="japan">Japans</string>
+    <string name="select_the_games_folder">Selecteer de EasyRPG-folder</string>
+    <string name="arabic">Arabisch</string>
+    <string name="scale_nearest">Schalen naar schermgrootte met behulp van de dichtstbijzijnde buur (Snel, slechte kwaliteit)</string>
+    <string name="fast_forward">Knopmodus voor vooruitspoelen:</string>
+    <string name="settings_resolution">Spelresolutie:</string>
+    <string name="region_modification_failed">Regio veranderen mislukt</string>
+    <string name="navigation_drawer_close">Navigatielade sluiten</string>
+    <string name="settings_edit_layout_explanation">Bij het bewerken van een invoerlay-out kunnen knoppen worden toegevoegd (bijvoorbeeld een Shift-knop).
+\n Om een knop toe te voegen, drukt u op de terugknop en selecteert u \"Knop toevoegen\".</string>
+    <string name="screen_size">Schermschalen:</string>
+    <string name="navigation_drawer_open">Navigatielade openen</string>
+    <string name="Loading">Laden…</string>
+    <string name="change_default_mapping">Wijzig de standaard knoptoewijzing</string>
+    <string name="greek">Grieks</string>
+    <string name="report_bug_mail">Bedankt voor uw ondersteuning van EasyRPG Player.
+\n Een logbestand en uw bewaarde spellen zijn aan deze e-mail toegevoegd.
+\n Verwijder het logbestand niet! We hebben een bewaard spel nodig dat zich dicht bij de foutlocatie bevindt.
+\n Vertel ons alstublieft in detail wat er mis is gegaan.
+\n
+\n</string>
+    <string name="fast_forward_factor">Snelheidsvermenigvuldiger:</string>
+    <string name="yes">Ja</string>
+    <string name="vertical_input_layout">Verticale (staande) invoerlay-out</string>
+    <string name="launch_debug_mode">Start in foutopsporingsmodus</string>
+    <string name="watch_explanation_video">Aan de slag en spellen toevoegen (videogids)</string>
+    <string name="delete">Verwijderen</string>
+    <string name="input">Invoer</string>
+    <string name="not_valid_game">$PATH is geen geldig spel</string>
+    <string name="how_to_use_easy_rpg">Hoe EasyRPG Player gebruiken</string>
+    <string name="menu">Android-menu openen</string>
+    <string name="error_saf_download_selected">De downloadfolder kan niet worden gebruikt als de EasyRPG-folder.</string>
+    <string name="ok">OK</string>
+    <string name="toggle_ui">Schakel virtuele knoppen in of uit</string>
+    <string name="cyrillic">Cyrillisch</string>
+    <string name="key_enter">Bevestigen (Enter en Z)</string>
+    <string name="quick_access">Snelle toegang</string>
+    <string name="error_saf_select_easyrpg">Maak een lege EasyRPG-folder en selecteer deze.</string>
+    <string name="error_saf_title">Slechte folder geselecteerd</string>
+    <string name="autodetect">Regio automatisch detecteren (Aanbevolen)</string>
+    <string name="music_volume">Muziekvolume</string>
+    <string name="key_shift">Shift</string>
+    <string name="settings_resolution_original">Oorspronkelijk (320 x 240, 4:3, Aanbevolen)</string>
+    <string name="key_cancel">Annuleren (ESC en X)</string>
+    <string name="end_game">Beëindig spel</string>
+    <string name="key_fast_forward">Vooruitspoelen</string>
+    <string name="ignore_size_settings">Negeer de knopgrootte-instellingen en gebruik in plaats daarvan dit:</string>
+    <string name="key_debug_menu">Open foutopsporingsmenu (Vereist foutopsporingsmodus)</string>
+    <string name="enable_rtp_support">Schakel RTP-ondersteuning in</string>
+    <string name="cancel">Annuleren</string>
+    <string name="refresh">Verversen</string>
+    <string name="west_europe">West-Europees</string>
+    <string name="east_europe">Centraal/Oost-Europees</string>
+    <string name="settings_resolution_ultrawide">Ultrabreed (560x240, 21:9, Experimenteel)</string>
+    <string name="scale_integer">Schaal naar een veelvoud van de spelresolutie (Snel, kleiner beeld, goede kwaliteit)</string>
+    <string name="edit_name">Naam bewerken</string>
+    <string name="force_landscape_mode">Forceer landschapsoriëntatie</string>
+    <string name="no_games_found_and_explanation_android_30">Geen RPG Maker 2000/2003-games gevonden.
+\n
+\nDe EasyRPG-map die u heeft geselecteerd, bevat een spellenfolder (games). Gebruik een bestandsbeheer-app om uw spellen in deze map te plaatsen.
+\nSpellen kunnen in submappen of in ZIP-archieven worden geplaatst.
+\n
+\nDe EasyRPG-map kan worden gewijzigd in de instellingen.</string>
+    <string name="settings_soundfont_explanation">Zet soundfonts in SF2-formaat in de folder \"soundfonts\". Soundfonts veranderen hoe MIDI-muziek klinkt.</string>
+    <string name="video">Video</string>
+    <string name="save_and_quit">Opslaan en afsluiten</string>
+    <string name="easyrpg_folders">EasyRPG-folders</string>
+    <string name="report_bug">Meld een fout</string>
+    <string name="fast_forward_mode_tap">tik</string>
+    <string name="settings_default_soundfont">Standaard soundfont</string>
+    <string name="settings">Instellingen</string>
+    <string name="fast_forward_mode_hold">vasthouden</string>
+    <string name="report_bug_msg">Deze functie opent uw e-mailprogramma (bv. Gmail) om ons de foutmelding te sturen.
+\n
+\nAls u geen e-mail wilt verzenden of geen e-mailprogramma hebt geconfigureerd, kunt u in plaats daarvan een nieuwe probleemmelding aanmaken op https://github.com/EasyRPG/Player/issues.</string>
+    <string name="key_debug_walk_through_walls">Loop door muren (Vereist foutopsporingsmodus)</string>
+    <string name="error_games_no_rw">De spellenfolder (games) is niet leesbaar of beschrijfbaar. Selecteer een andere locatie voor de EasyRPG-folder. De EasyRPG-folder kan worden gewijzigd in de instellingen.</string>
+    <string name="unknown_region">Onbekende regio</string>
+    <string name="path_not_readable">$PATH niet leesbaar</string>
+    <string name="vietnamese">Vietnamees</string>
+    <string name="horizontal_input_layout">Horizontale (liggende) invoerlay-out</string>
+    <string name="thai">Thais</string>
+    <string name="stretch">Negeer de beeldverhouding (Uitrekken tot de breedte van het scherm)</string>
+    <string name="reset_button_mapping">Knoptoewijzing opnieuw instellen</string>
+    <string name="error_no_games_folder">De spellenfolder (games) bestaat niet of is geen folder. Maak het handmatig aan of selecteer een andere locatie voor de EasyRPG-folder. De EasyRPG-folder kan worden gewijzigd in de instellingen.</string>
+    <string name="open_games_folder">Open de spellenfolder (games)</string>
+    <string name="do_want_quit">Wilt u echt stoppen?</string>
+    <string name="default_layout">Standaard</string>
+    <string name="audio">Audio</string>
+    <string name="change_the_layout">Verander de lay-out</string>
+    <string name="enable_vibration">Trillingen inschakelen</string>
+</resources>
