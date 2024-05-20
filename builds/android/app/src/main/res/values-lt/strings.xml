@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autodetect">Automatiškai nustatyti regiona (Rekomenduojama)</string>
+    <string name="west_europe">Vakarų Europos</string>
+    <string name="east_europe">Vidurio/Rytų Europos</string>
+    <string name="cyrillic">Kirilica</string>
+    <string name="japan">Japonų</string>
+    <string name="korean">Korėjiečių</string>
+    <string name="chinese_simple">Kinų (Supaprastinta)</string>
+    <string name="chinese_traditional">Kinų (Tradicinė)</string>
+    <string name="greek">Graikų</string>
+    <string name="turkish">Turkų</string>
+    <string name="hebrew">Hebrajų</string>
+    <string name="arabic">Arabų</string>
+    <string name="baltic">Baltų</string>
+    <string name="thai">Tajų</string>
+    <string name="vietnamese">Vietnamiečių</string>
+    <string name="ok">Gerai</string>
+    <string name="cancel">Atšaukti</string>
+    <string name="do_want_quit">Ar tikrai norite išeiti\?</string>
+    <string name="yes">Taip</string>
+    <string name="no">Ne</string>
+    <string name="creating_dir_failed">Nepavyko sukurti $PATH katalogo</string>
+    <string name="path_not_readable">$PATH neįskaitomas</string>
+    <string name="no_games_found_and_explanation_android_30">Nepavyko rasti RPG Maker 2000/2003 žaidimų.
+\n
+\nPasirinktame EasyRPG aplanke yra aplankas „games“. Norėdami įdėti žaidimus į šį aplanką, naudokite failų tvarkyklės programą.
+\nŽaidimai gali būti sudėti į poaplankius arba ZIP archyvus.
+\n
+\n„EasyRPG“ aplanką galima pakeisti nustatymuose.</string>
+    <string name="open_games_folder">Atidarykite aplanką \"games\"</string>
+    <string name="no_external_storage">Nerasta išorinės atminties (pvz., SD kortelės)</string>
+    <string name="not_valid_game">$PATH nėra tinkamas žaidimas</string>
+    <string name="select_game_region">Pasirinkite žaidimo regioną</string>
+    <string name="change_the_layout">Pakeisti išdėstymą</string>
+    <string name="launch_debug_mode">Paleiskite derinimo režimu</string>
+    <string name="choose_layout">Pasirinkite išdėstymą</string>
+    <string name="unknown_region">Nežinomas regionas</string>
+    <string name="region_modification_failed">Nepavyko pakeisti regiono</string>
+    <string name="refresh">Atnaujinti</string>
+    <string name="change_default_mapping">Pakeiskite numatytąjį mygtukų susiejimą</string>
+    <string name="how_to_use_easy_rpg">Kaip naudotis EasyRPG Player</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Įdėkite savo RPG Maker 2000/2003 žaidimus į žaidimų aplanką „žaidimai“ pakatalogius.
+\nŽaidimai turi būti nesuspausti arba ZIP archyve.
+\nRAR, LZH ir EXE failai nepalaikomi.
+\n
+\nPasirenkamos funkcijos (žr. nustatymus):
+\n- Galima pateikti RTP (dalijamas turtas, naudojamas kai kuriuose žaidimuose).
+\n- Pasirinktinis garso šriftas, skirtas pakeisti MIDI muzikos garsų pateikimą</string>
+    <string name="visit_website">Apsilankykite mūsų svetainėje</string>
+    <string name="watch_explanation_video">Pradedant naudotis ir žaidimų pridėjimas (Vaizdo instrukcija)</string>
+    <string name="error_no_games_folder">Aplanko „žaidimai“ nėra arba jis nėra aplankas. Sukurkite jį rankiniu būdu arba pasirinkite kitą EasyRPG aplanko vietą. EasyRPG aplanką galima pakeisti nustatymuose.</string>
+    <string name="error_games_no_rw">Aplankas „žaidimai“ nėra įskaitomas ar įrašomas. Pasirinkite kitą EasyRPG aplanko vietą. „EasyRPG“ aplanką galima pakeisti nustatymuose.</string>
+    <string name="error_saf_title">Pasirinktas netinkamas aplankas</string>
+    <string name="error_saf_select_easyrpg">Sukurkite tuščią EasyRPG aplanką ir pasirinkite jį.</string>
+    <string name="error_saf_download_selected">Atsisiuntimo aplankas negali būti naudojamas kaip EasyRPG aplankas.</string>
+    <string name="error_saf_folder_not_empty">Pasirinktame aplanke yra pašalinių failų, todėl jo negalima naudoti kaip EasyRPG aplanko. Pašalinę visus aplanke esančius failus galite naudoti jį kaip EasyRPG aplanką.</string>
+    <string name="error_saf_bad_content_provider">Pasirinkto aplanko negalima naudoti kaip EasyRPG aplanko. Ši problema gali kilti dėl įvairių priežasčių, pavyzdžiui, jei pasirinkote šakninį katalogą arba saugyklos vietą debesyje.
+\n
+\n</string>
+    <string name="toggle_ui">Perjungti virtualius mygtukus</string>
+    <string name="end_game">Pabaigti žaidima</string>
+    <string name="report_bug">Panešti problema</string>
+    <string name="report_bug_msg">Ši funkcija atidarys jūsų el. pašto programą (pvz., Gmail), kad išsiųstumėte mums pranešimą apie iškilusia problema.
+\n
+\nJei nenorite siųsti laiškų arba neturite sukonfigūruotos pašto programos, galite atidaryti naują problemą adresu https://github.com/EasyRPG/Player/issues.</string>
+    <string name="report_bug_mail">Dėkojame, kad palaikote EasyRPG Player.
+\n Prie šio el. laiško buvo pridėtas žurnalo failas ir jūsų išsaugoti žaidimai.
+\n Nepašalinkite žurnalo failo! Mums reikia išsaugoto žaidimo, kuris būtų arti klaidų vietos.
+\n Papasakokite mums išsamiai, kas nutiko.
+\n
+\n</string>
+    <string name="video">Vaizdo įrašas</string>
+    <string name="audio">Garso įrašas</string>
+    <string name="input">Įvestis</string>
+    <string name="easyrpg_folders">EasyRPG aplankai</string>
+    <string name="settings">Nustatymai</string>
+    <string name="screen_size">Ekrano mastelio keitimas:</string>
+</resources>
