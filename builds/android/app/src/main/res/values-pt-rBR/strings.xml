@@ -53,8 +53,8 @@
     <string name="settings">Configurações</string>
     <string name="enable_vibration">Habilitar vibrações</string>
     <string name="vibrate_when_sliding_direction">Vibrar ao deslizar em outra direção</string>
-    <string name="input_layout_transparency">Transparência do layout de entrada</string>
-    <string name="ignore_size_settings">Ignorar configurações do tamanho dos botões e usar isso para todos botões</string>
+    <string name="input_layout_transparency">Transparência do layout de entrada:</string>
+    <string name="ignore_size_settings">Ignorar configurações do tamanho dos botões e usar isso para todos botões:</string>
     <string name="no_read_access_on_dir">Sem acesso de leitura em %1$s</string>
     <string name="quick_access">Acesso rápido</string>
     <string name="force_landscape_mode">Forçar modo de orientação Paisagem</string>
@@ -83,7 +83,7 @@
     <string name="navigation_drawer_open">Abrir menu</string>
     <string name="navigation_drawer_close">Fechar menu</string>
     <string name="menu">Abrir menu Android</string>
-    <string name="open_games_folder">Abrir a pasta de jogos</string>
+    <string name="open_games_folder">Abrir a pasta de jogos (games)</string>
     <string name="screen_size">Tamanho da tela:</string>
     <string name="Loading">Carregando…</string>
     <string name="enable_rtp_support">Ativar suporte ao RTP</string>
@@ -96,15 +96,34 @@
 \nGames pode ser posta em subpasta ou em arquivos ZIP.
 \n
 \nA pasta do EasyRPG pode ser mudada nas configurações.</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Coloque seus games de RPG Maker 2000 e 2003 em subpasta da pasta \"games\"
+    <string name="how_to_use_easy_rpg_explanation_android_30">Coloque seus jogos de RPG Maker 2000 e 2003 em subpasta da pasta \"games\".
 \nJogos devem ser descomprimidos em um arquivo ZIP.
 \nArquivos no formato RAR, LZH e EXE não são suportados.
 \n
 \nRecursos opcionais (consulte as configurações):
-\n- O RTP (assets compartilhados e usados em alguns jogos) podem ser fornecidos
-\n- Um soundfont personalizado para alterar como os sons da música midi podem ser fornecidos</string>
+\n- O RTP (assets compartilhados e usados em alguns jogos) podem ser fornecidos.
+\n- Um soundfont personalizado para alterar como os sons da música MIDI podem ser fornecidos</string>
     <string name="launch_debug_mode">Executar no modo de depuração</string>
     <string name="visit_website">Visite nosso website</string>
     <string name="error_games_no_rw">A pasta \"Games\" não é legível ou gravável. Selecione um local diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
     <string name="watch_explanation_video">Iniciando e adicionando jogos (Vídeo Explicativo)</string>
+    <string name="easyrpg_folders">Pastas EasyRPG</string>
+    <string name="open_the_sound_fonts_folder">Abra a pasta de soundfonts</string>
+    <string name="settings_soundfont_restart_app">Por favor, saia e reinicie o aplicativo após selecionar a soundfont.</string>
+    <string name="settings_soundfont_found">Soundfonts encontrados;):</string>
+    <string name="settings_default_soundfont">Soundfont padrão</string>
+    <string name="id_select_games_folder_explanation">O EasyRPG Player requer uma pasta única. Após tocar no botão, você será perguntado para selecionar uma pasta.
+\n
+\nSe você está usando este aplicativo pela primeira vez, não existe a pasta EasyRPG. Crie uma nova pasta EasyRPG e então selecione.
+\n
+\nSe você já usou este aplicativo antes, selecione a pasta EasyRPG existente.</string>
+    <string name="open_rtp_folder">Abra a pasta de RTP</string>
+    <string name="music_volume">Volume da música</string>
+    <string name="sound_volume">Volume do efeito sonoro</string>
+    <string name="error_no_games_folder">A pasta de jogos (games) não existe ou não é uma pasta. Por favor, crie manualmente ou selecione uma localização diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
+    <string name="settings_resolution">Resolução do jogo:</string>
+    <string name="settings_resolution_original">Original (320x240, 4:3, Recomendado)</string>
+    <string name="error_saf_select_easyrpg">Por favor, crie uma pasta EasyRPG vazia e selecione.</string>
+    <string name="error_saf_download_selected">A pasta de Download não pode ser usada para a pasta de EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">A pasta selecionada contém outros arquivos e não pode ser usada para a pasta EasyRPG. Quando você remover todos os arquivos de dentro da pasta, você poderá utilizar como a pasta EasyRPG.</string>
 </resources>
