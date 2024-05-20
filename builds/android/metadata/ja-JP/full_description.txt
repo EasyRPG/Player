@@ -1,8 +1,10 @@
-EasyRPGプレイヤーは、RPGツクール2000/2003で制作されたゲームを遊ぶためのアプリです。
-（現在のところ、RPGツクールXP/VX/VX Ace/MVは非対応です。）
+EasyRPG Playerは、RPGツクール2000/2003で制作されたゲームを遊ぶためのアプリです。
+（現在のところ、RPGツクールXP/VX/VX Ace/MV/MZは非対応です。）
+
+EasyRPG Playerはエディターではありません。このソフトを使ってゲームを作ることはできません。
 
 公式サイト: https://easyrpg.org/
 更新履歴: https://blog.easyrpg.org/
 バグ報告先: https://github.com/EasyRPG/Player/issues/
 
-このアプリは、KADOKAWAと提携していません
+このアプリは、KADOKAWAと提携していません。
