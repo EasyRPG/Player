@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="japan">Japonština</string>
+    <string name="korean">Korejština</string>
+    <string name="chinese_simple">Čínština (zjednodušená)</string>
+    <string name="chinese_traditional">Čínština (tradiční)</string>
+    <string name="greek">Řečtina</string>
+    <string name="turkish">Turečtina</string>
+    <string name="hebrew">Hebrejština</string>
+    <string name="arabic">Arabština</string>
+    <string name="thai">Thajština</string>
+    <string name="vietnamese">Vietnamština</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Zrušit</string>
+    <string name="do_want_quit">Opravdu chcete odejít\?</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+    <string name="open_games_folder">Otevřít složku „games“</string>
+    <string name="refresh">Obnovit</string>
+    <string name="end_game">Ukončit hru</string>
+    <string name="report_bug">Nahlásit chybu</string>
+    <string name="audio">Zvuk</string>
+    <string name="settings">Nastavení</string>
+    <string name="enable_vibration">Povolit vibrace</string>
+    <string name="Loading">Načítání…</string>
+    <string name="delete">Odstranit</string>
+    <string name="default_layout">Výchozí</string>
+    <string name="add_a_button">Přidat tlačítko</string>
+    <string name="exit_without_saving">Odejít bez uložení</string>
+    <string name="save_and_quit">Uložit a odejít</string>
+    <string name="key_shift">Shift</string>
+    <string name="autodetect">Automaticky rozpoznat region (doporučeno)</string>
+    <string name="west_europe">Západní Evropa</string>
+    <string name="east_europe">Střední/Východní Evropa</string>
+    <string name="cyrillic">Cyrilice</string>
+    <string name="baltic">Pobaltí</string>
+    <string name="creating_dir_failed">Vytvoření adresáře $PATH selhalo</string>
+    <string name="path_not_readable">$PATH není možné přečíst</string>
+    <string name="no_games_found_and_explanation_android_30">Nenalezeny žádné hry z RPG Makeru 2000/2003.
+\n
+\nVybraná složka EasyRPG obsahuje složku „games“. Pomocí aplikace Správce souborů vložte vaše hry do této složky.
+\nHry mohou být uloženy v podsložkách nebo ZIP archívech.
+\n
+\nUmístění složky EasyRPG může být změněno v nastavení.</string>
+    <string name="no_external_storage">Nebylo nalezeno žádné externí uloziště (např. SD karta)</string>
+    <string name="not_valid_game">$PATH není platná hra</string>
+    <string name="select_game_region">Vyberte herní region</string>
+    <string name="launch_debug_mode">Spustit v debug režimu</string>
+    <string name="unknown_region">Neznámý region</string>
+    <string name="region_modification_failed">Změna regionu selhala</string>
+    <string name="change_default_mapping">Změnit výchozí rozmístění tlačítek</string>
+    <string name="how_to_use_easy_rpg">Jak používat EasyRPG Player</string>
+    <string name="visit_website">Navštivte náš web</string>
+    <string name="video">Obraz</string>
+    <string name="settings_resolution">Herní rozlišení:</string>
+    <string name="music_volume">Hlasitost hudby</string>
+    <string name="sound_volume">Hlasitost zvukových efektů</string>
+    <string name="quick_access">Rychlý přístup</string>
+    <string name="select_the_games_folder">Vyberte složku EasyRPG</string>
+    <string name="menu">Otevřít Android menu</string>
+    <string name="change_the_layout">Změnit rozhraní</string>
+    <string name="choose_layout">Vybrat rozhraní</string>
+    <string name="error_no_games_folder">Složka „games“ neexistuje nebo není složkou. Vytvořte ji prosím ručně nebo zvolte jiné umístění složky EasyRPG. Umístění složky EasyRPG lze změnit v nastavení.</string>
+    <string name="error_games_no_rw">Složka „games“ není čitelná nebo zapisovatelná. Zvolte prosím jiné umístění složky EasyRPG. Umístění složky EasyRPG lze změnit v nastavení.</string>
+    <string name="error_saf_title">Zvolena nesprávná složka</string>
+    <string name="error_saf_select_easyrpg">Vytvořte prosím prázdnou složku EasyRPG a vyberte ji.</string>
+    <string name="force_landscape_mode">Vynutit orientaci na šířku</string>
+    <string name="stretch">Ignorovat poměr stran (roztáhnout na šířku obrazovky)</string>
+    <string name="id_select_games_folder_explanation">EasyRPG Player vyžaduje vyhrazenou složku. Po stisknutí tlačítka budete vyzváni k výběru složky.
+\n
+\nPokud tuto aplikaci používáte poprvé, není k dispozici žádná složka EasyRPG. Vytvořte novou složku EasyRPG a poté ji vyberte.
+\n
+\nPokud jste tuto aplikaci používali již dříve, vyberte stávající složku EasyRPG.</string>
+    <string name="open_rtp_folder">Otevřít složku RTP</string>
+    <string name="easyrpg_folders">Složky EasyRPG</string>
+    <string name="settings_resolution_desc">Změna rozlišení může způsobit grafické chyby nebo rozbít hru. Byli jste varováni!</string>
+    <string name="edit_layout">Upravit rozhraní</string>
+    <string name="reset_button_mapping">Resetovat rozmístění tlačítek</string>
+    <string name="key_enter">Enter (Z)</string>
+    <string name="key_cancel">Zrušit (Esc a X)</string>
+    <string name="watch_explanation_video">Jak spouštět a přidávat hry (video návod)</string>
+    <string name="error_saf_folder_not_empty">Vybraná složka obsahuje jiné soubory a nelze ji použít jako složku EasyRPG. Když odstraněníte všechny soubory uvnitř této složky, můžete ji použít jako složku EasyRPG.</string>
+    <string name="edit_name">Přejmenovat</string>
+    <string name="settings_resolution_original">Původní (320 × 240, 4:3, doporučeno)</string>
+    <string name="settings_resolution_widescreen">Širokoúhlý (416 × 240, 16:9, experimentální)</string>
+    <string name="settings_resolution_ultrawide">Ultraširoký (560 × 240, 21:9, experimentální)</string>
+    <string name="key_debug_menu">Otevřít debug menu (vyžaduje debug režim)</string>
+    <string name="key_debug_walk_through_walls">Chodit skrz zdi (vyžaduje debug režim)</string>
+    <string name="enable_rtp_support">Povolit podporu RTP</string>
+    <string name="toggle_ui">Zobrazit/skrýt virtuální tlačítka</string>
+    <string name="input">Vstup</string>
+    <string name="manage_input_layouts">Spravovat vstupní rozhraní:</string>
+    <string name="input_layout_transparency">Průhlednost rozhraní:</string>
+    <string name="vibrate_when_sliding_direction">Vibrovat při změně pohybu do jiného směru</string>
+    <string name="no_read_access_on_dir">%1$s nemá přístup ke čtení</string>
+    <string name="navigation_drawer_open">Otevřít navigační menu</string>
+    <string name="navigation_drawer_close">Zavřít navigační menu</string>
+    <string name="error_saf_bad_content_provider">Vybranou složku nelze použít jako složku EasyRPG. Tento problém může nastat z různých důvodů, například pokud jste vybrali kořenový adresář nebo uložiště umístěné v cloudu.
+\n
+\n</string>
+    <string name="settings_default_soundfont">Výchozí zvuková banka</string>
+    <string name="settings_soundfont_found">Nalezené zvukové banky:</string>
+    <string name="settings_custom_soundfont">Vlastní zvuková banka:</string>
+    <string name="open_the_sound_fonts_folder">Otevřít složku se zvukovými bankami</string>
+    <string name="fast_forward_mode_hold">držet</string>
+    <string name="fast_forward">Tlačítko režimu zrychlení:</string>
+    <string name="key_fast_forward">Zrychlení</string>
+    <string name="settings_soundfont_restart_app">Po změně zvukové banky prosím opusťte a restartujte aplikaci.</string>
+    <string name="fast_forward_mode_tap">stisknout</string>
+    <string name="fast_forward_factor">Rychlost:</string>
+    <string name="error_saf_download_selected">Adresář pro stahování nemůže být použit jako složka EasyRPG.</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Vložte vaše hry z RPG Makeru 2000/2003 do podsložky „games“.
+\nHry musí být nekomprimované nebo uložené v ZIP archívu.
+\nFormáty RAR, LZH a EXE nejsou podporovány.
+\n
+\nDodatečné funkce (viz nastavení):
+\n- RTP (sdílené materiály používané některými hrami) mohou být poskytnuty
+\n- vlastní zvukové banky, které určují jak MIDI hudba zní, mohou být poskytnuty</string>
+    <string name="settings_soundfont_explanation">Vložte zvukové banky ve formátu SF2 do složky „soundfonts“. Zvukové banky určují jak MIDI hudba zní.</string>
+    <string name="horizontal_input_layout">Horizontální (vodorovné) vstupní rozhraní</string>
+    <string name="vertical_input_layout">Vertikální (svislé) vstupní rozhraní</string>
+    <string name="settings_edit_layout_explanation">Při upravování vstupního rozhraní můžete přidávat tlačítka (např. Shift).
+\nAbyste přidali tlačítko, vraťte se šipkou zpátky a vyberte „Přidat tlačítko“.</string>
+    <string name="rtp_explanation">RTP poskytuje sdílené materiály používané některými hrami.
+\nVložte RTP pro RPG Maker 2000 do „rtp/2000“ a RTP pro RPG Maker 2003 do „rtp/2003“.
+\nBuďte si prosím vědomi, že povolení RTP podpory výrazně prodlouží počáteční dobu načítání hry.</string>
+    <string name="ignore_size_settings">Ignorovat nastavenou velikost tlačítek a použít následující:</string>
+    <string name="report_bug_msg">Tato funkce otevře váš e-mailový program (např. Gmail) aby nám poslala nahlášení o chybě.
+\n
+\nPokud nám nechcete poslat e-mail nebo nemáte nastavený e-mailový program, můžete místo toho nahlásit chybu na https://github.com/EasyRPG/Player/issues.</string>
+    <string name="report_bug_mail">Děkujeme, že pomáháte EasyRPG Playeru.
+\n K tomuto e-mailu byl připojen protokol (log) a vaše uložené hry.
+\n Neodstraňujte prosím soubor protokolu! Potřebujeme uloženou hru, která je blízko místa chyby.
+\n Sdělte nám prosím podrobně, co se pokazilo.
+\n
+\n</string>
+    <string name="screen_size">Měřítko obrazovky:</string>
+    <string name="scale_nearest">Škálovat na velikost obrazovky metodou nejbližšího souseda (rychlé, špatná kvalita)</string>
+    <string name="scale_integer">Škálovat na násobek rozlišení hry (rychlé, menší obraz, dobrá kvalita)</string>
+    <string name="scale_bilinear">Škálovat na velikost obrazovky a použít bilineární filtrování (pomalé, dobrá kvalita)</string>
+</resources>
