@@ -22,9 +22,8 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #  include <lcf/reader_util.h>
-#  define PICOJSON_USE_LOCALE 0
-#  define PICOJSON_ASSERT(e) do { if (! (e)) assert(false && #e); } while (0)
-#  include "external/picojson.h"
+#  include <nlohmann/json.hpp>
+   using json = nlohmann::json;
 #endif
 
 #include "async_handler.h"
@@ -148,15 +147,16 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 		return;
 	}
 
-	picojson::value v;
-	picojson::parse(v, f);
+	json j = json::parse(f, nullptr, false);
+	if (j.is_discarded()) {
+		Output::Error("Emscripten: index.json is not a valid JSON file");
+		return;
+	}
 
-	const auto& metadata = v.get("metadata");
-	if (metadata.is<picojson::object>()) {
-		for (const auto& value : metadata.get<picojson::object>()) {
-			if (value.first == "version") {
-				index_version = (int)value.second.get<double>();
-			}
+	if (j.contains("metadata") && j["metadata"].is_object()) {
+		const auto& metadata = j["metadata"];
+		if (metadata.contains("version") && metadata["version"].is_number()) {
+			index_version = metadata["version"].get<int>();
 		}
 	}
 
@@ -164,33 +164,30 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 
 	if (index_version <= 1) {
 		// legacy format
-		for (const auto& value : v.get<picojson::object>()) {
-			file_mapping[value.first] = value.second.to_str();
+		for (const auto& value : j.items()) {
+			file_mapping[value.key()] = value.value().get<std::string>();
 		}
 	} else {
-		using fn = std::function<void(const picojson::object&,const std::string&)>;
-		fn parse = [&] (const picojson::object& obj, const std::string& path) {
+		using fn = std::function<void(const json&, const std::string&)>;
+		fn parse = [&] (const json& obj, const std::string& path) {
 			std::string dirname;
-			for (const auto& value : obj) {
-				if (value.first == "_dirname" && value.second.is<std::string>()) {
-					dirname = value.second.to_str();
-				}
+			if (obj.contains("_dirname") && obj["_dirname"].is_string()) {
+				dirname = obj["_dirname"].get<std::string>();
 			}
 			dirname = FileFinder::MakePath(path, dirname);
 
-			for (const auto& value : obj) {
-				const auto& second = value.second;
-				if (second.is<picojson::object>()) {
-					parse(second.get<picojson::object>(), dirname);
-				} else if (second.is<std::string>()){
-					file_mapping[FileFinder::MakePath(Utils::LowerCase(dirname), value.first)] = FileFinder::MakePath(dirname, second.to_str());
+			for (const auto& value : obj.items()) {
+				const auto& second = value.value();
+				if (second.is_object()) {
+					parse(second, dirname);
+				} else if (second.is_string()){
+					file_mapping[FileFinder::MakePath(Utils::LowerCase(dirname), value.key())] = FileFinder::MakePath(dirname, second.get<std::string>());
 				}
 			}
 		};
 
-		const auto& cache = v.get("cache");
-		if (cache.is<picojson::object>()) {
-			parse(cache.get<picojson::object>(), "");
+		if (j.contains("cache") && j["cache"].is_object()) {
+			parse(j["cache"], "");
 		}
 
 		// Create some empty DLL files. Engine & patch detection depend on them.

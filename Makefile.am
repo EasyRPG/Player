@@ -513,7 +513,6 @@ EXTRA_DIST += \
 	bench/text.cpp \
 	bench/utils.cpp \
 	bench/variables.cpp \
-	src/external/picojson.h \
 	src/platform/3ds/audio.cpp \
 	src/platform/3ds/audio.h \
 	src/platform/3ds/clock.cpp \

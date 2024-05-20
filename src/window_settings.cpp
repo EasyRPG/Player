@@ -369,7 +369,6 @@ void Window_Settings::RefreshLicense() {
 	AddOption(MenuItem("ttyp0", "ttyp0 font family", "ttyp0"), [](){});
 	AddOption(MenuItem("WenQuanYi", "WenQuanYi font family (CJK)", "GPLv2+ with FE"), [](){});
 #ifdef EMSCRIPTEN
-	AddOption(MenuItem("PicoJSON", "JSON parser/serializer", "BSD"), [](){});
 	AddOption(MenuItem("Teenyicons", "Tiny minimal 1px icons", "MIT"), [](){});
 #endif
 }
