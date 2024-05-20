@@ -90,4 +90,21 @@
     <string name="rtp_explanation">O RTP fornece ativos compartilhados usados por alguns jogos.
 \nColoque o RPG Maker 2000 RTP em \"rtp/2000\" e o RPG Maker 2003 RTP em \"rtp/2003\".
 \nPor favor, observe que habilitar o suporte RTP aumentará significativamente o tempo de carregamento inicial de um jogo.</string>
+    <string name="no_games_found_and_explanation_android_30">Jogos do RPG Maker 2000/2003 não encontrados.
+\n
+\nA pasta do EasyRPG que você selecionou contém a pasta \"games\". Use um gerenciador de arquivos para por seus games nesta pasta.
+\nGames pode ser posta em subpasta ou em arquivos ZIP.
+\n
+\nA pasta do EasyRPG pode ser mudada nas configurações.</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Coloque seus games de RPG Maker 2000 e 2003 em subpasta da pasta \"games\"
+\nJogos devem ser descomprimidos em um arquivo ZIP.
+\nArquivos no formato RAR, LZH e EXE não são suportados.
+\n
+\nRecursos opcionais (consulte as configurações):
+\n- O RTP (assets compartilhados e usados em alguns jogos) podem ser fornecidos
+\n- Um soundfont personalizado para alterar como os sons da música midi podem ser fornecidos</string>
+    <string name="launch_debug_mode">Executar no modo de depuração</string>
+    <string name="visit_website">Visite nosso website</string>
+    <string name="error_games_no_rw">A pasta \"Games\" não é legível ou gravável. Selecione um local diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
+    <string name="watch_explanation_video">Iniciando e adicionando jogos (Vídeo Explicativo)</string>
 </resources>
