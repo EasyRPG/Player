@@ -39,7 +39,7 @@
     <string name="report_bug">Signaler un bug</string>
     <string name="report_bug_msg">Cette fonctionnalité va ouvrir votre application d\'e-mail (ex. Gmail) pour nous envoyer un rapport de bug.
 \n
-\nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail configurée, vous pouvez ouvrir une nouvelle issue à https ://github.com/EasyRPG/Player/issues à la place.</string>
+\nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail configurée, vous pouvez ouvrir une nouvelle issue à https://github.com/EasyRPG/Player/issues à la place.</string>
     <string name="report_bug_mail">Merci d\'aider EasyRPG Player.
 \nUn fichier de log et vos sauvegardes ont été placés en pièce jointe de cet e-mail.
 \nVeuillez ne pas supprimer le fichier de log ! Nous avons besoin d\'une sauvegarde qui est proche du lieu de votre bug pour pouvoir le reproduire facilement.

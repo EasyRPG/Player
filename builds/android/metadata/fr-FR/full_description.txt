@@ -2,6 +2,6 @@ Avec EasyRPG Player, vous pouvez jouer à des jeux créés avec RPG Maker 2000 e
 
 EasyRPG Player n'est pas un éditeur. Vous ne pouvez pas créer vos propres jeux avec.
 
-Site web : https ://easyrpg.org/
+Site web : https://easyrpg.org/
 
 Cette application n'est pas affiliée à Kadokawa Corporation.
