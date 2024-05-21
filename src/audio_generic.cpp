@@ -307,7 +307,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	if (scrap_buffer.size() != scrap_buffer_size) {
 		scrap_buffer.resize(scrap_buffer_size);
 	}
-	memset(mixer_buffer.data(), '\0', mixer_buffer.size());
+	std::fill(mixer_buffer.begin(), mixer_buffer.end(), '\0');
 
 	for (unsigned i = 0; i < nr_of_bgm_channels + nr_of_se_channels; i++) {
 		int read_bytes = 0;
