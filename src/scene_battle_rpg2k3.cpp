@@ -1772,7 +1772,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAl
 
 
 					std::vector<Game_Battler*> allies;
-					Main_Data::game_party->GetActiveBattlers(allies);
+					Main_Data::game_party->GetBattlers(allies);
 
 					int i = 0;
 					for (auto e : allies) {
