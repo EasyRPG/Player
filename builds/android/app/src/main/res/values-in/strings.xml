@@ -5,17 +5,17 @@
     <string name="west_europe">Eropa Barat</string>
     <string name="east_europe">Eropa Tengah/Timur</string>
     <string name="cyrillic">Cyrillic</string>
-    <string name="japan">Bahasa Jepang</string>
-    <string name="korean">Bahasa Korea</string>
-    <string name="chinese_simple">Bahasa Mandarin (Disederhanakan)</string>
-    <string name="chinese_traditional">Bahasa Mandarin (Tradisional)</string>
-    <string name="greek">Bahasa Yunani</string>
-    <string name="turkish">Bahasa Turki</string>
+    <string name="japan">Jepang</string>
+    <string name="korean">Korea</string>
+    <string name="chinese_simple">Cina (Disederhanakan)</string>
+    <string name="chinese_traditional">Cina (Tradisional)</string>
+    <string name="greek">Yunani</string>
+    <string name="turkish">Turki</string>
     <string name="hebrew">Ibrani</string>
-    <string name="arabic">Bahasa Arab</string>
+    <string name="arabic">Arab</string>
     <string name="baltic">Baltik</string>
-    <string name="thai">Bahasa Thailand</string>
-    <string name="vietnamese">Bahasa Vietnam</string>
+    <string name="thai">Thailand</string>
+    <string name="vietnamese">Vietnam</string>
     <string name="ok">OKE</string>
     <string name="cancel">Batal</string>
     <string name="do_want_quit">Apa benar ingin keluar\?</string>
@@ -36,7 +36,7 @@
     <!--Ingame menu-->
     <string name="toggle_ui">Aktifkan tombol virtual</string>
     <string name="end_game">Matikan permainan</string>
-    <string name="report_bug">Laporkan kutu</string>
+    <string name="report_bug">Laporkan kejadian bug</string>
     <string name="report_bug_msg">Fungsi ini akan membuka aplikasi surel Anda (misal. Gmail) untuk mengirimkan kepada kami laporan kutu.
 \n
 \nJika Anda tidak ingin mengirimkan surel atau tidak punya aplikasi surel yang di konfigurasikan, Anda dapat membuka isu baru di https://github.com/EasyRPG/Player/issues sebagai gantinya.</string>
@@ -83,19 +83,20 @@
     <string name="navigation_drawer_open">Buka panel navigasi</string>
     <string name="navigation_drawer_close">Tutup panel navigasi</string>
     <string name="menu">Buka menu Android</string>
-    <string name="no_games_found_and_explanation_android_30">permainan RPG Maker 2000/2003 tidak ditemukan.
-\nletakkan permainan di subdirektori folder permainan.
-\nfolder EasyRPG bisa diubah melalui pengaturan.</string>
-    <string name="open_games_folder">buka folder permainan</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">letakkan permainan RPG Maker 2000/2003 di subdirektori folder permainan.
+    <string name="no_games_found_and_explanation_android_30">Game RPG Maker 2000/2003 tidak ditemukan.
+\nFolder EasyRPG yang Anda pilih berisi folder \"games\". Gunakan aplikasi file manager untuk meletakkan game mu di folder ini.
+\nGame dapat dimasukkan ke dalam subfolder atau di arsip ZIP.
+\nFolder EasyRPG bisa diubah di pengaturan.</string>
+    <string name="open_games_folder">Buka folder \"games\"</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Letakkan permainan RPG Maker 2000/2003 di subdirektori folder \"games\".
 \nPermainan harus sudah tidak terkompres.
 \nfile ZIP, RAR, LZH dan EXE TIDAK didukung.
 \n
-\nfitur opsional (silahkan lihat pengaturan):
-\n- RTP (aset bersama digunakan oleh beberapa permainan) dapat disajikan
-\n- soundfont kostum untuk mengubah bagaimana suara musik MIDI dapat disajikan</string>
-    <string name="easyrpg_folders">folder EasyRPG</string>
-    <string name="screen_size">ukuran layar:</string>
+\nFitur opsional (silahkan lihat pengaturan):
+\n- RTP (aset bersama digunakan oleh beberapa permainan) yang disediakan
+\n- File kustom soundfont untuk mengubah notasi suara musik MIDI yang disediakan</string>
+    <string name="easyrpg_folders">Folder EasyRPG</string>
+    <string name="screen_size">Ukuran Layar:</string>
     <string name="settings_custom_soundfont">Soundfont kostum:</string>
     <string name="open_the_sound_fonts_folder">buka folder Soundfont</string>
     <string name="settings_soundfont_explanation">letakkan soundfont dalam format SF2 pada folder \"soundfont\". Soundfont mengatur bagaimana suara MIDI terdengar.</string>
@@ -103,11 +104,11 @@
     <string name="settings_soundfont_found">soundfont ditemukan:</string>
     <string name="settings_default_soundfont">Soundfont bawaan</string>
     <string name="select_the_games_folder">pilih folder EasyRPG</string>
-    <string name="id_select_games_folder_explanation">untuk dapat mengunakan EasyRPG Player anda harus memilih folder.
-\nfolder ini khusus untuk EasyRPG Player.
+    <string name="id_select_games_folder_explanation">EasyRPG Player membutuhkan folder khusus. Setelah menyentuh tombol Anda diminta untuk memilih folder.
 \n
-\nJangan memilih folder yang berisi lainnya, seperti folder unduhan.
-\nPermainan RPG Maker 2000/2003 harus diletakan didalam subdirektori dalam folder ini.</string>
+\nJika Anda menggunakan aplikasi ini untuk pertama kali, tidak ada folder EasyRPG. Buat folder EasyRPG baru, lalu pilih itu.
+\n
+\nJika Anda menggunakan aplikasi ini sebelumnya, pilih folder EasyRPG yang ada.</string>
     <string name="Loading">memuat…</string>
     <string name="enable_rtp_support">nyalakan dukungan RTP</string>
     <string name="rtp_explanation">RTP menyediakan aset bersama yang digunakan oleh beberapa permainan.
@@ -115,7 +116,34 @@
 \nmohon diingat bahwa menyalakan dukungan RTP akan meningkatkan waktu saat memulai memuat permainan.</string>
     <string name="open_rtp_folder">buka folder RTP</string>
     <string name="horizontal_input_layout">tata letak masukan horisontal (luas)</string>
-    <string name="vertical_input_layout">tata letak masukan vertikal (foto)</string>
+    <string name="vertical_input_layout">tata letak masukan vertikal (portal)</string>
     <string name="settings_edit_layout_explanation">ketika mengedit tata letak masukan,tombol bisa ditambahkan (seperti tombol shift).
 \n untuk menambahkan tombol tekan tombol kembali dan pilih tambah tombol.</string>
+    <string name="scale_nearest">Naikkan Skala ke ukuran layar menggunakan neighbour terdekat (Cepat, kualitas buruk)</string>
+    <string name="scale_integer">Naikkan Skala ke beberapa resolusi game (Cepat, gambar lebih kecil, kualitas bagus)</string>
+    <string name="scale_bilinear">Naikkan Skala ke ukuran layar dan terapkan filter bilinear (Lambat, kualitas bagus)</string>
+    <string name="stretch">Abaikan rasio aspek (Rentangkan ke lebar layar)</string>
+    <string name="music_volume">Volume Musik</string>
+    <string name="sound_volume">Volume Efek Suara</string>
+    <string name="launch_debug_mode">Jalankan dengan mode debug</string>
+    <string name="visit_website">Kunjungi website</string>
+    <string name="error_no_games_folder">Folder \"games\" tidak ditemukan. Silahkan buat folder secara manual atau pilih lokasi berbeda dari folder EasyRPG. Folder EasyRPG bisa ubah dari pengaturan.</string>
+    <string name="error_games_no_rw">Folder \"games\" tidak dapat dibaca atau ditulis. Silakan pilih lokasi lain untuk folder EasyRPG. Folder EasyRPG dapat diubah di pengaturan.</string>
+    <string name="key_debug_walk_through_walls">Jalan tembus tembok (Diperlukan mode debug)</string>
+    <string name="key_debug_menu">Buka menu Debug (Diperlukan mode debug)</string>
+    <string name="settings_resolution">Resolusi Game:</string>
+    <string name="settings_resolution_desc">Mengubah resolusi dapat menyebabkan gangguan grafis atau merusak permainan. Anda telah diperingatkan!</string>
+    <string name="settings_resolution_original">Original (320x240, 4:3, Direkomendasikan)</string>
+    <string name="settings_resolution_widescreen">Widescreen (416x240, 16:9, Eksperimental)</string>
+    <string name="settings_resolution_ultrawide">Ultrawide (560x240, 21:9, Eksperimental)</string>
+    <string name="watch_explanation_video">Panduan pemakai dan menambahkan game (dengan video)</string>
+    <string name="error_saf_title">Folder buruk dipilih</string>
+    <string name="error_saf_select_easyrpg">Silahkan buat folder EasyRPG kosong dan pilih itu.</string>
+    <string name="error_saf_download_selected">Folder Download tidak dapat digunakan sebagai folder EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">Folder yang dipilih berisi file lain dan tidak dapat digunakan sebagai folder EasyRPG. Saat Anda menghapus semua file di dalam folder, Anda dapat menggunakannya sebagai folder EasyRPG.</string>
+    <string name="error_saf_bad_content_provider">Folder yang dipilih tidak dapat digunakan sebagai folder EasyRPG. Masalah ini dapat terjadi karena berbagai alasan, misalnya jika Anda telah memilih direktori root atau lokasi penyimpanan di cloud.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">tahan</string>
+    <string name="fast_forward_mode_tap">tekan</string>
 </resources>

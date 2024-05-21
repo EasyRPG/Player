@@ -15,4 +15,47 @@
     <string name="exit_without_saving">Έξοδος χωρίς αποθήκευση</string>
     <!--GameBrowserAPI15-->
     <string name="menu">Άνοιγμα μενού Android</string>
+    <string name="autodetect">Αυτόματη επιλογή περιοχής (Προτεινόμενο)</string>
+    <string name="west_europe">Δυτική Ευρώπη</string>
+    <string name="east_europe">Κεντρική/Ανατολική Ευρώπη</string>
+    <string name="cyrillic">Κυριλλικά</string>
+    <string name="japan">Ιαπωνικά</string>
+    <string name="korean">Κορεάτικα</string>
+    <string name="chinese_simple">Κινέζικα (Απλοποιημένα)</string>
+    <string name="chinese_traditional">Κινέζικα (Παραδοσιακά)</string>
+    <string name="greek">Ελληνικά</string>
+    <string name="turkish">Τουρκικά</string>
+    <string name="hebrew">Εβραϊκά</string>
+    <string name="arabic">Αραβικά</string>
+    <string name="baltic">Βαλτικά</string>
+    <string name="thai">Tαϊλανδικά</string>
+    <string name="vietnamese">Βιετναμέζικα</string>
+    <string name="do_want_quit">Είσαι σίγουρος πως θέλεις να εγκαταλείψεις το παιχνίδι\?</string>
+    <string name="creating_dir_failed">Η δημιουργία του $PATH απέτυχε</string>
+    <string name="path_not_readable">Το $PATH δεν διαβάζετε</string>
+    <string name="no_external_storage">Δεν βρέθηκε κάρτα sd</string>
+    <string name="not_valid_game">Το $PATH δεν είναι σωστό παιχνιδι</string>
+    <string name="select_game_region">Διάλεξε περιοχή παιχνιδιού</string>
+    <string name="change_the_layout">Άλλαξε την διάταξη</string>
+    <string name="choose_layout">Διάλεξε μια διάταξη</string>
+    <string name="unknown_region">Άγνωστη περιοχή</string>
+    <string name="region_modification_failed">Αλλαγή περιοχής απέτυχε</string>
+    <string name="refresh">Επαναφορτωση</string>
+    <string name="change_default_mapping">Αλλαγή των αρχικών κουμπιων</string>
+    <string name="how_to_use_easy_rpg">Πως να χρησιμοποιήσετε το EasyRPG</string>
+    <string name="no_games_found_and_explanation_android_30">Δεν βρέθηκαν RPG Maker 2000/2003 παιχνιδια.
+\n
+\nΟ EasyRPG φάκελος που διάλεξες περιέχει έναν φάκελο ονόματι \"games\". Χρησιμοποίησε έναν διαχειριστή αρχείων για να βάλεις τον φάκελο του παιχνιδιού εκεί πέρα ή σε μορφή zip.
+\nΟ φάκελος EasyRPG μπορεί να αλλάξει στης ρυθμίσεις</string>
+    <string name="open_games_folder">Άνοιξε τον φάκελο \"games\"</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Τοποθετήστε τα παιχνίδια σας RPG Maker 2000/2003 σε υποκαταλόγους του φακέλου \"games\". Τα παιχνίδια πρέπει να είναι αποσυμπιεσμένα ή σε αρχείο ZIP.
+\nΤα αρχεία RAR, LZH και EXE ΔΕΝ υποστηρίζονται.
+\n
+\nΠροαιρετικά χαρακτηριστικά (Ανατρέξτε στις ρυθμίσεις):
+\n- Το RTP (κοινόχρηστα στοιχεία που χρησιμοποιούνται από ορισμένα παιχνίδια) μπορεί να παρέχεται
+\n- Μια προσαρμοσμένη γραμματοσειρά ήχου για να αλλάξετε τον τρόπο με τον οποίο μπορεί να παρέχεται ήχος μουσικής MIDI</string>
+    <string name="launch_debug_mode">Άνοιξε σε χρήση debug mode</string>
+    <string name="visit_website">Επισκεφτείτε την ιστοσελίδα μας</string>
+    <string name="error_no_games_folder">Ο φάκελος \"games\" δεν υπάρχει ή δεν είναι φάκελος. Δημιουργήστε το με μη αυτόματο τρόπο ή επιλέξτε διαφορετική θέση για το φάκελο EasyRPG. Ο φάκελος EasyRPG μπορεί να αλλάξει στις ρυθμίσεις.</string>
+    <string name="watch_explanation_video">Προετοιμασία και εφαρμογή παιχνιδιών (Οδηγός βίντεο)</string>
 </resources>

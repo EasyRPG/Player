@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="baltic">Báltico</string>
+    <string name="choose_layout">Escolha um layout</string>
+    <string name="error_saf_folder_not_empty">A pasta selecionada contém outros arquivos e não pode ser usada como pasta EasyRPG. Ao remover todos os arquivos dentro da pasta, você pode usá-lo como a pasta EasyRPG.</string>
+    <string name="error_saf_bad_content_provider">A pasta selecionada não pode ser usada como pasta EasyRPG. Este problema pode ocorrer por vários motivos, por exemplo, se você selecionou o diretório raiz ou um local de armazenamento na nuvem.
+\n
+\n</string>
+    <string name="korean">Coreano</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Coloque seus jogos do RPG Maker 2000/2003 em subdiretórios da pasta \"games\".
+\nOs jogos devem estar descompactados ou em um arquivo ZIP.
+\nArquivos RAR, LZH e EXE NÃO são suportados.
+\n
+\nRecursos opcionais (consulte as configurações):
+\n- O RTP (ativos compartilhados usados por alguns jogos) pode ser fornecido
+\n- Uma fonte de som personalizada para alterar a forma como os sons musicais MIDI podem ser fornecidos</string>
+    <string name="no_external_storage">Nenhum armazenamento externo (por exemplo, cartão SD) encontrado</string>
+    <string name="visit_website">Visite nosso site</string>
+    <string name="chinese_simple">Chinês (Simplificado)</string>
+    <string name="turkish">Turco</string>
+    <string name="select_game_region">Selecione a região do jogo</string>
+    <string name="chinese_traditional">Chinês (Tradicional)</string>
+    <string name="hebrew">Hebraico</string>
+    <string name="no">Não</string>
+    <string name="creating_dir_failed">Falha na criação do diretório $PATH</string>
+    <string name="japan">japonês</string>
+    <string name="arabic">Árabe</string>
+    <string name="region_modification_failed">Falha ao alterar região</string>
+    <string name="screen_size">Dimensionamento da tela:</string>
+    <string name="change_default_mapping">Alterar o mapeamento de botão padrão</string>
+    <string name="greek">Grego</string>
+    <string name="report_bug_mail">Obrigado por apoiar o EasyRPG Player.
+\nUm arquivo de log e seus savegames foram anexados a este e-mail.
+\nPor favor, não remova o arquivo de log! Precisamos de um savegame que esteja fechado para o local do bug.
+\nPor favor, conte-nos em detalhes o que deu errado.
+\n
+\n</string>
+    <string name="yes">Sim</string>
+    <string name="launch_debug_mode">Iniciar em modo de depuração</string>
+    <string name="watch_explanation_video">Introdução e adição de jogos (Guia de vídeo)</string>
+    <string name="input">Entrada</string>
+    <string name="not_valid_game">$PATH não é um jogo válido</string>
+    <string name="how_to_use_easy_rpg">Como usar o EasyRPG Player</string>
+    <string name="error_saf_download_selected">A pasta Download não pode ser usada como pasta EasyRPG.</string>
+    <string name="ok">OK</string>
+    <string name="toggle_ui">Alternar botões virtuais</string>
+    <string name="cyrillic">Cirílico</string>
+    <string name="error_saf_select_easyrpg">Crie uma pasta EasyRPG vazia e selecione-a.</string>
+    <string name="error_saf_title">Pasta inválida selecionada</string>
+    <string name="autodetect">Região de detecção automática (recomendado)</string>
+    <string name="end_game">Fim do jogo</string>
+    <string name="cancel">Cancelar</string>
+    <string name="refresh">Atualizar</string>
+    <string name="west_europe">Europa ocidental</string>
+    <string name="east_europe">Europa Central/Oriental</string>
+    <string name="force_landscape_mode">Forçar orientação horizontal</string>
+    <string name="no_games_found_and_explanation_android_30">Nenhum jogo de RPG Maker 2000/2003 encontrado.
+\n
+\nA pasta EasyRPG que você selecionou contém uma pasta “jogos”. Use um aplicativo gerenciador de arquivos para colocar seus jogos nesta pasta.
+\nOs jogos podem ser colocados em subpastas ou em arquivos ZIP.
+\n
+\nA pasta EasyRPG pode ser alterada nas configurações.</string>
+    <string name="video">Vídeo</string>
+    <string name="easyrpg_folders">Pastas EasyRPG</string>
+    <string name="report_bug">Reportar um erro</string>
+    <string name="settings">Configurações</string>
+    <string name="report_bug_msg">Esta função abrirá seu programa de e-mail (por exemplo, Gmail) para nos enviar o relatório de bug.
+\n
+\nSe não quiser enviar um e-mail ou não tiver um programa de e-mail configurado, você pode abrir um novo problema em https://github.com/EasyRPG/Player/issues.</string>
+    <string name="error_games_no_rw">A pasta “games” não é legível ou gravável. Selecione um local diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
+    <string name="unknown_region">Região desconhecida</string>
+    <string name="path_not_readable">$PATH não legível</string>
+    <string name="vietnamese">Vietnamita</string>
+    <string name="thai">Tailandês</string>
+    <string name="error_no_games_folder">A pasta “games” não existe ou não é uma pasta. Crie-o manualmente ou selecione um local diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
+    <string name="open_games_folder">Abra a \"pasta jogos (games)\"</string>
+    <string name="do_want_quit">Você realmente quer sair?</string>
+    <string name="audio">Áudio</string>
+    <string name="change_the_layout">Alterar o layout</string>
+</resources>

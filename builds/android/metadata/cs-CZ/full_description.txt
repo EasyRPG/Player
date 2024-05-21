@@ -1,0 +1,7 @@
+Díky EasyRPG Playeru můžete hrát hry vytvořené v RPG Makeru 2000 a RPG Makeru 2003. Novější enginy jako XP, VX, MV a MZ nejsou podporovány.
+
+EasyRPG Player není editor. Nemůžete s ním vytvařet svoje vlastní hry.
+
+Domovská stránka: https://easyrpg.org/
+
+Tato aplikace není přidružená ke společností Kadokawa Corporation.

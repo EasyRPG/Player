@@ -132,7 +132,7 @@
     <string name="scale_bilinear">按屏幕尺寸缩放并应用双线性滤波器（速度慢、质量好）</string>
     <string name="stretch">忽略纵横比（拉伸到屏幕宽度）</string>
     <string name="error_no_games_folder">\"games\" 文件夹不存在或不是文件夹。请为 EasyRPG 手动创建文件夹或选择其他位置。EasyRPG 文件夹可以在设置中更改。</string>
-    <string name="settings_resolution_widescreen">宽屏（416x240，16:9，试验性）</string>
+    <string name="settings_resolution_widescreen">宽屏（416x240，16:9，实验性）</string>
     <string name="settings_resolution_ultrawide">超宽（560x240，21:9，实验性）</string>
     <string name="watch_explanation_video">入门和添加游戏（视频指南）</string>
     <string name="error_saf_title">选择了错误的文件夹</string>

@@ -39,7 +39,7 @@
     <string name="report_bug">Signaler un bug</string>
     <string name="report_bug_msg">Cette fonctionnalité va ouvrir votre application d\'e-mail (ex. Gmail) pour nous envoyer un rapport de bug.
 \n
-\nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail configurée vous pouvez ouvrir une nouvelle issue à https://github.com/EasyRPG/Player/issues à la place.</string>
+\nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail configurée, vous pouvez ouvrir une nouvelle issue à https://github.com/EasyRPG/Player/issues à la place.</string>
     <string name="report_bug_mail">Merci d\'aider EasyRPG Player.
 \nUn fichier de log et vos sauvegardes ont été placés en pièce jointe de cet e-mail.
 \nVeuillez ne pas supprimer le fichier de log ! Nous avons besoin d\'une sauvegarde qui est proche du lieu de votre bug pour pouvoir le reproduire facilement.
@@ -61,7 +61,7 @@
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Gérer l\'agencement des boutons :</string>
     <string name="edit_name">Changer le nom</string>
-    <string name="edit_layout">Changer l\'agencement</string>
+    <string name="edit_layout">Modifier l\'agencement</string>
     <string name="delete">Supprimer</string>
     <string name="default_layout">Par défaut</string>
     <!--ButtonMapping Activity-->
@@ -90,8 +90,8 @@
 \nLes jeux doivent être décompressés ou dans une archive ZIP.
 \nLes fichiers RAR, LZH et EXE ne sont PAS supportés.
 \n
-\nFonctionnalités optionnelles (Veuillez vous référer aux paramètres) :
-\n- Le RTP (assets partagés utilisés par certains jeux) peut être fourni
+\nFonctionnalités optionnelles (Veuillez vous référer aux paramètres) :
+\n- Le RTP (ressources partagées utilisées par certains jeux) peut être fourni
 \n- Un soundfont personnalisé pour altérer comment sonnent les musiques MIDI peut être fourni</string>
     <string name="easyrpg_folders">Dossiers EasyRPG</string>
     <string name="screen_size">Agrandissement de l\'écran :</string>
@@ -102,9 +102,9 @@
     <string name="settings_soundfont_found">Soundfonts trouvés :</string>
     <string name="settings_default_soundfont">Soundfont par défaut</string>
     <string name="select_the_games_folder">Choisir le dossier d\'EasyRPG</string>
-    <string name="id_select_games_folder_explanation">EasyRPG Player a besoin d\'un dossier dédié. Après avoir appuyé sur le bouton vous serez demandé de sélectionner un dossier.
+    <string name="id_select_games_folder_explanation">EasyRPG Player a besoin d\'un dossier dédié. Après avoir appuyé sur le bouton, vous serez demandé de sélectionner un dossier.
 \n
-\nSi vous utilisez cette application pour la première fois, il n\'y a pas de dossier EasyRPG. Créez un nouveau dossier EasyRPG et sélectionnez-le.
+\nSi vous utilisez cette application pour la première fois, il ne devrait pas y avoir de dossier EasyRPG. Créez donc un nouveau dossier EasyRPG puis sélectionnez-le.
 \n
 \nSi vous avez utilisé cette application auparavant, veuillez sélectionner le dossier EasyRPG existant.</string>
     <string name="Loading">Chargement…</string>
@@ -116,7 +116,7 @@
     <string name="horizontal_input_layout">Agencement horizontal (paysage) des contrôles</string>
     <string name="vertical_input_layout">Agencement vertical (portrait) des contrôles</string>
     <string name="settings_edit_layout_explanation">Lorsque vous éditez un agencement des boutons, des boutons peuvent être ajoutés (ex. un bouton Maj).
-\n Pour ajouter un bouton appuyez sur le bouton retour et choisissez Ajouter un bouton.</string>
+\n Pour ajouter un bouton, appuyez sur le bouton retour et choisissez Ajouter un bouton.</string>
     <string name="scale_nearest">Agrandir à la taille de l\'écran en utilisant l\'agrandissement le plus proche (Rapide, mauvaise qualité)</string>
     <string name="scale_integer">Agrandir à un multiple de la résolution du jeu (Rapide, petite image, bonne qualité)</string>
     <string name="scale_bilinear">Agrandir à la taille de l\'écran et appliquer un filtre bilinéaire (Lent, bonne qualité)</string>
@@ -125,7 +125,7 @@
     <string name="sound_volume">Volume des effets sonores</string>
     <string name="launch_debug_mode">Démarrer en mode de débogage</string>
     <string name="visit_website">Visiter notre site web</string>
-    <string name="error_no_games_folder">Le dossier « games » n\'existe pas ou n\'est pas un dossier. Veuillez le créer manuellement ou sélectionner un lieu différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
+    <string name="error_no_games_folder">Le dossier « games » n\'existe pas ou n\'est pas un dossier. Veuillez le créer manuellement ou sélectionner un emplacement différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
     <string name="error_games_no_rw">Le dossier « games » n\'a pas pu être lu ou n\'a pas pu être écrit. Veuillez sélectionner un emplacement différent pour le dossier d\'EasyRPG. Le dossier d\'EasyRPG peut être changé dans les paramètres.</string>
     <string name="key_debug_walk_through_walls">Marcher à travers les murs (Nécessite le mode de débogage)</string>
     <string name="key_debug_menu">Ouvrir le menu de débogage (Nécessite le mode de débogage)</string>

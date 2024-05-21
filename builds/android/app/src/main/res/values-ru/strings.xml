@@ -99,4 +99,44 @@
     <string name="settings_resolution_original">Изначально (320х240, 4:3, рекомендовано)</string>
     <string name="settings_resolution_widescreen">Широкоформатный (416x240, 16:9, Экспериментальный)</string>
     <string name="settings_resolution_ultrawide">Сверхшироформатный (560x240, 21:9, экспериментальный)</string>
+    <string name="open_games_folder">Открыть папку с играми (games)</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Поместите свои игры RPG Maker 2000/2003 в подкаталоги папки «games».
+\nИгры должны быть в несжатом виде или в ZIP-архиве.
+\nФайлы RAR, LZH и EXE НЕ поддерживаются.
+\n
+\nДополнительные функции (см. настройки):
+\n- Может быть предоставлен RTP (общие активы, используемые некоторыми играми).
+\n- Пользовательский звуковой шрифт для изменения того, как могут быть предоставлены звуки MIDI-музыки.</string>
+    <string name="settings_soundfont_explanation">Поместите звуковые шрифты в формате SF2 в папку «soundfonts». Soundfonts изменяют звучание MIDI-музыки.</string>
+    <string name="settings_soundfont_restart_app">Пожалуйста, закройте и перезапустите приложение после выбора soundfont.</string>
+    <string name="settings_default_soundfont">Обычный soundfount</string>
+    <string name="select_the_games_folder">Выберите папку EasyRPG</string>
+    <string name="id_select_games_folder_explanation">Для EasyRPG Player требуется отдельная папка. После нажатия на кнопку вам будет предложено выбрать папку.
+\n
+\nЕсли вы используете это приложение впервые, папки EasyRPG не будет. Создайте новую папку EasyRPG а затем выберите еë.
+\n
+\nЕсли вы использовали это приложение раньше, выберите существующую папку EasyRPG.</string>
+    <string name="Loading">Загрузка…</string>
+    <string name="enable_rtp_support">Включить поддержку RTP</string>
+    <string name="rtp_explanation">RTP предоставляет общие активы, используемые некоторыми играми.
+\nПоместите RPG Maker 2000 RTP в «rtp/2000», а RPG Maker 2003 RTP в «rtp/2003».
+\nОбратите внимание, что включение поддержки RTP значительно увеличит время загрузки игры.</string>
+    <string name="open_rtp_folder">Откройте папку RTP</string>
+    <string name="horizontal_input_layout">Горизонтальный (альбомный) интерфейс ввода</string>
+    <string name="vertical_input_layout">Вертикальный (книжный) интерфейс ввода</string>
+    <string name="scale_nearest">Масштабирование до размера экрана с использованием ближайших пикселей (быстро, плохое качество)</string>
+    <string name="scale_integer">Масштабирование до кратного разрешению игры (быстро, изображение меньшего размера, хорошее качество)</string>
+    <string name="music_volume">Громкость музыки</string>
+    <string name="sound_volume">Громкость музыкальных эффектов</string>
+    <string name="error_no_games_folder">Папка \"games\" не существует или не является папкой. Пожалуйста, создайте его вручную или выберите другое место для папки EasyRPG. Папку EasyRPG можно изменить в настройках.</string>
+    <string name="watch_explanation_video">Начало работы и добавление игр (видеогайд)</string>
+    <string name="error_saf_title">Плохой выбор папки</string>
+    <string name="error_saf_select_easyrpg">Пожалуйста, создайте пустую папку EasyRPG и выберите ее.</string>
+    <string name="error_saf_download_selected">Папка Download не может использоваться как папка EasyRPG.</string>
+    <string name="error_saf_folder_not_empty">Выбранная папка содержит другие файлы и не может использоваться в качестве папки EasyRPG. Когда вы удалите все файлы внутри папки, вы сможете использовать ее как папку EasyRPG.</string>
+    <string name="error_saf_bad_content_provider">Выбранную папку нельзя использовать в качестве папки EasyRPG. Эта проблема может возникнуть по разным причинам, например, если вы выбрали корневой каталог или место хранения в облаке.
+\n
+\n</string>
+    <string name="fast_forward_mode_hold">Удерживать</string>
+    <string name="fast_forward_mode_tap">Нажимать</string>
 </resources>

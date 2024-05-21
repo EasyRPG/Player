@@ -99,4 +99,8 @@
     <string name="error_saf_select_easyrpg">EasyRPGのアプリで使用する専用の空フォルダーを作成し、アプリ内で設定してください。</string>
     <string name="fast_forward_mode_hold">ホールド</string>
     <string name="fast_forward_mode_tap">タップ</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003 ゲームを「games」フォルダーのサブディレクトリに置きます。 ゲームは解凍するか、ZIP アーカイブにする必要があります。 RAR、LZH、EXE ファイルはサポートされていません。 オプション機能 (設定を参照してください): - RTP（一部のゲームで使用される共有アセット）の提供が可能 - MIDI音楽のサウンドを変更するカスタムサウンドフォントを提供可能</string>
+    <string name="launch_debug_mode">デバッグモードで起動</string>
+    <string name="error_no_games_folder">\" games \"フォルダが存在しないか、フォルダになっていません。手動で作成するか、\" EasyRPG \"フォルダの別の場所を選択してください。\" EasyRPG \"フォルダは設定で変更できます。</string>
+    <string name="error_games_no_rw">\" games \"フォルダが読み書きできません。\" EasyRPG \"フォルダは別の場所を選択してください。\" EasyRPG \"フォルダは設定で変更できます。</string>
 </resources>
