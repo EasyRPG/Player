@@ -313,7 +313,6 @@ void Scene_Settings::UpdateMain() {
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		auto idx = main_window->GetIndex();
 
 		if (main_window->IsItemEnabled(idx)) {
