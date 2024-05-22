@@ -5058,7 +5058,6 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 		Player::game_config.patch_key_patch.Set(flag_value);
 	if (flag_name == "rpg2k3-cmds" || flag_name == "rpg2k3-commands")
 		Player::game_config.patch_rpg2k3_commands.Set(flag_value);
-
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
 
@@ -5066,7 +5065,13 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 }
 
 bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com) {
+#ifndef HAVE_NLOHMANN_JSON
+	Output::Warning("CommandProcessJson: JSON not supported on this platform");
+	return true;
+#else
+
 	if (!Player::IsPatchManiac()) {
+		Output::Warning("CommandProcessJson: This command needs Maniac Patch support");
 		return true;
 	}
 
@@ -5133,6 +5138,8 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	}
 
 	return true;
+
+#endif // !HAVE_NLOHMANN_JSON
 }
 
 bool Game_Interpreter::CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com) {
