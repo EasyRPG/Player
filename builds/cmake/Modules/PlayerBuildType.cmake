@@ -8,8 +8,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
 	set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
 	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
-else()
-	message(STATUS "Build type is set to ${CMAKE_BUILD_TYPE}.")
 endif()
 
 # Ensure needed debugging flags are passed

@@ -16,3 +16,19 @@ CMakePresets.json -diff linguist-generated
 builds/android/app/src/main/java/org/libsdl/app/*.java -diff linguist-vendored
 builds/android/app/src/main/java/org/libsdl/app/SDLActivity.java diff
 src/generated/* -diff linguist-generated
+
+.gitattributes export-ignore
+.gitignore export-ignore
+/.github/ export-ignore
+/.tx/ export-ignore
+.editorconfig export-ignore
+/builds/cmake/.git-hash export-subst
+
+#TODO? .gitmodules export-ignore
+#TODO? /builds/libretro/ export-ignore
+
+/builds/android/ export-ignore
+/builds/flatpak/ export-ignore
+/builds/snap/ export-ignore
+/builds/release-helper.sh export-ignore
+/builds/make-dist.sh export-ignore
