@@ -5142,7 +5142,14 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 	return true;
 }
 bool Game_Interpreter::CommandProcessJson(lcf::rpg::EventCommand const& com) {
+
+#ifndef HAVE_NLOHMANN_JSON
+	Output::Warning("CommandProcessJson: JSON not supported on this platform");
+	return true;
+#else
+
 	if (!Player::IsPatchManiac()) {
+		Output::Warning("CommandProcessJson: This command needs Maniac Patch support");
 		return true;
 	}
 
@@ -5207,6 +5214,8 @@ bool Game_Interpreter::CommandProcessJson(lcf::rpg::EventCommand const& com) {
 	}
 
 	return true;
+
+#endif // !HAVE_NLOHMANN_JSON
 }
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
