@@ -85,12 +85,12 @@
     <string name="menu">Buka menu Android</string>
     <string name="no_games_found_and_explanation_android_30">Game RPG Maker 2000/2003 tidak ditemukan.
 \nFolder EasyRPG yang Anda pilih berisi folder \"games\". Gunakan aplikasi file manager untuk meletakkan game mu di folder ini.
-\nGame dapat dimasukkan ke dalam subfolder atau di arsip ZIP.
+\nGame dapat dimasukkan ke dalam subfolder atau di arsip ZIP/LZH.
 \nFolder EasyRPG bisa diubah di pengaturan.</string>
     <string name="open_games_folder">Buka folder \"games\"</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Letakkan permainan RPG Maker 2000/2003 di subdirektori folder \"games\".
-\nPermainan harus sudah tidak terkompres.
-\nfile ZIP, RAR, LZH dan EXE TIDAK didukung.
+\nPermainan harus sudah tidak terkompres atau dalam arsip ZIP/LZH.
+\nfile RAR, 7z dan EXE TIDAK didukung.
 \n
 \nFitur opsional (silahkan lihat pengaturan):
 \n- RTP (aset bersama digunakan oleh beberapa permainan) yang disediakan

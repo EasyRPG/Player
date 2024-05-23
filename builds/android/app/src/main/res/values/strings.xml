@@ -24,7 +24,7 @@
     <string name="no">No</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
-    <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found.\n\nThe EasyRPG folder you selected contains a \"games\" folder. Use a file manager app to put your games in this folder.\nGames can be put in subfolders or in ZIP archives.\n\nThe EasyRPG folder can be changed in the settings.</string>
+    <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found.\n\nThe EasyRPG folder you selected contains a \"games\" folder. Use a file manager app to put your games in this folder.\nGames can be put in subfolders or in ZIP/LZH archives.\n\nThe EasyRPG folder can be changed in the settings.</string>
     <string name="open_games_folder">Open the \"games\" folder</string>
     <string name="no_external_storage">No external storage (e.g. SD card) found</string>
     <string name="not_valid_game">$PATH is not a valid game</string>
@@ -37,7 +37,7 @@
     <string name="refresh">Refresh</string>
     <string name="change_default_mapping">Change the default button mapping</string>
     <string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the \"games\" folder.\nGames have to be uncompressed or in a ZIP archive.\nRAR, LZH and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the \"games\" folder.\nGames have to be uncompressed or in a ZIP/LZH archive.\nRAR, 7z and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
     <string name="visit_website">Visit our website</string>
     <string name="watch_explanation_video">Getting started and adding games (Video Guide)</string>
     <string name="error_no_games_folder">The \"games\" folder does not exist or is not a folder. Please create it manually or select a different location for the EasyRPG folder. The EasyRPG folder can be changed in the settings.</string>

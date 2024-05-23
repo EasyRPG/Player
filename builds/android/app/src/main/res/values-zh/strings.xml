@@ -109,12 +109,12 @@
     <string name="no_games_found_and_explanation_android_30">找不到 RPG Maker 2000/2003 游戏。
 \n
 \n您选择的 EasyRPG 文件夹包含一个 \"games\" 文件夹。使用文件管理器应用程序将您的游戏放在此文件夹中。
-\n游戏可以放在子文件夹或 ZIP 档案中。
+\n游戏可以放在子文件夹或 ZIP/LZH 档案中。
 \n
 \nEasyRPG 文件夹可以在设置中更改。</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">将您的 RPG Maker 2000/200 3游戏放在“游戏”文件夹的子目录中。
-\n游戏必须解压缩或保存在 ZIP 档案中。
-\n不支持 RAR、LZH 和 EXE 文件。
+\n游戏必须解压缩或保存在 ZIP/LZH 档案中。
+\n不支持 RAR、7z 和 EXE 文件。
 \n
 \n可选功能（请参阅设置）：
 \n-RTP（一些游戏所使用的共享素材）
