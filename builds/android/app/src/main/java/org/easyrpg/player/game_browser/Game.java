@@ -16,23 +16,27 @@ import java.io.ByteArrayOutputStream;
 
 public class Game implements Comparable<Game> {
     final static char escapeCode = '\u0001';
+    /** The title shown in the Game Browser */
 	private String title;
+    /** Path to the game folder (forwarded via --project-path */
     private final String gameFolderPath;
+    /** Relative path to the save directory, made absolute by launchGame (forwarded via --save-path) */
     private String savePath;
+    /** Whether the game was tagged as a favourite */
 	private boolean isFavorite;
-    private Bitmap titleScreen;
+    /** Title image shown in the Game Browser */
+    private Bitmap titleScreen = null;
+    /** Game is launched from the APK via standalone mode */
     private boolean standalone = false;
 
 	private Game(String gameFolderPath) {
+        // For simplicity the gameFolderPath is an URI that is parsed
+        // Similar to the SafFile code
         int encoded_slash_pos = gameFolderPath.lastIndexOf("%2F");
-        if (encoded_slash_pos == -1) {
-            // Should not happen because the game is in a subdirectory
-            Log.e("EasyRPG", "Strange Uri " + gameFolderPath);
-        }
-        int slash_pos = gameFolderPath.indexOf("/", encoded_slash_pos);
+        int slash_pos = gameFolderPath.lastIndexOf("/");
 
         // A file is provided when a / is after the encoded / (%2F)
-        if (slash_pos > -1) {
+        if (slash_pos > -1 && slash_pos > encoded_slash_pos) {
             // Extract the filename and properly encode it
             this.title = gameFolderPath.substring(slash_pos + 1);
         } else {
@@ -41,6 +45,7 @@ public class Game implements Comparable<Game> {
 
         int dot_pos = this.title.indexOf(".");
         if (dot_pos > -1) {
+            // Strip of the file extension
             this.title = this.title.substring(0, dot_pos);
         }
 
@@ -52,7 +57,9 @@ public class Game implements Comparable<Game> {
 
 	public Game(String gameFolderPath, byte[] titleScreen) {
 	    this(gameFolderPath);
-        this.titleScreen = BitmapFactory.decodeByteArray(titleScreen, 0, titleScreen.length);;
+        if (titleScreen != null) {
+            this.titleScreen = BitmapFactory.decodeByteArray(titleScreen, 0, titleScreen.length);
+        };
     }
 
     /**

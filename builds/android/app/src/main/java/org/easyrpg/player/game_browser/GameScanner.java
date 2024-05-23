@@ -112,7 +112,7 @@ public class GameScanner {
                 }
             }
 
-            if (gameList.size() > 0) {
+            if (!gameList.isEmpty()) {
                 Log.i("EasyRPG", gameList.size() + " game(s) found in cache.");
 
                 return;
@@ -160,6 +160,7 @@ public class GameScanner {
         final ArrayList<String> names = new ArrayList<>();
         final ArrayList<Uri> fileURIs = new ArrayList<>();
 
+        // Precalculate how many folders are to be scanned
         for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
             String fileDocumentID = array[0];
 
@@ -175,18 +176,22 @@ public class GameScanner {
             }
         }
 
+        // Scan all the folders and show the current scanning progress
         for (int i = 0; i < names.size(); ++i) {
-            final String name = names.get(i);
+            final String name = names.get(i); // only "final" variables can be passed to lambdas
             final int j = i;
             activity.runOnUiThread(() -> {
+                // Update Ui progress
                 TextView myTextView = activity.findViewById(R.id.progressText);
                 myTextView.setText(String.format("%s (%d/%d)", name, j + 1, names.size()));
             });
 
-            Game game = findGame(fileURIs.get(i).toString());
+            Game[] candidates = findGames(fileURIs.get(i).toString());
 
-            if (game != null) {
-                gameList.add(game);
+            for (Game candidate: candidates) {
+                if (candidate != null) {
+                    gameList.add(candidate);
+                }
             }
         }
     }
@@ -203,5 +208,5 @@ public class GameScanner {
         return !errorList.isEmpty();
     }
 
-    private static native Game findGame(String path);
+    private static native Game[] findGames(String path);
 }
