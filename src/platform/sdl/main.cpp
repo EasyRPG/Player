@@ -30,6 +30,7 @@
 #  include <shellapi.h>
 #elif defined(__ANDROID__)
 #  include <android/log.h>
+#  include "platform/android/android.h"
 #elif defined(__WIIU__)
 #  include <coreinit/debug.h>
 #endif
@@ -81,6 +82,10 @@ extern "C" int main(int argc, char* argv[]) {
 
 #if defined(__WIIU__) || defined(__ANDROID__)
 	Output::SetLogCallback(LogCallback);
+#endif
+
+#if defined(__ANDROID__)
+	EpAndroid::env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 #endif
 
 	Player::Init(std::move(args));

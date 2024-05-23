@@ -573,7 +573,6 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	endif()
 
 	if(ANDROID)
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
 	endif()
 
@@ -1347,6 +1346,7 @@ else() # library
 		endif()
 	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_library(easyrpg_android
+			src/platform/android/android.cpp
 			src/platform/android/android.h
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
@@ -1357,6 +1357,7 @@ else() # library
 			src/platform/sdl/main.cpp)
 		target_link_libraries(easyrpg_android ${PROJECT_NAME})
 		set_target_properties(easyrpg_android PROPERTIES DEBUG_POSTFIX "")
+		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_TEST_LIBRARIES "easyrpg_android")
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")

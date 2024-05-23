@@ -20,10 +20,12 @@
 
 #include <mutex>
 #include <functional>
+#include <jni.h>
 
 namespace EpAndroid {
-	inline std::function<void()> android_fn;
-	inline std::mutex android_mutex;
+	extern JNIEnv* env;
+	extern std::function<void()> android_fn;
+	extern std::mutex android_mutex;
 
 	inline void invoke() {
 		if (!android_fn) {
