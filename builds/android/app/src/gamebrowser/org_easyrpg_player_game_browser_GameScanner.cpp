@@ -31,70 +31,16 @@
 #include <vector>
 #include <array>
 
-class FdStreamBufIn : public std::streambuf {
-public:
-	FdStreamBufIn(int fd) : std::streambuf(), fd(fd) {
-		setg(buffer.data(), buffer.data() + buffer.size(), buffer.data() + buffer.size());
-	}
 
-	~FdStreamBufIn() override {
-		close(fd);
-	}
-
-	int underflow() override {
-		ssize_t res = read(fd, buffer.data(), buffer.size());
-		if (res <= 0) {
-			return traits_type::eof();
-		}
-		setg(buffer.data(), buffer.data(), buffer.data() + res);
-		return traits_type::to_int_type(*gptr());
-	}
-
-private:
-	int fd = 0;
-	std::array<char, 4096> buffer;
-};
-
-class BufferStreamBufIn : public std::streambuf {
-public:
-	BufferStreamBufIn(char* buffer, jsize size) : std::streambuf(), buffer(buffer), size(size) {
-		setg(buffer, buffer, buffer + size);
-	}
-
-private:
-	char* buffer;
-	jsize size;
-	jsize index = 0;
-};
+#include "filefinder.h"
+#include "utils.h"
+#include "string_view.h"
+#include "platform/android/android.h"
 
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
 	std::vector<uint8_t> *p = reinterpret_cast<std::vector<uint8_t>*>(png_get_io_ptr(png_ptr));
 	p->insert(p->end(), data, data + length);
-}
-
-jbyteArray readXyz(JNIEnv *env, std::istream& stream);
-
-extern "C"
-JNIEXPORT jbyteArray JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZbuffer(
-		JNIEnv *env, jclass, jbyteArray buffer) {
-	jbyte* elements = env->GetByteArrayElements(buffer, nullptr);
-	jsize size = env->GetArrayLength(buffer);
-
-	std::istream stream(new BufferStreamBufIn(reinterpret_cast<char*>(elements), size));
-	jbyteArray array = readXyz(env, stream);
-
-	env->ReleaseByteArrayElements(buffer, elements, 0);
-
-	return array;
-}
-
-extern "C"
-JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZfd
-  (JNIEnv * env, jclass, jint fd) {
-	std::istream stream(new FdStreamBufIn(fd));
-	return readXyz(env, stream);
 }
 
 jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
@@ -213,4 +159,61 @@ jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 
 	return result;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_findGame(JNIEnv *env, jclass clazz,
+															 jstring path) {
+	EpAndroid::env = env;
+
+	const char* cpath = env->GetStringUTFChars(path, nullptr);
+	std::string spath(cpath);
+	env->ReleaseStringUTFChars(path, cpath);
+
+	auto fs = FileFinder::FindGameRecursive(FileFinder::Root().Create(spath));
+	if (!fs) {
+		return nullptr;
+	}
+
+	std::string save_path;
+	if (!fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+		save_path = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+
+		// compatibility with Java code
+		size_t ext = save_path.find('.');
+		if (ext != std::string::npos) {
+			save_path = save_path.substr(0, ext);
+		}
+	}
+
+	jbyteArray title_image = nullptr;
+
+	auto title = fs.Subtree("Title");
+	if (title) {
+		for (auto& [name, entry]: *title.ListDirectory()) {
+			if (entry.type == DirectoryTree::FileType::Regular) {
+				if (StringView(name).ends_with(".xyz")) {
+					auto is = title.OpenInputStream(entry.name);
+					title_image = readXyz(env, is);
+				} else if (StringView(name).ends_with(".png") || StringView(name).ends_with(".bmp")) {
+					auto is = title.OpenInputStream(entry.name);
+					auto vec = Utils::ReadStream(is);
+
+					title_image = env->NewByteArray(vec.size());
+					env->SetByteArrayRegion(title_image, 0, vec.size(), reinterpret_cast<jbyte*>(vec.data()));
+				}
+			}
+		}
+	}
+
+	jclass game_class = env->FindClass("org/easyrpg/player/game_browser/Game");
+
+	jmethodID constructor = env->GetMethodID(game_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
+
+	jstring game_path = env->NewStringUTF(("content://" + FileFinder::GetFullFilesystemPath(fs)).c_str());
+	jstring save_pat = env->NewStringUTF(save_path.c_str());
+	jobject game_object = env->NewObject(game_class, constructor, game_path, save_pat, title_image);
+
+	return game_object;
 }
