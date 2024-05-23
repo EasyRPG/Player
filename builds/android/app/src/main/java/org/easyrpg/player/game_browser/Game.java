@@ -17,77 +17,39 @@ import java.io.ByteArrayOutputStream;
 public class Game implements Comparable<Game> {
     final static char escapeCode = '\u0001';
     /** The title shown in the Game Browser */
-	private String title;
+    private String title;
     /** Path to the game folder (forwarded via --project-path */
     private final String gameFolderPath;
     /** Relative path to the save directory, made absolute by launchGame (forwarded via --save-path) */
-    private String savePath;
+    private String savePath = "";
     /** Whether the game was tagged as a favourite */
-	private boolean isFavorite;
+    private boolean isFavorite;
     /** Title image shown in the Game Browser */
     private Bitmap titleScreen = null;
     /** Game is launched from the APK via standalone mode */
     private boolean standalone = false;
 
-	private Game(String gameFolderPath) {
-        // For simplicity the gameFolderPath is an URI that is parsed
-        // Similar to the SafFile code
-        int encoded_slash_pos = gameFolderPath.lastIndexOf("%2F");
-        int slash_pos = gameFolderPath.lastIndexOf("/");
-
-        // A file is provided when a / is after the encoded / (%2F)
-        if (slash_pos > -1 && slash_pos > encoded_slash_pos) {
-            // Extract the filename and properly encode it
-            this.title = gameFolderPath.substring(slash_pos + 1);
-        } else {
-            this.title = gameFolderPath.substring(encoded_slash_pos + 3);
-        }
-
-        int dot_pos = this.title.indexOf(".");
-        if (dot_pos > -1) {
-            // Strip of the file extension
-            this.title = this.title.substring(0, dot_pos);
-        }
-
+    public Game(String gameFolderPath, String saveFolder, String title, byte[] titleScreen) {
         this.gameFolderPath = gameFolderPath;
-        this.savePath = gameFolderPath;
 
-        this.isFavorite = isFavoriteFromSettings();
-	}
-
-	public Game(String gameFolderPath, byte[] titleScreen) {
-	    this(gameFolderPath);
-        if (titleScreen != null) {
-            this.titleScreen = BitmapFactory.decodeByteArray(titleScreen, 0, titleScreen.length);
-        };
-    }
-
-    /**
-     * Constructor for standalone mode
-     *
-     * @param gameFolder
-     * @param saveFolder
-     */
-    public Game(String gameFolder, String saveFolder) {
-        this.title = "Standalone";
-        this.gameFolderPath = gameFolder;
-        this.savePath = saveFolder;
-        this.isFavorite = false;
-        this.standalone = true;
-    }
-
-    private Game(String gameFolderPath, String saveFolder, byte[] titleScreen) {
-        this(gameFolderPath, titleScreen);
         // is only relative here, launchGame will put this in the "saves" directory
         if (!saveFolder.isEmpty()) {
             savePath = saveFolder;
         }
+
+        this.title = title;
+
+        if (titleScreen != null) {
+            this.titleScreen = BitmapFactory.decodeByteArray(titleScreen, 0, titleScreen.length);
+        };
+
+        this.isFavorite = isFavoriteFromSettings();
     }
 
     public static Game fromCacheEntry(Context context, String cache) {
         String[] entries = cache.split(String.valueOf(escapeCode));
 
-        if (entries.length != 3) {
+        if (entries.length != 4) {
             return null;
         }
 
@@ -97,65 +59,67 @@ public class Game implements Comparable<Game> {
             return null;
         }
 
+        String title = entries[2];
+
         byte[] titleScreen = null;
-        if (!entries[2].equals("null")) {
-            titleScreen = Base64.decode(entries[2], 0);
+        if (!entries[3].equals("null")) {
+            titleScreen = Base64.decode(entries[3], 0);
         }
 
-        return new Game(entries[1], savePath, titleScreen);
+        return new Game(entries[1], savePath, title, titleScreen);
     }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getGameFolderPath() {
-		return gameFolderPath;
-	}
+    public String getGameFolderPath() {
+        return gameFolderPath;
+    }
 
-	public String getSavePath() {
-		return savePath;
-	}
+    public String getSavePath() {
+        return savePath;
+    }
 
     public void setSavePath(String path) {
         savePath = path;
     }
 
-	public boolean isFavorite() {
-		return isFavorite;
-	}
+    public boolean isFavorite() {
+        return isFavorite;
+    }
 
-	public void setFavorite(boolean isFavorite) {
-		this.isFavorite = isFavorite;
-		if(isFavorite){
-			SettingsManager.addFavoriteGame(this);
-		} else {
-			SettingsManager.removeAFavoriteGame(this);
-		}
-	}
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+        if(isFavorite){
+            SettingsManager.addFavoriteGame(this);
+        } else {
+            SettingsManager.removeAFavoriteGame(this);
+        }
+    }
 
-	private boolean isFavoriteFromSettings() {
-		return SettingsManager.getFavoriteGamesList().contains(this.title);
-	}
+    private boolean isFavoriteFromSettings() {
+        return SettingsManager.getFavoriteGamesList().contains(this.gameFolderPath);
+    }
 
-	@Override
-	public int compareTo(Game game) {
-		if (this.isFavorite() && !game.isFavorite()) {
-			return -1;
-		}
-		if (!this.isFavorite() && game.isFavorite()) {
-			return 1;
-		}
-		return this.title.compareTo(game.title);
-	}
+    @Override
+    public int compareTo(Game game) {
+        if (this.isFavorite() && !game.isFavorite()) {
+            return -1;
+        }
+        if (!this.isFavorite() && game.isFavorite()) {
+            return 1;
+        }
+        return this.title.compareTo(game.title);
+    }
 
-	public Encoding getEncoding() {
+    public Encoding getEncoding() {
         return SettingsManager.getGameEncoding(this);
-	}
+    }
 
-	public void setEncoding(Encoding encoding) {
+    public void setEncoding(Encoding encoding) {
         SettingsManager.setGameEncoding(this, encoding);
-	}
+    }
 
     @NonNull
     @Override
@@ -166,10 +130,12 @@ public class Game implements Comparable<Game> {
     public String toCacheEntry() {
         StringBuilder sb = new StringBuilder();
 
+        // Cache structure: savePath | gameFolderPath | title | titleScreen
         sb.append(savePath);
         sb.append(escapeCode);
-
         sb.append(gameFolderPath);
+        sb.append(escapeCode);
+        sb.append(title);
         sb.append(escapeCode);
 
         if (titleScreen != null) {
@@ -188,7 +154,11 @@ public class Game implements Comparable<Game> {
         return titleScreen;
     }
 
-    public Boolean isStandalone() {
+    public boolean isStandalone() {
         return standalone;
+    }
+
+    public void setStandalone(boolean standalone) {
+        this.standalone = standalone;
     }
 }

@@ -1,15 +1,8 @@
 package org.easyrpg.player.game_browser;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
-import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -20,21 +13,10 @@ import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDL;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class GameScanner {
     // We use a singleton pattern to allow further optimizations
@@ -145,7 +127,7 @@ public class GameScanner {
     private int scanFolderHash(Context context, Uri folderURI) {
         StringBuilder sb = new StringBuilder();
 
-        for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
+        for (String[] array : Helper.listChildrenDocuments(context, folderURI)) {
             sb.append(array[0]);
             sb.append(array[1]);
         }
@@ -161,10 +143,10 @@ public class GameScanner {
         final ArrayList<Uri> fileURIs = new ArrayList<>();
 
         // Precalculate how many folders are to be scanned
-        for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
+        for (String[] array : Helper.listChildrenDocuments(context, folderURI)) {
             String fileDocumentID = array[0];
+            String name = array[2];
 
-            String name = Helper.getFileNameFromDocumentID(fileDocumentID);
             if (name.isEmpty()) {
                 continue;
             }
@@ -186,7 +168,7 @@ public class GameScanner {
                 myTextView.setText(String.format("%s (%d/%d)", name, j + 1, names.size()));
             });
 
-            Game[] candidates = findGames(fileURIs.get(i).toString());
+            Game[] candidates = findGames(fileURIs.get(i).toString(), names.get(i));
 
             for (Game candidate: candidates) {
                 if (candidate != null) {
@@ -208,5 +190,5 @@ public class GameScanner {
         return !errorList.isEmpty();
     }
 
-    private static native Game[] findGames(String path);
+    private static native Game[] findGames(String path, String mainFolderName);
 }

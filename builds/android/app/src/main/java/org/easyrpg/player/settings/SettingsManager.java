@@ -105,7 +105,7 @@ public class SettingsManager {
 
     public static void addFavoriteGame(Game game) {
         // Update user's preferences
-        favoriteGamesList.add(game.getTitle());
+        favoriteGamesList.add(game.getGameFolderPath());
 
         setFavoriteGamesList(favoriteGamesList);
     }

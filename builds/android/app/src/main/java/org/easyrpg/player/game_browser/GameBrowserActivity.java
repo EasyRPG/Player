@@ -62,7 +62,7 @@ public class GameBrowserActivity extends AppCompatActivity
                 libraryLoaded = true;
             } catch (UnsatisfiedLinkError e) {
                 Log.e("EasyRPG Player", "Couldn't load libgamebrowser: " + e.getMessage());
-		        throw e;
+                throw e;
             }
         }
 

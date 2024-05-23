@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -15,7 +14,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
@@ -90,13 +88,13 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
         Uri soundFontsFolder = SettingsManager.getSoundFontsFolderURI(this);
         if (soundFontsFolder != null) {
-            for (String[] array : Helper.listChildrenDocumentIDAndType(this, soundFontsFolder)) {
+            for (String[] array : Helper.listChildrenDocuments(this, soundFontsFolder)) {
                 String fileDocumentID = array[0];
                 String fileDocumentType = array[1];
+                String name = array[2];
 
                 // Is it a soundfont file ?
                 boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
-                String name = Helper.getFileNameFromDocumentID(fileDocumentID);
                 if (!isDirectory && name.toLowerCase().endsWith(".sf2")) {
                     DocumentFile soundFontFile = Helper.getFileFromDocumentID(this, soundFontsFolder, fileDocumentID);
                     if (soundFontFile != null) {
