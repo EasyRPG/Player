@@ -178,7 +178,7 @@ public class Helper {
                 return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_READ;
             }
 
-            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "r")) {
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "w")) {
             } catch (IOException | IllegalArgumentException e) {
                 return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_WRITE;
             }
