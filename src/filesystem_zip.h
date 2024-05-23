@@ -70,6 +70,7 @@ private:
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries;
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries_cp437;
 	std::string encoding;
+	mutable Filesystem_Stream::InputStream zip_is;
 	mutable std::vector<char> filename_buffer;
 };
 
