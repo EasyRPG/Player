@@ -153,9 +153,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         mLayout.addView(surface);
         updateScreenPosition();
 
-        // Set speed multiplier
-        setFastForwardMultiplier(SettingsManager.getFastForwardMultiplier());
-
         showInputLayout();
     }
 

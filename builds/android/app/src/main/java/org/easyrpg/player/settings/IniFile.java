@@ -10,6 +10,7 @@ public class IniFile {
 
     public SectionView video;
     public SectionView audio;
+    public SectionView input;
     public SectionView engine;
 
     public IniFile(File iniFile) {
@@ -28,6 +29,7 @@ public class IniFile {
 
         video = new SectionView("Video");
         audio = new SectionView("Audio");
+        input = new SectionView("Input");
         engine = new SectionView("Engine");
     }
 
