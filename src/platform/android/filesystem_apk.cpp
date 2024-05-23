@@ -18,16 +18,16 @@
 #include "filesystem_apk.h"
 #include "filefinder.h"
 #include "output.h"
+#include "android.h"
 
 #include <jni.h>
 #include <SDL_system.h>
 
 ApkFilesystem::ApkFilesystem() : Filesystem("", FilesystemView()) {
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getAssetManager = env->GetMethodID(cls, "getAssetManager", "()Landroid/content/res/AssetManager;");
-	jobject asset_manager = (jobject)env->CallObjectMethod(sdl_activity, jni_getAssetManager);
+	JNIEnv* env = EpAndroid::env;
+	jclass cls = env->FindClass("org/easyrpg/player/player/EasyRpgPlayerActivity");
+	jmethodID jni_getAssetManager = env->GetStaticMethodID(cls, "getAssetManager", "()Landroid/content/res/AssetManager;");
+	jobject asset_manager = (jobject)env->CallStaticObjectMethod(cls, jni_getAssetManager);
 	mgr = AAssetManager_fromJava(env, asset_manager);
 }
 
