@@ -79,7 +79,6 @@ public class InputLayout {
     private static LinkedList<VirtualButton> getDefaultHorizontalButtonList(Activity activity) {
         LinkedList<VirtualButton> l = new LinkedList<>();
         l.add(new MenuButton(activity, 0.01, 0.01, 90));
-        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.9, 0.01, 90));
         l.add(new VirtualCross(activity, 0.01, 0.4, 100));
         l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.80, 0.55, 100));
         l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.90, 0.45, 100));
@@ -90,7 +89,6 @@ public class InputLayout {
     private static LinkedList<VirtualButton> getDefaultVerticalButtonList(Activity activity) {
         LinkedList<VirtualButton> l = new LinkedList<>();
         l.add(new MenuButton(activity, 0.01, 0.5, 90));
-        l.add(VirtualButton.Create(activity, VirtualButton.KEY_FAST_FORWARD, 0.70, 0.5, 90));
         l.add(new VirtualCross(activity, 0.05, 0.65, 100));
         l.add(VirtualButton.Create(activity, VirtualButton.ENTER, 0.60, 0.75, 100));
         l.add(VirtualButton.Create(activity, VirtualButton.CANCEL, 0.70, 0.65, 100));
