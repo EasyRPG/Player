@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -178,7 +177,7 @@ public class GameBrowserHelper {
                 return SafError.BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND;
             }
 
-            List<String[]> items = Helper.listChildrenDocumentIDAndType(activity, folder.getUri());
+            List<String[]> items = Helper.listChildrenDocuments(activity, folder.getUri());
             int item_count = 0;
             for (String[] item: items) {
                 if (item[0] == null || Helper.isDirectoryFromMimeType(item[1]) || item[0].endsWith(".nomedia")) {
