@@ -364,7 +364,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         return "";
     }
 
-    public SafFile getHandleForPath(String path) {
+    public static SafFile getHandleForPath(String path) {
         return SafFile.fromPath(getContext(), path);
     }
 
@@ -420,8 +420,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      *
      * @return asset manager
      */
-    public AssetManager getAssetManager() {
-        return getAssets();
+    public static AssetManager getAssetManager() {
+        return getContext().getAssets();
     }
 
     /**
