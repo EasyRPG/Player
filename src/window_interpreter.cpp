@@ -58,7 +58,7 @@ void Window_Interpreter::Refresh() {
 	for (int i = state.stack.size() - 1; i >= 0; i--) {
 		int evt_id = state.stack[i].event_id;
 		int page_id = 0;
-		if ((Player::IsPatchManiac() || Player::HasEasyRpgExtensions()) && state.stack[i].maniac_event_id > 0) {
+		if (state.stack[i].maniac_event_id > 0) {
 			evt_id = state.stack[i].maniac_event_id;
 			page_id = state.stack[i].maniac_event_page_id;
 		}

@@ -119,10 +119,8 @@ void Game_Interpreter::Push(
 	frame.current_command = 0;
 	frame.triggered_by_decision_key = started_by_decision_key;
 	frame.event_id = event_id;
-	if (Player::IsPatchManiac() || Player::HasEasyRpgExtensions()) {
-		frame.maniac_event_id = event_id;
-		frame.maniac_event_page_id = event_page_id;
-	}
+	frame.maniac_event_id = event_id;
+	frame.maniac_event_page_id = event_page_id;
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
 		Main_Data::game_system->ClearMessageFace();
