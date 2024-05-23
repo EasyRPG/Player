@@ -163,57 +163,78 @@ jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_findGame(JNIEnv *env, jclass clazz,
-															 jstring path) {
+Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass clazz,
+															 jstring jpath) {
 	EpAndroid::env = env;
 
-	const char* cpath = env->GetStringUTFChars(path, nullptr);
-	std::string spath(cpath);
-	env->ReleaseStringUTFChars(path, cpath);
+	const char* path = env->GetStringUTFChars(jpath, nullptr);
+	std::string spath(path);
+	env->ReleaseStringUTFChars(jpath, path);
 
-	auto fs = FileFinder::FindGameRecursive(FileFinder::Root().Create(spath));
-	if (!fs) {
-		return nullptr;
+	std::vector<FilesystemView> fs_list = FileFinder::FindGames(FileFinder::Root().Create(spath));
+
+	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
+	jobjectArray jgame_array = env->NewObjectArray(fs_list.size(), jgame_class, nullptr);
+
+	if (fs_list.empty()) {
+		return jgame_array;
 	}
 
-	std::string save_path;
-	if (!fs.IsFeatureSupported(Filesystem::Feature::Write)) {
-		save_path = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+	jmethodID jgame_constructor = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
 
-		// compatibility with Java code
-		size_t ext = save_path.find('.');
-		if (ext != std::string::npos) {
-			save_path = save_path.substr(0, ext);
+	for (size_t i = 0; i < fs_list.size(); ++i) {
+		auto& fs = fs_list[i];
+
+		std::string save_path;
+		if (!fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+			// Is an archive and needs a redirected save path
+			save_path = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+
+			// compatibility with original GameScanner Java code (everything after the extension dot is removed)
+			size_t ext = save_path.find('.');
+			if (ext != std::string::npos) {
+				save_path = save_path.substr(0, ext);
+			}
 		}
-	}
 
-	jbyteArray title_image = nullptr;
+		// Very simple title graphic search: The first image in "Title" is used
+		auto title = fs.Subtree("Title");
+		jbyteArray title_image = nullptr;
+		if (title) {
+			for (auto &[name, entry]: *title.ListDirectory()) {
+				if (entry.type == DirectoryTree::FileType::Regular) {
+					if (StringView(name).ends_with(".xyz")) {
+						auto is = title.OpenInputStream(entry.name);
+						title_image = readXyz(env, is);
+					} else if (StringView(name).ends_with(".png") ||
+							   StringView(name).ends_with(".bmp")) {
+						auto is = title.OpenInputStream(entry.name);
+						if (!is) {
+							// When opening of the image fails it is an unsupported archive format
+							// Skip this game
+							continue;
+						}
 
-	auto title = fs.Subtree("Title");
-	if (title) {
-		for (auto& [name, entry]: *title.ListDirectory()) {
-			if (entry.type == DirectoryTree::FileType::Regular) {
-				if (StringView(name).ends_with(".xyz")) {
-					auto is = title.OpenInputStream(entry.name);
-					title_image = readXyz(env, is);
-				} else if (StringView(name).ends_with(".png") || StringView(name).ends_with(".bmp")) {
-					auto is = title.OpenInputStream(entry.name);
-					auto vec = Utils::ReadStream(is);
+						auto vec = Utils::ReadStream(is);
 
-					title_image = env->NewByteArray(vec.size());
-					env->SetByteArrayRegion(title_image, 0, vec.size(), reinterpret_cast<jbyte*>(vec.data()));
+						title_image = env->NewByteArray(vec.size());
+						env->SetByteArrayRegion(title_image, 0, vec.size(),
+												reinterpret_cast<jbyte *>(vec.data()));
+					}
 				}
 			}
 		}
+
+		// Create an instance of "Game"
+		jstring jgame_path = env->NewStringUTF(
+				("content://" + FileFinder::GetFullFilesystemPath(fs)).c_str());
+		jstring jsave_path = env->NewStringUTF(save_path.c_str());
+		jobject jgame_object = env->NewObject(jgame_class, jgame_constructor, jgame_path, jsave_path, title_image);
+
+		env->SetObjectArrayElement(jgame_array, i, jgame_object);
 	}
 
-	jclass game_class = env->FindClass("org/easyrpg/player/game_browser/Game");
-
-	jmethodID constructor = env->GetMethodID(game_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
-
-	jstring game_path = env->NewStringUTF(("content://" + FileFinder::GetFullFilesystemPath(fs)).c_str());
-	jstring save_pat = env->NewStringUTF(save_path.c_str());
-	jobject game_object = env->NewObject(game_class, constructor, game_path, save_pat, title_image);
-
-	return game_object;
+	// Some fields of the Array can be NULL when a game was skipped due to an error
+	// This is sanitized on the Java site
+	return jgame_array;
 }

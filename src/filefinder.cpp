@@ -533,30 +533,31 @@ void FileFinder::DumpFilesystem(FilesystemView fs) {
 	}
 }
 
-FilesystemView FileFinder::FindGameRecursive(FilesystemView fs, int recursion_limit) {
-	if (!fs || recursion_limit == 0) {
-		return {};
-	}
+std::vector<FilesystemView> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
+	std::vector<FilesystemView> games;
 
-	if (IsValidProject(fs)) {
-		return fs;
-	}
+	std::function<void(FilesystemView, int)> find_recursive = [&](FilesystemView subfs, int rec_limit) -> void {
+		if (!subfs || rec_limit == 0 || games.size() >= game_limit) {
+			return;
+		}
 
-	auto entries = fs.ListDirectory();
+		if (IsValidProject(subfs)) {
+			games.push_back(subfs);
+			return;
+		}
 
-	for (auto& [name_lower, entry]: *entries) {
-		if (entry.type == DirectoryTree::FileType::Directory) {
-			auto fs_ret = FindGameRecursive(fs.Subtree(entry.name), recursion_limit - 1);
-			if (fs_ret) {
-				return fs_ret;
-			}
-		} else if (entry.type == DirectoryTree::FileType::Regular && IsSupportedArchiveExtension(entry.name)) {
-			auto fs_ret = FindGameRecursive(fs.Create(entry.name));
-			if (fs_ret) {
-				return fs_ret;
+		auto entries = subfs.ListDirectory();
+
+		for (auto& [name_lower, entry]: *entries) {
+			if (entry.type == DirectoryTree::FileType::Directory) {
+				find_recursive(subfs.Subtree(entry.name), rec_limit - 1);
+			} else if (entry.type == DirectoryTree::FileType::Regular && IsSupportedArchiveExtension(entry.name)) {
+				find_recursive(fs.Create(entry.name), rec_limit - 1);
 			}
 		}
-	}
+	};
 
-	return {};
+	find_recursive(fs, recursion_limit);
+
+	return games;
 }

@@ -10,7 +10,7 @@ extern "C" {
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_findGame(JNIEnv *env, jclass clazz, jstring path);
+Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass clazz, jstring path);
 
 #ifdef __cplusplus
 }
