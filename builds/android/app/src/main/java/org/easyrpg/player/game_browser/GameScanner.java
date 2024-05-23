@@ -1,5 +1,6 @@
 package org.easyrpg.player.game_browser;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -155,23 +157,38 @@ public class GameScanner {
         Context context = activity.getApplicationContext();
         SDL.setContext(context);
 
-            for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
-                String fileDocumentID = array[0];
+        final ArrayList<String> names = new ArrayList<>();
+        final ArrayList<Uri> fileURIs = new ArrayList<>();
 
-                String name = Helper.getFileNameFromDocumentID(fileDocumentID);
+        for (String[] array : Helper.listChildrenDocumentIDAndType(context, folderURI)) {
+            String fileDocumentID = array[0];
+
+            String name = Helper.getFileNameFromDocumentID(fileDocumentID);
             if (name.isEmpty()) {
-                    continue;
-                }
+                continue;
+            }
 
-                if (!name.startsWith(".")) {
-                        Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
-                Game game = findGame(fileURI.toString());
+            if (!name.startsWith(".")) {
+                Uri fileURI = Helper.getURIFromDocumentID(folderURI, fileDocumentID);
+                names.add(name);
+                fileURIs.add(fileURI);
+            }
+        }
 
-                            if (game != null) {
-                                gameList.add(game);
-                            }
-                        }
-                    }
+        for (int i = 0; i < names.size(); ++i) {
+            final String name = names.get(i);
+            final int j = i;
+            activity.runOnUiThread(() -> {
+                TextView myTextView = activity.findViewById(R.id.progressText);
+                myTextView.setText(String.format("%s (%d/%d)", name, j + 1, names.size()));
+            });
+
+            Game game = findGame(fileURIs.get(i).toString());
+
+            if (game != null) {
+                gameList.add(game);
+            }
+        }
     }
 
     public List<Game> getGameList() {
