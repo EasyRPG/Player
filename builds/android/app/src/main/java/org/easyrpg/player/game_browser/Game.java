@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
@@ -15,28 +16,43 @@ import java.io.ByteArrayOutputStream;
 
 public class Game implements Comparable<Game> {
     final static char escapeCode = '\u0001';
-	private final String title;
+	private String title;
     private final String gameFolderPath;
     private String savePath;
 	private boolean isFavorite;
-    private final DocumentFile gameFolder;
     private Bitmap titleScreen;
-    /** Path to the game folder inside of the zip */
-    private String zipInnerPath;
+    private boolean standalone = false;
 
-	private Game(DocumentFile gameFolder) {
-		this.gameFolder = gameFolder;
-	    this.title = gameFolder.getName();
-        Uri folderURI = gameFolder.getUri();
-	    this.gameFolderPath = folderURI.toString();
+	private Game(String gameFolderPath) {
+        int encoded_slash_pos = gameFolderPath.lastIndexOf("%2F");
+        if (encoded_slash_pos == -1) {
+            // Should not happen because the game is in a subdirectory
+            Log.e("EasyRPG", "Strange Uri " + gameFolderPath);
+        }
+        int slash_pos = gameFolderPath.indexOf("/", encoded_slash_pos);
+
+        // A file is provided when a / is after the encoded / (%2F)
+        if (slash_pos > -1) {
+            // Extract the filename and properly encode it
+            this.title = gameFolderPath.substring(slash_pos + 1);
+        } else {
+            this.title = gameFolderPath.substring(encoded_slash_pos + 3);
+        }
+
+        int dot_pos = this.title.indexOf(".");
+        if (dot_pos > -1) {
+            this.title = this.title.substring(0, dot_pos);
+        }
+
+        this.gameFolderPath = gameFolderPath;
         this.savePath = gameFolderPath;
 
         this.isFavorite = isFavoriteFromSettings();
 	}
 
-	public Game(DocumentFile gameFolder, Bitmap titleScreen) {
-	    this(gameFolder);
-        this.titleScreen = titleScreen;
+	public Game(String gameFolderPath, byte[] titleScreen) {
+	    this(gameFolderPath);
+        this.titleScreen = BitmapFactory.decodeByteArray(titleScreen, 0, titleScreen.length);;
     }
 
     /**
@@ -49,26 +65,22 @@ public class Game implements Comparable<Game> {
         this.title = "Standalone";
         this.gameFolderPath = gameFolder;
         this.savePath = saveFolder;
-        this.gameFolder = null;
         this.isFavorite = false;
+        this.standalone = true;
     }
 
-    private Game(DocumentFile gameFolder, String pathInZip, Bitmap titleScreen) {
-        this(gameFolder, titleScreen);
-        zipInnerPath = pathInZip;
-    }
-
-    public static Game fromZip(DocumentFile gameFolder, String pathInZip, String saveFolder, Bitmap titleScreen) {
-        Game game = new Game(gameFolder, pathInZip, titleScreen);
+    private Game(String gameFolderPath, String saveFolder, byte[] titleScreen) {
+        this(gameFolderPath, titleScreen);
         // is only relative here, launchGame will put this in the "saves" directory
-        game.setSavePath(saveFolder);
-        return game;
+        if (!saveFolder.isEmpty()) {
+            savePath = saveFolder;
+        }
     }
 
     public static Game fromCacheEntry(Context context, String cache) {
         String[] entries = cache.split(String.valueOf(escapeCode));
 
-        if (entries.length != 5) {
+        if (entries.length != 3) {
             return null;
         }
 
@@ -78,24 +90,12 @@ public class Game implements Comparable<Game> {
             return null;
         }
 
-        boolean isZip = Boolean.parseBoolean(entries[2]);
-        String zipInnerPath = null;
-
-        if (isZip) {
-            zipInnerPath = entries[3];
+        byte[] titleScreen = null;
+        if (!entries[2].equals("null")) {
+            titleScreen = Base64.decode(entries[2], 0);
         }
 
-        Bitmap titleScreen = null;
-        if (!entries[4].equals("null")) {
-            byte[] decodedByte = Base64.decode(entries[4], 0);
-            titleScreen = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-        }
-
-        if (isZip) {
-            return fromZip(gameFolder, zipInnerPath, savePath, titleScreen);
-        } else {
-            return new Game(gameFolder, titleScreen);
-        }
+        return new Game(entries[1], savePath, titleScreen);
     }
 
 	public String getTitle() {
@@ -162,13 +162,7 @@ public class Game implements Comparable<Game> {
         sb.append(savePath);
         sb.append(escapeCode);
 
-        sb.append(gameFolder.getUri());
-        sb.append(escapeCode);
-
-        sb.append(isZipArchive());
-        sb.append(escapeCode);
-
-        sb.append(zipInnerPath);
+        sb.append(gameFolderPath);
         sb.append(escapeCode);
 
         if (titleScreen != null) {
@@ -183,23 +177,11 @@ public class Game implements Comparable<Game> {
         return sb.toString();
     }
 
-    public DocumentFile getGameFolder() {
-        return gameFolder;
-    }
-
     public Bitmap getTitleScreen() {
         return titleScreen;
     }
 
     public Boolean isStandalone() {
-        return gameFolder == null;
-    }
-
-    public Boolean isZipArchive() {
-        return zipInnerPath != null;
-    }
-
-    public String getZipInnerPath() {
-        return zipInnerPath;
+        return standalone;
     }
 }

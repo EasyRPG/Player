@@ -57,10 +57,12 @@ public class GameBrowserActivity extends AppCompatActivity
 
         if (!libraryLoaded) {
             try {
+                System.loadLibrary("easyrpg_android");
                 System.loadLibrary("gamebrowser");
                 libraryLoaded = true;
             } catch (UnsatisfiedLinkError e) {
-                Log.e("EasyRPG Player", "Couldn't load libgamebrowser. XYZ parsing will be unavailable: " + e.getMessage());
+                Log.e("EasyRPG Player", "Couldn't load libgamebrowser: " + e.getMessage());
+		        throw e;
             }
         }
 

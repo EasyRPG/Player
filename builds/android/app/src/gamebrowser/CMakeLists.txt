@@ -7,8 +7,9 @@ add_library(gamebrowser
 	org_easyrpg_player_game_browser_GameScanner.h
 )
 
-find_package(PNG REQUIRED)
-target_link_libraries(gamebrowser PNG::PNG)
+set_target_properties(gamebrowser PROPERTIES DEBUG_POSTFIX "")
+
+target_link_libraries(gamebrowser easyrpg_android)
 
 if(BUILD_SHARED_LIBS)
 	set_property(TARGET gamebrowser PROPERTY POSITION_INDEPENDENT_CODE ON)

@@ -50,74 +50,53 @@ public class GameBrowserHelper {
     public static void launchGame(Context context, Game game, boolean debugMode) {
         String path = game.getGameFolderPath();
 
-        // Test again in case somebody messed with the file system
-        boolean valid = game.isStandalone() ||
-            (game.isZipArchive() && game.getGameFolder().canRead()) ||
-            (game.getGameFolder().isDirectory() && game.getGameFolder().canRead());
+        Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
+        ArrayList<String> args = new ArrayList<>();
 
-        if (valid) {
-            Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
-            ArrayList<String> args = new ArrayList<>();
+        // Command line passed via intent "command_line"
+        args.add("--project-path");
+        args.add(path);
 
-            // Command line passed via intent "command_line"
-            String savePath;
+        String savePath = path;
+        if (!game.getSavePath().isEmpty()) {
+            DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
 
-            if (game.isZipArchive()) {
-                // Create the redirected save folder
-                DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
-
-                args.add("--project-path");
-                args.add(path + "/" + game.getZipInnerPath());
-
-                // In error case the native code will try to put a save folder next to the zip
-                if (saveFolder != null) {
-                    savePath = saveFolder.getUri().toString();
-                    args.add("--save-path");
-                    args.add(savePath);
-                } else {
-                    savePath = path;
-                }
-            } else {
-                args.add("--project-path");
-                args.add(path);
-
-                savePath = game.getSavePath();
+            // In error case the native code will try to put a save folder next to the zip
+            if (saveFolder != null) {
+                savePath = saveFolder.getUri().toString();
                 args.add("--save-path");
                 args.add(savePath);
             }
-
-            Encoding enc = game.getEncoding();
-            if (enc.getIndex() > 0) {
-                // 0 = Auto, in that case let the Player figure it out
-                args.add("--encoding");
-                args.add(enc.getRegionCode());
-            }
-
-            args.add("--config-path");
-            args.add(context.getExternalFilesDir(null).getAbsolutePath());
-
-            // Soundfont
-            Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
-            if (soundfontUri != null) {
-                args.add("--soundfont");
-                args.add(soundfontUri.toString());
-            }
-
-            if (debugMode) {
-                args.add("--test-play");
-            }
-
-            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
-            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
-            intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
-
-            Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args);
-            Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));
-            context.startActivity(intent);
-        } else {
-            String msg = context.getString(R.string.not_valid_game).replace("$PATH", game.getTitle());
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         }
+
+        Encoding enc = game.getEncoding();
+        if (enc.getIndex() > 0) {
+            // 0 = Auto, in that case let the Player figure it out
+            args.add("--encoding");
+            args.add(enc.getRegionCode());
+        }
+
+        args.add("--config-path");
+        args.add(context.getExternalFilesDir(null).getAbsolutePath());
+
+        // Soundfont
+        Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
+        if (soundfontUri != null) {
+            args.add("--soundfont");
+            args.add(soundfontUri.toString());
+        }
+
+        if (debugMode) {
+            args.add("--test-play");
+        }
+
+        intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
+        intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
+        intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
+
+        Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args);
+        Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));
+        context.startActivity(intent);
     }
 
     public static void openSettingsActivity(Context context) {
