@@ -47,13 +47,6 @@
     <string name="error_saf_download_selected">The Download folder cannot be used as the EasyRPG folder.</string>
     <string name="error_saf_folder_not_empty">The selected folder contains other files and cannot be used as the EasyRPG folder. When you remove all files inside the folder you can use it as the EasyRPG folder.</string>
     <string name="error_saf_bad_content_provider">The selected folder cannot be used as the EasyRPG folder. This problem can occur for various reasons, for example if you have selected the root directory or a storage location in the cloud.\n\n</string>
-    <string name="error_saf_bad_content_provider_create" translatable="false">File creation failed.</string>
-    <string name="error_saf_bad_content_provider_read" translatable="false">Read operation failed.</string>
-    <string name="error_saf_bad_content_provider_write" translatable="false">Write operation failed.</string>
-    <string name="error_saf_bad_content_provider_delete" translatable="false">File deletion failed.</string>
-    <string name="error_saf_bad_content_provider_filename_ignored" translatable="false">Provided filename ignored.</string>
-    <string name="error_saf_bad_content_provider_base_folder_not_found" translatable="false">Selected folder not found.</string>
-    <string name="error_saf_bad_content_provider_file_access" translatable="false">A file was successfully created but cannot be accessed.</string>
 
     <!--Ingame menu-->
     <string name="toggle_ui">Toggle virtual buttons</string>

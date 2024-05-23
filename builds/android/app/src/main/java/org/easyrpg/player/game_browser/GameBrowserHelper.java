@@ -242,31 +242,31 @@ public class GameBrowserHelper {
                 break;
             case BAD_CONTENT_PROVIDER_CREATE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_create);
+                errorMsg += "File creation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_READ:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_read);
+                errorMsg += "Read operation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_WRITE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_write);
+                errorMsg += "Write operation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_DELETE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_delete);
+                errorMsg += "File deletion failed.";
                 break;
             case BAD_CONTENT_PROVIDER_FILENAME_IGNORED:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_filename_ignored);
+                errorMsg += "Provided filename ignored.";
                 break;
             case BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_base_folder_not_found);
+                errorMsg += "Selected folder not found.";
                 break;
             case BAD_CONTENT_PROVIDER_FILE_ACCESS:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_file_access);
+                errorMsg += "A file was successfully created but cannot be accessed.";
                 break;
             case FOLDER_NOT_ALMOST_EMPTY:
                 errorMsg = context.getString(R.string.error_saf_folder_not_empty);
