@@ -31,11 +31,14 @@
 #include <vector>
 #include <array>
 
-
 #include "filefinder.h"
 #include "utils.h"
 #include "string_view.h"
 #include "platform/android/android.h"
+
+#include <lcf/ldb/reader.h>
+#include <lcf/reader_util.h>
+#include <lcf/encoder.h>
 
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
@@ -216,28 +219,86 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass 
 			}
 		}
 
-		// Very simple title graphic search: The first image in "Title" is used
-		auto title_fs = fs.Subtree("Title");
+		/// Obtaining of the title image:
+		// 1. When the title directory contains only one image: Load it
+		// 2. Attempt to fetch it from the database
+		// 3. If this fails grab the first from the title folder
 		jbyteArray title_image = nullptr;
-		if (title_fs) {
-			for (auto &[name, entry]: *title_fs.ListDirectory()) {
-				if (entry.type == DirectoryTree::FileType::Regular) {
-					if (StringView(name).ends_with(".xyz")) {
-						auto is = title_fs.OpenInputStream(entry.name);
-						title_image = readXyz(env, is);
-					} else if (StringView(name).ends_with(".png") ||
-							   StringView(name).ends_with(".bmp")) {
-						auto is = title_fs.OpenInputStream(entry.name);
-						if (!is) {
-							// When opening of the image fails it is an unsupported archive format
-							// Skip this game
-							continue;
-						}
 
-						auto vec = Utils::ReadStream(is);
-						title_image = env->NewByteArray(vec.size());
-						env->SetByteArrayRegion(title_image, 0, vec.size(),
-												reinterpret_cast<jbyte *>(vec.data()));
+		auto load_image = [&](Filesystem_Stream::InputStream& stream) {
+			if (!stream) {
+				return;
+			}
+
+			if (stream.GetName().ends_with(".xyz")) {
+				title_image = readXyz(env, stream);
+			} else if (stream.GetName().ends_with(".png") || stream.GetName().ends_with(".bmp")) {
+				auto vec = Utils::ReadStream(stream);
+				title_image = env->NewByteArray(vec.size());
+				env->SetByteArrayRegion(title_image, 0, vec.size(), reinterpret_cast<jbyte *>(vec.data()));
+			}
+		};
+
+		// 1. When the title directory contains only one image: Load it
+		auto title_fs = fs.Subtree("Title");
+		if (title_fs) {
+			auto& content = *title_fs.ListDirectory();
+			if (content.size() == 1 && content[0].second.type == DirectoryTree::FileType::Regular) {
+				auto is = title_fs.OpenInputStream(content[0].second.name);
+				if (!is) {
+					// When opening of the image fails it is in an unsupported archive format
+					// Skip this game
+					continue;
+				}
+				load_image(is);
+			}
+		}
+
+		// 2. Attempt to fetch it from the database
+		if (!title_image) {
+			std::string db_file = fs.FindFile("RPG_RT.ldb");
+			if (!db_file.empty()) {
+				// This can fail when the database file is renamed, is not an error condition
+				auto is = fs.OpenInputStream(db_file);
+				if (!is) {
+					// When opening of the db fails it is in an unsupported archive format
+					// Skip this game
+					continue;
+				} else {
+					auto db = lcf::LDB_Reader::Load(is);
+					if (!db) {
+						// Database corrupted? Skip
+						continue;
+					}
+
+					if (!db->system.title_name.empty()) {
+						auto encodings = lcf::ReaderUtil::DetectEncodings(*db);
+						for (auto &enc: encodings) {
+							lcf::Encoder encoder(enc);
+							if (encoder.IsOk()) {
+								std::string title_name = lcf::ToString(db->system.title_name);
+								encoder.Encode(title_name);
+								auto title_is = fs.OpenFile("Title", title_name, FileFinder::IMG_TYPES);
+								// Title image was found -> Load it
+								load_image(title_is);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// 3. Simply grab the first from the title folder
+		if (!title_image) {
+			// No image loaded yet: Grab the first from the title folder
+			if (title_fs) {
+				for (auto &[name, entry]: *title_fs.ListDirectory()) {
+					if (entry.type == DirectoryTree::FileType::Regular) {
+						auto is = title_fs.OpenInputStream(entry.name);
+						load_image(is);
+						if (title_image) {
+							break;
+						}
 					}
 				}
 			}
