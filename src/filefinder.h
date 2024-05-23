@@ -353,6 +353,15 @@ namespace FileFinder {
 	 * @param fs Filesystem to use
 	 */
 	void DumpFilesystem(FilesystemView fs);
+
+	/**
+	 * Searches recursively for a game directory.
+	 *
+	 * @param fs Filesystem where the search starts
+	 * @param recursion_limit Recursion depth
+	 * @return View of the game directory when found
+	 */
+	FilesystemView FindGameRecursive(FilesystemView fs, int recursion_limit = 3);
 } // namespace FileFinder
 
 template<typename T>
