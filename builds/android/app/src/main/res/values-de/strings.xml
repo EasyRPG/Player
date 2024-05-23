@@ -86,13 +86,13 @@
     <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden.
 \n
 \nDer von dir ausgewählte EasyRPG-Ordner enthält einen Spiele-Ordner (games). Verwende die Datei-App deines Systems um Spiele in diesem Ordner abzulegen.
-\nSpiele können in Ordnern oder ZIP-Archiven sein.
+\nSpiele können in Ordnern oder ZIP/LZH-Archiven sein.
 \n
 \nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
     <string name="open_games_folder">Den Spiele-Ordner (games) öffnen</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003-Spiele müssen im Unterverzeichnis \"games\" platziert werden.
-\nDie Spiele müssen entpackt sein oder in einem ZIP-Archiv vorliegen.
-\nRAR, LZH und EXE-Dateien werden NICHT unterstützt.
+\nDie Spiele müssen entpackt sein oder in einem ZIP/LZH-Archiv vorliegen.
+\nRAR-, 7z- und EXE-Dateien werden NICHT unterstützt.
 \n
 \nOptionale Funktionen (wirf einen Blick in die Einstellungen):
 \n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Assets) kann bereitgestellt werden
