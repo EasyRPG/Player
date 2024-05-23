@@ -41,7 +41,7 @@ protected:
 private:
 	struct StackItem {
 		bool is_ce;
-		int evt_id;
+		int evt_id, page_id;
 		std::string name;
 		int cmd_current, cmd_count;
 	};
@@ -53,8 +53,7 @@ private:
 	std::string interpreter_desc;
 	int lines_without_stack = 0;
 
-	int digits_stackitemno = 0, digits_cmdcount = 0;
-	
+	int digits_stackitemno = 0, digits_evt_id = 0, digits_page_id = 0, digits_evt_combined_id = 0, digits_cmdcount = 0;
 	std::vector<StackItem> stack_display_items;
 };
 

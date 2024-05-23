@@ -54,12 +54,21 @@ void Window_Interpreter::SetStackState(bool is_ce, std::string interpreter_desc,
 void Window_Interpreter::Refresh() {
 	stack_display_items.clear();
 
-	int max_cmd_count = 0;
+	int max_cmd_count = 0, max_evt_id = 10, max_page_id = 0;
 
 	for (int i = state.stack.size() - 1; i >= 0; i--) {
 		int evt_id = state.stack[i].event_id;
+		int page_id = 0;
+		if ((Player::IsPatchManiac() || Player::HasEasyRpgExtensions()) && state.stack[i].maniac_event_id > 0) {
+			evt_id = state.stack[i].maniac_event_id;
+			page_id = state.stack[i].maniac_event_page_id;
+		}
+		if (evt_id == 0 && i == 0)
+			evt_id = display_item.owner_evt_id;
+
 		bool is_calling_ev_ce = false;
 
+		//FIXME: There are some currently unimplemented SaveEventExecFrame fields introduced via the ManiacPatch which should be used to properly get event state information
 		if (evt_id == 0 && i > 0) {
 			auto& prev_frame = state.stack[i - 1];
 			auto& com = prev_frame.commands[prev_frame.current_command - 1];
@@ -74,9 +83,16 @@ void Window_Interpreter::Refresh() {
 				}
 			}
 		}
+		if (evt_id > max_evt_id)
+			max_evt_id = evt_id;
+
+		if (page_id > max_page_id)
+			max_page_id = page_id;
+
 		StackItem item = StackItem();
 		item.is_ce = is_calling_ev_ce || (i == 0 && this->is_ce);
 		item.evt_id = evt_id;
+		item.page_id = page_id;
 		item.name = "";
 		item.cmd_current = state.stack[i].current_command;
 		item.cmd_count = state.stack[i].commands.size();
@@ -89,7 +105,7 @@ void Window_Interpreter::Refresh() {
 		} else {
 			auto* ev = Game_Map::GetEvent(evt_id);
 			if (ev) {
-				//TODO: map could have changed, but map_id isn't available
+				//FIXME: map could have changed, but map_id isn't available
 				item.name = ToString(ev->GetName());
 			}
 		}
@@ -109,7 +125,13 @@ void Window_Interpreter::Refresh() {
 	}
 
 	digits_stackitemno = std::log10(stack_display_items.size()) + 1;
+	digits_evt_id = max_evt_id == 0 ? 2 : std::log10(max_evt_id) + 1;
+	digits_page_id = max_page_id == 0 ? 0 : std::log10(max_page_id) + 1;
 	digits_cmdcount = std::log10(max_cmd_count) + 1;
+
+	digits_evt_combined_id = digits_evt_id + 3;
+	if (digits_page_id > 0)
+		digits_evt_combined_id += digits_page_id + 2;
 
 	CreateContents();
 	contents->Clear();
@@ -160,16 +182,23 @@ void Window_Interpreter::DrawStackLine(int index) {
 	StackItem& item = stack_display_items[index];
 
 	contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format("[{:0" + std::to_string(digits_stackitemno) + "d}]", state.stack.size() - index));
-	contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("{}{:04d}", item.is_ce ? "CE" : "EV", item.evt_id));
+	if (item.is_ce) {
+		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("CE{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id));
+	} else if (item.page_id > 0) {
+		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}[{:0" + std::to_string(digits_page_id) + "d}]", item.evt_id, item.page_id));
+	} else {
+		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id));
+	}
 
 	std::string name = item.name;
-	int max_length = 22;
+	int max_length = 28;
 	max_length -= digits_stackitemno;
+	max_length -= digits_evt_combined_id;
 	max_length -= digits_cmdcount * 2;
 	if (name.length() > max_length) {
 		name = name.substr(0, max_length - 3) + "...";
 	}
-	contents->TextDraw(rect.x + (digits_stackitemno * 6) + 56, rect.y, Font::ColorDefault, name, Text::AlignLeft);
+	contents->TextDraw(rect.x + ((digits_stackitemno + digits_evt_combined_id) * 6) + 16, rect.y, Font::ColorDefault, name, Text::AlignLeft);
 	contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorDefault, fmt::format("{:0" + std::to_string(digits_cmdcount) + "d}/{:0" + std::to_string(digits_cmdcount) + "d}", item.cmd_current, item.cmd_count), Text::AlignRight);
 }
 

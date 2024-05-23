@@ -66,7 +66,8 @@ public:
 	void Push(
 			std::vector<lcf::rpg::EventCommand> _list,
 			int _event_id,
-			bool started_by_decision_key = false
+			bool started_by_decision_key = false,
+			int event_page_id = 0
 	);
 	void Push(Game_Event* ev);
 	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);

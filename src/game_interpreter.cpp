@@ -102,7 +102,8 @@ bool Game_Interpreter::IsRunning() const {
 void Game_Interpreter::Push(
 	std::vector<lcf::rpg::EventCommand> _list,
 	int event_id,
-	bool started_by_decision_key
+	bool started_by_decision_key,
+	int event_page_id
 ) {
 	if (_list.empty()) {
 		return;
@@ -118,6 +119,10 @@ void Game_Interpreter::Push(
 	frame.current_command = 0;
 	frame.triggered_by_decision_key = started_by_decision_key;
 	frame.event_id = event_id;
+	if (Player::IsPatchManiac() || Player::HasEasyRpgExtensions()) {
+		frame.maniac_event_id = event_id;
+		frame.maniac_event_page_id = event_page_id;
+	}
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
 		Main_Data::game_system->ClearMessageFace();
@@ -526,11 +531,11 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 // Setup Starting Event
 void Game_Interpreter::Push(Game_Event* ev) {
-	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
+	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey(), ev->GetActivePage() ? ev->GetActivePage()->ID : 0);
 }
 
 void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key) {
-	Push(page->event_commands, ev->GetId(), triggered_by_decision_key);
+	Push(page->event_commands, ev->GetId(), triggered_by_decision_key, page->ID);
 }
 
 void Game_Interpreter::Push(Game_CommonEvent* ev) {
@@ -4001,7 +4006,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 		return true;
 	}
 
-	Push(page->event_commands, event->GetId(), false);
+	Push(page->event_commands, event->GetId(), false, page->ID);
 
 	return true;
 }
@@ -5109,7 +5114,7 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push({ cmd }, GetCurrentEventId(), false);
+	Push({ cmd }, GetCurrentEventId(), false); //FIXME: add some new flag, so the interpreter debug view (window_interpreter) can differentiate this frame from normal ones
 
 	return true;
 }
