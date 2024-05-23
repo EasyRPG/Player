@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Helper {
 	/**
@@ -215,17 +214,21 @@ public class Helper {
         return filesList;
     }
 
-    /** List files (with DOCUMENT_ID and MIME_TYPE) in the folder pointed by "folderURI" */
-    public static List<String[]> listChildrenDocumentIDAndType(Context context, Uri folderUri){
+    /**
+     * List files in the folder pointed by "folderURI"
+     * @return Array of Document ID, mimeType, display name (filename)
+     */
+    public static List<String[]> listChildrenDocuments(Context context, Uri folderUri){
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         List<String[]> filesList = new ArrayList<>();
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_MIME_TYPE }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
                 String mimeType = c.getString(1);
-                filesList.add(new String[] {documentID, mimeType});
+                String fileName = c.getString(2);
+                filesList.add(new String[] {documentID, mimeType, fileName});
             }
             c.close();
         } catch (Exception e) {
@@ -238,10 +241,10 @@ public class Helper {
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
-                String fileName = getFileNameFromDocumentID(documentID);
+                String fileName = c.getString(1);
                 if (fileName.equals(fileNameToFind)) {
                     Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
                     c.close();
@@ -261,10 +264,10 @@ public class Helper {
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
-                String fileName = getFileNameFromDocumentID(documentID);
+                String fileName = c.getString(1);
                 if (fileName.matches(regex)) {
                     Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
                     uriList.add(uri);
@@ -280,13 +283,6 @@ public class Helper {
     public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
         Uri uri = findFileUri(context, folderUri, fileNameToFind);
         return getFileFromURI(context, uri);
-    }
-
-    public static String getFileNameFromDocumentID(String documentID) {
-        if (documentID != null) {
-            return documentID.substring(documentID.lastIndexOf('/') + 1);
-        }
-        return "";
     }
 
     public static DocumentFile getFileFromURI (Context context, Uri fileURI) {
