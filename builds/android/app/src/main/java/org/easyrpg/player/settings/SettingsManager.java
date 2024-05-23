@@ -37,6 +37,7 @@ public class SettingsManager {
     private static int imageSize, gameResolution;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static int musicVolume, soundVolume;
+    private static int speedModifierA;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
     private static Uri easyRPGFolderURI, soundFountFileURI;
@@ -76,10 +77,11 @@ public class SettingsManager {
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
         stretch = configIni.video.getBoolean(STRETCH.toString(), false);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
-        fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
         musicVolume = configIni.audio.getInteger(MUSIC_VOLUME.toString(), 100);
         soundVolume = configIni.audio.getInteger(SOUND_VOLUME.toString(), 100);
+
+        speedModifierA = configIni.input.getInteger(SPEED_MODIFIER_A.toString(), 3);
 
         favoriteGamesList = new HashSet<>(sharedPref.getStringSet(FAVORITE_GAMES.toString(), new HashSet<>()));
 
@@ -194,16 +196,6 @@ public class SettingsManager {
     public static void setFastForwardMode(int i) {
         fastForwardMode = i;
         editor.putInt(SettingsEnum.FAST_FORWARD_MODE.toString(), i);
-        editor.commit();
-    }
-
-    public static int getFastForwardMultiplier() {
-        return fastForwardMultiplier;
-    }
-
-    public static void setFastForwardMultiplier(int i) {
-        fastForwardMultiplier = i;
-        editor.putInt(SettingsEnum.FAST_FORWARD_MULTIPLIER.toString(), i);
         editor.commit();
     }
 
@@ -397,5 +389,15 @@ public class SettingsManager {
     public static void setGameEncoding(Game game, Encoding encoding) {
         editor.putString(game.getTitle() + "_Encoding", encoding.getRegionCode());
         editor.commit();
+    }
+
+    public static int getSpeedModifierA() {
+        return speedModifierA;
+    }
+
+    public static void setSpeedModifierA(int speedModifierA) {
+        SettingsManager.speedModifierA = speedModifierA;
+        configIni.input.set(SPEED_MODIFIER_A.toString(), speedModifierA);
+        configIni.save();
     }
 }
