@@ -45,10 +45,9 @@ Window_Interpreter::~Window_Interpreter() {
 
 }
 
-void Window_Interpreter::SetStackState(bool is_ce, std::string interpreter_desc, lcf::rpg::SaveEventExecState state) {
-	this->interpreter_desc = interpreter_desc;
+void Window_Interpreter::SetStackState(bool is_ce, int owner_evt_id, std::string interpreter_desc, lcf::rpg::SaveEventExecState state) {
+	this->display_item = { is_ce, owner_evt_id, interpreter_desc };
 	this->state = state;
-	this->is_ce = is_ce;
 }
 
 void Window_Interpreter::Refresh() {
@@ -73,12 +72,14 @@ void Window_Interpreter::Refresh() {
 			auto& prev_frame = state.stack[i - 1];
 			auto& com = prev_frame.commands[prev_frame.current_command - 1];
 			if (com.code == 12330) { // CallEvent
-				is_calling_ev_ce = true;
 				if (com.parameters[0] == 0) {
+					is_calling_ev_ce = true;
 					evt_id = com.parameters[1];
 				} else if (com.parameters[0] == 3 && Player::IsPatchManiac()) {
+					is_calling_ev_ce = true;
 					evt_id = Main_Data::game_variables->Get(com.parameters[1]);
 				} else if (com.parameters[0] == 4 && Player::IsPatchManiac()) {
+					is_calling_ev_ce = true;
 					evt_id = Main_Data::game_variables->GetIndirect(com.parameters[1]);
 				}
 			}
@@ -90,7 +91,7 @@ void Window_Interpreter::Refresh() {
 			max_page_id = page_id;
 
 		StackItem item = StackItem();
-		item.is_ce = is_calling_ev_ce || (i == 0 && this->is_ce);
+		item.is_ce = is_calling_ev_ce || (i == 0 && this->display_item.is_ce);
 		item.evt_id = evt_id;
 		item.page_id = page_id;
 		item.name = "";
@@ -147,7 +148,7 @@ void Window_Interpreter::Refresh() {
 }
 
 bool Window_Interpreter::IsValid() {
-	return !interpreter_desc.empty();
+	return !display_item.desc.empty();
 }
 
 void Window_Interpreter::Update() {
@@ -159,7 +160,7 @@ void Window_Interpreter::DrawDescriptionLines() {
 	Rect rect = GetItemRect(i++);
 	contents->ClearRect(rect);
 
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, interpreter_desc);
+	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, display_item.desc);
 
 	if (state.wait_movement) {
 		rect = GetItemRect(i++);

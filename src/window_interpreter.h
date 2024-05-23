@@ -30,7 +30,7 @@ public:
 
 	void Update() override;
 
-	void SetStackState(bool is_ce, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
+	void SetStackState(bool is_ce, int owner_evt_id, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
 	void Refresh();
 	bool IsValid();
 
@@ -39,6 +39,12 @@ protected:
 	void DrawDescriptionLines();
 	void DrawStackLine(int index);
 private:
+	struct InterpDisplayItem {
+		bool is_ce;
+		int owner_evt_id;
+		std::string desc;
+	};
+
 	struct StackItem {
 		bool is_ce;
 		int evt_id, page_id;
@@ -48,12 +54,12 @@ private:
 
 	const int lines_without_stack_fixed = 3;
 	
-	bool is_ce = false;
 	lcf::rpg::SaveEventExecState state;
-	std::string interpreter_desc;
 	int lines_without_stack = 0;
 
 	int digits_stackitemno = 0, digits_evt_id = 0, digits_page_id = 0, digits_evt_combined_id = 0, digits_cmdcount = 0;
+
+	InterpDisplayItem display_item;
 	std::vector<StackItem> stack_display_items;
 };
 
