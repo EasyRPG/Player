@@ -105,13 +105,13 @@ public class SettingsManager {
 
     public static void addFavoriteGame(Game game) {
         // Update user's preferences
-        favoriteGamesList.add(game.getGameFolderPath());
+        favoriteGamesList.add(game.getKey());
 
         setFavoriteGamesList(favoriteGamesList);
     }
 
     public static void removeAFavoriteGame(Game game) {
-        favoriteGamesList.remove(game.getTitle());
+        favoriteGamesList.remove(game.getKey());
         setFavoriteGamesList(favoriteGamesList);
     }
 
@@ -383,11 +383,11 @@ public class SettingsManager {
     }
 
     public static Encoding getGameEncoding(Game game) {
-        return Encoding.regionCodeToEnum(pref.getString(game.getTitle() + "_Encoding", ""));
+        return Encoding.regionCodeToEnum(pref.getString(game.getKey() + "_Encoding", ""));
     }
 
     public static void setGameEncoding(Game game, Encoding encoding) {
-        editor.putString(game.getTitle() + "_Encoding", encoding.getRegionCode());
+        editor.putString(game.getKey() + "_Encoding", encoding.getRegionCode());
         editor.commit();
     }
 

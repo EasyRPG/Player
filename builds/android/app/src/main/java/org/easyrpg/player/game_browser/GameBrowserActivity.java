@@ -321,7 +321,7 @@ public class GameBrowserActivity extends AppCompatActivity
                         .setTitle(R.string.settings)
                         .setItems(choices_list, (dialog, which) -> {
                             if (which == 0) {
-                                chooseRegion(activity, gameList.get(position));
+                                chooseRegion(activity, holder, gameList.get(position));
                             } else if (which == 1) {
                                 launchGame(position, true);
                             }
@@ -365,7 +365,7 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.favoriteButton.setImageResource(buttonImageResource);
         }
 
-        public void chooseRegion(final Context context, final Game game) {
+        public void chooseRegion(final Context context, final ViewHolder holder, final Game game) {
             // The list of region choices
             String[] region_array = Encoding.getEncodingDescriptions(context);
 
@@ -383,6 +383,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
                     if (!selectedEncoding.equals(encoding)) {
                         game.setEncoding(selectedEncoding);
+                        holder.title.setText(game.getTitle());
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);
