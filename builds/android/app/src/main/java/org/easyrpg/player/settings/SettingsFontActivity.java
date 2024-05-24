@@ -2,12 +2,15 @@ package org.easyrpg.player.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -18,6 +21,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.libsdl.app.SDL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class SettingsFontActivity extends AppCompatActivity {
         fonts2ListLayout = findViewById(R.id.settings_font2_list);
 
         SettingsManager.init(getApplicationContext());
+        SDL.setContext(getApplicationContext());
 
         // Setup UI components
         // The Font Button
@@ -98,6 +103,33 @@ public class SettingsFontActivity extends AppCompatActivity {
         }
         if (!font2Selected) {
             font2List.get(0).setSelected(true);
+        }
+    }
+
+    private void updatePreview(boolean firstFont) {
+        ImageView imageView;
+        String font = "";
+        int size;
+        if (firstFont) {
+            imageView = findViewById(R.id.settings_font1_preview);
+            Uri fontUri = SettingsManager.getFont1FileURI();
+            if (fontUri != null) {
+                font = fontUri.toString();
+            }
+            size = SettingsManager.getFont1Size();
+        } else {
+            imageView = findViewById(R.id.settings_font2_preview);
+            Uri fontUri = SettingsManager.getFont2FileURI();
+            if (fontUri != null) {
+                font = fontUri.toString();
+            }
+            size = SettingsManager.getFont2Size();
+        }
+
+        byte[] image = DrawText(font, size, firstFont);
+        if (image != null) {
+            Bitmap bitmap = Helper.createBitmapFromRGBA(image,304, 16 * 6);
+            imageView.setImageBitmap(bitmap);
         }
     }
 
@@ -183,12 +215,14 @@ public class SettingsFontActivity extends AppCompatActivity {
                     s.getRadioButton().setChecked(false);
                 }
                 radioButton.setChecked(true);
+                updatePreview(true);
             } else {
                 SettingsManager.setFont2FileURI(uri);
                 for (FontItemList s : font2List) {
                     s.getRadioButton().setChecked(false);
                 }
                 radioButton.setChecked(true);
+                updatePreview(false);
             }
         }
 
@@ -214,16 +248,17 @@ public class SettingsFontActivity extends AppCompatActivity {
     }
 
     private void configureFont1Size() {
-        SeekBar font1SizeSeekBar = findViewById(R.id.settings_font1_size);
-        font1SizeSeekBar.setProgress(SettingsManager.getFont1Size() - SIZE_MIN);
+        SeekBar fontSize1SeekBar = findViewById(R.id.settings_font1_size);
+        fontSize1SeekBar.setProgress(SettingsManager.getFont1Size() - SIZE_MIN);
 
         TextView t = findViewById(R.id.settings_font1_size_text_view);
 
-        font1SizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        fontSize1SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 SettingsManager.setFont1Size(seekBar.getProgress() + SIZE_MIN);
+                updatePreview(true);
             }
 
             @Override
@@ -232,11 +267,12 @@ public class SettingsFontActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                t.setText(String.valueOf(font1SizeSeekBar.getProgress() + SIZE_MIN));
+                t.setText(String.valueOf(fontSize1SeekBar.getProgress() + SIZE_MIN));
             }
         });
 
-        t.setText(String.valueOf(font1SizeSeekBar.getProgress() + SIZE_MIN));
+        t.setText(String.valueOf(fontSize1SeekBar.getProgress() + SIZE_MIN));
+        updatePreview(true);
     }
 
     private void configureFont2Size() {
@@ -250,6 +286,7 @@ public class SettingsFontActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 SettingsManager.setFont2Size(seekBar.getProgress() + SIZE_MIN);
+                updatePreview(false);
             }
 
             @Override
@@ -263,6 +300,9 @@ public class SettingsFontActivity extends AppCompatActivity {
         });
 
         t.setText(String.valueOf(fontSize2SeekBar.getProgress() + SIZE_MIN));
+        updatePreview(false);
     }
+
+    private static native byte[] DrawText(String font, int size, boolean firstFont);
 }
 

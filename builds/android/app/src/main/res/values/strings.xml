@@ -109,7 +109,9 @@ Please tell us in detail what went wrong.\n\n
     <string name="open_rtp_folder">Open the RTP folder</string>
     <string name="open_fonts_folder">Open the Fonts folder</string>
     <string name="settings_fonts_explanation">Put fonts in the \"fonts\" folder. For the best result use TTF fonts or bitmap (FON) fonts.</string>
-    <string name="settings_fonts_explanation2">The game can decide whether it wants the first font or the second font.</string>
+    <string name="settings_fonts_explanation2">The game decides whether it uses the first font or the second font.</string>
+    <string name="settings_fonts_size_explanation">The font size setting has no effect when using the built-in font or certain bitmap fonts.</string>
+    <string name="settings_fonts_size_explanation2">The size must be set so that the # is at least partially visible. If you cannot see it, the text will be cut off in-game.</string>
     <string name="settings_font_1">First Font:</string>
     <string name="settings_font_2">Second Font:</string>
     <string name="settings_font_size">Font size</string>

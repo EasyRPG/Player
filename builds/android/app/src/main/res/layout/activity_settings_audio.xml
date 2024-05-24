@@ -92,11 +92,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_soundfont_restart_app"
-            android:textSize="18sp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/settings_soundfont_found"
             android:textSize="20sp"
             android:paddingTop="10dp"/>
