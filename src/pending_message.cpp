@@ -159,7 +159,11 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 			return ToString(actor->GetName());
 		}
 	} else if (ch == 'V' || ch == 'v') {
+#ifdef LIBLCF_STUB_COMSTRING_VARSUBSTITUTION
+		if (!Player::HasEasyRpgExtensions()) {
+#else
 		if (!Player::HasEasyRpgExtensions() || !lcf::Data::system.easyrpg_var_substitution_formatting) {
+#endif
 			auto parse_ret = Game_Message::ParseVariable(*iter, end, escape_char, true);
 			*iter = parse_ret.next;
 			int value = parse_ret.value;

@@ -34,6 +34,8 @@
 #include "lcf/rpg/treemap.h"
 #include "lcf/rpg/database.h"
 
+#define LIBLCF_STUB_COMSTRING_VARSUBSTITUTION
+
 namespace lcf {
 
 /**

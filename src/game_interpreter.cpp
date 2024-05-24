@@ -1786,7 +1786,11 @@ int Game_Interpreter::ValueOrVariableBitfield(lcf::rpg::EventCommand const& com,
 }
 
 std::string Game_Interpreter::CommandString(lcf::rpg::EventCommand const& com) {
+#ifdef LIBLCF_STUB_COMSTRING_VARSUBSTITUTION
+	if (!Player::HasEasyRpgExtensions()) {
+#else
 	if (!Player::HasEasyRpgExtensions() || !lcf::Data::system.easyrpg_var_substitution_in_commands) {
+#endif
 		return ToString(com.string);
 	}
 	return PendingMessage::ApplyTextInsertingCommands(ToString(com.string), Player::escape_char, Game_Message::CommandCodeInserter);
