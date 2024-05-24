@@ -125,7 +125,7 @@ public class InitActivity extends AppCompatActivity {
             String saveDir = getExternalFilesDir(null).getAbsolutePath() + "/Save";
             new File(saveDir).mkdirs();
 
-            Game project = new Game(gameDir, saveDir, "", null);
+            Game project = new Game(gameDir, saveDir, null);
             project.setStandalone(true);
             GameBrowserHelper.launchGame(this, project);
             finish();

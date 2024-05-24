@@ -8,9 +8,11 @@
 extern "C" {
 #endif
 
-extern "C"
 JNIEXPORT jobject JNICALL
 Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass clazz, jstring path, jstring jmain_dir_name);
+
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject thiz);
 
 #ifdef __cplusplus
 }
