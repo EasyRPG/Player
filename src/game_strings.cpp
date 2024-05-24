@@ -322,7 +322,9 @@ std::string Game_Strings::Extract(StringView string, bool as_hex) {
 		cmd_fn = ManiacsCommandInserter;
 	}
 
-	return PendingMessage::ApplyTextInsertingCommands(ToString(string), Player::escape_char, cmd_fn);
+	std::string str = ToString(string);
+	PendingMessage::ApplyTextInsertingCommands(str, Player::escape_char, cmd_fn);
+	return str;
 }
 
 std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
