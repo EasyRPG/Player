@@ -111,6 +111,7 @@ public class Helper {
             createFolder(context, easyRPGFolder, SettingsManager.GAMES_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.SOUND_FONTS_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.SAVES_FOLDER_NAME);
+            createFolder(context, easyRPGFolder, SettingsManager.FONTS_FOLDER_NAME);
 
             // The .nomedia file (avoid media app to scan games and RTP folders)
             if (Helper.findFile(context, easyRPGFolder.getUri(), ".nomedia") == null) {

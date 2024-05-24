@@ -65,6 +65,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="video">Video</string>
     <string name="audio">Audio</string>
     <string name="input">Input</string>
+    <string name="font">Font</string>
     <string name="easyrpg_folders">EasyRPG Folders</string>
     <string name="settings">Settings</string>
     <string name="screen_size">Screen scaling:</string>
@@ -106,7 +107,13 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_rtp_support">Enable RTP support</string>
     <string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".\nPlease note that enabling RTP support will significantly increase the initial loading time of a game.</string>
     <string name="open_rtp_folder">Open the RTP folder</string>
-
+    <string name="open_fonts_folder">Open the Fonts folder</string>
+    <string name="settings_fonts_explanation">Put fonts in the \"fonts\" folder. For the best result use TTF fonts or bitmap (FON) fonts.</string>
+    <string name="settings_fonts_explanation2">The game can decide whether it wants the first font or the second font.</string>
+    <string name="settings_font_1">First Font:</string>
+    <string name="settings_font_2">Second Font:</string>
+    <string name="settings_font_size">Font size</string>
+    <string name="settings_font_default">Built-In Font</string>
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage Input Layouts:</string>
     <string name="edit_name">Edit name</string>
