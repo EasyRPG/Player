@@ -44,7 +44,7 @@ PendingMessage::PendingMessage(PendingMessage::CommandInserter cmd_fn) :
 
 int PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
-	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, command_inserter);
+	ApplyTextInsertingCommands(msg, Player::escape_char, command_inserter);
 	texts.push_back(std::move(msg));
 	return texts.size();
 }
@@ -94,17 +94,15 @@ void PendingMessage::SetChoiceResetColors(bool value) {
 	choice_reset_color = value;
 }
 
-std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32_t escape_char, const CommandInserter& cmd_fn) {
+void PendingMessage::ApplyTextInsertingCommands(std::string& input, uint32_t escape_char, const CommandInserter& cmd_fn) {
 	if (input.empty()) {
-		return input;
+		return;
 	}
 
-	std::string output;
-
 	const char* iter = input.data();
-	const auto end = input.data() + input.size();
+	auto end = input.data() + input.size();
 
-	const char* start_copy = iter;
+	const char* start_replace = nullptr;
 	while (iter != end) {
 		auto ret = Utils::UTF8Next(iter, end);
 		if (ret.ch != escape_char) {
@@ -117,8 +115,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			break;
 		}
 
-		output.append(start_copy, iter - start_copy);
-		start_copy = iter;
+		start_replace = iter;
 
 		iter = ret.next;
 		if (iter == end) {
@@ -130,19 +127,17 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 
 		auto fn_res = cmd_fn(ch, &iter, end, escape_char);
 		if (fn_res) {
-			output.append(*fn_res);
-			start_copy = iter;
-		} 
-	}
+			size_t repl_pos = start_replace - input.data();
+			size_t repl_len = iter - start_replace;
+			size_t insert_len = fn_res->size();
 
-	if (start_copy == input.data()) {
-		// Fast path - no substitutions occured, so just move the input into the return value.
-		output = std::move(input);
-	} else {
-		output.append(start_copy, end - start_copy);
-	}
+			input.replace(repl_pos, repl_len, fn_res->data(), insert_len);
 
-	return output;
+			iter = input.data() + repl_pos + insert_len;
+			end = input.data() + input.size();
+			start_replace = nullptr;
+		}
+	}
 }
 
 std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {

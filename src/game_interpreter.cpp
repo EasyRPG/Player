@@ -1793,7 +1793,9 @@ std::string Game_Interpreter::CommandString(lcf::rpg::EventCommand const& com) {
 #endif
 		return ToString(com.string);
 	}
-	return PendingMessage::ApplyTextInsertingCommands(ToString(com.string), Player::escape_char, Game_Message::CommandCodeInserter);
+	std::string command_string = ToString(com.string);
+	PendingMessage::ApplyTextInsertingCommands(command_string, Player::escape_char, Game_Message::CommandCodeInserter);
+	return command_string;
 }
 
 
