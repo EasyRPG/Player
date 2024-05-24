@@ -28,6 +28,14 @@
         style="?android:attr/borderlessButtonStyle" />
 
     <Button
+        android:id="@+id/settings_main_font"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/font"
+        android:drawableStart="@drawable/ic_gamepad_black_36dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
         android:id="@+id/settings_main_easyrpg_folders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

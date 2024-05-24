@@ -78,19 +78,21 @@ public class GameBrowserHelper {
         args.add("--config-path");
         args.add(context.getExternalFilesDir(null).getAbsolutePath());
 
-        // Soundfont
-        Uri soundfontUri = SettingsManager.getSoundFontFileURI(context);
-        if (soundfontUri != null) {
-            args.add("--soundfont");
-            args.add(soundfontUri.toString());
-        }
-
+        /* FIXME: Currently disabled because the built-in scene cannot handle URI-encoded paths
         // Sound Font Folder path (used by the settings scene)
         Uri soundFontFolderUri = SettingsManager.getSoundFontsFolderURI(context);
         if (soundFontFolderUri != null) {
             args.add("--soundfont-path");
             args.add(soundFontFolderUri.toString());
         }
+
+        // Font Folder path (used by the settings scene)
+        Uri fontFolderUri = SettingsManager.getFontsFolderURI(context);
+        if (fontFolderUri != null) {
+            args.add("--font-path");
+            args.add(fontFolderUri.toString());
+        }
+        */
 
         if (debugMode) {
             args.add("--test-play");

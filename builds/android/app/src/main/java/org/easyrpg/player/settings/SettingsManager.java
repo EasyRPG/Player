@@ -40,13 +40,15 @@ public class SettingsManager {
     private static int speedModifierA;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
-    private static Uri easyRPGFolderURI, soundFontFileURI;
+    private static Uri easyRPGFolderURI, soundFontFileURI, font1FileURI, font2FileURI;
+    private static int font1Size, font2Size;
     private static Set<String> favoriteGamesList = new HashSet<>();
     private static int gamesCacheHash;
     private static Set<String> gamesCache = new HashSet<>();
     public static String RTP_FOLDER_NAME = "rtp", RTP_2000_FOLDER_NAME = "2000",
         RTP_2003_FOLDER_NAME = "2003", SOUND_FONTS_FOLDER_NAME = "soundfonts",
-        GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves";
+        GAMES_FOLDER_NAME = "games", SAVES_FOLDER_NAME = "saves",
+        FONTS_FOLDER_NAME = "fonts";
     public static int FAST_FORWARD_MODE_HOLD = 0, FAST_FORWARD_MODE_TAP = 1;
 
     private static List<String> imageSizeOption = Arrays.asList("nearest", "integer", "bilinear");
@@ -80,6 +82,9 @@ public class SettingsManager {
 
         musicVolume = configIni.audio.getInteger(MUSIC_VOLUME.toString(), 100);
         soundVolume = configIni.audio.getInteger(SOUND_VOLUME.toString(), 100);
+
+        font1Size = configIni.engine.getInteger(FONT1_SIZE.toString(), 12);
+        font2Size = configIni.engine.getInteger(FONT2_SIZE.toString(), 12);
 
         speedModifierA = configIni.input.getInteger(SPEED_MODIFIER_A.toString(), 3);
 
@@ -315,6 +320,15 @@ public class SettingsManager {
         }
     }
 
+    public static Uri getFontsFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), FONTS_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
     public static Uri getSoundFontsFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
         if (easyRPGFolder != null) {
@@ -324,10 +338,29 @@ public class SettingsManager {
         }
     }
 
-    public static Uri getSoundFontFileURI(Context context) {
+    public static int getFont1Size() {
+        return font1Size;
+    }
+
+    public static void setFont1Size(int i) {
+        font1Size = i;
+        configIni.engine.set(FONT1_SIZE.toString(), i);
+        configIni.save();
+    }
+
+    public static int getFont2Size() {
+        return font2Size;
+    }
+
+    public static void setFont2Size(int i) {
+        font2Size = i;
+        configIni.engine.set(FONT2_SIZE.toString(), i);
+        configIni.save();
+    }
+
+    public static Uri getSoundFontFileURI() {
         if (soundFontFileURI == null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            String soundfontURI = sharedPref.getString(SettingsEnum.SOUNDFONT_URI.toString(), "");
+            String soundfontURI = configIni.audio.getString(SOUNDFONT_URI.toString(), "");
             if (soundfontURI.isEmpty()) {
                 soundFontFileURI = null;
             } else {
@@ -341,10 +374,57 @@ public class SettingsManager {
         String st = "";
         SettingsManager.soundFontFileURI = soundFontFileURI;
         if (soundFontFileURI != null) {
-            st = soundFontFileURI.toString();
+            configIni.audio.set(SOUNDFONT_URI.toString(), soundFontFileURI.toString());
+        } else {
+            configIni.audio.set(SOUNDFONT_URI.toString(), "");
         }
-        editor.putString(SettingsEnum.SOUNDFONT_URI.toString(), st);
-        editor.commit();
+        configIni.save();
+    }
+
+    public static Uri getFont1FileURI() {
+        if (font1FileURI == null) {
+            String fontURI = configIni.engine.getString(FONT1_URI.toString(), "");
+            if (fontURI.isEmpty()) {
+                font1FileURI = null;
+            } else {
+                font1FileURI = Uri.parse(fontURI);
+            }
+        }
+        return font1FileURI;
+    }
+
+    public static void setFont1FileURI(Uri fontFileURI) {
+        String st = "";
+        SettingsManager.font1FileURI = fontFileURI;
+        if (fontFileURI != null) {
+            configIni.engine.set(FONT1_URI.toString(), fontFileURI.toString());
+        } else {
+            configIni.engine.set(FONT1_URI.toString(), "");
+        }
+        configIni.save();
+    }
+
+    public static Uri getFont2FileURI() {
+        if (font2FileURI == null) {
+            String fontURI = configIni.engine.getString(FONT2_URI.toString(), "");
+            if (fontURI.isEmpty()) {
+                font2FileURI = null;
+            } else {
+                font2FileURI = Uri.parse(fontURI);
+            }
+        }
+        return font2FileURI;
+    }
+
+    public static void setFont2FileURI(Uri fontFileURI) {
+        String st = "";
+        SettingsManager.font2FileURI = fontFileURI;
+        if (fontFileURI != null) {
+            configIni.engine.set(FONT2_URI.toString(), fontFileURI.toString());
+        } else {
+            configIni.engine.set(FONT2_URI.toString(), "");
+        }
+        configIni.save();
     }
 
     public static InputLayout getInputLayoutHorizontal(Activity activity) {

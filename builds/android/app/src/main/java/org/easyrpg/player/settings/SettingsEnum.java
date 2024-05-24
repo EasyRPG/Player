@@ -11,7 +11,7 @@ enum SettingsEnum {
     LAYOUT_SIZE("PREF_SIZE_EVERY_BUTTONS"),
     EASYRPG_FOLDER_URI("PREF_EASYRPG_FOLDER_URI"),
     ENABLE_RTP_SCANNING("PREF_ENABLE_RTP_SCANNING"),
-    SOUNDFONT_URI("PREF_SOUNDFONT_URI"),
+    SOUNDFONT_URI("Soundfont"),
     FAVORITE_GAMES("PREF_FAVORITE_GAMES_NEW"),
     CACHE_GAMES_HASH("PREF_CACHE_GAMES_HASH"),
     CACHE_GAMES("PREF_CACHE_GAMES"),
@@ -23,7 +23,12 @@ enum SettingsEnum {
     SOUND_VOLUME("SoundVolume"),
     STRETCH("Stretch"),
     GAME_RESOLUTION("GameResolution"),
-    SPEED_MODIFIER_A("SpeedModifierA")
+    SPEED_MODIFIER_A("SpeedModifierA"),
+    FONT1_URI("Font1"),
+    FONT2_URI("Font2"),
+    FONT1_SIZE("Font1Size"),
+    FONT2_SIZE("Font2Size")
+
     ;
 
 

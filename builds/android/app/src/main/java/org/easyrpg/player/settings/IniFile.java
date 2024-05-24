@@ -30,7 +30,7 @@ public class IniFile {
         video = new SectionView("Video");
         audio = new SectionView("Audio");
         input = new SectionView("Input");
-        engine = new SectionView("Engine");
+        engine = new SectionView("Player");
     }
 
     public boolean save() {

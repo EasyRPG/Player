@@ -95,7 +95,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
 
                 // Is it a soundfont file ?
                 boolean isDirectory = Helper.isDirectoryFromMimeType(fileDocumentType);
-                if (!isDirectory && name.toLowerCase().endsWith(".sf2")) {
+                if (!isDirectory && (name.toLowerCase().endsWith(".sf2") || name.toLowerCase().endsWith(".soundfont"))) {
                     DocumentFile soundFontFile = Helper.getFileFromDocumentID(this, soundFontsFolder, fileDocumentID);
                     if (soundFontFile != null) {
                         soundfontList.add(new SoundfontItemList(this, name, soundFontFile.getUri()));
@@ -111,7 +111,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
     }
 
     public static boolean isSelectedSoundfontFile(Context context, Uri soundfontUri) {
-        Uri selectedSoundFontUri = SettingsManager.getSoundFontFileURI(context);
+        Uri selectedSoundFontUri = SettingsManager.getSoundFontFileURI();
         if (soundfontUri == null && selectedSoundFontUri == null) {
             return true;
         }
