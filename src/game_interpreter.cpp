@@ -2245,7 +2245,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	std::string& name = CommandString(com);
+	std::string name = CommandString(com);
 	int vehicle_index = com.parameters[1];
 
 	vehicle->SetSpriteGraphic(name, vehicle_index);
@@ -3562,7 +3562,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		case 1:
 		{
 			// Name
-			std::string& name = CommandString(com);
+			std::string name = CommandString(com);
 			result = (actor->GetName() == name);
 			break;
 		}
