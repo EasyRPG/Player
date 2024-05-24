@@ -106,7 +106,6 @@ public class SettingsManager {
     public static void addFavoriteGame(Game game) {
         // Update user's preferences
         favoriteGamesList.add(game.getKey());
-
         setFavoriteGamesList(favoriteGamesList);
     }
 
@@ -388,6 +387,15 @@ public class SettingsManager {
 
     public static void setGameEncoding(Game game, Encoding encoding) {
         editor.putString(game.getKey() + "_Encoding", encoding.getRegionCode());
+        editor.commit();
+    }
+
+    public static String getCustomGameTitle(Game game) {
+        return pref.getString(game.getKey() + "_Title", "");
+    }
+
+    public static void setCustomGameTitle(Game game, String customTitle) {
+        editor.putString(game.getKey() + "_Title", customTitle);
         editor.commit();
     }
 

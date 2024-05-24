@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -313,6 +315,7 @@ public class GameBrowserActivity extends AppCompatActivity
             holder.settingsButton.setOnClickListener(v -> {
                 String[] choices_list = {
                     activity.getResources().getString(R.string.select_game_region),
+                    activity.getResources().getString(R.string.game_rename),
                     activity.getResources().getString(R.string.launch_debug_mode)
                 };
 
@@ -323,6 +326,8 @@ public class GameBrowserActivity extends AppCompatActivity
                             if (which == 0) {
                                 chooseRegion(activity, holder, gameList.get(position));
                             } else if (which == 1) {
+                                renameGame(activity, holder, gameList.get(position));
+                            } else if (which == 2) {
                                 launchGame(position, true);
                             }
                         });
@@ -387,6 +392,29 @@ public class GameBrowserActivity extends AppCompatActivity
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);
+            builder.show();
+        }
+
+        public void renameGame(final Context context, final ViewHolder holder, final Game game) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            // Set up text input
+            final EditText input = new EditText(context);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setText(holder.title.getText());
+            builder.setView(input);
+
+            builder
+                .setTitle(R.string.game_rename)
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    game.setCustomTitle(input.getText().toString());
+                    holder.title.setText(game.getTitle());
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setNeutralButton(R.string.revert, (dialog, id) -> {
+                    game.setCustomTitle("");
+                    holder.title.setText(game.getTitle());
+                });
             builder.show();
         }
 
