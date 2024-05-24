@@ -79,10 +79,17 @@ public class GameBrowserHelper {
         args.add(context.getExternalFilesDir(null).getAbsolutePath());
 
         // Soundfont
-        Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
+        Uri soundfontUri = SettingsManager.getSoundFontFileURI(context);
         if (soundfontUri != null) {
             args.add("--soundfont");
             args.add(soundfontUri.toString());
+        }
+
+        // Sound Font Folder path (used by the settings scene)
+        Uri soundFontFolderUri = SettingsManager.getSoundFontsFolderURI(context);
+        if (soundFontFolderUri != null) {
+            args.add("--soundfont-path");
+            args.add(soundFontFolderUri.toString());
         }
 
         if (debugMode) {
