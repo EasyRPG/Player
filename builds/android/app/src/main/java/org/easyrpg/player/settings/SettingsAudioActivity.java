@@ -111,7 +111,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
     }
 
     public static boolean isSelectedSoundfontFile(Context context, Uri soundfontUri) {
-        Uri selectedSoundFontUri = SettingsManager.getSoundFountFileURI(context);
+        Uri selectedSoundFontUri = SettingsManager.getSoundFontFileURI(context);
         if (soundfontUri == null && selectedSoundFontUri == null) {
             return true;
         }
@@ -145,7 +145,7 @@ public class SettingsAudioActivity extends AppCompatActivity {
         }
 
         public void select() {
-            SettingsManager.setSoundFountFileURI(uri);
+            SettingsManager.setSoundFontFileURI(uri);
 
             // Uncheck other RadioButton
             for (SoundfontItemList s : soundfontList) {

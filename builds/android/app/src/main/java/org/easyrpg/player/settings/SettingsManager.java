@@ -40,7 +40,7 @@ public class SettingsManager {
     private static int speedModifierA;
     private static InputLayout inputLayoutHorizontal, inputLayoutVertical;
     // Note: don't store DocumentFile as they can be nullify with a change of context
-    private static Uri easyRPGFolderURI, soundFountFileURI;
+    private static Uri easyRPGFolderURI, soundFontFileURI;
     private static Set<String> favoriteGamesList = new HashSet<>();
     private static int gamesCacheHash;
     private static Set<String> gamesCache = new HashSet<>();
@@ -324,24 +324,24 @@ public class SettingsManager {
         }
     }
 
-    public static Uri getSoundFountFileURI(Context context) {
-        if (soundFountFileURI == null) {
+    public static Uri getSoundFontFileURI(Context context) {
+        if (soundFontFileURI == null) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String soundfontURI = sharedPref.getString(SettingsEnum.SOUNDFONT_URI.toString(), "");
             if (soundfontURI.isEmpty()) {
-                soundFountFileURI = null;
+                soundFontFileURI = null;
             } else {
-                soundFountFileURI = Uri.parse(soundfontURI);
+                soundFontFileURI = Uri.parse(soundfontURI);
             }
         }
-        return soundFountFileURI;
+        return soundFontFileURI;
     }
 
-    public static void setSoundFountFileURI(Uri soundFountFileURI) {
+    public static void setSoundFontFileURI(Uri soundFontFileURI) {
         String st = "";
-        SettingsManager.soundFountFileURI = soundFountFileURI;
-        if (soundFountFileURI != null) {
-            st = soundFountFileURI.toString();
+        SettingsManager.soundFontFileURI = soundFontFileURI;
+        if (soundFontFileURI != null) {
+            st = soundFontFileURI.toString();
         }
         editor.putString(SettingsEnum.SOUNDFONT_URI.toString(), st);
         editor.commit();
