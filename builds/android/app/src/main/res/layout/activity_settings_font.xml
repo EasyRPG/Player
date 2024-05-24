@@ -13,12 +13,6 @@
         android:padding="20dp"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_custom_soundfont"
-            android:textSize="20sp"
-            android:textColor="#000000"/>
         <Button
             android:id="@+id/button_open_font_folder"
             android:layout_width="wrap_content"
@@ -80,6 +74,27 @@
                 />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/settings_font1_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="Font 1 Preview"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_fonts_size_explanation"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_fonts_size_explanation2"
+            android:textSize="18sp" />
+
         <include layout="@layout/separator"/>
 
         <TextView
@@ -124,5 +139,25 @@
                 android:progress="100"
                 />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/settings_font2_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="Font 2 Preview"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_fonts_size_explanation"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_fonts_size_explanation2"
+            android:textSize="18sp" />
     </LinearLayout>
 </ScrollView>

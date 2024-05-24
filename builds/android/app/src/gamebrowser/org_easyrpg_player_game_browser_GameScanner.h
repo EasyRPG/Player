@@ -14,6 +14,9 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass 
 JNIEXPORT void JNICALL
 Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject thiz);
 
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jclass clazz, jstring font, jint size, jboolean first_font);
+
 #ifdef __cplusplus
 }
 #endif

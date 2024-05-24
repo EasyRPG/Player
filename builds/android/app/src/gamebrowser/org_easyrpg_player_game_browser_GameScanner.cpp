@@ -35,6 +35,9 @@
 #include "utils.h"
 #include "string_view.h"
 #include "platform/android/android.h"
+#include "bitmap.h"
+#include "font.h"
+#include "cache.h"
 
 #include <lcf/ldb/reader.h>
 #include <lcf/reader_util.h>
@@ -393,4 +396,52 @@ Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject th
 	jstring jtitle = env->NewStringUTF(title.c_str());
 	jmethodID jset_title_method = env->GetMethodID(jgame_class, "setTitle", "(Ljava/lang/String;)V");
 	env->CallVoidMethod(thiz, jset_title_method, jtitle);
+}
+
+extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jclass, jstring jfont, jint jsize, jboolean jfirst_font) {
+	EpAndroid::env = env;
+
+	std::string font = jstring_to_string(env, jfont);
+
+	FontRef font_file;
+	FontRef def_bitmap = Font::DefaultBitmapFont(!jfirst_font);
+
+	if (font.empty()) {
+		// Option "Built-in Font" selected
+		font_file = def_bitmap;
+	} else {
+		auto is = FileFinder::Root().OpenInputStream(font);
+		if (!is) {
+			return nullptr;
+		}
+
+		font_file = Font::CreateFtFont(std::move(is), jsize, false, false);
+		if (!font_file) {
+			return nullptr;
+		}
+
+		font_file->SetFallbackFont(def_bitmap);
+	}
+
+	int width = MESSAGE_BOX_WIDTH - 16;
+	int height = 16 * 6;
+
+	jbyteArray buffer_array = env->NewByteArray(width * height * 4);
+	jbyte* buffer_raw = env->GetByteArrayElements(buffer_array, 0);
+
+	Bitmap::SetFormat(Bitmap::ChooseFormat(format_R8G8B8A8_a().format()));
+	auto sys = Cache::System(CACHE_DEFAULT_BITMAP);
+	BitmapRef draw_area = Bitmap::Create(reinterpret_cast<void*>(buffer_raw), width, height, 0, format_R8G8B8A8_a().format());
+	draw_area->Fill(Color(0, 0, 0, 255));
+
+	Text::Draw(*draw_area, 0, 16 * 0 + 2, *font_file, *sys, Font::ColorDefault, "TheQuickBrownFoxJumpsOverTheLazyDog.!?1234567890=&#%");
+	Text::Draw(*draw_area, 0, 16 * 1 + 2, *font_file, *sys, Font::ColorDefault, "色は匂えど散りぬるを我が世誰ぞ常ならん有為の奥山今#日越えて浅き夢見じ酔いもせず");
+	Text::Draw(*draw_area, 0, 16 * 2 + 2, *font_file, *sys, Font::ColorDefault, "天地玄黃宇宙洪荒日月盈昃辰宿列張寒來暑往秋收冬藏閏#餘成歲律呂調陽");
+	Text::Draw(*draw_area, 0, 16 * 3 + 2, *font_file, *sys, Font::ColorDefault, "키스의고유조건은입술끼리만나야하고특별한기술은필요#치않다");
+	Text::Draw(*draw_area, 0, 16 * 4 + 2, *font_file, *sys, Font::ColorDefault, "(+)[-]{*}</>ÀÁÂÃÄÅÆÇАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬ#ЭЮЯ");
+	Text::Draw(*draw_area, 0, 16 * 5 + 2, *font_file, *sys, Font::ColorDefault, "ÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúû#üýþÿ");
+
+	return buffer_array;
 }

@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -328,4 +329,27 @@ public class Helper {
 
         return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels) / (float) outLargestSize.x;
     }
+
+    public static Bitmap createBitmapFromRGBA(byte[] rgba, int width, int height) {
+        if (rgba == null || rgba.length != width * height * 4) {
+            throw new IllegalArgumentException("Invalid RGBA array length");
+        }
+
+        int[] pixels = new int[width * height];
+
+        for (int i = 0; i < width * height; i++) {
+            int r = rgba[i * 4] & 0xFF;
+            int g = rgba[i * 4 + 1] & 0xFF;
+            int b = rgba[i * 4 + 2] & 0xFF;
+            int a = rgba[i * 4 + 3] & 0xFF;
+
+            pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+
+        return bitmap;
+    }
+
 }
