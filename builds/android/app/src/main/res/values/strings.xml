@@ -22,6 +22,7 @@
     <string name="do_want_quit">Do you really want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="revert">Revert</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
     <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found.\n\nThe EasyRPG folder you selected contains a \"games\" folder. Use a file manager app to put your games in this folder.\nGames can be put in subfolders or in ZIP/LZH archives.\n\nThe EasyRPG folder can be changed in the settings.</string>
@@ -31,6 +32,7 @@
     <string name="select_game_region">Select game region</string>
     <string name="change_the_layout">Change the layout</string>
     <string name="launch_debug_mode">Launch in debug mode</string>
+    <string name="game_rename">Rename game</string>
     <string name="choose_layout">Choose a layout</string>
     <string name="unknown_region">Unknown region</string>
     <string name="region_modification_failed">Changing region failed</string>
