@@ -47,6 +47,11 @@ public class Game implements Comparable<Game> {
     }
 
     public String getTitle() {
+        String customTitle = getCustomTitle();
+        if (!customTitle.isEmpty()) {
+            return customTitle;
+        }
+
         return title;
     }
 
@@ -55,6 +60,14 @@ public class Game implements Comparable<Game> {
     }
 
     public native void reencodeTitle();
+
+    public String getCustomTitle() {
+        return SettingsManager.getCustomGameTitle(this);
+    }
+
+    public void setCustomTitle(String customTitle) {
+        SettingsManager.setCustomGameTitle(this, customTitle);
+    }
 
     public String getGameFolderPath() {
         return gameFolderPath;
@@ -82,7 +95,7 @@ public class Game implements Comparable<Game> {
     }
 
     private boolean isFavoriteFromSettings() {
-        return SettingsManager.getFavoriteGamesList().contains(this.gameFolderPath);
+        return SettingsManager.getFavoriteGamesList().contains(this.getKey());
     }
 
     @Override
@@ -93,7 +106,7 @@ public class Game implements Comparable<Game> {
         if (!this.isFavorite() && game.isFavorite()) {
             return 1;
         }
-        return this.title.compareTo(game.title);
+        return this.getTitle().compareTo(game.getTitle());
     }
 
     /**
