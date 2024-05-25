@@ -71,7 +71,7 @@
 \nPokud tuto aplikaci používáte poprvé, není k dispozici žádná složka EasyRPG. Vytvořte novou složku EasyRPG a poté ji vyberte.
 \n
 \nPokud jste tuto aplikaci používali již dříve, vyberte stávající složku EasyRPG.</string>
-    <string name="open_rtp_folder">Otevřít složku RTP</string>
+    <string name="open_rtp_folder">Otevřít složku \"rtp\"</string>
     <string name="easyrpg_folders">Složky EasyRPG</string>
     <string name="settings_resolution_desc">Změna rozlišení může způsobit grafické chyby nebo rozbít hru. Byli jste varováni!</string>
     <string name="edit_layout">Upravit rozhraní</string>
@@ -105,7 +105,6 @@
     <string name="fast_forward_mode_hold">držet</string>
     <string name="fast_forward">Tlačítko režimu zrychlení:</string>
     <string name="key_fast_forward">Zrychlení</string>
-    <string name="settings_soundfont_restart_app">Po změně zvukové banky prosím opusťte a restartujte aplikaci.</string>
     <string name="fast_forward_mode_tap">stisknout</string>
     <string name="fast_forward_factor">Rychlost:</string>
     <string name="error_saf_download_selected">Adresář pro stahování nemůže být použit jako složka EasyRPG.</string>

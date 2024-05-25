@@ -103,12 +103,11 @@
     <string name="rtp_explanation">RTP 提供共用的素材，有些遊戲會使用它們。
 \n請將 RPG Maker 2000 的 RTP 放在 \"rtp/2000\" 資料夾下，RPG Maker 2003 的 RTP 放在 \"rtp/2003\" 資料夾下。
 \n請注意，啟用 RTP 支援會使遊戲初始化時的載入時間明顯的拉長。</string>
-    <string name="open_rtp_folder">開啟 RTP 資料夾</string>
+    <string name="open_rtp_folder">開啟 \"rtp\" 資料夾</string>
     <string name="horizontal_input_layout">橫向按鍵配置方案</string>
     <string name="vertical_input_layout">縱向按鍵配置方案</string>
     <string name="settings_edit_layout_explanation">編輯按鍵配置方案時可以新增如 Shift 鈕的按鈕。
 \n要新增一個按鈕，點擊「返回」鍵後選擇「新增按鈕」。</string>
-    <string name="settings_soundfont_restart_app">當你選擇了一個音樂聲庫以後，請退出並重新啟動應用程式。</string>
     <string name="settings_resolution_widescreen">寬屏（416x240，16:9比例，實驗性）</string>
     <string name="error_saf_folder_not_empty">選擇的資料夾裡面包括了其他的檔案，不能用作EasyRPG的默認資料夾。當你移除了裡面的其他檔案時，就可以使用這個資料夾了。</string>
     <string name="open_the_sound_fonts_folder">打開音樂聲庫資料夾</string>

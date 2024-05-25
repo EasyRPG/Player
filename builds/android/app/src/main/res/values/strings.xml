@@ -82,10 +82,9 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
     <string name="settings_custom_soundfont">Custom Soundfont:</string>
-    <string name="open_the_sound_fonts_folder">Open the soundfonts folder</string>
+    <string name="open_the_sound_fonts_folder">Open the \"soundfonts\" folder</string>
     <string name="settings_soundfont_explanation">Put soundfonts in SF2-format in the \"soundfonts\" folder. Soundfonts alter how MIDI music sounds.</string>
-    <string name="settings_soundfont_restart_app">Please quit and restart the app after selecting a soundfont.</string>
-    <string name="settings_soundfont_found">Soundfonts found:</string>
+    <string name="settings_soundfont_found">Soundfonts:</string>
     <string name="settings_default_soundfont">Default Soundfont</string>
     <string name="music_volume">Music volume</string>
     <string name="sound_volume">Sound effect volume</string>
@@ -106,8 +105,8 @@ Please tell us in detail what went wrong.\n\n
     <string name="Loading">Loading…</string>
     <string name="enable_rtp_support">Enable RTP support</string>
     <string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".\nPlease note that enabling RTP support will significantly increase the initial loading time of a game.</string>
-    <string name="open_rtp_folder">Open the RTP folder</string>
-    <string name="open_fonts_folder">Open the Fonts folder</string>
+    <string name="open_rtp_folder">Open the \"rtp\" folder</string>
+    <string name="open_fonts_folder">Open the \"fonts\" folder</string>
     <string name="settings_fonts_explanation">Put fonts in the \"fonts\" folder. For the best result use TTF fonts or bitmap (FON) fonts.</string>
     <string name="settings_fonts_explanation2">The game decides whether it uses the first font or the second font.</string>
     <string name="settings_fonts_size_explanation">The font size setting has no effect when using the built-in font or certain bitmap fonts.</string>
