@@ -20,6 +20,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="do_want_quit">Do you really want to quit?</string>
+    <string name="do_want_reset">Do you really want to reset?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="revert">Revert</string>
@@ -52,6 +53,8 @@
 
     <!--Ingame menu-->
     <string name="toggle_ui">Toggle virtual buttons</string>
+    <string name="toggle_fps">Toggle FPS display</string>
+    <string name="reset_game">Reset game</string>
     <string name="end_game">End game</string>
     <string name="report_bug">Report a bug</string>
     <string name="report_bug_msg">This function will open your E-mail program (e.g. Gmail) to send us the bug report.\n\nIf you don\'t want to send a mail or don\'t have a mail program configured you can open a new issue at https://github.com/EasyRPG/Player/issues instead.</string>
