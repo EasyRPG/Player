@@ -674,6 +674,24 @@ bool Sdl2Ui::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
+bool Sdl2Ui::HandleErrorOutput(const std::string &message) {
+	std::string title = Player::GetFullVersionString();
+
+	// Manually Restore window from fullscreen, since message would not be visible otherwise
+	if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP)
+		== SDL_WINDOW_FULLSCREEN_DESKTOP) {
+		SDL_SetWindowFullscreen(sdl_window, 0);
+		SDL_SetWindowSize(sdl_window, 0, 0);
+	}
+
+	if(SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(),
+		message.c_str(), sdl_window) != 0) {
+		return false;
+	}
+
+	return true;
+}
+
 void Sdl2Ui::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
 		case SDL_WINDOWEVENT:

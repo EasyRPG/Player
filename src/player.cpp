@@ -106,9 +106,9 @@ namespace Player {
 	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 	bool has_custom_resolution = false;
-
-	bool exit_flag;
-	bool reset_flag;
+	int exit_code = EXIT_SUCCESS;
+	bool exit_flag = false;
+	bool reset_flag = false;
 	bool debug_flag;
 	bool hide_title_flag;
 	int load_game_id;

@@ -28,8 +28,6 @@
 #include <fmt/ostream.h>
 #ifdef EMSCRIPTEN
 #  include "platform/emscripten/interface.h"
-#elif defined(__vita__)
-#  include <psp2/kernel/processmgr.h>
 #endif
 
 #include "output.h"
@@ -203,10 +201,7 @@ static void HandleErrorOutput(const std::string& err) {
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	surface->FillRect(surface->GetRect(), Color(255, 0, 0, 128));
 
-	std::string error = "Error:\n";
-	error += err;
-
-	error += "\n\nEasyRPG Player will close now.\nPress [ENTER] key to exit...";
+	std::string error = err + "\nPress [ENTER] key to exit...";
 
 	Text::Draw(*surface, 11, 11, *Font::DefaultBitmapFont(), Color(0, 0, 0, 255), error);
 	Text::Draw(*surface, 10, 10, *Font::DefaultBitmapFont(), Color(255, 255, 255, 255), error);
@@ -294,16 +289,19 @@ void Output::ToggleLog() {
 
 void Output::ErrorStr(std::string const& err) {
 	WriteLog(LogLevel::Error, err);
+	std::string error = "Error:\n" + err + "\n\nEasyRPG Player will close now.";
+
 	static bool recursive_call = false;
 	if (!recursive_call && DisplayUi) {
 		recursive_call = true;
-		HandleErrorOutput(err);
+		// Try platform handler first, then global one
+		if (!DisplayUi->HandleErrorOutput(error)) {
+			HandleErrorOutput(error);
+		}
 		DisplayUi.reset();
 	} else {
 		// Fallback to Console if the display is not ready yet
-		std::cout << err << std::endl;
-		std::cout << std::endl;
-		std::cout << "EasyRPG Player will close now.";
+		std::cout << error << std::endl;
 #if defined (PLAYER_NINTENDO) || defined(__vita__)
 		// stdin is non-blocking
 		Game_Clock::SleepFor(5s);
@@ -316,11 +314,10 @@ void Output::ErrorStr(std::string const& err) {
 #endif
 	}
 
-	// FIXME: This does not go through platform teardown code
-#ifdef __vita__
-	sceKernelExitProcess(EXIT_FAILURE);
-#endif
-	exit(EXIT_FAILURE);
+	Player::exit_code = EXIT_FAILURE;
+
+	// FIXME: No idea how to indicate error from core in libretro
+	exit(Player::exit_code);
 }
 
 void Output::WarningStr(std::string const& warn) {

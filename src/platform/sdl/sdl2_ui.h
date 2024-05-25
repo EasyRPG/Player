@@ -71,6 +71,7 @@ public:
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 	Rect GetWindowMetrics() const override;
+	bool HandleErrorOutput(const std::string &message) override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
