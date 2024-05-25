@@ -1,7 +1,7 @@
 /*
  * This file is part of EasyRPG Player
  *
- * Copyright (c) 2021 EasyRPG Project. All rights reserved.
+ * Copyright (c) EasyRPG Project. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "org_easyrpg_player_game_browser_GameScanner.h"
+#include "org_easyrpg_player_game_browser.h"
 
 #include <zlib.h>
 #include <png.h>
