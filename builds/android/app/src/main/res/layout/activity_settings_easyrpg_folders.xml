@@ -12,26 +12,6 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/set_games_folder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_the_games_folder" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/id_select_games_folder_explanation"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/watch_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/watch_explanation_video" />
-
-        <include layout="@layout/separator"/>
-
-        <Button
             android:id="@+id/open_game_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,5 +39,38 @@
             android:text="@string/rtp_explanation"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/settings_rtp_2000_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rtp_not_found"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/settings_rtp_2003_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rtp_not_found"
+            android:textSize="18sp" />
+
+        <include layout="@layout/separator"/>
+
+        <Button
+            android:id="@+id/set_games_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_the_games_folder" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/id_select_games_folder_explanation"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/watch_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_explanation_video" />
     </LinearLayout>
 </ScrollView>

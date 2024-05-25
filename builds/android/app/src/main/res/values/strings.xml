@@ -105,6 +105,8 @@ Please tell us in detail what went wrong.\n\n
     <string name="Loading">Loading…</string>
     <string name="enable_rtp_support">Enable RTP support</string>
     <string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".\nPlease note that enabling RTP support will significantly increase the initial loading time of a game.</string>
+    <string name="rtp_not_found">RTP $YEAR not found. Games that require this RTP will have missing assets.</string>
+    <string name="rtp_found">RTP $YEAR found: $NAME ($FOUND of $MAX assets found)</string>
     <string name="open_rtp_folder">Open the \"rtp\" folder</string>
     <string name="open_fonts_folder">Open the \"fonts\" folder</string>
     <string name="settings_fonts_explanation">Put fonts in the \"fonts\" folder. For the best result use TTF fonts or bitmap (FON) fonts.</string>
