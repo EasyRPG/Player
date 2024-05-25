@@ -38,6 +38,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "cache.h"
+#include "rtp.h"
 
 #include <lcf/ldb/reader.h>
 #include <lcf/reader_util.h>
@@ -186,6 +187,8 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	// jpath is the SAF path to the game, is converted to FilesystemView "root"
 	std::string spath = jstring_to_string(env, jpath);
 	auto root = FileFinder::Root().Create(spath);
+	root.ClearCache();
+
 	std::vector<FilesystemView> fs_list = FileFinder::FindGames(root);
 
 	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
@@ -444,4 +447,53 @@ Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jcla
 	Text::Draw(*draw_area, 0, 16 * 5 + 2, *font_file, *sys, Font::ColorDefault, "ÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúû#üýþÿ");
 
 	return buffer_array;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_settings_SettingsGamesFolderActivity_DetectRtp(JNIEnv *env, jobject, jstring jpath, jobject hit_info, int version) {
+	EpAndroid::env = env;
+
+
+	std::string path = jstring_to_string(env, jpath);
+
+	auto fs = FileFinder::Root().Create(path);
+	if (!fs) {
+		return;
+	}
+
+	fs.ClearCache();
+
+	auto hits = RTP::Detect(fs, version);
+
+	if (hits.empty()) {
+		return;
+	}
+
+	// Find RTP with highest hit rate
+	double best_rate = 0;
+	int best_index = 0;
+
+	for (size_t i = 0; i < hits.size(); ++i) {
+		double rate = static_cast<double>(hits[i].hits) / hits[i].max;
+		if (rate > best_rate) {
+			best_index = i;
+			best_rate = rate;
+		}
+	}
+
+	RTP::RtpHitInfo& best_hit = hits[best_index];
+
+	jclass hit_info_cls = env->GetObjectClass(hit_info);
+	jfieldID name_field = env->GetFieldID(hit_info_cls, "name", "Ljava/lang/String;");
+	jfieldID version_field = env->GetFieldID(hit_info_cls, "version", "I");
+	jfieldID hits_field = env->GetFieldID(hit_info_cls, "hits", "I");
+	jfieldID max_field = env->GetFieldID(hit_info_cls, "max", "I");
+
+	jstring jname = env->NewStringUTF(best_hit.name.c_str());
+	env->SetObjectField(hit_info, name_field, jname);
+
+	env->SetIntField(hit_info, version_field, best_hit.version);
+	env->SetIntField(hit_info, hits_field, best_hit.hits);
+	env->SetIntField(hit_info, max_field, best_hit.max);
 }

@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+#include <lcf/enum_tags.h>
 #include "filefinder.h"
 
 /**
@@ -52,7 +53,19 @@ namespace RTP {
 		RPG2003_OfficialTraditionalChinese
 	};
 
-	extern const char* Names[];
+	constexpr auto kTypes = lcf::makeEnumTags<Type>(
+		"Official Japanese",
+		"Official English",
+		"Don Miguel English Translation",
+		"Don Miguel RTP Addon",
+		"Official Japanese",
+		"Official English",
+		"RPG Advocate English Translation",
+		"Vlad Russian Translation",
+		"RPG Universe Spanish/Portuguese Translation",
+		"Korean Translation",
+		"Official Traditional Chinese"
+	);
 
 	struct RtpHitInfo {
 		RTP::Type type;

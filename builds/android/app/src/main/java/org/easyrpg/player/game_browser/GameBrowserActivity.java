@@ -37,6 +37,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
+import org.libsdl.app.SDL;
 
 import java.util.Collections;
 import java.util.List;
@@ -67,6 +68,8 @@ public class GameBrowserActivity extends AppCompatActivity
                 throw e;
             }
         }
+
+        SDL.setContext(getApplicationContext());
 
         setContentView(R.layout.activity_games_browser);
 

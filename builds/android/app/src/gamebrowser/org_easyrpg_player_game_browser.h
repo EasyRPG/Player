@@ -39,6 +39,9 @@ Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject th
 JNIEXPORT jbyteArray JNICALL
 Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jclass clazz, jstring font, jint size, jboolean first_font);
 
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_settings_SettingsGamesFolderActivity_DetectRtp(JNIEnv *env, jobject thiz, jstring path, jobject hit_info, int version);
+
 #ifdef __cplusplus
 }
 #endif

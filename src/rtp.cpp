@@ -21,22 +21,6 @@
 #include <cstring>
 #include "rtp.h"
 
-namespace RTP {
-	const char* Names[] {
-		"Official Japanese",
-		"Official English",
-		"Don Miguel English Translation",
-		"Don Miguel RTP Addon",
-		"Official Japanese",
-		"Official English",
-		"RPG Advocate English Translation",
-		"Vlad Russian Translation",
-		"RPG Universe Spanish/Portuguese Translation",
-		"Korean Translation",
-		"Official Traditional Chinese"
-	};
-}
-
 static std::pair<int, int> get_table_idx(const char* const lookup_table[16], const int lookup_table_idx[16], StringView category) {
 	int i;
 
@@ -78,17 +62,17 @@ static void detect_helper(const FilesystemView& fs, std::vector<struct RTP::RtpH
 
 std::vector<RTP::RtpHitInfo> RTP::Detect(const FilesystemView& fs, int version, int miss_limit) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
-		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, fs},
-		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, fs},
-		{RTP::Type::RPG2000_DonMiguelEnglish, Names[2], 2000, 0, 500, fs},
-		{RTP::Type::RPG2000_DonMiguelAddon, Names[3], 2000, 0, 503, fs},
-		{RTP::Type::RPG2003_OfficialJapanese, Names[4], 2003, 0, 675, fs},
-		{RTP::Type::RPG2003_OfficialEnglish, Names[5], 2003, 0, 675, fs},
-		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, fs},
-		{RTP::Type::RPG2003_VladRussian, Names[7], 2003, 0, 350, fs},
-		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, Names[8], 2003, 0, 600, fs},
-		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, fs},
-		{RTP::Type::RPG2003_OfficialTraditionalChinese, Names[10], 2003, 0, 676, fs}
+		{RTP::Type::RPG2000_OfficialJapanese, kTypes[0], 2000, 0, 465, fs},
+		{RTP::Type::RPG2000_OfficialEnglish, kTypes[1], 2000, 0, 465, fs},
+		{RTP::Type::RPG2000_DonMiguelEnglish, kTypes[2], 2000, 0, 500, fs},
+		{RTP::Type::RPG2000_DonMiguelAddon, kTypes[3], 2000, 0, 503, fs},
+		{RTP::Type::RPG2003_OfficialJapanese, kTypes[4], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_OfficialEnglish, kTypes[5], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_RpgAdvocateEnglish, kTypes[6], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_VladRussian, kTypes[7], 2003, 0, 350, fs},
+		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, kTypes[8], 2003, 0, 600, fs},
+		{RTP::Type::RPG2003_Korean, kTypes[9], 2003, 0, 675, fs},
+		{RTP::Type::RPG2003_OfficialTraditionalChinese, kTypes[10], 2003, 0, 676, fs}
 	}};
 
 	auto SOUND_TYPES = Utils::MakeSvVector(".wav", ".mp3");
