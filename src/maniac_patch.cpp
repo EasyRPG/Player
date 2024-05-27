@@ -673,7 +673,7 @@ StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
 	case 13: //.cev[a].name
 	{
 		// assuming the vector of common events here is ordered by common event ID
-		if (Game_Map::GetCommonEvents().size() >= id) {
+		if (static_cast<int>(Game_Map::GetCommonEvents().size()) >= id) {
 			return Game_Map::GetCommonEvents()[id - 1].GetName();
 		}
 		break;

@@ -67,7 +67,6 @@ void Scene_Status::vUpdate() {
 		Scene::Pop();
 	} else if (actors.size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-		const auto& actor = actors[actor_index];
 		actor_index = (actor_index + 1) % actors.size();
 		Scene::Push(std::make_shared<Scene_Status>(actors, actor_index), true);
 	} else if (actors.size() > 1 && Input::IsTriggered(Input::LEFT)) {

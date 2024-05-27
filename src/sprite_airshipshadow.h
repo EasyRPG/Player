@@ -31,12 +31,6 @@
  */
 class Sprite_AirshipShadow : public Sprite {
 public:
-	enum CloneType {
-		Original = 1,
-		XClone = 2,
-		YClone = 4
-	};
-
 	Sprite_AirshipShadow(int x_offset = 0, int y_offset = 0);
 	void Draw(Bitmap& dst) override;
 	void Update();

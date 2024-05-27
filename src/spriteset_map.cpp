@@ -208,8 +208,6 @@ bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
 }
 
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
-	using CloneType = Sprite_Character::CloneType;
-
 	auto add_sprite = [&](auto&& chara) {
 		chara->SetRenderOx(map_render_ox);
 		chara->SetRenderOy(map_render_oy);
@@ -234,8 +232,6 @@ void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone,
 }
 
 void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone) {
-	using CloneType = Sprite_AirshipShadow::CloneType;
-
 	auto add_sprite = [&](auto&& chara) {
 		chara->SetRenderOx(map_render_ox);
 		chara->SetRenderOy(map_render_oy);

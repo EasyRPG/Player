@@ -124,7 +124,7 @@ bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_inde
 			actor_index--;
 			actors = Main_Data::game_party->GetActors();
 
-			if (actor_index < 0 || actor_index >= actors.size()) {
+			if (actor_index < 0 || actor_index >= static_cast<int>(actors.size())) {
 				Output::Warning("RequestMainMenu: Invalid actor party member {}", actor_index);
 				return false;
 			}
@@ -725,7 +725,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& /* 
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const& com) { // code 11950
+bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const&) { // code 11950
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 

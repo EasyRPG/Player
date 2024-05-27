@@ -127,7 +127,7 @@ inline std::vector<lcf::DBString> Game_Strings::GetLcfData() const {
 
 	for (auto& [index, value]: _strings) {
 		assert(index > 0);
-		if (index >= lcf_data.size()) {
+		if (index >= static_cast<int>(lcf_data.size())) {
 			lcf_data.resize(index + 1);
 		}
 		lcf_data[index - 1] = lcf::DBString(value);
