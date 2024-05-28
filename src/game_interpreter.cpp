@@ -835,6 +835,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
+		case 9992:
+			return CommandShowStringPicSelectable(com);
 		default:
 			return true;
 	}
@@ -5197,4 +5199,146 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 	}
 
 	return value;
+}
+
+bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand const& com) {
+
+	int picIndex = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	int type = com.parameters[2];
+
+	// Output::Debug("CommandShowStringPicSelectable pic Index : {}, {}", picIndex, type);
+
+	if (!Main_Data::game_windows->GetWindow(picIndex).window)
+		Output::Info("ShowStringPic {} doesn't exist", picIndex);
+	else {
+		if (type == 0) {
+			Main_Data::game_windows->GetWindow(picIndex).window->SetIndex(0);
+			Main_Data::game_windows->GetWindow(picIndex).window->SetActive(true);
+			auto text = Main_Data::game_windows->GetWindow(picIndex).data.texts;
+			int maxItem = 0;
+			for (const auto& text : text) {
+				std::stringstream ss(ToString(text.text));
+				std::string out;
+				while (Utils::ReadLine(ss, out)) {
+					maxItem++;
+				}
+			}
+			Main_Data::game_windows->GetWindow(picIndex).window->SetItemMax(maxItem);
+		}
+		else if (type == 1) {
+			if (Main_Data::game_windows->GetWindow(picIndex).window->GetActive()) {
+				Main_Data::game_windows->GetWindow(picIndex).window->Update();
+
+				if (Input::IsTriggered(Input::CANCEL)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+					int choice_result = Main_Data::game_windows->GetWindow(picIndex).window->GetPageItemMax();
+					//Output::Debug("CANCEL {}", choice_result);
+
+
+					int label_id = com.parameters[0];
+
+					auto& frame = GetFrame();
+					const auto& list = frame.commands;
+					auto& index = frame.current_command;
+					auto& old_index = index;
+					int indent = list[index].indent;
+
+					int i = 0;
+
+					for (int idx = 0; (size_t)idx < list.size(); idx++) {
+						if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
+							continue;
+						//if (list[idx].parameters[0] != label_id)
+						if (list[idx].indent > indent)
+							continue;
+						if (list[idx].indent == indent) {
+							//Output::Debug("Indent : {} {} {}", i, list[idx].indent, com.indent);
+							if (i != choice_result) {
+								i++;
+								continue;
+							}
+						}
+						if (list[idx].indent < indent) {
+							//Output::Debug("Indent : {} {}", list[idx].indent, com.indent);
+							break;
+						}
+						index = idx + 1;
+						break;
+					}
+
+					return true;
+				}
+				if (Input::IsTriggered(Input::DECISION)) {
+					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+					int choice_result = Main_Data::game_windows->GetWindow(picIndex).window->GetIndex();
+					//Output::Debug("CONFIRM {}", choice_result);
+
+
+					int label_id = com.parameters[0];
+
+					auto& frame = GetFrame();
+					const auto& list = frame.commands;
+					auto& index = frame.current_command;
+					auto& old_index = index;
+					int indent = list[index].indent;
+
+					int i = 0;
+
+					for (int idx = 0; (size_t)idx < list.size(); idx++) {
+						if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
+							continue;
+						//if (list[idx].parameters[0] != label_id)
+						if (list[idx].indent > indent)
+							continue;
+						if (list[idx].indent == indent) {
+							//Output::Debug("Indent : {} {} {}", i, list[idx].indent, com.indent);
+							if (i != choice_result) {
+								i++;
+								continue;
+							}
+						}
+						if (list[idx].indent < indent) {
+							//Output::Debug("Indent : {} {}", list[idx].indent, com.indent);
+							break;
+						}
+						index = idx + 1;
+						break;
+					}
+
+					return true;
+				}
+			}
+			else {
+				//Output::Debug("!Active");
+				Main_Data::game_windows->GetWindow(picIndex).window->SetIndex(0);
+				Main_Data::game_windows->GetWindow(picIndex).window->SetActive(true);
+				auto text = Main_Data::game_windows->GetWindow(picIndex).data.texts;
+				int maxItem = 0;
+				for (const auto& text : text) {
+					std::stringstream ss(ToString(text.text));
+					std::string out;
+					while (Utils::ReadLine(ss, out)) {
+						maxItem++;
+					}
+				}
+				Main_Data::game_windows->GetWindow(picIndex).window->SetItemMax(maxItem);
+				return false;
+			}
+
+			return false;
+		}
+		else if (type == 2) {
+			Main_Data::game_windows->GetWindow(picIndex).window->Update();
+
+			int variableID = ValueOrVariable(com.parameters[3], com.parameters[4]);
+			int value = Main_Data::game_windows->GetWindow(picIndex).window->GetIndex();
+			Main_Data::game_variables->Set(variableID, value);
+		}
+		else if (type == 3) {
+			Main_Data::game_windows->GetWindow(picIndex).window->SetActive(false);
+		}
+	}
+
+	return true;
 }
