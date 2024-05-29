@@ -513,7 +513,6 @@ EXTRA_DIST += \
 	bench/text.cpp \
 	bench/utils.cpp \
 	bench/variables.cpp \
-	src/external/picojson.h \
 	src/platform/3ds/audio.cpp \
 	src/platform/3ds/audio.h \
 	src/platform/3ds/clock.cpp \
@@ -579,6 +578,7 @@ libeasyrpg_player_a_CXXFLAGS = \
 	$(FREETYPE_CFLAGS) \
 	$(HARFBUZZ_CFLAGS) \
 	$(LHASA_CFLAGS) \
+	$(NLOHMANN_JSON_CFLAGS) \
 	$(SDL_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
@@ -632,6 +632,7 @@ easyrpg_player_LDADD = libeasyrpg-player.a libplayer-version.a \
 	$(FREETYPE_LIBS) \
 	$(HARFBUZZ_LIBS) \
 	$(LHASA_LIBS) \
+	$(NLOHMANN_JSON_LIBS) \
 	$(SDL_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \

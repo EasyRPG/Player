@@ -783,7 +783,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
 	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
 	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
-	target_sources(${PROJECT_NAME} PRIVATE src/external/picojson.h)
 endif()
 
 # Endianess check
@@ -883,6 +882,22 @@ player_find_package(NAME lhasa
 	DEFINITION HAVE_LHASA
 	TARGET LHASA::liblhasa
 )
+
+# json support
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+	player_find_package(NAME nlohmann_json
+		DEFINITION HAVE_NLOHMANN_JSON
+		TARGET nlohmann_json::nlohmann_json
+		REQUIRED
+	)
+else()
+	option(PLAYER_WITH_NLOHMANN_JSON "Support processing of JSON files" ON)
+	player_find_package(NAME nlohmann_json
+		CONDITION PLAYER_WITH_NLOHMANN_JSON
+		DEFINITION HAVE_NLOHMANN_JSON
+		TARGET nlohmann_json::nlohmann_json
+	)
+endif()
 
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
@@ -1574,6 +1589,12 @@ if(TARGET LHASA::liblhasa)
 	message(STATUS "LZH archive support: lhasa")
 else()
 	message(STATUS "LZH archive support: No")
+endif()
+
+if(TARGET nlohmann_json::nlohmann_json)
+	message(STATUS "JSON support: nlohmann_json")
+else()
+	message(STATUS "JSON support: No")
 endif()
 
 message(STATUS "")

@@ -361,13 +361,14 @@ void Window_Settings::RefreshLicense() {
 #ifdef HAVE_LHASA
 	AddOption(MenuItem("lhasa", "For parsing LHA (.lzh) archives", "ISC"), [](){});
 #endif
-	AddOption(MenuItem("rang", "Colors the terminal output", "Unlicense"), [](){});
+#ifdef HAVE_NLOHMANN_JSON
+	AddOption(MenuItem("nlohmann_json", "Processing of JSON files", "MIT"), [](){});
+#endif
 	AddOption(MenuItem("Baekmuk", "Korean font family", "Baekmuk"), [](){});
 	AddOption(MenuItem("Shinonome", "Japanese font family", "Public Domain"), [](){});
 	AddOption(MenuItem("ttyp0", "ttyp0 font family", "ttyp0"), [](){});
 	AddOption(MenuItem("WenQuanYi", "WenQuanYi font family (CJK)", "GPLv2+ with FE"), [](){});
 #ifdef EMSCRIPTEN
-	AddOption(MenuItem("PicoJSON", "JSON parser/serializer", "BSD"), [](){});
 	AddOption(MenuItem("Teenyicons", "Tiny minimal 1px icons", "MIT"), [](){});
 #endif
 }
