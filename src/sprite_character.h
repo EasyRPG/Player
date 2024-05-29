@@ -32,12 +32,6 @@ struct FileRequestResult;
  */
 class Sprite_Character : public Sprite {
 public:
-	enum CloneType {
-		Original = 1,
-		XClone = 2,
-		YClone = 4
-	};
-
 	/**
 	 * Constructor.
 	 *

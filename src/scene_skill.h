@@ -44,7 +44,7 @@ public:
 
 private:
 	std::vector<Game_Actor*> actors;
-	/** Actor in the span whose skills are displayed. */
+	/** Actor in the vector whose skills are displayed. */
 	int actor_index;
 	/** Skill to select at startup. */
 	int skill_index;

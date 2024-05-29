@@ -1516,7 +1516,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSk
 		ResetWindows(true);
 
 		skill_window->SetActive(true);
-		skill_window->SetActor(active_actor->GetId());
+		skill_window->SetActor(*active_actor);
 		if (previous_state == State_SelectCommand) {
 			skill_window->RestoreActorIndex(actor_index);
 		}

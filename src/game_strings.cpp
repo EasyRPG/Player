@@ -185,7 +185,7 @@ StringView Game_Strings::ToFile(Str_Params params, std::string filename, int enc
 
 	// Maniacs forces the File in Text/ folder with .txt extension
 	filename = "Text/" + filename;
-	
+
 	// EasyRPG Extension: When "*" is at the end of filename, ".txt" is not appended
 	if (Player::HasEasyRpgExtensions() && filename.back() == '*') {
 		filename.pop_back();
@@ -228,7 +228,6 @@ StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_i
 		return {};
 	}
 
-	int index;
 	std::string result;
 	StringView str = Get(params.string_id);
 
@@ -306,7 +305,7 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 }
 
 std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
-	if (string.size() < min_size) {
+	if (static_cast<int>(string.size()) < min_size) {
 		int s = min_size - string.size();
 		return std::string(s, c) + ToString(string);
 	}

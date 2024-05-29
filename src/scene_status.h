@@ -37,7 +37,7 @@ public:
 	 * Constructor.
 	 *
 	 * @param actors list of actors
-	 * @param index index in the span to show
+	 * @param index index in the vector to show
 	 */
 	Scene_Status(std::vector<Game_Actor*> actors, int actor_index);
 

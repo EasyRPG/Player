@@ -79,7 +79,6 @@ void Scene_Skill::vUpdate() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (Algo::IsNormalOrSubskill(*skill)) {
-				int actor_target_index = actor_index;
 				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index));
 				skill_index = skill_window->GetIndex();

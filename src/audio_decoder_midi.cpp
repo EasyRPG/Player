@@ -91,11 +91,11 @@ static bool midimsg_validate(uint32_t msg) {
 	// Do some very basic sanity checks on the messages as
 	// invalid messages can cause the underlying MIDI synth to crash.
 	uint8_t event_type = midimsg_get_event_type(msg);
-	uint8_t channel = midimsg_get_channel(msg);
+	//uint8_t channel = midimsg_get_channel(msg);
 	uint8_t value1 = midimsg_get_value1(msg);
-	uint8_t value2 = midimsg_get_value2(msg);
+	//uint8_t value2 = midimsg_get_value2(msg);
 
-	if ((event_type >= 0 && event_type < 64) ||
+	if (event_type < 64 ||
 		(event_type >= 70 && event_type < 84) ||
 		(event_type == 88) ||
 		(event_type >= 91 && event_type < 96) ||

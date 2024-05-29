@@ -138,7 +138,7 @@ public:
 	std::vector<uint8_t> Save(const std::string& id) {
 		std::stringstream ss;
 		ss << x << "," << y << ",";
-		for (int i = 0; i < texts.size(); ++i) {
+		for (size_t i = 0; i < texts.size(); ++i) {
 			std::string t = texts[i];
 			// Replace , with a sentinel 0x01 to not mess up the tokenizer
 			std::replace(t.begin(), t.end(), ',', '\1');
@@ -252,9 +252,9 @@ private:
 
 	std::vector<std::string> texts;
 	BitmapRef bitmap;
+	int pic_id = 1;
 	int x = 0;
 	int y = 0;
-	int pic_id = 1;
 	int color = 0;
 	bool fixed = false;
 };
