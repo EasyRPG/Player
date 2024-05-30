@@ -237,3 +237,19 @@ lcf::rpg::MoveCommand Game_Interpreter_Shared::DecodeMove(lcf::DBArray<int32_t>:
 
 	return cmd;
 }
+
+//explicit declarations for target evaluation logic shared between ControlSwitches/ControlVariables/ControlStrings
+template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<true, false, false, false, false>(lcf::rpg::EventCommand const&, int&, int&) const;
+template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<true, true, true, false, false>(lcf::rpg::EventCommand const&, int&, int&) const;
+template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<false, true, false, true, false>(lcf::rpg::EventCommand const&, int&, int&) const;
+
+//common variant for suggested "Ex" commands
+template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<false, true, true, true, true, true>(lcf::rpg::EventCommand const&, int&, int&) const;
+
+//explicit declarations for default value evaluation logic
+template int Game_Interpreter_Shared::ValueOrVariable<true, true, false, false>(int, int, const Game_BaseInterpreterContext&);
+template int Game_Interpreter_Shared::ValueOrVariableBitfield<true, true, false, false>(int, int, int, const Game_BaseInterpreterContext&);
+template int Game_Interpreter_Shared::ValueOrVariableBitfield<true, true, false, false>(lcf::rpg::EventCommand const&, int, int, int, const Game_BaseInterpreterContext&);
+
+//variant for "Ex" commands
+template int Game_Interpreter_Shared::ValueOrVariableBitfield<false, true, true, true>(int, int, int, const Game_BaseInterpreterContext&);

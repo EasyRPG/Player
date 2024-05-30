@@ -25,35 +25,7 @@
 #include <string_view.h>
 
 class Game_Character;
-
-class Game_BaseInterpreterContext {
-public:
-	virtual ~Game_BaseInterpreterContext() {}
-
-	virtual int GetThisEventId() const = 0;
-	virtual Game_Character* GetCharacter(int event_id) const = 0;
-	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
-
-protected:
-	template<bool validate_patches, bool support_range_indirect, bool support_expressions, bool support_bitmask, bool support_scopes, bool support_named = false>
-	inline bool DecodeTargetEvaluationMode(lcf::rpg::EventCommand const& com, int& id_0, int& id_1) const {
-		return Game_Interpreter_Shared::DecodeTargetEvaluationMode<validate_patches, support_range_indirect, support_expressions, support_bitmask, support_scopes, support_named>(com, id_0, id_1, *this);
-	}
-
-	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
-	inline int ValueOrVariable(int mode, int val) const {
-		return Game_Interpreter_Shared::ValueOrVariable<validate_patches, support_indirect_and_switch, support_scopes, support_named>(mode, val, *this);
-	}
-	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
-	inline int ValueOrVariableBitfield(int mode, int shift, int val) const {
-		return Game_Interpreter_Shared::ValueOrVariableBitfield<validate_patches, support_indirect_and_switch, support_scopes, support_named>(mode, shift, val, *this);
-	}
-
-	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
-	inline int ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) const {
-		return Game_Interpreter_Shared::ValueOrVariableBitfield<validate_patches, support_indirect_and_switch, support_scopes, support_named>(com, mode_idx, shift, val_idx, *this);
-	}
-};
+class Game_BaseInterpreterContext;
 
 namespace Game_Interpreter_Shared {
 
@@ -168,20 +140,33 @@ inline bool Game_Interpreter_Shared::ManiacCheckContinueLoop(int val, int val2, 
 	}
 }
 
-//explicit declarations for target evaluation logic shared between ControlSwitches/ControlVariables/ControlStrings
-template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<true, false, false, false, false>(lcf::rpg::EventCommand const&, int&, int&) const;
-template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<true, true, true, false, false>(lcf::rpg::EventCommand const&, int&, int&) const;
-template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<false, true, false, true, false>(lcf::rpg::EventCommand const&, int&, int&) const;
+class Game_BaseInterpreterContext {
+public:
+	virtual ~Game_BaseInterpreterContext() {}
 
-//common variant for suggested "Ex" commands
-template bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode<false, true, true, true, true, true>(lcf::rpg::EventCommand const&, int&, int&) const;
+	virtual int GetThisEventId() const = 0;
+	virtual Game_Character* GetCharacter(int event_id) const = 0;
+	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
 
-//explicit declarations for default value evaluation logic
-template int Game_Interpreter_Shared::ValueOrVariable<true, true, false, false>(int, int, const Game_BaseInterpreterContext&);
-template int Game_Interpreter_Shared::ValueOrVariableBitfield<true, true, false, false>(int, int, int, const Game_BaseInterpreterContext&);
-template int Game_Interpreter_Shared::ValueOrVariableBitfield<true, true, false, false>(lcf::rpg::EventCommand const&, int, int, int, const Game_BaseInterpreterContext&);
+protected:
+	template<bool validate_patches, bool support_range_indirect, bool support_expressions, bool support_bitmask, bool support_scopes, bool support_named = false>
+	inline bool DecodeTargetEvaluationMode(lcf::rpg::EventCommand const& com, int& id_0, int& id_1) const {
+		return Game_Interpreter_Shared::DecodeTargetEvaluationMode<validate_patches, support_range_indirect, support_expressions, support_bitmask, support_scopes, support_named>(com, id_0, id_1, *this);
+	}
 
-//variant for "Ex" commands
-template int Game_Interpreter_Shared::ValueOrVariableBitfield<false, true, true, true>(int, int, int, const Game_BaseInterpreterContext&);
+	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
+	inline int ValueOrVariable(int mode, int val) const {
+		return Game_Interpreter_Shared::ValueOrVariable<validate_patches, support_indirect_and_switch, support_scopes, support_named>(mode, val, *this);
+	}
+	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
+	inline int ValueOrVariableBitfield(int mode, int shift, int val) const {
+		return Game_Interpreter_Shared::ValueOrVariableBitfield<validate_patches, support_indirect_and_switch, support_scopes, support_named>(mode, shift, val, *this);
+	}
+
+	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
+	inline int ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) const {
+		return Game_Interpreter_Shared::ValueOrVariableBitfield<validate_patches, support_indirect_and_switch, support_scopes, support_named>(com, mode_idx, shift, val_idx, *this);
+	}
+};
 
 #endif
