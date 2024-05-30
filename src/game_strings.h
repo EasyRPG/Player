@@ -41,6 +41,12 @@ public:
 		int string_id = 0, hex = 0, extract = 0;
 	};
 
+	enum StringEvalMode : std::int8_t { // 4 bits
+		eStringEval_Text = 0, // String is taken from com.string
+		eStringEval_Direct = 1, // String is referenced directly by string id
+		eStringEval_Indirect = 2 // String is referenced indirectly by variable id
+	};
+
 	Game_Strings() = default;
 
 	void SetData(Strings_t s);
@@ -158,9 +164,9 @@ inline StringView Game_Strings::GetIndirect(int id, const Game_Variables& variab
 
 inline StringView Game_Strings::GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const {
 	switch (mode) {
-	case 1: // direct string reference
+	case StringEvalMode::eStringEval_Direct:
 		return Get(arg);
-	case 2: // indirect string reference
+	case StringEvalMode::eStringEval_Indirect:
 		return GetIndirect(arg, variables);
 	default:
 		return str_data;
@@ -170,16 +176,16 @@ inline StringView Game_Strings::GetWithMode(StringView str_data, int mode, int a
 inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables) {
 	StringView ret;
 	switch (mode) {
-	case 0:
-		assert(pos);
-		ret = str_data.substr(*pos, arg);
-		*pos += arg;
-		return ret;
-	case 1: // direct string reference
-		return Get(arg);
-	case 2: // indirect string reference
-		return GetIndirect(arg, variables);
-	default:
-		return ret;
+		case StringEvalMode::eStringEval_Text:
+			assert(pos);
+			ret = str_data.substr(*pos, arg);
+			*pos += arg;
+			return ret;
+		case StringEvalMode::eStringEval_Direct:
+			return Get(arg);
+		case StringEvalMode::eStringEval_Indirect:
+			return GetIndirect(arg, variables);
+		default:
+			return ret;
 	}
 }

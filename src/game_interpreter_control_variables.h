@@ -21,14 +21,14 @@
 
 #include <lcf/rpg/eventcommand.h>
 
-class Game_Interpreter;
+class Game_BaseInterpreterContext;
 
 namespace ControlVariables {
 	int Random(int value, int value2);
 	int Item(int op, int item);
 	int Actor(int op, int actor_id);
 	int Party(int op, int party_idx);
-	int Event(int op, int event_id, const Game_Interpreter& interpreter);
+	int Event(int op, int event_id, const Game_BaseInterpreterContext& interpreter);
 	int Other(int op);
 	int Enemy(int op, int enemy_idx);
 	int Pow(int arg1, int arg2);
