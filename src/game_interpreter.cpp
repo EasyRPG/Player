@@ -573,56 +573,6 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 	}
 }
 
-int Game_Interpreter::DecodeInt(lcf::DBArray<int32_t>::const_iterator& it) {
-	int value = 0;
-
-	for (;;) {
-		int x = *it++;
-		value <<= 7;
-		value |= x & 0x7F;
-		if (!(x & 0x80))
-			break;
-	}
-
-	return value;
-}
-
-const std::string Game_Interpreter::DecodeString(lcf::DBArray<int32_t>::const_iterator& it) {
-	std::ostringstream out;
-	int len = DecodeInt(it);
-
-	for (int i = 0; i < len; i++)
-		out << (char)*it++;
-
-	std::string result = lcf::ReaderUtil::Recode(out.str(), Player::encoding);
-
-	return result;
-}
-
-lcf::rpg::MoveCommand Game_Interpreter::DecodeMove(lcf::DBArray<int32_t>::const_iterator& it) {
-	lcf::rpg::MoveCommand cmd;
-	cmd.command_id = *it++;
-
-	switch (cmd.command_id) {
-	case 32:	// Switch ON
-	case 33:	// Switch OFF
-		cmd.parameter_a = DecodeInt(it);
-		break;
-	case 34:	// Change Graphic
-		cmd.parameter_string = lcf::DBString(DecodeString(it));
-		cmd.parameter_a = DecodeInt(it);
-		break;
-	case 35:	// Play Sound Effect
-		cmd.parameter_string = lcf::DBString(DecodeString(it));
-		cmd.parameter_a = DecodeInt(it);
-		cmd.parameter_b = DecodeInt(it);
-		cmd.parameter_c = DecodeInt(it);
-		break;
-	}
-
-	return cmd;
-}
-
 // Execute Command.
 bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
@@ -5061,23 +5011,6 @@ Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 
 bool Game_Interpreter::IsWaitingForWaitCommand() const {
 	return (_state.wait_time > 0) || _state.wait_key_enter;
-}
-
-bool Game_Interpreter::ManiacCheckContinueLoop(int val, int val2, int type, int op) const {
-	switch (type) {
-		case 0: // Infinite loop
-			return true;
-		case 1: // X times
-		case 2: // Count up
-			return val <= val2;
-		case 3: // Count down
-			return val >= val2;
-		case 4: // While
-		case 5: // Do While
-			return CheckOperator(val, val2, op);
-		default:
-			return false;
-	}
 }
 
 int Game_Interpreter::ManiacBitmask(int value, int mask) const {

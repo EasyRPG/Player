@@ -36,6 +36,7 @@
 #include <cmath>
 #include <cstdint>
 #include <lcf/rpg/savepartylocation.h>
+#include <lcf/reader_util.h>
 
 using Main_Data::game_switches, Main_Data::game_variables, Main_Data::game_strings;
 
@@ -184,4 +185,55 @@ StringView Game_Interpreter_Shared::CommandStringOrVariableBitfield(lcf::rpg::Ev
 	}
 
 	return com.string;
+}
+
+
+int Game_Interpreter_Shared::DecodeInt(lcf::DBArray<int32_t>::const_iterator& it) {
+	int value = 0;
+
+	for (;;) {
+		int x = *it++;
+		value <<= 7;
+		value |= x & 0x7F;
+		if (!(x & 0x80))
+			break;
+	}
+
+	return value;
+}
+
+const std::string Game_Interpreter_Shared::DecodeString(lcf::DBArray<int32_t>::const_iterator& it) {
+	std::ostringstream out;
+	int len = DecodeInt(it);
+
+	for (int i = 0; i < len; i++)
+		out << (char)*it++;
+
+	std::string result = lcf::ReaderUtil::Recode(out.str(), Player::encoding);
+
+	return result;
+}
+
+lcf::rpg::MoveCommand Game_Interpreter_Shared::DecodeMove(lcf::DBArray<int32_t>::const_iterator& it) {
+	lcf::rpg::MoveCommand cmd;
+	cmd.command_id = *it++;
+
+	switch (cmd.command_id) {
+		case 32:	// Switch ON
+		case 33:	// Switch OFF
+			cmd.parameter_a = DecodeInt(it);
+			break;
+		case 34:	// Change Graphic
+			cmd.parameter_string = lcf::DBString(DecodeString(it));
+			cmd.parameter_a = DecodeInt(it);
+			break;
+		case 35:	// Play Sound Effect
+			cmd.parameter_string = lcf::DBString(DecodeString(it));
+			cmd.parameter_a = DecodeInt(it);
+			cmd.parameter_b = DecodeInt(it);
+			cmd.parameter_c = DecodeInt(it);
+			break;
+	}
+
+	return cmd;
 }

@@ -20,6 +20,7 @@
 #define EP_GAME_INTERPRETER_SHARED
 
 #include <lcf/rpg/eventcommand.h>
+#include <lcf/rpg/movecommand.h>
 #include <lcf/rpg/saveeventexecframe.h>
 #include <string_view.h>
 
@@ -60,18 +61,18 @@ namespace Game_Interpreter_Shared {
 	* Indicates how the target of an interpreter operation (lvalue) should be evaluated.
 	*/
 	enum TargetEvalMode : std::int8_t { // 4 bits
-		eTargetEval_Single = 0,			// v[x]
-		eTargetEval_Range = 1,			// v[x...y]
-		eTargetEval_IndirectSingle = 2, // v[v[x]]
-		eTargetEval_IndirectRange = 3,	// v[v[x]...v[y]] (ManiacPatch)
-		eTargetEval_Expression = 4		// ManiacPatch expression
+		eTargetEval_Single = 0,				// v[x]
+		eTargetEval_Range = 1,				// v[x...y]
+		eTargetEval_IndirectSingle = 2,		// v[v[x]]
+		eTargetEval_IndirectRange = 3,		// v[v[x]...v[y]] (ManiacPatch)
+		eTargetEval_Expression = 4			// ManiacPatch expression
 	};
 
 	/*
 	* Indicates how an operand of an interpreter operation (rvalue) should be evaluted.
 	*/
 	enum ValueEvalMode : std::int8_t { // 4 bits
-		eValueEval_Constant = 0,				// Constant value is given
+		eValueEval_Constant = 0,			// Constant value is given
 		eValueEval_Variable = 1,
 		eValueEval_VariableIndirect = 2,
 		eValueEval_Switch = 3,
@@ -123,6 +124,12 @@ namespace Game_Interpreter_Shared {
 	StringView CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
 
 	bool CheckOperator(int val, int val2, int op);
+
+	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
+	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
+	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
+
+	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
@@ -139,6 +146,23 @@ inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
 			return val < val2;
 		case 5:
 			return val != val2;
+		default:
+			return false;
+	}
+}
+
+inline bool Game_Interpreter_Shared::ManiacCheckContinueLoop(int val, int val2, int type, int op) {
+	switch (type) {
+		case 0: // Infinite loop
+			return true;
+		case 1: // X times
+		case 2: // Count up
+			return val <= val2;
+		case 3: // Count down
+			return val >= val2;
+		case 4: // While
+		case 5: // Do While
+			return CheckOperator(val, val2, op);
 		default:
 			return false;
 	}
