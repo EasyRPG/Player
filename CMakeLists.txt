@@ -539,8 +539,22 @@ set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
 )
 
 # Platform setup
-set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1 libretro psvita 3ds switch wii amigaos4")
-set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro psvita 3ds switch wii amigaos4)
+if(NINTENDO_3DS)
+	set(PLAYER_TARGET_PLATFORM "3ds" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_SWITCH)
+	set(PLAYER_TARGET_PLATFORM "switch" CACHE STRING "Platform to compile for.")
+elseif(VITA)
+	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_WII)
+	set(PLAYER_TARGET_PLATFORM "wii" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_WIIU)
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
+elseif(AMIGA)
+	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "Platform to compile for.")
+else()
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1 libretro")
+	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro)
+endif()
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
@@ -601,9 +615,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
-	if(NOT NINTENDO_3DS)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/3DS.cmake' option.")
-	endif()
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi PLAYER_NINTENDO)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
 	# generate gfx assets
@@ -634,9 +645,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/ui.h)
 	target_link_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
-	if(NOT VITA)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
-	endif()
 	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=Psp2Ui)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
@@ -649,9 +657,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		src/platform/psvita/ui.cpp
 		src/platform/psvita/ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
-	if(NOT NINTENDO_SWITCH)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake' option.")
-	endif()
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi PLAYER_NINTENDO)
 	find_package(OpenGL CONFIG REQUIRED)
 	find_library(GLAD glad REQUIRED)
@@ -671,12 +676,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/ui.h)
 	target_link_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
-	if(NOT NINTENDO_WII)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
-	endif()
-	find_package(SDL REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
 		src/platform/wii/audio.h
@@ -686,19 +686,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
-	if(NOT AMIGAOS4)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=path/to/ppc-amigaos.cmake' option.")
-	endif()
-	find_package(SDL REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
-		src/platform/sdl/axis.h
-		src/platform/sdl/sdl_ui.cpp
-		src/platform/sdl/sdl_ui.h)
+	player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
@@ -710,13 +698,17 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$" OR NINTENDO_WII
 	set(PLAYER_ENABLE_TESTS OFF)
 	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
 endif()
-# Make romfs available
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$")
-	option(PLAYER_ROMFS "Embedd a directory in the executable" OFF)
-	set(PLAYER_ROMFS_PATH "romfs" CACHE PATH "Directory to include in executable as romfs:/ path")
-	set(ROMFS_ARG "NO_ROMFS_IGNORE_ME")
-	if(PLAYER_ROMFS)
-		set(ROMFS_ARG "ROMFS")
+# Make content available (romfs/wuhb bundle)
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$" OR NINTENDO_WIIU)
+	option(PLAYER_BUNDLE "Embedd a directory in the executable" OFF)
+	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
+	set(BUNDLE_ARG "_IGNORE_ME")
+	if(PLAYER_BUNDLE)
+		if(NINTENDO_WIIU)
+			set(BUNDLE_ARG "CONTENT")
+		else()
+			set(BUNDLE_ARG "ROMFS")
+		endif()
 	endif()
 endif()
 
@@ -914,21 +906,17 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
 else()
+	# Assuming that all platforms not targeting SDL have only one audio backend
 	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Default OFF)
-
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Default")
-		# Assuming that all platforms not targeting SDL have only one audio backend
-		set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM})
-	endif()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "libretro")
+	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
@@ -983,7 +971,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -1099,7 +1087,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 endif()
 
 # Executable
-if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL(1|2)$" AND NOT NINTENDO_WIIU)
+if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL[12]$" AND NOT NINTENDO_WIIU)
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1215,7 +1203,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
 		ctr_create_3dsx(easyrpg-player
 			SMDH easyrpg-player.smdh
-			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.3dsx
 				resources/3ds/easyrpg-player.xml # consider removing, *hax² is mostly obsolete
 			DESTINATION easyrpg-player COMPONENT 3ds)
@@ -1231,14 +1219,13 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
-			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
 		add_executable(easyrpg-player src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
-			${SDL_LIBRARIES}
 			-laesnd
 			-lfat
 			-lwiikeyboard)
@@ -1261,7 +1248,8 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 			AUTHOR "EasyRPG Team"
 			ICON resources/wiiu/icon.png
 			TVSPLASH resources/wiiu/splash-tv.png
-			DRCSPLASH resources/wiiu/splash-drc.png)
+			DRCSPLASH resources/wiiu/splash-drc.png
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.wuhb
 			DESTINATION . COMPONENT wiiu)
@@ -1317,12 +1305,6 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${CPACK_PLATFORM}-debug")
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
 	include(CPack)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
-	add_executable(easyrpg-player "src/platform/sdl/main.cpp")
-	target_link_libraries(easyrpg-player
-		${PROJECT_NAME}
-		${SDL_LIBRARIES})
-	# FIXME: packaging?
 else() # library
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
@@ -1495,9 +1477,15 @@ endif()
 
 # Print summary
 message(STATUS "")
-message(STATUS "Target system: ${PLAYER_TARGET_PLATFORM}")
-if(PLAYER_ROMFS)
-	message(STATUS "RomFS: Embedding directory \"${PLAYER_ROMFS_PATH}\"")
+set(TARGET_STATUS "${PLAYER_TARGET_PLATFORM}")
+if(NINTENDO_WIIU)
+	set(TARGET_STATUS "Wii U (SDL2)")
+elseif(AMIGA)
+	set(TARGET_STATUS "Amiga (SDL1)")
+endif()
+message(STATUS "Target system: ${TARGET_STATUS}")
+if(PLAYER_BUNDLE)
+	message(STATUS "Embedding directory \"${PLAYER_BUNDLE_PATH}\"")
 endif()
 message(STATUS "")
 
@@ -1507,7 +1495,7 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	message(STATUS "")
 
 	set(WAV_LIBS)
