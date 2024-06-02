@@ -155,9 +155,6 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 	// Only handle keyboard events when the canvas has focus
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #endif
-#ifdef __WIIU__
-	//WHBProcInit();
-#endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
@@ -210,10 +207,6 @@ Sdl2Ui::~Sdl2Ui() {
 		SDL_DestroyWindow(sdl_window);
 	}
 	SDL_Quit();
-
-#ifdef __WIIU__
-	//WHBProcShutdown();
-#endif
 }
 
 bool Sdl2Ui::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
@@ -526,6 +519,11 @@ void Sdl2Ui::ToggleZoom() {
 
 void Sdl2Ui::ProcessEvents() {
 	SDL_Event evnt;
+
+#ifdef __WIIU__
+	if (!WHBProcIsRunning())
+		Player::Exit();
+#endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Reset Mouse scroll
@@ -1264,12 +1262,6 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	// Toggling this freezes the web player
 	cfg.vsync.SetOptionVisible(false);
 	cfg.pause_when_focus_lost.Lock(false);
-	cfg.pause_when_focus_lost.SetOptionVisible(false);
-#elif defined(__WIIU__)
-	// FIXME: Some options below may crash, better disable for now
-	cfg.fullscreen.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.vsync.SetOptionVisible(false);
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #endif
 }

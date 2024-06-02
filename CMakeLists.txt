@@ -1239,7 +1239,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 			${CMAKE_CURRENT_BINARY_DIR}/resources/wii/meta.xml
 			DESTINATION easyrpg-player COMPONENT wii)
 	elseif(NINTENDO_WIIU)
-		add_executable(easyrpg-player src/platform/sdl/main.cpp)
+		add_executable(easyrpg-player src/platform/wiiu/main.cpp)
 		target_link_libraries(easyrpg-player ${PROJECT_NAME})
 		wut_create_rpx(easyrpg-player)
 		wut_create_wuhb(easyrpg-player
