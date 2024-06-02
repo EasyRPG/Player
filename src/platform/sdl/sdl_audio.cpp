@@ -64,6 +64,7 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 			return AudioDecoder::Format::F32;
 #endif
 		default:
+			Output::Warning("Couldn't find GenericAudio format for {:#x}", format);
 			assert(false);
 	}
 
@@ -96,7 +97,7 @@ SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
 	SDL_AudioSpec want = {};
 	SDL_AudioSpec have = {};
 	want.freq = frequency;
-	want.format = AUDIO_S16;
+	want.format = AUDIO_S16SYS;
 	want.channels = 2;
 	want.samples = 2048;
 	want.callback = sdl_audio_callback;
