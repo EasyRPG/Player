@@ -1257,9 +1257,11 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 		wut_create_rpx(easyrpg-player)
 		wut_create_wuhb(easyrpg-player
 			NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
-			SHORT_NAME "Player"
+			SHORTNAME "EasyRPG Player"
 			AUTHOR "EasyRPG Team"
-		) # todo icon, splashs)
+			ICON resources/wiiu/icon.png
+			TVSPLASH resources/wiiu/splash-tv.png
+			DRCSPLASH resources/wiiu/splash-drc.png)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.wuhb
 			DESTINATION . COMPONENT wiiu)
