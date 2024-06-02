@@ -124,7 +124,7 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 #ifdef __wii__
 		path = "/data/easyrpg-player";
 #elif defined(__WIIU__)
-		path = "/vol/external01/data/easyrpg-player"; // temp
+		path = "fs:/vol/external01/wiiu/apps/easyrpg-player";
 #elif defined(__SWITCH__)
 		path = "/switch/easyrpg-player";
 #elif defined(__3DS__)
