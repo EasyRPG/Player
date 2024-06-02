@@ -77,7 +77,6 @@
 			"displayName": "Nintendo 3DS",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "3ds",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
 			},
 			"inherits": "dkp-user"
@@ -87,7 +86,6 @@
 			"displayName": "Nintendo Switch",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "switch",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
 			"inherits": "dkp-user"
@@ -97,7 +95,6 @@
 			"displayName": "Nintendo Wii",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "wii",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user"
@@ -116,7 +113,6 @@
 			"displayName": "PlayStation Vita",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "psvita",
 				"BUILD_SHARED_LIBS": "OFF"
 			}
 		}

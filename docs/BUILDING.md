@@ -94,13 +94,13 @@ The unsigned APK is stored in:
     app/build/outputs/apk/release/app-release-unsigned.apk
 
 
-## Nintendo and Sony Homebrew ports (Wii, 3DS, Switch, PSVita/PSTV)
+## Nintendo and Sony Homebrew ports (Wii (U), 3DS, Switch, PSVita/PSTV)
 
 This is based on the CMake method.
 
 Building requirements:
 
-- devkitPPC for Wii
+- devkitPPC for Wii and Wii U
 - devkitARM for 3DS
 - devkitA64 for Switch
 - vitasdk for PSVita/PSTV
@@ -110,13 +110,12 @@ and vitasdk: https://vitasdk.org
 
 Invoke CMake with these additional parameters:
 
-    -DCMAKE_TOOLCHAIN_FILE=<DEVKITPRO>/cmake/3DS|Switch|Wii.cmake
+    -DCMAKE_TOOLCHAIN_FILE=<DEVKITPRO>/cmake/3DS|Switch|Wii|WiiU.cmake
                          (or <VITASDK>/share/vita.toolchain.cmake)
-    -DPLAYER_TARGET_PLATFORM=3ds|switch|wii|psvita
 
-Switch and 3DS support romfs game loading, use these parameters:
+Switch, Wii U and 3DS support shipping games, use these parameters:
 
-    -DPLAYER_ROMFS=ON -DPLAYER_ROMFS_PATH=path/to/myGame
+    -DPLAYER_BUNDLE=ON -DPLAYER_BUNDLE_PATH=path/to/myGame
 
 
 [buildscripts]: https://github.com/EasyRPG/buildscripts
