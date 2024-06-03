@@ -157,6 +157,13 @@ bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 			}
 		}
 
+#if defined(__WIIU__)
+		if (cur_path == "fs:/vol" || cur_path == "/vol") {
+			// /vol is part of the path but checking for existance fails
+			continue;
+		}
+#endif
+
 		File cf(cur_path);
 		if (cf.IsDirectory(follow_symlinks)) {
 			continue;
