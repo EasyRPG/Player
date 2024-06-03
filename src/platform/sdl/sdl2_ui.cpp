@@ -1252,6 +1252,9 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.window_zoom.SetOptionVisible(false);
 	// Toggling this freezes the web player
 	cfg.vsync.SetOptionVisible(false);
+#elif defined(__WIIU__)
+	// Only makes the screen flicker
+        cfg.fullscreen.SetOptionVisible(false);
 #endif
 }
 
