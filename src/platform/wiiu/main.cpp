@@ -27,8 +27,10 @@
 #ifdef USE_SDL // SDL might wrap main()
 #  include <SDL.h>
 #endif
+
 #include <coreinit/debug.h>
-#include <whb/proc.h>
+#include <coreinit/foreground.h>
+#include <proc_ui/procui.h>
 #include <sysapp/launch.h>
 
 using namespace std::chrono_literals;
@@ -46,6 +48,7 @@ static void deinitLogging() {}
 static bool moduleLogInit = false;
 static bool cafeLogInit = false;
 static bool udpLogInit = false;
+static bool prodUiExited = false;
 
 static void initLogging() {
 	if (!(moduleLogInit = WHBLogModuleInit())) {
@@ -81,6 +84,38 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
 #endif
 }
 
+static uint32_t SaveCallback(void*) {
+	OSSavesDone_ReadyToRelease();
+	return 0;
+}
+
+bool WiiU_ProcessProcUI() {
+	ProcUIStatus status = ProcUIProcessMessages(TRUE);
+	if (status == PROCUI_STATUS_EXITING) {
+		prodUiExited = true;
+		return false;
+	} else if (status == PROCUI_STATUS_RELEASE_FOREGROUND) {
+		ProcUIDrawDoneRelease();
+	}
+	return true;
+}
+
+void WiiU_Exit() {
+	Output::Debug("Shutdown Reason: {}", prodUiExited ? "HOME Menu" : "Player Exit");
+
+    if (!prodUiExited) {
+		// Exit was not through the Home Menu
+		// Manually launch the system menu
+		SYSLaunchMenu();
+		Game_Clock::SleepFor(std::chrono::milliseconds(10));
+		while (WiiU_ProcessProcUI()) {}
+	}
+
+	ProcUIShutdown();
+
+	deinitLogging();
+}
+
 /**
  * If the main function ever needs to change, be sure to update the `main()`
  * functions of the other platforms as well.
@@ -89,7 +124,7 @@ extern "C" int main(int argc, char* argv[]) {
 	std::vector<std::string> args{argv, argv + argc};
 
 	initLogging();
-	WHBProcInit();
+	ProcUIInitEx(SaveCallback, nullptr);
 
 	Output::SetLogCallback(LogCallback);
 
@@ -118,19 +153,7 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
-	// FIXME: somehow the wiiu sdl2 port does not clean up procui
-	// without launching the menu manually
-#if 1
-	SYSLaunchMenu();
-	while(WHBProcIsRunning()) {
-		Output::Debug("Waiting for shutdown...");
-		Game_Clock::SleepFor(1s);
-	}
-#else
-	WHBProcShutdown();
-#endif
-
-	deinitLogging();
+	WiiU_Exit();
 
 	return EXIT_SUCCESS;
 }
