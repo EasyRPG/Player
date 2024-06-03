@@ -593,6 +593,7 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	if(NINTENDO_WIIU)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
 		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/wiiu/main.h
 			src/platform/wiiu/input_buttons.cpp)
 	endif()
 

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -31,8 +30,6 @@
 #  include <SDL_system.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
-#elif defined(__WIIU__)
-#  include <whb/proc.h>
 #endif
 #include "icon.h"
 
@@ -519,11 +516,6 @@ void Sdl2Ui::ToggleZoom() {
 
 void Sdl2Ui::ProcessEvents() {
 	SDL_Event evnt;
-
-#ifdef __WIIU__
-	if (!WHBProcIsRunning())
-		Player::Exit();
-#endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Reset Mouse scroll
