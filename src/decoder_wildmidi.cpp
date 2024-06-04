@@ -142,7 +142,7 @@ bool WildMidiDecoder::Initialize(std::string& status_message) {
 	}
 #elif defined(__WIIU__)
 	// preferred SD card directory
-	config_file = "fs:/vol/external01/wiiu/apps/easyrpg-player/wildmidi.cfg";
+	config_file = "fs:/vol/external01/wiiu/data/easyrpg-player/wildmidi.cfg";
 	found = FileFinder::Root().Exists(config_file);
 
 	// shipped
