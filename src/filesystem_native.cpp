@@ -20,13 +20,20 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <ios>
 #include <string>
 #include <vector>
 #include <fmt/core.h>
 
+#include "filesystem_stream.h"
 #include "system.h"
 #include "output.h"
 #include "platform.h"
+
+#ifdef USE_CUSTOM_FILE_READBUF
+#  include <sys/stat.h>
+#  include <fcntl.h>
+#endif
 
 NativeFilesystem::NativeFilesystem(std::string base_path, FilesystemView parent_fs) : Filesystem(std::move(base_path), parent_fs) {
 }
@@ -48,7 +55,17 @@ int64_t NativeFilesystem::GetFilesize(StringView path) const {
 }
 
 std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-	auto* buf = new std::filebuf();
+#ifdef USE_CUSTOM_FILE_READBUF
+	(void)mode;
+	int fd = open(ToString(path).c_str(), O_RDONLY);
+	if (fd < 0) {
+		return nullptr;
+	}
+
+	return new Filesystem_Stream::FdStreamBuf(fd);
+#else
+	auto buf = new std::filebuf();
+
 	buf->open(
 #ifdef _MSC_VER
 		Utils::ToWideString(path),
@@ -63,6 +80,7 @@ std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::
 	}
 
 	return buf;
+#endif
 }
 
 std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
