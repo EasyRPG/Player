@@ -24,6 +24,7 @@
 #include <ostream>
 #include "filesystem.h"
 #include "utils.h"
+#include "system.h"
 
 namespace Filesystem_Stream {
 	class InputStream final : public std::istream {
@@ -95,6 +96,29 @@ namespace Filesystem_Stream {
 	private:
 		std::vector<uint8_t> buffer;
 	};
+
+#ifdef USE_CUSTOM_FILE_READBUF
+	class FdStreamBuf : public std::streambuf {
+	public:
+		FdStreamBuf(int fd);
+		FdStreamBuf(FdStreamBuf const& other) = delete;
+		FdStreamBuf const& operator=(FdStreamBuf const& other) = delete;
+		~FdStreamBuf();
+
+	protected:
+		int_type underflow();
+		std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode);
+		std::streambuf::pos_type seekpos(std::streambuf::pos_type pos, std::ios_base::openmode);
+
+	private:
+		void clear_buffer();
+		ssize_t bytes_remaining() const;
+
+		int fd;
+		off_t file_offset = 0;
+		std::array<char, USE_CUSTOM_FILE_READBUF> buffer;
+	};
+#endif
 
 	static constexpr std::ios_base::seekdir CSeekdirToCppSeekdir(int origin);
 

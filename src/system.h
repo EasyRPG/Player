@@ -71,6 +71,7 @@
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #  define SUPPORT_TOUCH
+#  define USE_CUSTOM_FILE_READBUF 16 * 1024
 #elif defined(_WIN32)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
