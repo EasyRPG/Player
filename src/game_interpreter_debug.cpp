@@ -52,7 +52,7 @@ Debug::ParallelInterpreterStates Debug::ParallelInterpreterStates::GetCachedStat
 }
 
 std::vector<Debug::CallStackItem> Debug::CreateCallStack(const int owner_evt_id, const lcf::rpg::SaveEventExecState& state) {
-	std::vector<CallStackItem> items(state.stack.size());
+	std::vector<CallStackItem> items;
 
 	for (int i = state.stack.size() - 1; i >= 0; i--) {
 		int evt_id = state.stack[i].event_id;
@@ -134,4 +134,55 @@ std::string Debug::FormatEventName(Game_Character const& ch) {
 			assert(false);
 	}
 	return "";
+}
+
+void Debug::AssertBlockedMoves() {
+	auto check = [](Game_Character& ev) {
+		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteFinished()
+			&& ev.GetStopCount() != 0xFFFF && ev.GetStopCount() > ev.GetMaxStopCount();
+	};
+	auto assert_way = [](Game_Character& ev) {
+		using Code = lcf::rpg::MoveCommand::Code;
+		auto& move_command = ev.GetMoveRoute().move_commands[ev.GetMoveRouteIndex()];
+
+		if (move_command.command_id >= static_cast<int>(Code::move_up)
+			&& move_command.command_id <= static_cast<int>(Code::move_forward)) {
+
+			const int dir = ev.GetDirection();
+			const int from_x = ev.GetX(),
+				from_y = ev.GetY(),
+				to_x = from_x + ev.GetDxFromDirection(dir),
+				to_y = from_y + ev.GetDyFromDirection(dir);
+
+			if (from_x != to_x && from_y != to_y) {
+				bool valid = Game_Map::AssertWay(ev, from_x, from_y, from_x, to_y);
+				if (valid)
+					valid = Game_Map::AssertWay(ev, from_x, to_y, to_x, to_y);
+				if (valid)
+					valid = Game_Map::AssertWay(ev, from_x, from_y, to_x, from_y);
+				if (valid)
+					valid = Game_Map::AssertWay(ev, to_x, from_y, to_x, to_y);
+			} else {
+				Game_Map::AssertWay(ev, from_x, from_y, to_x, to_y);
+			}
+		}
+	};
+	const auto map_id = Game_Map::GetMapId();
+	if (auto& ch = *Main_Data::game_player; check(ch)) {
+		assert_way(ch);
+	}
+	if (auto& vh = *Game_Map::GetVehicle(Game_Vehicle::Boat); vh.GetMapId() == map_id && check(vh)) {
+		assert_way(vh);
+	}
+	if (auto& vh = *Game_Map::GetVehicle(Game_Vehicle::Ship); vh.GetMapId() == map_id && check(vh)) {
+		assert_way(vh);
+	}
+	if (auto& vh = *Game_Map::GetVehicle(Game_Vehicle::Airship); vh.GetMapId() == map_id && check(vh)) {
+		assert_way(vh);
+	}
+	for (auto& ev : Game_Map::GetEvents()) {
+		if (check(ev)) {
+			assert_way(ev);
+		}
+	}
 }

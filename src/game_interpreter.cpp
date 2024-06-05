@@ -436,6 +436,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		if (_state.wait_movement) {
+			if (ShouldAssertMoveRoutes()) {
+				Debug::AssertBlockedMoves();
+			}
 			if (Game_Map::IsAnyMovePending()) {
 				break;
 			}
@@ -5649,4 +5652,11 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 	}
 
 	return value;
+}
+
+bool Game_Interpreter::ShouldAssertMoveRoutes() const {
+	//FIXME: Needs liblcf update
+	//return (main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_main) > 0)
+	//	|| (!main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_parallel) > 0);
+	return true;
 }
