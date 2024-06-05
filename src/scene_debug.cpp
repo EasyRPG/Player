@@ -25,6 +25,7 @@
 #include "input.h"
 #include "game_variables.h"
 #include "game_switches.h"
+#include "game_strings.h"
 #include "game_map.h"
 #include "game_system.h"
 #include "game_battle.h"
@@ -44,6 +45,7 @@
 #include <lcf/data.h>
 #include "output.h"
 #include "transition.h"
+#include "lcf/reader_util.h"
 
 namespace {
 struct IndexSet {
@@ -69,14 +71,22 @@ void Scene_Debug::Start() {
 	CreateRangeWindow();
 	CreateVarListWindow();
 	CreateNumberInputWindow();
+	CreateChoicesWindow();
+	CreateStringViewWindow();
+	CreateInterpreterWindow();
 
 	SetupUiRangeList();
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
+	stringview_window->SetActive(false);
+	interpreter_window->SetActive(false);
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
+	RefreshDetailWindow();
+
+	strings_cached = false;
+	interpreter_states_cached = false;
 }
 
 Scene_Debug::StackFrame& Scene_Debug::GetFrame(int n) {
@@ -115,6 +125,8 @@ Window_VarList::Mode Scene_Debug::GetWindowMode() const {
 			return Window_VarList::eCommonEvent;
 		case eCallMapEvent:
 			return Window_VarList::eMapEvent;
+		case eString:
+			return Window_VarList::eString;
 		default:
 			return Window_VarList::eNone;
 	}
@@ -131,14 +143,25 @@ void Scene_Debug::UpdateFrameValueFromUi() {
 		case eUiRangeList:
 			idx.range_index = range_index;
 			idx.range_page = range_page;
-			frame.value = range_page * 100 + range_index * 10;
+			frame.value = GetSelectedIndexFromRange() - 1;
 			break;
 		case eUiVarList:
 			idx.range_page_index = var_window->GetIndex();
-			frame.value = range_page * 100 + range_index * 10 + var_window->GetIndex() + 1;
+			frame.value = GetSelectedIndexFromRange() + var_window->GetIndex();
 			break;
 		case eUiNumberInput:
 			frame.value = numberinput_window->GetNumber();
+			break;
+		case eUiChoices:
+			frame.value = choices_window->GetIndex();
+			break;
+		eUiStringView:
+			frame.value = stringview_window->GetIndex();
+			break;
+		case eUiInterpreterView:
+			idx.range_page_index = interpreter_window->GetIndex();
+			frame.value = GetSelectedIndexFromRange() + interpreter_window->GetIndex();
+			state_interpreter.selected_frame = interpreter_window->GetSelectedStackFrameLine();
 			break;
 	}
 }
@@ -150,9 +173,34 @@ void Scene_Debug::Push(UiMode ui) {
 
 	range_window->SetActive(false);
 	var_window->SetActive(false);
+	interpreter_window->SetActive(false);
+	interpreter_window->SetVisible(false);
 	numberinput_window->SetActive(false);
 	numberinput_window->SetVisible(false);
+	stringview_window->SetActive(false);
+	stringview_window->SetVisible(false);
 }
+
+int Scene_Debug::GetSelectedIndexFromRange() const {
+	switch (mode) {
+		case eInterpreter:
+			return range_page * 10 + range_index + 1;
+	}
+	return range_page * 100 + range_index * 10 + 1;
+}
+
+void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
+	switch (mode) {
+		case eInterpreter:
+			range_index = value % 10;
+			range_page = value / 10;
+			break;
+		default:
+			range_index = (value % 100) / 10;
+			range_page = value / 100;
+			break;
+	}
+} 
 
 void Scene_Debug::SetupUiRangeList() {
 	auto& idx = prev[mode];
@@ -161,8 +209,12 @@ void Scene_Debug::SetupUiRangeList() {
 	range_index = idx.range_index;
 	range_page = idx.range_page;
 
-	var_window->SetMode(vmode);
-	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+	//if (mode == eInterpreter && (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars)) {
+	//	var_window->SetMode(state_interpreter.show_frame_switches ? Window_VarList::eFrameSwitch : Window_VarList::eFrameVariable);
+	//} else {
+		var_window->SetMode(vmode, mode == eString ? strings.size() : 0);
+	//}
+	UpdateDetailWindow();
 
 	range_window->SetIndex(range_index);
 }
@@ -175,8 +227,11 @@ void Scene_Debug::PushUiRangeList() {
 	range_window->SetActive(true);
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
+	RefreshDetailWindow();
 
+	if (mode == eInterpreter) {
+		interpreter_window->SetVisible(true);
+	}
 }
 
 void Scene_Debug::PushUiVarList() {
@@ -195,7 +250,6 @@ void Scene_Debug::PushUiVarList() {
 
 	UpdateRangeListWindow();
 	var_window->Refresh();
-
 }
 
 void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operator) {
@@ -208,21 +262,98 @@ void Scene_Debug::PushUiNumberInput(int init_value, int digits, bool show_operat
 	numberinput_window->SetMaxDigits(digits);
 	numberinput_window->Refresh();
 
-	var_window->Refresh();
+	RefreshDetailWindow();
 	UpdateRangeListWindow();
 }
 
+void Scene_Debug::PushUiChoices(std::vector<std::string> choices, std::vector<bool> choices_enabled) {
+	Push(eUiChoices);
+
+	choices_window->ReplaceCommands(choices);
+	choices_window->SetY(Player::menu_offset_y + (choices.size() + 1) * 8 + 72);
+	choices_window->SetHeight((choices.size() + 1) * 16);
+	choices_window->SetVisible(true);
+	choices_window->SetActive(true);
+	choices_window->Refresh();
+
+	for (int i = 0; i < choices_enabled.size(); i++) {
+		choices_window->SetItemEnabled(i, choices_enabled[i]);
+	}
+
+	RefreshDetailWindow();
+	UpdateRangeListWindow();
+}
+
+void Scene_Debug::PushUiStringView() {
+	const auto str_id = GetFrame().value;
+
+	auto value = ToString(Main_Data::game_strings->Get(str_id));
+
+	if (value.empty()) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+	Push(eUiStringView);
+
+	var_window->SetActive(false);
+	stringview_window->SetActive(true);
+	stringview_window->SetVisible(true);
+
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+	stringview_window->SetDisplayData(value);
+	stringview_window->SetIndex(0);
+	stringview_window->Refresh();
+}
+
+void Scene_Debug::PushUiInterpreterView() {
+	const bool was_range_list = (GetFrame().uimode == eUiRangeList);
+
+	if (!interpreter_window->IsValid()) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+
+	Push(eUiInterpreterView);
+
+	auto& idx = prev[mode];
+
+	if (!was_range_list) {
+		SetupUiRangeList();
+	}
+
+	interpreter_window->SetVisible(true);
+	var_window->SetVisible(false);
+
+	interpreter_window->SetActive(true);
+	interpreter_window->SetIndex(0);
+
+	UpdateRangeListWindow();
+	interpreter_window->Refresh();
+}
+
+
 void Scene_Debug::Pop() {
 	auto pui = GetFrame().uimode;
-
-	if (pui == eUiVarList) {
-		var_window->SetIndex(-1);
-	}
 
 	range_window->SetActive(false);
 	var_window->SetActive(false);
 	numberinput_window->SetActive(false);
 	numberinput_window->SetVisible(false);
+	choices_window->SetActive(false);
+	choices_window->SetVisible(false);
+	stringview_window->SetActive(false);
+	stringview_window->SetVisible(false);
+	interpreter_window->SetActive(false);
+
+	if (mode == eInterpreter /* && !(state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) */) {
+		interpreter_window->SetIndex(-1);
+		interpreter_window->SetVisible(true);
+		var_window->SetVisible(false);
+	} else {
+		var_window->SetIndex(-1);
+		var_window->SetVisible(true);
+		interpreter_window->SetVisible(false);
+	}
 
 	if (stack_index == 0) {
 		Scene::Pop();
@@ -231,10 +362,12 @@ void Scene_Debug::Pop() {
 
 	--stack_index;
 
-	auto nui = GetFrame().uimode;
+	auto& frame = GetFrame();
+	auto nui = frame.uimode;
 	switch (nui) {
 		case eUiMain:
 			var_window->SetMode(Window_VarList::eNone);
+			interpreter_window->SetVisible(false);
 			range_index = (static_cast<int>(mode) - 1) % 10;
 			range_page = (static_cast<int>(mode) - 1) / 10;
 			range_window->SetActive(true);
@@ -242,18 +375,34 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiRangeList:
 			range_window->SetActive(true);
-			range_index = (GetFrame().value % 100) / 10;
-			range_page = GetFrame().value / 100;
+			RestoreRangeSelectionFromSelectedValue(frame.value);
 			range_window->SetIndex(range_index);
 			break;
 		case eUiVarList:
 			var_window->SetActive(true);
-			var_window->SetIndex((GetFrame().value - 1) % 10);
+			var_window->SetIndex((frame.value - 1) % 10);
 			break;
 		case eUiNumberInput:
-			numberinput_window->SetNumber(GetFrame().value);
+			numberinput_window->SetNumber(frame.value);
 			numberinput_window->SetActive(true);
 			numberinput_window->SetVisible(true);
+			break;
+		case eUiChoices:
+			choices_window->SetIndex(frame.value);
+			choices_window->SetActive(true);
+			choices_window->SetVisible(true);
+			break;
+		case eUiStringView:
+			stringview_window->SetActive(true);
+			stringview_window->SetVisible(true);
+			break;
+		case eUiInterpreterView:
+			interpreter_window->SetActive(true);
+			interpreter_window->SetIndex(frame.value - 1);
+			var_window->SetVisible(false);
+			interpreter_window->SetVisible(true);
+			//state_interpreter.show_frame_switches = false;
+			//state_interpreter.show_frame_vars = false;
 			break;
 	}
 
@@ -262,30 +411,44 @@ void Scene_Debug::Pop() {
 	}
 
 	UpdateRangeListWindow();
-	var_window->Refresh();
+	RefreshDetailWindow();
 }
 
 void Scene_Debug::vUpdate() {
 	range_window->Update();
 	if (range_index != range_window->GetIndex()){
 		range_index = range_window->GetIndex();
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		var_window->Refresh();
+		UpdateDetailWindow();
+		RefreshDetailWindow();
 	}
 	var_window->Update();
 
+	if (stringview_window->GetActive())
+		stringview_window->Update();
+
 	if (numberinput_window->GetActive())
 		numberinput_window->Update();
+
+	if (choices_window->GetActive())
+		choices_window->Update();
+
+	if (interpreter_window->GetActive())
+		interpreter_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		UpdateFrameValueFromUi();
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Pop();
+
+		const auto sz = GetStackSize();
+		if ((mode == eInterpreter) && sz == 4) {
+			Pop(); //skip over choices window
+		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		UpdateFrameValueFromUi();
 		if (mode == eMain) {
 			auto next_mode = static_cast<Mode>(range_window->GetIndex() + range_page * 10 + 1);
-			if (next_mode > eMain && next_mode < eLastMainMenuOption) {
+			if (next_mode > eMain && next_mode <= GetNumMainMenuItems()) {
 				if (!range_window->IsItemEnabled(range_window->GetIndex())) {
 					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 				} else {
@@ -445,29 +608,78 @@ void Scene_Debug::vUpdate() {
 					}
 				}
 				break;
+			case eString:
+				if (sz == 3) {
+					PushUiStringView();
+				} else if (sz == 2) {
+					PushUiVarList();
+				} else if (sz == 1) {
+					if (!strings_cached) {
+						strings = Main_Data::game_strings->GetLcfData();
+						strings_cached = true;
+					}
+					PushUiRangeList();
+				}
+				break;
+			case eInterpreter:
+				if (sz == 3) {
+					if (state_interpreter.selected_frame >= 0) {
+						/*std::vector<std::string> choices;
+						std::vector<bool> choices_enabled;
+
+						choices.push_back("FrameSwitches");
+						choices.push_back("FrameVariables");
+
+						choices_enabled.push_back(GetSelectedInterpreterFrameFromUiState().easyrpg_frame_switches.size() > 0);
+						choices_enabled.push_back(GetSelectedInterpreterFrameFromUiState().easyrpg_frame_variables.size() > 0);
+
+						PushUiChoices(choices, choices_enabled);*/
+					} else {
+						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+					}
+				} else if (sz == 2) {
+					PushUiInterpreterView();
+				} else if (sz == 1) {
+					if (!interpreter_states_cached) {
+						CacheBackgroundInterpreterStates();
+						interpreter_states_cached = true;
+					}
+					PushUiRangeList();
+					interpreter_window->SetVisible(true);
+					UpdateInterpreterWindow(GetSelectedIndexFromRange());
+				}
+				break;
 			case eOpenMenu:
 				DoOpenMenu();
 				break;
 		}
 		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
+		int range_page_prev = range_page;
 		if (range_page < GetLastPage()) {
 			++range_page;
 		} else {
 			range_page = 0;
 		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
+		if (range_page != range_page_prev) {
+			UpdateDetailWindow();
+			RefreshDetailWindow();
+			UpdateRangeListWindow();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+		}
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::LEFT)) {
+		int range_page_prev = range_page;
 		if (range_page > 0) {
 			--range_page;
 		} else {
 			range_page = GetLastPage();
 		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
+		if (range_page != range_page_prev) {
+			UpdateDetailWindow();
+			RefreshDetailWindow();
+			UpdateRangeListWindow();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+		}
 	}
 
 	UpdateArrows();
@@ -521,6 +733,8 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Call ComEvent");
 				addItem("Call MapEvent", Scene::Find(Scene::Map) != nullptr);
 				addItem("Call BtlEvent", is_battle);
+				addItem("Strings", Player::IsPatchManiac());
+				addItem("Interpreter");
 				addItem("Open Menu", !is_battle);
 			}
 			break;
@@ -597,12 +811,83 @@ void Scene_Debug::UpdateRangeListWindow() {
 				}
 			}
 			break;
+		case eString:
+			fillRange("St");
+			break;
+		case eInterpreter:
+		{
+			//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
+			//	for (int i = 0; i < 10; i++) {
+			//		const auto st = range_page * 100 + i * 10 + 1;
+			//		addItem(fmt::format("{}[{:03d}-{:03d}]", state_interpreter.show_frame_switches ? "FSw" : "FVr", st, st + 9));
+			//	}
+			//} else {
+				int skip_items = range_page * 10;
+				int count_items = 0;
+				if (range_page == 0) {
+					addItem(fmt::format("{}Main", Game_Interpreter::GetForegroundInterpreter().GetState().wait_movement ? "(W) " : ""));
+					skip_items = 1;
+					count_items = 1;
+				}
+				for (int i = 0; i < state_interpreter.ev.size() && count_items < 10; i++) {
+					if (skip_items > 0) {
+						skip_items--;
+						continue;
+					}
+					int evt_id = state_interpreter.ev[i];
+					addItem(fmt::format("{}EV{:04d}: {}", state_interpreter.state_ev[i].wait_movement ? "(W) " : "", evt_id, Game_Map::GetEvent(evt_id)->GetName()));
+					count_items++;
+				}
+				for (int i = 0; i < state_interpreter.ce.size() && count_items < 10; i++) {
+					if (skip_items > 0) {
+						skip_items--;
+						continue;
+					}
+					int ce_id = state_interpreter.ce[i];
+					auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, ce_id);
+					addItem(fmt::format("{}CE{:04d}: {}", state_interpreter.state_ce[i].wait_movement ? "(W) " : "", ce_id, ce->name));
+					count_items++;
+				}
+			//}
+		}
+		break;
 		default:
 			break;
 	}
 
 	while (idx < 10) {
 		addItem("", true);
+	}
+}
+
+void Scene_Debug::UpdateDetailWindow() {
+	if (mode == eInterpreter) {
+		//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
+		//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
+		//	var_window->SetInterpreterFrame(&interpreter_frame);
+		//	var_window->UpdateList(GetSelectedIndexFromRange());
+		//	
+		//	interpreter_window->SetVisible(false);
+		//	interpreter_window->SetActive(false);
+		//} else {
+			UpdateInterpreterWindow(GetSelectedIndexFromRange());
+		//}
+	} else {
+		var_window->UpdateList(GetSelectedIndexFromRange());
+	}
+}
+
+void Scene_Debug::RefreshDetailWindow() {
+	if (mode == eInterpreter) {
+		//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
+		//	var_window->Refresh();
+		//} else {
+			//var_window->SetInterpreterFrame(nullptr);
+			interpreter_window->Refresh();
+		//}
+	} else {
+		//var_window->SetInterpreterFrame(nullptr);
+		var_window->Refresh();
 	}
 }
 
@@ -616,7 +901,7 @@ void Scene_Debug::CreateVarListWindow() {
 	var_window->SetVisible(false);
 	var_window->SetIndex(-1);
 
-	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+	var_window->UpdateList(GetSelectedIndexFromRange());
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
@@ -625,6 +910,31 @@ void Scene_Debug::CreateNumberInputWindow() {
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);
+}
+
+void Scene_Debug::CreateChoicesWindow() {
+	std::vector<std::string> vars;
+	for (int i = 0; i < 2; i++)
+		vars.push_back("");
+	choices_window.reset(new Window_Command(vars));
+	choices_window->SetX(Player::menu_offset_x + 160 - choice_window_width / 2);
+	choices_window->SetY(Player::menu_offset_y + 104);
+	choices_window->SetWidth(choice_window_width);
+	choices_window->SetHeight(64);
+	choices_window->SetVisible(false);
+	choices_window->SetOpacity(255);
+}
+
+void Scene_Debug::CreateStringViewWindow() {
+	stringview_window.reset(new Window_StringView(Player::menu_offset_x + 15, Player::menu_offset_y + 16, 288, 208));
+	stringview_window->SetVisible(false);
+	stringview_window->SetIndex(-1);
+}
+
+void Scene_Debug::CreateInterpreterWindow() {
+	interpreter_window.reset(new Window_Interpreter(Player::menu_offset_x + range_window->GetWidth(), range_window->GetY(), 224, 176));
+	interpreter_window->SetVisible(false);
+	interpreter_window->SetIndex(-1);
 }
 
 int Scene_Debug::GetNumMainMenuItems() const {
@@ -663,6 +973,20 @@ int Scene_Debug::GetLastPage() {
 		case eCallMapEvent:
 			num_elements = Game_Map::GetHighestEventId();
 			break;
+		case eString:
+			num_elements = strings.size();
+			break;
+		case eInterpreter:
+			//if (state_interpreter.show_frame_switches) {
+			//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
+			//	return interpreter_frame.easyrpg_frame_switches.size();	
+			//} else if (state_interpreter.show_frame_vars) {
+			//		auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
+			//		return interpreter_frame.easyrpg_frame_variables.size();					
+			//} else {
+				num_elements = 1 + state_interpreter.ev.size() + state_interpreter.ce.size();
+				return (static_cast<int>(num_elements) - 1) / 10;
+			//}
 		default:
 			break;
 	}
@@ -687,7 +1011,7 @@ void Scene_Debug::DoSwitch() {
 		Main_Data::game_switches->Flip(sw_id);
 		Game_Map::SetNeedRefresh(true);
 
-		var_window->Refresh();
+		RefreshDetailWindow();
 	}
 }
 
@@ -890,4 +1214,95 @@ void Scene_Debug::UpdateArrows() {
 	bool arrow_visible = (arrow_frame < arrow_animation_frames);
 	range_window->SetLeftArrow(show_left_arrow && arrow_visible);
 	range_window->SetRightArrow(show_right_arrow && arrow_visible);
+}
+
+void Scene_Debug::CacheBackgroundInterpreterStates() {
+	state_interpreter.ev.clear();
+	state_interpreter.ce.clear();
+	state_interpreter.state_ev.clear();
+	state_interpreter.state_ce.clear();
+
+	if (Game_Map::GetMapId() > 0) {
+		for (auto& ev : Game_Map::GetEvents()) {
+			if (ev.GetTrigger() != lcf::rpg::EventPage::Trigger_parallel || !ev.interpreter)
+				continue;
+			state_interpreter.ev.emplace_back(ev.GetId());
+			state_interpreter.state_ev.emplace_back(ev.interpreter->GetState());
+		}
+		for (auto& ce : Game_Map::GetCommonEvents()) {
+			if (ce.IsWaitingBackgroundExecution(false)) {
+				state_interpreter.ce.emplace_back(ce.common_event_id);
+				state_interpreter.state_ce.emplace_back(ce.interpreter->GetState());
+			}
+		}
+	} else if (Game_Battle::IsBattleRunning() && Player::IsPatchManiac()) {
+		//Not implemented: battle common events
+	}
+}
+
+void Scene_Debug::UpdateInterpreterWindow(int index) {
+	lcf::rpg::SaveEventExecState state;
+	std::string first_line = "";
+	bool valid = false;
+	int evt_id = 0;
+
+	if (index == 1) {
+		state = Game_Interpreter::GetForegroundInterpreter().GetState();
+		first_line = Game_Battle::IsBattleRunning() ? "Foreground (Battle)" : "Foreground (Map)";
+		valid = true;
+	} else if (index <= state_interpreter.ev.size()) {
+		evt_id = state_interpreter.ev[index - 1];
+		state = state_interpreter.state_ev[index - 1];
+		first_line = fmt::format("EV{:04d}: {}", evt_id, Game_Map::GetEvent(evt_id)->GetName());
+		valid = true;
+	} else if ((index - state_interpreter.ev.size()) <= state_interpreter.ce.size()) {
+		int ce_id = state_interpreter.ce[index - state_interpreter.ev.size() - 1];
+		state = state_interpreter.state_ce[index - state_interpreter.ev.size() - 1];
+		for (auto& ce : Game_Map::GetCommonEvents()) {
+			if (ce.common_event_id == ce_id) {
+				first_line = fmt::format("CE{:04d}: {}", ce_id, ce.GetName());
+				evt_id = ce_id;
+				valid = true;
+				break;
+			}
+		}
+	}
+
+	if (valid) {
+		state_interpreter.selected_state = index;
+		interpreter_window->SetStackState(index > state_interpreter.ev.size(), evt_id, first_line, state);
+	} else {
+		state_interpreter.selected_state = -1;
+		interpreter_window->SetStackState(0, 0, "", {});
+	}
+}
+
+lcf::rpg::SaveEventExecFrame& Scene_Debug::GetSelectedInterpreterFrameFromUiState() const {
+	static lcf::rpg::SaveEventExecFrame empty;
+
+	if (state_interpreter.selected_state <= 0 || state_interpreter.selected_frame < 0) {
+		return empty;
+	}
+
+	int index = state_interpreter.selected_state;
+
+	if (index == 1) {
+		auto& state = Game_Interpreter::GetForegroundInterpreter()._state;
+		return state.stack[state_interpreter.selected_frame];
+	} else if (index <= state_interpreter.ev.size()) {
+		int evt_id = state_interpreter.ev[index - 1];
+		auto ev = Game_Map::GetEvent(evt_id);
+
+		auto& state = ev->interpreter->_state;
+		return state.stack[state_interpreter.selected_frame];
+	} else if ((index - state_interpreter.ev.size()) <= state_interpreter.ce.size()) {
+		int ce_id = state_interpreter.ce[index - state_interpreter.ev.size() - 1];
+		for (auto& ce : Game_Map::GetCommonEvents()) {
+			if (ce.common_event_id == ce_id) {
+				auto& state = ce.interpreter->_state;
+				return state.stack[state_interpreter.selected_frame];
+			}
+		}
+	}
+	return empty;
 }

@@ -24,6 +24,8 @@
 #include "window_command.h"
 #include "window_numberinput.h"
 #include "window_varlist.h"
+#include "window_stringview.h"
+#include "window_interpreter.h"
 
 /**
  * Scene Equip class.
@@ -68,6 +70,8 @@ public:
 		eCallCommonEvent,
 		eCallMapEvent,
 		eCallBattleEvent,
+		eString,
+		eInterpreter,
 		eOpenMenu,
 		eLastMainMenuOption,
 	};
@@ -76,7 +80,10 @@ public:
 		eUiMain,
 		eUiRangeList,
 		eUiVarList,
-		eUiNumberInput
+		eUiNumberInput,
+		eUiStringView,
+		eUiChoices,
+		eUiInterpreterView
 	};
 private:
 	Mode mode = eMain;
@@ -95,8 +102,23 @@ private:
 	/** Creates number input window. */
 	void CreateNumberInputWindow();
 
+	/** Creates choices window. */
+	void CreateChoicesWindow();
+
+	/** Creates string view window. */
+	void CreateStringViewWindow();
+
+	/** Creates interpreter window. */
+	void CreateInterpreterWindow();
+
+
 	/** Get the last page for the current mode */
 	int GetLastPage();
+
+	/** Get the first item number for the selected range */
+	int GetSelectedIndexFromRange() const;
+
+	void RestoreRangeSelectionFromSelectedValue(int value);
 
 	int GetNumMainMenuItems() const;
 
@@ -114,12 +136,20 @@ private:
 	void DoCallBattleEvent();
 	void DoOpenMenu();
 
+	const int choice_window_width = 120;
+
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
 	std::unique_ptr<Window_VarList> var_window;
 	/** Number Editor. */
 	std::unique_ptr<Window_NumberInput> numberinput_window;
+	/** Choices window. */
+	std::unique_ptr<Window_Command> choices_window;
+	/** Windows for displaying multiline strings. */
+	std::unique_ptr<Window_StringView> stringview_window;
+	/** Displays the currently running inteprreters. */
+	std::unique_ptr<Window_Interpreter> interpreter_window;
 
 	struct StackFrame {
 		UiMode uimode = eUiMain;
@@ -140,14 +170,40 @@ private:
 	void PushUiRangeList();
 	void PushUiVarList();
 	void PushUiNumberInput(int init_value, int digits, bool show_operator);
+	void PushUiChoices(std::vector<std::string> choices, std::vector<bool> choices_enabled);
+	void PushUiStringView();
+	void PushUiInterpreterView();
 
 	Window_VarList::Mode GetWindowMode() const;
 	void UpdateFrameValueFromUi();
+	void UpdateDetailWindow();
+	void RefreshDetailWindow();
 
 	bool IsValidMapId(int map_id) const;
 
 	void UpdateArrows();
 	int arrow_frame = 0;
+
+	bool strings_cached = false;
+	std::vector<lcf::DBString> strings;
+
+	bool interpreter_states_cached = false;
+
+	void UpdateInterpreterWindow(int index);
+	lcf::rpg::SaveEventExecFrame& GetSelectedInterpreterFrameFromUiState() const;
+	void CacheBackgroundInterpreterStates();
+	struct {
+		std::vector<int> ev;
+		std::vector<int> ce;
+		std::vector<lcf::rpg::SaveEventExecState> state_ev;
+		std::vector<lcf::rpg::SaveEventExecState> state_ce;
+
+		// Frame-scoped data types introduced in 'ScopedVars' branch
+		// bool show_frame_switches = false;
+		// bool show_frame_vars = false;
+		int selected_state = -1;
+		int selected_frame = -1;
+	} state_interpreter;
 };
 
 #endif

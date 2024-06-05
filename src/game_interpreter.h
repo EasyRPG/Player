@@ -66,7 +66,8 @@ public:
 	void Push(
 			std::vector<lcf::rpg::EventCommand> _list,
 			int _event_id,
-			bool started_by_decision_key = false
+			bool started_by_decision_key = false,
+			int event_page_id = 0
 	);
 	void Push(Game_Event* ev);
 	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
@@ -80,11 +81,17 @@ public:
 
 
 	/**
+	 * Returns the interpreters current state information.
+	 * For saving state into a save file, use GetSaveState instead.
+	 */
+	const lcf::rpg::SaveEventExecState& GetState() const;
+
+	/**
 	 * Returns a SaveEventExecState needed for the savefile.
 	 *
 	 * @return interpreter commands stored in SaveEventCommands
 	 */
-	lcf::rpg::SaveEventExecState GetState() const;
+	lcf::rpg::SaveEventExecState GetSaveState();
 
 	/** @return Game_Character of the passed event_id */
 	Game_Character* GetCharacter(int event_id) const;
@@ -341,6 +348,8 @@ protected:
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
+
+	friend class Scene_Debug;
 };
 
 inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {

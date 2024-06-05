@@ -212,6 +212,8 @@ private:
 	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
+
+	friend class Scene_Debug;
 };
 
 inline int Game_Event::GetNumPages() const {

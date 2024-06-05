@@ -100,7 +100,7 @@ lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
 	lcf::rpg::SaveEventExecState state;
 	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
 		if (interpreter) {
-			state = interpreter->GetState();
+			state = interpreter->GetSaveState();
 		}
 
 		if (state.stack.empty() && page->event_commands.empty()) {
