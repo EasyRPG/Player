@@ -19,7 +19,7 @@
 
 #include <utility>
 
-#ifdef USE_CUSTOM_FILE_READBUF
+#ifdef USE_CUSTOM_FILEBUF
 #  include <unistd.h>
 #endif
 
@@ -127,14 +127,21 @@ Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(std::vector<uint8_
 
 }
 
+#ifdef USE_CUSTOM_FILEBUF
 
-#ifdef USE_CUSTOM_FILE_READBUF
-
-Filesystem_Stream::FdStreamBuf::FdStreamBuf(int fd) : fd(fd) {
-	clear_buffer();
+Filesystem_Stream::FdStreamBuf::FdStreamBuf(int fd, bool is_read) : fd(fd), is_read(is_read) {
+	if (is_read) {
+		clear_buffer();
+	} else {
+		setp(buffer.end(), buffer.end());
+	}
 }
 
 Filesystem_Stream::FdStreamBuf::~FdStreamBuf() {
+	if (!is_read) {
+		sync();
+	}
+
 	close(fd);
 }
 
@@ -152,7 +159,10 @@ Filesystem_Stream::FdStreamBuf::int_type Filesystem_Stream::FdStreamBuf::underfl
 	return traits_type::to_int_type(*gptr());
 }
 
-std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode) {
+std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) {
+	// Not implemented for writing
+	assert(is_read);
+
 	if (dir == std::ios_base::beg) {
 		offset = offset - file_offset + bytes_remaining();
 		dir = std::ios_base::cur;
@@ -197,6 +207,34 @@ std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekoff(std::streambuf:
 
 std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) {
 	return seekoff(pos, std::ios_base::beg, mode);
+}
+
+
+Filesystem_Stream::FdStreamBuf::int_type Filesystem_Stream::FdStreamBuf::overflow(int c) {
+	assert(pptr() == epptr());
+
+	if (c == traits_type::eof() || sync() == -1) {
+		return traits_type::eof();
+	}
+
+	*pptr() = traits_type::to_char_type(c);
+
+	pbump(1);
+	return c;
+}
+
+int Filesystem_Stream::FdStreamBuf::sync() {
+	char *p = pbase();
+	while (p < pptr()) {
+		int written = write(fd, p, pptr() - p);
+		if (written <= 0) {
+			return -1;
+		}
+		p += written;
+	}
+
+	setp(buffer.begin(), buffer.end());
+	return 0;
 }
 
 void Filesystem_Stream::FdStreamBuf::clear_buffer() {
