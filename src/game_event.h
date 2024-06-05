@@ -24,6 +24,7 @@
 #include "game_character.h"
 #include <lcf/rpg/event.h>
 #include <lcf/rpg/savemapevent.h>
+#include "game_interpreter_debug.h"
 #include "game_interpreter_map.h"
 #include "async_op.h"
 
@@ -219,6 +220,7 @@ private:
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 
 	friend class Scene_Debug;
+	friend class Debug::ParallelInterpreterStates;
 };
 
 inline int Game_Event::GetNumPages() const {
