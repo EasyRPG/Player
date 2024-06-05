@@ -258,6 +258,10 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y);
 
+	bool AssertWay(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y);
+
 	/**
 	 * Gets if possible to land the airship at (x,y)
 	 *
@@ -626,19 +630,16 @@ namespace Game_Map {
 	 *
 	 * Returns true if move is possible.
 	 *
+	 * @tparam  check_events_and_vehicles Whether to consider events and vehicles.
+	 * @tparam  check_map_geometry Whether to take map collision into account.
 	 * @param self Character to move. If not nullptr, checks the vehicle type and performs vehicle specific checks if is vehicle.
 	 *        Also ignores self in the event tile graphic checks if self is not nullptr.
 	 * @param bit which direction bits to check
 	 * @param x target tile x.
 	 * @param y target tile y.
-	 * @param check_events_and_vehicles Whether to consider events and vehicles.
-	 * @param check_map_geometry Whether to take map collision into account.
 	 * @return whether is passable.
 	 */
-	bool IsPassableTile(
-		const Game_Character* self, int bit, int x, int y,
-		bool check_events_and_vehicles, bool check_map_geometry
-		);
+	template<bool check_events_and_vehicles = true, bool check_map_geometry = true>
 	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
 	/**
