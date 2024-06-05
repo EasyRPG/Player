@@ -34,6 +34,10 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
 	sceClibPrintf("[%s] %s: %s\n", GAME_TITLE, prefix.c_str(), msg.c_str());
 }
 
+void VitaExit() {
+	sceKernelExitProcess(Player::exit_code);
+}
+
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
 
@@ -102,11 +106,13 @@ int main(int argc, char* argv[]) {
 		args.push_back(psp2_dir);
 	}
 
+	// Setup teardown code
+	atexit(VitaExit);
+
 	// Run Player
 	Player::Init(std::move(args));
 	Player::Run();
 
 	// Close
-	sceKernelExitProcess(EXIT_SUCCESS);
-	return EXIT_SUCCESS;
+	return Player::exit_code;
 }

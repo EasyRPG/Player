@@ -54,6 +54,7 @@ public:
 	void ToggleStretch() override;
 	void ToggleTouchUi() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
+	bool HandleErrorOutput(const std::string &message) override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();

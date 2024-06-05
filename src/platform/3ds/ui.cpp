@@ -452,3 +452,15 @@ void CtrUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.touch_ui.SetDescription("Toggle the backlight of the bottom screen");
 	cfg.touch_ui.Set(bottom_state != screen_state::off);
 }
+
+bool CtrUi::HandleErrorOutput(const std::string &message) {
+	errorConf errCnf;
+	std::string error = Player::GetFullVersionString();
+	error += "\n\n" + message;
+
+	errorInit(&errCnf, ERROR_TEXT_WORD_WRAP, CFG_LANGUAGE_EN);
+	errorText(&errCnf, error.c_str());
+	errorDisp(&errCnf);
+
+	return true;
+}

@@ -114,5 +114,6 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Init(std::move(args));
 	Player::Run();
 
-	return EXIT_SUCCESS;
+	// Close
+	return Player::exit_code;
 }

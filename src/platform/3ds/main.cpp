@@ -104,6 +104,16 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
 	}
 }
 
+void n3dsExit() {
+	romfsExit();
+	stop3DSLink();
+	gfxExit();
+
+	if (old_time_limit != UINT32_MAX) {
+		APT_SetAppCpuTimeLimit(old_time_limit);
+	}
+}
+
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
 
@@ -174,17 +184,13 @@ int main(int argc, char* argv[]) {
 		args.push_back(ctr_dir);
 	}
 
+	// Setup teardown code
+	atexit(n3dsExit);
+
 	// Run Player
 	Player::Init(std::move(args));
 	Player::Run();
 
-	romfsExit();
-	stop3DSLink();
-	gfxExit();
-
-	if (old_time_limit != UINT32_MAX) {
-		APT_SetAppCpuTimeLimit(old_time_limit);
-	}
-
-	return EXIT_SUCCESS;
+	// Close
+	return Player::exit_code;
 }

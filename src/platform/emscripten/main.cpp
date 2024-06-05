@@ -87,5 +87,6 @@ extern "C" int main(int argc, char* argv[]) {
 
 	emscripten_set_main_loop(main_loop, 0, 0);
 
-	return EXIT_SUCCESS;
+	// Close
+	return Player::exit_code;
 }
