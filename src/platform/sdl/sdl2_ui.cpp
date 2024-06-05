@@ -54,7 +54,11 @@ AudioInterface& Sdl2Ui::GetAudio() {
 #endif
 
 static uint32_t GetDefaultFormat() {
+#ifdef WORDS_BIGENDIAN
+	return SDL_PIXELFORMAT_ABGR32;
+#else
 	return SDL_PIXELFORMAT_RGBA32;
+#endif
 }
 
 /**
@@ -63,7 +67,18 @@ static uint32_t GetDefaultFormat() {
  * We prefer formats which have fast paths in pixman.
  */
 static int GetFormatRank(uint32_t fmt) {
+
 	switch (fmt) {
+#ifdef WORDS_BIGENDIAN
+		case SDL_PIXELFORMAT_RGBA32:
+			return 0;
+		case SDL_PIXELFORMAT_BGRA32:
+			return 0;
+		case SDL_PIXELFORMAT_ARGB32:
+			return 1;
+		case SDL_PIXELFORMAT_ABGR32:
+			return 2;
+#else
 		case SDL_PIXELFORMAT_RGBA32:
 			return 2;
 		case SDL_PIXELFORMAT_BGRA32:
@@ -72,6 +87,7 @@ static int GetFormatRank(uint32_t fmt) {
 			return 1;
 		case SDL_PIXELFORMAT_ABGR32:
 			return 0;
+#endif
 		default:
 			return -1;
 	}
@@ -559,8 +575,23 @@ void Sdl2Ui::ToggleVsync() {
 }
 
 void Sdl2Ui::UpdateDisplay() {
+#ifdef __WIIU__
+	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
+		// Workaround WiiU bug: Bilinear uses a render target and for these the format is not converted
+		void* target_pixels;
+		int target_pitch;
+
+		SDL_LockTexture(sdl_texture_game, nullptr, &target_pixels, &target_pitch);
+		SDL_ConvertPixels(main_surface->width(), main_surface->height(), GetDefaultFormat(), main_surface->pixels(),
+			main_surface->pitch(), SDL_PIXELFORMAT_RGBA8888, target_pixels, target_pitch);
+		SDL_UnlockTexture(sdl_texture_game);
+	} else {
+		SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
+	}
+#else
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
+#endif
 
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
