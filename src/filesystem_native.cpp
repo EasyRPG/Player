@@ -30,7 +30,7 @@
 #include "output.h"
 #include "platform.h"
 
-#ifdef USE_CUSTOM_FILE_READBUF
+#ifdef USE_CUSTOM_FILEBUF
 #  include <sys/stat.h>
 #  include <fcntl.h>
 #endif
@@ -55,14 +55,14 @@ int64_t NativeFilesystem::GetFilesize(StringView path) const {
 }
 
 std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
-#ifdef USE_CUSTOM_FILE_READBUF
+#ifdef USE_CUSTOM_FILEBUF
 	(void)mode;
 	int fd = open(ToString(path).c_str(), O_RDONLY);
 	if (fd < 0) {
 		return nullptr;
 	}
 
-	return new Filesystem_Stream::FdStreamBuf(fd);
+	return new Filesystem_Stream::FdStreamBuf(fd, true);
 #else
 	auto buf = new std::filebuf();
 
@@ -84,6 +84,20 @@ std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::
 }
 
 std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+#ifdef USE_CUSTOM_FILEBUF
+	int flags = O_TRUNC;
+
+	if ((mode & std::ios_base::app) == std::ios_base::app) {
+		flags = O_APPEND;
+	}
+
+	int fd = open(ToString(path).c_str(), O_WRONLY | O_CREAT | flags, S_IRUSR | S_IWUSR);
+	if (fd < 0) {
+		return nullptr;
+	}
+
+	return new Filesystem_Stream::FdStreamBuf(fd, false);
+#else
 	auto* buf = new std::filebuf();
 	buf->open(
 #ifdef _MSC_VER
@@ -99,6 +113,7 @@ std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std:
 	}
 
 	return buf;
+#endif
 }
 
 bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
