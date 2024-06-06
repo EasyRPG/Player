@@ -677,7 +677,9 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/ui.h)
 	target_link_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
+	find_package(SDL REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
 		src/platform/wii/audio.h
@@ -687,7 +689,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
-	player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
@@ -1227,6 +1228,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 		add_executable(easyrpg-player src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
+			${SDL_LIBRARIES}
 			-laesnd
 			-lfat
 			-lwiikeyboard)
