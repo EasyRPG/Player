@@ -16,4 +16,3 @@
  */
 
 bool WiiU_ProcessProcUI();
-void WiiU_Exit();

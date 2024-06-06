@@ -150,10 +150,11 @@ extern "C" int main(int argc, char* argv[]) {
 		args.push_back(working_dir);
 	}
 
+	// Setup teardown code
+	atexit(WiiU_Exit);
+
 	Player::Init(std::move(args));
 	Player::Run();
 
-	WiiU_Exit();
-
-	return EXIT_SUCCESS;
+	return Player::exit_code;
 }
