@@ -67,7 +67,7 @@ namespace Debug {
 
 	std::string FormatEventName(Game_Character const& ev);
 
-	void AssertBlockedMoves();
+	void AssertBlockedMoves(bool main_flag);
 }
 
 #endif
