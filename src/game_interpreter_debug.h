@@ -74,7 +74,7 @@ namespace Debug {
 
 	std::string FormatEventName(Game_CommonEvent const& ce);
 
-	void AssertBlockedMoves();
+	void AssertBlockedMoves(bool main_flag);
 }
 
 #endif

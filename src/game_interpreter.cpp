@@ -457,7 +457,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		if (_state.wait_movement) {
 			if (ShouldAssertMoveRoutes()) {
-				Debug::AssertBlockedMoves();
+				Debug::AssertBlockedMoves(main_flag);
 			}
 			if (Game_Map::IsAnyMovePending()) {
 				break;

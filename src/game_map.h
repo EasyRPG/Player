@@ -260,7 +260,7 @@ namespace Game_Map {
 
 	bool AssertWay(const Game_Character& self,
 		int from_x, int from_y,
-		int to_x, int to_y);
+		int to_x, int to_y, bool main_flag);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)

@@ -134,12 +134,12 @@ std::string Debug::FormatEventName(Game_CommonEvent const& ce) {
 	return fmt::format("CE{:04d}: '{}'", ce.GetIndex(), ce.GetName());
 }
 
-void Debug::AssertBlockedMoves() {
+void Debug::AssertBlockedMoves(bool main_flag) {
 	auto check = [](Game_Character& ev) {
 		return ev.IsMoveRouteOverwritten() && !ev.IsMoveRouteFinished()
 			&& ev.GetStopCount() != 0xFFFF && ev.GetStopCount() > ev.GetMaxStopCount();
 	};
-	auto assert_way = [](Game_Character& ev) {
+	auto assert_way = [&main_flag](Game_Character& ev) {
 		using Code = lcf::rpg::MoveCommand::Code;
 		auto& move_command = ev.GetMoveRoute().move_commands[ev.GetMoveRouteIndex()];
 
@@ -153,15 +153,15 @@ void Debug::AssertBlockedMoves() {
 				to_y = from_y + ev.GetDyFromDirection(dir);
 
 			if (from_x != to_x && from_y != to_y) {
-				bool valid = Game_Map::AssertWay(ev, from_x, from_y, from_x, to_y);
+				bool valid = Game_Map::AssertWay(ev, from_x, from_y, from_x, to_y, main_flag);
 				if (valid)
-					valid = Game_Map::AssertWay(ev, from_x, to_y, to_x, to_y);
+					valid = Game_Map::AssertWay(ev, from_x, to_y, to_x, to_y, main_flag);
 				if (valid)
-					valid = Game_Map::AssertWay(ev, from_x, from_y, to_x, from_y);
+					valid = Game_Map::AssertWay(ev, from_x, from_y, to_x, from_y, main_flag);
 				if (valid)
-					valid = Game_Map::AssertWay(ev, to_x, from_y, to_x, to_y);
+					valid = Game_Map::AssertWay(ev, to_x, from_y, to_x, to_y, main_flag);
 			} else {
-				Game_Map::AssertWay(ev, from_x, from_y, to_x, to_y);
+				Game_Map::AssertWay(ev, from_x, from_y, to_x, to_y, main_flag);
 			}
 		}
 	};

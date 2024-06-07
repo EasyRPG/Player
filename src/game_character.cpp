@@ -516,6 +516,27 @@ bool Game_Character::Move(int dir) {
 	return true;
 }
 
+bool Game_Character::CheckMove(int dir) {
+	bool move_success = false;
+
+	const auto x = GetX();
+	const auto y = GetY();
+	const auto dx = GetDxFromDirection(dir);
+	const auto dy = GetDyFromDirection(dir);
+
+	if (dx && dy) {
+		// For diagonal movement, RPG_RT trys vert -> horiz and if that fails, then horiz -> vert.
+		move_success = (CheckWay(x, y, x, y + dy) && CheckWay(x, y + dy, x + dx, y + dy))
+			|| (CheckWay(x, y, x + dx, y) && CheckWay(x + dx, y, x + dx, y + dy));
+	} else if (dx) {
+		move_success = CheckWay(x, y, x + dx, y);
+	} else if (dy) {
+		move_success = CheckWay(x, y, x, y + dy);
+	}
+
+	return move_success;
+}
+
 void Game_Character::Turn90DegreeLeft() {
 	SetDirection(GetDirection90DegreeLeft(GetDirection()));
 }
