@@ -1,0 +1,98 @@
+#
+# See https://github.com/actions/labeler
+# and workflows/pr_labels.yml for reference
+#
+
+Building:
+- changed-files:
+  - any-glob-to-any-file:
+    - .github/**
+    - CMakeLists.txt
+    - builds/**
+    - '!builds/android/app/**'
+    - Makefile.am
+    - configure.ac
+
+Documentation:
+- changed-files:
+  - any-glob-to-any-file:
+    - docs/**
+    - '**/*.md'
+    - '**/*.adoc'
+    - src/docmain.h
+    - '**/Doxyfile*'
+    - resources/unix/*.metainfo.xml
+
+Tests:
+- changed-files:
+  - any-glob-to-any-file: [ tests/** ]
+
+Window/Scenes:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/window_*, src/**/scene_* ]
+
+# misc
+
+Audio:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/*audio* ]
+
+FileFinder:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/filefinder*, src/**/filesystem* ]
+
+Fonts:
+- changed-files:
+  - any-glob-to-any-file:
+    - resources/exfont.png
+    - resources/ttyp0/**
+    - resources/shinonome/**
+    - resources/wenquanyi/**
+    - src/**/*font*
+    - src/generated/bitmapfont_*
+
+MIDI:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/*midi* ]
+
+# platforms
+
+3DS:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/3ds/**, resources/3ds/** ]
+
+Android:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/android/**, builds/android/app/** ]
+
+Emscripten:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/emscripten/**, resources/emscripten/** ]
+
+libretro:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/libretro/** ]
+
+macOS:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/macos/**, resources/macos/** ]
+
+PSVita:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/psvita/**, resources/psvita/** ]
+
+Switch:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/switch/**, resources/switch/** ]
+
+Wii:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/wii/**, resources/wii/** ]
+
+WiiU:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/wiiu/**, resources/wiiu/** ]
+
+Win32:
+- changed-files:
+  - any-glob-to-any-file: [ src/platform/windows/**, resources/windows/** ]

@@ -57,6 +57,9 @@ jobs:
         with:
           ref: ${{ github.event.inputs.git-ref }}
 
+      - name: Use gcc problem matcher
+        run: echo "::add-matcher::.github/gcc_comment_matcher.json"
+
       - name: Compile
         run: |
           VER="(GA, `date +%Y-%m-%d`)"
