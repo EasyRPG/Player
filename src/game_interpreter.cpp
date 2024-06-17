@@ -835,7 +835,7 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
-		case 9992:
+		case static_cast<Cmd>(9992):
 			return CommandShowStringPicSelectable(com);
 		default:
 			return true;
@@ -5202,142 +5202,109 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 }
 
 bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand const& com) {
+	int mode = com.parameters[0];
+	int strpic_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	int output_variable = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	int picIndex = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	if (!Main_Data::game_windows->GetWindow(strpic_index).window) {
+		Output::Warning("String Picture Menu - String Picture {} doesn't exist", strpic_index);
+		return true;
+	}
 
-	int type = com.parameters[2];
+	auto& window = Main_Data::game_windows->GetWindow(strpic_index).window;
+	bool is_menu_active = window->GetActive();
 
-	// Output::Debug("CommandShowStringPicSelectable pic Index : {}, {}", picIndex, type);
+	if (mode == 0) { // ENABLE MENU
+		if (!is_menu_active) {
+			if (window->GetIndex() == -1)
+				window->SetIndex(0);
 
-	if (!Main_Data::game_windows->GetWindow(picIndex).window)
-		Output::Info("ShowStringPic {} doesn't exist", picIndex);
-	else {
-		if (type == 0) {
-			Main_Data::game_windows->GetWindow(picIndex).window->SetIndex(0);
-			Main_Data::game_windows->GetWindow(picIndex).window->SetActive(true);
-			auto text = Main_Data::game_windows->GetWindow(picIndex).data.texts;
-			int maxItem = 0;
-			for (const auto& text : text) {
-				std::stringstream ss(ToString(text.text));
-				std::string out;
-				while (Utils::ReadLine(ss, out)) {
-					maxItem++;
-				}
-			}
-			Main_Data::game_windows->GetWindow(picIndex).window->SetItemMax(maxItem);
-		}
-		else if (type == 1) {
-			if (Main_Data::game_windows->GetWindow(picIndex).window->GetActive()) {
-				Main_Data::game_windows->GetWindow(picIndex).window->Update();
-
-				if (Input::IsTriggered(Input::CANCEL)) {
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-					int choice_result = Main_Data::game_windows->GetWindow(picIndex).window->GetPageItemMax();
-					//Output::Debug("CANCEL {}", choice_result);
-
-
-					int label_id = com.parameters[0];
-
-					auto& frame = GetFrame();
-					const auto& list = frame.commands;
-					auto& index = frame.current_command;
-					auto& old_index = index;
-					int indent = list[index].indent;
-
-					int i = 0;
-
-					for (int idx = 0; (size_t)idx < list.size(); idx++) {
-						if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
-							continue;
-						//if (list[idx].parameters[0] != label_id)
-						if (list[idx].indent > indent)
-							continue;
-						if (list[idx].indent == indent) {
-							//Output::Debug("Indent : {} {} {}", i, list[idx].indent, com.indent);
-							if (i != choice_result) {
-								i++;
-								continue;
-							}
-						}
-						if (list[idx].indent < indent) {
-							//Output::Debug("Indent : {} {}", list[idx].indent, com.indent);
-							break;
-						}
-						index = idx + 1;
-						break;
-					}
-
-					return true;
-				}
-				if (Input::IsTriggered(Input::DECISION)) {
-					Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-					int choice_result = Main_Data::game_windows->GetWindow(picIndex).window->GetIndex();
-					//Output::Debug("CONFIRM {}", choice_result);
-
-
-					int label_id = com.parameters[0];
-
-					auto& frame = GetFrame();
-					const auto& list = frame.commands;
-					auto& index = frame.current_command;
-					auto& old_index = index;
-					int indent = list[index].indent;
-
-					int i = 0;
-
-					for (int idx = 0; (size_t)idx < list.size(); idx++) {
-						if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
-							continue;
-						//if (list[idx].parameters[0] != label_id)
-						if (list[idx].indent > indent)
-							continue;
-						if (list[idx].indent == indent) {
-							//Output::Debug("Indent : {} {} {}", i, list[idx].indent, com.indent);
-							if (i != choice_result) {
-								i++;
-								continue;
-							}
-						}
-						if (list[idx].indent < indent) {
-							//Output::Debug("Indent : {} {}", list[idx].indent, com.indent);
-							break;
-						}
-						index = idx + 1;
-						break;
-					}
-
-					return true;
-				}
-			}
-			else {
-				//Output::Debug("!Active");
-				Main_Data::game_windows->GetWindow(picIndex).window->SetIndex(0);
-				Main_Data::game_windows->GetWindow(picIndex).window->SetActive(true);
-				auto text = Main_Data::game_windows->GetWindow(picIndex).data.texts;
-				int maxItem = 0;
-				for (const auto& text : text) {
-					std::stringstream ss(ToString(text.text));
-					std::string out;
-					while (Utils::ReadLine(ss, out)) {
-						maxItem++;
-					}
-				}
-				Main_Data::game_windows->GetWindow(picIndex).window->SetItemMax(maxItem);
-				return false;
-			}
-
+			window->SetActive(true);
+			InitializeMenu(strpic_index);
 			return false;
 		}
-		else if (type == 2) {
-			Main_Data::game_windows->GetWindow(picIndex).window->Update();
 
-			int variableID = ValueOrVariable(com.parameters[3], com.parameters[4]);
-			int value = Main_Data::game_windows->GetWindow(picIndex).window->GetIndex();
-			Main_Data::game_variables->Set(variableID, value);
+		window->Update();
+
+		if (Input::IsTriggered(Input::DECISION) || Input::IsTriggered(Input::CANCEL)) {
+			window->SetActive(false);
+			return HandleMenuSelection(strpic_index, output_variable);
 		}
-		else if (type == 3) {
-			Main_Data::game_windows->GetWindow(picIndex).window->SetActive(false);
+
+		return false;
+	}
+	else if (mode == 1) { // DISABLE MENU
+		window->SetIndex(-1);
+		window->SetActive(false);
+	}
+
+	return true;
+}
+
+void Game_Interpreter::InitializeMenu(int strpic_index) {
+	auto text_data = Main_Data::game_windows->GetWindow(strpic_index).data.texts;
+	int max_item = 0;
+	for (const auto& text : text_data) {
+		std::stringstream ss(ToString(text.text));
+		std::string out;
+		while (Utils::ReadLine(ss, out)) {
+			max_item++;
 		}
+	}
+	Main_Data::game_windows->GetWindow(strpic_index).window->SetItemMax(max_item);
+}
+
+bool Game_Interpreter::HandleMenuSelection(int strpic_index, int output_variable) {
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
+	int indent = list[index].indent;
+
+	int choice_result = 0;
+	auto choice_controller = list[index + 1];
+
+	if (Input::IsTriggered(Input::DECISION)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+		choice_result = Main_Data::game_windows->GetWindow(strpic_index).window->GetIndex();
+	}
+
+	if (Input::IsTriggered(Input::CANCEL)) {
+		if (static_cast<Cmd>(choice_controller.code) == Cmd::ShowChoice) {
+			choice_result = choice_controller.parameters[0] - 1;
+
+			if (choice_result == -1) {
+				Main_Data::game_windows->GetWindow(strpic_index).window->SetActive(true);
+				return false;
+			}
+		}
+		else if (choice_result == 0) {
+			choice_result = -1;
+		}
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+	}
+
+	if (output_variable > 0) {
+		Main_Data::game_variables->Set(output_variable, choice_result);
+		Game_Map::SetNeedRefresh(true);
+	}
+
+	int i = 0;
+	for (int idx = index; (size_t)idx < list.size(); idx++) {
+		if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
+			continue;
+		if (list[idx].indent > indent)
+			continue;
+		if (list[idx].indent == indent) {
+			if (i != choice_result) {
+				i++;
+				continue;
+			}
+		}
+		if (list[idx].indent < indent) {
+			break;
+		}
+		index = idx + 1;
+		break;
 	}
 
 	return true;
