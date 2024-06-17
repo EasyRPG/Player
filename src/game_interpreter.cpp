@@ -5206,13 +5206,35 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 	int strpic_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int output_variable = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	if (!Main_Data::game_windows->GetWindow(strpic_index).window) {
+	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
+
+	if (!window_data.window) {
 		Output::Warning("String Picture Menu - String Picture {} doesn't exist", strpic_index);
 		return true;
 	}
 
-	auto& window = Main_Data::game_windows->GetWindow(strpic_index).window;
+	auto& window = window_data.window;
+	auto& data = window_data.data;
 	bool is_menu_active = window->GetActive();
+
+	auto& game_system = Main_Data::game_system;
+	struct SystemProperties {
+		std::string name;
+		lcf::rpg::System::Stretch stretch;
+		lcf::rpg::System::Font font;
+	};
+
+	SystemProperties current_system = {
+		ToString(game_system->GetSystemName()),
+		static_cast<lcf::rpg::System::Stretch>(game_system->GetMessageStretch()),
+		static_cast<lcf::rpg::System::Font>(game_system->GetFontId())
+	};
+
+	SystemProperties strpic_system = {
+		ToString(data.system_name),
+		static_cast<lcf::rpg::System::Stretch>(data.message_stretch),
+		current_system.font
+	};
 
 	if (mode == 0) { // ENABLE MENU
 		if (!is_menu_active) {
@@ -5224,7 +5246,9 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 			return false;
 		}
 
+		game_system->SetSystemGraphic(strpic_system.name, strpic_system.stretch, strpic_system.font);
 		window->Update();
+		game_system->SetSystemGraphic(current_system.name, current_system.stretch, current_system.font);
 
 		if (Input::IsTriggered(Input::DECISION) || Input::IsTriggered(Input::CANCEL)) {
 			window->SetActive(false);
@@ -5242,10 +5266,10 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 }
 
 void Game_Interpreter::InitializeMenu(int strpic_index) {
-	auto text_data = Main_Data::game_windows->GetWindow(strpic_index).data.texts;
+	auto data = Main_Data::game_windows->GetWindow(strpic_index).data;
 	int max_item = 0;
-	for (const auto& text : text_data) {
-		std::stringstream ss(ToString(text.text));
+	for (const auto& texts : data.texts) {
+		std::stringstream ss(ToString(texts.text));
 		std::string out;
 		while (Utils::ReadLine(ss, out)) {
 			max_item++;
