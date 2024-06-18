@@ -116,6 +116,7 @@ void Window_Selectable::UpdateCursorRect() {
 	x = (index % column_max * (cursor_width + 8)) - 4;
 
 	int y = index / column_max * menu_item_height - oy;
+	y += ( menu_item_line_spacing * index ) - (4 * index); // calculate spacing between lines
 	SetCursorRect(Rect(x, y, cursor_width, menu_item_height));
 }
 
@@ -233,6 +234,10 @@ void Window_Selectable::SetEndlessScrolling(bool state) {
 // Set menu item height
 void Window_Selectable::SetMenuItemHeight(int height) {
 	menu_item_height = height;
+}
+
+void Window_Selectable::SetMenuItemLineSpacing(int spacing) {
+	menu_item_line_spacing = spacing;
 }
 
 void Window_Selectable::SetSingleColumnWrapping(bool wrap) {

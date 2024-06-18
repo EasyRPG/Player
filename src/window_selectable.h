@@ -93,6 +93,13 @@ public:
 	void SetMenuItemHeight(int height);
 
 	/**
+	 * Sets the menu item height.
+	*
+	* @param spacing between menu items.
+	*/
+	void SetMenuItemLineSpacing(int spacing);
+
+	/**
 	 * Allow left/right input to move cursor up/down when the selectable has only one column.
 	 * By default this behaviour is only enabled for two and more columns.
 	 *
@@ -112,6 +119,7 @@ protected:
 	bool endless_scrolling = true;
 
 	int menu_item_height = 16;
+	int menu_item_line_spacing = 4;
 
 	int scroll_dir = 0;
 	int scroll_progress = 0;

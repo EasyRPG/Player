@@ -5276,6 +5276,7 @@ void Game_Interpreter::InitializeMenu(int strpic_index) {
 		}
 	}
 	Main_Data::game_windows->GetWindow(strpic_index).window->SetItemMax(max_item);
+	Main_Data::game_windows->GetWindow(strpic_index).window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
 }
 
 bool Game_Interpreter::HandleMenuSelection(int strpic_index, int output_variable) {
