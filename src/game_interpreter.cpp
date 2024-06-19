@@ -5238,11 +5238,12 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 
 	if (mode == 0) { // ENABLE MENU
 		if (!is_menu_active) {
+			InitializeMenu(strpic_index);
+
 			if (window->GetIndex() == -1)
 				window->SetIndex(0);
 
 			window->SetActive(true);
-			InitializeMenu(strpic_index);
 			return false;
 		}
 

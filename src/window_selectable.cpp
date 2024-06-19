@@ -117,7 +117,15 @@ void Window_Selectable::UpdateCursorRect() {
 
 	int y = index / column_max * menu_item_height - oy;
 	y += ( menu_item_line_spacing * index ) - (4 * index); // calculate spacing between lines
-	SetCursorRect(Rect(x, y, cursor_width, menu_item_height));
+
+	int item_height = menu_item_height;
+	if (border_x == 0) { // When margin doesn't exist
+		x += 4;
+		cursor_width += 8;
+		if (index == 0) item_height += 3;
+	}
+
+	SetCursorRect(Rect(x, y, cursor_width, item_height));
 }
 
 void Window_Selectable::UpdateArrows() {
