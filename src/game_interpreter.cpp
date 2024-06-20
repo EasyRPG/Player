@@ -5267,7 +5267,8 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 }
 
 void Game_Interpreter::InitializeMenu(int strpic_index) {
-	auto data = Main_Data::game_windows->GetWindow(strpic_index).data;
+	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
+	auto data = window_data.data;
 	int max_item = 0;
 	for (const auto& texts : data.texts) {
 		std::stringstream ss(ToString(texts.text));
@@ -5276,8 +5277,8 @@ void Game_Interpreter::InitializeMenu(int strpic_index) {
 			max_item++;
 		}
 	}
-	Main_Data::game_windows->GetWindow(strpic_index).window->SetItemMax(max_item);
-	Main_Data::game_windows->GetWindow(strpic_index).window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
+	window_data.window->SetItemMax(max_item);
+	window_data.window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
 }
 
 bool Game_Interpreter::HandleMenuSelection(int strpic_index, int output_variable) {

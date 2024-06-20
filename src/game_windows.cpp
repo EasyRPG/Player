@@ -238,11 +238,11 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		return font->ApplyStyle(style);
 	};
 
-	if (data.width == 0 || data.height == 0) {
-		// Automatic window size
-		int x_max = 0;
-		int y_max = 0;
+	// Automatic window size
+	int x_max = 0;
+	int y_max = 0;
 
+	if (true) {//(data.width == 0 || data.height == 0) {
 		for (size_t i = 0; i < data.texts.size(); ++i) {
 			// Lots of duplication with the rendering code below but cannot be easily reduced more
 			auto& font = fonts[i];
@@ -351,7 +351,13 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		// FIXME: Figure out why 0 does not work here (bug in Window class)
 		window->SetBorderY(-3);
 	}
+
+	if (data.width != 0) window->SetWidth(x_max);
+	if (data.height != 0) window->SetHeight(y_max);
 	window->CreateContents();
+	if (data.width != 0) window->SetWidth(data.width);
+	if (data.height != 0) window->SetHeight(data.height);
+
 	window->SetVisible(false);
 
 	window->SetActive(false);
