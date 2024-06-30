@@ -37,6 +37,14 @@
  * insensitive files paths.
  */
 namespace FileFinder {
+	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
+	constexpr const auto MUSIC_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
+	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
+	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
+
 	/**
 	 * Quits FileFinder.
 	 */
@@ -345,6 +353,16 @@ namespace FileFinder {
 	 * @param fs Filesystem to use
 	 */
 	void DumpFilesystem(FilesystemView fs);
+
+	/**
+	 * Searches recursively for game directories.
+	 *
+	 * @param fs Filesystem where the search starts
+	 * @param recursion_limit Recursion depth
+	 * @param game_limit Abort the search when this amount of games was found.
+	 * @return Vector of views to the found game directories
+	 */
+	std::vector<FilesystemView> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

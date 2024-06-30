@@ -25,7 +25,6 @@
 #include <sstream>
 #include <vector>
 #include <random>
-#include "system.h"
 #include "string_view.h"
 #include "span.h"
 

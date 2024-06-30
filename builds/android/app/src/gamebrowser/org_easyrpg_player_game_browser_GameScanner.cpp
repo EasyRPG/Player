@@ -31,70 +31,20 @@
 #include <vector>
 #include <array>
 
-class FdStreamBufIn : public std::streambuf {
-public:
-	FdStreamBufIn(int fd) : std::streambuf(), fd(fd) {
-		setg(buffer.data(), buffer.data() + buffer.size(), buffer.data() + buffer.size());
-	}
+#include "filefinder.h"
+#include "utils.h"
+#include "string_view.h"
+#include "platform/android/android.h"
 
-	~FdStreamBufIn() override {
-		close(fd);
-	}
-
-	int underflow() override {
-		ssize_t res = read(fd, buffer.data(), buffer.size());
-		if (res <= 0) {
-			return traits_type::eof();
-		}
-		setg(buffer.data(), buffer.data(), buffer.data() + res);
-		return traits_type::to_int_type(*gptr());
-	}
-
-private:
-	int fd = 0;
-	std::array<char, 4096> buffer;
-};
-
-class BufferStreamBufIn : public std::streambuf {
-public:
-	BufferStreamBufIn(char* buffer, jsize size) : std::streambuf(), buffer(buffer), size(size) {
-		setg(buffer, buffer, buffer + size);
-	}
-
-private:
-	char* buffer;
-	jsize size;
-	jsize index = 0;
-};
+#include <lcf/ldb/reader.h>
+#include <lcf/reader_util.h>
+#include <lcf/encoder.h>
+#include <lcf/inireader.h>
 
 // via https://stackoverflow.com/q/1821806
 static void custom_png_write_func(png_structp  png_ptr, png_bytep data, png_size_t length) {
 	std::vector<uint8_t> *p = reinterpret_cast<std::vector<uint8_t>*>(png_get_io_ptr(png_ptr));
 	p->insert(p->end(), data, data + length);
-}
-
-jbyteArray readXyz(JNIEnv *env, std::istream& stream);
-
-extern "C"
-JNIEXPORT jbyteArray JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZbuffer(
-		JNIEnv *env, jclass, jbyteArray buffer) {
-	jbyte* elements = env->GetByteArrayElements(buffer, nullptr);
-	jsize size = env->GetArrayLength(buffer);
-
-	std::istream stream(new BufferStreamBufIn(reinterpret_cast<char*>(elements), size));
-	jbyteArray array = readXyz(env, stream);
-
-	env->ReleaseByteArrayElements(buffer, elements, 0);
-
-	return array;
-}
-
-extern "C"
-JNIEXPORT jbyteArray JNICALL Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZfd
-  (JNIEnv * env, jclass, jint fd) {
-	std::istream stream(new FdStreamBufIn(fd));
-	return readXyz(env, stream);
 }
 
 jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
@@ -213,4 +163,234 @@ jbyteArray readXyz(JNIEnv *env, std::istream& stream) {
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 
 	return result;
+}
+
+std::string jstring_to_string(JNIEnv* env, jstring j_str) {
+	if (!j_str) {
+		return {};
+	}
+	const char* chars = env->GetStringUTFChars(j_str, NULL);
+	std::string str(chars);
+	env->ReleaseStringUTFChars(j_str, chars);
+	return str;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass, jstring jpath, jstring jmain_dir_name) {
+	EpAndroid::env = env;
+
+	// jpath is the SAF path to the game, is converted to FilesystemView "root"
+	std::string spath = jstring_to_string(env, jpath);
+	auto root = FileFinder::Root().Create(spath);
+	std::vector<FilesystemView> fs_list = FileFinder::FindGames(root);
+
+	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
+	jobjectArray jgame_array = env->NewObjectArray(fs_list.size(), jgame_class, nullptr);
+
+	if (fs_list.empty()) {
+		// No games found
+		return jgame_array;
+	}
+
+	jmethodID jgame_constructor = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
+
+	bool game_in_main_dir = false;
+	if (fs_list.size() == 1) {
+		if (FileFinder::GetFullFilesystemPath(root) == FileFinder::GetFullFilesystemPath(fs_list[0])) {
+			game_in_main_dir = true;
+		}
+	}
+
+	for (size_t i = 0; i < fs_list.size(); ++i) {
+		auto& fs = fs_list[i];
+
+		std::string full_path = FileFinder::GetFullFilesystemPath(fs);
+		std::string game_dir_name;
+		if (game_in_main_dir) {
+			// The main dir is URI encoded, the human readable name is in jmain_dir_name
+			game_dir_name = jstring_to_string(env, jmain_dir_name);
+		} else {
+			// In all other cases the folder name is "clean" and can be used
+			game_dir_name = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+		}
+
+		std::string save_path;
+		if (!fs.IsFeatureSupported(Filesystem::Feature::Write)) {
+			// Is an archive and needs a redirected save path
+			save_path = game_dir_name;
+
+			// compatibility with original GameScanner Java code (everything after the extension dot is removed)
+			size_t ext = save_path.find('.');
+			if (ext != std::string::npos) {
+				save_path = save_path.substr(0, ext);
+			}
+		}
+
+		/* Obtaining of the game_dir_name image */
+
+		// 1. When the game_dir_name directory contains only one image: Load it
+		// 2. Attempt to fetch it from the database
+		// 3. If this fails grab the first from the game_dir_name folder
+		jbyteArray title_image = nullptr;
+
+		auto load_image = [&](Filesystem_Stream::InputStream& stream) {
+			if (!stream) {
+				return;
+			}
+
+			if (stream.GetName().ends_with(".xyz")) {
+				title_image = readXyz(env, stream);
+			} else if (stream.GetName().ends_with(".png") || stream.GetName().ends_with(".bmp")) {
+				auto vec = Utils::ReadStream(stream);
+				title_image = env->NewByteArray(vec.size());
+				env->SetByteArrayRegion(title_image, 0, vec.size(), reinterpret_cast<jbyte *>(vec.data()));
+			}
+		};
+
+		// 1. When the game_dir_name directory contains only one image: Load it
+		auto title_fs = fs.Subtree("Title");
+		if (title_fs) {
+			auto& content = *title_fs.ListDirectory();
+			if (content.size() == 1 && content[0].second.type == DirectoryTree::FileType::Regular) {
+				auto is = title_fs.OpenInputStream(content[0].second.name);
+				if (!is) {
+					// When opening of the image fails it is in an unsupported archive format
+					// Skip this game
+					continue;
+				}
+				load_image(is);
+			}
+		}
+
+		// 2. Attempt to fetch it from the database
+		if (!title_image) {
+			std::string db_file = fs.FindFile("RPG_RT.ldb");
+			if (!db_file.empty()) {
+				// This can fail when the database file is renamed, is not an error condition
+				auto is = fs.OpenInputStream(db_file);
+				if (!is) {
+					// When opening of the db fails it is in an unsupported archive format
+					// Skip this game
+					continue;
+				} else {
+					auto db = lcf::LDB_Reader::Load(is);
+					if (!db) {
+						// Database corrupted? Skip
+						continue;
+					}
+
+					if (!db->system.title_name.empty()) {
+						auto encodings = lcf::ReaderUtil::DetectEncodings(*db);
+						for (auto &enc: encodings) {
+							if (lcf::Encoder encoder(enc); encoder.IsOk()) {
+								std::string title_name = lcf::ToString(db->system.title_name);
+								encoder.Encode(title_name);
+								auto title_is = fs.OpenFile("Title", title_name, FileFinder::IMG_TYPES);
+								// Title image was found -> Load it
+								load_image(title_is);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// 3. Simply grab the first from the game_dir_name folder
+		if (!title_image) {
+			// No image loaded yet: Grab the first from the game_dir_name folder
+			if (title_fs) {
+				for (auto &[name, entry]: *title_fs.ListDirectory()) {
+					if (entry.type == DirectoryTree::FileType::Regular) {
+						auto is = title_fs.OpenInputStream(entry.name);
+						load_image(is);
+						if (title_image) {
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		/* Setting the game title */
+		// By default it is just the name of the directory
+		std::string title = game_dir_name;
+		bool title_from_ini = false;
+
+		// Try to grab a title from the INI file
+		if (auto ini_is = fs.OpenFile("RPG_RT.ini"); ini_is) {
+			if (lcf::INIReader ini(ini_is); !ini.ParseError()) {
+				if (std::string ini_title = ini.GetString("RPG_RT", "GameTitle", ""); !ini_title.empty()) {
+					title = ini_title;
+					title_from_ini = true;
+				}
+			}
+		}
+
+		/* Create an instance of "Game" */
+		jstring jgame_path = env->NewStringUTF(("content://" + full_path).c_str());
+		jstring jsave_path = env->NewStringUTF(save_path.c_str());
+		jobject jgame_object = env->NewObject(jgame_class, jgame_constructor, jgame_path, jsave_path, title_image);
+
+		if (title_from_ini) {
+			// Store the raw string in the Game instance so it can be reencoded later via user setting
+			jbyteArray jtitle_raw = env->NewByteArray(title.size());
+			env->SetByteArrayRegion(jtitle_raw, 0, title.size(), reinterpret_cast<jbyte*>(title.data()));
+			jfieldID jtitle_raw_field = env->GetFieldID(jgame_class, "titleRaw", "[B");
+			env->SetObjectField(jgame_object, jtitle_raw_field, jtitle_raw);
+			Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(env, jgame_object);
+		} else {
+			// Use the folder name as the title
+			jstring jtitle = env->NewStringUTF(title.c_str());
+			jmethodID jset_title_method = env->GetMethodID(jgame_class, "setTitle", "(Ljava/lang/String;)V");
+			env->CallVoidMethod(jgame_object, jset_title_method, jtitle);
+		}
+
+		env->SetObjectArrayElement(jgame_array, i, jgame_object);
+	}
+
+	// Some fields of the Array can be NULL when a game was skipped due to an error
+	// This is sanitized on the Java site
+	return jgame_array;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject thiz) {
+	jclass jgame_class = env->GetObjectClass(thiz);
+
+	// Fetch the raw title string (result will be at the end in "title" variable)
+	jfieldID jtitle_raw_field = env->GetFieldID(jgame_class, "titleRaw", "[B");
+	jbyteArray jtitle_raw = reinterpret_cast<jbyteArray>(env->GetObjectField(thiz, jtitle_raw_field));
+
+	if (!jtitle_raw) {
+		return;
+	}
+
+	jbyte* title_data = env->GetByteArrayElements(jtitle_raw, NULL);
+	jsize title_len = env->GetArrayLength(jtitle_raw);
+	std::string title(reinterpret_cast<char*>(title_data), title_len);
+	env->ReleaseByteArrayElements(jtitle_raw, title_data, 0);
+
+	// Obtain the encoding
+	jmethodID jget_encoding_method = env->GetMethodID(jgame_class, "getEncodingCode", "()Ljava/lang/String;");
+	jstring jencoding = (jstring)env->CallObjectMethod(thiz, jget_encoding_method);
+	std::string encoding = jstring_to_string(env, jencoding);
+	if (encoding == "auto") {
+		lcf::Encoder enc(lcf::ReaderUtil::DetectEncoding(title));
+		enc.Encode(title);
+	} else {
+		lcf::Encoder enc(encoding);
+		enc.Encode(title);
+	}
+
+	if (title.empty()) {
+		// Something failed, do not set a new title
+		return;
+	}
+
+	// Set the new title after reencoding
+	jstring jtitle = env->NewStringUTF(title.c_str());
+	jmethodID jset_title_method = env->GetMethodID(jgame_class, "setTitle", "(Ljava/lang/String;)V");
+	env->CallVoidMethod(thiz, jset_title_method, jtitle);
 }

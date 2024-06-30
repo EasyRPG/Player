@@ -8,12 +8,11 @@
 extern "C" {
 #endif
 
-JNIEXPORT jbyteArray JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZfd(JNIEnv *env, jclass clazz, jint fd);
+JNIEXPORT jobject JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass clazz, jstring path, jstring jmain_dir_name);
 
-JNIEXPORT jbyteArray JNICALL
-Java_org_easyrpg_player_game_1browser_GameScanner_decodeXYZbuffer(JNIEnv *env, jclass clazz,
-																  jbyteArray buffer);
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject thiz);
 
 #ifdef __cplusplus
 }

@@ -82,13 +82,13 @@
     <string name="no_games_found_and_explanation_android_30">Aucun jeu RPG Maker 2000/2003 n\'a été trouvé.
 \n
 \nLe dossier EasyRPG que vous avez sélectionné contient un dossier pour les jeux (games). Utiliser une application de gestionnaire de fichiers pour mettre vos jeux dans ce dossier.
-\nLes jeux peuvent être placés dans des sous-répertoires ou dans des archives ZIP.
+\nLes jeux peuvent être placés dans des sous-répertoires ou dans des archives ZIP/LZH.
 \n
 \nLe dossier d\'EasyRPG peut être changé dans les paramètres.</string>
     <string name="open_games_folder">Ouvrir le dossier « games »</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Mettez vos jeux RPG Maker 2000/2003 dans les sous-répertoires du dossier « games ».
-\nLes jeux doivent être décompressés ou dans une archive ZIP.
-\nLes fichiers RAR, LZH et EXE ne sont PAS supportés.
+\nLes jeux doivent être décompressés ou dans une archive ZIP/LZH.
+\nLes fichiers RAR, 7z et EXE ne sont PAS supportés.
 \n
 \nFonctionnalités optionnelles (Veuillez vous référer aux paramètres) :
 \n- Le RTP (ressources partagées utilisées par certains jeux) peut être fourni
