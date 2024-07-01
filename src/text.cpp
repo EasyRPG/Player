@@ -75,7 +75,6 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 
 	dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
-	if (dst_rect.IsOutOfBounds(dest.GetWidth(), dest.GetHeight())) return { 0, 0 };
 
 	const int iy = dst_rect.y;
 	const int ix = dst_rect.x;

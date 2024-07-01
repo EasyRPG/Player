@@ -1071,7 +1071,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 		player_find_package(NAME FluidLite
 			CONDITION PLAYER_WITH_FLUIDLITE
 			DEFINITION HAVE_FLUIDLITE
-			TARGET FluidLite::fluidlite)
+			TARGET "fluidlite::fluidlite;fluidlite::fluidlite-static")
 	endif()
 
 	# xmp (lite)
@@ -1525,7 +1525,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(TARGET FluidSynth::libfluidsynth)
 		list(APPEND MIDI_LIBS "FluidSynth")
 	endif()
-	if(TARGET FluidLite::fluidlite)
+	if(TARGET fluidlite::fluidlite OR TARGET fluidlite::fluidlite-static)
 		list(APPEND MIDI_LIBS "FluidLite")
 	endif()
 	if(TARGET WildMidi::libwildmidi OR TARGET WildMidi::libwildmidi-static)

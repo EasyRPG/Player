@@ -35,11 +35,18 @@
 
 namespace {
 	std::string config_path;
+	std::string soundfont_path;
+	std::string font_path;
 	StringView config_name = "config.ini";
 }
 
 void Game_ConfigPlayer::Hide() {
-	// Game specific settings unsupported
+#ifndef HAVE_FREETYPE
+	font1.SetOptionVisible(false);
+	font1_size.SetOptionVisible(false);
+	font2.SetOptionVisible(false);
+	font2_size.SetOptionVisible(false);
+#endif
 }
 
 void Game_ConfigVideo::Hide() {
@@ -48,16 +55,15 @@ void Game_ConfigVideo::Hide() {
 
 	// Always enabled by default:
 	// - renderer (name of the renderer)
-	// - show_fps (Rendering of FPS, engine feature)
 
 	vsync.SetOptionVisible(false);
 	fullscreen.SetOptionVisible(false);
 	fps_limit.SetOptionVisible(false);
-	fps_render_window.SetOptionVisible(false);
 	window_zoom.SetOptionVisible(false);
 	scaling_mode.SetOptionVisible(false);
 	stretch.SetOptionVisible(false);
 	touch_ui.SetOptionVisible(false);
+	pause_when_focus_lost.SetOptionVisible(false);
 	game_resolution.SetOptionVisible(false);
 }
 
@@ -78,7 +84,7 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 
 #if USE_SDL >= 2
-	cfg.video.scaling_mode.Set(ScalingMode::Bilinear);
+	cfg.video.scaling_mode.Set(ConfigEnum::ScalingMode::Bilinear);
 #endif
 
 	cp.Rewind();
@@ -201,6 +207,35 @@ Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput() {
 	return Filesystem_Stream::InputStream();
 }
 
+FilesystemView Game_Config::GetSoundfontFilesystem() {
+	std::string path = soundfont_path;
+	if (path.empty()) {
+		path = FileFinder::MakePath(GetGlobalConfigFilesystem().GetFullPath(), "Soundfont");
+	}
+
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		Output::Warning("Could not create soundfont path {}", path);
+		return {};
+	}
+
+	return FileFinder::Root().Create(path);
+}
+
+
+FilesystemView Game_Config::GetFontFilesystem() {
+	std::string path = font_path;
+	if (path.empty()) {
+		path = FileFinder::MakePath(GetGlobalConfigFilesystem().GetFullPath(), "Font");
+	}
+
+	if (!FileFinder::Root().MakeDirectory(path, true)) {
+		Output::Warning("Could not create fount path {}", path);
+		return {};
+	}
+
+	return FileFinder::Root().Create(path);
+}
+
 Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
 	auto fs = GetGlobalConfigFilesystem();
 
@@ -238,6 +273,9 @@ std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 }
 
 void Game_Config::LoadFromArgs(CmdlineParser& cp) {
+	font_path.clear();
+	soundfont_path.clear();
+
 	while (!cp.Done()) {
 		CmdlineArg arg;
 		long li_value = 0;
@@ -257,12 +295,24 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			video.fps_limit.Set(0);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, {"--show-fps", "--no-show-fps"})) {
-			video.show_fps.Set(arg.ArgIsOn());
+		if (cp.ParseNext(arg, 0, "--show-fps")) {
+			video.fps.Set(ConfigEnum::ShowFps::ON);
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, {"--fps-render-window", "--no-fps-render-window"})) {
-			video.fps_render_window.Set(arg.ArgIsOn());
+		if (cp.ParseNext(arg, 0, "--no-show-fps")) {
+			video.fps.Set(ConfigEnum::ShowFps::OFF);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--fps-render-window")) {
+			video.fps.Set(ConfigEnum::ShowFps::Overlay);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--pause-focus-lost")) {
+			video.pause_when_focus_lost.Set(true);
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, "--no-pause-focus-lost")) {
+			video.pause_when_focus_lost.Set(false);
 			continue;
 		}
 		if (cp.ParseNext(arg, 0, "--window")) {
@@ -321,6 +371,48 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--soundfont")) {
+			if (arg.NumValues() > 0) {
+				audio.soundfont.Set(arg.Value(0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font1")) {
+			if (arg.NumValues() > 0) {
+				player.font1.Set(FileFinder::MakeCanonical(arg.Value(0), 0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font1-size")) {
+			if (arg.ParseValue(0, li_value)) {
+				player.font1_size.Set(li_value);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font2")) {
+			if (arg.NumValues() > 0) {
+				player.font2.Set(FileFinder::MakeCanonical(arg.Value(0), 0));
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font2-size")) {
+			if (arg.ParseValue(0, li_value)) {
+				player.font2_size.Set(li_value);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--soundfont-path")) {
+			if (arg.NumValues() > 0) {
+				soundfont_path = FileFinder::MakeCanonical(arg.Value(0), 0);
+			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 1, "--font-path")) {
+			if (arg.NumValues() > 0) {
+				font_path = FileFinder::MakeCanonical(arg.Value(0), 0);
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -337,13 +429,13 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	/** VIDEO SECTION */
 	video.vsync.FromIni(ini);
 	video.fullscreen.FromIni(ini);
-	video.show_fps.FromIni(ini);
-	video.fps_render_window.FromIni(ini);
+	video.fps.FromIni(ini);
 	video.fps_limit.FromIni(ini);
 	video.window_zoom.FromIni(ini);
 	video.scaling_mode.FromIni(ini);
 	video.stretch.FromIni(ini);
 	video.touch_ui.FromIni(ini);
+	video.pause_when_focus_lost.FromIni(ini);
 	video.game_resolution.FromIni(ini);
 
 	if (ini.HasValue("Video", "WindowX") && ini.HasValue("Video", "WindowY") && ini.HasValue("Video", "WindowWidth") && ini.HasValue("Video", "WindowHeight")) {
@@ -356,6 +448,10 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	/** AUDIO SECTION */
 	audio.music_volume.FromIni(ini);
 	audio.sound_volume.FromIni(ini);
+	audio.fluidsynth_midi.FromIni(ini);
+	audio.wildmidi_midi.FromIni(ini);
+	audio.native_midi.FromIni(ini);
+	audio.soundfont.FromIni(ini);
 
 	/** INPUT SECTION */
 	input.buttons = Input::GetDefaultButtonMappings();
@@ -411,6 +507,10 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.settings_in_title.FromIni(ini);
 	player.settings_in_menu.FromIni(ini);
 	player.show_startup_logos.FromIni(ini);
+	player.font1.FromIni(ini);
+	player.font1_size.FromIni(ini);
+	player.font2.FromIni(ini);
+	player.font2_size.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -419,13 +519,13 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	os << "[Video]\n";
 	video.vsync.ToIni(os);
 	video.fullscreen.ToIni(os);
-	video.show_fps.ToIni(os);
-	video.fps_render_window.ToIni(os);
+	video.fps.ToIni(os);
 	video.fps_limit.ToIni(os);
 	video.window_zoom.ToIni(os);
 	video.scaling_mode.ToIni(os);
 	video.stretch.ToIni(os);
 	video.touch_ui.ToIni(os);
+	video.pause_when_focus_lost.ToIni(os);
 	video.game_resolution.ToIni(os);
 
 	// only preserve when toggling between window and fullscreen is supported
@@ -442,6 +542,11 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 
 	audio.music_volume.ToIni(os);
 	audio.sound_volume.ToIni(os);
+	audio.fluidsynth_midi.ToIni(os);
+	audio.wildmidi_midi.ToIni(os);
+	audio.native_midi.ToIni(os);
+	audio.soundfont.ToIni(os);
+
 	os << "\n";
 
 	/** INPUT SECTION */
@@ -487,6 +592,10 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.settings_in_title.ToIni(os);
 	player.settings_in_menu.ToIni(os);
 	player.show_startup_logos.ToIni(os);
+	player.font1.ToIni(os);
+	player.font1_size.ToIni(os);
+	player.font2.ToIni(os);
+	player.font2_size.ToIni(os);
 
 	os << "\n";
 }

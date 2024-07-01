@@ -63,6 +63,8 @@ void Scene_Logo::Start() {
 
 void Scene_Logo::vUpdate() {
 	if (current_logo_index == 0 && frame_counter == 0) {
+		Font::ResetDefault();
+
 		if (!DetectGame()) {
 			// async delay for emscripten
 			return;
@@ -211,7 +213,7 @@ void Scene_Logo::DrawTextOnLogo(bool verbose) {
 }
 
 std::vector<std::vector<uint8_t>> Scene_Logo::LoadLogos() {
-	if (Player::player_config.show_startup_logos.Get() == StartupLogos::None) {
+	if (Player::player_config.show_startup_logos.Get() == ConfigEnum::StartupLogos::None) {
 		return {};
 	}
 

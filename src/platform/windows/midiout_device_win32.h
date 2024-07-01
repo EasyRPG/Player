@@ -31,7 +31,7 @@
  */
 class Win32MidiOutDevice : public MidiDecoder {
 public:
-	Win32MidiOutDevice();
+	Win32MidiOutDevice(std::string& status_message);
 	~Win32MidiOutDevice();
 
 	void SendMidiMessage(uint32_t message) override;

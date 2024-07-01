@@ -19,14 +19,14 @@
 #include "ui.h"
 #include "output.h"
 
-LibretroMidiOutDevice::LibretroMidiOutDevice() {
+LibretroMidiOutDevice::LibretroMidiOutDevice(std::string& status_message) {
 	if (!LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_MIDI_INTERFACE, &midi_out)) {
-		Output::Debug("libretro: GET_MIDI_INTERFACE unsupported");
+		status_message = "libretro: GET_MIDI_INTERFACE unsupported";
 		return;
 	}
 
 	if (!midi_out.output_enabled()) {
-		Output::Debug("libretro: MIDI output not enabled");
+		status_message = "libretro: MIDI output not enabled";
 		return;
 	}
 

@@ -39,6 +39,9 @@ void Window_Help::SetText(std::string text, int color, Text::Alignment align, bo
 		this->text = std::move(text);
 		this->align = align;
 		this->color = color;
+		this->text_x_scroll = 0;
+		this->text_x_scroll_dir = false;
+		this->text_x_width = text_x_offset;
 	}
 }
 
@@ -61,7 +64,7 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 
 		// Special handling for proportional fonts: If the "normal" space is already small do not half it again
 		if (nextpos != decltype(text)::npos) {
-			int space_width = Text::GetSize(*Font::Default(), " ").width;
+			int space_width = Text::GetSize(*(font ? font : Font::Default()), " ").width;
 
 			if (halfwidthspace && space_width >= 6) {
 				text_x_offset += space_width / 2;
@@ -71,4 +74,52 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 			pos = nextpos + 1;
 		}
 	}
+}
+
+void Window_Help::SetAnimation(Window_Help::Animation animation) {
+	text_x_scroll = 0;
+	this->animation = animation;
+}
+
+void Window_Help::UpdateScroll() {
+	if (animation == Animation::None) {
+		return;
+	}
+
+	if (text_x_width <= contents->GetWidth()) {
+		// no need to scroll
+		return;
+	}
+
+	if (animation == Animation::BackAndForth) {
+		text_x_scroll += text_x_scroll_dir ? 1 : -1;
+
+		if ((!text_x_scroll_dir && (text_x_width + text_x_scroll) == contents->GetWidth()) ||
+				(text_x_scroll_dir && text_x_scroll == 0)) {
+			text_x_scroll_dir = !text_x_scroll_dir;
+		}
+
+		contents->Clear();
+		text_x_offset = text_x_scroll;
+		AddText(text, color, align, true);
+	} else if (animation == Animation::Loop) {
+		--text_x_scroll;
+
+		const int gap_size = 18;
+
+		if (text_x_scroll == -text_x_width - gap_size) {
+			text_x_scroll = 0;
+		}
+
+		contents->Clear();
+		text_x_offset = text_x_scroll;
+		AddText(text, color, align, true);
+		text_x_offset += gap_size;
+		AddText(text, color, align, true);
+	}
+}
+
+void Window_Help::Update() {
+	Window_Base::Update();
+	UpdateScroll();
 }

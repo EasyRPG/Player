@@ -44,16 +44,9 @@ public:
 	FluidSynthDecoder();
 	~FluidSynthDecoder() override;
 
-	static bool Initialize(std::string& error_message);
+	static bool Initialize(std::string& status_message);
 	static void ResetState();
-
-	/**
-	 * Sets the name of the preferred soundfont.
-	 * Must be called before the first MIDI is played.
-	 *
-	 * @param sf soundfont to check for first
-	 */
-	static void SetSoundfont(StringView sf);
+	static bool ChangeGlobalSoundfont(StringView sf_path, std::string& status_message);
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 
@@ -68,6 +61,8 @@ public:
 		return "FluidLite";
 #endif
 	};
+
+	void OnNewMidi() override;
 
 	bool NeedsSoftReset() override;
 

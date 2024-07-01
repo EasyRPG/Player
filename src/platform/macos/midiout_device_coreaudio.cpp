@@ -19,10 +19,10 @@
 #include "midiout_device_coreaudio.h"
 #include "output.h"
 
-CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
+CoreAudioMidiOutDevice::CoreAudioMidiOutDevice(std::string& status_message) {
 	OSStatus status = NewAUGraph(&graph);
 	if (status != noErr) {
-		Output::Debug("macOS Midi: NewAUGraph failed: {}", status);
+		status_message = fmt::format("macOS Midi: NewAUGraph failed: {}", status);
 		return;
 	}
 	AudioComponentDescription synthDesc = {
@@ -70,7 +70,7 @@ CoreAudioMidiOutDevice::CoreAudioMidiOutDevice() {
 	status = AUGraphStart(graph);
 
 	if (status != noErr) {
-		Output::Debug("macOS Midi: AUGraphStart failed: {}", status);
+		status_message = fmt::format("macOS Midi: AUGraphStart failed: {}", status);
 		return;
 	}
 

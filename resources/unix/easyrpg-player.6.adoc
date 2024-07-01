@@ -62,6 +62,25 @@ NOTE: For games that only use ASCII (English games) use '1252'.
    - 'rpg2k3v105'  - RPG Maker 2003 (v1.05 - v1.09a)
    - 'rpg2k3e'     - RPG Maker 2003 RPG Maker 2003 (English release, v1.12)
 
+*--font1* _FILE_::
+  Path to a font to use for the first font. The system graphic of the game
+  determines whether font 1 or 2 is used. When no font is selected or the
+  selected font lacks certain glyphs the built-in pixel font is used.
+
+*--font1-size* _PX_::
+  Size of font 1 in pixel. The default value is 12.
+
+*--font2* _FILE_::
+  Path to a font to use for the second font. See font 1 for further information.
+
+*--font2-size* _PX_::
+  Size of font 2 in pixel. The default value is 12.
+
+*--font-path* _PATH_::
+  Configures the path where the settings scene looks for fonts. The user can
+  choose from any font in the directory. This is more flexible than using
+  *--font1* or *--font2* directly. The default path is 'config-path/Font'.
+
 *--language* _LANG_::
   Loads the game translation in language/'LANG' folder.
 
@@ -171,6 +190,10 @@ NOTE: When using the game browser all games will share the same save directory!
    - 'widescreen'  - 416x240 (16:9)
    - 'ultrawide'   - 560x240 (21:9)
 
+*--pause-focus-lost*::
+  Pause the game when the window has no focus. Can be disabled with
+  *--no-pause-focus-lost*.
+
 *--scaling* _MODE_::
   How the video output is scaled. Possible options:
    - 'nearest'    - Scale to screen size using nearest neighbour algorithm.
@@ -180,8 +203,10 @@ NOTE: When using the game browser all games will share the same save directory!
    - 'bilinear'   - Like 'nearest' but apply a bilinear filter to avoid the
                     artifacts.
 *--show-fps*::
-  Enable display of the frames per second counter. Can be disabled with
-  *--no-show-fps*.
+  Enable display of the frames per second counter. When in windowed mode it is
+  shown inside the window. When in fullscreen mode it is shown in the titlebar.
+  Use *--fps-render-window* to always show the counter inside the window. Can be
+  disabled with *--no-show-fps*.
 
 *--stretch*::
   Ignore the aspect ratio and stretch video output to the entire width of the
@@ -211,6 +236,10 @@ NOTE: When using the game browser all games will share the same save directory!
   Adds 'FILE' to the list of soundfonts used for playing MIDI files and use
   this one with highest precedence. The soundfont must be in SF2 format.
 
+*--soundfont-path* _P_::
+  Configures the path where the settings scene looks for soundfonts. The user
+  can choose from any soundfont in the directory. This is more flexible than
+  using *--soundfont* directly. The default path is 'config-path/Soundfont'.
 
 === Debug options
 

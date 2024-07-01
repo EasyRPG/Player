@@ -33,29 +33,46 @@
 
 class CmdlineParser;
 
-enum class ScalingMode {
-	/** Nearest neighbour to fit screen */
-	Nearest,
-	/** Like NN but only scales to integers */
-	Integer,
-	/** Integer followed by Bilinear downscale to fit screen */
-	Bilinear,
+namespace ConfigEnum {
+	enum class ScalingMode {
+		/** Nearest neighbour to fit screen */
+		Nearest,
+		/** Like NN but only scales to integers */
+		Integer,
+		/** Integer followed by Bilinear downscale to fit screen */
+		Bilinear,
+	};
+
+	enum class GameResolution {
+		/** 320x240 */
+		Original,
+		/** 416x240 */
+		Widescreen,
+		/** 560x240 */
+		Ultrawide
+	};
+
+	enum class StartupLogos {
+		None,
+		Custom,
+		All
+	};
+
+	enum class ShowFps {
+		/** Do not show */
+		OFF,
+		/** When windowed: Title bar, fullscreen: Overlay */
+		ON,
+		/** Always overlay */
+		Overlay
+	};
 };
 
-enum class GameResolution {
-	/** 320x240 */
-	Original,
-	/** 416x240 */
-	Widescreen,
-	/** 560x240 */
-	Ultrawide
-};
-
-enum class StartupLogos {
-	None,
-	Custom,
-	All
-};
+#ifdef HAVE_FLUIDLITE
+#define EP_FLUID_NAME "FluidLite"
+#else
+#define EP_FLUID_NAME "FluidSynth"
+#endif
 
 struct Game_ConfigPlayer {
 	StringConfigParam autobattle_algo{ "", "", "", "", "" };
@@ -63,11 +80,15 @@ struct Game_ConfigPlayer {
 	BoolConfigParam settings_autosave{ "Save settings on exit", "Automatically save the settings on exit", "Player", "SettingsAutosave", false };
 	BoolConfigParam settings_in_title{ "Show settings on title screen", "Display settings menu item on the title screen", "Player", "SettingsInTitle", false };
 	BoolConfigParam settings_in_menu{ "Show settings in menu", "Display settings menu item on the menu screen", "Player", "SettingsInMenu", false };
-	EnumConfigParam<StartupLogos, 3> show_startup_logos{
-		"Startup Logos", "Logos that are displayed on startup", "Player", "StartupLogos", StartupLogos::Custom,
+	EnumConfigParam<ConfigEnum::StartupLogos, 3> show_startup_logos{
+		"Startup Logos", "Logos that are displayed on startup", "Player", "StartupLogos", ConfigEnum::StartupLogos::Custom,
 		Utils::MakeSvArray("None", "Custom", "All"),
 		Utils::MakeSvArray("none", "custom", "all"),
 		Utils::MakeSvArray("Do not show any additional logos", "Show custom logos bundled with the game", "Show all logos, including the original from RPG Maker")};
+	PathConfigParam font1 { "Font 1", "The game chooses whether it wants font 1 or 2", "Player", "Font1", "" };
+	RangeConfigParam<int> font1_size { "Font 1 Size", "", "Player", "Font1Size", 12, 6, 16};
+	PathConfigParam font2 { "Font 2", "The game chooses whether it wants font 1 or 2", "Player", "Font2", "" };
+	RangeConfigParam<int> font2_size { "Font 2 Size", "", "Player", "Font2Size", 12, 6, 16};
 
 	void Hide();
 };
@@ -76,17 +97,21 @@ struct Game_ConfigVideo {
 	LockedConfigParam<std::string> renderer{ "Renderer", "The rendering engine", "auto" };
 	BoolConfigParam vsync{ "V-Sync", "Toggle V-Sync mode (Recommended: ON)", "Video", "Vsync", true };
 	BoolConfigParam fullscreen{ "Fullscreen", "Toggle between fullscreen and window mode", "Video", "Fullscreen", true };
-	BoolConfigParam show_fps{ "Show FPS", "Toggle display of the FPS counter", "Video", "ShowFps", false };
-	BoolConfigParam fps_render_window{ "Show FPS in Window", "Show FPS inside the window when in window mode", "Video", "FpsRenderWindow", false };
+	EnumConfigParam<ConfigEnum::ShowFps, 3> fps{
+		"FPS counter", "How to display the FPS counter", "Video", "Fps", ConfigEnum::ShowFps::OFF,
+		Utils::MakeSvArray("[OFF]", "[ON]", "Overlay"),
+		Utils::MakeSvArray("off", "on", "overlay"),
+		Utils::MakeSvArray("Do not show the FPS counter", "Show the FPS counter", "Always show the FPS counter inside the window")};
 	RangeConfigParam<int> fps_limit{ "Frame Limiter", "Toggle the frames per second limit (Recommended: 60)", "Video", "FpsLimit", DEFAULT_FPS, 0, 99999 };
 	ConfigParam<int> window_zoom{ "Window Zoom", "Toggle the window zoom level", "Video", "WindowZoom", 2 };
-	EnumConfigParam<ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode", ScalingMode::Nearest,
+	EnumConfigParam<ConfigEnum::ScalingMode, 3> scaling_mode{ "Scaling method", "How the output is scaled", "Video", "ScalingMode", ConfigEnum::ScalingMode::Nearest,
 		Utils::MakeSvArray("Nearest", "Integer", "Bilinear"),
 		Utils::MakeSvArray("nearest", "integer", "bilinear"),
 		Utils::MakeSvArray("Scale to screen size (Causes scaling artifacts)", "Scale to multiple of the game resolution", "Like Nearest, but output is blurred to avoid artifacts")};
 	BoolConfigParam stretch{ "Stretch", "Stretch to the width of the window/screen", "Video", "Stretch", false };
+	BoolConfigParam pause_when_focus_lost{ "Pause when focus lost", "Pause the program when it is in the background", "Video", "PauseWhenFocusLost", true };
 	BoolConfigParam touch_ui{ "Touch Ui", "Display the touch ui", "Video", "TouchUi", true };
-	EnumConfigParam<GameResolution, 3> game_resolution{ "Resolution", "Game resolution. Changes require a restart.", "Video", "GameResolution", GameResolution::Original,
+	EnumConfigParam<ConfigEnum::GameResolution, 3> game_resolution{ "Resolution", "Game resolution. Changes require a restart.", "Video", "GameResolution", ConfigEnum::GameResolution::Original,
 		Utils::MakeSvArray("Original (Recommended)", "Widescreen (Experimental)", "Ultrawide (Experimental)"),
 		Utils::MakeSvArray("original", "widescreen", "ultrawide"),
 		Utils::MakeSvArray("The default resolution (320x240, 4:3)", "Can cause glitches (416x240, 16:9)", "Can cause glitches (560x240, 21:9)")};
@@ -103,6 +128,11 @@ struct Game_ConfigVideo {
 struct Game_ConfigAudio {
 	RangeConfigParam<int> music_volume{ "BGM Volume", "Volume of the background music", "Audio", "MusicVolume", 100, 0, 100 };
 	RangeConfigParam<int> sound_volume{ "SFX Volume", "Volume of the sound effects", "Audio", "SoundVolume", 100, 0, 100 };
+	BoolConfigParam fluidsynth_midi { EP_FLUID_NAME " (SF2)", "Play MIDI using SF2 soundfonts", "Audio", "Fluidsynth", true };
+	BoolConfigParam wildmidi_midi { "WildMidi (GUS)", "Play MIDI using GUS patches", "Audio", "WildMidi", true };
+	BoolConfigParam native_midi { "Native MIDI", "Play MIDI through the operating system ", "Audio", "NativeMidi", true };
+	LockedConfigParam<std::string> fmmidi_midi { "FmMidi", "Play MIDI using the built-in MIDI synthesizer", "[Always ON]" };
+	PathConfigParam soundfont { "Soundfont", "Soundfont to use for " EP_FLUID_NAME, "Audio", "Soundfont", "" };
 
 	void Hide();
 };
@@ -144,6 +174,19 @@ struct Game_Config {
 	 * Returns the a filesystem view to the global config directory
 	 */
 	static FilesystemView GetGlobalConfigFilesystem();
+
+	/**
+	 * Returns the filesystem view to the soundfont directory
+	 * By default this is config/Soundfont
+	 */
+	static FilesystemView GetSoundfontFilesystem();
+
+	/**
+	 * Returns the filesystem view to the font directory
+	 * By default this is config/Font
+	 */
+	static FilesystemView GetFontFilesystem();
+
 
 	/**
 	 * Returns a handle to the global config file for reading.

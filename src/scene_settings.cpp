@@ -87,9 +87,14 @@ void Scene_Settings::CreateMainWindow() {
 }
 
 void Scene_Settings::CreateOptionsWindow() {
-	help_window.reset(new Window_Help(Player::menu_offset_x, 0, MENU_WIDTH, 32));
+	help_window = std::make_unique<Window_Help>(Player::menu_offset_x, 0, MENU_WIDTH, 32);
+	help_window->SetAnimation(Window_Help::Animation::Loop);
 	options_window = std::make_unique<Window_Settings>(Player::menu_offset_x + 32, 32, MENU_WIDTH - 64, Player::screen_height - 32 * 2);
 	options_window->SetHelpWindow(help_window.get());
+
+	help_window2 = std::make_unique<Window_Help>(Player::menu_offset_x, options_window->GetBottomY(), MENU_WIDTH, 32);
+	help_window2->SetAnimation(Window_Help::Animation::Loop);
+	options_window->help_window2 = help_window2.get();
 
 	input_window = std::make_unique<Window_InputSettings>(Player::menu_offset_x, 32, MENU_WIDTH, Player::screen_height - 32 * 3);
 	input_window->SetHelpWindow(help_window.get());
@@ -140,9 +145,11 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	input_mode_window->SetVisible(false);
 	input_help_window->SetVisible(false);
 	help_window->SetVisible(false);
+	help_window2->SetVisible(false);
 	about_window->SetVisible(false);
 
 	picker_window.reset();
+	font_size_window.reset();
 
 	switch (mode) {
 		case Window_Settings::eNone:
@@ -189,6 +196,10 @@ void Scene_Settings::SetMode(Window_Settings::UiMode new_mode) {
 	}
 }
 
+void Scene_Settings::Refresh() {
+	options_window->Refresh();
+}
+
 void Scene_Settings::vUpdate() {
 	if (RefreshInputEmergencyReset()) {
 		return;
@@ -196,6 +207,7 @@ void Scene_Settings::vUpdate() {
 
 	main_window->Update();
 	help_window->Update();
+	help_window2->Update();
 	options_window->Update();
 	input_window->Update();
 	input_mode_window->Update();
@@ -225,6 +237,7 @@ void Scene_Settings::vUpdate() {
 			return;
 		}
 
+		help_window2->SetFont(nullptr);
 		options_window->Pop();
 		SetMode(options_window->GetMode());
 		if (mode == Window_Settings::eNone) {
@@ -244,6 +257,8 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eInput:
 		case Window_Settings::eVideo:
 		case Window_Settings::eAudio:
+		case Window_Settings::eAudioMidi:
+		case Window_Settings::eAudioSoundfont:
 		case Window_Settings::eLicense:
 		case Window_Settings::eEngine:
 		case Window_Settings::eInputButtonCategory:
@@ -251,6 +266,12 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eInputListButtonsEngine:
 		case Window_Settings::eInputListButtonsDeveloper:
 			UpdateOptions();
+			break;
+		case Window_Settings::eEngineFont1:
+			UpdateFont(false);
+			break;
+		case Window_Settings::eEngineFont2:
+			UpdateFont(true);
 			break;
 		case Window_Settings::eInputButtonOption:
 			UpdateButtonOption();
@@ -292,7 +313,6 @@ void Scene_Settings::UpdateMain() {
 	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Game_System::SFX_Decision));
 		auto idx = main_window->GetIndex();
 
 		if (main_window->IsItemEnabled(idx)) {
@@ -434,6 +454,68 @@ void Scene_Settings::UpdateOptions() {
 			options_window->Refresh();
 		}
 	}
+}
+
+void Scene_Settings::UpdateFont(bool mincho) {
+	auto fs = Game_Config::GetFontFilesystem();
+
+	auto& last_index = options_window->GetFrame().scratch;
+
+	if (font_size_window) {
+		font_size_window->SetY(options_window->GetY() + options_window->GetCursorRect().y);
+		font_size_window->Update();
+	}
+
+	int index = options_window->GetIndex();
+	if (last_index == index) {
+		if (index == 0 || !help_window2->GetFont() || help_window2->GetFont()->GetCurrentStyle().size == options_window->font_size.Get()) {
+			// Same index or font size did not change
+			UpdateOptions();
+			return;
+		}
+	}
+	last_index = index;
+
+	if (!font_size_window) {
+		font_size_window = std::make_unique<Window_Help>(options_window->GetRightX(), 0, 32, 32);
+		font_size_window->SetLeftArrow(true);
+		font_size_window->SetRightArrow(true);
+		font_size_window->SetAnimateArrows(true);
+	}
+
+	font_size_window->SetVisible(false);
+	font_size_window->SetText(std::to_string(options_window->font_size.Get()));
+
+	if (index == 0) {
+		// Built-In font
+		help_window2->Clear();
+		help_window2->SetFont(Font::DefaultBitmapFont(mincho));
+		help_window2->SetVisible(true);
+	} else if (index >= options_window->GetRowMax() - 2) {
+		// Sample or browse
+		help_window2->Clear();
+		help_window2->SetFont(nullptr);
+		help_window2->SetVisible(true);
+	} else {
+		auto is = fs.OpenInputStream(options_window->GetCurrentOption().text);
+		if (is) {
+			auto font = Font::CreateFtFont(std::move(is), options_window->font_size.Get(), false, false);
+			if (font) {
+				help_window2->Clear();
+				help_window2->SetFont(font);
+				help_window2->SetVisible(true);
+				font_size_window->SetVisible(true);
+			} else {
+				auto& opt = options_window->GetCurrentOption();
+				opt.action = nullptr;
+				opt.value_text = "[Broken]";
+				opt.help2.clear();
+				options_window->DrawOption(options_window->GetIndex());
+			}
+		}
+	}
+
+	UpdateOptions();
 }
 
 void Scene_Settings::UpdateButtonOption() {

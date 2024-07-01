@@ -23,6 +23,7 @@
 #include "text.h"
 #include "window_settings.h"
 #include "game_config.h"
+#include "game_system.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "output.h"
@@ -31,6 +32,12 @@
 #include "player.h"
 #include "system.h"
 #include "audio.h"
+#include "audio_midi.h"
+#include "audio_generic_midiout.h"
+
+#ifdef EMSCRIPTEN
+#  include "platform/emscripten/interface.h"
+#endif
 
 class MenuItem final : public ConfigParam<StringView> {
 public:
@@ -48,10 +55,10 @@ void Window_Settings::DrawOption(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
 
-	auto& option = options[index];
+	auto& option = GetFrame().options[index];
 
 	bool enabled = bool(option.action);
-	Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
+	Font::SystemColor color = enabled ? option.color : Font::ColorDisabled;
 
 	contents->TextDraw(rect, color, option.text);
 	contents->TextDraw(rect, color, option.value_text, Text::AlignRight);
@@ -112,7 +119,7 @@ Window_Settings::UiMode Window_Settings::GetMode() const {
 }
 
 void Window_Settings::Refresh() {
-	options.clear();
+	GetFrame().options.clear();
 
 	switch (GetFrame().uimode) {
 		case eNone:
@@ -127,8 +134,20 @@ void Window_Settings::Refresh() {
 		case eAudio:
 			RefreshAudio();
 			break;
+		case eAudioMidi:
+			RefreshAudioMidi();
+			break;
+		case eAudioSoundfont:
+			RefreshAudioSoundfont();
+			break;
 		case eEngine:
 			RefreshEngine();
+			break;
+		case eEngineFont1:
+			RefreshEngineFont(false);
+			break;
+		case eEngineFont2:
+			RefreshEngineFont(true);
 			break;
 		case eLicense:
 			RefreshLicense();
@@ -145,9 +164,9 @@ void Window_Settings::Refresh() {
 			break;
 	}
 
-	SetItemMax(options.size());
+	SetItemMax(GetFrame().options.size());
 
-	if (GetFrame().uimode == eNone || options.empty()) {
+	if (GetFrame().uimode == eNone || GetFrame().options.empty()) {
 		SetIndex(-1);
 	}
 
@@ -161,10 +180,17 @@ void Window_Settings::Refresh() {
 }
 
 void Window_Settings::UpdateHelp() {
-	if (index >= 0 && index < static_cast<int>(options.size())) {
-		help_window->SetText(options[index].help);
+	if (index >= 0 && index < static_cast<int>(GetFrame().options.size())) {
+		help_window->SetText(GetFrame().options[index].help);
+		if (help_window2) {
+			help_window2->SetText(GetFrame().options[index].help2);
+			help_window2->SetVisible(!GetFrame().options[index].help2.empty());
+		}
 	} else {
 		help_window->SetText("");
+		if (help_window2) {
+			help_window2->SetVisible(false);
+		}
 	}
 }
 
@@ -183,7 +209,7 @@ void Window_Settings::AddOption(const Param& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 template <typename T, typename Action>
@@ -205,7 +231,7 @@ void Window_Settings::AddOption(const RangeConfigParam<T>& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 template <typename T, typename Action, size_t S>
@@ -241,7 +267,7 @@ void Window_Settings::AddOption(const EnumConfigParam<T, S>& param,
 	if (!param.IsLocked()) {
 		opt.action = std::forward<Action>(action);
 	}
-	options.push_back(std::move(opt));
+	GetFrame().options.push_back(std::move(opt));
 }
 
 void Window_Settings::RefreshVideo() {
@@ -250,14 +276,14 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.renderer,	[](){});
 	AddOption(cfg.fullscreen, [](){ DisplayUi->ToggleFullscreen(); });
 	AddOption(cfg.window_zoom, [](){ DisplayUi->ToggleZoom(); });
+	AddOption(cfg.fps, [this](){ DisplayUi->SetShowFps(static_cast<ConfigEnum::ShowFps>(GetCurrentOption().current_value)); });
 	AddOption(cfg.vsync, [](){ DisplayUi->ToggleVsync(); });
 	AddOption(cfg.fps_limit, [this](){ DisplayUi->SetFrameLimit(GetCurrentOption().current_value); });
-	AddOption(cfg.show_fps, [](){ DisplayUi->ToggleShowFps(); });
-	AddOption(cfg.fps_render_window, [](){ DisplayUi->ToggleShowFpsOnTitle(); });
 	AddOption(cfg.stretch, []() { DisplayUi->ToggleStretch(); });
-	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ScalingMode>(GetCurrentOption().current_value)); });
+	AddOption(cfg.scaling_mode, [this](){ DisplayUi->SetScalingMode(static_cast<ConfigEnum::ScalingMode>(GetCurrentOption().current_value)); });
+	AddOption(cfg.pause_when_focus_lost, [cfg]() mutable { DisplayUi->SetPauseWhenFocusLost(cfg.pause_when_focus_lost.Toggle()); });
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
-	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<GameResolution>(GetCurrentOption().current_value)); });
+	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<ConfigEnum::GameResolution>(GetCurrentOption().current_value)); });
 }
 
 void Window_Settings::RefreshAudio() {
@@ -265,28 +291,215 @@ void Window_Settings::RefreshAudio() {
 
 	AddOption(cfg.music_volume, [this](){ Audio().BGM_SetGlobalVolume(GetCurrentOption().current_value); });
 	AddOption(cfg.sound_volume, [this](){ Audio().SE_SetGlobalVolume(GetCurrentOption().current_value); });
-	/*AddOption("Midi Backend", LockedConfigParam<std::string>("Unknown"), "",
-			[](){},
-			"Which MIDI backend to use");
-	AddOption("Midi Soundfont", LockedConfigParam<std::string>("Default"), "",
-			[](){},
-			"Which MIDI soundfont to use");*/
+	if (cfg.fluidsynth_midi.IsOptionVisible() || cfg.wildmidi_midi.IsOptionVisible() || cfg.native_midi.IsOptionVisible() || cfg.fmmidi_midi.IsOptionVisible()) {
+		AddOption(MenuItem("MIDI drivers", "Configure MIDI playback", ""), [this]() { Push(eAudioMidi); });
+	}
+	AddOption(cfg.soundfont, [this](){ Push(eAudioSoundfont); });
+}
+
+void Window_Settings::RefreshAudioMidi() {
+	auto cfg = Audio().GetConfig();
+
+	bool used = false;
+
+	if (cfg.fluidsynth_midi.IsOptionVisible()) {
+		AddOption(cfg.fluidsynth_midi, []() { Audio().SetFluidsynthEnabled(Audio().GetConfig().fluidsynth_midi.Toggle()); });
+		if (!MidiDecoder::CheckFluidsynth(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
+		} else if (cfg.fluidsynth_midi.Get()) {
+			GetFrame().options.back().text += " [In use]";
+			used = true;
+		}
+	}
+
+	if (cfg.wildmidi_midi.IsOptionVisible()) {
+		AddOption(cfg.wildmidi_midi, []() { Audio().SetWildMidiEnabled(Audio().GetConfig().wildmidi_midi.Toggle()); });
+		if (!MidiDecoder::CheckWildMidi(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
+		} else if (cfg.wildmidi_midi.Get() && !used) {
+			GetFrame().options.back().text += " [In use]";
+			used = true;
+		}
+	}
+
+	if (cfg.native_midi.IsOptionVisible()) {
+		AddOption(cfg.native_midi, []() { Audio().SetNativeMidiEnabled(Audio().GetConfig().native_midi.Toggle()); });
+		auto midi_out = Audio().CreateAndGetMidiOut();
+		if (!midi_out || !midi_out->IsInitialized(GetFrame().options.back().help2)) {
+			GetFrame().options.back().text += " [Not working]";
+			GetFrame().options.back().color = Font::ColorKnockout;
+		} else if (cfg.native_midi.Get() && !used) {
+			GetFrame().options.back().text += " [In use]";
+			used = true;
+		}
+	}
+
+	if (cfg.fmmidi_midi.IsOptionVisible()) {
+		AddOption(cfg.fmmidi_midi, []() {});
+		if (!used) {
+			GetFrame().options.back().text += " [In use]";
+		}
+	}
+
+	AddOption(MenuItem("> Information <", "The first active and working option is used for MIDI", ""), [](){});
+	GetFrame().options.back().help2 = "Changes take effect when a new MIDI file is played";
+}
+
+void Window_Settings::RefreshAudioSoundfont() {
+	auto fs = Game_Config::GetSoundfontFilesystem();
+
+	if (!fs) {
+		Pop();
+	}
+
+	fs.ClearCache();
+
+	auto acfg = Audio().GetConfig();
+	AddOption(MenuItem("<Autodetect>", "Attempt to find a suitable soundfont automatically", acfg.soundfont.Get().empty() ? "[x]" : ""), [this]() {
+		Audio().SetFluidsynthSoundfont({});
+		Pop();
+	});
+
+	auto list = fs.ListDirectory();
+	assert(list);
+
+	std::string sf_lower = Utils::LowerCase(Audio().GetFluidsynthSoundfont());
+	for (const auto& item: *list) {
+		if (item.second.type == DirectoryTree::FileType::Regular && (StringView(item.first).ends_with(".sf2") || StringView(item.first).ends_with(".soundfont"))) {
+			AddOption(MenuItem(item.second.name, "Use this custom soundfont", StringView(sf_lower).ends_with(item.first) ? "[x]" : ""), [this, fs, item]() {
+				Audio().SetFluidsynthSoundfont(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
+				Pop();
+			});
+		}
+	}
+
+	for (auto& opt: GetFrame().options) {
+		opt.help2 = "Changes take effect when a new MIDI file is played";
+	}
+
+#ifdef EMSCRIPTEN
+	AddOption(MenuItem("<Upload Soundfont>", "Provide a soundfont from your system", ""), [fs]() { Emscripten_Interface::UploadSoundfont(); });
+#elif defined(SUPPORT_FILE_BROWSER)
+	AddOption(MenuItem("<Open Soundfont directory>", "Open the soundfont directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
+#endif
 }
 
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 
 	// FIXME: Binding &cfg is not needed and generates a warning but MSVC requires it
-#ifdef _MSC_VER
+	AddOption(cfg.font1, [this, &cfg]() {
+		font_size.Set(cfg.font1_size.Get());
+		Push(eEngineFont1);
+		GetFrame().scratch = -1;
+	});
+	if (cfg.font1.IsLocked()) {
+		GetFrame().options.back().help = "This game uses a custom font";
+	}
+	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
+		GetFrame().options.back().text += " [In use]";
+	}
+
+	AddOption(cfg.font2, [this, &cfg]() {
+		font_size.Set(cfg.font2_size.Get());
+		Push(eEngineFont2);
+		GetFrame().scratch = -1;
+	});
+	if (cfg.font2.IsLocked()) {
+		GetFrame().options.back().help = "This game uses a custom font";
+	}
+	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
+		GetFrame().options.back().text += " [In use]";
+	}
+
+	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<ConfigEnum::StartupLogos>(GetCurrentOption().current_value)); });
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
-	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
-#else
-	AddOption(cfg.settings_autosave, [](){ cfg.settings_autosave.Toggle(); });
-	AddOption(cfg.settings_in_title, [](){ cfg.settings_in_title.Toggle(); });
-	AddOption(cfg.settings_in_menu, [](){ cfg.settings_in_menu.Toggle(); });
-	AddOption(cfg.show_startup_logos, [this](){ cfg.show_startup_logos.Set(static_cast<StartupLogos>(GetCurrentOption().current_value)); });
+}
+
+void Window_Settings::RefreshEngineFont(bool mincho) {
+	auto fs = Game_Config::GetFontFilesystem();
+
+	if (!fs) {
+		Pop();
+	}
+
+	fs.ClearCache();
+
+	auto& cfg = Player::player_config;
+
+	auto& setting = mincho ? cfg.font2 : cfg.font1;
+
+	auto set_help2 = [this]() {
+		GetFrame().options.back().help2 = ToString(sample_text.GetDescriptions()[static_cast<int>(sample_text.Get())]);
+	};
+
+	AddOption(MenuItem("<Built-in Font>", "Use the built-in pixel font", setting.Get().empty() ? "[x]" : ""), [this, &setting, mincho]() {
+		Font::SetDefault(nullptr, mincho);
+		setting.Set("");
+		Pop();
+	});
+	set_help2();
+
+	std::string font_lower = Utils::LowerCase(Font::Default(mincho)->GetName());
+
+	auto list = fs.ListDirectory();
+	assert(list);
+	for (const auto& item: *list) {
+		bool is_font = std::any_of(FileFinder::FONTS_TYPES.begin(), FileFinder::FONTS_TYPES.end(), [&item](const auto& ext) {
+			return StringView(item.first).ends_with(ext);
+		});
+
+		if (item.second.type == DirectoryTree::FileType::Regular && is_font) {
+			AddOption(MenuItem(item.second.name, "Use this font", StringView(font_lower).ends_with(item.first) ? "[x]" : ""), [=, &cfg, &setting]() mutable {
+				if (Input::IsTriggered(Input::LEFT) || Input::IsRepeated(Input::LEFT)) {
+					if (font_size.Get() == font_size.GetMin()) {
+						font_size.Set(font_size.GetMax());
+					} else {
+						font_size.Set(font_size.Get() - 1);
+					}
+					return;
+				} else if (Input::IsTriggered(Input::RIGHT) || Input::IsRepeated(Input::RIGHT)) {
+					if (font_size.Get() == font_size.GetMax()) {
+						font_size.Set(font_size.GetMin());
+					} else {
+						font_size.Set(font_size.Get() + 1);
+					}
+					return;
+				}
+
+				auto is = fs.OpenInputStream(item.second.name);
+				if (is) {
+					auto font = Font::CreateFtFont(std::move(is), font_size.Get(), false, false);
+					if (font) {
+						setting.Set(FileFinder::MakePath(fs.GetFullPath(), item.second.name));
+						auto& setting_size = mincho ? cfg.font2_size : cfg.font1_size;
+						setting_size.Set(font->GetCurrentStyle().size);
+						Font::SetDefault(font, mincho);
+						Pop();
+					}
+				}
+			});
+			set_help2();
+		}
+	}
+
+	/*AddOption(font_size, [this]() mutable {
+		font_size.Set(GetCurrentOption().current_value);
+	});*/
+
+	AddOption(sample_text, [this]() {
+		sample_text.Set(static_cast<SampleText>(GetCurrentOption().current_value));
+	});
+	set_help2();
+
+#ifdef EMSCRIPTEN
+	AddOption(MenuItem("<Upload Font>", "Provide a font from your system", ""), [fs]() { Emscripten_Interface::UploadFont(); });
+#elif defined(SUPPORT_FILE_BROWSER)
+	AddOption(MenuItem("<Open Font directory>", "Open the font directory in a file browser", ""), [fs]() { DisplayUi->OpenURL(fs.GetFullPath()); });
 #endif
 }
 
@@ -333,7 +546,7 @@ void Window_Settings::RefreshLicense() {
 #ifdef HAVE_OPUS
 	AddOption(MenuItem("opus", "Decodes the free OPUS audio codec", "BSD"), [](){});
 #endif
-#ifdef HAVE_WILDMIDI
+#ifdef HAVE_LIBWILDMIDI
 	AddOption(MenuItem("WildMidi", "MIDI synthesizer", "LGPLv3+"), [](){});
 #endif
 #ifdef HAVE_FLUIDSYNTH

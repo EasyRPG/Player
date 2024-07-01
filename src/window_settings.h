@@ -42,8 +42,12 @@ public:
 		eInputButtonRemove,
 		eVideo,
 		eAudio,
+		eAudioMidi,
+		eAudioSoundfont,
 		eLicense,
 		eEngine,
+		eEngineFont1,
+		eEngineFont2,
 		eSave,
 		eEnd,
 		eAbout,
@@ -60,8 +64,10 @@ public:
 		std::string text;
 		std::string value_text;
 		std::string help;
+		std::string help2;
 		std::function<void(void)> action;
 		OptionMode mode;
+		Font::SystemColor color = Font::ColorDefault;
 		int current_value;
 		int original_value;
 		int min_value;
@@ -76,6 +82,7 @@ public:
 		int arg = -1;
 		int scratch = 0;
 		int scratch2 = 0;
+		std::vector<Option> options;
 	};
 
 	/** Constructor  */
@@ -84,13 +91,13 @@ public:
 	/** @return true if the index points to an enabled action */
 	bool IsCurrentActionEnabled() const {
 		return (index >= 0
-				&& index < static_cast<int>(options.size())
-				&& static_cast<bool>(options[index].action));
+				&& index < static_cast<int>(GetFrame().options.size())
+				&& static_cast<bool>(GetFrame().options[index].action));
 	}
 
 	/** Execute the action pointed to by index */
 	Option& GetCurrentOption() {
-		return options[index];
+		return GetFrame().options[index];
 	}
 
 	UiMode GetMode() const;
@@ -106,14 +113,16 @@ public:
 	 */
 	void Refresh();
 
-private:
-
 	/**
-	 * Draws an item together with the quantity.
+	 * Draws an item.
 	 *
 	 * @param index index of item to draw.
 	 */
 	void DrawOption(int index);
+
+	Window_Help* help_window2 = nullptr;
+	RangeConfigParam<int> font_size { "<Font Size>", "Font size to use. Not supported for the built-in font.", "", "", 12, 6, 16};
+private:
 
 	template <typename Param, typename Action>
 	void AddOption(const Param& p,
@@ -134,12 +143,13 @@ private:
 	void RefreshButtonList();
 	void RefreshVideo();
 	void RefreshAudio();
+	void RefreshAudioMidi();
+	void RefreshAudioSoundfont();
 	void RefreshEngine();
+	void RefreshEngineFont(bool mincho);
 	void RefreshLicense();
 
 	void UpdateHelp() override;
-
-	std::vector<Option> options;
 
 	struct Memory {
 		int index = 0;
@@ -153,6 +163,36 @@ private:
 
 	void SavePosition();
 	void RestorePosition();
+
+	// The sample text for the font preview. This option is not saved.
+	enum class SampleText {
+		English,
+		French,
+		German,
+		Spanish,
+		Chinese,
+		Japanese_Hiragana,
+		Japanese_Kanji,
+		Korean,
+		Diacritics
+	};
+
+	EnumConfigParam<SampleText, 9> sample_text{
+		"<Sample Text>", "Text to show in the preview", "", "", SampleText::English,
+		Utils::MakeSvArray("English", "French", "German", "Spanish", "Chinese", "Japanese (Hiragana)", "Japanese (Kanji)", "Korean", "Various Diacritics"),
+		Utils::MakeSvArray("", "", "", "", "", "", "", "", ""),
+		Utils::MakeSvArray(
+			"The quick brown fox jumps over the lazy dog 1234567890.?!",
+			"Voix ambiguë d'un cœur qui au zéphyr préfère les jattes de kiwis",
+			"Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich",
+			"Jovencillo emponzoñado de whisky, ¡qué figurota exhibe!",
+			"天地玄黃宇宙洪荒。日月盈昃辰宿列張。寒來暑往秋收冬藏。閏餘成歲律呂調陽。雲騰致雨露結為霜。金生麗水玉出崑岡。劍號巨闕珠稱夜光。果珍李柰菜重芥薑。海鹹河淡鱗潛羽翔。",
+			"いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす",
+			"色は匂えど散りぬるを我が世誰ぞ常ならん有為の奥山今日越えて浅き夢見じ酔いもせず",
+			"키스의 고유조건은 입술끼리 만나야 하고 특별한 기술은 필요치 않다",
+			"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ"
+		)
+	};
 };
 
 #endif

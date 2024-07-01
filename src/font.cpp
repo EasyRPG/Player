@@ -136,6 +136,7 @@ namespace {
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
 		~FTFont() override;
 
+		bool IsOk() const;
 		Rect vGetSize(char32_t glyph) const override;
 		GlyphRet vRender(char32_t glyph) const override;
 		GlyphRet vRenderShaped(char32_t glyph) const override;
@@ -282,6 +283,10 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 
 	FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), 0, &face);
 
+	if (face == nullptr) {
+		return;
+	}
+
 	if (face->num_charmaps > 0) {
 		// Force unicode charmap
 		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0) {
@@ -319,21 +324,33 @@ FTFont::~FTFont() {
 	}
 }
 
+bool FTFont::IsOk() const {
+	return face;
+}
+
 Rect FTFont::vGetSize(char32_t glyph) const {
 	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && fallback_font) {
-		return fallback_font->vGetSize(glyph);
+	if (glyph_index == 0) {
+		if (fallback_font) {
+			return fallback_font->vGetSize(glyph);
+		} else {
+			return {0, 0, 0, current_style.size};
+		}
 	}
 
 	auto load_glyph = [&](auto flags) {
 		if (FT_Load_Glyph(face, glyph_index, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
+		return true;
 	};
 
 	if (FT_HAS_COLOR(face)) {
-		load_glyph(FT_LOAD_COLOR);
+		if (!load_glyph(FT_LOAD_COLOR)) {
+			Output::Error("Broken color font for glyph {:#x}", uint32_t(glyph));
+		}
 
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then reload the glyph monochrome
@@ -341,7 +358,13 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
 		}
 	} else {
-		load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
+		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)) {
+			if (fallback_font) {
+				return fallback_font->vGetSize(glyph);
+			} else {
+				return {0, 0, 0, current_style.size};
+			}
+		}
 	}
 
 	FT_GlyphSlot slot = face->glyph;
@@ -360,30 +383,44 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 Font::GlyphRet FTFont::vRender(char32_t glyph) const {
 	auto glyph_index = FT_Get_Char_Index(face, glyph);
 
-	if (glyph_index == 0 && fallback_font) {
-		return fallback_font->vRender(glyph);
+	if (glyph_index == 0) {
+		if (fallback_font) {
+			return fallback_font->vRender(glyph);
+		} else {
+			return { {}, {0, current_style.size}, {0, 0}, false };
+		}
 	}
 
 	return vRenderShaped(glyph_index);
 }
 
 Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
-	if (glyph == 0 && fallback_font) {
-		return fallback_font->vRender(glyph);
+	if (glyph == 0) {
+		if (fallback_font) {
+			return fallback_font->vRender(glyph);
+		} else {
+			return { {}, {0, current_style.size}, {0, 0}, false };
+		}
 	}
 
 	auto render_glyph = [&](auto flags, auto mode) {
 		if (FT_Load_Glyph(face, glyph, flags) != FT_Err_Ok) {
-			Output::Error("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't load FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
 
 		if (FT_Render_Glyph(face->glyph, mode) != FT_Err_Ok) {
-			Output::Error("Couldn't render FreeType character {:#x}", uint32_t(glyph));
+			Output::Debug("Couldn't render FreeType character {:#x}", uint32_t(glyph));
+			return false;
 		}
+
+		return true;
 	};
 
 	if (FT_HAS_COLOR(face)) {
-		render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL);
+		if (!render_glyph(FT_LOAD_COLOR, FT_RENDER_MODE_NORMAL)) {
+			Output::Error("Broken color font for glyph {:#x}", uint32_t(glyph));
+		}
 
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then rerender the glyph monochrome
@@ -392,7 +429,13 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
 		}
 	} else {
-		render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
+		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO)) {
+			if (fallback_font) {
+				return fallback_font->vRender(glyph);
+			} else {
+				return { {}, {0, current_style.size}, {0, 0}, false };
+			}
+		}
 	}
 
 	FT_GlyphSlot slot = face->glyph;
@@ -535,7 +578,7 @@ void FTFont::SetSize(int height, bool create) {
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
-	baseline_offset = FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64;
+	baseline_offset = static_cast<int>(FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64);
 	if (baseline_offset == 0) {
 		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
 		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
@@ -598,7 +641,7 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 
 	if (it == ft_cache.end()) {
 		auto ft_font = std::make_shared<FTFont>(std::move(is), size, bold, italic);
-		if (!ft_font) {
+		if (!ft_font || !ft_font->IsOk()) {
 			return nullptr;
 		}
 
@@ -609,8 +652,6 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 		it->second.last_access = Game_Clock::GetFrameTime();
 		return it->second.font;
 	}
-
-	return std::make_shared<FTFont>(std::move(is), size, bold, italic);
 #else
 	return nullptr;
 #endif
@@ -619,10 +660,27 @@ FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bol
 void Font::ResetDefault() {
 	SetDefault(nullptr, true);
 	SetDefault(nullptr, false);
+
+#ifdef HAVE_FREETYPE
+	auto& cfg = Player::player_config;
+	if (!cfg.font1.Get().empty()) {
+		auto is = FileFinder::Root().OpenInputStream(cfg.font1.Get());
+		SetDefault(CreateFtFont(std::move(is), cfg.font1_size.Get(), false, false), false);
+	}
+
+	if (!cfg.font2.Get().empty()) {
+		auto is = FileFinder::Root().OpenInputStream(cfg.font2.Get());
+		SetDefault(CreateFtFont(std::move(is), cfg.font2_size.Get(), false, false), true);
+	}
+
+	cfg.font1.SetLocked(false);
+	cfg.font2.SetLocked(false);
+#endif
 }
 
 void Font::Dispose() {
-	ResetDefault();
+	SetDefault(nullptr, true);
+	SetDefault(nullptr, false);
 
 #ifdef HAVE_FREETYPE
 	if (library) {
@@ -640,6 +698,10 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 	original_style.bold = bold;
 	original_style.italic = italic;
 	current_style = original_style;
+}
+
+StringView Font::GetName() const {
+	return name;
 }
 
 Rect Font::GetSize(char32_t glyph) const {
@@ -671,47 +733,8 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 
 	auto gret = vRender(glyph);
 
-	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
-	if (EP_UNLIKELY(rect.width == 0)) {
+	if (EP_UNLIKELY(!RenderImpl(dest, x, y, sys, color, gret))) {
 		return {};
-	}
-
-	rect.x += gret.offset.x;
-	rect.y -= gret.offset.y;
-
-	unsigned src_x;
-	unsigned src_y;
-
-	if (color != ColorShadow) {
-		if (!gret.has_color && current_style.draw_shadow) {
-			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
-			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
-		}
-
-		src_x = color % 10 * 16 + 2;
-		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
-	} else {
-		src_x = 16;
-		src_y = 32;
-	}
-
-	if (!gret.has_color) {
-		if (current_style.draw_gradient) {
-			// When the glyph is large the system graphic color mask will be outside the rectangle
-			// Move the mask slightly up to avoid this
-			int offset = gret.bitmap->height() - gret.offset.y;
-			if (offset > 12) {
-				src_y -= offset - 12;
-			}
-
-			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
-		} else {
-			auto col = sys.GetColorAt(current_style.color_offset.x + src_x, current_style.color_offset.y + src_y);
-			auto col_bm = Bitmap::Create(gret.bitmap->width(), gret.bitmap->height(), col);
-			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
-		}
-	} else {
-		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
 
 	gret.advance.x += current_style.letter_spacing;
@@ -726,45 +749,117 @@ Point Font::Render(Bitmap& dest, int const x, int const y, const Bitmap& sys, in
 
 	auto gret = vRenderShaped(shape.code);
 
-	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
-	if (EP_UNLIKELY(rect.width == 0)) {
+	if (EP_UNLIKELY(!RenderImpl(dest, x, y, sys, color, gret))) {
 		return {};
 	}
 
-	rect.x += shape.offset.x + gret.offset.x;
-	rect.y -= shape.offset.y + gret.offset.y;
+	Point advance = { shape.advance.x + current_style.letter_spacing, shape.advance.y };
+	return advance;
+}
 
-	unsigned src_x;
-	unsigned src_y;
+bool Font::RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const GlyphRet& gret) const {
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return false;
+	}
 
+	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
+	if (EP_UNLIKELY(rect.width == 0)) {
+		return false;
+	}
+
+	// Drawing position of the glyph
+	rect.x += gret.offset.x;
+	rect.y -= gret.offset.y;
+
+	unsigned src_x = 0;
+	unsigned src_y = 0;
+
+	int glyph_height = gret.bitmap->height() - gret.offset.y;
+
+	// Adjust how the mask is applied depending on the glyph size to prevent that
+	// pixels from outside of the mask color are read
+	// When <= 12: Will work fine
+	// When <= 16: Slightly adjusted (see ~20 lines below)
+	if (glyph_height > 16) {
+		// Too large for the existing mask: Resize the masks (slow)
+		// The mask is too small and the system graphic must be resized
+		// This is usually an exception and requires a custom font
+		const Rect shadow_color_rect = { 16, 32, 16, 16 };
+		const Rect mask_color_rect = { color % 10 * 16, color / 10 * 16 + 48, 16, 16 };
+		auto sys_large = Bitmap::Create(current_style.size * 2, current_style.size, false);
+		double zoom = current_style.size / 16.0;
+		// Left half of the image is the shadow, right half the mask
+		if (color != ColorShadow && current_style.draw_shadow) {
+			sys_large->ZoomOpacityBlit(0, 0, 0, 0, sys, shadow_color_rect, zoom, zoom, Opacity::Opaque());
+		}
+		if (!gret.has_color) {
+			sys_large->ZoomOpacityBlit(current_style.size, 0, 0, 0, sys, mask_color_rect, zoom, zoom, Opacity::Opaque());
+		}
+
+		if (color != ColorShadow) {
+			// First draw the shadow, offset by one
+			if (!gret.has_color && current_style.draw_shadow) {
+				auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
+				dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, *sys_large, 0, 0);
+			}
+
+			src_x = current_style.size;
+			src_y -= gret.offset.y;
+		}
+
+		if (!gret.has_color) {
+			if (current_style.draw_gradient) {
+				dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *sys_large, src_x, src_y);
+			} else {
+				auto col = sys.GetColorAt(current_style.color_offset.x + src_x, current_style.color_offset.y + src_y);
+				auto col_bm = Bitmap::Create(gret.bitmap->width(), gret.bitmap->height(), col);
+				dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
+			}
+		} else {
+			// Color glyphs, emojis etc.
+			dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
+		}
+
+		return true;
+	}
+
+	// Glyph fits in the mask
 	if (color != ColorShadow) {
+		// First draw the shadow, offset by one
 		if (!gret.has_color && current_style.draw_shadow) {
 			auto shadow_rect = Rect(rect.x + 1, rect.y + 1, rect.width, rect.height);
 			dest.MaskedBlit(shadow_rect, *gret.bitmap, 0, 0, sys, 16, 32);
 		}
 
 		src_x = color % 10 * 16 + 2;
-		src_y = color / 10 * 16 + 48 + 16 - 12 - shape.offset.y - gret.offset.y;
-
-		// When the glyph is large the system graphic color mask will be outside the rectangle
-		// Move the mask slightly up to avoid this
-		int offset = gret.bitmap->height() - shape.offset.y - gret.offset.y;
-		if (offset > 12) {
-			src_y -= offset - 12;
-		}
+		src_y = color / 10 * 16 + 48 + 16 - 12 - gret.offset.y;
 	} else {
+		// When the color is the shadow color do not render twice
 		src_x = 16;
 		src_y = 32;
 	}
 
 	if (!gret.has_color) {
-		dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+		if (current_style.draw_gradient) {
+			// When the glyph is large the system graphic color mask will be outside the rectangle
+			// Move the mask slightly up to avoid this
+ 			if (glyph_height > 12) {
+				// Slightly too large -> Apply an offset
+				src_y -= glyph_height - 12;
+			}
+
+			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, sys, src_x, src_y);
+		} else {
+			auto col = sys.GetColorAt(current_style.color_offset.x + src_x, current_style.color_offset.y + src_y);
+			auto col_bm = Bitmap::Create(gret.bitmap->width(), gret.bitmap->height(), col);
+			dest.MaskedBlit(rect, *gret.bitmap, 0, 0, *col_bm, 0, 0);
+		}
 	} else {
+		// Color glyphs, emojis etc.
 		dest.Blit(rect.x, rect.y, *gret.bitmap, gret.bitmap->GetRect(), Opacity::Opaque());
 	}
 
-	Point advance = { shape.advance.x + current_style.letter_spacing, shape.advance.y };
-	return advance;
+	return true;
 }
 
 Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyph) const {
@@ -773,6 +868,9 @@ Point Font::Render(Bitmap& dest, int x, int y, Color const& color, char32_t glyp
 	}
 
 	auto gret = vRender(glyph);
+	if (EP_UNLIKELY(gret.bitmap == nullptr)) {
+		return {};
+	}
 
 	auto rect = Rect(x, y, gret.bitmap->width(), gret.bitmap->height());
 	dest.MaskedBlit(rect, *gret.bitmap, 0, 0, color);
