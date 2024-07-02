@@ -55,13 +55,13 @@ public:
 	bool HasValidEntry();
 
 	/**
-	 * @return filesystem and entry name of the selected game
+	 * @return filesystem of the selected game
 	 */
-	std::pair<FilesystemView, std::string> GetGameFilesystem() const;
+	FilesystemView GetGameFilesystem() const;
 
 private:
 	FilesystemView base_fs;
-	std::vector<std::string> game_directories;
+	std::vector<DirectoryTree::Entry> game_directories;
 
 	bool show_dotdot = false;
 };

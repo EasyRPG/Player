@@ -217,9 +217,11 @@ public:
 	/** @{ */
 	virtual bool IsFile(StringView path) const = 0;
 	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
+	virtual bool IsFilesystemNode(StringView path) const;
 	virtual bool Exists(StringView path) const = 0;
 	virtual int64_t GetFilesize(StringView path) const = 0;
 	virtual bool MakeDirectory(StringView dir, bool follow_symlinks) const;
+	virtual FilesystemView CreateFromNode(StringView path) const;
 	virtual bool IsFeatureSupported(Feature f) const;
 	virtual std::string Describe() const = 0;
 	/** @} */
@@ -371,6 +373,12 @@ public:
 
 	/**
 	 * @param path Path to check
+	 * @return True when path is pointing to a virtual filesystem
+	 */
+	bool IsFilesystemNode(StringView path) const;
+
+	/**
+	 * @param path Path to check
 	 * @return True when a file exists at the path
 	 */
 	bool Exists(StringView path) const;
@@ -462,6 +470,14 @@ public:
 	bool MakeDirectory(StringView dir, bool follow_symlinks) const;
 
 	/**
+	 * Create a filesystem view from the passed in path.
+	 * The path must point to a virtual filesystem entry (type Filesystem).
+	 * @param path Path to create filesystem from
+	 * @return view pointing at the new fs
+	 */
+	FilesystemView CreateFromNode(StringView path) const;
+
+	/**
 	 * @param f Filesystem feature to check
 	 * @return true when the feature is supported.
 	 */
@@ -474,6 +490,19 @@ public:
 	 * @return subtree rooted at sub_path
 	 */
 	FilesystemView Subtree(StringView sub_path) const;
+
+	/**
+	 * @return Whether it is possible to go up from the current view
+	 */
+	bool CanGoUp() const;
+
+	/**
+	 * From the current view goes up by one.
+	 * Returns an invalid view when going up is not possible (no parent).
+	 *
+	 * @return View that is rooted at the parent.
+	 */
+	FilesystemView GoUp() const;
 
 	/** @return human readable representation of this filesystem for debug purposes */
 	std::string Describe() const;

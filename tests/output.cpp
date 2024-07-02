@@ -7,7 +7,6 @@ TEST_SUITE_BEGIN("Output");
 
 TEST_CASE("Message Output") {
 	Graphics::Init();
-	Main_Data::Init();
 	Output::Debug("Test {}", "debg");
 	Output::Warning("Test {}", "test");
 	Output::Info("Test {}", "info");

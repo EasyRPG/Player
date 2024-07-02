@@ -41,9 +41,12 @@
 #include "system.h"
 #include "output.h"
 
-#ifndef _WIN32
+#ifdef _WIN32
+#  include <windows.h>
+#else
 #  include <unistd.h>
 #endif
+
 #if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
@@ -89,22 +92,31 @@ void Main_Data::Init() {
 			// Set to current directory
 			project_path = "";
 
-#if defined(PLAYER_AMIGA)
-			// Working directory not correctly handled
-			char working_dir[256];
-			getcwd(working_dir, 255);
-			project_path = std::string(working_dir);
-#elif defined(__APPLE__) && TARGET_OS_OSX
+#ifdef _WIN32
+			wchar_t working_dir[MAX_PATH];
+			if (GetCurrentDirectory(MAX_PATH, working_dir) != 0) {
+				project_path = Utils::FromWideString(working_dir);
+			}
+#else
+
+#  ifndef PATH_MAX
+#    define PATH_MAX 256
+#  endif
+			char working_dir[PATH_MAX];
+			if (getcwd(working_dir, sizeof(working_dir))) {
+				project_path = std::string(working_dir);
+			}
+
+#  if defined(__APPLE__) && TARGET_OS_OSX
 			// Apple Finder does not set the working directory
 			// It points to HOME instead. When it is HOME change it to
 			// the application directory instead
 
 			char* home = getenv("HOME");
-			char current_dir[PATH_MAX] = { 0 };
-			getcwd(current_dir, sizeof(current_dir));
-			if (strcmp(current_dir, "/") == 0 || strcmp(current_dir, home) == 0) {
+			if (strcmp(working_dir, "/") == 0 || strcmp(working_dir, home) == 0) {
 				project_path = MacOSUtils::GetBundleDir();
 			}
+#  endif
 #endif
 		}
 	}
