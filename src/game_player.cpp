@@ -148,6 +148,8 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 		data()->pan_finish_y = GetDefaultPanY();
 		data()->pan_current_x = GetDefaultPanX();
 		data()->pan_current_y = GetDefaultPanY();
+		maniac_pan_current_x = static_cast<double>(GetDefaultPanX());
+		maniac_pan_current_y = static_cast<double>(GetDefaultPanY());
 
 		ResetAnimation();
 
@@ -770,6 +772,8 @@ void Game_Player::UnlockPan() {
 }
 
 void Game_Player::StartPan(int direction, int distance, int speed) {
+	bool is_maniac = Player::IsPatchManiac();
+
 	distance *= SCREEN_TILE_SIZE;
 
 	if (direction == PanUp) {
@@ -786,20 +790,88 @@ void Game_Player::StartPan(int direction, int distance, int speed) {
 		data()->pan_finish_x = new_pan;
 	}
 
+	// Maniac uses separate horizontal/vertical pan doubles for everything
+	if (is_maniac) {
+		data()->maniac_horizontal_pan_speed = static_cast<double>(2 << speed);
+		data()->maniac_vertical_pan_speed = static_cast<double>(2 << speed);
+	}
 	data()->pan_speed = 2 << speed;
 }
 
+void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool centered, bool relative) {
+	const bool is_maniac = Player::IsPatchManiac();
+
+	if (!is_maniac) {
+		return;
+	}
+
+	h *= TILE_SIZE;
+	v *= TILE_SIZE;
+
+	int new_pan_x;
+	int new_pan_y;
+
+	double h_speed;
+	double v_speed;
+
+	int pan_current_x = data()->pan_current_x;
+	int pan_current_y = data()->pan_current_y;
+	maniac_pan_current_x = static_cast<double>(pan_current_x);
+	maniac_pan_current_y = static_cast<double>(pan_current_y);
+
+	if (relative) {
+		new_pan_x = data()->pan_finish_x - h;
+		new_pan_y = data()->pan_finish_y - v;
+	} else {
+		if (centered) {
+			new_pan_x = GetSpriteX() + GetDefaultPanX() - h;
+			new_pan_y = GetSpriteY() + GetDefaultPanY() - v;
+		} else {
+			new_pan_x = GetSpriteX() - h;
+			new_pan_y = GetSpriteY() - v;
+		}
+	}
+
+	if (speed == 0) {
+		// Instant pan if speed is zero
+		h_speed = std::abs((static_cast<double>(new_pan_x) - maniac_pan_current_x));
+		v_speed = std::abs((static_cast<double>(new_pan_y) - maniac_pan_current_y));
+	} else if (interpolated) {
+		// Interpolate distance by number of frames
+		h_speed = std::abs((static_cast<double>(new_pan_x) - maniac_pan_current_x)) / (speed + 1);
+		v_speed = std::abs((static_cast<double>(new_pan_y) - maniac_pan_current_y)) / (speed + 1);
+	} else {
+		// Multiply speed by 0.001
+		h_speed = std::max(static_cast<double>(speed * TILE_SIZE * 0.001), 1.0);
+		v_speed = std::max(static_cast<double>(speed * TILE_SIZE * 0.001), 1.0);
+	}
+
+	data()->pan_finish_x = new_pan_x;
+	data()->pan_finish_y = new_pan_y;
+	data()->maniac_horizontal_pan_speed = h_speed;
+	data()->maniac_vertical_pan_speed = v_speed;
+}
+
 void Game_Player::ResetPan(int speed) {
+	bool is_maniac = Player::IsPatchManiac();
 	data()->pan_finish_x = GetDefaultPanX();
 	data()->pan_finish_y = GetDefaultPanY();
+	// Maniac uses separate horizontal/vertical pan doubles for everything
+	if (is_maniac) {
+		data()->maniac_horizontal_pan_speed = static_cast<double>(2 << speed);
+		data()->maniac_vertical_pan_speed = static_cast<double>(2 << speed);
+	}
 	data()->pan_speed = 2 << speed;
 }
 
 int Game_Player::GetPanWait() {
+	bool is_maniac = Player::IsPatchManiac();
 	const auto distance = std::max(
 			std::abs(data()->pan_current_x - data()->pan_finish_x),
 			std::abs(data()->pan_current_y - data()->pan_finish_y));
-	const auto speed = data()->pan_speed;
+	const auto speed = !is_maniac ? data()->pan_speed : static_cast<int>(std::max(
+			std::abs(data()->maniac_horizontal_pan_speed),
+			std::abs(data()->maniac_vertical_pan_speed)));
 	assert(speed > 0);
 	return distance / speed + (distance % speed != 0);
 }
@@ -808,14 +880,38 @@ void Game_Player::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
+	bool is_maniac = Player::IsPatchManiac();
 	const int step = data()->pan_speed;
 	const int pan_remain_x = data()->pan_current_x - data()->pan_finish_x;
 	const int pan_remain_y = data()->pan_current_y - data()->pan_finish_y;
 
-	int dx = std::min(step, std::abs(pan_remain_x));
-	dx = pan_remain_x >= 0 ? dx : -dx;
-	int dy = std::min(step, std::abs(pan_remain_y));
-	dy = pan_remain_y >= 0 ? dy : -dy;
+	// Maniac
+	const double step_x = data()->maniac_horizontal_pan_speed;
+	const double step_y = data()->maniac_vertical_pan_speed;
+
+	int dx;
+	int dy;
+	if (is_maniac) {
+		// Maniac uses doubles for smoother screen scrolling
+		double ddx = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
+		double ddy = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
+
+		ddx = pan_remain_x >= 0 ? ddx : -ddx;
+		ddy = pan_remain_y >= 0 ? ddy : -ddy;
+
+		maniac_pan_current_x -= ddx;
+		maniac_pan_current_y -= ddy;
+
+		// Depending on the position decimal, floor or ceil the value.
+		dx = std::round(std::abs(maniac_pan_current_x)) == std::ceil(std::abs(maniac_pan_current_x)) ? static_cast<int>(std::floor(ddx)) : static_cast<int>(std::ceil(ddx));
+		dy = std::round(std::abs(maniac_pan_current_y)) == std::ceil(std::abs(maniac_pan_current_y)) ? static_cast<int>(std::floor(ddy)) : static_cast<int>(std::ceil(ddy));
+	} else {
+		dx = std::min(step, std::abs(pan_remain_x));
+		dy = std::min(step, std::abs(pan_remain_y));
+
+		dx = pan_remain_x >= 0 ? dx : -dx;
+		dy = pan_remain_y >= 0 ? dy : -dy;
+	}
 
 	int screen_x = Game_Map::GetPositionX();
 	int screen_y = Game_Map::GetPositionY();
