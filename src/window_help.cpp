@@ -54,7 +54,7 @@ void Window_Help::Clear() {
 }
 
 void Window_Help::AddText(std::string text, int color, Text::Alignment align, bool halfwidthspace) {
-	std::string::size_type pos = 0;
+	/*std::string::size_type pos = 0;
 	std::string::size_type nextpos = 0;
 	while (nextpos != std::string::npos) {
 		nextpos = text.find(' ', pos);
@@ -73,7 +73,10 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 			}
 			pos = nextpos + 1;
 		}
-	}
+	}*/
+
+	auto offset = contents->TextDraw(text_x_offset, 2, color, text, align);
+	text_x_offset += offset.x;
 }
 
 void Window_Help::SetAnimation(Window_Help::Animation animation) {

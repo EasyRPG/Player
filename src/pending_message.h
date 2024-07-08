@@ -17,6 +17,7 @@
 
 #ifndef EP_PENDING_MESSAGE_H
 #define EP_PENDING_MESSAGE_H
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -24,6 +25,7 @@
 #include <functional>
 #include <optional>
 #include "async_op.h"
+#include "text.h"
 
 class PendingMessage {
 	public:
@@ -44,6 +46,7 @@ class PendingMessage {
 		void SetChoiceContinuation(ChoiceContinuation f) { choice_continuation = std::move(f); }
 
 		const std::vector<std::string>& GetLines() const { return texts; }
+		const std::vector<std::vector<Text::Run>>& GetRuns() const { return runs; }
 
 		bool IsActive() const { return NumLines() || HasNumberInput(); }
 		int NumLines() const { return texts.size(); }
@@ -78,6 +81,7 @@ class PendingMessage {
 		CommandInserter command_inserter;
 		ChoiceContinuation choice_continuation;
 		std::vector<std::string> texts;
+		std::vector<std::vector<Text::Run>> runs;
 		int choice_start = -1;
 		int choice_cancel_type = 5;
 		int num_input_variable = 0;

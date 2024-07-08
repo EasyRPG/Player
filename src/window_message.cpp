@@ -133,7 +133,8 @@ Window_Message::~Window_Message() {
 }
 
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
-	text.clear();
+	text_runs.clear();
+	active_run = 0;
 	pending_message = std::move(pm);
 
 	if (!IsVisible()) {
@@ -145,27 +146,38 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		return;
 	}
 
-	const auto& lines = pending_message.GetLines();
+	//const auto& lines = pending_message.GetRuns();
+	const auto& lines = pending_message.GetRuns();
 
 	int num_lines = 0;
-	auto append = [&](const std::string& line) {
-		bool force_page_break = (!line.empty() && line.back() == '\f');
+	auto append = [&](const std::vector<Text::Run>& runs) {
+		text_runs.insert(text_runs.end(), runs.begin(), runs.end());
+
+		bool force_page_break = false;
+		/*bool force_page_break = (!line.empty() && line.back() == '\f');
 
 		text.append(line, 0, line.size() - force_page_break);
 		if (line.empty() || text.back() != '\n') {
 			text.push_back('\n');
 		}
+
+		//auto runs = Text::Bidi(line, Text::Direction::LTR);
+		*/
+
+		text_runs.push_back({"\n", Text::Direction::LTR});
+
 		++num_lines;
 
 		if (num_lines == GetMaxLinesPerPage() || force_page_break) {
-			text.push_back('\f');
+			text_runs.back().text += '\f';
+			//text.push_back('\f');
 			num_lines = 0;
 		}
 	};
 
-	if (pending_message.IsWordWrapped()) {
+	/*if (pending_message.IsWordWrapped()) {
 		for (const std::string& line : lines) {
-			/* TODO: don't take commands like \> \< into account when word-wrapping */
+			// TODO: don't take commands like \> \< into account when word-wrapping
 			Game_Message::WordWrap(
 					line,
 					width - 24,
@@ -174,21 +186,21 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 					}
 			);
 		}
-	} else {
-		for (const std::string& line : lines) {
-			append(line);
+	} else {*/
+		for (const auto& run : lines) {
+			append(run);
 		}
-	}
+	//}
 
-	if (text.empty() || text.back() != '\f') {
-		text.push_back('\f');
+	if (text_runs.empty() || text_runs.back().text.back() != '\f') {
+		text_runs.back().text += '\f';
 	}
 
 	item_max = min(4, pending_message.GetNumChoices());
 
-	text_index = text.data();
+	text_index = text_runs[active_run].text.data();
 
-	DebugLog("{}: MSG TEXT \n{}", text);
+	//DebugLog("{}: MSG TEXT \n{}", text_runs[active_run].text);
 
 	disallow_next_message = true;
 	msg_was_pushed_this_frame = true;
@@ -336,10 +348,10 @@ void Window_Message::InsertNewPage() {
 		ShowGoldWindow();
 	} else {
 		// If first character is gold, the gold window appears immediately and animates open with the main window.
-		auto tret = Utils::TextNext(text_index, (text.data() + text.size()), Player::escape_char);
+		/*auto tret = Utils::TextNext(text_index, (text.data() + text.size()), Player::escape_char);
 		if (tret && tret.is_escape && tret.ch == '$') {
 			ShowGoldWindow();
-		}
+		}*/
 	}
 }
 
@@ -374,8 +386,8 @@ void Window_Message::InsertNewLine() {
 
 void Window_Message::FinishMessageProcessing() {
 	DebugLog("{}: FINISH MSG");
-	text.clear();
-	text_index = text.data();
+	text_runs.clear();
+	text_index = nullptr;
 
 	SetPause(false);
 	kill_page = false;
@@ -434,11 +446,12 @@ void Window_Message::Update() {
 			disallow_next_message = true;
 			return;
 		}
-		if (!text.empty() && text_index == text.data()) {
+
+		if (!text_runs.empty() && text_index == text_runs[active_run].text.data()) {
 			auto open_frames = (!IsVisible() && !Game_Battle::IsBattleRunning()) ? message_animation_frames : 0;
 			SetOpenAnimation(open_frames);
 			DebugLog("{}: MSG START OPEN {}", open_frames);
-			
+
 			InsertNewPage();
 		}
 		return;
@@ -495,7 +508,10 @@ void Window_Message::UpdateMessage() {
 	auto system = Cache::SystemOrBlack();
 
 	while (true) {
-		const auto* end = text.data() + text.size();
+		const auto& run = text_runs[active_run];
+		const auto* end = run.text.data() + run.text.size();
+
+		Output::Debug("Run {} {} {}", run.text, (int)(text_index - run.text.data()), (int)run.direction);
 
 		if (wait_count > 0) {
 			DebugLog("{}: MSG WAIT LOOP {}", wait_count);
@@ -517,6 +533,12 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (text_index == end) {
+			++active_run;
+			if (active_run < (int)text_runs.size()) {
+				text_index = text_runs[active_run].text.data();
+				continue;
+			}
+
 			FinishMessageProcessing();
 			break;
 		}
@@ -682,15 +704,20 @@ void Window_Message::UpdateMessage() {
 				text_index_shape = tret.next;
 				auto chs = tret.ch;
 
-				if (text_index_shape == end || tret.is_exfont || tret.is_escape || Utils::IsControlCharacter(chs)) {
+				if (tret.is_exfont || tret.is_escape || Utils::IsControlCharacter(chs)) {
 					text_index = text_prev_shape;
 					break;
 				}
 
 				text32 += tret.ch;
+
+				if (text_index_shape == end) {
+					text_index = text_prev_shape;
+					break;
+				}
 			}
 
-			shape_ret = page_font->Shape(text32);
+			shape_ret = page_font->Shape(text32, text_runs[active_run].direction);
 			continue;
 		} else {
 			if (!DrawGlyph(*page_font, *system, ch, false)) {
@@ -869,13 +896,14 @@ void Window_Message::SetWaitForNonPrintable(int frames) {
 void Window_Message::SetWaitForCharacter(int width) {
 	int frames = 0;
 	if (!instant_speed && width > 0) {
-		bool is_last_for_page;
+		/*bool is_last_for_page;
 		if (!shape_ret.empty()) {
 			is_last_for_page = (shape_ret.size() == 1) && (
 				(text.data() + text.size() - text_index) <= 1 || (*text_index == '\n' && *(text_index + 1) == '\f'));
 		} else {
 			is_last_for_page = (text.data() + text.size() - text_index) <= 1 || (*text_index == '\n' && *(text_index + 1) == '\f');
-		}
+		}*/
+		bool is_last_for_page = false;
 
 		if (is_last_for_page) {
 			// RPG_RT always waits 2 frames for last character on the page.

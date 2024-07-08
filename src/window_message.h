@@ -150,9 +150,11 @@ protected:
 	/** Maximum number of lines per page */
 	int max_lines_per_page = 4;
 	/** Index of the next char in text that will be output. */
+	int active_run = 0;
 	const char* text_index = nullptr;
 	/** text message that will be displayed. */
-	std::string text;
+	std::vector<Text::Run> text_runs;
+	//std::string text;
 	/** Text color. */
 	int text_color = 0;
 	/** Current speed modifier. */

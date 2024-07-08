@@ -26,6 +26,7 @@
 #include "system.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "text.h"
 
 #ifdef HAVE_FREETYPE
 #ifndef __PS4__
@@ -157,7 +158,7 @@ namespace {
 		GlyphRet vRenderShaped(char32_t glyph) const override;
 		bool vCanShape() const override;
 #ifdef HAVE_HARFBUZZ
-		std::vector<ShapeRet> vShape(std::u32string_view txt) const override;
+		std::vector<ShapeRet> vShape(std::u32string_view txt, Text::Direction direction) const override;
 #endif
 		void vApplyStyle(const Style& style) override;
 
@@ -506,11 +507,12 @@ bool FTFont::vCanShape() const {
 }
 
 #ifdef HAVE_HARFBUZZ
-std::vector<Font::ShapeRet> FTFont::vShape(std::u32string_view txt) const {
+std::vector<Font::ShapeRet> FTFont::vShape(std::u32string_view txt, Text::Direction direction) const {
 	hb_buffer_clear_contents(hb_buffer);
 
 	hb_buffer_add_utf32(hb_buffer, reinterpret_cast<const uint32_t*>(txt.data()), txt.size(), 0, txt.size());
 	hb_buffer_guess_segment_properties(hb_buffer);
+	hb_buffer_set_direction(hb_buffer, direction == Text::Direction::LTR ? HB_DIRECTION_LTR : HB_DIRECTION_RTL);
 
 	hb_shape(hb_font, hb_buffer, nullptr, 0);
 
@@ -899,10 +901,10 @@ bool Font::CanShape() const {
 	return vCanShape();
 }
 
-std::vector<Font::ShapeRet> Font::Shape(std::u32string_view text) const {
+std::vector<Font::ShapeRet> Font::Shape(std::u32string_view text, Text::Direction direction) const {
 	assert(vCanShape());
 
-	return vShape(text);
+	return vShape(text, direction);
 }
 
 void Font::SetFallbackFont(FontRef fallback_font) {

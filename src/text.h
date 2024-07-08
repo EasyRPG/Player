@@ -40,6 +40,17 @@ namespace Text {
 		AlignRight
 	};
 
+	enum Direction {
+		// Enum values equal to UBiDiDirection
+		LTR,
+		RTL
+	};
+
+	struct Run {
+		std::string text;
+		Direction direction;
+	};
+
 	/**
 	 * Draws the text onto dest bitmap with given parameters.
 	 *
@@ -86,7 +97,6 @@ namespace Text {
 	 */
 	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont);
 
-
 	/**
 	 * Draws the character onto dest bitmap with given parameters. Does not draw a shadow.
 	 *
@@ -126,5 +136,7 @@ namespace Text {
 	 * @return Rect describing the rendered string boundary
 	 */
 	Rect GetSize(const Font& font, char32_t glyph, bool is_exfont);
+
+	std::vector<Run> Bidi(std::string_view text, Direction text_direction);
 }
 #endif
