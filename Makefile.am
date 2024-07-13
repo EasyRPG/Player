@@ -14,6 +14,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/async_op.h \
 	src/algo.h \
 	src/algo.cpp \
+	src/animation_helper.cpp \
+	src/animation_helper.h \
 	src/attribute.h \
 	src/attribute.cpp \
 	src/audio.cpp \
