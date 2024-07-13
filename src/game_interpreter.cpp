@@ -44,6 +44,7 @@
 #include "game_screen.h"
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
+#include "json_helper.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
@@ -835,6 +836,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
+		case static_cast<Game_Interpreter::Cmd>(2055): //EasyRPG_ProcessJson
+			return CommandProcessJson(com);
 		default:
 			return true;
 	}
@@ -5141,8 +5144,86 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
+	
+	return true;
+}
+bool Game_Interpreter::CommandProcessJson(lcf::rpg::EventCommand const& com) {
+
+#ifndef HAVE_NLOHMANN_JSON
+	Output::Warning("CommandProcessJson: JSON not supported on this platform");
+	return true;
+#else
+
+	if (!Player::IsPatchManiac()) {
+		Output::Warning("CommandProcessJson: This command needs Maniac Patch support");
+		return true;
+	}
+
+	int operation = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int source_var_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int target_var_type = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
+	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
+	std::string json_data = ToString(Main_Data::game_strings->Get(source_var_id));
+
+	std::string result;
+
+	if (operation == 0) { // Get operation: Extract a value from JSON data
+		result = Json_Helper::GetValue(json_data, json_path);
+
+		if (result != "<<INVALID_OUTPUT>>") {
+			int output_value = 0;
+
+			std::istringstream iss(result);
+			int temp;
+			if (iss >> temp) {
+				output_value = temp;
+			}
+			else {
+				output_value = 0;
+			}
+
+			switch (target_var_type) {
+			case 0: // Switch
+				Main_Data::game_switches->Set({ target_var_id }, output_value);
+				break;
+			case 1: // Variable
+				Main_Data::game_variables->Set({ target_var_id }, output_value);
+				break;
+			default: // String
+				Main_Data::game_strings->Asg({ target_var_id }, result);
+				break;
+			}
+		}
+	}
+	else if (operation == 1) { // Set operation: Update JSON data with a new value
+		std::string new_value;
+
+		switch (target_var_type) {
+		case 0: // Switch
+			new_value = std::to_string(Main_Data::game_switches->Get(target_var_id));
+			break;
+		case 1: // Variable
+			new_value = std::to_string(Main_Data::game_variables->Get(target_var_id));
+			break;
+		default: // String
+			new_value = ToString(Main_Data::game_strings->Get(target_var_id));
+			break;
+		}
+
+		result = Json_Helper::SetValue(json_data, json_path, new_value);
+
+		if (result != "<<INVALID_OUTPUT>>") {
+			Main_Data::game_strings->Asg({ source_var_id }, result);
+		}
+	}
+	else {
+		Output::Warning("Process JSON - Invalid Operation: {}", operation);
+	}
 
 	return true;
+
+#endif // !HAVE_NLOHMANN_JSON
 }
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {

@@ -233,6 +233,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/input_source.h
 	src/instrumentation.cpp
 	src/instrumentation.h
+	src/json_helper.cpp
+	src/json_helper.h
 	src/keys.h
 	src/main_data.cpp
 	src/main_data.h
