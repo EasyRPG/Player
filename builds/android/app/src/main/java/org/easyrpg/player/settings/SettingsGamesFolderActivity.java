@@ -8,12 +8,14 @@ import android.provider.DocumentsContract;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
+import org.libsdl.app.SDL;
 
 public class SettingsGamesFolderActivity extends AppCompatActivity {
     private GameBrowserHelper.SafError safError = GameBrowserHelper.SafError.OK;
@@ -22,6 +24,7 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_easyrpg_folders);
+        SDL.setContext(getApplicationContext());
 
         safError = GameBrowserHelper.SafError.OK;
 
@@ -78,6 +81,8 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GameBrowserHelper.VIDEO_URL));
             startActivity(browserIntent);
         });
+
+        DetectRtp();
     }
 
     @Override
@@ -87,6 +92,8 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
         if (safError != GameBrowserHelper.SafError.OK && safError != GameBrowserHelper.SafError.ABORTED) {
             GameBrowserHelper.showErrorMessage(this, safError);
             safError = GameBrowserHelper.SafError.OK;
+        } else {
+            DetectRtp();
         }
     }
 
@@ -110,4 +117,52 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
         intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
     }
+
+    private void DetectRtp() {
+        Uri rtpUri = SettingsManager.getRTPFolderURI(this);
+        if (rtpUri == null) {
+            return;
+        }
+
+        RtpHitInfo hitInfo = new RtpHitInfo();
+        DetectRtp(rtpUri + "/2000", hitInfo, 2000);
+
+        TextView res = findViewById(R.id.settings_rtp_2000_result);
+        String rtpText;
+        if (hitInfo.version == 2000) {
+            rtpText = getApplicationContext().getResources().getString(R.string.rtp_found);
+            rtpText = rtpText.replace("$YEAR", "2000")
+                .replace("$NAME", hitInfo.name)
+                .replace("$FOUND", Integer.toString(hitInfo.hits))
+                .replace("$MAX", Integer.toString(hitInfo.max));
+        } else {
+            rtpText = getApplicationContext().getResources().getString(R.string.rtp_not_found);
+            rtpText = rtpText.replace("$YEAR", "2000");
+        }
+        res.setText(rtpText);
+
+        DetectRtp(rtpUri + "/2003", hitInfo, 2003);
+
+        res = findViewById(R.id.settings_rtp_2003_result);
+        if (hitInfo.version == 2003) {
+            rtpText = getApplicationContext().getResources().getString(R.string.rtp_found);
+            rtpText = rtpText.replace("$YEAR", "2003")
+                .replace("$NAME", hitInfo.name)
+                .replace("$FOUND", Integer.toString(hitInfo.hits))
+                .replace("$MAX", Integer.toString(hitInfo.max));
+        } else {
+            rtpText = getApplicationContext().getResources().getString(R.string.rtp_not_found);
+            rtpText = rtpText.replace("$YEAR", "2003");
+        }
+        res.setText(rtpText);
+    }
+
+    public static class RtpHitInfo {
+        String name;
+        int version = 0;
+        int hits = 0;
+        int max = 0;
+    };
+
+    private native void DetectRtp(String path, RtpHitInfo hitInfo, int version);
 }

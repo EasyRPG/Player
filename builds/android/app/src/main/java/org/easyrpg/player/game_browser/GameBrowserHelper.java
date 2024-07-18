@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -50,74 +49,62 @@ public class GameBrowserHelper {
     public static void launchGame(Context context, Game game, boolean debugMode) {
         String path = game.getGameFolderPath();
 
-        // Test again in case somebody messed with the file system
-        boolean valid = game.isStandalone() ||
-            (game.isZipArchive() && game.getGameFolder().canRead()) ||
-            (game.getGameFolder().isDirectory() && game.getGameFolder().canRead());
+        Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
+        ArrayList<String> args = new ArrayList<>();
 
-        if (valid) {
-            Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
-            ArrayList<String> args = new ArrayList<>();
+        // Command line passed via intent "command_line"
+        args.add("--project-path");
+        args.add(path);
 
-            // Command line passed via intent "command_line"
-            String savePath;
+        String savePath = path;
+        if (!game.getSavePath().isEmpty()) {
+            DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
 
-            if (game.isZipArchive()) {
-                // Create the redirected save folder
-                DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
-
-                args.add("--project-path");
-                args.add(path + "/" + game.getZipInnerPath());
-
-                // In error case the native code will try to put a save folder next to the zip
-                if (saveFolder != null) {
-                    savePath = saveFolder.getUri().toString();
-                    args.add("--save-path");
-                    args.add(savePath);
-                } else {
-                    savePath = path;
-                }
-            } else {
-                args.add("--project-path");
-                args.add(path);
-
-                savePath = game.getSavePath();
+            // In error case the native code will try to put a save folder next to the zip
+            if (saveFolder != null) {
+                savePath = saveFolder.getUri().toString();
                 args.add("--save-path");
                 args.add(savePath);
             }
-
-            Encoding enc = game.getEncoding();
-            if (enc.getIndex() > 0) {
-                // 0 = Auto, in that case let the Player figure it out
-                args.add("--encoding");
-                args.add(enc.getRegionCode());
-            }
-
-            args.add("--config-path");
-            args.add(context.getExternalFilesDir(null).getAbsolutePath());
-
-            // Soundfont
-            Uri soundfontUri = SettingsManager.getSoundFountFileURI(context);
-            if (soundfontUri != null) {
-                args.add("--soundfont");
-                args.add(soundfontUri.toString());
-            }
-
-            if (debugMode) {
-                args.add("--test-play");
-            }
-
-            intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
-            intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
-            intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
-
-            Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args);
-            Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));
-            context.startActivity(intent);
-        } else {
-            String msg = context.getString(R.string.not_valid_game).replace("$PATH", game.getTitle());
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         }
+
+        Encoding enc = game.getEncoding();
+        if (enc.getIndex() > 0) {
+            // 0 = Auto, in that case let the Player figure it out
+            args.add("--encoding");
+            args.add(enc.getRegionCode());
+        }
+
+        args.add("--config-path");
+        args.add(context.getExternalFilesDir(null).getAbsolutePath());
+
+        /* FIXME: Currently disabled because the built-in scene cannot handle URI-encoded paths
+        // Sound Font Folder path (used by the settings scene)
+        Uri soundFontFolderUri = SettingsManager.getSoundFontsFolderURI(context);
+        if (soundFontFolderUri != null) {
+            args.add("--soundfont-path");
+            args.add(soundFontFolderUri.toString());
+        }
+
+        // Font Folder path (used by the settings scene)
+        Uri fontFolderUri = SettingsManager.getFontsFolderURI(context);
+        if (fontFolderUri != null) {
+            args.add("--font-path");
+            args.add(fontFolderUri.toString());
+        }
+        */
+
+        if (debugMode) {
+            args.add("--test-play");
+        }
+
+        intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
+        intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
+        intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
+
+        Log.i("EasyRPG", "Start EasyRPG Player with following arguments : " + args);
+        Log.i("EasyRPG", "The RTP folder is : " + SettingsManager.getRTPFolderURI(context));
+        context.startActivity(intent);
     }
 
     public static void openSettingsActivity(Context context) {
@@ -199,7 +186,7 @@ public class GameBrowserHelper {
                 return SafError.BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND;
             }
 
-            List<String[]> items = Helper.listChildrenDocumentIDAndType(activity, folder.getUri());
+            List<String[]> items = Helper.listChildrenDocuments(activity, folder.getUri());
             int item_count = 0;
             for (String[] item: items) {
                 if (item[0] == null || Helper.isDirectoryFromMimeType(item[1]) || item[0].endsWith(".nomedia")) {
@@ -242,31 +229,31 @@ public class GameBrowserHelper {
                 break;
             case BAD_CONTENT_PROVIDER_CREATE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_create);
+                errorMsg += "File creation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_READ:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_read);
+                errorMsg += "Read operation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_WRITE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_write);
+                errorMsg += "Write operation failed.";
                 break;
             case BAD_CONTENT_PROVIDER_DELETE:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_delete);
+                errorMsg += "File deletion failed.";
                 break;
             case BAD_CONTENT_PROVIDER_FILENAME_IGNORED:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_filename_ignored);
+                errorMsg += "Provided filename ignored.";
                 break;
             case BAD_CONTENT_PROVIDER_BASE_FOLDER_NOT_FOUND:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_base_folder_not_found);
+                errorMsg += "Selected folder not found.";
                 break;
             case BAD_CONTENT_PROVIDER_FILE_ACCESS:
                 errorMsg = context.getString(R.string.error_saf_bad_content_provider);
-                errorMsg += context.getString(R.string.error_saf_bad_content_provider_file_access);
+                errorMsg += "A file was successfully created but cannot be accessed.";
                 break;
             case FOLDER_NOT_ALMOST_EMPTY:
                 errorMsg = context.getString(R.string.error_saf_folder_not_empty);

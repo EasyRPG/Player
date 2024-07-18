@@ -108,7 +108,6 @@
 \n- Может быть предоставлен RTP (общие активы, используемые некоторыми играми).
 \n- Пользовательский звуковой шрифт для изменения того, как могут быть предоставлены звуки MIDI-музыки.</string>
     <string name="settings_soundfont_explanation">Поместите звуковые шрифты в формате SF2 в папку «soundfonts». Soundfonts изменяют звучание MIDI-музыки.</string>
-    <string name="settings_soundfont_restart_app">Пожалуйста, закройте и перезапустите приложение после выбора soundfont.</string>
     <string name="settings_default_soundfont">Обычный soundfount</string>
     <string name="select_the_games_folder">Выберите папку EasyRPG</string>
     <string name="id_select_games_folder_explanation">Для EasyRPG Player требуется отдельная папка. После нажатия на кнопку вам будет предложено выбрать папку.
@@ -121,7 +120,7 @@
     <string name="rtp_explanation">RTP предоставляет общие активы, используемые некоторыми играми.
 \nПоместите RPG Maker 2000 RTP в «rtp/2000», а RPG Maker 2003 RTP в «rtp/2003».
 \nОбратите внимание, что включение поддержки RTP значительно увеличит время загрузки игры.</string>
-    <string name="open_rtp_folder">Откройте папку RTP</string>
+    <string name="open_rtp_folder">Откройте папку \"rtp\"</string>
     <string name="horizontal_input_layout">Горизонтальный (альбомный) интерфейс ввода</string>
     <string name="vertical_input_layout">Вертикальный (книжный) интерфейс ввода</string>
     <string name="scale_nearest">Масштабирование до размера экрана с использованием ближайших пикселей (быстро, плохое качество)</string>

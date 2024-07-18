@@ -41,7 +41,8 @@ namespace {
 }
 
 void Game_ConfigPlayer::Hide() {
-#ifndef HAVE_FREETYPE
+#if !defined(HAVE_FREETYPE) || defined(__ANDROID__)
+	// FIXME (Android): URI encoded SAF paths are not supported
 	font1.SetOptionVisible(false);
 	font1_size.SetOptionVisible(false);
 	font2.SetOptionVisible(false);

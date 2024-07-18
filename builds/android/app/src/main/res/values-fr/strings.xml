@@ -82,13 +82,13 @@
     <string name="no_games_found_and_explanation_android_30">Aucun jeu RPG Maker 2000/2003 n\'a été trouvé.
 \n
 \nLe dossier EasyRPG que vous avez sélectionné contient un dossier pour les jeux (games). Utiliser une application de gestionnaire de fichiers pour mettre vos jeux dans ce dossier.
-\nLes jeux peuvent être placés dans des sous-répertoires ou dans des archives ZIP.
+\nLes jeux peuvent être placés dans des sous-répertoires ou dans des archives ZIP/LZH.
 \n
 \nLe dossier d\'EasyRPG peut être changé dans les paramètres.</string>
     <string name="open_games_folder">Ouvrir le dossier « games »</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Mettez vos jeux RPG Maker 2000/2003 dans les sous-répertoires du dossier « games ».
-\nLes jeux doivent être décompressés ou dans une archive ZIP.
-\nLes fichiers RAR, LZH et EXE ne sont PAS supportés.
+\nLes jeux doivent être décompressés ou dans une archive ZIP/LZH.
+\nLes fichiers RAR, 7z et EXE ne sont PAS supportés.
 \n
 \nFonctionnalités optionnelles (Veuillez vous référer aux paramètres) :
 \n- Le RTP (ressources partagées utilisées par certains jeux) peut être fourni
@@ -96,10 +96,9 @@
     <string name="easyrpg_folders">Dossiers EasyRPG</string>
     <string name="screen_size">Agrandissement de l\'écran :</string>
     <string name="settings_custom_soundfont">Soundfont personnalisé :</string>
-    <string name="open_the_sound_fonts_folder">Ouvrir le dossier des soundfonts</string>
+    <string name="open_the_sound_fonts_folder">Ouvrir le dossier \"soundfonts\"</string>
     <string name="settings_soundfont_explanation">Mettez vos soundfonts au format SF2 dans le dossier « soundfonts ». Les soundfonts altèrent comment sonnent les musiques MIDI.</string>
-    <string name="settings_soundfont_restart_app">Veuillez quitter et redémarrer l\'application après avoir sélectionné un soundfont.</string>
-    <string name="settings_soundfont_found">Soundfonts trouvés :</string>
+    <string name="settings_soundfont_found">Soundfonts :</string>
     <string name="settings_default_soundfont">Soundfont par défaut</string>
     <string name="select_the_games_folder">Choisir le dossier d\'EasyRPG</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player a besoin d\'un dossier dédié. Après avoir appuyé sur le bouton, vous serez demandé de sélectionner un dossier.
@@ -112,7 +111,7 @@
     <string name="rtp_explanation">Le RTP donne accès à certaines ressources partagées utilisées par certains jeux.
 \nMettez le RTP de RPG Maker 2000 dans « rtp/2000 » et le RTP de RPG Maker 2003 dans « rtp/2003 ».
 \nVeuillez noter qu\'activer le support du RTP va significativement augmenter le temps de chargement initial d\'un jeu.</string>
-    <string name="open_rtp_folder">Ouvrir le dossier du RTP</string>
+    <string name="open_rtp_folder">Ouvrir le dossier \"rtp\"</string>
     <string name="horizontal_input_layout">Agencement horizontal (paysage) des contrôles</string>
     <string name="vertical_input_layout">Agencement vertical (portrait) des contrôles</string>
     <string name="settings_edit_layout_explanation">Lorsque vous éditez un agencement des boutons, des boutons peuvent être ajoutés (ex. un bouton Maj).

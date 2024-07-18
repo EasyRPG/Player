@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_soundfont_restart_app">Sluit de app af en start deze opnieuw nadat u een soundfont heeft geselecteerd.</string>
     <string name="baltic">Baltisch</string>
     <string name="settings_resolution_widescreen">Breedbeeld (416x240, 16:9, Experimenteel)</string>
     <string name="choose_layout">Kies een lay-out</string>
     <string name="error_saf_folder_not_empty">De geselecteerde folder bevat andere bestanden en kan niet worden gebruikt als de EasyRPG-folder. Wanneer u alle bestanden in de folder verwijdert, kunt u deze gebruiken als de EasyRPG-folder.</string>
     <string name="exit_without_saving">Afsluiten zonder op te slaan</string>
-    <string name="open_the_sound_fonts_folder">Op de soundfonts-folder</string>
+    <string name="open_the_sound_fonts_folder">Op de \"soundfonts\"-folder</string>
     <string name="vibrate_when_sliding_direction">Trillen tijdens het glijden naar een andere richting</string>
     <string name="error_saf_bad_content_provider">De geselecteerde folder kan niet worden gebruikt als de EasyRPG-folder. Dit probleem kan verschillende oorzaken hebben, bijvoorbeeld als u de hoofdfolder of een opslaglocatie in de cloud heeft geselecteerd.
 \n
@@ -21,7 +20,7 @@
 \n- De RTP (gedeelde middelen die door sommige spellen worden gebruikt) kan worden verstrekt
 \n- Een aangepast soundfont om te wijzigen hoe MIDI-muziekgeluiden kunnen worden verstrekt</string>
     <string name="no_external_storage">Geen externe opslag (bv. SD-kaart) gevonden</string>
-    <string name="settings_soundfont_found">Soundfonts gevonden:</string>
+    <string name="settings_soundfont_found">Soundfonts:</string>
     <string name="visit_website">Bezoek onze website</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player vereist een speciale folder. Nadat u de knop heeft aangeraakt, wordt u gevraagd een folder te selecteren.
 \n
@@ -29,7 +28,7 @@
 \n
 \nAls u deze app eerder gebruikt heeft, selecteer dan de bestaande EasyRPG-folder.</string>
     <string name="add_a_button">Knop toevoegen</string>
-    <string name="open_rtp_folder">Open de RTP-folder</string>
+    <string name="open_rtp_folder">Open de \"rtp\"-folder</string>
     <string name="edit_layout">Lay-out bewerken</string>
     <string name="manage_input_layouts">Invoerlay-outs beheren:</string>
     <string name="no_read_access_on_dir">Geen leestoegang op %1$s</string>

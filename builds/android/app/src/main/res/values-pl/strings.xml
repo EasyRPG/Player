@@ -84,11 +84,11 @@
     <string name="navigation_drawer_close">Zamknij menu nawigacji</string>
     <string name="menu">Otwórz menu Androida</string>
     <string name="no_games_found_and_explanation_android_30">Nie znaleziono gier RPG Maker 2000/2003. Umieść je w podkatalogach folderu gier.
-\nGry mogą być w osobnych katalogach lub w archiwach ZIP. Folder EasyRPG można zmienić w ustawieniach.</string>
+\nGry mogą być w osobnych katalogach lub w archiwach ZIP/LZH. Folder EasyRPG można zmienić w ustawieniach.</string>
     <string name="open_games_folder">Otwórz folder gier</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Umieść swoje gry RPG Maker 2000/2003 w podkatalogach folderu gier.
-\nGry muszą być nieskompresowane bądź spakowane w archiwum ZIP.
-\nPliki RAR, LZH i EXE NIE są obsługiwane.
+\nGry muszą być nieskompresowane bądź spakowane w archiwum ZIP/LZH.
+\nPliki RAR, 7t i EXE NIE są obsługiwane.
 \n
 \nFunkcje opcjonalne (zapoznaj się z ustawieniami):
 \n- RTP (współdzielone zasoby używane przez niektóre gry) mogą być dostarczone
@@ -98,7 +98,6 @@
     <string name="settings_custom_soundfont">Niestandardowa czcionka dźwiękowa:</string>
     <string name="open_the_sound_fonts_folder">Otwórz folder Czcionek dźwięków</string>
     <string name="settings_soundfont_explanation">Umieść czcionki dźwiękowe w formacie SF2 w folderze \"soundfonts\". Czcionki dźwiękowe zmieniają brzmienie muzyki MIDI.</string>
-    <string name="settings_soundfont_restart_app">Zamknij i uruchom ponownie aplikację po wybraniu czcionki dźwiękowej.</string>
     <string name="settings_soundfont_found">Znaleziono czcionki dźwiękowe:</string>
     <string name="settings_default_soundfont">Domyślna czcionka dźwiękowa</string>
     <string name="select_the_games_folder">Wybierz folder EasyRPG</string>
@@ -112,7 +111,7 @@
     <string name="rtp_explanation">RTP zapewnia wspólne zasoby używane przez niektóre gry.
 \nUmieść RPG Maker 2000 RTP w \"rtp/2000\" i RPG Maker 2003 RTP w \"rtp/2003\".
 \nNależy pamiętać, że włączenie obsługi RTP znacznie wydłuży początkowy czas ładowania gry.</string>
-    <string name="open_rtp_folder">Otwórz folder RTP</string>
+    <string name="open_rtp_folder">Otwórz folder \"rtp\"</string>
     <string name="horizontal_input_layout">Poziomy układ wejściowy</string>
     <string name="vertical_input_layout">pionowy Układ wejściowy</string>
     <string name="settings_edit_layout_explanation">Podczas edycji układu sterowania można dodać przyciski (np. przycisk Shift).

@@ -35,6 +35,7 @@
 #include "system.h"
 #include "options.h"
 #include "utils.h"
+#include "directory_tree.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "filesystem.h"
@@ -530,4 +531,33 @@ void FileFinder::DumpFilesystem(FilesystemView fs) {
 		Output::Debug("{}: {}", i++, cur_fs.Describe());
 		cur_fs = cur_fs.GetOwner().GetParent();
 	}
+}
+
+std::vector<FilesystemView> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
+	std::vector<FilesystemView> games;
+
+	std::function<void(FilesystemView, int)> find_recursive = [&](FilesystemView subfs, int rec_limit) -> void {
+		if (!subfs || rec_limit == 0 || games.size() >= game_limit) {
+			return;
+		}
+
+		if (IsValidProject(subfs)) {
+			games.push_back(subfs);
+			return;
+		}
+
+		auto entries = subfs.ListDirectory();
+
+		for (auto& [name_lower, entry]: *entries) {
+			if (entry.type == DirectoryTree::FileType::Directory) {
+				find_recursive(subfs.Subtree(entry.name), rec_limit - 1);
+			} else if (entry.type == DirectoryTree::FileType::Regular && IsSupportedArchiveExtension(entry.name)) {
+				find_recursive(fs.Create(entry.name), rec_limit - 1);
+			}
+		}
+	};
+
+	find_recursive(fs, recursion_limit);
+
+	return games;
 }

@@ -20,24 +20,27 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="do_want_quit">Do you really want to quit?</string>
+    <string name="do_want_reset">Do you really want to reset?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="revert">Revert</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
-    <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found.\n\nThe EasyRPG folder you selected contains a \"games\" folder. Use a file manager app to put your games in this folder.\nGames can be put in subfolders or in ZIP archives.\n\nThe EasyRPG folder can be changed in the settings.</string>
+    <string name="no_games_found_and_explanation_android_30">No RPG Maker 2000/2003 games found.\n\nThe EasyRPG folder you selected contains a \"games\" folder. Use a file manager app to put your games in this folder.\nGames can be put in subfolders or in ZIP/LZH archives.\n\nThe EasyRPG folder can be changed in the settings.</string>
     <string name="open_games_folder">Open the \"games\" folder</string>
     <string name="no_external_storage">No external storage (e.g. SD card) found</string>
     <string name="not_valid_game">$PATH is not a valid game</string>
     <string name="select_game_region">Select game region</string>
     <string name="change_the_layout">Change the layout</string>
     <string name="launch_debug_mode">Launch in debug mode</string>
+    <string name="game_rename">Rename game</string>
     <string name="choose_layout">Choose a layout</string>
     <string name="unknown_region">Unknown region</string>
     <string name="region_modification_failed">Changing region failed</string>
     <string name="refresh">Refresh</string>
     <string name="change_default_mapping">Change the default button mapping</string>
     <string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the \"games\" folder.\nGames have to be uncompressed or in a ZIP archive.\nRAR, LZH and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Put your RPG Maker 2000/2003 games in subdirectories of the \"games\" folder.\nGames have to be uncompressed or in a ZIP/LZH archive.\nRAR, 7z and EXE files are NOT supported.\n\nOptional features (Please refer to the settings):\n- The RTP (shared assets used by some games) can be provided\n- A custom soundfont to alter how MIDI music sounds can be provided</string>
     <string name="visit_website">Visit our website</string>
     <string name="watch_explanation_video">Getting started and adding games (Video Guide)</string>
     <string name="error_no_games_folder">The \"games\" folder does not exist or is not a folder. Please create it manually or select a different location for the EasyRPG folder. The EasyRPG folder can be changed in the settings.</string>
@@ -47,16 +50,11 @@
     <string name="error_saf_download_selected">The Download folder cannot be used as the EasyRPG folder.</string>
     <string name="error_saf_folder_not_empty">The selected folder contains other files and cannot be used as the EasyRPG folder. When you remove all files inside the folder you can use it as the EasyRPG folder.</string>
     <string name="error_saf_bad_content_provider">The selected folder cannot be used as the EasyRPG folder. This problem can occur for various reasons, for example if you have selected the root directory or a storage location in the cloud.\n\n</string>
-    <string name="error_saf_bad_content_provider_create" translatable="false">File creation failed.</string>
-    <string name="error_saf_bad_content_provider_read" translatable="false">Read operation failed.</string>
-    <string name="error_saf_bad_content_provider_write" translatable="false">Write operation failed.</string>
-    <string name="error_saf_bad_content_provider_delete" translatable="false">File deletion failed.</string>
-    <string name="error_saf_bad_content_provider_filename_ignored" translatable="false">Provided filename ignored.</string>
-    <string name="error_saf_bad_content_provider_base_folder_not_found" translatable="false">Selected folder not found.</string>
-    <string name="error_saf_bad_content_provider_file_access" translatable="false">A file was successfully created but cannot be accessed.</string>
 
     <!--Ingame menu-->
     <string name="toggle_ui">Toggle virtual buttons</string>
+    <string name="toggle_fps">Toggle FPS display</string>
+    <string name="reset_game">Reset game</string>
     <string name="end_game">End game</string>
     <string name="report_bug">Report a bug</string>
     <string name="report_bug_msg">This function will open your E-mail program (e.g. Gmail) to send us the bug report.\n\nIf you don\'t want to send a mail or don\'t have a mail program configured you can open a new issue at https://github.com/EasyRPG/Player/issues instead.</string>
@@ -70,6 +68,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="video">Video</string>
     <string name="audio">Audio</string>
     <string name="input">Input</string>
+    <string name="font">Font</string>
     <string name="easyrpg_folders">EasyRPG Folders</string>
     <string name="settings">Settings</string>
     <string name="screen_size">Screen scaling:</string>
@@ -86,10 +85,9 @@ Please tell us in detail what went wrong.\n\n
     <string name="enable_vibration">Enable vibrations</string>
     <string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
     <string name="settings_custom_soundfont">Custom Soundfont:</string>
-    <string name="open_the_sound_fonts_folder">Open the soundfonts folder</string>
+    <string name="open_the_sound_fonts_folder">Open the \"soundfonts\" folder</string>
     <string name="settings_soundfont_explanation">Put soundfonts in SF2-format in the \"soundfonts\" folder. Soundfonts alter how MIDI music sounds.</string>
-    <string name="settings_soundfont_restart_app">Please quit and restart the app after selecting a soundfont.</string>
-    <string name="settings_soundfont_found">Soundfonts found:</string>
+    <string name="settings_soundfont_found">Soundfonts:</string>
     <string name="settings_default_soundfont">Default Soundfont</string>
     <string name="music_volume">Music volume</string>
     <string name="sound_volume">Sound effect volume</string>
@@ -110,8 +108,18 @@ Please tell us in detail what went wrong.\n\n
     <string name="Loading">Loading…</string>
     <string name="enable_rtp_support">Enable RTP support</string>
     <string name="rtp_explanation">The RTP provides shared assets used by some games.\nPut the RPG Maker 2000 RTP in \"rtp/2000\" and the RPG Maker 2003 RTP in \"rtp/2003\".\nPlease note that enabling RTP support will significantly increase the initial loading time of a game.</string>
-    <string name="open_rtp_folder">Open the RTP folder</string>
-
+    <string name="rtp_not_found">RTP $YEAR not found. Games that require this RTP will have missing assets.</string>
+    <string name="rtp_found">RTP $YEAR found: $NAME ($FOUND of $MAX assets found)</string>
+    <string name="open_rtp_folder">Open the \"rtp\" folder</string>
+    <string name="open_fonts_folder">Open the \"fonts\" folder</string>
+    <string name="settings_fonts_explanation">Put fonts in the \"fonts\" folder. For the best result use TTF fonts or bitmap (FON) fonts.</string>
+    <string name="settings_fonts_explanation2">The game decides whether it uses the first font or the second font.</string>
+    <string name="settings_fonts_size_explanation">The font size setting has no effect when using the built-in font or certain bitmap fonts.</string>
+    <string name="settings_fonts_size_explanation2">The size must be set so that the # is at least partially visible. If you cannot see it, the text will be cut off in-game.</string>
+    <string name="settings_font_1">First Font:</string>
+    <string name="settings_font_2">Second Font:</string>
+    <string name="settings_font_size">Font size</string>
+    <string name="settings_font_default">Built-In Font</string>
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage Input Layouts:</string>
     <string name="edit_name">Edit name</string>

@@ -275,7 +275,7 @@ Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, St
 
 			if (game_rtp.size() == 1) {
 				// From now on the RTP lookups should be perfect
-				Output::Debug("Game uses RTP \"{}\"", RTP::Names[(int) game_rtp[0]]);
+				Output::Debug("Game uses RTP \"{}\"", RTP::kTypes[(int) game_rtp[0]]);
 			}
 		}
 	}

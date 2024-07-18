@@ -388,6 +388,7 @@ void Window_Settings::RefreshAudioSoundfont() {
 
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
+	cfg.Hide();
 
 	// FIXME: Binding &cfg is not needed and generates a warning but MSVC requires it
 	AddOption(cfg.font1, [this, &cfg]() {
@@ -395,11 +396,13 @@ void Window_Settings::RefreshEngine() {
 		Push(eEngineFont1);
 		GetFrame().scratch = -1;
 	});
-	if (cfg.font1.IsLocked()) {
-		GetFrame().options.back().help = "This game uses a custom font";
-	}
-	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
-		GetFrame().options.back().text += " [In use]";
+	if (cfg.font1.IsOptionVisible()) {
+		if (cfg.font1.IsLocked()) {
+			GetFrame().options.back().help = "This game uses a custom font";
+		}
+		if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_gothic) {
+			GetFrame().options.back().text += " [In use]";
+		}
 	}
 
 	AddOption(cfg.font2, [this, &cfg]() {
@@ -407,11 +410,13 @@ void Window_Settings::RefreshEngine() {
 		Push(eEngineFont2);
 		GetFrame().scratch = -1;
 	});
-	if (cfg.font2.IsLocked()) {
-		GetFrame().options.back().help = "This game uses a custom font";
-	}
-	if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
-		GetFrame().options.back().text += " [In use]";
+	if (cfg.font2.IsOptionVisible()) {
+		if (cfg.font2.IsLocked()) {
+			GetFrame().options.back().help = "This game uses a custom font";
+		}
+		if (Main_Data::game_system->GetFontId() == lcf::rpg::System::Font_mincho) {
+			GetFrame().options.back().text += " [In use]";
+		}
 	}
 
 	AddOption(cfg.show_startup_logos, [this, &cfg](){ cfg.show_startup_logos.Set(static_cast<ConfigEnum::StartupLogos>(GetCurrentOption().current_value)); });

@@ -353,6 +353,16 @@ namespace FileFinder {
 	 * @param fs Filesystem to use
 	 */
 	void DumpFilesystem(FilesystemView fs);
+
+	/**
+	 * Searches recursively for game directories.
+	 *
+	 * @param fs Filesystem where the search starts
+	 * @param recursion_limit Recursion depth
+	 * @param game_limit Abort the search when this amount of games was found.
+	 * @return Vector of views to the found game directories
+	 */
+	std::vector<FilesystemView> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

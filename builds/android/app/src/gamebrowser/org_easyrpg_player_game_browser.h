@@ -23,22 +23,24 @@
  */
 
 #include <jni.h>
-/* Header for class org_easyrpg_player_EasyRpgPlayerActivity */
 
-#ifndef _Included_org_easyrpg_player_player_EasyRpgPlayerActivity
-#define _Included_org_easyrpg_player_player_EasyRpgPlayerActivity
+#ifndef _Included_org_easyrpg_player_game_browser_GameScanner
+#define _Included_org_easyrpg_player_game_browser_GameScanner
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame(JNIEnv *, jclass);
-
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame(JNIEnv *, jclass);
-
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps(JNIEnv *, jclass);
+JNIEXPORT jobject JNICALL
+Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass clazz, jstring path, jstring jmain_dir_name);
 
 JNIEXPORT void JNICALL
-Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings(JNIEnv *, jclass);
+Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject thiz);
+
+JNIEXPORT jbyteArray JNICALL
+Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jclass clazz, jstring font, jint size, jboolean first_font);
+
+JNIEXPORT void JNICALL
+Java_org_easyrpg_player_settings_SettingsGamesFolderActivity_DetectRtp(JNIEnv *env, jobject thiz, jstring path, jobject hit_info, int version);
 
 #ifdef __cplusplus
 }
