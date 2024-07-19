@@ -177,6 +177,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_interpreter.h
 	src/game_interpreter_map.cpp
 	src/game_interpreter_map.h
+	src/game_interpreter_shared.cpp
+	src/game_interpreter_shared.h
 	src/game_map.cpp
 	src/game_map.h
 	src/game_message.cpp

@@ -76,6 +76,8 @@ enum InnSubcommand {
 	eOptionInnNoStay = 1,
 };
 
+using namespace Game_Interpreter_Shared;
+
 void Game_Interpreter_Map::SetState(const lcf::rpg::SaveEventExecState& save) {
 	Clear();
 	_state = save;
