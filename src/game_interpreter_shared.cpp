@@ -142,7 +142,7 @@ int Game_Interpreter_Shared::ValueOrVariableBitfield(int mode, int shift, int va
 
 template<bool validate_patches, bool support_indirect_and_switch, bool support_scopes, bool support_named>
 int Game_Interpreter_Shared::ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx, Game_BaseInterpreterContext const& interpreter) {
-	assert(com.parameters.size() > val_idx);
+	assert(static_cast<int>(com.parameters.size()) > val_idx);
 
 	if (!Player::IsPatchManiac()) {
 		return com.parameters[val_idx];
@@ -150,7 +150,7 @@ int Game_Interpreter_Shared::ValueOrVariableBitfield(lcf::rpg::EventCommand cons
 
 	assert(mode_idx != val_idx);
 
-	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
+	if (static_cast<int>(com.parameters.size()) > std::max(mode_idx, val_idx)) {
 		int mode = com.parameters[mode_idx];
 		return ValueOrVariableBitfield<validate_patches, support_indirect_and_switch, support_scopes, support_named>(com.parameters[mode_idx], shift, com.parameters[val_idx], interpreter);
 	}
@@ -165,7 +165,7 @@ StringView Game_Interpreter_Shared::CommandStringOrVariable(lcf::rpg::EventComma
 
 	assert(mode_idx != val_idx);
 
-	if (com.parameters.size() > std::max(mode_idx, val_idx)) {
+	if (static_cast<int>(com.parameters.size()) > std::max(mode_idx, val_idx)) {
 		return game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx], *game_variables);
 	}
 
@@ -179,7 +179,7 @@ StringView Game_Interpreter_Shared::CommandStringOrVariableBitfield(lcf::rpg::Ev
 
 	assert(mode_idx != val_idx);
 
-	if (com.parameters.size() >= std::max(mode_idx, val_idx) + 1) {
+	if (static_cast<int>(com.parameters.size()) >= std::max(mode_idx, val_idx) + 1) {
 		int mode = com.parameters[mode_idx];
 		return game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *game_variables);
 	}
