@@ -298,10 +298,7 @@ protected:
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 
-	bool CommandShowStringPicSelectable(lcf::rpg::EventCommand const& com);
-	
-	void InitializeMenu(int strpic_index);
-	bool HandleMenuSelection(int strpic_index, int output_variable);
+	bool CommandStringPicMenu(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
 	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);

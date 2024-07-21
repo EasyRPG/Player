@@ -835,8 +835,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
-		case static_cast<Cmd>(9992):
-			return CommandShowStringPicSelectable(com);
+		case static_cast<Cmd>(2057): //Cmd::EasyRpg_StringPicMenu
+			return CommandStringPicMenu(com);
 		default:
 			return true;
 	}
@@ -5201,10 +5201,11 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 	return value;
 }
 
-bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand const& com) {
-	int mode = com.parameters[0];
-	int strpic_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	int output_variable = ValueOrVariable(com.parameters[3], com.parameters[4]);
+bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
+	const int mode = com.parameters[0];
+	const int strpic_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	const int output_var_current_item = ValueOrVariable(com.parameters[3], com.parameters[4]);
+	const int output_var_input_state = ValueOrVariable(com.parameters[5], com.parameters[6]);
 
 	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
 
@@ -5215,123 +5216,136 @@ bool Game_Interpreter::CommandShowStringPicSelectable(lcf::rpg::EventCommand con
 
 	auto& window = window_data.window;
 	auto& data = window_data.data;
-	bool is_menu_active = window->GetActive();
-
 	auto& game_system = Main_Data::game_system;
+
 	struct SystemProperties {
 		std::string name;
 		lcf::rpg::System::Stretch stretch;
 		lcf::rpg::System::Font font;
 	};
 
-	SystemProperties current_system = {
+	const SystemProperties current_system = {
 		ToString(game_system->GetSystemName()),
 		static_cast<lcf::rpg::System::Stretch>(game_system->GetMessageStretch()),
 		static_cast<lcf::rpg::System::Font>(game_system->GetFontId())
 	};
 
-	SystemProperties strpic_system = {
+	const SystemProperties strpic_system = {
 		ToString(data.system_name),
-		static_cast<lcf::rpg::System::Stretch>(data.message_stretch),
+		static_cast<lcf::rpg::System::Stretch>(!bool(data.message_stretch)),
 		current_system.font
 	};
 
-	if (mode == 0) { // ENABLE MENU
-		if (!is_menu_active) {
-			InitializeMenu(strpic_index);
+	auto UpdateVariables = [&](int current_item, int input_state) {
+		if (output_var_current_item > 0) {
+			if (current_item == -2) current_item = -1;
+			Main_Data::game_variables->Set(output_var_current_item, current_item);
+			Game_Map::SetNeedRefresh(true);
+		}
+		if (output_var_input_state > 0) {
+			Main_Data::game_variables->Set(output_var_input_state, input_state);
+			Game_Map::SetNeedRefresh(true);
+		}
+		};
 
-			if (window->GetIndex() == -1)
-				window->SetIndex(0);
+	auto GetRealChoiceId = [&](int ui_choice_index, int indent) { //Gets a choice ID from a "Show Choices" command bellow this command.
+		auto& frame = GetFrame();
+		const auto& commands = frame.commands;
+		auto& current_index = frame.current_command;
+
+		if (ui_choice_index == -2) {
+			for (size_t idx = current_index + 1; idx < commands.size(); idx++) {
+				const auto& command = commands[idx];
+				if (static_cast<Cmd>(command.code) != Cmd::ShowChoiceOption) continue;
+				if (command.indent != indent) break;
+				current_index = idx + 1;
+			}
+			return commands[current_index - 1].parameters[0];
+		}
+
+		int option_count = 0;
+		for (size_t idx = current_index + 1; idx < commands.size(); idx++) {
+			const auto& command = commands[idx];
+			if (static_cast<Cmd>(command.code) != Cmd::ShowChoiceOption) continue;
+			if (command.indent != indent) break;
+
+			if (ui_choice_index != -1 && option_count == ui_choice_index) {
+				current_index = idx + 1;
+				return command.parameters[0];
+			}
+			option_count++;
+		}
+
+		current_index++;
+		return ui_choice_index;
+		};
+
+	auto HandleMenuSelection = [&]() -> bool {
+		auto& frame = GetFrame();
+		const auto& commands = frame.commands;
+		auto& current_index = frame.current_command;
+		int indent = commands[current_index].indent;
+		int ui_choice_index = -1;
+		const auto& choice_controller = commands[current_index + 1];
+		bool has_choice_list = (static_cast<Cmd>(choice_controller.code) == Cmd::ShowChoice);
+
+		UpdateVariables(window->GetIndex(), 0);
+
+		auto ProcessSelection = [&](int input_state, int sound) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(sound));
+			int real_choice_id = GetRealChoiceId(ui_choice_index, indent);
+			UpdateVariables(ui_choice_index == -1 ? window->GetIndex() : ui_choice_index, input_state);
+			//Output::Debug("Selected choice: UI index {} - real Choice ID {}", ui_choice_index, real_choice_id);
+			window->SetActive(false);
+			return true;
+			};
+
+		if (Input::IsTriggered(Input::DECISION)) {
+			ui_choice_index = window->GetIndex();
+			return ProcessSelection(1, Main_Data::game_system->SFX_Decision);
+		}
+		else if (Input::IsTriggered(Input::CANCEL)) {
+			if (has_choice_list) {
+				ui_choice_index = (choice_controller.parameters[0] == 5) ? -2 : choice_controller.parameters[0] - 1; // -2 means that cancel has a branch
+				if (ui_choice_index == -1) return false;
+			}
+			return ProcessSelection(-1, Main_Data::game_system->SFX_Cancel);
+		}
+		return false;
+		};
+
+	if (mode == 0) { // ENABLE MENU
+		if (!window->GetActive()) {
+			int max_item = 0;
+			for (const auto& text_data : data.texts) {
+				std::stringstream ss(ToString(text_data.text));
+				std::string out;
+				while (Utils::ReadLine(ss, out)) {
+					max_item++;
+				}
+			}
+
+			window->SetItemMax(max_item);
+			//window->SetColumnMax(2);
+			window->SetMenuItemHeight(data.texts[0].font_size + 4); // TODO: item area with bigger font-sizes could look better...
+			window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
+			if (window->GetIndex() == -1) window->SetIndex(0);
 
 			window->SetActive(true);
+			UpdateVariables(window->GetIndex(), 0);
 			return false;
 		}
 
+		//WORKAROUND: I have to flicker between 2 systems to set menu visuals as current stringpic menu.
 		game_system->SetSystemGraphic(strpic_system.name, strpic_system.stretch, strpic_system.font);
 		window->Update();
 		game_system->SetSystemGraphic(current_system.name, current_system.stretch, current_system.font);
-
-		if (Input::IsTriggered(Input::DECISION) || Input::IsTriggered(Input::CANCEL)) {
-			window->SetActive(false);
-			return HandleMenuSelection(strpic_index, output_variable);
-		}
-
-		return false;
+		window->SetStretch(strpic_system.stretch);
+		return HandleMenuSelection();
 	}
 	else if (mode == 1) { // DISABLE MENU
 		window->SetIndex(-1);
 		window->SetActive(false);
-	}
-
-	return true;
-}
-
-void Game_Interpreter::InitializeMenu(int strpic_index) {
-	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
-	auto data = window_data.data;
-	int max_item = 0;
-	for (const auto& texts : data.texts) {
-		std::stringstream ss(ToString(texts.text));
-		std::string out;
-		while (Utils::ReadLine(ss, out)) {
-			max_item++;
-		}
-	}
-	window_data.window->SetItemMax(max_item);
-	window_data.window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
-}
-
-bool Game_Interpreter::HandleMenuSelection(int strpic_index, int output_variable) {
-	auto& frame = GetFrame();
-	const auto& list = frame.commands;
-	auto& index = frame.current_command;
-	int indent = list[index].indent;
-
-	int choice_result = 0;
-	auto choice_controller = list[index + 1];
-
-	if (Input::IsTriggered(Input::DECISION)) {
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-		choice_result = Main_Data::game_windows->GetWindow(strpic_index).window->GetIndex();
-	}
-
-	if (Input::IsTriggered(Input::CANCEL)) {
-		if (static_cast<Cmd>(choice_controller.code) == Cmd::ShowChoice) {
-			choice_result = choice_controller.parameters[0] - 1;
-
-			if (choice_result == -1) {
-				Main_Data::game_windows->GetWindow(strpic_index).window->SetActive(true);
-				return false;
-			}
-		}
-		else if (choice_result == 0) {
-			choice_result = -1;
-		}
-		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-	}
-
-	if (output_variable > 0) {
-		Main_Data::game_variables->Set(output_variable, choice_result);
-		Game_Map::SetNeedRefresh(true);
-	}
-
-	int i = 0;
-	for (int idx = index; (size_t)idx < list.size(); idx++) {
-		if (static_cast<Cmd>(list[idx].code) != Cmd::ShowChoiceOption)
-			continue;
-		if (list[idx].indent > indent)
-			continue;
-		if (list[idx].indent == indent) {
-			if (i != choice_result) {
-				i++;
-				continue;
-			}
-		}
-		if (list[idx].indent < indent) {
-			break;
-		}
-		index = idx + 1;
-		break;
 	}
 
 	return true;
