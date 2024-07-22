@@ -5327,8 +5327,17 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 
 			window->SetItemMax(max_item);
 			//window->SetColumnMax(2);
-			window->SetMenuItemHeight(data.texts[0].font_size + 4); // TODO: item area with bigger font-sizes could look better...
-			window->SetMenuItemLineSpacing(data.texts[0].line_spacing);
+			if (data.texts.empty()) {
+				Output::Warning("String Picture Menu - String Picture {} is not valid", strpic_index);
+				return true;
+			}
+
+			int item_height = data.texts[0].font_size + 4;
+			int item_spacing = data.texts[0].line_spacing;
+
+			window->SetMenuItemHeight(item_height);
+			window->SetMenuItemLineSpacing(item_spacing);
+
 			if (window->GetIndex() == -1) window->SetIndex(0);
 
 			window->SetActive(true);
@@ -5340,6 +5349,7 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 		game_system->SetSystemGraphic(strpic_system.name, strpic_system.stretch, strpic_system.font);
 		window->Update();
 		game_system->SetSystemGraphic(current_system.name, current_system.stretch, current_system.font);
+
 		window->SetStretch(strpic_system.stretch);
 		return HandleMenuSelection();
 	}
