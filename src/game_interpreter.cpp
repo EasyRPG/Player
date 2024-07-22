@@ -5318,15 +5318,22 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 		if (!window->GetActive()) {
 			int max_item = 0;
 			for (const auto& text_data : data.texts) {
-				std::stringstream ss(ToString(text_data.text));
-				std::string out;
-				while (Utils::ReadLine(ss, out)) {
-					max_item++;
+				auto pending_message = Main_Data::game_windows->GeneratePendingMessage(ToString(text_data.text));
+				const auto& lines = pending_message.GetLines();
+
+				for (const auto& line : lines) {
+					std::stringstream ss(line);
+					std::string sub_line;
+
+					while (Utils::ReadLine(ss, sub_line)) {
+						max_item++;
+						// Output::Warning("{}", sub_line);
+					}
 				}
 			}
 
 			window->SetItemMax(max_item);
-			//window->SetColumnMax(2);
+			//window->SetColumnMax(2); // TODO: is there an easy way to put text near cursor rects?
 			if (data.texts.empty()) {
 				Output::Warning("String Picture Menu - String Picture {} is not valid", strpic_index);
 				return true;

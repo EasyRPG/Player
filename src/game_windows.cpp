@@ -46,6 +46,16 @@ Game_Windows::Window_User::Window_User(lcf::rpg::SaveEasyRpgWindow save)
 
 }
 
+PendingMessage Game_Windows::GeneratePendingMessage(const std::string& text) {
+	std::stringstream ss(text);
+	std::string out;
+	PendingMessage pm(CommandCodeInserter);
+	while (Utils::ReadLine(ss, out)) {
+		pm.PushLine(out);
+	}
+	return pm;
+}
+
 void Game_Windows::SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save) {
 	windows.clear();
 
@@ -218,12 +228,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		fonts.emplace_back(font);
 
 		std::stringstream ss(ToString(text.text));
-		std::string out;
-		PendingMessage pm(CommandCodeInserter);
-		while (Utils::ReadLine(ss, out)) {
-			pm.PushLine(out);
-		}
-		messages.emplace_back(pm);
+		messages.emplace_back(GeneratePendingMessage(ToString(text.text)));
 	}
 
 	auto apply_style = [](auto& font, const auto& text) {

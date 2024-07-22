@@ -41,6 +41,8 @@ class Game_Windows {
 public:
 	Game_Windows() = default;
 
+	static PendingMessage GeneratePendingMessage(const std::string& text);
+
 	void SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save);
 	std::vector<lcf::rpg::SaveEasyRpgWindow> GetSaveData() const;
 
