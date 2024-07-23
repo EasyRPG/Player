@@ -243,94 +243,132 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		return font->ApplyStyle(style);
 	};
 
+	BitmapRef system;
 	// Automatic window size
 	int x_max = 0;
 	int y_max = 0;
 
-	if (true) {//(data.width == 0 || data.height == 0) {
-		for (size_t i = 0; i < data.texts.size(); ++i) {
-			// Lots of duplication with the rendering code below but cannot be easily reduced more
-			auto& font = fonts[i];
-			const auto& pm = messages[i];
-			const auto& text = data.texts[i];
-			auto style_guard = apply_style(font, text);
+	auto ProcessText = [&](ProcessTextMode mode) { 
+			for (size_t i = 0; i < data.texts.size(); ++i) {
+				auto& font = fonts[i];
+				const auto& pm = messages[i];
+				const auto& text = data.texts[i];
+				auto style_guard = apply_style(font, text);
 
-			int x = text.position_x;
-			int y = text.position_y;
-			for (const auto& line: pm.GetLines()) {
-				std::u32string line32;
-				auto* text_index = line.data();
-				const auto* end = line.data() + line.size();
+				int x = text.position_x;
+				int y;
+				int text_color = 0;
 
-				while (text_index != end) {
-					auto tret = Utils::TextNext(text_index, end, Player::escape_char);
-					text_index = tret.next;
+				if (mode == ProcessTextMode::TextDrawing) {
+					y = text.position_y + 2; // +2 to match the offset RPG_RT uses
+				}
+				else { // SetMaxCoordinates
+					y = text.position_y;
+				}
 
-					if (EP_UNLIKELY(!tret)) {
-						continue;
-					}
+				for (const auto& line : pm.GetLines()) {
+					std::u32string line32;
+					auto* text_index = line.data();
+					const auto* end = line.data() + line.size();
 
-					const auto ch = tret.ch;
+					while (text_index != end) {
+						auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+						text_index = tret.next;
 
-					if (ch == '\n') {
-						if (!line32.empty()) {
-							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
-							line32.clear();
+						if (EP_UNLIKELY(!tret)) {
+							continue;
 						}
 
-						x_max = std::max(x, x_max);
-						x = 0;
-						y += text.font_size + text.line_spacing;
+						const auto ch = tret.ch;
 
-						continue;
-					}
+						if (ch == '\n') {
+							if (!line32.empty()) {
+								if (mode == ProcessTextMode::TextDrawing) {
+									Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
+								}
+								else { // SetMaxCoordinates
+									x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+								}
+								line32.clear();
+							}
 
-					if (Utils::IsControlCharacter(ch)) {
-						// control characters not handled
-						continue;
-					}
-
-					if (tret.is_exfont) {
-						// exfont processed later
-						line32 += '$';
-					}
-
-					if (tret.is_escape && ch != Player::escape_char) {
-						if (!line32.empty()) {
-							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
-							line32.clear();
+							if (mode == ProcessTextMode::SetMaxCoordinates) {
+								x_max = std::max(x, x_max);
+							}
+							x = 0;
+							y += text.font_size + text.line_spacing;
+							continue;
 						}
 
-						// Special message codes
-						switch (ch) {
+						if (Utils::IsControlCharacter(ch)) {
+							// control characters not handled
+							continue;
+						}
+
+						if (tret.is_exfont) {
+							// exfont processed later
+							line32 += '$';
+						}
+
+						if (tret.is_escape && ch != Player::escape_char) {
+							if (!line32.empty()) {
+								if (mode == ProcessTextMode::TextDrawing) {
+									x += Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32)).x;
+								}
+								else { // SetMaxCoordinates
+									x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+								}
+								line32.clear();
+							}
+
+							// Special message codes
+							switch (ch) {
 							case 'c':
 							case 'C':
 							{
 								// Color
-								text_index = Game_Message::ParseColor(text_index, end, Player::escape_char, true).next;
+								auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+								if (mode == ProcessTextMode::TextDrawing) {
+									auto value = pres.value;
+									text_color = value > 19 ? 0 : value;
+								}
+								text_index = pres.next;
 							}
 							break;
+							}
+							continue;
 						}
-						continue;
+
+						line32 += static_cast<char32_t>(ch);
 					}
 
-					line32 += static_cast<char32_t>(ch);
+					if (!line32.empty()) {
+						if (mode == ProcessTextMode::TextDrawing) {
+							Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
+						}
+						else { // SetMaxCoordinates
+							x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+						}
+					}
+
+					if (mode == ProcessTextMode::SetMaxCoordinates) {
+						x_max = std::max(x, x_max);
+					}
+
+					x = 0;
+					y += text.font_size + text.line_spacing;
 				}
 
-				if (!line32.empty()) {
-					x += Text::GetSize(*font, Utils::EncodeUTF(line32)).width;
+				if (mode == ProcessTextMode::SetMaxCoordinates) {
+					y -= text.line_spacing;
+					y_max = std::max(y, y_max);
 				}
-
-				x_max = std::max(x, x_max);
-
-				x = 0;
-				y += text.font_size + text.line_spacing;
 			}
+		};
 
-			y -= text.line_spacing;
 
-			y_max = std::max(y, y_max);
-		}
+	if (true) {//(data.width == 0 || data.height == 0) {
+		ProcessText(ProcessTextMode::SetMaxCoordinates);
 
 		// Border size
 		if (data.flags.border_margin) {
@@ -366,8 +404,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	window->SetVisible(false);
 
 	window->SetActive(false);
-
-	BitmapRef system;
+	
 	// FIXME: Transparency setting is currently not applied to the system graphic
 	// Disabling transparency breaks the rendering of the system graphic
 	if (!data.system_name.empty()) {
@@ -388,84 +425,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	}
 
 	// Draw text
-	for (size_t i = 0; i < data.texts.size(); ++i) {
-		auto& font = fonts[i];
-		const auto& pm = messages[i];
-		const auto& text = data.texts[i];
-		auto style_guard = apply_style(font, text);
-
-		int x = text.position_x;
-		int y = text.position_y + 2; // +2 to match the offset RPG_RT uses
-		int text_color = 0;
-		for (const auto& line: pm.GetLines()) {
-			std::u32string line32;
-			auto* text_index = line.data();
-			const auto* end = line.data() + line.size();
-
-			while (text_index != end) {
-				auto tret = Utils::TextNext(text_index, end, Player::escape_char);
-				text_index = tret.next;
-
-				if (EP_UNLIKELY(!tret)) {
-					continue;
-				}
-
-				const auto ch = tret.ch;
-
-				if (ch == '\n') {
-					if (!line32.empty()) {
-						Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
-						line32.clear();
-					}
-
-					x = 0;
-					y += text.font_size + text.line_spacing;
-					continue;
-				}
-
-				if (Utils::IsControlCharacter(ch)) {
-					// control characters not handled
-					continue;
-				}
-
-				if (tret.is_exfont) {
-					// exfont processed later
-					line32 += '$';
-				}
-
-				if (tret.is_escape && ch != Player::escape_char) {
-					if (!line32.empty()) {
-						x += Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32)).x;
-						line32.clear();
-					}
-
-					// Special message codes
-					switch (ch) {
-						case 'c':
-						case 'C':
-						{
-							// Color
-							auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
-							auto value = pres.value;
-							text_index = pres.next;
-							text_color = value > 19 ? 0 : value;
-						}
-						break;
-					}
-					continue;
-				}
-
-				line32 += static_cast<char32_t>(ch);
-			}
-
-			if (!line32.empty()) {
-				Text::Draw(*window->GetContents(), x, y, *font, *system, text_color, Utils::EncodeUTF(line32));
-			}
-
-			x = 0;
-			y += text.font_size + text.line_spacing;
-		}
-	}
+	ProcessText(ProcessTextMode::TextDrawing);
 
 	// Add to picture
 	auto& pic = Main_Data::game_pictures->GetPicture(data.ID);

@@ -46,6 +46,8 @@ public:
 	void SetSaveData(std::vector<lcf::rpg::SaveEasyRpgWindow> save);
 	std::vector<lcf::rpg::SaveEasyRpgWindow> GetSaveData() const;
 
+	enum class ProcessTextMode { TextDrawing, SetMaxCoordinates };
+
 	struct WindowText {
 		std::string text;
 		int position_x = 0;
