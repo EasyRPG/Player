@@ -165,6 +165,10 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	SetFlipY((data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) == lcf::rpg::SavePicture::EasyRpgFlip_y);
 	SetBlendType(data.easyrpg_blend_mode);
 
+	// Don't draw anything if zoom is at zero, helps avoid a glitchy rotated sprite in the top left corner
+	if (GetZoomX() <= 0.0 || GetZoomY() <= 0.0) {
+		return;
+	}
 	Sprite::Draw(dst);
 }
 
