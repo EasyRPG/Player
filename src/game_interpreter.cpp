@@ -5207,6 +5207,10 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 	const int output_var_current_item = ValueOrVariable(com.parameters[3], com.parameters[4]);
 	const int output_var_input_state = ValueOrVariable(com.parameters[5], com.parameters[6]);
 
+	if (strpic_index <= 0) {
+		Output::Warning("CommandStringPicMenu: Requested invalid picture id ({})", strpic_index);
+		return true;
+	}
 	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
 
 	if (!window_data.window) {
@@ -5286,7 +5290,11 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 		auto& current_index = frame.current_command;
 		int indent = commands[current_index].indent;
 		int ui_choice_index = -1;
-		const auto& choice_controller = commands[current_index + 1];
+
+		const auto& choice_controller = (current_index + 1 < commands.size()) ?
+			commands[current_index + 1] :
+			commands[current_index];
+
 		bool has_choice_list = (static_cast<Cmd>(choice_controller.code) == Cmd::ShowChoice);
 
 		UpdateVariables(window->GetIndex(), 0);
@@ -5321,12 +5329,37 @@ bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
 				auto pending_message = Main_Data::game_windows->GeneratePendingMessage(ToString(text_data.text));
 				const auto& lines = pending_message.GetLines();
 
+				bool use_substring_mode = false;
+
+				// Detect mode by checking for "\/" in the entire text
+				for (const auto& line : lines) {
+					if (line.find("\\/") != std::string::npos) {
+						use_substring_mode = true;
+						break;
+					}
+				}
+
+				// Now apply the appropriate counting method
 				for (const auto& line : lines) {
 					std::stringstream ss(line);
 					std::string sub_line;
 
 					while (Utils::ReadLine(ss, sub_line)) {
-						max_item++;
+						if (use_substring_mode) {
+							size_t pos = 0;
+							int count = 0;
+							while ((pos = sub_line.find("\\/", pos)) != std::string::npos) {
+								count++;
+								if (count % 2 != 0) {  // Check if count is odd
+									max_item++;
+								}
+								pos += 2; // Move past the found substring
+							}
+						}
+						else {
+							max_item++; // Increment once per sub_line in original mode
+						}
+
 						// Output::Warning("{}", sub_line);
 					}
 				}

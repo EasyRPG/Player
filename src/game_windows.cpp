@@ -248,6 +248,10 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	int x_max = 0;
 	int y_max = 0;
 
+	bool is_drawing_rect = false;
+	Rect current_rect;
+	std::vector<Rect> inline_rects = {};
+
 	auto ProcessText = [&](ProcessTextMode mode) { 
 			for (size_t i = 0; i < data.texts.size(); ++i) {
 				auto& font = fonts[i];
@@ -335,11 +339,39 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 								text_index = pres.next;
 							}
 							break;
+							case '/':
+							{
+								if (mode == ProcessTextMode::TextDrawing) continue;
+								// Toggle rect drawing mode
+								if (!is_drawing_rect) {
+									// Start drawing a new rect
+									current_rect.x = x;
+									current_rect.y = y;
+									is_drawing_rect = true;
+								}
+								else {
+									// Finish the current rect
+									current_rect.width = x + 1 - current_rect.x;
+									if (current_rect.width > x_max && x_max != 0 ) current_rect.width -=1;
+									current_rect.height = y - current_rect.y;
+									inline_rects.push_back(current_rect);
+									is_drawing_rect = false;
+								}
+							}
+							break;
 							}
 							continue;
 						}
 
 						line32 += static_cast<char32_t>(ch);
+					}
+
+					// After the loop, check if there's an unfinished rect
+					if (is_drawing_rect) {
+						current_rect.width = x_max -1;
+						current_rect.height = y;
+						inline_rects.push_back(current_rect);
+						is_drawing_rect = false;
 					}
 
 					if (!line32.empty()) {
@@ -389,6 +421,9 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	}
 
 	window = std::make_unique<Window_Selectable>(0, 0, data.width, data.height);
+
+	if (!inline_rects.empty()) window->inline_rects = inline_rects;
+
 	if (!data.flags.border_margin) {
 		window->SetBorderX(0);
 		// FIXME: Figure out why 0 does not work here (bug in Window class)
