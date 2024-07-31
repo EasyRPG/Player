@@ -50,10 +50,12 @@ void Scene_Menu::Start() {
 
 	// Gold Window
 	gold_window.reset(new Window_Gold(Player::menu_offset_x, (Player::screen_height - gold_window_height - Player::menu_offset_y), gold_window_width, gold_window_height));
+	gold_window->ApplyRtlMirror();
 
 	// Status Window
 	menustatus_window.reset(new Window_MenuStatus(Player::menu_offset_x + menu_command_width, Player::menu_offset_y, (MENU_WIDTH - menu_command_width), MENU_HEIGHT));
 	menustatus_window->SetActive(false);
+	menustatus_window->ApplyRtlMirror();
 }
 
 void Scene_Menu::Continue(SceneType /* prev_scene */) {
@@ -161,6 +163,7 @@ void Scene_Menu::CreateCommandWindow() {
 	command_window.reset(new Window_Command(options, menu_command_width));
 	command_window->SetX(Player::menu_offset_x);
 	command_window->SetY(Player::menu_offset_y);
+	command_window->ApplyRtlMirror();
 	command_window->SetIndex(menu_index);
 
 	// Disable items

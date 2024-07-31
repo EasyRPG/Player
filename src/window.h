@@ -100,6 +100,8 @@ public:
 	bool IsClosing() const;
 	bool IsOpeningOrClosing() const;
 
+	void ApplyRtlMirror();
+
 protected:
 	virtual bool IsSystemGraphicUpdateAllowed() const;
 
