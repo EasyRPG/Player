@@ -785,6 +785,10 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 }
 
 bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
 	_state.easyrpg_parameters.resize(3);
 
 	int& event_id = _state.easyrpg_parameters[0];
