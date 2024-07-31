@@ -291,7 +291,7 @@ void Game_Map::SetupFromSave(
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
+std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	std::unique_ptr<lcf::rpg::Map> map;
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
@@ -391,7 +391,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 
 	if (src_map_id == GetMapId()) source_map = std::make_unique<lcf::rpg::Map>(GetMap());
 	else {
-		source_map = Game_Map::loadMapFile(src_map_id);
+		source_map = Game_Map::LoadMapFile(src_map_id);
 
 		if (source_map == nullptr) {
 			Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
@@ -1873,7 +1873,9 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	Player::translation.RequestAndAddMap(map_id);
 #endif
 
-	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	auto* request = AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	request->SetImportantFile(true);
+	return request;
 }
 
 // Parallax

@@ -112,7 +112,7 @@ namespace Game_Map {
 	 * @param map_id the id of the map to load
 	 * @return the map, or nullptr if it couldn't be loaded
 	 */
-	std::unique_ptr<lcf::rpg::Map> loadMapFile(int map_id);
+	std::unique_ptr<lcf::rpg::Map> LoadMapFile(int map_id);
 
 	/**
 	 * Setups a new map.
