@@ -109,9 +109,9 @@ namespace Game_Map {
 
 	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
 	void CreateMapEvents();
-	inline void FixUnderlyingEventReferences();
-	void AddEventToCache(lcf::rpg::Event& ev);
-	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int eventId);
+	void FixUnderlyingEventReferences();
+	void AddEventToCache(const lcf::rpg::Event& ev);
+	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
 	int GetNextAvailableEventId();
 
 	/**

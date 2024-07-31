@@ -5136,12 +5136,16 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
-	
+
 	return true;
 }
 
 bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
-	int src_map = ValueOrVariable(com.parameters[0], com.parameters[1]);	
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	int src_map = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int src_event = ValueOrVariable(com.parameters[2], com.parameters[3]);
 	int target_x = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int target_y = ValueOrVariable(com.parameters[6], com.parameters[7]);
@@ -5149,9 +5153,19 @@ bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
 
 	std::string target_name = ToString(Game_Interpreter::CommandStringOrVariable(com, 10, 11));
 
-	if (src_map == 0) src_map = Game_Map::GetMapId();
+	if (src_map == 0) {
+		src_map = Game_Map::GetMapId();
+	} else {
+		auto* request = Game_Map::RequestMap(src_map);
+		if (!request->IsReady()) {
+			// Download the map and try again
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+	}
 
 	Game_Map::CloneMapEvent(src_map, src_event, target_x, target_y, target_event, target_name);
+
 	return true;
 }
 
