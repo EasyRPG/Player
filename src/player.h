@@ -273,6 +273,11 @@ namespace Player {
 	 */
 	bool IsCP1251();
 
+	/**
+	 * @return true when the active language is right-to-left like Arabic or Hebrew.
+	 */
+	bool IsRTL();
+
 	/** @return true when engine is 2k3 or the 2k3-commands patch is enabled */
 	bool IsRPG2k3Commands();
 

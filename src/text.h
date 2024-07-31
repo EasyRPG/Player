@@ -25,6 +25,7 @@
 #include "color.h"
 #include "string_view.h"
 #include <string>
+#include <vector>
 
 class Font;
 class Bitmap;

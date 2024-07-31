@@ -72,7 +72,7 @@ void Window_ShopBuy::DrawItem(int index) {
 	}
 
 	bool enabled = CheckEnable(item_id);
-	DrawItemName(*item, rect.x, rect.y, enabled);
+	DrawItemName(*item, rect, enabled);
 
 	Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 	contents->TextDraw(rect.width, rect.y, color, std::to_string(item->price), Text::AlignRight);

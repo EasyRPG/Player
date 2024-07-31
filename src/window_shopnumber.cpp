@@ -45,7 +45,7 @@ void Window_ShopNumber::Refresh() {
 
 	int y = 34;
 	// (Shop) items are guaranteed to be valid
-	DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, item_id), 0, y);
+	//DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, item_id), 0, y);
 
 	std::stringstream ss;
 	ss << number;

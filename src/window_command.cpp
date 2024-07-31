@@ -19,6 +19,7 @@
 #include "window_command.h"
 #include "color.h"
 #include "bitmap.h"
+#include "text.h"
 #include "util_macro.h"
 
 static int CalculateWidth(const std::vector<std::string>& commands, int width) {
@@ -47,8 +48,10 @@ void Window_Command::Refresh() {
 }
 
 void Window_Command::DrawItem(int index, Font::SystemColor color) {
-	contents->ClearRect(Rect(0, menu_item_height * index, contents->GetWidth() - 0, menu_item_height));
-	contents->TextDraw(0, menu_item_height * index + menu_item_height / 8, color, commands[index]);
+	Rect rect = Rect(0, menu_item_height * index, contents->GetWidth() - 0, menu_item_height);
+	contents->ClearRect(rect);
+	rect.y = menu_item_height * index + menu_item_height / 8;
+	contents->TextDraw(rect, color, commands[index], Text::ScriptAlignment(commands[index]));
 }
 
 void Window_Command::DisableItem(int i) {

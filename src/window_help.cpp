@@ -19,6 +19,7 @@
 #include "window_help.h"
 #include "bitmap.h"
 #include "font.h"
+#include "text.h"
 
 Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight, Drawable::Flags flags) :
 	Window_Base(ix, iy, iwidth, iheight, flags),
@@ -75,7 +76,11 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 		}
 	}*/
 
-	auto offset = contents->TextDraw(text_x_offset, 2, color, text, align);
+	Rect rect = GetContents()->GetRect();
+	rect.x = text_x_offset;
+	rect.y = 2;
+
+	auto offset = contents->TextDraw(rect, color, text, Text::ScriptAlignment(text));
 	text_x_offset += offset.x;
 }
 

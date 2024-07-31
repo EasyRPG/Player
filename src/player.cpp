@@ -75,6 +75,7 @@
 #include "scene_settings.h"
 #include "scene_title.h"
 #include "instrumentation.h"
+#include "translation.h"
 #include "transition.h"
 #include <lcf/scope_guard.h>
 #include <lcf/log_handler.h>
@@ -1626,6 +1627,14 @@ bool Player::IsCP1251() {
 	}
 
 	return (encoding == "ibm-5347_P100-1998" || encoding == "windows-1251" || encoding == "1251");
+}
+
+bool Player::IsRTL() {
+	if (Tr::HasActiveTranslation() && !Tr::GetCurrentLanguageCode().empty()) {
+		return Tr::GetCurrentLanguageCode() == "ar_AR" || Tr::GetCurrentLanguageCode() == "he_IL";
+	}
+
+	return false;
 }
 
 int Player::EngineVersion() {
