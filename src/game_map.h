@@ -101,9 +101,9 @@ namespace Game_Map {
 
 	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
 	void CreateMapEvents();
-	inline void FixUnderlyingEventReferences();
-	void AddEventToCache(lcf::rpg::Event& ev);
-	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int eventId);
+	void FixUnderlyingEventReferences();
+	void AddEventToCache(const lcf::rpg::Event& ev);
+	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
 	int GetNextAvailableEventId();
 
 	/**
@@ -691,7 +691,7 @@ namespace Game_Map {
 	namespace Caching {
 		class MapEventCache {
 		public:
-			void AddEvent(lcf::rpg::Event& ev);
+			void AddEvent(const lcf::rpg::Event& ev);
 
 		private:
 			std::vector<int> event_ids;
@@ -709,7 +709,7 @@ namespace Game_Map {
 		class MapCache {
 		public:
 			template <ObservedVarOps Op>
-			void AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev);
+			void AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev);
 
 			template <ObservedVarOps Op>
 			bool GetNeedRefresh(int var_id);
@@ -877,7 +877,7 @@ inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();
 }
 
-inline void Game_Map::Caching::MapEventCache::AddEvent(lcf::rpg::Event& ev) {
+inline void Game_Map::Caching::MapEventCache::AddEvent(const lcf::rpg::Event& ev) {
 	auto id = ev.ID;
 
 	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
@@ -886,7 +886,7 @@ inline void Game_Map::Caching::MapEventCache::AddEvent(lcf::rpg::Event& ev) {
 }
 
 template <Game_Map::Caching::ObservedVarOps Op>
-inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev) {
+inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev) {
 	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
 
 	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];

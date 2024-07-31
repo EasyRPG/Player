@@ -39,6 +39,7 @@ public:
 	 */
 	Game_Event(int map_id, const lcf::rpg::Event* event);
 
+	/** @param ev Event referenced */
 	void SetUnderlyingEvent(const lcf::rpg::Event* ev) {
 		event = ev;
 	}

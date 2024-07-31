@@ -364,7 +364,7 @@ void Game_Map::CreateMapEvents() {
 	}
 }
 
-void Game_Map::AddEventToCache(lcf::rpg::Event& ev) {
+void Game_Map::AddEventToCache(const lcf::rpg::Event& ev) {
 	using Op = Caching::ObservedVarOps;
 
 	for (const auto& pg : ev.pages) {
@@ -387,42 +387,52 @@ void Game_Map::Caching::MapCache::Clear() {
 }
 
 bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id = 0, std::string target_name = "") {
-	std::unique_ptr<lcf::rpg::Map> source_map;
+	std::unique_ptr<lcf::rpg::Map> source_map_storage;
+	const lcf::rpg::Map* source_map;
 
-	if (src_map_id == GetMapId()) source_map = std::make_unique<lcf::rpg::Map>(GetMap());
-	else {
-		source_map = Game_Map::LoadMapFile(src_map_id);
+	if (src_map_id == GetMapId()) {
+		source_map = &GetMap();
+	} else {
+		source_map_storage = Game_Map::LoadMapFile(src_map_id);
+		source_map = source_map_storage.get();
 
-		if (source_map == nullptr) {
+		if (source_map_storage == nullptr) {
 			Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
-			return true;
+			return false;
 		}
 
 		if (!Tr::GetCurrentTranslationId().empty()) {
-			TranslateMapMessages(src_map_id, *source_map);
+			TranslateMapMessages(src_map_id, *source_map_storage);
 		}
 	}
 
 	const lcf::rpg::Event* source_event = FindEventById(source_map->events, src_event_id);
 	if (source_event == nullptr) {
 		Output::Warning("CloneMapEvent: Event ID {} not found on source map {}", src_event_id, src_map_id);
-		return true;
+		return false;
 	}
 
 	lcf::rpg::Event new_event = *source_event;
 	if (target_event_id > 0) {
 		DestroyMapEvent(target_event_id);
 		new_event.ID = target_event_id;
+	} else {
+		new_event.ID = GetNextAvailableEventId();
 	}
-	else new_event.ID = GetNextAvailableEventId();
 	new_event.x = target_x;
 	new_event.y = target_y;
 
-	if (!target_name.empty()) new_event.name = lcf::DBString(target_name);
+	if (!target_name.empty()) {
+		new_event.name = lcf::DBString(target_name);
+	}
 
 	map->events.push_back(new_event);
+	std::sort(map->events.begin(), map->events.end(), [](const auto& e, const auto& e2) {
+		return e.ID < e2.ID;
+	});
 
 	events.emplace_back(GetMapId(), &map->events.back());
+
 	FixUnderlyingEventReferences();
 
 	AddEventToCache(new_event);
@@ -454,7 +464,6 @@ bool Game_Map::DestroyMapEvent(const int event_id) {
 	//			events_cache_by_variable[pg.condition.variable_id].RemoveEvent(*event);
 	//		}
 	//	}
-
 
 	// Remove event from events vector
 	auto it = events.end();
@@ -492,7 +501,8 @@ void Game_Map::TranslateMapMessages(int mapId, lcf::rpg::Map& map) {
 }
 
 
-inline void Game_Map::FixUnderlyingEventReferences() {
+void Game_Map::FixUnderlyingEventReferences() {
+	// Update references because modifying the vector can reallocate
 	size_t idx = 0;
 	for (auto& ev : events) {
 		ev.SetUnderlyingEvent(&map->events.at(idx++));
@@ -509,11 +519,7 @@ const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event
 }
 
 int Game_Map::GetNextAvailableEventId() {
-	int maxEventId = 0;
-	for (const auto& ev : map->events) {
-		maxEventId = std::max(maxEventId, ev.ID);
-	}
-	return maxEventId + 1;
+	return map->events.back().ID + 1;
 }
 
 void Game_Map::PrepareSave(lcf::rpg::Save& save) {
