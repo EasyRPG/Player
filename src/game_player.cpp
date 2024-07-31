@@ -78,7 +78,6 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, Telep
 	teleport_target = TeleportTarget(map_id, x, y, direction, tt);
 
 	FileRequestAsync* request = Game_Map::RequestMap(map_id);
-	request->SetImportantFile(true);
 	request->Start();
 }
 
@@ -152,7 +151,7 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 
 		ResetAnimation();
 
-		auto map = Game_Map::loadMapFile(GetMapId());
+		auto map = Game_Map::LoadMapFile(GetMapId());
 
 		Game_Map::Setup(std::move(map));
 		Game_Map::PlayBgm();
