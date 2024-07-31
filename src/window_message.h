@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "text.h"
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
@@ -154,6 +155,7 @@ protected:
 	const char* text_index = nullptr;
 	/** text message that will be displayed. */
 	std::vector<Text::Run> text_runs;
+	std::vector<Text::Direction> line_direction;
 	//std::string text;
 	/** Text color. */
 	int text_color = 0;

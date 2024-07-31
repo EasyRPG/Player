@@ -49,6 +49,7 @@ namespace Text {
 	struct Run {
 		std::string text;
 		Direction direction;
+		int length = 0;
 	};
 
 	/**
@@ -136,6 +137,8 @@ namespace Text {
 	 * @return Rect describing the rendered string boundary
 	 */
 	Rect GetSize(const Font& font, char32_t glyph, bool is_exfont);
+
+	Alignment ScriptAlignment(std::string_view text, Text::Alignment align = Text::AlignLeft);
 
 	std::vector<Run> Bidi(std::string_view text, Direction text_direction);
 }

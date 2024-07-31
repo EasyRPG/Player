@@ -134,6 +134,7 @@ Window_Message::~Window_Message() {
 
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	text_runs.clear();
+	line_direction.clear();
 	active_run = 0;
 	pending_message = std::move(pm);
 
@@ -151,7 +152,13 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	int num_lines = 0;
 	auto append = [&](const std::vector<Text::Run>& runs) {
-		text_runs.insert(text_runs.end(), runs.begin(), runs.end());
+		if (runs.back().direction == Text::Direction::RTL) {
+			text_runs.insert(text_runs.end(), runs.rbegin(), runs.rend());
+			line_direction.push_back(Text::Direction::RTL);
+		} else {
+			text_runs.insert(text_runs.end(), runs.begin(), runs.end());
+			line_direction.push_back(Text::Direction::LTR);
+		}
 
 		bool force_page_break = false;
 		/*bool force_page_break = (!line.empty() && line.back() == '\f');
@@ -194,6 +201,70 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	if (text_runs.empty() || text_runs.back().text.back() != '\f') {
 		text_runs.back().text += '\f';
+	}
+
+	for (auto& run: text_runs) {
+		std::u32string line32;
+		const auto* text_index = run.text.data();
+		const auto* end = run.text.data() + run.text.size();
+
+		int line_width = 0;
+		while (text_index != end) {
+			auto tret = Utils::TextNext(text_index, end, Player::escape_char);
+			text_index = tret.next;
+
+			if (EP_UNLIKELY(!tret)) {
+				continue;
+			}
+
+			const auto ch = tret.ch;
+
+			if (Utils::IsControlCharacter(ch)) {
+				// control characters not handled
+				continue;
+			}
+
+			if (tret.is_exfont) {
+				// exfont processed later
+				line32 += '$';
+			}
+
+			if (tret.is_escape && ch != Player::escape_char) {
+				if (!line32.empty()) {
+					line_width += Text::GetSize(*Font::Default(), Utils::EncodeUTF(line32)).width;
+					line32.clear();
+				}
+
+				// Special message codes
+				switch (ch) {
+					case 'c':
+					case 'C':
+					{
+						// Color
+						text_index = Game_Message::ParseColor(text_index, end, Player::escape_char, true).next;
+					}
+					break;
+					case 's':
+					case 'S':
+					{
+						// Color
+						text_index = Game_Message::ParseColor(text_index, end, Player::escape_char, true).next;
+					}
+					break;
+					default:
+					break;
+				}
+				continue;
+			}
+
+			line32 += static_cast<char32_t>(ch);
+		}
+
+		if (!line32.empty()) {
+			line_width += Text::GetSize(*Font::Default(), Utils::EncodeUTF(line32)).width;
+		}
+
+		run.length = line_width;
 	}
 
 	item_max = min(4, pending_message.GetNumChoices());
@@ -329,7 +400,11 @@ void Window_Message::InsertNewPage() {
 			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), 248, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
 		}
 	} else {
-		contents_x = 0;
+		if (line_direction[line_count] == Text::RTL) {
+			contents_x = 304;
+		} else {
+			contents_x = 0;
+		}
 	}
 
 	if (pending_message.GetChoiceStartLine() == 0 && pending_message.HasChoices()) {
@@ -357,14 +432,19 @@ void Window_Message::InsertNewPage() {
 
 void Window_Message::InsertNewLine() {
 	DebugLog("{}: MSG NEW LINE");
-	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
-		contents_x = LeftMargin + FaceSize + RightFaceMargin;
-	} else {
-		contents_x = 0;
-	}
 
 	contents_y += 16;
 	++line_count;
+
+	if (IsFaceEnabled() && !Main_Data::game_system->IsMessageFaceRightPosition()) {
+		contents_x = LeftMargin + FaceSize + RightFaceMargin;
+	} else {
+		if (line_count < (int)line_direction.size() && line_direction[line_count] == Text::RTL) {
+			contents_x = 304;
+		} else {
+			contents_x = 0;
+		}
+	}
 
 	if (pending_message.HasChoices() && line_count >= pending_message.GetChoiceStartLine()) {
 		unsigned choice_index = line_count - pending_message.GetChoiceStartLine();
@@ -520,11 +600,20 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (!shape_ret.empty()) {
-			if (!DrawGlyph(*page_font, *system, shape_ret[0])) {
-				continue;
+			if (run.direction == Text::Direction::LTR) {
+				if (!DrawGlyph(*page_font, *system, shape_ret.front())) {
+					continue;
+				}
+
+				shape_ret.erase(shape_ret.begin());
+			} else {
+				if (!DrawGlyph(*page_font, *system, shape_ret.back())) {
+					continue;
+				}
+
+				shape_ret.erase(shape_ret.end());
 			}
 
-			shape_ret.erase(shape_ret.begin());
 			continue;
 		}
 
@@ -533,8 +622,30 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (text_index == end) {
+			auto prev_run = text_runs[active_run];
+
 			++active_run;
 			if (active_run < (int)text_runs.size()) {
+				auto cur_run = text_runs[active_run];
+
+				if (line_direction[line_count] == Text::LTR) {
+
+				} else {
+					if (prev_run.direction == Text::LTR) {
+						if (cur_run.direction == Text::LTR) {
+							contents_x -= (prev_run.length + cur_run.length);
+						} else { // RTL
+							contents_x -= prev_run.length;
+						}
+					} else { // RTL
+						if (cur_run.direction == Text::LTR) {
+							contents_x -= cur_run.length;
+						} else { // RTL
+							// no-op
+						}
+					}
+				}
+
 				text_index = text_runs[active_run].text.data();
 				continue;
 			}
@@ -628,7 +739,11 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '_':
 				// Insert half size space
-				contents_x += Text::GetSize(*page_font, " ").width / 2;
+				if (run.direction == Text::Direction::LTR) {
+					contents_x += Text::GetSize(*page_font, " ").width / 2;
+				} else {
+					contents_x -= Text::GetSize(*page_font, " ").width / 2;
+				}
 				DebugLogText("{}: MSG HalfWait \\_");
 				SetWaitForCharacter(1);
 				break;
@@ -712,7 +827,7 @@ void Window_Message::UpdateMessage() {
 				text32 += tret.ch;
 
 				if (text_index_shape == end) {
-					text_index = text_prev_shape;
+					text_index = end;
 					break;
 				}
 			}
@@ -790,12 +905,24 @@ bool Window_Message::DrawGlyph(Font& font, const Bitmap& system, const Font::Sha
 		}
 	}
 
-	auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
+	auto& run = text_runs[active_run];
 
-	int glyph_width = rect.x;
-	contents_x += glyph_width;
+	int glyph_width;
+
+	if (run.direction == Text::Direction::LTR) {
+		auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
+		glyph_width = rect.x;
+		contents_x += glyph_width;
+	} else {
+		contents_x -= shape.advance.x;
+		auto rect = font.Render(*contents, contents_x, contents_y, system, text_color, shape);
+		glyph_width = rect.x;
+	}
+
 	int width = get_width(glyph_width);
 	SetWaitForCharacter(width);
+
+	SetWait(3);
 
 	return true;
 }

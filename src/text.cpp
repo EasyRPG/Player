@@ -20,6 +20,7 @@
 #include "cache.h"
 #include "directory_tree.h"
 #include "output.h"
+#include "player.h"
 #include "utils.h"
 #include "bitmap.h"
 #include "font.h"
@@ -29,7 +30,10 @@
 #include <cctype>
 #include <iterator>
 #include <lcf/string_view.h>
+
+#include <unicode/ubidi.h>
 #include <unicode/utypes.h>
+
 
 Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
@@ -88,7 +92,7 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
 	if (font.CanShape()) {
-		auto runs = Bidi(text, RTL);
+		auto runs = Bidi(text, LTR);
 
 		// Collect all glyphs until ExFont or end of string and then shape and render
 		for (const auto& run: runs) {
@@ -279,8 +283,22 @@ Rect Text::GetSize(const Font& font, char32_t glyph, bool is_exfont) {
 	}
 }
 
-#include <unicode/ubidi.h>
-#include <unicode/utypes.h>
+Text::Alignment Text::ScriptAlignment(std::string_view text, Text::Alignment align) {
+	if (text.empty() || !Player::IsRTL()) {
+		return align;
+	}
+
+	auto bidi = Bidi(text, LTR);
+
+	if (bidi.back().direction == LTR) {
+		return align;
+	}
+
+	return
+		align == AlignLeft ? AlignRight :
+		align == AlignRight ? AlignLeft :
+		align;
+}
 
 std::vector<Text::Run> Text::Bidi(std::string_view text, Text::Direction text_direction) {
 	UErrorCode error_code = U_ZERO_ERROR;
@@ -321,19 +339,27 @@ std::vector<Text::Run> Text::Bidi(std::string_view text, Text::Direction text_di
 
 		int32_t start, length;
 		std::string subtext;
-		std::u32string subtext32;
+		std::u16string subtext16;
 
 		// iterate over directional runs
 		for (int32_t i = 0; i < count; ++i) {
 			direction = ubidi_getVisualRun(bidi, i, &start, &length);
 
-			// FIXME: Doing UTF16-8-32 conversion, better would be a UTF16-32 conversion
-			subtext = Utils::EncodeUTF(std::u16string_view(text16.data() + start, length));
-			//subtext32 = Utils::DecodeUTF32(subtext);
+			subtext16 = std::u16string(text16.data() + start, length);
 
-			runs.push_back({subtext, static_cast<Direction>(direction)});
+			auto it = std::remove_if(subtext16.begin(), subtext16.end(), [](auto ch) {
+				// Filter out unicode bidi characters
+				return ch == u'\u200E' || ch == u'\u200F' || ch == u'\u061C' ||
+					(ch >= u'\u202A' && ch <= u'\u202E') ||
+					(ch >= u'\u2066' && ch <= u'\u2069');
+			});
+
+			subtext16.erase(it, subtext16.end());
+
+			if (!subtext16.empty()) {
+				runs.push_back({Utils::EncodeUTF(subtext16), static_cast<Direction>(direction)});
+			}
 		}
-
 	}
 
 	ubidi_close(bidi);
