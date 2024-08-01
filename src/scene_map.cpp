@@ -413,6 +413,10 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		Player::LoadSavegame(save_name, aop.GetSaveSlot());
 	}
 
+	if (aop.GetType() == AsyncOp::eCloneMapEvent) {
+		Game_Map::CloneMapEvent(aop.GetMapId(), aop.GetSourceEventId(), aop.GetX(), aop.GetY(), aop.GetTargetEventId(), aop.GetEventName());
+	}
+
 	auto& transition = Transition::instance();
 
 	if (aop.GetType() == AsyncOp::eEraseScreen) {

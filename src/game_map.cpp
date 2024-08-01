@@ -386,7 +386,7 @@ void Game_Map::Caching::MapCache::Clear() {
 	}
 }
 
-bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id = 0, std::string target_name = "") {
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name) {
 	std::unique_ptr<lcf::rpg::Map> source_map_storage;
 	const lcf::rpg::Map* source_map;
 
@@ -432,6 +432,9 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 	});
 
 	events.emplace_back(GetMapId(), &map->events.back());
+	std::sort(events.begin(), events.end(), [](const auto& e, const auto& e2) {
+		return e.GetId() < e2.GetId();
+	});
 
 	FixUnderlyingEventReferences();
 
@@ -466,15 +469,11 @@ bool Game_Map::DestroyMapEvent(const int event_id) {
 	//	}
 
 	// Remove event from events vector
-	auto it = events.end();
-	for (auto iter = events.begin(); iter != events.end(); ++iter) {
-		if (iter->GetId() == event_id) {
-			it = iter;
+	for (auto it = events.begin(); it != events.end(); ++it) {
+		if (it->GetId() == event_id) {
+			events.erase(it);
 			break;
 		}
-	}
-	if (it != events.end()) {
-		events.erase(it);
 	}
 
 	// Remove event from map
