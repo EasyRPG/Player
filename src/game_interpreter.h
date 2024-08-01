@@ -291,7 +291,7 @@ protected:
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 
-	bool CommandSpawnMapEvent(lcf::rpg::EventCommand const& com);
+	bool CommandCloneMapEvent(lcf::rpg::EventCommand const& com);
 
 	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
 	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);

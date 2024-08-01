@@ -828,8 +828,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
-		case static_cast<Cmd>(2056): //EasyRPG_SpawnMapEvent
-			return CommandSpawnMapEvent(com);
+		case static_cast<Cmd>(2056): //EasyRPG_CloneMapEvent
+			return CommandCloneMapEvent(com);
 		default:
 			return true;
 	}
@@ -5140,8 +5140,12 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 	return true;
 }
 
-bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
+bool Game_Interpreter::CommandCloneMapEvent(lcf::rpg::EventCommand const& com) {
 	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	if (com.parameters.size() < 8) {
 		return true;
 	}
 
@@ -5149,7 +5153,11 @@ bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
 	int src_event = ValueOrVariable(com.parameters[2], com.parameters[3]);
 	int target_x = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int target_y = ValueOrVariable(com.parameters[6], com.parameters[7]);
-	int target_event = ValueOrVariable(com.parameters[8], com.parameters[9]);
+
+	int target_event = 0;
+	if (com.parameters.size() >= 10) {
+		target_event = ValueOrVariable(com.parameters[8], com.parameters[9]);
+	}
 
 	std::string target_name = ToString(Game_Interpreter::CommandStringOrVariable(com, 10, 11));
 
@@ -5157,6 +5165,8 @@ bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
 		src_map = Game_Map::GetMapId();
 	} else {
 		auto* request = Game_Map::RequestMap(src_map);
+		request->Start();
+
 		if (!request->IsReady()) {
 			// Download the map and try again
 			_async_op = AsyncOp::MakeYieldRepeat();
@@ -5164,7 +5174,7 @@ bool Game_Interpreter::CommandSpawnMapEvent(lcf::rpg::EventCommand const& com) {
 		}
 	}
 
-	Game_Map::CloneMapEvent(src_map, src_event, target_x, target_y, target_event, target_name);
+	_async_op = AsyncOp::MakeCloneMapEvent(target_name, src_event, target_event, src_map, target_x, target_y);
 
 	return true;
 }
