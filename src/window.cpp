@@ -61,6 +61,8 @@ void Window::Draw(Bitmap& dst) {
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > dst.GetWidth() || y < -height || y > dst.GetHeight()) return;
 
+	if (back_opacity == 0) dst.ClearRect(Rect(0, 0, width, height)); // WORKAROUND: This may be exclusive to stringPic without backgrounds.
+
 	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
 			if (background_needs_refresh) RefreshBackground();

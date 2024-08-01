@@ -835,6 +835,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case static_cast<Game_Interpreter::Cmd>(2053): //Cmd::EasyRpg_SetInterpreterFlag
 			return CommandEasyRpgSetInterpreterFlag(com);
+		case static_cast<Cmd>(2058): //Cmd::EasyRpg_StringPicMenu
+			return CommandStringPicMenu(com);
 		default:
 			return true;
 	}
@@ -5197,4 +5199,204 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 	}
 
 	return value;
+}
+
+bool Game_Interpreter::CommandStringPicMenu(const lcf::rpg::EventCommand& com) {
+	const int mode = com.parameters[0];
+	const int strpic_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	const int output_var_current_item = ValueOrVariable(com.parameters[3], com.parameters[4]);
+	const int output_var_input_state = ValueOrVariable(com.parameters[5], com.parameters[6]);
+
+	if (strpic_index <= 0) {
+		Output::Warning("CommandStringPicMenu: Requested invalid picture id ({})", strpic_index);
+		return true;
+	}
+	auto& window_data = Main_Data::game_windows->GetWindow(strpic_index);
+
+	if (!window_data.window) {
+		Output::Warning("String Picture Menu - String Picture {} doesn't exist", strpic_index);
+		return true;
+	}
+
+	auto& window = window_data.window;
+	auto& data = window_data.data;
+	auto& game_system = Main_Data::game_system;
+
+	struct SystemProperties {
+		std::string name;
+		lcf::rpg::System::Stretch stretch;
+		lcf::rpg::System::Font font;
+	};
+
+	const SystemProperties current_system = {
+		ToString(game_system->GetSystemName()),
+		static_cast<lcf::rpg::System::Stretch>(game_system->GetMessageStretch()),
+		static_cast<lcf::rpg::System::Font>(game_system->GetFontId())
+	};
+
+	const SystemProperties strpic_system = {
+		ToString(data.system_name),
+		static_cast<lcf::rpg::System::Stretch>(!bool(data.message_stretch)),
+		current_system.font
+	};
+
+	auto UpdateVariables = [&](int current_item, int input_state) {
+		if (output_var_current_item > 0) {
+			if (current_item == -2) current_item = -1;
+			Main_Data::game_variables->Set(output_var_current_item, current_item);
+			Game_Map::SetNeedRefresh(true);
+		}
+		if (output_var_input_state > 0) {
+			Main_Data::game_variables->Set(output_var_input_state, input_state);
+			Game_Map::SetNeedRefresh(true);
+		}
+		};
+
+	auto GetRealChoiceId = [&](int ui_choice_index, int indent) { //Gets a choice ID from a "Show Choices" command bellow this command.
+		auto& frame = GetFrame();
+		const auto& commands = frame.commands;
+		auto& current_index = frame.current_command;
+
+		if (ui_choice_index == -2) {
+			for (size_t idx = current_index + 1; idx < commands.size(); idx++) {
+				const auto& command = commands[idx];
+				if (static_cast<Cmd>(command.code) != Cmd::ShowChoiceOption) continue;
+				if (command.indent != indent) break;
+				current_index = idx + 1;
+			}
+			return commands[current_index - 1].parameters[0];
+		}
+
+		int option_count = 0;
+		for (size_t idx = current_index + 1; idx < commands.size(); idx++) {
+			const auto& command = commands[idx];
+			if (static_cast<Cmd>(command.code) != Cmd::ShowChoiceOption) continue;
+			if (command.indent != indent) break;
+
+			if (ui_choice_index != -1 && option_count == ui_choice_index) {
+				current_index = idx + 1;
+				return command.parameters[0];
+			}
+			option_count++;
+		}
+
+		current_index++;
+		return ui_choice_index;
+		};
+
+	auto HandleMenuSelection = [&]() -> bool {
+		auto& frame = GetFrame();
+		const auto& commands = frame.commands;
+		auto& current_index = frame.current_command;
+		int indent = commands[current_index].indent;
+		int ui_choice_index = -1;
+
+		const auto& choice_controller = (current_index + 1 < commands.size()) ?
+			commands[current_index + 1] :
+			commands[current_index];
+
+		bool has_choice_list = (static_cast<Cmd>(choice_controller.code) == Cmd::ShowChoice);
+
+		UpdateVariables(window->GetIndex(), 0);
+
+		auto ProcessSelection = [&](int input_state, int sound) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(sound));
+			int real_choice_id = GetRealChoiceId(ui_choice_index, indent);
+			UpdateVariables(ui_choice_index == -1 ? window->GetIndex() : ui_choice_index, input_state);
+			//Output::Debug("Selected choice: UI index {} - real Choice ID {}", ui_choice_index, real_choice_id);
+			window->SetActive(false);
+			return true;
+			};
+
+		if (Input::IsTriggered(Input::DECISION)) {
+			ui_choice_index = window->GetIndex();
+			return ProcessSelection(1, Main_Data::game_system->SFX_Decision);
+		}
+		else if (Input::IsTriggered(Input::CANCEL)) {
+			if (has_choice_list) {
+				ui_choice_index = (choice_controller.parameters[0] == 5) ? -2 : choice_controller.parameters[0] - 1; // -2 means that cancel has a branch
+				if (ui_choice_index == -1) return false;
+			}
+			return ProcessSelection(-1, Main_Data::game_system->SFX_Cancel);
+		}
+		return false;
+		};
+
+	if (mode == 0) { // ENABLE MENU
+		if (!window->GetActive()) {
+			int max_item = 0;
+			for (const auto& text_data : data.texts) {
+				auto pending_message = Main_Data::game_windows->GeneratePendingMessage(ToString(text_data.text));
+				const auto& lines = pending_message.GetLines();
+
+				bool use_substring_mode = false;
+
+				// Detect mode by checking for "\/" in the entire text
+				for (const auto& line : lines) {
+					if (line.find("\\/") != std::string::npos) {
+						use_substring_mode = true;
+						break;
+					}
+				}
+
+				// Now apply the appropriate counting method
+				for (const auto& line : lines) {
+					std::stringstream ss(line);
+					std::string sub_line;
+
+					while (Utils::ReadLine(ss, sub_line)) {
+						if (use_substring_mode) {
+							size_t pos = 0;
+							int count = 0;
+							while ((pos = sub_line.find("\\/", pos)) != std::string::npos) {
+								count++;
+								if (count % 2 != 0) {  // Check if count is odd
+									max_item++;
+								}
+								pos += 2; // Move past the found substring
+							}
+						}
+						else {
+							max_item++; // Increment once per sub_line in original mode
+						}
+
+						// Output::Warning("{}", sub_line);
+					}
+				}
+			}
+
+			window->SetItemMax(max_item);
+			//window->SetColumnMax(2); // TODO: is there an easy way to put text near cursor rects?
+			if (data.texts.empty()) {
+				Output::Warning("String Picture Menu - String Picture {} is not valid", strpic_index);
+				return true;
+			}
+
+			int item_height = data.texts[0].font_size + 4;
+			int item_spacing = data.texts[0].line_spacing;
+
+			window->SetMenuItemHeight(item_height);
+			window->SetMenuItemLineSpacing(item_spacing);
+
+			if (window->GetIndex() == -1) window->SetIndex(0);
+
+			window->SetActive(true);
+			UpdateVariables(window->GetIndex(), 0);
+			return false;
+		}
+
+		//WORKAROUND: I have to flicker between 2 systems to set menu visuals as current stringpic menu.
+		game_system->SetSystemGraphic(strpic_system.name, strpic_system.stretch, strpic_system.font);
+		window->Update();
+		game_system->SetSystemGraphic(current_system.name, current_system.stretch, current_system.font);
+
+		window->SetStretch(strpic_system.stretch);
+		return HandleMenuSelection();
+	}
+	else if (mode == 1) { // DISABLE MENU
+		window->SetIndex(-1);
+		window->SetActive(false);
+	}
+
+	return true;
 }
