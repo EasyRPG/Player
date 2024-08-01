@@ -292,7 +292,8 @@ protected:
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
-	bool CommandCloneMapEvent(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com);
 
 	void SetSubcommandIndex(int indent, int idx);
 	uint8_t& ReserveSubcommandIndex(int indent);

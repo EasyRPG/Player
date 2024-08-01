@@ -788,7 +788,9 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
 		case static_cast<Cmd>(2056): //EasyRPG_CloneMapEvent
-			return CommandCloneMapEvent(com);
+			return CommandEasyRpgCloneMapEvent(com);
+		case static_cast<Cmd>(2057): //EasyRPG_DestroyMapEvent
+			return CommandEasyRpgDestroyMapEvent(com);
 		default:
 			return true;
 	}
@@ -808,7 +810,10 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (!evnt) {
-			Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
+			if (!Player::HasEasyRpgExtensions()) {
+				// Destroy Map Event triggers this sanity check
+				Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
+			}
 		} else if (main_flag) {
 			evnt->OnFinishForegroundEvent();
 		}
@@ -5013,7 +5018,7 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 	return true;
 }
 
-bool Game_Interpreter::CommandCloneMapEvent(lcf::rpg::EventCommand const& com) {
+bool Game_Interpreter::CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com) {
 	if (!Player::HasEasyRpgExtensions()) {
 		return true;
 	}
@@ -5048,6 +5053,22 @@ bool Game_Interpreter::CommandCloneMapEvent(lcf::rpg::EventCommand const& com) {
 	}
 
 	_async_op = AsyncOp::MakeCloneMapEvent(target_name, src_event, target_event, src_map, target_x, target_y);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	if (com.parameters.size() < 2) {
+		return true;
+	}
+
+	int target_event = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	_async_op = AsyncOp::MakeDestroyMapEvent(target_event);
 
 	return true;
 }
