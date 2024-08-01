@@ -94,6 +94,9 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	if (!config_path.empty()) {
 		config_file = FileFinder::MakePath(config_path, config_name);
 	}
+	else if (FileFinder::Root().Exists(config_name)) {
+		config_file = ToString(config_name);
+	}
 
 	auto cli_config = FileFinder::Root().OpenOrCreateInputStream(config_file);
 	if (!cli_config) {
