@@ -486,6 +486,11 @@ bool Game_Map::DestroyMapEvent(const int event_id) {
 
 	FixUnderlyingEventReferences();
 
+	if (GetInterpreter().GetOriginalEventId() == event_id) {
+		// Prevent triggering "invalid event on stack" sanity check
+		GetInterpreter().ClearOriginalEventId();
+	}
+
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 	scene->spriteset->Refresh();
 	SetNeedRefresh(true);

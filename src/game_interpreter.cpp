@@ -810,10 +810,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (!evnt) {
-			if (!Player::HasEasyRpgExtensions()) {
-				// Destroy Map Event triggers this sanity check
-				Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
-			}
+			Output::Error("Call stack finished with invalid event id {}. This can be caused by a vehicle teleport?", event_id);
 		} else if (main_flag) {
 			evnt->OnFinishForegroundEvent();
 		}

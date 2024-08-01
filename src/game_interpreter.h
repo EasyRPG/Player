@@ -106,6 +106,12 @@ public:
 	/** @return the event_id of the event at the base of the call stack */
 	int GetOriginalEventId() const;
 
+	/**
+	 * Sets the ID of the event at the base of the call stack to 0.
+	 * Used by DestroyMapEvent to prevent triggering a sanity check when the event is destroyed.
+	 */
+	void ClearOriginalEventId();
+
 	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
 	bool IsAsyncPending();
 
@@ -370,6 +376,12 @@ inline int Game_Interpreter::GetCurrentEventId() const {
 
 inline int Game_Interpreter::GetOriginalEventId() const {
 	return !_state.stack.empty() ? _state.stack.front().event_id : 0;
+}
+
+inline void Game_Interpreter::ClearOriginalEventId() {
+	if (!_state.stack.empty()) {
+		_state.stack.front().event_id = 0;
+	}
 }
 
 inline int Game_Interpreter::GetLoopCount() const {

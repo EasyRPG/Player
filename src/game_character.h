@@ -1379,6 +1379,9 @@ inline Game_CharacterDataStorage<T>::Game_CharacterDataStorage(Game_CharacterDat
 template <typename T>
 inline Game_CharacterDataStorage<T>& Game_CharacterDataStorage<T>::operator=(Game_CharacterDataStorage&& o) noexcept
 {
+	auto* base = static_cast<Game_Character*>(this);
+	*base = std::move(o);
+
 	if (this != &o) {
 		_data = std::move(o._data);
 		Game_Character::_data = &this->_data;
