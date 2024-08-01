@@ -45,7 +45,8 @@ class AsyncOp {
 			eLoad,
 			eYield,
 			eYieldRepeat,
-			eCloneMapEvent
+			eCloneMapEvent,
+			eDestroyMapEvent
 		};
 
 		AsyncOp() = default;
@@ -85,6 +86,9 @@ class AsyncOp {
 
 		/** @return a clone map event async operation */
 		static AsyncOp MakeCloneMapEvent(std::string name, int src_event_id, int target_event_id, int map_id, int x, int y);
+
+		/** @return a destroy map event async operation */
+		static AsyncOp MakeDestroyMapEvent(int target_event_id);
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -142,7 +146,7 @@ class AsyncOp {
 
 		/**
 		 * @return the event id of the event being created
-		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 * @pre If GetType() is not eCloneMapEvent or eDestroyMapEvent, the return value is undefined.
 		 */
 		int GetTargetEventId() const;
 
@@ -231,7 +235,7 @@ inline int AsyncOp::GetSourceEventId() const {
 }
 
 inline int AsyncOp::GetTargetEventId() const {
-	assert(GetType() == eCloneMapEvent);
+	assert(GetType() == eCloneMapEvent || GetType() == eDestroyMapEvent);
 	return _args[1];
 }
 
@@ -311,6 +315,10 @@ inline AsyncOp AsyncOp::MakeYieldRepeat() {
 
 inline AsyncOp AsyncOp::MakeCloneMapEvent(std::string name, int src_event_id, int target_event_id, int map_id, int x, int y) {
 	return AsyncOp(eCloneMapEvent, name, src_event_id, target_event_id, map_id, x, y);
+}
+
+inline AsyncOp AsyncOp::MakeDestroyMapEvent(int target_event_id) {
+	return AsyncOp(eDestroyMapEvent, 0, target_event_id);
 }
 
 #endif
