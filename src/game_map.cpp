@@ -292,7 +292,7 @@ void Game_Map::SetupFromSave(
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
-std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
+std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	std::unique_ptr<lcf::rpg::Map> map;
 
 	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
@@ -342,40 +342,179 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::loadMapFile(int map_id) {
 
 void Game_Map::SetupCommon() {
 	if (!Tr::GetCurrentTranslationId().empty()) {
-		// Build our map translation id.
-		std::stringstream ss;
-		ss << "map" << std::setfill('0') << std::setw(4) << GetMapId() << ".po";
-
-		// Translate all messages for this map
-		Player::translation.RewriteMapMessages(ss.str(), *map);
+		TranslateMapMessages(GetMapId(), *map);
 	}
 	SetNeedRefresh(true);
 
 	PrintPathToMap();
 
-	// Restart all common events after translation change
-	// Otherwise new strings are not applied
 	if (translation_changed) {
 		InitCommonEvents();
 	}
 
-	// Create the map events
+	CreateMapEvents();
+}
+
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name) {
+	std::unique_ptr<lcf::rpg::Map> source_map_storage;
+	const lcf::rpg::Map* source_map;
+
+	if (src_map_id == GetMapId()) {
+		source_map = &GetMap();
+	} else {
+		source_map_storage = Game_Map::LoadMapFile(src_map_id);
+		source_map = source_map_storage.get();
+
+		if (source_map_storage == nullptr) {
+			Output::Warning("CloneMapEvent: Invalid source map ID {}", src_map_id);
+			return false;
+		}
+
+		if (!Tr::GetCurrentTranslationId().empty()) {
+			TranslateMapMessages(src_map_id, *source_map_storage);
+		}
+	}
+
+	const lcf::rpg::Event* source_event = FindEventById(source_map->events, src_event_id);
+	if (source_event == nullptr) {
+		Output::Warning("CloneMapEvent: Event ID {} not found on source map {}", src_event_id, src_map_id);
+		return false;
+	}
+
+	lcf::rpg::Event new_event = *source_event;
+	if (target_event_id > 0) {
+		DestroyMapEvent(target_event_id);
+		new_event.ID = target_event_id;
+	} else {
+		new_event.ID = GetNextAvailableEventId();
+	}
+	new_event.x = target_x;
+	new_event.y = target_y;
+
+	if (!target_name.empty()) {
+		new_event.name = lcf::DBString(target_name);
+	}
+
+	map->events.push_back(new_event);
+	std::sort(map->events.begin(), map->events.end(), [](const auto& e, const auto& e2) {
+		return e.ID < e2.ID;
+	});
+
+	events.emplace_back(GetMapId(), &map->events.back());
+	std::sort(events.begin(), events.end(), [](const auto& e, const auto& e2) {
+		return e.GetId() < e2.GetId();
+	});
+
+	FixUnderlyingEventReferences();
+
+	AddEventToCache(new_event);
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	scene->spriteset->Refresh();
+	SetNeedRefresh(true);
+
+	return true;
+}
+
+bool Game_Map::DestroyMapEvent(const int event_id) {
+	const lcf::rpg::Event* event = FindEventById(map->events, event_id);
+
+	if (event == nullptr) {
+		Output::Warning("DestroyMapEvent: Event ID {} not found on current map", event_id);
+		return true;
+	}
+
+	// Remove event from cache
+	//	for (auto& pg : event->pages) {
+	//		if (pg.condition.flags.switch_a) {
+	//			events_cache_by_switch[pg.condition.switch_a_id].RemoveEvent(*event);
+	//		}
+	//		if (pg.condition.flags.switch_b) {
+	//			events_cache_by_switch[pg.condition.switch_b_id].RemoveEvent(*event);
+	//		}
+	//		if (pg.condition.flags.variable) {
+	//			events_cache_by_variable[pg.condition.variable_id].RemoveEvent(*event);
+	//		}
+	//	}
+
+	// Remove event from events vector
+	for (auto it = events.begin(); it != events.end(); ++it) {
+		if (it->GetId() == event_id) {
+			events.erase(it);
+			break;
+		}
+	}
+
+	// Remove event from map
+	for (auto it = map->events.begin(); it != map->events.end(); ++it) {
+		if (it->ID == event_id) {
+			map->events.erase(it);
+			break;
+		}
+	}
+
+	FixUnderlyingEventReferences();
+
+	if (GetInterpreter().GetOriginalEventId() == event_id) {
+		// Prevent triggering "invalid event on stack" sanity check
+		GetInterpreter().ClearOriginalEventId();
+	}
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	scene->spriteset->Refresh();
+	SetNeedRefresh(true);
+
+	return true;
+}
+
+void Game_Map::TranslateMapMessages(int mapId, lcf::rpg::Map& map) {
+	std::stringstream ss;
+	ss << "map" << std::setfill('0') << std::setw(4) << mapId << ".po";
+	Player::translation.RewriteMapMessages(ss.str(), map);
+}
+
+void Game_Map::CreateMapEvents() {
 	events.reserve(map->events.size());
 	for (auto& ev : map->events) {
 		events.emplace_back(GetMapId(), &ev);
+		AddEventToCache(ev);
+	}
+}
 
-		for (const auto& pg : ev.pages) {
-			if (pg.condition.flags.switch_a) {
-				AddEventToSwitchCache(ev, pg.condition.switch_a_id);
-			}
-			if (pg.condition.flags.switch_b) {
-				AddEventToSwitchCache(ev, pg.condition.switch_b_id);
-			}
-			if (pg.condition.flags.variable) {
-				AddEventToVariableCache(ev, pg.condition.variable_id);
-			}
+void Game_Map::FixUnderlyingEventReferences() {
+	// Update references because modifying the vector can reallocate
+	size_t idx = 0;
+	for (auto& ev : events) {
+		ev.SetUnderlyingEvent(&map->events.at(idx++));
+	}
+}
+
+void Game_Map::AddEventToCache(lcf::rpg::Event& ev) {
+	for ( auto& pg : ev.pages) {
+		if (pg.condition.flags.switch_a) {
+			AddEventToSwitchCache(ev, pg.condition.switch_a_id);
+		}
+		if (pg.condition.flags.switch_b) {
+			AddEventToSwitchCache(ev, pg.condition.switch_b_id);
+		}
+		if (pg.condition.flags.variable) {
+			AddEventToVariableCache(ev, pg.condition.variable_id);
 		}
 	}
+}
+
+const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id) {
+	auto it = std::lower_bound(events.begin(), events.end(), event_id, [](const lcf::rpg::Event& e, int w) {
+		return e.ID < w;
+	});
+	if (it != events.end() && it->ID == event_id) {
+		return &*it;
+	}
+	return nullptr;
+}
+
+int Game_Map::GetNextAvailableEventId() {
+	return map->events.back().ID + 1;
 }
 
 void Game_Map::AddEventToSwitchCache(lcf::rpg::Event& ev, int switch_id) {
@@ -1759,7 +1898,9 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	Player::translation.RequestAndAddMap(map_id);
 #endif
 
-	return AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	auto* request = AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	request->SetImportantFile(true);
+	return request;
 }
 
 // Parallax

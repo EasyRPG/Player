@@ -104,13 +104,23 @@ namespace Game_Map {
 	/** Disposes Game_Map. */
 	void Dispose();
 
+	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name);
+	bool DestroyMapEvent(const int event_id);
+
+	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
+	void CreateMapEvents();
+	void FixUnderlyingEventReferences();
+	void AddEventToCache(lcf::rpg::Event& ev);
+	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
+	int GetNextAvailableEventId();
+
 	/**
 	 * Loads the map from disk
 	 *
 	 * @param map_id the id of the map to load
 	 * @return the map, or nullptr if it couldn't be loaded
 	 */
-	std::unique_ptr<lcf::rpg::Map> loadMapFile(int map_id);
+	std::unique_ptr<lcf::rpg::Map> LoadMapFile(int map_id);
 
 	/**
 	 * Setups a new map.
