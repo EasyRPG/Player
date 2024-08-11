@@ -45,4 +45,12 @@ Input::KeyNamesArray Input::GetInputKeyNames() {
 
 void Input::GetSupportedConfig(Game_ConfigInput& cfg) {}
 
+
+#include "platform/sdl/axis.h"
+SdlAxis Input::GetSdlAxis() {
+	return {
+		0, 1, 2, 3, 4, 5, false, false
+	};
+}
+
 #endif
