@@ -259,9 +259,6 @@ void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order, int render_ox, int render_
 			if (loop_h) map_x = mod(map_x, width);
 			if (loop_v) map_y = mod(map_y, height);
 
-			int map_draw_x = x * TILE_SIZE - mod_ox;
-			int map_draw_y = y * TILE_SIZE - mod_oy;
-
 			bool out_of_bounds =
 				map_x < 0 || map_x >= width ||
 				map_y < 0 || map_y >= height;
@@ -269,6 +266,9 @@ void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order, int render_ox, int render_
 			if (out_of_bounds) {
 				continue;
 			}
+
+			int map_draw_x = x * TILE_SIZE - mod_ox;
+			int map_draw_y = y * TILE_SIZE - mod_oy;
 
 			// Get the tile data
 			TileData &tile = GetDataCache(map_x, map_y);
