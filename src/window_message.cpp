@@ -152,12 +152,17 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	int num_lines = 0;
 	auto append = [&](const std::vector<Text::Run>& runs) {
-		if (runs.back().direction == Text::Direction::RTL) {
-			text_runs.insert(text_runs.end(), runs.rbegin(), runs.rend());
-			line_direction.push_back(Text::Direction::RTL);
-		} else {
-			text_runs.insert(text_runs.end(), runs.begin(), runs.end());
+		if (runs.empty()) {
 			line_direction.push_back(Text::Direction::LTR);
+		} else {
+			if (runs.back().direction == Text::Direction::RTL) {
+				text_runs.insert(text_runs.end(), runs.rbegin(), runs.rend());
+				line_direction.push_back(Text::Direction::RTL);
+			}
+			else {
+				text_runs.insert(text_runs.end(), runs.begin(), runs.end());
+				line_direction.push_back(Text::Direction::LTR);
+			}
 		}
 
 		bool force_page_break = false;
@@ -199,7 +204,9 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		}
 	//}
 
-	if (text_runs.empty() || text_runs.back().text.back() != '\f') {
+	if (text_runs.empty()) {
+		text_runs.push_back({"\f", Text::Direction::LTR});
+	} else if (text_runs.back().text.back() != '\f') {
 		text_runs.back().text += '\f';
 	}
 
@@ -611,7 +618,7 @@ void Window_Message::UpdateMessage() {
 					continue;
 				}
 
-				shape_ret.erase(shape_ret.end());
+				shape_ret.pop_back();
 			}
 
 			continue;
