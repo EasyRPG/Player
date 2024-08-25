@@ -45,6 +45,8 @@ Game_Screen::~Game_Screen() {
 
 void Game_Screen::SetSaveData(lcf::rpg::SaveScreen screen)
 {
+	CancelBattleAnimation();
+
 	data = std::move(screen);
 }
 
