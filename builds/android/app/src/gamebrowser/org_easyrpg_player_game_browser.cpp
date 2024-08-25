@@ -201,9 +201,10 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 
 	jmethodID jgame_constructor = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
 
+	std::string root_path = FileFinder::GetFullFilesystemPath(root);
 	bool game_in_main_dir = false;
 	if (fs_list.size() == 1) {
-		if (FileFinder::GetFullFilesystemPath(root) == FileFinder::GetFullFilesystemPath(fs_list[0])) {
+		if (root_path == FileFinder::GetFullFilesystemPath(fs_list[0])) {
 			game_in_main_dir = true;
 		}
 	}
@@ -224,13 +225,24 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 		std::string save_path;
 		if (!fs.IsFeatureSupported(Filesystem::Feature::Write)) {
 			// Is an archive and needs a redirected save path
-			save_path = game_dir_name;
+			// Get archive name
+			save_path = jstring_to_string(env, jmain_dir_name);
 
-			// compatibility with original GameScanner Java code (everything after the extension dot is removed)
-			size_t ext = save_path.find('.');
+			// Compatibility with original GameScanner Java code
+			// Everything after the extension is removed
+			size_t ext = save_path.find_last_of('.');
 			if (ext != std::string::npos) {
 				save_path = save_path.substr(0, ext);
 			}
+
+			// Append subdirectory when the archive contains more than one game
+			if (fs_list.size() > 1) {
+				save_path += FileFinder::GetFullFilesystemPath(fs).substr(root_path.size());
+			}
+
+			// Recursion is annoying in SAF so flatten the path
+			// SAF already does this replacement but better do not rely on this implementation detail
+			save_path = Utils::ReplaceAll(save_path, "/", "_");
 		}
 
 		/* Obtaining of the game_dir_name image */
