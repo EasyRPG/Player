@@ -34,16 +34,24 @@ extern "C" {
 
 // To prevent race conditions use EpAndroid::schedule for everything that is not just a variable read/write
 
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame
-  (JNIEnv *, jclass)
-{
-	Player::exit_flag = true;
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame(JNIEnv *, jclass) {
+	EpAndroid::schedule([]() {
+		Player::exit_flag = true;
+	});
 }
 
-JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_setFastForwardMultiplier
-  (JNIEnv *, jclass, jint ji)
-{
-	Player::speed_modifier_a = ji;
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame(JNIEnv *, jclass) {
+	EpAndroid::schedule([]() {
+		Player::reset_flag = true;
+	});
+}
+
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps(JNIEnv *, jclass) {
+	EpAndroid::schedule([]() {
+		if (DisplayUi) {
+			DisplayUi->ToggleShowFps();
+		}
+	});
 }
 
 JNIEXPORT void JNICALL

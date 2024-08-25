@@ -4,10 +4,14 @@
 		  android:title="@string/settings" />
     <item android:id="@+id/edit_layout"
           android:title="@string/edit_layout" />
+    <item android:id="@+id/toggle_fps"
+        android:title="@string/toggle_fps" />
 	<item android:id="@+id/toggle_ui"
 		android:title="@string/toggle_ui" />
     <item android:id="@+id/report_bug"
           android:title="@string/report_bug" />
+    <item android:id="@+id/reset_game"
+        android:title="@string/reset_game" />
     <item android:id="@+id/end_game"
           android:title="@string/end_game" />
 </menu>

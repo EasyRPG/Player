@@ -54,8 +54,8 @@ static std::string normalize_path(StringView path) {
 
 ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, StringView enc) :
 	Filesystem(base_path, parent_fs) {
-	auto zipfile = parent_fs.OpenInputStream(GetPath());
-	if (!zipfile) {
+	zip_is = parent_fs.OpenInputStream(GetPath());
+	if (!zip_is) {
 		return;
 	}
 
@@ -70,18 +70,18 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 	bool is_utf8;
 
 	encoding = ToString(enc);
-	if (!FindCentralDirectory(zipfile, central_directory_offset, central_directory_size, central_directory_entries)) {
+	if (!FindCentralDirectory(zip_is, central_directory_offset, central_directory_size, central_directory_entries)) {
 		Output::Debug("ZipFS: {} is not a valid archive", GetPath());
 		return;
 	}
 
 	if (encoding.empty()) {
-		zipfile.seekg(central_directory_offset);
+		zip_is.seekg(central_directory_offset);
 		std::stringstream filename_guess;
 
 		// Guess the encoding first
 		int items = 0;
-		while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
+		while (ReadCentralDirectoryEntry(zip_is, filepath, entry, is_utf8)) {
 			// Only consider Non-ASCII & Non-UTF8 for encoding detection
 			// Skip directories, files already contain the paths
 			if (is_utf8 || filepath.back() == '/' || Utils::StringIsAscii(filepath)) {
@@ -124,13 +124,13 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 	}
 	bool enc_is_utf8 = encoding == "UTF-8";
 
-	zipfile.clear();
-	zipfile.seekg(central_directory_offset);
+	zip_is.clear();
+	zip_is.seekg(central_directory_offset);
 
 	lcf::Encoder detected_encoder(encoding);
 	lcf::Encoder cp437_encoder("437");
 	std::vector<std::string> paths;
-	while (ReadCentralDirectoryEntry(zipfile, filepath, entry, is_utf8)) {
+	while (ReadCentralDirectoryEntry(zip_is, filepath, entry, is_utf8)) {
 		if (is_utf8 || enc_is_utf8 || Utils::StringIsAscii(filepath)) {
 			// No reencoding necessary
 			filepath_cp437.clear();
@@ -358,11 +358,11 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 	std::string path_normalized = normalize_path(path);
 	auto central_entry = Find(path);
 	if (central_entry && !central_entry->is_directory) {
-		auto zip_file = GetParent().OpenInputStream(GetPath());
-		zip_file.seekg(central_entry->fileoffset);
+		zip_is.clear();
+		zip_is.seekg(central_entry->fileoffset);
 		StorageMethod method;
 		ZipEntry local_entry = {};
-		if (ReadLocalHeader(zip_file, method, local_entry)) {
+		if (ReadLocalHeader(zip_is, method, local_entry)) {
 			if (central_entry->compressed_size != local_entry.compressed_size) {
 				if (local_entry.compressed_size == 0) {
 					local_entry.compressed_size = central_entry->compressed_size;
@@ -386,15 +386,15 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 				return nullptr;
 			}
 
-			zip_file.seekg(central_entry->fileoffset + local_entry.fileoffset);
+			zip_is.seekg(central_entry->fileoffset + local_entry.fileoffset);
 			if (method == StorageMethod::Plain) {
 				auto data = std::vector<uint8_t>(local_entry.uncompressed_size);
-				zip_file.read(reinterpret_cast<char*>(data.data()), data.size());
+				zip_is.read(reinterpret_cast<char*>(data.data()), data.size());
 				return new Filesystem_Stream::InputMemoryStreamBuf(std::move(data));
 			} else if (method == StorageMethod::Deflate) {
 				std::vector<uint8_t> comp_buf;
 				comp_buf.resize(local_entry.compressed_size);
-				zip_file.read(reinterpret_cast<char*>(comp_buf.data()), comp_buf.size());
+				zip_is.read(reinterpret_cast<char*>(comp_buf.data()), comp_buf.size());
 				auto dec_buf = std::vector<uint8_t>(local_entry.uncompressed_size);
 				z_stream zlib_stream = {};
 				zlib_stream.next_in = reinterpret_cast<Bytef*>(comp_buf.data());

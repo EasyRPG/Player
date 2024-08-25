@@ -86,6 +86,11 @@ Game_ConfigAudio AudioInterface::GetConfig() const {
 	acfg.fmmidi_midi.SetOptionVisible(false);
 #endif
 
+#ifdef __ANDROID__
+	// FIXME: URI encoded SAF paths are not supported
+	acfg.soundfont.SetOptionVisible(false);
+#endif
+
 	vGetConfig(acfg);
 	return acfg;
 }

@@ -86,13 +86,13 @@
     <string name="no_games_found_and_explanation_android_30">No s\'han trobat jocs de RPG Maker 2000/2003.
 \n
 \nLa carpeta de EasyRPG que has seleccionat conté una carpeta \"games\". Fes servir una aplicació de gestió de fitxers per posar els jocs en aquesta carpeta.
-\nEls jocs es poden posar encarpetes o en arxius ZIP.
+\nEls jocs es poden posar encarpetes o en arxius ZIP/LZH.
 \n
 \nLa carpeta EasyRPG es pot canviar a la configuració.</string>
     <string name="open_games_folder">Obre la carpeta de jocs (\"games\")</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Col·loca els jocs de RPG Maker 2000/2003 a subcarpetes de la carpeta de jocs (\"games\").
-\nEls jocs han de ser descomprimits o en un arxiu ZIP.
-\nEls fitxers RAR, LZH i EXE NO estan suportats.
+\nEls jocs han de ser descomprimits o en un arxiu ZIP/LZH.
+\nEls fitxers RAR, 7z i EXE NO estan suportats.
 \n
 \nCaracterístiques opcionals (disponibles a la configuració):
 \n- Es pot afegir el RTP (arxius comuns usats per alguns jocs)
@@ -100,10 +100,9 @@
     <string name="easyrpg_folders">Carpetes de l\'EasyRPG</string>
     <string name="screen_size">Escalat de la pantalla:</string>
     <string name="settings_custom_soundfont">Soundfont personalitzat:</string>
-    <string name="open_the_sound_fonts_folder">Obre la carpeta de soundfonts</string>
+    <string name="open_the_sound_fonts_folder">Obre la carpeta \"soundfonts\"</string>
     <string name="settings_soundfont_explanation">Poseu els soundfont en format SF2 a la carpeta \"soundfonts\". Els soundfont modifiquen com sona la música MIDI.</string>
-    <string name="settings_soundfont_restart_app">Surt i reinicia l\'aplicació després de seleccionar un soundfont.</string>
-    <string name="settings_soundfont_found">Soundfonts trobats:</string>
+    <string name="settings_soundfont_found">Soundfonts:</string>
     <string name="settings_default_soundfont">Soundfont predeterminat</string>
     <string name="select_the_games_folder">Selecciona la carpeta de l\'EasyRPG</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player requereix una carpeta exclusiva. Després de tocar el botó, se\'t demanarà que seleccionis una carpeta.
@@ -116,7 +115,7 @@
     <string name="rtp_explanation">El RTP proporciona fitxers comuns utilitzats per alguns jocs.
 \nCol·loca el RTP del RPG Maker 2000 a \"rtp/2000\" i el RTP del RPG Maker 2003 a \"rtp/2003\".
 \nTingueu en compte que habilitar el suport RTP incrementarà el temps de càrrega d\'un joc de manera significativa.</string>
-    <string name="open_rtp_folder">Obre la carpeta RTP</string>
+    <string name="open_rtp_folder">Obre la carpeta \"rtp\"</string>
     <string name="horizontal_input_layout">Disposició dels botons horitzontal (paisatge)</string>
     <string name="vertical_input_layout">Disposició dels botons vertical (retrat)</string>
     <string name="settings_edit_layout_explanation">Es poden afegir botons en editar una distribució (per exemple, un botó shift).

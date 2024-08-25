@@ -108,16 +108,15 @@
     <string name="error_games_no_rw">A pasta \"Games\" não é legível ou gravável. Selecione um local diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
     <string name="watch_explanation_video">Iniciando e adicionando jogos (Vídeo Explicativo)</string>
     <string name="easyrpg_folders">Pastas EasyRPG</string>
-    <string name="open_the_sound_fonts_folder">Abra a pasta de soundfonts</string>
-    <string name="settings_soundfont_restart_app">Por favor, saia e reinicie o aplicativo após selecionar a soundfont.</string>
-    <string name="settings_soundfont_found">Soundfonts encontrados:</string>
+    <string name="open_the_sound_fonts_folder">Abra a pasta de \"soundfonts\"</string>
+    <string name="settings_soundfont_found">Soundfonts:</string>
     <string name="settings_default_soundfont">Soundfont padrão</string>
     <string name="id_select_games_folder_explanation">O EasyRPG Player requer uma pasta única. Após tocar no botão, você será perguntado para selecionar uma pasta.
 \n
 \nSe você está usando este aplicativo pela primeira vez, não existe a pasta EasyRPG. Crie uma nova pasta EasyRPG e então selecione.
 \n
 \nSe você já usou este aplicativo antes, selecione a pasta EasyRPG existente.</string>
-    <string name="open_rtp_folder">Abra a pasta de RTP</string>
+    <string name="open_rtp_folder">Abra a pasta \"rtp\"</string>
     <string name="music_volume">Volume da música</string>
     <string name="sound_volume">Volume do efeito sonoro</string>
     <string name="error_no_games_folder">A pasta de jogos (games) não existe ou não é uma pasta. Por favor, crie manualmente ou selecione uma localização diferente para a pasta EasyRPG. A pasta EasyRPG pode ser alterada nas configurações.</string>
