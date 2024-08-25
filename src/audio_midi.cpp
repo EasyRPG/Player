@@ -18,6 +18,7 @@
 // Headers
 #include "audio_midi.h"
 #include "audio_decoder_midi.h"
+#include "audio.h"
 #include "decoder_fluidsynth.h"
 #include "decoder_fmmidi.h"
 #include "decoder_wildmidi.h"
@@ -25,8 +26,6 @@
 
 #ifdef USE_AUDIO_RESAMPLER
 #include "audio_resampler.h"
-#include "audio.h"
-
 #endif
 
 void MidiDecoder::GetFormat(int& freq, AudioDecoderBase::Format& format, int& channels) const {
