@@ -30,6 +30,8 @@ class Window_Selectable: public Window_Base {
 public:
 	Window_Selectable(int ix, int iy, int iwidth, int iheight);
 
+	std::vector<Rect> inline_rects = {};
+
 	/**
 	 * Creates the contents based on how many items
 	 * are currently in the window.
@@ -76,6 +78,12 @@ public:
 	virtual void UpdateCursorRect();
 	void Update() override;
 
+	void InlineUpdateCursorRect();
+	void InlineUpdate();
+
+	void MoveIndexVertical(int direction);
+	void MoveIndexHorizontal(int direction);
+
 	virtual void UpdateHelp();
 
 	/**
@@ -91,6 +99,13 @@ public:
 	 * @param height the menu item height.
 	 */
 	void SetMenuItemHeight(int height);
+
+	/**
+	 * Sets the menu item height.
+	*
+	* @param spacing between menu items.
+	*/
+	void SetMenuItemLineSpacing(int spacing);
 
 	/**
 	 * Allow left/right input to move cursor up/down when the selectable has only one column.
@@ -112,6 +127,7 @@ protected:
 	bool endless_scrolling = true;
 
 	int menu_item_height = 16;
+	int menu_item_line_spacing = 4;
 
 	int scroll_dir = 0;
 	int scroll_progress = 0;
