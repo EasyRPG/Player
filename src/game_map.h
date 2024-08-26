@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
+#include "async_op.h"
 #include "system.h"
 #include "game_commonevent.h"
 #include "game_event.h"
@@ -38,8 +39,6 @@
 #include <lcf/rpg/savepartylocation.h>
 #include <lcf/rpg/savevehiclelocation.h>
 #include <lcf/rpg/savecommonevent.h>
-#include "async_op.h"
-#include <player.h>
 
 class FileRequestAsync;
 struct BattleArgs;
@@ -97,11 +96,11 @@ namespace Game_Map {
 	void Dispose();
 
 	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name);
-	bool DestroyMapEvent(const int event_id);
+	bool DestroyMapEvent(const int event_id, bool update_references = true);
 
 	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
 	void CreateMapEvents();
-	void FixUnderlyingEventReferences();
+	void UpdateUnderlyingEventReferences();
 	void AddEventToCache(const lcf::rpg::Event& ev);
 	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
 	int GetNextAvailableEventId();
@@ -681,10 +680,10 @@ namespace Game_Map {
 	 * Construct a map name, either for EasyRPG or RPG Maker projects
 	 *
 	 * @param map_id The ID of the map to construct
-	 * @param isEasyRpg Is the an easyrpg (emu) project, or an RPG Maker (lmu) one?
+	 * @param is_easyrpg Is the an easyrpg (emu) project, or an RPG Maker (lmu) one?
 	 * @return The map name, as Map<map_id>.<map_extension>
 	 */
-	std::string ConstructMapName(int map_id, bool isEasyRpg);
+	std::string ConstructMapName(int map_id, bool is_easyrpg);
 
 	FileRequestAsync* RequestMap(int map_id);
 

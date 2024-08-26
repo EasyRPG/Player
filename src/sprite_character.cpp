@@ -21,6 +21,7 @@
 #include "game_map.h"
 #include "bitmap.h"
 #include "output.h"
+#include "player.h"
 
 Sprite_Character::Sprite_Character(Game_Character* character, int x_offset, int y_offset) :
 	character(character),

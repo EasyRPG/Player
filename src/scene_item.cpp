@@ -30,6 +30,7 @@
 #include "scene_teleport.h"
 #include "output.h"
 #include "transition.h"
+#include "player.h"
 
 Scene_Item::Scene_Item(int item_index) :
 	item_index(item_index) {

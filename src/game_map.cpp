@@ -414,7 +414,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 
 	lcf::rpg::Event new_event = *source_event;
 	if (target_event_id > 0) {
-		DestroyMapEvent(target_event_id);
+		DestroyMapEvent(target_event_id, false);
 		new_event.ID = target_event_id;
 	} else {
 		new_event.ID = GetNextAvailableEventId();
@@ -436,7 +436,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 		return e.GetId() < e2.GetId();
 	});
 
-	FixUnderlyingEventReferences();
+	UpdateUnderlyingEventReferences();
 
 	AddEventToCache(new_event);
 
@@ -447,7 +447,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 	return true;
 }
 
-bool Game_Map::DestroyMapEvent(const int event_id) {
+bool Game_Map::DestroyMapEvent(const int event_id, bool update_references) {
 	const lcf::rpg::Event* event = FindEventById(map->events, event_id);
 
 	if (event == nullptr) {
@@ -484,16 +484,18 @@ bool Game_Map::DestroyMapEvent(const int event_id) {
 		}
 	}
 
-	FixUnderlyingEventReferences();
+	if (update_references) {
+		UpdateUnderlyingEventReferences();
+
+		Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+		scene->spriteset->Refresh();
+		SetNeedRefresh(true);
+	}
 
 	if (GetInterpreter().GetOriginalEventId() == event_id) {
 		// Prevent triggering "invalid event on stack" sanity check
 		GetInterpreter().ClearOriginalEventId();
 	}
-
-	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-	scene->spriteset->Refresh();
-	SetNeedRefresh(true);
 
 	return true;
 }
@@ -505,12 +507,14 @@ void Game_Map::TranslateMapMessages(int mapId, lcf::rpg::Map& map) {
 }
 
 
-void Game_Map::FixUnderlyingEventReferences() {
+void Game_Map::UpdateUnderlyingEventReferences() {
 	// Update references because modifying the vector can reallocate
 	size_t idx = 0;
 	for (auto& ev : events) {
 		ev.SetUnderlyingEvent(&map->events.at(idx++));
 	}
+
+	Main_Data::game_screen->UpdateUnderlyingEventReferences();
 }
 
 const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event>& events, int eventId) {
