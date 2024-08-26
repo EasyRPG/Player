@@ -426,15 +426,17 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 		new_event.name = lcf::DBString(target_name);
 	}
 
-	map->events.push_back(new_event);
-	std::sort(map->events.begin(), map->events.end(), [](const auto& e, const auto& e2) {
-		return e.ID < e2.ID;
-	});
+	// sorted insert
+	auto insert_it = map->events.insert(
+		std::upper_bound(map->events.begin(), map->events.end(), new_event, [](const auto& e, const auto& e2) {
+			return e.ID < e2.ID;
+		}), new_event);
 
-	events.emplace_back(GetMapId(), &map->events.back());
-	std::sort(events.begin(), events.end(), [](const auto& e, const auto& e2) {
-		return e.GetId() < e2.GetId();
-	});
+	auto game_event = Game_Event(GetMapId(), &*insert_it);
+	events.insert(
+		std::upper_bound(events.begin(), events.end(), game_event, [](const auto& e, const auto& e2) {
+			return e.GetId() < e2.GetId();
+		}), Game_Event(GetMapId(), &*insert_it));
 
 	UpdateUnderlyingEventReferences();
 
