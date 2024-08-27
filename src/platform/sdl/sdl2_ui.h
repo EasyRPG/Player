@@ -65,7 +65,7 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-	void ProcessEvents() override;
+	bool ProcessEvents() override;
 	void SetScalingMode(ConfigEnum::ScalingMode) override;
 	void ToggleStretch() override;
 	void ToggleVsync() override;

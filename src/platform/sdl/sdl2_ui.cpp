@@ -532,11 +532,10 @@ void Sdl2Ui::ToggleZoom() {
 #endif
 }
 
-void Sdl2Ui::ProcessEvents() {
+bool Sdl2Ui::ProcessEvents() {
 #if defined(__WIIU__)
 		if (!WiiU_ProcessProcUI()) {
-			Player::Exit();
-			return;
+			return false;
 		}
 #endif
 
@@ -555,6 +554,8 @@ void Sdl2Ui::ProcessEvents() {
 		if (Player::exit_flag)
 			break;
 	}
+
+	return true;
 }
 
 void Sdl2Ui::SetScalingMode(ConfigEnum::ScalingMode mode) {

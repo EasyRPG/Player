@@ -217,9 +217,10 @@ CtrUi::~CtrUi() {
 	ToggleBottomScreen(true);
 }
 
-void CtrUi::ProcessEvents() {
-	if (!aptMainLoop())
-		Player::Exit();
+bool CtrUi::ProcessEvents() {
+	if (!aptMainLoop()) {
+		return false;
+	}
 
 	hidScanInput();
 	u32 input = hidKeysHeld();
@@ -324,6 +325,8 @@ void CtrUi::ProcessEvents() {
 		}
 	}
 #endif
+
+	return true;
 }
 
 void CtrUi::UpdateDisplay() {

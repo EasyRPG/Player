@@ -214,9 +214,9 @@ static void HandleErrorOutput(const std::string& err) {
 #if !defined(USE_LIBRETRO)
 		Game_Clock::SleepFor(1ms);
 #endif
-		DisplayUi->ProcessEvents();
-
-		if (Player::exit_flag) break;
+		if (!DisplayUi->ProcessEvents() || Player::exit_flag) {
+			break;
+		}
 
 		Input::Update();
 	}

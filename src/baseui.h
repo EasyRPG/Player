@@ -68,8 +68,10 @@ public:
 
 	/**
 	 * Processes events queue.
+	 *
+	 * @return When false requests an immediate Player shutdown
 	 */
-	virtual void ProcessEvents() = 0;
+	virtual bool ProcessEvents() = 0;
 
 	/**
 	 * Cleans video buffer.

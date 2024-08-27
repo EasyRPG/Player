@@ -390,7 +390,7 @@ NxUi::~NxUi() {
 	appletUnhook(&applet_hook_cookie);
 }
 
-void NxUi::ProcessEvents() {
+bool NxUi::ProcessEvents() {
 	// handle system events
 	appletMainLoop();
 
@@ -453,6 +453,8 @@ void NxUi::ProcessEvents() {
 			}
 		}
 	}
+
+	return true;
 }
 
 void NxUi::UpdateDisplay() {

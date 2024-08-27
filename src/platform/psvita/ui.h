@@ -49,7 +49,7 @@ public:
 	 */
 	/** @{ */
 	void UpdateDisplay() override;
-	void ProcessEvents() override;
+	bool ProcessEvents() override;
 	void SetScalingMode(ConfigEnum::ScalingMode) override;
 	void ToggleStretch() override;
 	void ToggleTouchUi() override;
