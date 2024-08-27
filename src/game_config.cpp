@@ -84,9 +84,15 @@ void Game_ConfigInput::Hide() {
 Game_Config Game_Config::Create(CmdlineParser& cp) {
 	Game_Config cfg;
 
+	// Set platform specific defaults
 #if USE_SDL >= 2
 	cfg.video.scaling_mode.Set(ConfigEnum::ScalingMode::Bilinear);
 #endif
+
+#if defined(__WIIU__)
+	cfg.input.gamepad_swap_ab_and_xy.Set(true);
+#endif
+
 
 	cp.Rewind();
 

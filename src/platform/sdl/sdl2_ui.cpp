@@ -1298,6 +1298,8 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 #elif defined(__WIIU__)
 	// Only makes the screen flicker
 	cfg.fullscreen.SetOptionVisible(false);
+	// WiiU always pauses apps in the background
+	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #endif
 }
 
