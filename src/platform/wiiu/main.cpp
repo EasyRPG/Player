@@ -35,6 +35,8 @@
 
 using namespace std::chrono_literals;
 
+static bool procUiExited = false;
+
 #ifdef NDEBUG
 // stubbed
 static void initLogging() {}
@@ -48,7 +50,6 @@ static void deinitLogging() {}
 static bool moduleLogInit = false;
 static bool cafeLogInit = false;
 static bool udpLogInit = false;
-static bool prodUiExited = false;
 
 static void initLogging() {
 	if (!(moduleLogInit = WHBLogModuleInit())) {
@@ -92,7 +93,7 @@ static uint32_t SaveCallback(void*) {
 bool WiiU_ProcessProcUI() {
 	ProcUIStatus status = ProcUIProcessMessages(TRUE);
 	if (status == PROCUI_STATUS_EXITING) {
-		prodUiExited = true;
+		procUiExited = true;
 		return false;
 	} else if (status == PROCUI_STATUS_RELEASE_FOREGROUND) {
 		ProcUIDrawDoneRelease();
@@ -101,13 +102,13 @@ bool WiiU_ProcessProcUI() {
 }
 
 void WiiU_Exit() {
-	Output::Debug("Shutdown Reason: {}", prodUiExited ? "HOME Menu" : "Player Exit");
+	Output::Debug("Shutdown Reason: {}", procUiExited ? "HOME Menu" : "Player Exit");
 
-    if (!prodUiExited) {
+    if (!procUiExited) {
 		// Exit was not through the Home Menu
 		// Manually launch the system menu
 		SYSLaunchMenu();
-		Game_Clock::SleepFor(std::chrono::milliseconds(10));
+		Game_Clock::SleepFor(10ms);
 		while (WiiU_ProcessProcUI()) {}
 	}
 
@@ -130,6 +131,9 @@ extern "C" int main(int argc, char* argv[]) {
 
 	const char *default_dir = "fs:/vol/external01/wiiu/apps/easyrpg-player";
 
+	char working_dir[256];
+	getcwd(working_dir, 255);
+
 	// Check if wuhb has some files inside or not
 	if(::access("fs:/vol/content/RPG_RT.lmt", F_OK) == 0) {
 		Output::Debug("Running packaged game from wuhb.");
@@ -138,14 +142,13 @@ extern "C" int main(int argc, char* argv[]) {
 		args.push_back("--project-path");
 		args.push_back(cafe_dir);
 
-		//args.push_back("--save-path");
-		//args.push_back(cafe_dir);
+		// Save directory is where the wuhb is located
+		args.push_back("--save-path");
+		args.push_back(working_dir);
 	} else if(::access(default_dir, F_OK) == 0) {
 		chdir(default_dir);
 	} else {
 		// fall back to current working directory
-		char working_dir[256];
-		getcwd(working_dir, 255);
 		args.push_back("--project-path");
 		args.push_back(working_dir);
 	}

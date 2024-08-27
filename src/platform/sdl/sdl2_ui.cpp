@@ -30,6 +30,8 @@
 #  include <SDL_system.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(__WIIU__)
+#  include "platform/wiiu/main.h"
 #endif
 #include "icon.h"
 
@@ -531,6 +533,13 @@ void Sdl2Ui::ToggleZoom() {
 }
 
 void Sdl2Ui::ProcessEvents() {
+#if defined(__WIIU__)
+		if (!WiiU_ProcessProcUI()) {
+			Player::Exit();
+			return;
+		}
+#endif
+
 	SDL_Event evnt;
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)

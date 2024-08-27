@@ -702,7 +702,7 @@ if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$" OR NINTENDO_WII
 endif()
 # Make content available (romfs/wuhb bundle)
 if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$" OR NINTENDO_WIIU)
-	option(PLAYER_BUNDLE "Embedd a directory in the executable" OFF)
+	option(PLAYER_BUNDLE "Embed a directory in the executable" OFF)
 	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
 	set(BUNDLE_ARG "_IGNORE_ME")
 	if(PLAYER_BUNDLE)

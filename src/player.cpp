@@ -31,8 +31,6 @@
 #  include <windows.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
-#elif defined(__WIIU__)
-#  include "platform/wiiu/main.h"
 #endif
 
 #include "async_handler.h"
@@ -218,12 +216,6 @@ void Player::Run() {
 	// libretro invokes the MainLoop through a retro_run-callback
 #else
 	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
-#if defined(__WIIU__)
-		if (!WiiU_ProcessProcUI()) {
-			Player::Exit();
-			return;
-		}
-#endif
 		MainLoop();
 	}
 #endif
