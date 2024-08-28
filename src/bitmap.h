@@ -217,12 +217,21 @@ public:
 	Color GetShadowColor() const;
 
 	/**
-	 * Gets the filename this bitmap was loaded from.
-	 * This will be empty when the origin was not a file.
+	 * Returns an identifier for the bitmap.
+	 * When the bitmap was loaded from a file this contains the filename.
+	 * In all other cases this is implementation defined (and can be empty).
 	 *
-	 * @return filename
+	 * @return Bitmap identifier
 	 */
-	StringView GetFilename() const;
+	StringView GetId() const;
+
+	/**
+	 * Sets the identifier of the bitmap.
+	 * To avoid bugs the function will reject changing non-empty IDs.
+	 *
+	 * @param id new identifier
+	 */
+	void SetId(std::string id);
 
 	/**
 	 * Gets bpp of the source image.
@@ -608,7 +617,7 @@ protected:
 	Color bg_color, sh_color;
 	FontRef font;
 
-	std::string filename;
+	std::string id;
 
 	/** Bpp of the source image */
 	int original_bpp;
@@ -689,8 +698,13 @@ inline bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
 }
 
-inline StringView Bitmap::GetFilename() const {
-	return filename;
+inline StringView Bitmap::GetId() const {
+	return id;
+}
+
+inline void Bitmap::SetId(std::string id) {
+	assert(this->id.empty());
+	this->id = id;
 }
 
 inline FontRef Bitmap::GetFont() const {
