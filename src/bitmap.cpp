@@ -129,7 +129,7 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 
 	original_bpp = image_out.bpp;
 
-	filename = ToString(stream.GetName());
+	id = ToString(stream.GetName());
 }
 
 Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {

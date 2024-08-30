@@ -2329,6 +2329,14 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 				vehicle->MoveTo(map_id, x, y);
 			}
 			Main_Data::game_player->MoveTo(map_id, x, y);
+			if (vehicle_id == 0) {
+				// This fixes a bug in Yume2kki on map 3D Underworld (ID 1884)
+				// The map uses a MoveRoute with a jump and SetVehicleLocation for party movement in a tight loop which
+				// causes heavy flickering in our Player.
+				// TODO: This fix does not appear to be completely correct as RPG_RT does not reset the jump flag here
+				// but the "damage" is reduced because SetVehicleLocation -1 cannot happen without patching the game.
+				Main_Data::game_player->SetJumping(false);
+			}
 			return true;
 		};
 

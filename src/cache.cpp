@@ -82,7 +82,7 @@ namespace {
 	std::unordered_map<tile_key_type, std::weak_ptr<Bitmap>> cache_tiles;
 
 	// rect, flip_x, flip_y, tone, blend
-	using effect_key_type = std::tuple<Bitmap*, Rect, bool, bool, Tone, Color>;
+	using effect_key_type = std::tuple<std::string, Rect, bool, bool, Tone, Color>;
 	std::map<effect_key_type, std::weak_ptr<Bitmap>> cache_effects;
 
 	std::string system_name;
@@ -448,13 +448,17 @@ BitmapRef Cache::Tile(StringView filename, int tile_id) {
 		rect.x += sub_tile_id % 6 * 16;
 		rect.y += sub_tile_id / 6 * 16;
 
-		return(cache_tiles[key] = Bitmap::Create(*chipset, rect)).lock();
+		auto bmp = Bitmap::Create(*chipset, rect);
+		bmp->SetId(fmt::format("{}/{}", chipset->GetId(), tile_id));
+		cache_tiles[key] = bmp;
+
+		return bmp;
 	} else { return it->second.lock(); }
 }
 
 BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend) {
 	const effect_key_type key {
-		src_bitmap.get(),
+		src_bitmap->GetId(),
 		rect,
 		flip_x,
 		flip_y,
