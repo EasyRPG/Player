@@ -1,19 +1,19 @@
 /*
- * This file is part of EasyRPG Player.
- *
- * EasyRPG Player is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * EasyRPG Player is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
- */
+* This file is part of EasyRPG Player.
+*
+* EasyRPG Player is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* EasyRPG Player is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Headers
 #ifdef _MSC_VER
@@ -174,7 +174,7 @@ namespace {
 
 	struct Spec {
 		char const* directory;
-        DummyRenderer dummy_renderer;
+		DummyRenderer dummy_renderer;
 		bool transparent;
 		int min_width , max_width;
 		int min_height, max_height;
@@ -182,22 +182,22 @@ namespace {
 		bool warn_missing;
 	};
 	constexpr Spec spec[] = {
-        { "Backdrop", DrawCheckerboard<Material::Backdrop>, false, 320, 320, 160, 240, true, true },
-        { "Battle", DrawCheckerboard<Material::Battle>, true, 96, 480, 96, 480, true, true },
-        { "CharSet", DrawCheckerboard<Material::Charset>, true, 288, 288, 256, 256, true, true },
-        { "ChipSet", DrawCheckerboard<Material::Chipset>, true, 480, 480, 256, 256, true, true },
-        { "FaceSet", DrawCheckerboard<Material::Faceset>, true, 192, 192, 192, 192, true, true},
-        { "GameOver", DrawCheckerboard<Material::Gameover>, false, 320, 320, 240, 240, true, true },
-        { "Monster", DrawCheckerboard<Material::Monster>, true, 16, 320, 16, 160, false, false },
-        { "Panorama", DrawCheckerboard<Material::Panorama>, false, 80, 640, 80, 480, false, true },
-        { "Picture", DrawCheckerboard<Material::Picture>, true, 1, 640, 1, 480, false, true },
-        { "System", DummySystem, true, 160, 160, 80, 80, true, true },
-        { "Title", DrawCheckerboard<Material::Title>, false, 320, 320, 240, 240, true, true },
-        { "System2", DrawCheckerboard<Material::System2>, true, 80, 80, 96, 96, true, true },
-        { "Battle2", DrawCheckerboard<Material::Battle2>, true, 640, 640, 640, 640, true, true },
-        { "BattleCharSet", DrawCheckerboard<Material::Battlecharset>, true, 144, 144, 384, 384, true, false },
-        { "BattleWeapon", DrawCheckerboard<Material::Battleweapon>, true, 192, 192, 512, 512, true, false },
-        { "Frame", DrawCheckerboard<Material::Frame>, true, 320, 320, 240, 240, true, true },
+		{ "Backdrop", DrawCheckerboard<Material::Backdrop>, false, 320, 320, 160, 240, true, true },
+		{ "Battle", DrawCheckerboard<Material::Battle>, true, 96, 480, 96, 480, true, true },
+		{ "CharSet", DrawCheckerboard<Material::Charset>, true, 288, 288, 256, 256, true, true },
+		{ "ChipSet", DrawCheckerboard<Material::Chipset>, true, 480, 480, 256, 256, true, true },
+		{ "FaceSet", DrawCheckerboard<Material::Faceset>, true, 192, 192, 192, 192, true, true},
+		{ "GameOver", DrawCheckerboard<Material::Gameover>, false, 320, 320, 240, 240, true, true },
+		{ "Monster", DrawCheckerboard<Material::Monster>, true, 16, 320, 16, 160, false, false },
+		{ "Panorama", DrawCheckerboard<Material::Panorama>, false, 80, 640, 80, 480, false, true },
+		{ "Picture", DrawCheckerboard<Material::Picture>, true, 1, 640, 1, 480, false, true },
+		{ "System", DummySystem, true, 160, 160, 80, 80, true, true },
+		{ "Title", DrawCheckerboard<Material::Title>, false, 320, 320, 240, 240, true, true },
+		{ "System2", DrawCheckerboard<Material::System2>, true, 80, 80, 96, 96, true, true },
+		{ "Battle2", DrawCheckerboard<Material::Battle2>, true, 640, 640, 640, 640, true, true },
+		{ "BattleCharSet", DrawCheckerboard<Material::Battlecharset>, true, 144, 144, 384, 384, true, false },
+		{ "BattleWeapon", DrawCheckerboard<Material::Battleweapon>, true, 192, 192, 512, 512, true, false },
+		{ "Frame", DrawCheckerboard<Material::Frame>, true, 320, 320, 240, 240, true, true },
 	};
 
 	template<Material::Type T>
@@ -312,15 +312,15 @@ namespace {
 				max_h = min_h = Player::IsRPG2k() ? 160 : 240;
 			}
 
-            // EasyRPG extensions add support for large charsets; size is spoofed to ignore the error
-            if (!filename.empty() && filename.front() == '$' && T == Material::Charset && Player::HasEasyRpgExtensions()) {
-                w = 288;
-                h = 256;
-            }
+			// EasyRPG extensions add support for large charsets; size is spoofed to ignore the error
+			if (!filename.empty() && filename.front() == '$' && T == Material::Charset && Player::HasEasyRpgExtensions()) {
+				w = 288;
+				h = 256;
+			}
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {
 				Output::Debug("Image size out of bounds: {}/{} ({}x{} < {}x{} < {}x{})",
-							  s.directory, filename, min_w, min_h, w, h, max_w, max_h);
+							s.directory, filename, min_w, min_h, w, h, max_w, max_h);
 			}
 		}
 
