@@ -50,7 +50,7 @@ void Scene_Equip::Start() {
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(std::make_shared<Window_EquipItem>(Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height,actor.GetId(), i));
+		item_windows.push_back(std::make_shared<Window_EquipItem>(Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height, actor, i));
 	}
 
 	// Assign the help windows

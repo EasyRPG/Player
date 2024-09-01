@@ -22,7 +22,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight,  const Game_Actor& actor, int equip_type) :
+Window_EquipItem::Window_EquipItem(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor, int equip_type) :
 	Window_Item(ix, iy, iwidth, iheight),
 	actor(actor) {
 	this->equip_type = equip_type;
