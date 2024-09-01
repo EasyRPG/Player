@@ -269,12 +269,12 @@ bool Game_Interpreter_Map::CommandRecallToLocation(lcf::rpg::EventCommand const&
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(lcf::rpg::EventCommand const& com) { // code 10710
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	BattleArgs args;
 
@@ -366,12 +366,12 @@ bool Game_Interpreter_Map::CommandEndBattle(lcf::rpg::EventCommand const& /* com
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(lcf::rpg::EventCommand const& com) { // code 10720
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	bool allow_buy = false;
 	bool allow_sell = false;
@@ -394,7 +394,7 @@ bool Game_Interpreter_Map::CommandOpenShop(lcf::rpg::EventCommand const& com) { 
 	auto shop_type = com.parameters[1];
 
 	// Not used, but left here for documentation purposes
-	//bool has_shop_handlers = com.parameters[2] != 0;
+	// bool has_shop_handlers = com.parameters[2] != 0;
 
 	std::vector<int> goods;
 	for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ++it) {
@@ -544,12 +544,12 @@ bool Game_Interpreter_Map::CommandEndInn(lcf::rpg::EventCommand const& /* com */
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(lcf::rpg::EventCommand const& com) { // code 10740
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	auto actor_id = com.parameters[0];
 	auto charset = com.parameters[1];
@@ -715,12 +715,12 @@ bool Game_Interpreter_Map::CommandPlayMovie(lcf::rpg::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& /* com */) { // code 11910
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 	++index;
@@ -728,12 +728,12 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& /* 
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(lcf::rpg::EventCommand const&) { // code 11950
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	int subscreen_id = -1, actor_index = 0;
 	bool is_db_actor = false;
@@ -750,12 +750,12 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(lcf::rpg::EventCommand const& /* 
 		return true;
 	}
 
-	auto& frame = GetFrame();
-	auto& index = frame.current_command;
-
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
+	auto& frame = GetFrame();
+	auto& index = frame.current_command;
 
 	Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
 	++index;

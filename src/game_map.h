@@ -577,8 +577,6 @@ namespace Game_Map {
 	 */
 	std::vector<Game_CommonEvent>& GetCommonEvents();
 
-	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
-
 	/**
 	 * @param x x position on the map
 	 * @param y y position on the map

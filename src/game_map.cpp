@@ -981,14 +981,6 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	return terrain_data[chip_index];
 }
 
-void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
-	for (Game_Event& ev : GetEvents()) {
-		if (ev.IsInPosition(x, y) && ev.IsActive()) {
-			events.push_back(&ev);
-		}
-	}
-}
-
 Game_Event* Game_Map::GetEventAt(int x, int y, bool require_active) {
 	auto& events = GetEvents();
 	for (auto iter = events.rbegin(); iter != events.rend(); ++iter) {
