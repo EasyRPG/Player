@@ -899,6 +899,7 @@ else()
 		CONDITION PLAYER_WITH_NLOHMANN_JSON
 		DEFINITION HAVE_NLOHMANN_JSON
 		TARGET nlohmann_json::nlohmann_json
+		ONLY_CONFIG
 	)
 endif()
 
