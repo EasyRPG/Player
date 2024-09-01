@@ -243,6 +243,18 @@ public:
 	void SetMoveRouteFinished(bool finished);
 
 	/**
+	 * @return How often the current move action failed.
+	 */
+	int GetMoveFailureCount() const;
+
+	/**
+	 * Sets how often the current move action failed.
+	 *
+	 * @param count amount
+	 */
+	void SetMoveFailureCount(int count);
+
+	/**
 	 * Gets sprite name. Usually the name of the graphic file.
 	 *
 	 * @return sprite name
@@ -627,11 +639,17 @@ public:
 	 */
 	void Turn90DegreeLeftOrRight();
 
-	/** @return the direction we would need to face the hero. */
-	int GetDirectionToHero();
+	/**
+	 * @param target Target character
+	 * @return the direction we would need to face the target
+	 */
+	int GetDirectionToCharacter(const Game_Character& target);
 
-	/** @return the direction we would need to face away from hero. */
-	int GetDirectionAwayHero();
+	/**
+	 * @param target Target character
+	 * @return the direction we would need to face away from the target.
+	 */
+	int GetDirectionAwayCharacter(const Game_Character& target);
 
 	/**
 	 * @param dir input direction
@@ -660,14 +678,14 @@ public:
 	void TurnRandom();
 
 	/**
-	 * Character looks towards the hero.
+	 * @param target character looks towards this target.
 	 */
-	void TurnTowardHero();
+	void TurnTowardCharacter(const Game_Character& target);
 
 	/**
-	 * Character looks away from the hero.
+	 * @param target character looks away from this target.
 	 */
-	void TurnAwayFromHero();
+	void TurnAwayFromCharacter(const Game_Character& target);
 
 	/**
 	 * Character waits for 20 frames more.
@@ -763,8 +781,17 @@ public:
 	 */
 	void SetAnimationType(AnimType anim_type);
 
-	int DistanceXfromPlayer() const;
-	int DistanceYfromPlayer() const;
+	/**
+	 * @param target Target to calculate distance of
+	 * @return X distance to target
+	 */
+	int GetDistanceXfromCharacter(const Game_Character& target) const;
+
+	/**
+	 * @param target Target to calculate distance of
+	 * @return Y distance to target
+	 */
+	int GetDistanceYfromCharacter(const Game_Character& target) const;
 
 	/**
 	 * Tests if the character is currently on the tile at x/y or moving
@@ -877,6 +904,7 @@ public:
 	static int ReverseDir(int dir);
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
+	static Game_Character& GetPlayer();
 
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
@@ -1057,6 +1085,14 @@ inline bool Game_Character::IsMoveRouteFinished() const {
 
 inline void Game_Character::SetMoveRouteFinished(bool finished) {
 	data()->move_route_finished = finished;
+}
+
+inline int Game_Character::GetMoveFailureCount() const {
+	return data()->easyrpg_move_failure_count;
+}
+
+inline void Game_Character::SetMoveFailureCount(int count) {
+	data()->easyrpg_move_failure_count = count;
 }
 
 inline const std::string& Game_Character::GetSpriteName() const {
