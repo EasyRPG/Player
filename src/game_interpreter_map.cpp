@@ -793,9 +793,9 @@ bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCo
 
 	_state.easyrpg_parameters.resize(3);
 
-	int& event_id = _state.easyrpg_parameters[0];
-	int& failure_limit = _state.easyrpg_parameters[1];
-	int& output_var = _state.easyrpg_parameters[2];
+	auto& event_id = _state.easyrpg_parameters[0];
+	auto& failure_limit = _state.easyrpg_parameters[1];
+	auto& output_var = _state.easyrpg_parameters[2];
 
 	if (!_state.easyrpg_active) {
 		event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
