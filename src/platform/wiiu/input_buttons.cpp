@@ -27,10 +27,10 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{DOWN, Keys::JOY_DPAD_DOWN},
 		{LEFT, Keys::JOY_DPAD_LEFT},
 		{RIGHT, Keys::JOY_DPAD_RIGHT},
-		{DECISION, Keys::JOY_A},
-		{CANCEL, Keys::JOY_B},
-		{CANCEL, Keys::JOY_X},
-		{SHIFT, Keys::JOY_Y},
+		{DECISION, Keys::JOY_B},
+		{CANCEL, Keys::JOY_A},
+		{CANCEL, Keys::JOY_Y},
+		{SHIFT, Keys::JOY_X},
 		{N0, Keys::JOY_LSTICK},
 		{N5, Keys::JOY_RSTICK},
 		{DEBUG_ABORT_EVENT, Keys::JOY_SHOULDER_LEFT},
@@ -65,17 +65,18 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 }
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
-	// FIXME: Wiimote mapping is broken, consider removing
+	// FIXME: The mapping is named in terms of WiiU Gamepad / Controller
+	// For Wiimote the reported buttons change depending whether a Nunchuck is connected
 	return {
-		{Keys::JOY_A, "A"}, // 2 (Wiimote)
-		{Keys::JOY_B, "B"}, // 1 (Wiimote)
-		{Keys::JOY_X, "X"}, // (Pad/CC/Pro) / B (Wiimote) / Z (Wiimote+Nunchuck)
-		{Keys::JOY_Y, "Y"}, // (Pad/CC/Pro) / A (Wiimote) / C (Wiimote+Nunchuck)
+		{Keys::JOY_B, "A"}, // 2 (Wiimote) / A (Wiimote+Nunchuck)
+		{Keys::JOY_A, "B"}, // 1 (Wiimote) / B (Wiimote+Nunchuck)
+		{Keys::JOY_Y, "X"}, // (Pad/CC/Pro) / B (Wiimote) / Z (Wiimote+Nunchuck)
+		{Keys::JOY_X, "Y"}, // (Pad/CC/Pro) / A (Wiimote) / C (Wiimote+Nunchuck)
 		{Keys::JOY_BACK, "-"},
 		{Keys::JOY_START, "+"},
-		{Keys::JOY_GUIDE, "Home"}, // FIXME: not mapped at all, maybe use custom trigger
-		{Keys::JOY_SHOULDER_LEFT, "L"},
-		{Keys::JOY_SHOULDER_RIGHT, "R"},
+		{Keys::JOY_GUIDE, "Home"}, // The Home Key is not notified
+		{Keys::JOY_SHOULDER_LEFT, "L"}, // 1 (Wiimote+Nunchuck)
+		{Keys::JOY_SHOULDER_RIGHT, "R"}, // 2 (Wiimote+Nunchuck)
 		{Keys::JOY_LTRIGGER_FULL, "ZL"},
 		{Keys::JOY_RTRIGGER_FULL, "ZR"},
 

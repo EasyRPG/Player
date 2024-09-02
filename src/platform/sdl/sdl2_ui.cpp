@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -32,7 +31,7 @@
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
 #elif defined(__WIIU__)
-#  include <whb/proc.h>
+#  include "platform/wiiu/main.h"
 #endif
 #include "icon.h"
 
@@ -57,7 +56,11 @@ AudioInterface& Sdl2Ui::GetAudio() {
 #endif
 
 static uint32_t GetDefaultFormat() {
+#ifdef WORDS_BIGENDIAN
+	return SDL_PIXELFORMAT_ABGR32;
+#else
 	return SDL_PIXELFORMAT_RGBA32;
+#endif
 }
 
 /**
@@ -66,7 +69,18 @@ static uint32_t GetDefaultFormat() {
  * We prefer formats which have fast paths in pixman.
  */
 static int GetFormatRank(uint32_t fmt) {
+
 	switch (fmt) {
+#ifdef WORDS_BIGENDIAN
+		case SDL_PIXELFORMAT_RGBA32:
+			return 0;
+		case SDL_PIXELFORMAT_BGRA32:
+			return 0;
+		case SDL_PIXELFORMAT_ARGB32:
+			return 1;
+		case SDL_PIXELFORMAT_ABGR32:
+			return 2;
+#else
 		case SDL_PIXELFORMAT_RGBA32:
 			return 2;
 		case SDL_PIXELFORMAT_BGRA32:
@@ -75,6 +89,7 @@ static int GetFormatRank(uint32_t fmt) {
 			return 1;
 		case SDL_PIXELFORMAT_ABGR32:
 			return 0;
+#endif
 		default:
 			return -1;
 	}
@@ -155,9 +170,6 @@ Sdl2Ui::Sdl2Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 	// Only handle keyboard events when the canvas has focus
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
 #endif
-#ifdef __WIIU__
-	//WHBProcInit();
-#endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		Output::Error("Couldn't initialize SDL.\n{}\n", SDL_GetError());
@@ -210,10 +222,6 @@ Sdl2Ui::~Sdl2Ui() {
 		SDL_DestroyWindow(sdl_window);
 	}
 	SDL_Quit();
-
-#ifdef __WIIU__
-	//WHBProcShutdown();
-#endif
 }
 
 bool Sdl2Ui::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
@@ -524,7 +532,13 @@ void Sdl2Ui::ToggleZoom() {
 #endif
 }
 
-void Sdl2Ui::ProcessEvents() {
+bool Sdl2Ui::ProcessEvents() {
+#if defined(__WIIU__)
+		if (!WiiU_ProcessProcUI()) {
+			return false;
+		}
+#endif
+
 	SDL_Event evnt;
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
@@ -540,6 +554,8 @@ void Sdl2Ui::ProcessEvents() {
 		if (Player::exit_flag)
 			break;
 	}
+
+	return true;
 }
 
 void Sdl2Ui::SetScalingMode(ConfigEnum::ScalingMode mode) {
@@ -569,8 +585,23 @@ void Sdl2Ui::ToggleVsync() {
 }
 
 void Sdl2Ui::UpdateDisplay() {
+#ifdef __WIIU__
+	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
+		// Workaround WiiU bug: Bilinear uses a render target and for these the format is not converted
+		void* target_pixels;
+		int target_pitch;
+
+		SDL_LockTexture(sdl_texture_game, nullptr, &target_pixels, &target_pitch);
+		SDL_ConvertPixels(main_surface->width(), main_surface->height(), GetDefaultFormat(), main_surface->pixels(),
+			main_surface->pitch(), SDL_PIXELFORMAT_RGBA8888, target_pixels, target_pitch);
+		SDL_UnlockTexture(sdl_texture_game);
+	} else {
+		SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
+	}
+#else
 	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
+#endif
 
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
@@ -1266,10 +1297,9 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.pause_when_focus_lost.Lock(false);
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #elif defined(__WIIU__)
-	// FIXME: Some options below may crash, better disable for now
+	// Only makes the screen flicker
 	cfg.fullscreen.SetOptionVisible(false);
-	cfg.window_zoom.SetOptionVisible(false);
-	cfg.vsync.SetOptionVisible(false);
+	// WiiU always pauses apps in the background
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
 #endif
 }

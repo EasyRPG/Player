@@ -60,17 +60,21 @@
 #elif defined(__3DS__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define USE_CUSTOM_FILEBUF 4 * 1024
 #elif defined(__vita__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define USE_CUSTOM_FILEBUF 4 * 1024
 #elif defined(__wii__)
 #  include <cstdint>
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define USE_CUSTOM_FILEBUF 4 * 1024
 #elif defined(__WIIU__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #  define SUPPORT_TOUCH
+#  define USE_CUSTOM_FILEBUF 16 * 1024
 #elif defined(_WIN32)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE
@@ -81,6 +85,7 @@
 #elif defined(__SWITCH__)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
+#  define USE_CUSTOM_FILEBUF 16 * 1024
 #elif defined(PLAYER_AMIGA) && !defined(__AROS__)
 #  define SUPPORT_ZOOM
 #  define SUPPORT_MOUSE

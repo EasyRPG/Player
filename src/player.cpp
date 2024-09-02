@@ -229,10 +229,22 @@ void Player::MainLoop() {
 
 	Player::UpdateInput();
 
+	if (!DisplayUi->ProcessEvents()) {
+		Scene::PopUntil(Scene::Null);
+		Player::Exit();
+		return;
+	}
+
 	int num_updates = 0;
 	while (Game_Clock::NextGameTimeStep()) {
 		if (num_updates > 0) {
 			Player::UpdateInput();
+
+			if (!DisplayUi->ProcessEvents()) {
+				Scene::PopUntil(Scene::Null);
+				Player::Exit();
+				return;
+			}
 		}
 
 		Scene::old_instances.clear();
@@ -306,9 +318,6 @@ void Player::UpdateInput() {
 	if (Main_Data::game_quit) {
 		reset_flag |= Main_Data::game_quit->ShouldQuit();
 	}
-
-	// Update Logic:
-	DisplayUi->ProcessEvents();
 }
 
 void Player::Update(bool update_scene) {

@@ -207,7 +207,7 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::ProcessEvents() {
+bool Psp2Ui::ProcessEvents() {
 	SceCtrlData input;
 	SceTouchData touch;
 
@@ -261,6 +261,8 @@ void Psp2Ui::ProcessEvents() {
 			}
 		}
 	}
+
+	return true;
 }
 
 void Psp2Ui::UpdateDisplay() {

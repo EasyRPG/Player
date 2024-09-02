@@ -48,7 +48,7 @@ public:
 	 */
 	/** @{ */
 	void UpdateDisplay() override;
-	void ProcessEvents() override;
+	bool ProcessEvents() override;
 	void ToggleStretch() override;
 	void ToggleTouchUi() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;

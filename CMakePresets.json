@@ -417,7 +417,6 @@
 			"name": "3ds-parent",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "3ds",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/3ds"
 			},
 			"inherits": "dkp-user",
@@ -478,7 +477,6 @@
 			"name": "switch-parent",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "switch",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
 			"inherits": "dkp-user",
@@ -539,7 +537,6 @@
 			"name": "wii-parent",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Wii.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "wii",
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
 			"inherits": "dkp-user",
@@ -660,7 +657,6 @@
 			"name": "psvita-parent",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
 			"cacheVariables": {
-				"PLAYER_TARGET_PLATFORM": "psvita",
 				"BUILD_SHARED_LIBS": "OFF"
 			},
 			"hidden": true,

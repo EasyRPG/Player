@@ -47,7 +47,7 @@ public:
 	/** @{ */
 	bool vChangeDisplaySurfaceResolution(int new_width, int new_height) override;
 	void UpdateDisplay() override;
-	void ProcessEvents() override;
+	bool ProcessEvents() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO

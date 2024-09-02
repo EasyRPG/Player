@@ -404,7 +404,7 @@ void SdlUi::ToggleZoom() {
 	EndDisplayModeChange();
 }
 
-void SdlUi::ProcessEvents() {
+bool SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
 	// Poll SDL events and process them
@@ -414,6 +414,8 @@ void SdlUi::ProcessEvents() {
 		if (Player::exit_flag)
 			break;
 	}
+
+	return true;
 }
 
 void SdlUi::UpdateDisplay() {

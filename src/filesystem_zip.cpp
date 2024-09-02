@@ -30,8 +30,8 @@
 #include <algorithm>
 #include <fmt/core.h>
 
-constexpr uint32_t end_of_central_directory = 0x06054b50;
-constexpr int32_t end_of_central_directory_size = 22;
+constexpr char end_of_central_directory[] = "\x50\x4b\x05\x06";
+constexpr int32_t end_of_central_directory_size = 18;
 
 constexpr uint32_t central_directory_entry = 0x02014b50;
 constexpr uint32_t local_header = 0x04034b50;
@@ -212,23 +212,31 @@ bool ZipFilesystem::FindCentralDirectory(std::istream& zipfile, uint32_t& offset
 	bool found = false;
 
 	// seek to the first position where the end_of_central_directory Signature may occur
-	zipfile.seekg(-end_of_central_directory_size, std::ios_base::end);
+	zipfile.seekg(-end_of_central_directory_size - UINT16_MAX, std::ios_base::end);
+	zipfile.clear();
 
 	// The only variable length field in the end of central directory is the comment which
 	// has a maximum length of UINT16_MAX - so if we seek longer, this is no zip file
-	for (size_t i = 0; i < UINT16_MAX && zipfile.good() && !found; i++) {
-		zipfile.read(reinterpret_cast<char*>(&magic), sizeof(magic));
-		Utils::SwapByteOrder(magic); // Take care of big endian systems
-		if (magic == end_of_central_directory) {
+	std::vector<char> items(UINT16_MAX);
+	zipfile.read(items.data(), items.size());
+	zipfile.clear();
+
+	items.resize(zipfile.gcount());
+	if (items.size() < sizeof(magic)) {
+		return false;
+	}
+
+	int i = static_cast<int>(items.size()) - sizeof(magic);
+	// The data is read once and then scanned backwards in memory (faster)
+	for (; i >= 0 && !found; --i) {
+		if (!memcmp(items.data() + i, end_of_central_directory, 4)) {
 			found = true;
-		}
-		else {
-			// if not yet found the magic number step one byte back in the file
-			zipfile.seekg(-(static_cast<int>(sizeof(magic)) + 1), std::ios_base::cur);
+			break;
 		}
 	}
 
 	if (found) {
+		zipfile.seekg(-(static_cast<int>(items.size()) - i - 4), std::ios_base::cur); // Move right after the magic
 		zipfile.seekg(6, std::ios_base::cur); // Jump over multiarchive related fields
 		zipfile.read(reinterpret_cast<char*>(&num_entries), sizeof(uint16_t));
 		Utils::SwapByteOrder(num_entries);
