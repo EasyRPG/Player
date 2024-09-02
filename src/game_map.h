@@ -691,24 +691,24 @@ namespace Game_Map {
 
 		using MapEventCacheData_t = std::unordered_map<int, MapEventCache>;
 
-		enum ObservervedVarOps {
+		enum ObservedVarOps {
 			SwitchSet = 0,
 			VarSet,
 
-			ObservervedVarOps_END
+			ObservedVarOps_END
 		};
 
 		class MapCache {
 		public:
-			template <ObservervedVarOps Op>
+			template <ObservedVarOps Op>
 			void AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev);
 
-			template <ObservervedVarOps Op>
+			template <ObservedVarOps Op>
 			bool GetNeedRefresh(int var_id);
 
 			void Clear();
 		private:
-			MapEventCacheData_t refresh_targets_by_varid[ObservervedVarOps_END];
+			MapEventCacheData_t refresh_targets_by_varid[ObservedVarOps_END];
 		};
 	}
 
@@ -877,17 +877,17 @@ inline void Game_Map::Caching::MapEventCache::AddEvent(lcf::rpg::Event& ev) {
 	}
 }
 
-template <Game_Map::Caching::ObservervedVarOps Op>
+template <Game_Map::Caching::ObservedVarOps Op>
 inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev) {
-	static_assert(static_cast<int>(Op) >= 0 && Op < ObservervedVarOps_END);
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
 
 	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
 	events_cache[var_id].AddEvent(ev);
 }
 
-template <Game_Map::Caching::ObservervedVarOps Op>
+template <Game_Map::Caching::ObservedVarOps Op>
 inline bool Game_Map::Caching::MapCache::GetNeedRefresh(int var_id) {
-	static_assert(static_cast<int>(Op) >= 0 && Op < ObservervedVarOps_END);
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
 
 	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
 	return events_cache.find(var_id) != events_cache.end();

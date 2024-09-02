@@ -359,7 +359,7 @@ void Game_Map::SetupCommon() {
 	}
 
 	map_cache->Clear();
-	using Op = Caching::ObservervedVarOps;
+	using Op = Caching::ObservedVarOps;
 
 	// Create the map events
 	events.reserve(map->events.size());
@@ -381,7 +381,7 @@ void Game_Map::SetupCommon() {
 }
 
 void Game_Map::Caching::MapCache::Clear() {
-	for (int i = 0; i < static_cast<int>(ObservervedVarOps_END); i++) {
+	for (int i = 0; i < static_cast<int>(ObservedVarOps_END); i++) {
 		refresh_targets_by_varid[i].clear();
 	}
 }
@@ -1552,14 +1552,14 @@ void Game_Map::SetNeedRefresh(bool refresh) {
 void Game_Map::SetNeedRefreshForSwitchChange(int switch_id) {
 	if (need_refresh)
 		return;
-	if (map_cache->GetNeedRefresh<Caching::ObservervedVarOps::SwitchSet>(switch_id))
+	if (map_cache->GetNeedRefresh<Caching::ObservedVarOps::SwitchSet>(switch_id))
 		SetNeedRefresh(true);
 }
 
 void Game_Map::SetNeedRefreshForVarChange(int var_id) {
 	if (need_refresh)
 		return;
-	if (map_cache->GetNeedRefresh<Caching::ObservervedVarOps::VarSet>(var_id))
+	if (map_cache->GetNeedRefresh<Caching::ObservedVarOps::VarSet>(var_id))
 		SetNeedRefresh(true);
 }
 
