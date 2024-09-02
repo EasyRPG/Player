@@ -2732,9 +2732,9 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		}
 
 		params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
-		if (Player::IsPatchManiac() && com.parameters.size() > 31 && com.parameters[20] >= 16 && params.effect_mode == 0) {
+		if (Player::IsPatchManiac() && com.parameters.size() > 31 && com.parameters[20] >= 16) {
 			// The >= 16 check is needed because this bit is set when independent width/height scaling is used
-			// When using special effects on Maniacs, Height is set to Width
+			// Since version 240423, Maniacs supports width/height scaling for special effects pictures.
 			params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[31]);
 		} else {
 			params.magnify_height = params.magnify_width;
@@ -2859,9 +2859,9 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 
 			params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
-			if (Player::IsPatchManiac() && com.parameters.size() > 18 && com.parameters[20] >= 16 && params.effect_mode == 0) {
+			if (Player::IsPatchManiac() && com.parameters.size() > 18 && com.parameters[20] >= 16) {
 				// The >= 16 check is needed because this bit is set when independent width/height scaling is used
-				// When using special effects on Maniacs, Height is set to Width
+				// Since version 240423, Maniacs supports width/height scaling for special effects pictures.
 				params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[18]);
 			} else {
 				params.magnify_height = params.magnify_width;
