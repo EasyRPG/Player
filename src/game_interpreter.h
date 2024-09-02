@@ -25,6 +25,7 @@
 #include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
+#include "game_interpreter_shared.h"
 #include <lcf/dbarray.h>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/eventcommand.h>
@@ -40,7 +41,7 @@ class PendingMessage;
 /**
  * Game_Interpreter class
  */
-class Game_Interpreter
+class Game_Interpreter : public Game_BaseInterpreterContext
 {
 public:
 	using Cmd = lcf::rpg::EventCommand::Code;
@@ -94,13 +95,13 @@ public:
 	lcf::rpg::SaveEventExecState GetSaveState();
 
 	/** @return Game_Character of the passed event_id */
-	Game_Character* GetCharacter(int event_id) const;
+	Game_Character* GetCharacter(int event_id) const override;
 
 	/** @return the event_id of the current frame */
 	int GetCurrentEventId() const;
 
 	/** @return the event_id used by "ThisEvent" in commands */
-	int GetThisEventId() const;
+	int GetThisEventId() const override;
 
 	/** @return the event_id of the event at the base of the call stack */
 	int GetOriginalEventId() const;
@@ -119,7 +120,7 @@ protected:
 	static constexpr int call_stack_limit = 1000;
 	static constexpr int subcommand_sentinel = 255;
 
-	const lcf::rpg::SaveEventExecFrame& GetFrame() const;
+	const lcf::rpg::SaveEventExecFrame& GetFrame() const override;
 	lcf::rpg::SaveEventExecFrame& GetFrame();
 	const lcf::rpg::SaveEventExecFrame* GetFramePtr() const;
 	lcf::rpg::SaveEventExecFrame* GetFramePtr();
@@ -175,12 +176,6 @@ protected:
 	 * @param id actor ID (mode = 1) or variable ID (mode = 2).
 	 */
 	static std::vector<Game_Actor*> GetActors(int mode, int id);
-	static int ValueOrVariable(int mode, int val);
-	static int ValueOrVariableBitfield(int mode, int shift, int val);
-	// Range checked, conditional version (slower) of ValueOrVariableBitfield
-	static int ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
-	static StringView CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
-	static StringView CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
 
 	/**
 	 * When current frame finishes executing we pop the stack
@@ -298,10 +293,6 @@ protected:
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 
-	int DecodeInt(lcf::DBArray<int32_t>::const_iterator& it);
-	const std::string DecodeString(lcf::DBArray<int32_t>::const_iterator& it);
-	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
-
 	void SetSubcommandIndex(int indent, int idx);
 	uint8_t& ReserveSubcommandIndex(int indent);
 	int GetSubcommandIndex(int indent) const;
@@ -341,8 +332,6 @@ protected:
 		void toSave(lcf::rpg::SaveEventExecState& save) const;
 	};
 
-	bool CheckOperator(int val, int val2, int op) const;
-	bool ManiacCheckContinueLoop(int val, int val2, int type, int op) const;
 	int ManiacBitmask(int value, int mask) const;
 
 	lcf::rpg::SaveEventExecState _state;

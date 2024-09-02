@@ -74,14 +74,6 @@ private:
 	bool message = false;
 };
 
-class MapEventCache {
-public:
-	void AddEvent(lcf::rpg::Event& ev);
-
-private:
-	std::vector<int> event_ids;
-};
-
 /**
  * Game_Map namespace
  */
@@ -686,13 +678,43 @@ namespace Game_Map {
 
 	FileRequestAsync* RequestMap(int map_id);
 
+	namespace Caching {
+		class MapEventCache {
+		public:
+			void AddEvent(lcf::rpg::Event& ev);
+
+		private:
+			std::vector<int> event_ids;
+		};
+
+		using MapEventCacheData_t = std::unordered_map<int, MapEventCache>;
+
+		enum ObservedVarOps {
+			SwitchSet = 0,
+			VarSet,
+
+			ObservedVarOps_END
+		};
+
+		class MapCache {
+		public:
+			template <ObservedVarOps Op>
+			void AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev);
+
+			template <ObservedVarOps Op>
+			bool GetNeedRefresh(int var_id);
+
+			void Clear();
+		private:
+			MapEventCacheData_t refresh_targets_by_varid[ObservedVarOps_END];
+		};
+	}
+
 	void SetNeedRefreshForSwitchChange(int switch_id);
 	void SetNeedRefreshForVarChange(int var_id);
 	void SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids);
 	void SetNeedRefreshForVarChange(std::initializer_list<int> var_ids);
 
-	void AddEventToSwitchCache(lcf::rpg::Event& ev, int switch_id);
-	void AddEventToVariableCache(lcf::rpg::Event& ev, int var_id);
 
 	namespace Parallax {
 		struct Params {
@@ -843,6 +865,30 @@ inline bool MapUpdateAsyncContext::IsMessage() const {
 
 inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();
+}
+
+inline void Game_Map::Caching::MapEventCache::AddEvent(lcf::rpg::Event& ev) {
+	auto id = ev.ID;
+
+	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
+		event_ids.emplace_back(id);
+	}
+}
+
+template <Game_Map::Caching::ObservedVarOps Op>
+inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev) {
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
+
+	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
+	events_cache[var_id].AddEvent(ev);
+}
+
+template <Game_Map::Caching::ObservedVarOps Op>
+inline bool Game_Map::Caching::MapCache::GetNeedRefresh(int var_id) {
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
+
+	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
+	return events_cache.find(var_id) != events_cache.end();
 }
 
 #endif

@@ -117,7 +117,7 @@ namespace {
 	};
 }
 
-int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator end, const Game_Interpreter& ip) {
+int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator end, const Game_BaseInterpreterContext& ip) {
 	int value = 0;
 	int imm = 0;
 	int imm2 = 0;
@@ -413,7 +413,7 @@ int process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator e
 	}
 }
 
-int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes, const Game_Interpreter& interpreter) {
+int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes, const Game_BaseInterpreterContext& interpreter) {
 	std::vector<int32_t> ops;
 	for (auto &o: op_codes) {
 		auto uo = static_cast<uint32_t>(o);

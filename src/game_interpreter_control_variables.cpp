@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "game_interpreter_shared.h"
 #include "game_interpreter_control_variables.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
@@ -154,7 +155,7 @@ int ControlVariables::Party(int op, int party_idx) {
 	return ControlVariables::Actor(op, actor->GetId());
 }
 
-int ControlVariables::Event(int op, int event_id, const Game_Interpreter& interpreter) {
+int ControlVariables::Event(int op, int event_id, const Game_BaseInterpreterContext& interpreter) {
 	auto character = interpreter.GetCharacter(event_id);
 	if (character) {
 		switch (op) {

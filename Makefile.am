@@ -157,6 +157,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_interpreter_control_variables.h \
 	src/game_interpreter_map.cpp \
 	src/game_interpreter_map.h \
+	src/game_interpreter_shared.cpp \
+	src/game_interpreter_shared.h \
 	src/game_map.cpp \
 	src/game_map.h \
 	src/game_message.cpp \

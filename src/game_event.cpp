@@ -256,33 +256,9 @@ bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 			return false;
 		}
 	} else {
-		if (page.condition.flags.variable) {
-			switch (page.condition.compare_operator) {
-			case 0: // ==
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) == page.condition.variable_value))
-					return false;
-				break;
-			case 1: // >=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) >= page.condition.variable_value))
-					return false;
-				break;
-			case 2: // <=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) <= page.condition.variable_value))
-					return false;
-				break;
-			case 3: // >
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) > page.condition.variable_value))
-					return false;
-				break;
-			case 4: // <
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) < page.condition.variable_value))
-					return false;
-				break;
-			case 5: // !=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) != page.condition.variable_value))
-					return false;
-				break;
-			}
+		if (page.condition.flags.variable && page.condition.compare_operator >= 0 && page.condition.compare_operator <= 5) {
+			if (!Game_Interpreter_Shared::CheckOperator(Main_Data::game_variables->Get(page.condition.variable_id), page.condition.variable_value, page.condition.compare_operator))
+				return false;
 		}
 	}
 
