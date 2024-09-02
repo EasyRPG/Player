@@ -395,8 +395,18 @@ Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject th
 	jstring jencoding = (jstring)env->CallObjectMethod(thiz, jget_encoding_method);
 	std::string encoding = jstring_to_string(env, jencoding);
 	if (encoding == "auto") {
-		lcf::Encoder enc(lcf::ReaderUtil::DetectEncoding(title));
-		enc.Encode(title);
+		auto det_encodings = lcf::ReaderUtil::DetectEncodings(title);
+		for (auto &det_enc: det_encodings) {
+			if (det_enc == "UTF-16BE" || det_enc == "UTF-16LE") {
+				// Skip obviously wrong title encodings
+				continue;
+			}
+
+			if (lcf::Encoder encoder(det_enc); encoder.IsOk()) {
+				encoder.Encode(title);
+				break;
+			}
+		}
 	} else {
 		lcf::Encoder enc(encoding);
 		enc.Encode(title);

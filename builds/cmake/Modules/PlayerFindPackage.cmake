@@ -12,7 +12,7 @@
 #   Name of the library to search. The name must match FindNAME.cmake.
 # ``TARGET`` (list of string)
 #   Targets to import when the library was found.
-#	Searching ends when any of the targets is found.
+#   Searching ends when any of the targets is found.
 #
 # Optional Arguments
 # ^^^^^^^^^^^^^^^^^^
@@ -27,8 +27,13 @@
 # ``VERSION`` (String)
 #   Specifies required version of the library.
 # ``CONFIG_BROKEN`` (without arguments)
-#	Indicates that the config file of the library is known to be broken on certain systems.
+#   Indicates that the config file of the library is known to be broken on
+#   certain systems.
 #   Uses bundled FindXXX.cmake instead.
+# ``ONLY_CONFIG`` (without arguments)
+#   Use this for libraries that only have a config file and no find-module.
+#   This silences a huge warning emitted by CMake in that case and replaces it
+#   with a one-liner.
 #
 # Return variables
 # ^^^^^^^^^^^^^^^^
@@ -37,7 +42,7 @@
 #
 
 function(player_find_package)
-	cmake_parse_arguments(PARSE_ARGV 0 PLAYER_FIND_PACKAGE "REQUIRED;CONFIG_BROKEN" "NAME;CONDITION;DEFINITION;TARGET;VERSION" "")
+	cmake_parse_arguments(PARSE_ARGV 0 PLAYER_FIND_PACKAGE "REQUIRED;CONFIG_BROKEN;ONLY_CONFIG" "NAME;CONDITION;DEFINITION;TARGET;VERSION" "")
 
 	set(IS_REQUIRED "")
 	if(PLAYER_FIND_PACKAGE_REQUIRED)
@@ -49,11 +54,20 @@ function(player_find_package)
 		set(MODULE "MODULE")
 	endif()
 
+	set(ONLY_CONFIG_QUIET "")
+	if(PLAYER_FIND_PACKAGE_ONLY_CONFIG)
+		set(ONLY_CONFIG_QUIET "QUIET")
+	endif()
+
 	# Assume "true" when Condition is empty, otherwise dereference the condition variable
 	if((NOT PLAYER_FIND_PACKAGE_CONDITION) OR (${PLAYER_FIND_PACKAGE_CONDITION}))
-		find_package(${PLAYER_FIND_PACKAGE_NAME} ${PLAYER_FIND_PACKAGE_VERSION} ${IS_REQUIRED} ${MODULE})
+		find_package(${PLAYER_FIND_PACKAGE_NAME} ${PLAYER_FIND_PACKAGE_VERSION} ${IS_REQUIRED} ${MODULE} ${ONLY_CONFIG_QUIET})
+		set(DEP_FOUND FALSE)
+
 		foreach(TARGET_ITEM ${PLAYER_FIND_PACKAGE_TARGET})
 			if (TARGET ${TARGET_ITEM})
+				set(DEP_FOUND TRUE)
+
 				if(${PLAYER_FIND_PACKAGE_NAME}_DIR)
 					message(STATUS "Found ${PLAYER_FIND_PACKAGE_NAME}: ${${PLAYER_FIND_PACKAGE_NAME}_DIR} (${TARGET_ITEM})")
 				endif()
@@ -66,5 +80,9 @@ function(player_find_package)
 				break()
 			endif()
 		endforeach()
+
+		if (PLAYER_FIND_PACKAGE_ONLY_CONFIG AND NOT DEP_FOUND)
+			message(STATUS "Could NOT find ${PLAYER_FIND_PACKAGE_NAME} (missing: ${PLAYER_FIND_PACKAGE_NAME}Config.cmake)")
+		endif()
 	endif()
 endfunction()
