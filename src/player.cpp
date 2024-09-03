@@ -24,7 +24,6 @@
 #include <iomanip>
 #include <fstream>
 #include <memory>
-#include <thread>
 
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
@@ -42,6 +41,7 @@
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
+#include "filesystem_hook.h"
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_map.h"
@@ -691,6 +691,9 @@ void Player::CreateGameObjects() {
 		Output::Error("Invalid encoding: {}.", encoding);
 	}
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
+
+	// Special handling for games with altered files
+	FileFinder::SetGameFilesystem(HookFilesystem::Detect(FileFinder::Game()));
 
 	// Check for translation-related directories and load language names.
 	translation.InitTranslations();
