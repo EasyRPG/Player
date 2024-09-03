@@ -135,7 +135,7 @@ FilesystemView FileFinder::Root() {
 		root_fs = std::make_unique<RootFilesystem>();
 	}
 
-	return root_fs->Subtree("");
+	return *root_fs;
 }
 
 std::string FileFinder::MakePath(StringView dir, StringView name) {

@@ -16,6 +16,7 @@
  */
 
 #include "filesystem_root.h"
+#include "filesystem_drive.h"
 #include "output.h"
 
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
@@ -28,12 +29,20 @@ constexpr const StringView root_ns = "root://";
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 	// Add platform specific namespaces here
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
-	fs_list.push_back(std::make_pair("apk", std::make_unique<ApkFilesystem>()));
-	fs_list.push_back(std::make_pair("content", std::make_unique<SafFilesystem>("", FilesystemView())));
+	fs_list.push_back(std::make_pair("apk", std::make_shared<ApkFilesystem>()));
+	fs_list.push_back(std::make_pair("content", std::make_shared<SafFilesystem>("", FilesystemView())));
 #endif
 
+	// Support for drive letters on e.g. Windows (and similiar concepts on other platforms)
+	auto drive_fs = std::make_shared<DriveFilesystem>();
+	FilesystemView drive_view;
+	if (drive_fs->HasDrives()) {
+		drive_view = *drive_fs;
+		fs_list.push_back(std::make_pair("drive", drive_fs));
+	}
+
 	// IMPORTANT: This must be the last filesystem in the list, do not push anything to fs_list afterwards!
-	fs_list.push_back(std::make_pair("file", std::make_unique<NativeFilesystem>("", FilesystemView())));
+	fs_list.push_back(std::make_pair("file", std::make_shared<NativeFilesystem>("", drive_view)));
 
 	assert(fs_list.back().first == "file" && "File namespace must be last!");
 }

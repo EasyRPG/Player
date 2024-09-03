@@ -157,6 +157,8 @@ namespace Platform {
 	inline Directory::operator bool() const noexcept {
 #ifdef __vita__
 		return dir_handle >= 0;
+#elif defined(_WIN32)
+		return dir_handle != INVALID_HANDLE_VALUE;
 #else
 		return dir_handle != nullptr;
 #endif

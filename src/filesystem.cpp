@@ -87,9 +87,13 @@ void Filesystem::ClearCache(StringView path) const {
 FilesystemView Filesystem::Create(StringView path) const {
 	// Determine the proper file system to use
 
-	// When the path doesn't exist check if the path contains a file that can
-	// be handled by another filesystem
-	if (!IsDirectory(path, true)) {
+	if (IsFilesystemNode(path)) {
+		// The support for "mounted" virtual filesystems is very limited and the only
+		// use right now is to delegate from DriveFilesystem to NativeFilesystem.
+		return CreateFromNode(path);
+	} else if (!IsDirectory(path, true)) {
+		// When the path doesn't exist check if the path contains a file that can
+		// be handled by another filesystem
 		std::string dir_of_file;
 		std::string path_prefix;
 		std::vector<std::string> components = FileFinder::SplitPath(path);
@@ -175,8 +179,16 @@ FilesystemView Filesystem::Subtree(std::string sub_path) const {
 	return FilesystemView(shared_from_this(), sub_path);
 }
 
+bool Filesystem::IsFilesystemNode(StringView) const {
+	return false;
+}
+
 bool Filesystem::MakeDirectory(StringView, bool) const {
 	return false;
+}
+
+FilesystemView Filesystem::CreateFromNode(StringView) const {
+	return FilesystemView();
 }
 
 bool Filesystem::IsValid() const {
@@ -307,6 +319,11 @@ bool FilesystemView::IsDirectory(StringView path, bool follow_symlinks) const {
 	return fs->IsDirectory(MakePath(path), follow_symlinks);
 }
 
+bool FilesystemView::IsFilesystemNode(StringView path) const {
+	assert(fs);
+	return fs->IsFilesystemNode(MakePath(path));
+}
+
 bool FilesystemView::Exists(StringView path) const {
 	assert(fs);
 	return fs->Exists(MakePath(path));
@@ -372,6 +389,11 @@ bool FilesystemView::MakeDirectory(StringView dir, bool follow_symlinks) const {
 	return fs->MakeDirectory(MakePath(dir), follow_symlinks);
 }
 
+FilesystemView FilesystemView::CreateFromNode(StringView path) const {
+	assert(fs);
+	return fs->CreateFromNode(MakePath(path));
+}
+
 bool FilesystemView::IsFeatureSupported(Filesystem::Feature f) const {
 	assert(fs);
 	return fs->IsFeatureSupported(f);
@@ -380,6 +402,24 @@ bool FilesystemView::IsFeatureSupported(Filesystem::Feature f) const {
 FilesystemView FilesystemView::Subtree(StringView sub_path) const {
 	assert(fs);
 	return FilesystemView(fs, MakePath(sub_path));
+}
+
+bool FilesystemView::CanGoUp() const {
+	return static_cast<bool>(GoUp());
+}
+
+FilesystemView FilesystemView::GoUp() const {
+	if (GetSubPath().empty() || GetSubPath() == "/") {
+		return fs->GetParent();
+	}
+
+	auto [path, file] = FileFinder::GetPathAndFilename(GetSubPath());
+
+	if (path == GetSubPath()) {
+		return fs->GetParent();
+	}
+
+	return FilesystemView(fs, path);
 }
 
 std::string FilesystemView::Describe() const {

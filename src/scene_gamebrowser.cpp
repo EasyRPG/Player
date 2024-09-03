@@ -99,11 +99,15 @@ void Scene_GameBrowser::CreateWindows() {
 	command_window->SetIndex(0);
 
 	gamelist_window = std::make_unique<Window_GameList>(0, 64, Player::screen_width, Player::screen_height - 64);
-	gamelist_window->Refresh(stack.back().filesystem, false);
+	gamelist_window->Refresh(stack.back().filesystem, stack.back().filesystem.CanGoUp());
 
-	if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
+	if (stack.size() == 1 && !stack.back().filesystem.CanGoUp() && !gamelist_window->HasValidEntry()) {
 		command_window->DisableItem(0);
 	}
+
+#ifdef EMSCRIPTEN
+	command_window->DisableItem(0);
+#endif
 
 	help_window = std::make_unique<Window_Help>(0, 0, Player::screen_width, 32);
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
@@ -140,7 +144,7 @@ void Scene_GameBrowser::UpdateCommand() {
 
 		switch (menu_index) {
 			case GameList:
-				if (stack.size() == 1 && !gamelist_window->HasValidEntry()) {
+				if (!command_window->IsItemEnabled(0)) {
 					return;
 				}
 				command_window->SetActive(false);
@@ -177,20 +181,24 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 }
 
 void Scene_GameBrowser::BootGame() {
-	if (stack.size() > 1 && gamelist_window->GetIndex() == 0) {
+	if (stack.back().filesystem.CanGoUp() && gamelist_window->GetIndex() == 0) {
 		// ".." -> Go one level up
 		int index = stack.back().index;
-		stack.pop_back();
-		gamelist_window->Refresh(stack.back().filesystem, stack.size() > 1);
+
+		if (stack.size() == 1) {
+			stack.back() = {stack.back().filesystem.GoUp(), 0};
+		} else {
+			stack.pop_back();
+		}
+
+		gamelist_window->Refresh(stack.back().filesystem, stack.back().filesystem.CanGoUp());
 		gamelist_window->SetIndex(index);
 		load_window->SetVisible(false);
 		game_loading = false;
 		return;
 	}
 
-	FilesystemView fs;
-	std::string entry;
-	std::tie(fs, entry) = gamelist_window->GetGameFilesystem();
+	FilesystemView fs = gamelist_window->GetGameFilesystem();
 
 	if (!fs) {
 		Output::Warning("The selected file or directory cannot be opened");
