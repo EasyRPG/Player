@@ -608,6 +608,15 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 	int speed;
 	bool waiting_pan_screen = false;
 
+	// Maniac has new functions for pixel scrolling, which also have X and Y offsets
+	bool is_maniac = Player::IsPatchManiac();
+	int h;
+	int v;
+	double h_speed;
+	double v_speed;
+	bool centered = false;
+	bool relative = false;
+
 	auto& player = *Main_Data::game_player;
 
 	switch (com.parameters[0]) {
@@ -635,6 +644,34 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 				, std::abs(player.GetPanY() - player.GetTargetPanY()));
 		distance /= SCREEN_TILE_SIZE;
 		break;
+	}
+	if (is_maniac && com.parameters.size() > 5) {
+		h = ValueOrVariableBitfield(com, 1, 0, 2);
+		v = ValueOrVariableBitfield(com, 1, 1, 3);
+		waiting_pan_screen = (com.parameters[4] & 0x01) != 0;
+		speed = ValueOrVariableBitfield(com, 1, 2, 5);
+		switch (com.parameters[0]) {
+		case 4: // Relative Pixel Pan (speed)
+			centered = false;
+			relative = true;
+			player.StartPixelPan(h, v, speed, false, centered, relative);
+			break;
+		case 5: // Relative Pixel Pan (interpolated)
+			centered = false;
+			relative = true;
+			player.StartPixelPan(h, v, speed, true, centered, relative);
+			break;
+		case 6: // Absolute Pixel Pan (speed)
+			centered = (com.parameters[4] & 0x02) != 0;
+			relative = (com.parameters[4] & 0x04) != 0;
+			player.StartPixelPan(h, v, speed, false, centered, relative);
+			break;
+		case 7: // Absolute Pixel Pan (interpolated)
+			centered = (com.parameters[4] & 0x02) != 0;
+			relative = (com.parameters[4] & 0x04) != 0;
+			player.StartPixelPan(h, v, speed, true, centered, relative);
+			break;
+		}
 	}
 
 	if (waiting_pan_screen) {
