@@ -430,7 +430,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 
 	lcf::rpg::Event new_event = *source_event;
 	if (target_event_id > 0) {
-		DestroyMapEvent(target_event_id, false);
+		DestroyMapEvent(target_event_id, true);
 		new_event.ID = target_event_id;
 	} else {
 		new_event.ID = GetNextAvailableEventId();
@@ -465,11 +465,13 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 	return true;
 }
 
-bool Game_Map::DestroyMapEvent(const int event_id, bool update_references) {
+bool Game_Map::DestroyMapEvent(const int event_id, bool from_clone) {
 	const lcf::rpg::Event* event = FindEventById(map->events, event_id);
 
 	if (event == nullptr) {
-		Output::Warning("DestroyMapEvent: Event ID {} not found on current map", event_id);
+		if (!from_clone) {
+			Output::Warning("DestroyMapEvent: Event ID {} not found on current map", event_id);
+		}
 		return true;
 	}
 
@@ -492,7 +494,7 @@ bool Game_Map::DestroyMapEvent(const int event_id, bool update_references) {
 		}
 	}
 
-	if (update_references) {
+	if (!from_clone) {
 		UpdateUnderlyingEventReferences();
 
 		Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();

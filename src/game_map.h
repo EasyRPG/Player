@@ -96,8 +96,27 @@ namespace Game_Map {
 	/** Disposes Game_Map. */
 	void Dispose();
 
+	/**
+	 * Clones a map event.
+	 *
+	 * @param src_map_id Source map where to clone the event from
+	 * @param src_event_id Source event ID to clone
+	 * @param target_x Where to place the new event (X coordinate)
+	 * @param target_y Where to place the new event (Y coordinate)
+	 * @param target_event_id New event ID. When <= 0 a free ID is selected. When the ID exists the event is overwritten.
+	 * @param target_name New name of the event. When empty the original name is used.
+	 * @return Whether the cloning was successful. It will fail when source map or the src/target event do not exist.
+	 */
 	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name);
-	bool DestroyMapEvent(const int event_id, bool update_references = true);
+
+	/**
+	 * Deletes a map event.
+	 *
+	 * @param event_id Event ID to delete
+	 * @param from_clone When true this function was invoked by CloneMapEvent. This silences warnings and skips refreshes.
+	 * @return Whether the event was deleted. This will fail when the event does not exist.
+	 */
+	bool DestroyMapEvent(const int event_id, bool from_clone = false);
 
 	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
 	void CreateMapEvents();
