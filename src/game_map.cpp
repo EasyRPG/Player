@@ -380,6 +380,22 @@ void Game_Map::AddEventToCache(const lcf::rpg::Event& ev) {
 	}
 }
 
+void Game_Map::RemoveEventFromCache(const lcf::rpg::Event& ev) {
+	using Op = Caching::ObservedVarOps;
+
+	for (const auto& pg : ev.pages) {
+		if (pg.condition.flags.switch_a) {
+			map_cache->RemoveEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_a_id, ev);
+		}
+		if (pg.condition.flags.switch_b) {
+			map_cache->RemoveEventAsRefreshTarget<Op::SwitchSet>(pg.condition.switch_b_id, ev);
+		}
+		if (pg.condition.flags.variable) {
+			map_cache->RemoveEventAsRefreshTarget<Op::VarSet>(pg.condition.variable_id, ev);
+		}
+	}
+}
+
 void Game_Map::Caching::MapCache::Clear() {
 	for (int i = 0; i < static_cast<int>(ObservedVarOps_END); i++) {
 		refresh_targets_by_varid[i].clear();
@@ -458,17 +474,7 @@ bool Game_Map::DestroyMapEvent(const int event_id, bool update_references) {
 	}
 
 	// Remove event from cache
-	//	for (auto& pg : event->pages) {
-	//		if (pg.condition.flags.switch_a) {
-	//			events_cache_by_switch[pg.condition.switch_a_id].RemoveEvent(*event);
-	//		}
-	//		if (pg.condition.flags.switch_b) {
-	//			events_cache_by_switch[pg.condition.switch_b_id].RemoveEvent(*event);
-	//		}
-	//		if (pg.condition.flags.variable) {
-	//			events_cache_by_variable[pg.condition.variable_id].RemoveEvent(*event);
-	//		}
-	//	}
+	RemoveEventFromCache(*event);
 
 	// Remove event from events vector
 	for (auto it = events.begin(); it != events.end(); ++it) {
@@ -1892,6 +1898,26 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	auto* request = AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
 	request->SetImportantFile(true);
 	return request;
+}
+
+// MapEventCache
+//////////////////
+void Game_Map::Caching::MapEventCache::AddEvent(const lcf::rpg::Event& ev) {
+	auto id = ev.ID;
+
+	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
+		event_ids.emplace_back(id);
+	}
+}
+
+void Game_Map::Caching::MapEventCache::RemoveEvent(const lcf::rpg::Event& ev) {
+	auto id = ev.ID;
+
+	auto it = std::find(event_ids.begin(), event_ids.end(), id);
+
+	if (it != event_ids.end()) {
+		event_ids.erase(it);
+	}
 }
 
 // Parallax

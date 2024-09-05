@@ -23,6 +23,7 @@
 #include <initializer_list>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include "async_op.h"
 #include "system.h"
@@ -102,6 +103,7 @@ namespace Game_Map {
 	void CreateMapEvents();
 	void UpdateUnderlyingEventReferences();
 	void AddEventToCache(const lcf::rpg::Event& ev);
+	void RemoveEventFromCache(const lcf::rpg::Event& ev);
 	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
 	int GetNextAvailableEventId();
 
@@ -691,6 +693,7 @@ namespace Game_Map {
 		class MapEventCache {
 		public:
 			void AddEvent(const lcf::rpg::Event& ev);
+			void RemoveEvent(const lcf::rpg::Event& ev);
 
 		private:
 			std::vector<int> event_ids;
@@ -711,6 +714,9 @@ namespace Game_Map {
 			void AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev);
 
 			template <ObservedVarOps Op>
+			void RemoveEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev);
+
+			template <ObservedVarOps Op>
 			bool GetNeedRefresh(int var_id);
 
 			void Clear();
@@ -723,7 +729,6 @@ namespace Game_Map {
 	void SetNeedRefreshForVarChange(int var_id);
 	void SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids);
 	void SetNeedRefreshForVarChange(std::initializer_list<int> var_ids);
-
 
 	namespace Parallax {
 		struct Params {
@@ -807,7 +812,6 @@ namespace Game_Map {
 	}
 }
 
-
 inline AsyncOp MapUpdateAsyncContext::GetAsyncOp() const {
 	return async_op;
 }
@@ -876,20 +880,20 @@ inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();
 }
 
-inline void Game_Map::Caching::MapEventCache::AddEvent(const lcf::rpg::Event& ev) {
-	auto id = ev.ID;
-
-	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
-		event_ids.emplace_back(id);
-	}
-}
-
 template <Game_Map::Caching::ObservedVarOps Op>
 inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev) {
 	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
 
 	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
 	events_cache[var_id].AddEvent(ev);
+}
+
+template <Game_Map::Caching::ObservedVarOps Op>
+inline void Game_Map::Caching::MapCache::RemoveEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev) {
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
+
+	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
+	events_cache[var_id].RemoveEvent(ev);
 }
 
 template <Game_Map::Caching::ObservedVarOps Op>
