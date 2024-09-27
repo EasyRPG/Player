@@ -104,7 +104,7 @@ void Game_Player::PerformTeleport() {
 		return;
 	}
 
-	if (teleport_target.GetMapId() <= 0) {
+	if (Game_Map::GetCustomMapName() == "" && teleport_target.GetMapId() <= 0) {
 		Output::Error("Invalid Teleport map id! mapid={} x={} y={} d={}", teleport_target.GetMapId(),
 				teleport_target.GetX(), teleport_target.GetY(), teleport_target.GetDirection());
 	}

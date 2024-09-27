@@ -382,6 +382,10 @@ namespace Game_Map {
 	 */
 	int GetMapId();
 
+	std::string GetCustomMapName();
+
+	void SetCustomMapName(lcf::DBString mapName);
+
 	/**
 	 * Outputs the path in the map tree to reach the current map.
 	 */

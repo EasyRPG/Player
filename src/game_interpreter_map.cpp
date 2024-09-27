@@ -578,6 +578,8 @@ bool Game_Interpreter_Map::CommandTeleport(lcf::rpg::EventCommand const& com) { 
 	int x = com.parameters[1];
 	int y = com.parameters[2];
 
+	if (map_id == 0 && com.string != "") Game_Map::SetCustomMapName(com.string);
+
 	// RPG2k3 feature
 	int direction = -1;
 	if (com.parameters.size() > 3 && Player::IsRPG2k3Commands()) {
