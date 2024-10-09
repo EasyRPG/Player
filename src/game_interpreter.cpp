@@ -25,6 +25,7 @@
 #include <string>
 #include <cassert>
 #include "game_interpreter.h"
+#include "async_handler.h"
 #include "audio.h"
 #include "dynrpg.h"
 #include "filefinder.h"
@@ -4066,8 +4067,8 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 		Game_Pictures::ShowParams params;
 		params.use_transparent_color = true;
 		params.top_trans = 100; // Full transparent by default
-			params.map_layer = 7;
-			params.battle_layer = 7;
+		params.map_layer = 7;
+		params.battle_layer = 7;
 
 		// Spritesheet configured to match the FaceSet layout
 		params.name = FileFinder::MakePath("..\\FaceSet", face_names[i]);
@@ -4521,14 +4522,13 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 
 	int operation = com.parameters[0];
 
-	static bool was_loaded = false; // FIXME
+	auto load_global_save = [&]() {
+		Main_Data::global_save_opened = true;
 
-	if (operation == 0 || (!was_loaded && (operation == 4 || operation == 5))) {
-		was_loaded = true;
 		// Load
 		auto lgs = FileFinder::Save().OpenFile("Save.lgs");
 		if (!lgs) {
-			return true;
+			return;
 		}
 
 		lcf::LcfReader reader(lgs);
@@ -4536,7 +4536,7 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 		reader.ReadString(header, reader.ReadInt());
 		if (header.length() != 13 || header != "LcfGlobalSave") {
 			Output::Debug("This is not a valid global save.");
-			return true;
+			return;
 		}
 
 		lcf::LcfReader::Chunk chunk;
@@ -4561,15 +4561,18 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 					reader.Skip(chunk, "CommandManiacControlGlobalSave");
 			}
 		}
-	}
+	};
 
-
-	if (operation == 0 || operation == 1) {
-		// Open / Close (no-op)
+	if (operation == 0) {
+		// Open
+		load_global_save();
+	} else if (operation == 1) {
+		// Close
+		Main_Data::global_save_opened = false;
 	} else if (operation == 2 || operation == 3) {
 		// 2: Save (write to file)
 		// 3: Save and Close
-		if (!was_loaded) {
+		if (!Main_Data::global_save_opened) {
 			return true;
 		}
 
@@ -4594,7 +4597,17 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 		writer.WriteInt(2);
 		writer.WriteInt(Main_Data::game_variables_global->GetSize() * sizeof(int32_t));
 		writer.Write(Main_Data::game_variables_global->GetData());
+
+		AsyncHandler::SaveFilesystem();
+
+		if (operation == 3) {
+			Main_Data::global_save_opened = false;
+		}
 	} else if (operation == 4 || operation == 5) {
+		if (!Main_Data::global_save_opened) {
+			load_global_save();
+		}
+
 		int type = com.parameters[2];
 		int game_state_idx = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[3]);
 		int global_save_idx = ValueOrVariableBitfield(com.parameters[1], 1, com.parameters[4]);
