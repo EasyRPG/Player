@@ -4061,19 +4061,15 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 			continue;
 		}
 
-		// When the picture exists: Data is reused and effects finish immediately
-		// When not: Default data is used
-		// New features (spritesheets etc.) are always set due to how the patch works
-		// We are incompatible here and only set name and spritesheet and reuse stuff like the layer
+		// An existing picture is overwritten
+		// Default data is used with the exceptions listed below
 		Game_Pictures::ShowParams params;
-		auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
-		if (pic.Exists()) {
-			params = pic.GetShowParams();
-		} else {
-			params.top_trans = 100;
+		params.use_transparent_color = true;
+		params.top_trans = 100; // Full transparent by default
 			params.map_layer = 7;
 			params.battle_layer = 7;
-		}
+
+		// Spritesheet configured to match the FaceSet layout
 		params.name = FileFinder::MakePath("..\\FaceSet", face_names[i]);
 		params.spritesheet_cols = 4;
 		params.spritesheet_rows = 4;
