@@ -83,8 +83,8 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, St
 		int items = 0;
 		while (ReadCentralDirectoryEntry(zip_is, filepath, entry, is_utf8)) {
 			// Only consider Non-ASCII & Non-UTF8 for encoding detection
-			// Skip directories, files already contain the paths
-			if (is_utf8 || filepath.back() == '/' || Utils::StringIsAscii(filepath)) {
+			// Directories are skipped as most of them are usually ASCII and do not help with the detection
+			if (is_utf8 || filepath.back() == '/' || Utils::StringIsAscii(std::get<1>(FileFinder::GetPathAndFilename(filepath)))) {
 				continue;
 			}
 			// Codepath will be only entered by Windows "compressed folder" ZIPs (uses local encoding) and
