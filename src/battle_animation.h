@@ -108,6 +108,7 @@ protected:
 class BattleAnimationMap : public BattleAnimation {
 public:
 	BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global);
+	void SetTarget(Game_Character& target);
 	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
@@ -115,7 +116,7 @@ protected:
 	void DrawSingle(Bitmap& dst);
 	void DrawGlobal(Bitmap& dst);
 
-	Game_Character& target;
+	Game_Character* target;
 	bool global = false;
 };
 

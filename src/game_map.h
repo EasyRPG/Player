@@ -23,7 +23,9 @@
 #include <initializer_list>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
+#include "async_op.h"
 #include "system.h"
 #include "game_commonevent.h"
 #include "game_event.h"
@@ -38,8 +40,6 @@
 #include <lcf/rpg/savepartylocation.h>
 #include <lcf/rpg/savevehiclelocation.h>
 #include <lcf/rpg/savecommonevent.h>
-#include "async_op.h"
-#include <player.h>
 
 class FileRequestAsync;
 struct BattleArgs;
@@ -97,12 +97,42 @@ namespace Game_Map {
 	void Dispose();
 
 	/**
+	 * Clones a map event.
+	 *
+	 * @param src_map_id Source map where to clone the event from
+	 * @param src_event_id Source event ID to clone
+	 * @param target_x Where to place the new event (X coordinate)
+	 * @param target_y Where to place the new event (Y coordinate)
+	 * @param target_event_id New event ID. When <= 0 a free ID is selected. When the ID exists the event is overwritten.
+	 * @param target_name New name of the event. When empty the original name is used.
+	 * @return Whether the cloning was successful. It will fail when source map or the src/target event do not exist.
+	 */
+	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name);
+
+	/**
+	 * Deletes a map event.
+	 *
+	 * @param event_id Event ID to delete
+	 * @param from_clone When true this function was invoked by CloneMapEvent. This silences warnings and skips refreshes.
+	 * @return Whether the event was deleted. This will fail when the event does not exist.
+	 */
+	bool DestroyMapEvent(const int event_id, bool from_clone = false);
+
+	void TranslateMapMessages(int mapId, lcf::rpg::Map& map);
+	void CreateMapEvents();
+	void UpdateUnderlyingEventReferences();
+	void AddEventToCache(const lcf::rpg::Event& ev);
+	void RemoveEventFromCache(const lcf::rpg::Event& ev);
+	const lcf::rpg::Event* FindEventById(const std::vector<lcf::rpg::Event>& events, int event_id);
+	int GetNextAvailableEventId();
+
+	/**
 	 * Loads the map from disk
 	 *
 	 * @param map_id the id of the map to load
 	 * @return the map, or nullptr if it couldn't be loaded
 	 */
-	std::unique_ptr<lcf::rpg::Map> loadMapFile(int map_id);
+	std::unique_ptr<lcf::rpg::Map> LoadMapFile(int map_id);
 
 	/**
 	 * Setups a new map.
@@ -671,17 +701,18 @@ namespace Game_Map {
 	 * Construct a map name, either for EasyRPG or RPG Maker projects
 	 *
 	 * @param map_id The ID of the map to construct
-	 * @param isEasyRpg Is the an easyrpg (emu) project, or an RPG Maker (lmu) one?
+	 * @param is_easyrpg Is the an easyrpg (emu) project, or an RPG Maker (lmu) one?
 	 * @return The map name, as Map<map_id>.<map_extension>
 	 */
-	std::string ConstructMapName(int map_id, bool isEasyRpg);
+	std::string ConstructMapName(int map_id, bool is_easyrpg);
 
 	FileRequestAsync* RequestMap(int map_id);
 
 	namespace Caching {
 		class MapEventCache {
 		public:
-			void AddEvent(lcf::rpg::Event& ev);
+			void AddEvent(const lcf::rpg::Event& ev);
+			void RemoveEvent(const lcf::rpg::Event& ev);
 
 		private:
 			std::vector<int> event_ids;
@@ -699,7 +730,10 @@ namespace Game_Map {
 		class MapCache {
 		public:
 			template <ObservedVarOps Op>
-			void AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev);
+			void AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev);
+
+			template <ObservedVarOps Op>
+			void RemoveEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev);
 
 			template <ObservedVarOps Op>
 			bool GetNeedRefresh(int var_id);
@@ -714,7 +748,6 @@ namespace Game_Map {
 	void SetNeedRefreshForVarChange(int var_id);
 	void SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids);
 	void SetNeedRefreshForVarChange(std::initializer_list<int> var_ids);
-
 
 	namespace Parallax {
 		struct Params {
@@ -798,7 +831,6 @@ namespace Game_Map {
 	}
 }
 
-
 inline AsyncOp MapUpdateAsyncContext::GetAsyncOp() const {
 	return async_op;
 }
@@ -867,20 +899,20 @@ inline bool MapUpdateAsyncContext::IsActive() const {
 	return GetAsyncOp().IsActive();
 }
 
-inline void Game_Map::Caching::MapEventCache::AddEvent(lcf::rpg::Event& ev) {
-	auto id = ev.ID;
-
-	if (std::find(event_ids.begin(), event_ids.end(), id) == event_ids.end()) {
-		event_ids.emplace_back(id);
-	}
-}
-
 template <Game_Map::Caching::ObservedVarOps Op>
-inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, lcf::rpg::Event& ev) {
+inline void Game_Map::Caching::MapCache::AddEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev) {
 	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
 
 	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
 	events_cache[var_id].AddEvent(ev);
+}
+
+template <Game_Map::Caching::ObservedVarOps Op>
+inline void Game_Map::Caching::MapCache::RemoveEventAsRefreshTarget(int var_id, const lcf::rpg::Event& ev) {
+	static_assert(static_cast<int>(Op) >= 0 && Op < ObservedVarOps_END);
+
+	auto& events_cache = refresh_targets_by_varid[static_cast<int>(Op)];
+	events_cache[var_id].RemoveEvent(ev);
 }
 
 template <Game_Map::Caching::ObservedVarOps Op>
