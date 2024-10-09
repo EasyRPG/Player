@@ -1161,7 +1161,6 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	if (!load_on_map) {
 		Scene::PopUntil(Scene::Title);
 	}
-	Game_Map::Dispose();
 
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 	Main_Data::game_switches->SetData(std::move(save->system.switches));
@@ -1180,17 +1179,26 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
-	save_request_id = map->Bind([save=std::move(*save)](auto* request) { OnMapSaveFileReady(request, std::move(save)); });
+	save_request_id = map->Bind(
+		[save=std::move(*save), load_on_map, save_id](auto* request) {
+			Game_Map::Dispose();
+
+			OnMapSaveFileReady(request, std::move(save));
+
+			if (load_on_map) {
+				// Increment frame counter for consistency with a normal savegame load
+				IncFrame();
+				static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
+			}
+		}
+	);
 
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
+	// load_on_map is handled in the async callback
 	if (!load_on_map) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
-	} else {
-		// Increment frame counter for consistency with a normal savegame load
-		IncFrame();
-		static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
 	}
 }
 
