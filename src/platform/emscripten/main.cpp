@@ -68,9 +68,14 @@ void main_loop() {
 		Player::MainLoop();
 		if (!DisplayUi.get()) {
 			// Yield on shutdown to ensure async operations (e.g. IDBFS saving) can finish
-			counter = -5;
+			counter = -10;
 		}
 	} else if (counter == -1) {
+		if (DisplayUi.get()) {
+			// we previously lost the UI and restored it, so continue doing stuff.
+			counter = 6;
+			return;
+		}
 		emscripten_cancel_main_loop();
 	}
 }

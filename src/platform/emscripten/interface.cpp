@@ -24,6 +24,7 @@
 
 #include "system.h"
 #include "async_handler.h"
+#include "baseui.h"
 #include "filefinder.h"
 #include "filesystem_stream.h"
 #include "player.h"
@@ -159,6 +160,12 @@ bool Emscripten_Interface_Private::UploadFontStep2(std::string filename, int buf
 	return true;
 }
 
+bool Emscripten_Interface::ResetCanvas() {
+	DisplayUi.reset();
+	DisplayUi = BaseUi::CreateUi(Player::screen_width, Player::screen_height, Player::ParseCommandLine());
+	return DisplayUi != nullptr;
+}
+
 // Binding code
 EMSCRIPTEN_BINDINGS(player_interface) {
 	emscripten::class_<Emscripten_Interface>("api")
@@ -173,6 +180,7 @@ EMSCRIPTEN_BINDINGS(player_interface) {
 #endif
 		.class_function("refreshScene", &Emscripten_Interface::RefreshScene)
 		.class_function("takeScreenshot", &Emscripten_Interface::TakeScreenshot)
+		.class_function("resetCanvas", &Emscripten_Interface::ResetCanvas)
 	;
 
 	emscripten::class_<Emscripten_Interface_Private>("api_private")

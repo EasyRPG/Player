@@ -15,12 +15,14 @@ Module = { ...Module,
   canvas: (() => {
     const canvas = document.getElementById('canvas');
 
-    // As a default initial behavior, pop up an alert when webgl context is lost
     // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
     canvas.addEventListener('webglcontextlost', event => {
-      alert('WebGL context lost. You will need to reload the page.');
       event.preventDefault();
     }, false);
+
+    canvas.addEventListener('webglcontextrestored', () => {
+      Module.api.resetCanvas();
+    });
 
     return canvas;
   })(),

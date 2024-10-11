@@ -29,6 +29,7 @@ public:
     static void RefreshScene();
 	static void TakeScreenshot();
 	static void Reset();
+	static bool ResetCanvas();
 };
 
 class Emscripten_Interface_Private {
