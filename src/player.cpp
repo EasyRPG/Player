@@ -1083,7 +1083,7 @@ void Player::LoadFonts() {
 }
 
 static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
-	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
+	auto map = Game_Map::LoadMapFile(Main_Data::game_player->GetMapId());
 	Game_Map::SetupFromSave(
 			std::move(map),
 			std::move(save.map_info),
@@ -1181,7 +1181,6 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind([save=std::move(*save)](auto* request) { OnMapSaveFileReady(request, std::move(save)); });
-	map->SetImportantFile(true);
 
 	Main_Data::game_system->ReloadSystemGraphic();
 
@@ -1233,7 +1232,6 @@ void Player::SetupPlayerSpawn() {
 
 	FileRequestAsync* request = Game_Map::RequestMap(map_id);
 	map_request_id = request->Bind(&OnMapFileReady);
-	request->SetImportantFile(true);
 	request->Start();
 }
 

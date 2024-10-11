@@ -18,6 +18,8 @@
 #ifndef EP_ASYNC_OP_H
 #define EP_ASYNC_OP_H
 
+#include "string_view.h"
+#include <string>
 #include <utility>
 #include <cassert>
 
@@ -42,7 +44,9 @@ class AsyncOp {
 			eSave,
 			eLoad,
 			eYield,
-			eYieldRepeat
+			eYieldRepeat,
+			eCloneMapEvent,
+			eDestroyMapEvent
 		};
 
 		AsyncOp() = default;
@@ -79,6 +83,12 @@ class AsyncOp {
 
 		/** @return a Yield for one frame and repeat the command to e.g. fetch an important asset */
 		static AsyncOp MakeYieldRepeat();
+
+		/** @return a clone map event async operation */
+		static AsyncOp MakeCloneMapEvent(std::string name, int src_event_id, int target_event_id, int map_id, int x, int y);
+
+		/** @return a destroy map event async operation */
+		static AsyncOp MakeDestroyMapEvent(int target_event_id);
 
 		/** @return the type of async operation */
 		Type GetType() const;
@@ -128,13 +138,52 @@ class AsyncOp {
 		 **/
 		int GetSaveResultVar() const;
 
+		/**
+		 * @return the event id of the event being cloned
+		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 */
+		int GetSourceEventId() const;
+
+		/**
+		 * @return the event id of the event being created
+		 * @pre If GetType() is not eCloneMapEvent or eDestroyMapEvent, the return value is undefined.
+		 */
+		int GetTargetEventId() const;
+
+		/**
+		 * @return the map id where the event is cloned from
+		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 */
+		int GetMapId() const;
+
+		/**
+		 * @return the x coordinate where to spawn the event
+		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 */
+		int GetX() const;
+
+		/**
+		 * @return the y coordinate where to spawn the event
+		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 */
+		int GetY() const;
+
+		/**
+		 * @return the new name of the event
+		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
+		 */
+		StringView GetEventName() const;
+
 	private:
 		Type _type = eNone;
-		int _args[3] = {};
+		int _args[5] = {};
+		std::string _str_arg;
 
 		template <typename... Args>
 		explicit AsyncOp(Type type, Args&&... args);
 
+		template <typename... Args>
+		explicit AsyncOp(Type type, std::string str_arg, Args&&... args);
 };
 
 inline AsyncOp::Type AsyncOp::GetType() const {
@@ -180,10 +229,44 @@ inline int AsyncOp::GetSaveResultVar() const {
 	return _args[1];
 }
 
+inline int AsyncOp::GetSourceEventId() const {
+	assert(GetType() == eCloneMapEvent);
+	return _args[0];
+}
+
+inline int AsyncOp::GetTargetEventId() const {
+	assert(GetType() == eCloneMapEvent || GetType() == eDestroyMapEvent);
+	return _args[1];
+}
+
+inline int AsyncOp::GetMapId() const {
+	assert(GetType() == eCloneMapEvent);
+	return _args[2];
+}
+
+inline int AsyncOp::GetX() const {
+	assert(GetType() == eCloneMapEvent);
+	return _args[3];
+}
+
+inline int AsyncOp::GetY() const {
+	assert(GetType() == eCloneMapEvent);
+	return _args[4];
+}
+
+inline StringView AsyncOp::GetEventName() const {
+	assert(GetType() == eCloneMapEvent);
+	return _str_arg;
+}
 
 template <typename... Args>
 inline AsyncOp::AsyncOp(Type type, Args&&... args)
 	: _type(type), _args{std::forward<Args>(args)...}
+{}
+
+template <typename... Args>
+inline AsyncOp::AsyncOp(Type type, std::string str_arg, Args&&... args)
+	: _type(type), _args{std::forward<Args>(args)...}, _str_arg(std::move(str_arg))
 {}
 
 inline AsyncOp AsyncOp::MakeShowScreen(int transition_type) {
@@ -228,6 +311,14 @@ inline AsyncOp AsyncOp::MakeYield() {
 
 inline AsyncOp AsyncOp::MakeYieldRepeat() {
 	return AsyncOp(eYieldRepeat);
+}
+
+inline AsyncOp AsyncOp::MakeCloneMapEvent(std::string name, int src_event_id, int target_event_id, int map_id, int x, int y) {
+	return AsyncOp(eCloneMapEvent, name, src_event_id, target_event_id, map_id, x, y);
+}
+
+inline AsyncOp AsyncOp::MakeDestroyMapEvent(int target_event_id) {
+	return AsyncOp(eDestroyMapEvent, 0, target_event_id);
 }
 
 #endif

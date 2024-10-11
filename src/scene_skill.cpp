@@ -28,6 +28,7 @@
 #include "scene_actortarget.h"
 #include "scene_teleport.h"
 #include "transition.h"
+#include "player.h"
 
 Scene_Skill::Scene_Skill(std::vector<Game_Actor*> actors, int actor_index, int skill_index) :
 	actors(actors), actor_index(actor_index), skill_index(skill_index) {
