@@ -97,6 +97,8 @@ namespace FileFinder {
 	 */
 	std::string FindMusic(StringView name);
 
+	std::string FindMovie(StringView name);
+
 	/**
 	 * Finds a sound file in the current RPG Maker game.
 	 *
