@@ -71,6 +71,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Targets> game_targets;
 	std::unique_ptr<Game_Quit> game_quit;
 	std::unique_ptr<Game_Ineluki> game_ineluki;
+	bool global_save_opened = false;
 	std::unique_ptr<Game_Switches> game_switches_global;
 	std::unique_ptr<Game_Variables> game_variables_global;
 
@@ -125,6 +126,9 @@ void Main_Data::Cleanup() {
 	game_quit.reset();
 	game_system.reset();
 	game_ineluki.reset();
+	global_save_opened = false;
+	game_switches_global.reset();
+	game_variables_global.reset();
 }
 
 const std::string& Main_Data::GetDefaultProjectPath() {

@@ -58,6 +58,7 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_Targets> game_targets;
 	extern std::unique_ptr<Game_Quit> game_quit;
 	extern std::unique_ptr<Game_Ineluki> game_ineluki;
+	extern bool global_save_opened;
 	extern std::unique_ptr<Game_Switches> game_switches_global; // Used by Global Save command
 	extern std::unique_ptr<Game_Variables> game_variables_global;
 
