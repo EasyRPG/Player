@@ -29,7 +29,7 @@ namespace DynRpg {
 	 */
 	class EasyRpgPlugin : public DynRpgPlugin {
 	public:
-		EasyRpgPlugin() : DynRpgPlugin("EasyRpgPlugin") {}
+		EasyRpgPlugin(Game_DynRpg& instance) : DynRpgPlugin("EasyRpgPlugin", instance) {}
 
 		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Load(const std::vector<uint8_t>& buffer) override;

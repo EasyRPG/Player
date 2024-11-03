@@ -154,7 +154,7 @@ private:
 /** Base class for implementing a DynRpg Plugins */
 class DynRpgPlugin {
 public:
-	explicit DynRpgPlugin(std::string identifier) : identifier(std::move(identifier)) {}
+	explicit DynRpgPlugin(std::string identifier, Game_DynRpg& instance) : instance(instance), identifier(std::move(identifier)) {}
 	DynRpgPlugin() = delete;
 	virtual ~DynRpgPlugin() = default;
 
@@ -163,6 +163,9 @@ public:
 	virtual void Update() {}
 	virtual void Load(const std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }
+
+protected:
+	Game_DynRpg& instance;
 
 private:
 	std::string identifier;

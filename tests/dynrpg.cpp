@@ -151,6 +151,8 @@ TEST_CASE("easyrpg dynrpg invoke") {
 	Game_DynRpg dyn;
 	const MockActor m;
 
+	Player::game_config.patch_dynrpg.Set(true);
+
 	std::vector<int32_t> vars = {-1};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);

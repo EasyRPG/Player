@@ -180,11 +180,11 @@ void Game_DynRpg::InitPlugins() {
 	}
 
 	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
-		plugins.emplace_back(new DynRpg::EasyRpgPlugin());
+		plugins.emplace_back(new DynRpg::EasyRpgPlugin(*this));
 	}
 
 	if (Player::IsPatchDynRpg()) {
-		plugins.emplace_back(new DynRpg::TextPlugin());
+		plugins.emplace_back(new DynRpg::TextPlugin(*this));
 	}
 
 	plugins_loaded = true;

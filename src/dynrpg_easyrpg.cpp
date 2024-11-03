@@ -58,7 +58,7 @@ bool DynRpg::EasyRpgPlugin::EasyCall(dyn_arg_list args, bool& do_yield, Game_Int
 		return true;
 	}
 
-	for (auto& plugin: Main_Data::game_dynrpg->plugins) {
+	for (auto& plugin: instance.plugins) {
 		if (plugin->Invoke(func_name, args.subspan(1), do_yield, interpreter)) {
 			return true;
 		}

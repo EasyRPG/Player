@@ -23,7 +23,7 @@
 namespace DynRpg {
 	class TextPlugin : public DynRpgPlugin {
 	public:
-		TextPlugin() : DynRpgPlugin("DynTextPlugin") {}
+		TextPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynTextPlugin", instance) {}
 		~TextPlugin() override;
 
 		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
