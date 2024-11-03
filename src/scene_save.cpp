@@ -23,7 +23,7 @@
 #endif
 
 #include <lcf/data.h>
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_actor.h"
 #include "game_map.h"
@@ -156,7 +156,8 @@ bool Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	auto lcf_engine = Player::IsRPG2k3() ? lcf::EngineVersion::e2k3 : lcf::EngineVersion::e2k;
 	bool res = lcf::LSD_Reader::Save(os, save, lcf_engine, Player::encoding);
 
-	DynRpg::Save(slot_id);
+	Main_Data::game_dynrpg->Save(slot_id);
+
 	AsyncHandler::SaveFilesystem();
 
 	return res;

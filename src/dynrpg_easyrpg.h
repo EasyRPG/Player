@@ -18,7 +18,9 @@
 #ifndef EP_DYNRPG_EASYRPG_H
 #define EP_DYNRPG_EASYRPG_H
 
-#include "dynrpg.h"
+#include "game_dynrpg.h"
+#include "game_battle.h"
+#include "game_map.h"
 
 namespace DynRpg {
 	/**
@@ -29,9 +31,12 @@ namespace DynRpg {
 	public:
 		EasyRpgPlugin() : DynRpgPlugin("EasyRpgPlugin") {}
 
-		void RegisterFunctions() override;
+		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Load(const std::vector<uint8_t>& buffer) override;
 		std::vector<uint8_t> Save() override;
+
+	private:
+		bool EasyCall(dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter);
 	};
 }
 

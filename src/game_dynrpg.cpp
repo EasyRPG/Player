@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_actors.h"
 #include "game_variables.h"
@@ -26,7 +26,6 @@
 
 #include <cstring>
 #include <fstream>
-#include <map>
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
@@ -39,33 +38,13 @@ enum DynRpg_ParseMode {
 	ParseMode_Token
 };
 
-typedef std::map<std::string, dynfunc> dyn_rpg_func;
-
-namespace {
-	bool init = false;
-
-	// Registered DynRpg Plugins
-	std::vector<std::unique_ptr<DynRpgPlugin>> plugins;
-
-	// DynRpg Function table
-	dyn_rpg_func dyn_rpg_functions;
-}
-
-void DynRpg::RegisterFunction(const std::string& name, dynfunc func) {
-	dyn_rpg_functions[name] = func;
-}
-
-bool DynRpg::HasFunction(const std::string& name) {
-	return dyn_rpg_functions.find(name) != dyn_rpg_functions.end();
-}
-
 // Var arg referenced by $n
 std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay) {
 	parse_okay = true;
 	if (index >= static_cast<int>(args.size())) {
 		parse_okay = false;
 		Output::Warning("{}: Vararg {} out of range", func_name, index);
-		return "";
+		return {};
 	}
 
 	std::string::iterator text_index, end;
@@ -97,7 +76,7 @@ std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int ind
 					// $-ref out of range
 					parse_okay = false;
 					Output::Warning("{}: Vararg $-ref {} out of range", func_name, i);
-					return "";
+					return {};
 				}
 
 				++text_index;
@@ -113,11 +92,10 @@ std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int ind
 }
 
 
-static std::string ParseToken(const std::string& token, const std::string& function_name) {
+static std::string ParseToken(std::string token, StringView function_name) {
 	std::string::iterator text_index, end;
-	std::string text = token;
-	text_index = text.begin();
-	end = text.end();
+	text_index = token.begin();
+	end = token.end();
 
 	char chr = *text_index;
 
@@ -147,7 +125,7 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 				if (*it == 'N') {
 					if (!Main_Data::game_actors->ActorExists(number)) {
 						Output::Warning("{}: Invalid actor id {} in {}", function_name, number, token);
-						return "";
+						return {};
 					}
 
 					// N is last
@@ -180,36 +158,36 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 	}
 
 	// Normal token
-	return Utils::LowerCase(token);
+	Utils::LowerCaseInPlace(token);
+	return token;
 }
 
-void create_all_plugins() {
-	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
-	plugins.emplace_back(new DynRpg::TextPlugin());
-	
-	for (auto& plugin : plugins) {
-		plugin->RegisterFunctions();
+void Game_DynRpg::InitPlugins() {
+	if (plugins_loaded) {
+		return;
 	}
 
-	init = true;
+	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
+	plugins.emplace_back(new DynRpg::TextPlugin());
+
+	plugins_loaded = true;
 }
 
-std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::string>& args) {
+std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& args) {
 	if (command.empty()) {
 		// Not a DynRPG function (empty comment)
-		return "";
+		return {};
 	}
 
 	std::string::iterator text_index, end;
-	std::string text = command;
-	text_index = text.begin();
-	end = text.end();
+	text_index = command.begin();
+	end = command.end();
 
 	char chr = *text_index;
 
 	if (chr != '@') {
 		// Not a DynRPG function, normal comment
-		return "";
+		return {};
 	}
 
 	DynRpg_ParseMode mode = ParseMode_Function;
@@ -241,7 +219,7 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					if (function_name.empty()) {
 						// empty function name
 						Output::Warning("Empty DynRPG function name");
-						return "";
+						return {};
 					}
 					break;
 				case ParseMode_WaitForComma:
@@ -272,7 +250,7 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					if (function_name.empty()) {
 						// empty function name
 						Output::Warning("Empty DynRPG function name");
-						return "";
+						return {};
 					}
 					token.str("");
 
@@ -297,7 +275,7 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					if (function_name.empty()) {
 						// empty function name
 						Output::Warning("Empty DynRPG function name");
-						return "";
+						return {};
 					}
 					token.str("");
 					// Empty arg
@@ -330,7 +308,7 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 					break;
 				case ParseMode_WaitForComma:
 					Output::Warning("{}: Expected \",\", got token", function_name);
-					return "";
+					return {};
 				case ParseMode_WaitForArg:
 					if (chr == '"') {
 						mode = ParseMode_String;
@@ -373,33 +351,32 @@ std::string DynRpg::ParseCommand(const std::string& command, std::vector<std::st
 	return function_name;
 }
 
-bool DynRpg::Invoke(const std::string& command) {
-	if (!init) {
-		create_all_plugins();
-	}
+bool Game_DynRpg::Invoke(StringView command, Game_Interpreter* interpreter) {
+	InitPlugins();
 
 	std::vector<std::string> args;
-	std::string function_name = ParseCommand(command, args);
+	std::string function_name = DynRpg::ParseCommand(ToString(command), args);
 
 	if (function_name.empty()) {
 		return true;
 	}
 
-	return Invoke(function_name, args);
+	return Invoke(function_name, args, interpreter);
 }
 
-bool DynRpg::Invoke(const std::string& func, dyn_arg_list args) {
-	if (!init) {
-		create_all_plugins();
+bool Game_DynRpg::Invoke(StringView func, dyn_arg_list args, Game_Interpreter* interpreter) {
+	InitPlugins();
+
+	bool yield = false;
+
+	for (auto& plugin: plugins) {
+		if (plugin->Invoke(func, args, yield, interpreter)) {
+			return !yield;
+		}
 	}
 
-	if (!DynRpg::HasFunction(func)) {
-		// Not a supported function
-		Output::Warning("Unsupported DynRPG function: {}", func);
-		return true;
-	}
-
-	return dyn_rpg_functions[func](args);
+	Output::Warning("Unsupported DynRPG function: {}", func);
+	return true;
 }
 
 std::string get_filename(int slot) {
@@ -416,14 +393,12 @@ std::string get_filename(int slot) {
 	return found;
 }
 
-void DynRpg::Load(int slot) {
+void Game_DynRpg::Load(int slot) {
 	if (!Player::IsPatchDynRpg()) {
 		return;
 	}
 
-	if (!init) {
-		create_all_plugins();
-	}
+	InitPlugins();
 
 	std::string filename = get_filename(slot);
 
@@ -457,7 +432,7 @@ void DynRpg::Load(int slot) {
 		bool have_one = false;
 
 		for (auto &plugin : plugins) {
-			if (strncmp((char*)in_buffer.data(), plugin->GetIdentifier().c_str(), len) == 0) {
+			if (strncmp((char*)in_buffer.data(), plugin->GetIdentifier().data(), len) == 0) {
 				// Chunk length
 				in.read((char *) &len, 4);
 				Utils::SwapByteOrder(len);
@@ -485,14 +460,12 @@ void DynRpg::Load(int slot) {
 	}
 }
 
-void DynRpg::Save(int slot) {
+void Game_DynRpg::Save(int slot) {
 	if (!Player::IsPatchDynRpg()) {
 		return;
 	}
 
-	if (!init) {
-		create_all_plugins();
-	}
+	InitPlugins();
 
 	std::string filename = get_filename(slot);
 
@@ -512,7 +485,7 @@ void DynRpg::Save(int slot) {
 		Utils::SwapByteOrder(len);
 
 		out.write((char*)&len, 4);
-		out.write(plugin->GetIdentifier().c_str(), len);
+		out.write(plugin->GetIdentifier().data(), len);
 
 		std::vector<uint8_t> data = plugin->Save();
 		len = data.size();
@@ -523,14 +496,8 @@ void DynRpg::Save(int slot) {
 	}
 }
 
-void DynRpg::Update() {
+void Game_DynRpg::Update() {
 	for (auto& plugin : plugins) {
 		plugin->Update();
 	}
-}
-
-void DynRpg::Reset() {
-	init = false;
-	dyn_rpg_functions.clear();
-	plugins.clear();
 }

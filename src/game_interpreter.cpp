@@ -27,7 +27,7 @@
 #include "game_interpreter.h"
 #include "async_handler.h"
 #include "audio.h"
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -2023,7 +2023,7 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 			}
 		}
 
-		return DynRpg::Invoke(command);
+		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
 	return true;
 }
