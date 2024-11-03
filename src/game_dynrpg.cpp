@@ -179,8 +179,13 @@ void Game_DynRpg::InitPlugins() {
 		return;
 	}
 
-	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
-	plugins.emplace_back(new DynRpg::TextPlugin());
+	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
+		plugins.emplace_back(new DynRpg::EasyRpgPlugin());
+	}
+
+	if (Player::IsPatchDynRpg()) {
+		plugins.emplace_back(new DynRpg::TextPlugin());
+	}
 
 	plugins_loaded = true;
 }

@@ -2001,10 +2001,17 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
-	if (Player::IsPatchDynRpg()) {
+	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
 			return true;
+		}
+
+		if (!Player::IsPatchDynRpg() && Player::HasEasyRpgExtensions()) {
+			// Only accept commands starting with @easyrpg_
+			if (!StringView(com.string).starts_with("@easyrpg_")) {
+				return true;
+			}
 		}
 
 		auto& frame = GetFrame();
