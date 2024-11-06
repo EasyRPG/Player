@@ -1155,9 +1155,14 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		ResetWindows(true);
 		target_window->SetIndex(-1);
 
-		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional
+				|| ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && (std::find(battle_options.begin(), battle_options.end(), Win) == battle_options.end()) && (std::find(battle_options.begin(), battle_options.end(), Lose) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
 			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(Player::menu_offset_x - options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
+			return SceneActionReturn::eContinueThisFrame;
+		} else if (battle_options.size() == 1 && (std::find(battle_options.begin(), battle_options.end(), AutoBattle) != battle_options.end())) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(Player::menu_offset_x - options_window->GetWidth(), 1);
+			SetState(State_AutoBattle);
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
