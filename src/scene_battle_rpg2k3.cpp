@@ -1163,13 +1163,12 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 
 		options_window->SetActive(true);
 
+		auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 		if (IsEscapeAllowedFromOptionWindow()) {
-			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 			if (it != battle_options.end()) {
 				options_window->EnableItem(std::distance(battle_options.begin(), it));
 			}
 		} else {
-			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 			if (it != battle_options.end()) {
 				options_window->DisableItem(std::distance(battle_options.begin(), it));
 			}
@@ -1216,6 +1215,16 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 					} else {
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 					}
+					break;
+				case Win: // Win
+					for each (Game_Enemy* enemy in Main_Data::game_enemyparty->GetEnemies())
+					{
+						enemy->Kill();
+					}
+					SetState(State_Victory);
+					break;
+				case Lose: // Lose
+					SetState(State_Defeat);
 					break;
 			}
 		}

@@ -31,6 +31,7 @@
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
+#include <scene_battle.h>
 
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
@@ -605,12 +606,42 @@ bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventComman
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ChangeBattleCommandEx not supported");
+	// 1 row removed
+	bool actorCommandFlags = com.parameters[0];
+
+	lcf::Data::battlecommands.easyrpg_disable_row_feature = actorCommandFlags;
+
+	// 10000 lose added
+	// 01000 win added
+	// 00100 escape removed
+	// 00010 auto removed
+	// 00001 fight removed
+	int partyCommandFlags = com.parameters[1];
+
+	lcf::Data::system.easyrpg_battle_options.clear();
+	for (size_t i = 0; i < Scene_Battle::BattleOptionType::Lose + 1; i++)
+	{
+		bool partyCommandFlag = partyCommandFlags & (1 << i);
+		bool flagIsSet = i > 2;
+
+		if (partyCommandFlag == flagIsSet)
+		{
+			lcf::Data::system.easyrpg_battle_options.push_back(i);
+		}
+	}
+
+	auto& scene = Scene::instance;
+	Scene_Battle* sceneBattle = dynamic_cast<Scene_Battle*>(scene.get());
+
+	if (sceneBattle) {
+		sceneBattle->CreateOptions();
+	}
+
 	return true;
 }
 

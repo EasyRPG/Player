@@ -80,6 +80,8 @@ public:
 
 	void Start() override;
 
+	void CreateOptions();
+
 	void UpdateScreen();
 	void UpdateBattlers();
 	void UpdateUi();
@@ -125,7 +127,9 @@ public:
 	enum BattleOptionType {
 		Battle,
 		AutoBattle,
-		Escape
+		Escape,
+		Win,
+		Lose
 	};
 
 	static void SelectionFlash(Game_Battler* battler);

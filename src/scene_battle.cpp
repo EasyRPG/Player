@@ -189,16 +189,18 @@ void Scene_Battle::DrawBackground(Bitmap& dst) {
 	dst.Clear();
 }
 
-void Scene_Battle::CreateUi() {
+void Scene_Battle::CreateOptions() {
 	std::vector<std::string> commands;
 
-	for (auto option: lcf::Data::system.easyrpg_battle_options) {
+	battle_options.clear();
+
+	for (auto option : lcf::Data::system.easyrpg_battle_options) {
 		battle_options.push_back((BattleOptionType)option);
 	}
 
 	// Add all menu items
-	for (auto option: battle_options) {
-		switch(option) {
+	for (auto option : battle_options) {
+		switch (option) {
 		case Battle:
 			commands.push_back(ToString(lcf::Data::terms.battle_fight));
 			break;
@@ -208,6 +210,12 @@ void Scene_Battle::CreateUi() {
 		case Escape:
 			commands.push_back(ToString(lcf::Data::terms.battle_escape));
 			break;
+		case Win:
+			commands.push_back("Win");
+			break;
+		case Lose:
+			commands.push_back("Lose");
+			break;
 		}
 	}
 
@@ -215,6 +223,10 @@ void Scene_Battle::CreateUi() {
 	options_window->SetHeight(80);
 	options_window->SetX(Player::menu_offset_x);
 	options_window->SetY(Player::menu_offset_y + MENU_HEIGHT - 80);
+}
+
+void Scene_Battle::CreateUi() {
+	CreateOptions();
 
 	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, 32));
 	help_window->SetVisible(false);
