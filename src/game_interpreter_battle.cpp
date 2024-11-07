@@ -597,12 +597,104 @@ bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand 
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlAtbGauge not supported");
+	// 0 actor
+	// 1 party member
+	// 2 entire party
+	// 3 troop member
+	// 4 entire troop
+	int targetFlags = com.parameters[0];
+	// 0 constant
+	// 1 variable
+	// 2 variable id
+	int targetReferenceFlags = com.parameters[1];
+	int targetReferenceIdentifier = com.parameters[2];
+	// 0 set
+	// 1 add
+	// 2 sub
+	int operationFlags = com.parameters[3];
+	// 0 value
+	// 1 percentage
+	int operandFlags = com.parameters[4];
+	// 0 constant
+	// 1 variable
+	// 2 variable id
+	int valueReferenceFlags = com.parameters[5];
+	int valueReferenceIdentifier = com.parameters[6];
+
+	auto getVariableOrValue = [](int flags, int identifier) {
+		switch (flags) {
+			case 0:
+				return identifier;
+				break;
+			case 1:
+				return Main_Data::game_variables->Get(identifier);
+				break;
+			case 2:
+				return Main_Data::game_variables->Get(Main_Data::game_variables->Get(identifier));
+				break;
+		}
+	};
+
+	int targetId = getVariableOrValue(targetReferenceFlags, targetReferenceIdentifier);
+
+	auto getAtbValue = [getVariableOrValue, valueReferenceFlags, valueReferenceIdentifier](int flags) {
+		int value = getVariableOrValue(valueReferenceFlags, valueReferenceIdentifier);
+
+		switch (flags) {
+			case 0:
+				return value;
+				break;
+			case 1:
+				return (int) ((double)value / 100 * Game_Battler::GetMaxAtbGauge());
+				break;
+		}
+	};
+
+	auto executeOperation = [getAtbValue, operandFlags](int flags, Game_Battler* battler) {
+		switch (flags) {
+			case 0:
+				battler->SetAtbGauge(getAtbValue(operandFlags));
+				break;
+			case 1:
+				battler->IncrementAtbGauge(getAtbValue(operandFlags));
+				break;
+			case 2:
+				battler->IncrementAtbGauge(-getAtbValue(operandFlags));
+				break;
+		}
+	};
+
+	switch (targetFlags) {
+		case 0:
+			if (targetId > 0) {
+				executeOperation(operationFlags, Main_Data::game_actors->GetActor(targetId));
+			}
+			break;
+		case 1:
+			executeOperation(operationFlags, Main_Data::game_party->GetActor(targetId));
+			break;
+		case 2:
+			for each (Game_Battler* member in Main_Data::game_party->GetActors()) {
+				executeOperation(operationFlags, member);
+			}
+			break;
+		case 3:
+			if (targetId > 0) {
+				executeOperation(operationFlags, Main_Data::game_enemyparty->GetEnemy(targetId));
+			}
+			break;
+		case 4:
+			for each (Game_Battler* member in Main_Data::game_enemyparty->GetEnemies()) {
+				executeOperation(operationFlags, member);
+			}
+			break;
+	}
+
 	return true;
 }
 
