@@ -602,95 +602,75 @@ bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventComman
 		return true;
 	}
 
-	// 0 actor
-	// 1 party member
-	// 2 entire party
-	// 3 troop member
-	// 4 entire troop
-	int targetFlags = com.parameters[0];
-	// 0 constant
-	// 1 variable
-	// 2 variable id
-	int targetReferenceFlags = com.parameters[1];
-	int targetReferenceIdentifier = com.parameters[2];
-	// 0 set
-	// 1 add
-	// 2 sub
-	int operationFlags = com.parameters[3];
-	// 0 value
-	// 1 percentage
-	int operandFlags = com.parameters[4];
-	// 0 constant
-	// 1 variable
-	// 2 variable id
-	int valueReferenceFlags = com.parameters[5];
-	int valueReferenceIdentifier = com.parameters[6];
+	int target_flags = com.parameters[0];
+	int target_reference_flags = com.parameters[1];
+	int target_reference_identifier = com.parameters[2];
+	int operation_flags = com.parameters[3];
+	int operand_flags = com.parameters[4];
+	int value_reference_flags = com.parameters[5];
+	int value_reference_identifier = com.parameters[6];
 
-	auto getVariableOrValue = [](int flags, int identifier) {
-		switch (flags) {
-			case 0:
-				return identifier;
-				break;
-			case 1:
-				return Main_Data::game_variables->Get(identifier);
-				break;
-			case 2:
-				return Main_Data::game_variables->Get(Main_Data::game_variables->Get(identifier));
-				break;
-		}
-	};
+	int target_id = ValueOrVariable(target_reference_flags, target_reference_identifier);
 
-	int targetId = getVariableOrValue(targetReferenceFlags, targetReferenceIdentifier);
-
-	auto getAtbValue = [getVariableOrValue, valueReferenceFlags, valueReferenceIdentifier](int flags) {
-		int value = getVariableOrValue(valueReferenceFlags, valueReferenceIdentifier);
+	auto getAtbValue = [this, value_reference_flags, value_reference_identifier](int flags) {
+		int value = ValueOrVariable(value_reference_flags, value_reference_identifier);
 
 		switch (flags) {
 			case 0:
+				// value
 				return value;
 				break;
 			case 1:
+				// percentage
 				return (int) ((double)value / 100 * Game_Battler::GetMaxAtbGauge());
 				break;
 		}
 	};
 
-	auto executeOperation = [getAtbValue, operandFlags](int flags, Game_Battler* battler) {
+	auto executeOperation = [getAtbValue, operand_flags](int flags, Game_Battler* battler) {
 		switch (flags) {
 			case 0:
-				battler->SetAtbGauge(getAtbValue(operandFlags));
+				// set
+				battler->SetAtbGauge(getAtbValue(operand_flags));
 				break;
 			case 1:
-				battler->IncrementAtbGauge(getAtbValue(operandFlags));
+				// add
+				battler->IncrementAtbGauge(getAtbValue(operand_flags));
 				break;
 			case 2:
-				battler->IncrementAtbGauge(-getAtbValue(operandFlags));
+				// sub
+				battler->IncrementAtbGauge(-getAtbValue(operand_flags));
 				break;
 		}
 	};
 
-	switch (targetFlags) {
+	switch (target_flags) {
 		case 0:
-			if (targetId > 0) {
-				executeOperation(operationFlags, Main_Data::game_actors->GetActor(targetId));
+			// actor
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_actors->GetActor(target_id));
 			}
 			break;
 		case 1:
-			executeOperation(operationFlags, Main_Data::game_party->GetActor(targetId));
+			// party member
+			executeOperation(operation_flags, Main_Data::game_party->GetActor(target_id));
 			break;
 		case 2:
-			for each (Game_Battler* member in Main_Data::game_party->GetActors()) {
-				executeOperation(operationFlags, member);
+			// entire party
+			for (Game_Battler* member : Main_Data::game_party->GetActors()) {
+				executeOperation(operation_flags, member);
 			}
 			break;
 		case 3:
-			if (targetId > 0) {
-				executeOperation(operationFlags, Main_Data::game_enemyparty->GetEnemy(targetId));
+			// troop member
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_enemyparty->GetEnemy(target_id));
 			}
 			break;
 		case 4:
-			for each (Game_Battler* member in Main_Data::game_enemyparty->GetEnemies()) {
-				executeOperation(operationFlags, member);
+			// entire troop
+			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
+				executeOperation(operation_flags, member);
 			}
 			break;
 	}
