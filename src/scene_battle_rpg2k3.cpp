@@ -1222,8 +1222,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 					}
 					break;
 				case Win: // Win
-					for each (Game_Enemy* enemy in Main_Data::game_enemyparty->GetEnemies())
-					{
+					for (Game_Enemy* enemy : Main_Data::game_enemyparty->GetEnemies()) {
 						enemy->Kill();
 					}
 					SetState(State_Victory);

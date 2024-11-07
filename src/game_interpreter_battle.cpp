@@ -31,7 +31,7 @@
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
-#include <scene_battle.h>
+#include "scene_battle.h"
 
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
@@ -612,34 +612,31 @@ bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::Event
 	}
 
 	// 1 row removed
-	bool actorCommandFlags = com.parameters[0];
+	bool actor_command_flags = com.parameters[0];
 
-	lcf::Data::battlecommands.easyrpg_disable_row_feature = actorCommandFlags;
+	lcf::Data::battlecommands.easyrpg_disable_row_feature = actor_command_flags;
 
 	// 10000 lose added
 	// 01000 win added
 	// 00100 escape removed
 	// 00010 auto removed
 	// 00001 fight removed
-	int partyCommandFlags = com.parameters[1];
+	int party_command_flags = com.parameters[1];
 
 	lcf::Data::system.easyrpg_battle_options.clear();
-	for (size_t i = 0; i < Scene_Battle::BattleOptionType::Lose + 1; i++)
-	{
-		bool partyCommandFlag = partyCommandFlags & (1 << i);
-		bool flagIsSet = i > 2;
+	for (size_t i = 0; i < Scene_Battle::BattleOptionType::Lose + 1; i++) {
+		bool party_command_flag = party_command_flags & (1 << i);
+		bool flag_is_set = i > 2;
 
-		if (partyCommandFlag == flagIsSet)
-		{
+		if (party_command_flag == flag_is_set) {
 			lcf::Data::system.easyrpg_battle_options.push_back(i);
 		}
 	}
 
-	auto& scene = Scene::instance;
-	Scene_Battle* sceneBattle = dynamic_cast<Scene_Battle*>(scene.get());
+	auto* scene_battle = static_cast<Scene_Battle*>(Scene::instance.get());
 
-	if (sceneBattle) {
-		sceneBattle->CreateOptions();
+	if (scene_battle) {
+		scene_battle->CreateOptions();
 	}
 
 	return true;
