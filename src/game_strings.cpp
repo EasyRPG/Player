@@ -175,6 +175,11 @@ std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_y
 	if (encoding == 0) {
 		lcf::Encoder enc(Player::encoding);
 		enc.Encode(file_content);
+	} else {
+		// UTF-8: Remove Byte Order Mask
+		if (file_content.size() >= 3 && file_content[0] == '\xEF' && file_content[1] == '\xBB' && file_content[2] == '\xBF') {
+			file_content.erase(0, 3);
+		}
 	}
 
 	return file_content;
