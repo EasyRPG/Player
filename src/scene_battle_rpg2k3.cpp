@@ -1155,21 +1155,25 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 		ResetWindows(true);
 		target_window->SetIndex(-1);
 
-		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional || ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
+		if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional
+				|| ((std::find(battle_options.begin(), battle_options.end(), AutoBattle) == battle_options.end()) && (std::find(battle_options.begin(), battle_options.end(), Win) == battle_options.end()) && (std::find(battle_options.begin(), battle_options.end(), Lose) == battle_options.end()) && !IsEscapeAllowedFromOptionWindow())) {
 			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(Player::menu_offset_x - options_window->GetWidth(), 1);
 			SetState(State_SelectActor);
+			return SceneActionReturn::eContinueThisFrame;
+		} else if (battle_options.size() == 1 && (std::find(battle_options.begin(), battle_options.end(), AutoBattle) != battle_options.end())) {
+			if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional) MoveCommandWindows(Player::menu_offset_x - options_window->GetWidth(), 1);
+			SetState(State_AutoBattle);
 			return SceneActionReturn::eContinueThisFrame;
 		}
 
 		options_window->SetActive(true);
 
+		auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 		if (IsEscapeAllowedFromOptionWindow()) {
-			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 			if (it != battle_options.end()) {
 				options_window->EnableItem(std::distance(battle_options.begin(), it));
 			}
 		} else {
-			auto it = std::find(battle_options.begin(), battle_options.end(), Escape);
 			if (it != battle_options.end()) {
 				options_window->DisableItem(std::distance(battle_options.begin(), it));
 			}
@@ -1216,6 +1220,15 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFi
 					} else {
 						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 					}
+					break;
+				case Win: // Win
+					for (Game_Enemy* enemy : Main_Data::game_enemyparty->GetEnemies()) {
+						enemy->Kill();
+					}
+					SetState(State_Victory);
+					break;
+				case Lose: // Lose
+					SetState(State_Defeat);
 					break;
 			}
 		}
