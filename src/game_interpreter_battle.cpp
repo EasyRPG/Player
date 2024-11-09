@@ -37,6 +37,18 @@ enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
 
+enum TargetType {
+	Actor,
+	Member,
+	Enemy,
+};
+
+static const char* target_text[] = { "actor", "party member", "enemy" };
+
+static const void MissingTargetWarning(const char* command_name, TargetType target_type, int target_id) {
+	Output::Warning("{}: Invalid {} ID: {}", command_name, target_text[target_type], target_id);
+}
+
 Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages)
 	: Game_Interpreter(true), pages(pages), executed(pages.size(), false)
 {
@@ -597,12 +609,90 @@ bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand 
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlAtbGauge not supported");
+	int target_flags = com.parameters[0];
+	int target_reference_flags = com.parameters[1];
+	int target_reference_identifier = com.parameters[2];
+	int operation_flags = com.parameters[3];
+	int operand_flags = com.parameters[4];
+	int value_reference_flags = com.parameters[5];
+	int value_reference_identifier = com.parameters[6];
+
+	int target_id = ValueOrVariable(target_reference_flags, target_reference_identifier);
+
+	auto getAtbValue = [this, value_reference_flags, value_reference_identifier](int flags) {
+		int value = ValueOrVariable(value_reference_flags, value_reference_identifier);
+
+		switch (flags) {
+			case 0:
+				// value
+				return value;
+				break;
+			case 1:
+				// percentage
+				return (int) ((double)value / 100 * Game_Battler::GetMaxAtbGauge());
+				break;
+			default: return 0;
+		}
+	};
+
+	auto executeOperation = [getAtbValue, operand_flags, target_id](int flags, Game_Battler* battler, TargetType battler_type) {
+		if (!battler) {
+			MissingTargetWarning("CommandManiacControlAtbGauge", battler_type, target_id);
+			return;
+		}
+
+		switch (flags) {
+			case 0:
+				// set
+				battler->SetAtbGauge(getAtbValue(operand_flags));
+				break;
+			case 1:
+				// add
+				battler->IncrementAtbGauge(getAtbValue(operand_flags));
+				break;
+			case 2:
+				// sub
+				battler->IncrementAtbGauge(-getAtbValue(operand_flags));
+				break;
+		}
+	};
+
+	switch (target_flags) {
+		case 0:
+			// actor
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_actors->GetActor(target_id), Actor);
+			}
+			break;
+		case 1:
+			// party member
+			executeOperation(operation_flags, Main_Data::game_party->GetActor(target_id), Member);
+			break;
+		case 2:
+			// entire party
+			for (Game_Battler* member : Main_Data::game_party->GetActors()) {
+				executeOperation(operation_flags, member, Member);
+			}
+			break;
+		case 3:
+			// troop member
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
+			}
+			break;
+		case 4:
+			// entire troop
+			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
+				executeOperation(operation_flags, member, Enemy);
+			}
+			break;
+	}
+
 	return true;
 }
 
