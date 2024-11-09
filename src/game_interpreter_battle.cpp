@@ -767,7 +767,7 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 				Main_Data::game_variables->Set(information_identifier, states);
 				for (size_t i = 0; i < states; i++)
 				{
-					Main_Data::game_variables->Set(information_identifier + i + 1, battler->HasState(lcf::Data::states.at(i).ID));
+					Main_Data::game_variables->Set(information_identifier + i + 1, battler->HasState(lcf::Data::states[i].ID));
 				}
 				break;
 			}
@@ -778,9 +778,8 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 				Main_Data::game_variables->Set(information_identifier, elements);
 				for (size_t i = 0; i < elements; i++)
 				{
-					Main_Data::game_variables->Set(information_identifier + i + 1, battler->GetAttributeRateShift(lcf::Data::attributes.at(i).ID) + 1);
+					Main_Data::game_variables->Set(information_identifier + i + 1, battler->GetAttributeRateShift(lcf::Data::attributes[i].ID) + 1);
 				}
-				break;
 				break;
 			}
 			case 3:
