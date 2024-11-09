@@ -37,6 +37,18 @@ enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
 
+enum TargetType {
+	Actor,
+	Member,
+	Enemy,
+};
+
+static const char* target_text[] = { "actor", "party member", "enemy" };
+
+static const void MissingTargetWarning(char* command_name, TargetType target_type, int target_id) {
+	Output::Warning("{}: Invalid {} ID: {}", command_name, target_text[target_type], target_id);
+}
+
 Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages)
 	: Game_Interpreter(true), pages(pages), executed(pages.size(), false)
 {
@@ -624,10 +636,16 @@ bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventComman
 				// percentage
 				return (int) ((double)value / 100 * Game_Battler::GetMaxAtbGauge());
 				break;
+			default: return 0;
 		}
 	};
 
-	auto executeOperation = [getAtbValue, operand_flags](int flags, Game_Battler* battler) {
+	auto executeOperation = [getAtbValue, operand_flags, target_id](int flags, Game_Battler* battler, TargetType battler_type) {
+		if (!battler) {
+			MissingTargetWarning("CommandManiacControlAtbGauge", battler_type, target_id);
+			return;
+		}
+
 		switch (flags) {
 			case 0:
 				// set
@@ -648,29 +666,29 @@ bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventComman
 		case 0:
 			// actor
 			if (target_id > 0) {
-				executeOperation(operation_flags, Main_Data::game_actors->GetActor(target_id));
+				executeOperation(operation_flags, Main_Data::game_actors->GetActor(target_id), Actor);
 			}
 			break;
 		case 1:
 			// party member
-			executeOperation(operation_flags, Main_Data::game_party->GetActor(target_id));
+			executeOperation(operation_flags, Main_Data::game_party->GetActor(target_id), Member);
 			break;
 		case 2:
 			// entire party
 			for (Game_Battler* member : Main_Data::game_party->GetActors()) {
-				executeOperation(operation_flags, member);
+				executeOperation(operation_flags, member, Member);
 			}
 			break;
 		case 3:
 			// troop member
 			if (target_id > 0) {
-				executeOperation(operation_flags, Main_Data::game_enemyparty->GetEnemy(target_id));
+				executeOperation(operation_flags, Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
 			}
 			break;
 		case 4:
 			// entire troop
 			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
-				executeOperation(operation_flags, member);
+				executeOperation(operation_flags, member, Enemy);
 			}
 			break;
 	}
