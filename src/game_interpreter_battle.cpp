@@ -45,7 +45,7 @@ enum TargetType {
 
 static const char* target_text[] = { "actor", "party member", "enemy" };
 
-static const void MissingTargetWarning(char* command_name, TargetType target_type, int target_id) {
+static const void MissingTargetWarning(const char* command_name, TargetType target_type, int target_id) {
 	Output::Warning("{}: Invalid {} ID: {}", command_name, target_text[target_type], target_id);
 }
 
