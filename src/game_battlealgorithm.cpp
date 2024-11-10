@@ -194,15 +194,17 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 			source->ChangeSp(-sp);
 		}
 
-		Game_Battle::ManiacBattleHook(
-			Game_Interpreter_Battle::StatChange,
-			target->GetType() == Game_Battler::Type_Enemy,
-			target->GetPartyIndex(),
-			target->GetDisplayX(),
-			target->GetDisplayY(),
-			3,
-			sp
-		);
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				3,
+				sp
+			);
+		}
 	}
 
 	return sp;
@@ -218,15 +220,17 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 			source->ChangeAtkModifier(-atk);
 		}
 
-		Game_Battle::ManiacBattleHook(
-			Game_Interpreter_Battle::StatChange,
-			target->GetType() == Game_Battler::Type_Enemy,
-			target->GetPartyIndex(),
-			target->GetDisplayX(),
-			target->GetDisplayY(),
-			4,
-			atk
-		);
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				4,
+				atk
+			);
+		}
 	}
 	return atk;
 }
@@ -241,15 +245,17 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 			source->ChangeDefModifier(-def);
 		}
 
-		Game_Battle::ManiacBattleHook(
-			Game_Interpreter_Battle::StatChange,
-			target->GetType() == Game_Battler::Type_Enemy,
-			target->GetPartyIndex(),
-			target->GetDisplayX(),
-			target->GetDisplayY(),
-			5,
-			def
-		);
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				5,
+				def
+			);
+		}
 	}
 	return def;
 }
@@ -264,15 +270,17 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 			source->ChangeSpiModifier(-spi);
 		}
 
-		Game_Battle::ManiacBattleHook(
-			Game_Interpreter_Battle::StatChange,
-			target->GetType() == Game_Battler::Type_Enemy,
-			target->GetPartyIndex(),
-			target->GetDisplayX(),
-			target->GetDisplayY(),
-			6,
-			spi
-		);
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				6,
+				spi
+			);
+		}
 	}
 	return spi;
 }
@@ -287,15 +295,17 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 			source->ChangeAgiModifier(-agi);
 		}
 
-		Game_Battle::ManiacBattleHook(
-			Game_Interpreter_Battle::StatChange,
-			target->GetType() == Game_Battler::Type_Enemy,
-			target->GetPartyIndex(),
-			target->GetDisplayX(),
-			target->GetDisplayY(),
-			7,
-			agi
-		);
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				7,
+				agi
+			);
+		}
 	}
 	return agi;
 }
