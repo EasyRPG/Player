@@ -219,9 +219,26 @@ void Game_Battle::UpdateAtbGauges() {
 				const auto multiplier = std::max(1.0, static_cast<double>(275000 - cur_atb) / 55000.0);
 				increment = Utils::RoundTo<int>(multiplier * increment);
 			}
+
+			ManiacBattleHook(
+				Game_Interpreter_Battle::AtbIncrement,
+				bat->GetType() == Game_Battler::Type_Enemy,
+				bat->GetPartyIndex(),
+				bat->GetAtbGauge(),
+				increment
+			);
+
 			bat->IncrementAtbGauge(increment);
 		}
 	}
+}
+
+bool Game_Battle::ManiacBattleHook(Game_Interpreter_Battle::ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4, int var5, int var6) {
+	return interpreter->ManiacBattleHook(hook_type, var1, var2, var3, var4, var5, var6);
+}
+
+bool Game_Battle::ManiacProcessSubEvents() {
+	return interpreter->ProcessManiacSubEvents();
 }
 
 void Game_Battle::ChangeBackground(const std::string& name) {

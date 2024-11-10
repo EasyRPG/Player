@@ -40,6 +40,7 @@ class Game_Interpreter_Battle : public Game_Interpreter
 {
 public:
 	explicit Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages);
+	explicit Game_Interpreter_Battle();
 
 	int GetNumPages() const;
 
@@ -59,6 +60,26 @@ public:
 	bool IsForceFleeEnabled() const;
 
 	bool ExecuteCommand(lcf::rpg::EventCommand const& com) override;
+
+	/**
+	 * All possible hook type events that maniacs offers.
+	 */
+	enum ManiacBattleHookType {
+		AtbIncrement,
+		DamagePop,
+		Targetting,
+		SetState,
+		StatChange
+	};
+
+	/**
+	 * Calls a maniacs battle hook, which processes sub-events at any time.
+	 */
+	bool ManiacBattleHook(ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4 = 0, int var5 = 0, int var6 = 0);
+	/**
+	 * Processes all maniacs sub-events, and returns whether it's currently running
+	 */
+	bool ProcessManiacSubEvents();
 
 private:
 	bool CommandCallCommonEvent(lcf::rpg::EventCommand const& com);
@@ -87,6 +108,7 @@ private:
 	int current_actor_id = 0;
 	bool targets_single_enemy = false;
 	bool force_flee_enabled = false;
+	static std::map<ManiacBattleHookType, std::tuple<int, int>> maniac_hooks;
 };
 
 inline int Game_Interpreter_Battle::GetNumPages() const {

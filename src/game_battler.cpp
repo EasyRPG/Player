@@ -367,6 +367,13 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 		}
 	}
 
+	Game_Battle::ManiacBattleHook(
+		Game_Interpreter_Battle::SetState,
+		GetType() == Game_Battler::Type_Enemy,
+		GetPartyIndex(),
+		state_id
+	);
+
 	return was_added;
 }
 
@@ -584,6 +591,10 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	} else {
 		return *Main_Data::game_enemyparty;
 	}
+}
+
+int Game_Battler::GetPartyIndex() {
+	return GetParty().GetMemberIndex(this);
 }
 
 void Game_Battler::UpdateBattle() {

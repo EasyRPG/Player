@@ -88,6 +88,14 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	party_target = target;
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetActionType() {
+	return 0;
+}
+
+int Game_BattleAlgorithm::AlgorithmBase::GetActionId() {
+	return 0;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	hp = 0;
 	sp = 0;
@@ -185,7 +193,18 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
+
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			3,
+			sp
+		);
 	}
+
 	return sp;
 }
 
@@ -198,6 +217,16 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 		if (IsAbsorbAtk()) {
 			source->ChangeAtkModifier(-atk);
 		}
+
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			4,
+			atk
+		);
 	}
 	return atk;
 }
@@ -211,6 +240,16 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 		if (IsAbsorbDef()) {
 			source->ChangeDefModifier(-def);
 		}
+
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			5,
+			def
+		);
 	}
 	return def;
 }
@@ -224,6 +263,16 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 		if (IsAbsorbSpi()) {
 			source->ChangeSpiModifier(-spi);
 		}
+
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			6,
+			spi
+		);
 	}
 	return spi;
 }
@@ -237,6 +286,16 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 		if (IsAbsorbAgi()) {
 			source->ChangeAgiModifier(-agi);
 		}
+
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			7,
+			agi
+		);
 	}
 	return agi;
 }
@@ -530,6 +589,10 @@ void Game_BattleAlgorithm::AlgorithmBase::BattlePhysicalStateHeal(int physical_r
 Game_BattleAlgorithm::None::None(Game_Battler* source) :
 AlgorithmBase(Type::None, source, source) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::None::GetActionId() {
+	return 7;
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
@@ -847,6 +910,14 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
 	Skill(source, source, skill, item)
 {
+}
+
+int Game_BattleAlgorithm::Skill::GetActionType() {
+	return 1;
+}
+
+int Game_BattleAlgorithm::Skill::GetActionId() {
+	return skill.ID;
 }
 
 void Game_BattleAlgorithm::Skill::Init() {
@@ -1236,6 +1307,14 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 		// no-op
 }
 
+int Game_BattleAlgorithm::Item::GetActionType() {
+	return 3;
+}
+
+int Game_BattleAlgorithm::Item::GetActionId() {
+	return item.ID;
+}
+
 bool Game_BattleAlgorithm::Item::vStart() {
 	Main_Data::game_party->ConsumeItemUse(item.ID);
 	return true;
@@ -1340,6 +1419,10 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 		source->SetIsDefending(true);
 }
 
+int Game_BattleAlgorithm::Defend::GetActionId() {
+	return 2;
+}
+
 std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1360,6 +1443,10 @@ AlgorithmBase(Type::Observe, source, source) {
 	// no-op
 }
 
+int Game_BattleAlgorithm::Observe::GetActionId() {
+	return 3;
+}
+
 std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1374,6 +1461,10 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
 AlgorithmBase(Type::Charge, source, source) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::Charge::GetActionId() {
+	return 4;
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
@@ -1394,6 +1485,10 @@ void Game_BattleAlgorithm::Charge::ApplyCustomEffect() {
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
 AlgorithmBase(Type::SelfDestruct, source, target) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::SelfDestruct::GetActionId() {
+	return 5;
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
@@ -1450,6 +1545,10 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 	// no-op
 }
 
+int Game_BattleAlgorithm::Escape::GetActionId() {
+	return 6;
+}
+
 std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1487,6 +1586,14 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 	// no-op
 }
 
+int Game_BattleAlgorithm::Transform::GetActionType() {
+	return 2;
+}
+
+int Game_BattleAlgorithm::Transform::GetActionId() {
+	return new_monster_id;
+}
+
 std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
 	if (line == 0 && Feature::HasRpg2kBattleSystem()) {
 		auto* enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id);
@@ -1507,5 +1614,9 @@ void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 Game_BattleAlgorithm::DoNothing::DoNothing(Game_Battler* source) :
 AlgorithmBase(Type::DoNothing, source, source) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::DoNothing::GetActionId() {
+	return 7;
 }
 
