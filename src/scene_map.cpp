@@ -41,7 +41,7 @@
 #include "screen.h"
 #include "scene_load.h"
 #include "output.h"
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 
 using namespace std::chrono_literals;
 
@@ -84,7 +84,7 @@ void Scene_Map::Start() {
 		auto current_music = Main_Data::game_system->GetCurrentBGM();
 		Main_Data::game_system->BgmStop();
 		Main_Data::game_system->BgmPlay(current_music);
-		DynRpg::Load(from_save_id);
+		Main_Data::game_dynrpg->Load(from_save_id);
 	} else {
 		Game_Map::PlayBgm();
 	}

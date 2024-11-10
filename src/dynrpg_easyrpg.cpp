@@ -48,23 +48,23 @@ static bool EasyOput(dyn_arg_list args) {
 	return true;
 }
 
-static bool EasyCall(dyn_arg_list args) {
-	auto token = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
+bool DynRpg::EasyRpgPlugin::EasyCall(dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+	auto func_name = std::get<0>(DynRpg::ParseArgs<std::string>("call", args));
 
-	if (token.empty()) {
+	if (func_name.empty()) {
 		// empty function name
 		Output::Warning("call: Empty RPGSS function name");
 
 		return true;
 	}
 
-	if (!DynRpg::HasFunction(token)) {
-		// Not a supported function
-		Output::Warning("Unsupported RPGSS function: {}", token);
-		return true;
+	for (auto& plugin: instance.plugins) {
+		if (plugin->Invoke(func_name, args.subspan(1), do_yield, interpreter)) {
+			return true;
+		}
 	}
 
-	return DynRpg::Invoke(token, args.subspan(1));
+	return false;
 }
 
 static bool EasyAdd(dyn_arg_list args) {
@@ -88,10 +88,15 @@ static bool EasyAdd(dyn_arg_list args) {
 	return true;
 }
 
-void DynRpg::EasyRpgPlugin::RegisterFunctions() {
-	DynRpg::RegisterFunction("call", EasyCall);
-	DynRpg::RegisterFunction("easyrpg_output", EasyOput);
-	DynRpg::RegisterFunction("easyrpg_add", EasyAdd);
+bool DynRpg::EasyRpgPlugin::Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+	if (func == "call") {
+		return EasyCall(args, do_yield, interpreter);
+	} else if (func == "easyrpg_output") {
+		return EasyOput(args);
+	} else if (func == "easyrpg_add") {
+		return EasyAdd(args);
+	}
+	return false;
 }
 
 void DynRpg::EasyRpgPlugin::Load(const std::vector<uint8_t>& buffer) {

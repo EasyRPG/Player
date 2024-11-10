@@ -37,7 +37,7 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
@@ -410,7 +410,6 @@ void Player::Exit() {
 #endif
 	Player::ResetGameObjects();
 	Font::Dispose();
-	DynRpg::Reset();
 	Graphics::Quit();
 	Output::Quit();
 	FileFinder::Quit();
@@ -821,7 +820,7 @@ void Player::CreateGameObjects() {
 
 		if (!FileFinder::Game().FindFile("dynloader.dll").empty()) {
 			game_config.patch_dynrpg.Set(true);
-			Output::Warning("This game uses DynRPG and will not run properly.");
+			Output::Debug("This game uses DynRPG. Depending on the plugins used it will not run properly.");
 		}
 
 		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
@@ -919,9 +918,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 	Main_Data::game_switches_global = std::make_unique<Game_Switches>();
 	Main_Data::game_variables_global = std::make_unique<Game_Variables>(min_var, max_var);
+	Main_Data::game_dynrpg = std::make_unique<Game_DynRpg>();
 	Main_Data::game_ineluki = std::make_unique<Game_Ineluki>();
-
-	DynRpg::Reset();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
 
