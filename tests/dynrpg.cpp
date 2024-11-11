@@ -1,6 +1,6 @@
 #include <lcf/data.h>
 #include "doctest.h"
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "game_variables.h"
 #include "test_mock_actor.h"
 
@@ -148,39 +148,42 @@ TEST_CASE("Arg parse") {
 }
 
 TEST_CASE("easyrpg dynrpg invoke") {
+	Game_DynRpg dyn;
 	const MockActor m;
+
+	Player::game_config.patch_dynrpg.Set(true);
 
 	std::vector<int32_t> vars = {-1};
 	Main_Data::game_variables->SetData(vars);
 	Main_Data::game_variables->SetWarning(0);
 
-	DynRpg::Invoke("@easyrpg_add 1, 2, 4");
+	dyn.Invoke("@easyrpg_add 1, 2, 4");
 	CHECK(Main_Data::game_variables->Get(1) == 6);
 
 	// Invalid, stays 6
-	DynRpg::Invoke("@easyrpg_add 1, 2, a");
+	dyn.Invoke("@easyrpg_add 1, 2, a");
 	CHECK(Main_Data::game_variables->Get(1) == 6);
 
 	// Not enough args, stays 6
-	DynRpg::Invoke("@easyrpg_add 1");
+	dyn.Invoke("@easyrpg_add 1");
 	CHECK(Main_Data::game_variables->Get(1) == 6);
 
-	DynRpg::Invoke("@easyrpg_add 1, 2");
+	dyn.Invoke("@easyrpg_add 1, 2");
 	CHECK(Main_Data::game_variables->Get(1) == 2);
 
-	DynRpg::Invoke("@call easyrpg_add, 1, 4.3, 7.7");
+	dyn.Invoke("@call easyrpg_add, 1, 4.3, 7.7");
 	CHECK(Main_Data::game_variables->Get(1) == 11);
 
 	// Extra args ignored
-	DynRpg::Invoke("@call easyrpg_add, 1, 4, 8, -14.0");
+	dyn.Invoke("@call easyrpg_add, 1, 4, 8, -14.0");
 	CHECK(Main_Data::game_variables->Get(1) == -2);
 
 	// Invalid func, stays -2
-	DynRpg::Invoke("@call easyrpg_xxx, 1, 4, 7");
+	dyn.Invoke("@call easyrpg_xxx, 1, 4, 7");
 	CHECK(Main_Data::game_variables->Get(1) == -2);
 
 	// does not crash
-	DynRpg::Invoke("@unknownfunc 1, 2, 3");
+	dyn.Invoke("@unknownfunc 1, 2, 3");
 }
 
 TEST_CASE("Incompatible changes") {

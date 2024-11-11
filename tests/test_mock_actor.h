@@ -78,7 +78,7 @@ class MockActor {
 public:
 	MockActor(int eng = Player::EngineRpg2k3 | Player::EngineEnglish)
 	{
-		_engine = Player::game_config.engine;
+		_config = Player::game_config;
 		Player::game_config.engine = eng;
 
 		InitEmptyDB();
@@ -100,10 +100,10 @@ public:
 		Main_Data::Cleanup();
 
 		lcf::Data::data = {};
-		Player::game_config.engine = _engine;
+		Player::game_config = _config;
 	}
 private:
-	int _engine = {};
+	Game_ConfigGame _config = {};
 };
 
 struct MockBattle : public MockActor {

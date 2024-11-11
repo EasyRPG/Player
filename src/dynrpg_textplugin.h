@@ -18,15 +18,15 @@
 #ifndef EP_DYNRPG_TEXTPLUGIN_H
 #define EP_DYNRPG_TEXTPLUGIN_H
 
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 
 namespace DynRpg {
 	class TextPlugin : public DynRpgPlugin {
 	public:
-		TextPlugin() : DynRpgPlugin("DynTextPlugin") {}
-		~TextPlugin();
+		TextPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynTextPlugin", instance) {}
+		~TextPlugin() override;
 
-		void RegisterFunctions() override;
+		bool Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Update() override;
 		void Load(const std::vector<uint8_t>&) override;
 		std::vector<uint8_t> Save() override;

@@ -31,10 +31,23 @@
 #include "game_map.h"
 #include "spriteset_battle.h"
 #include <cassert>
+#include "scene_battle.h"
 
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
+
+enum TargetType {
+	Actor,
+	Member,
+	Enemy,
+};
+
+static const char* target_text[] = { "actor", "party member", "enemy" };
+
+static const void MissingTargetWarning(const char* command_name, TargetType target_type, int target_id) {
+	Output::Warning("{}: Invalid {} ID: {}", command_name, target_text[target_type], target_id);
+}
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages)
 	: Game_Interpreter(true), pages(pages), executed(pages.size(), false)
@@ -596,30 +609,247 @@ bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand 
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacControlAtbGauge(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ControlAtbGauge not supported");
+	int target_flags = com.parameters[0];
+	int target_reference_flags = com.parameters[1];
+	int target_reference_identifier = com.parameters[2];
+	int operation_flags = com.parameters[3];
+	int operand_flags = com.parameters[4];
+	int value_reference_flags = com.parameters[5];
+	int value_reference_identifier = com.parameters[6];
+
+	int target_id = ValueOrVariable(target_reference_flags, target_reference_identifier);
+
+	auto getAtbValue = [this, value_reference_flags, value_reference_identifier](int flags) {
+		int value = ValueOrVariable(value_reference_flags, value_reference_identifier);
+
+		switch (flags) {
+			case 0:
+				// value
+				return value;
+				break;
+			case 1:
+				// percentage
+				return (int) ((double)value / 100 * Game_Battler::GetMaxAtbGauge());
+				break;
+			default: return 0;
+		}
+	};
+
+	auto executeOperation = [getAtbValue, operand_flags, target_id](int flags, Game_Battler* battler, TargetType battler_type) {
+		if (!battler) {
+			MissingTargetWarning("CommandManiacControlAtbGauge", battler_type, target_id);
+			return;
+		}
+
+		switch (flags) {
+			case 0:
+				// set
+				battler->SetAtbGauge(getAtbValue(operand_flags));
+				break;
+			case 1:
+				// add
+				battler->IncrementAtbGauge(getAtbValue(operand_flags));
+				break;
+			case 2:
+				// sub
+				battler->IncrementAtbGauge(-getAtbValue(operand_flags));
+				break;
+		}
+	};
+
+	switch (target_flags) {
+		case 0:
+			// actor
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_actors->GetActor(target_id), Actor);
+			}
+			break;
+		case 1:
+			// party member
+			executeOperation(operation_flags, Main_Data::game_party->GetActor(target_id), Member);
+			break;
+		case 2:
+			// entire party
+			for (Game_Battler* member : Main_Data::game_party->GetActors()) {
+				executeOperation(operation_flags, member, Member);
+			}
+			break;
+		case 3:
+			// troop member
+			if (target_id > 0) {
+				executeOperation(operation_flags, Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
+			}
+			break;
+		case 4:
+			// entire troop
+			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
+				executeOperation(operation_flags, member, Enemy);
+			}
+			break;
+	}
+
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ChangeBattleCommandEx not supported");
+	// 1 row removed
+	bool actor_command_flags = com.parameters[0];
+
+	lcf::Data::battlecommands.easyrpg_disable_row_feature = actor_command_flags;
+
+	// 10000 lose added
+	// 01000 win added
+	// 00100 escape removed
+	// 00010 auto removed
+	// 00001 fight removed
+	int party_command_flags = com.parameters[1];
+
+	lcf::Data::system.easyrpg_battle_options.clear();
+	for (size_t i = 0; i < Scene_Battle::BattleOptionType::Lose + 1; i++) {
+		bool party_command_flag = party_command_flags & (1 << i);
+		bool flag_is_set = i > 2;
+
+		if (party_command_flag == flag_is_set) {
+			lcf::Data::system.easyrpg_battle_options.push_back(i);
+		}
+	}
+
+	auto* scene_battle = static_cast<Scene_Battle*>(Scene::instance.get());
+
+	if (scene_battle) {
+		scene_battle->CreateOptions();
+	}
+
 	return true;
 }
 
-bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command GetBattleInfo not supported");
+	int target_flags = com.parameters[0];
+	int target_reference_flags = com.parameters[2];
+	int target_reference_identifier = com.parameters[3];
+	int information_flags = com.parameters[1];
+	int information_identifier = com.parameters[4];
+
+	int target_id = ValueOrVariable(target_reference_flags, target_reference_identifier);
+
+	auto executeOperationSingle = [information_flags, information_identifier, target_id](Game_Battler* battler, TargetType battler_type) {
+		if (!battler) {
+			MissingTargetWarning("CommandManiacGetBattleInfo", battler_type, target_id);
+			return;
+		}
+
+		switch (information_flags)
+		{
+			case 0:
+				// parameter buffs: attack, defense, mind, agility
+				Main_Data::game_variables->Set(information_identifier, battler->GetAtkModifier());
+				Main_Data::game_variables->Set(information_identifier + 1, battler->GetDefModifier());
+				Main_Data::game_variables->Set(information_identifier + 2, battler->GetSpiModifier());
+				Main_Data::game_variables->Set(information_identifier + 3, battler->GetAgiModifier());
+				break;
+			case 1:
+			{
+				// states: size, [...state_id]
+				auto states = lcf::Data::states.size();
+				Main_Data::game_variables->Set(information_identifier, states);
+				for (size_t i = 0; i < states; i++)
+				{
+					Main_Data::game_variables->Set(information_identifier + i + 1, battler->HasState(lcf::Data::states[i].ID));
+				}
+				break;
+			}
+			case 2:
+			{
+				// elements: size, [...element_id]
+				auto elements = lcf::Data::attributes.size();
+				Main_Data::game_variables->Set(information_identifier, elements);
+				for (size_t i = 0; i < elements; i++)
+				{
+					Main_Data::game_variables->Set(information_identifier + i + 1, battler->GetAttributeRateShift(lcf::Data::attributes[i].ID) + 1);
+				}
+				break;
+			}
+			case 3:
+				// others: x, y, can move, defending, charging, appeared
+				Main_Data::game_variables->Set(information_identifier, battler->GetBattlePosition().x);
+				Main_Data::game_variables->Set(information_identifier + 1, battler->GetBattlePosition().y);
+				Main_Data::game_variables->Set(information_identifier + 2, battler->CanAct());
+				Main_Data::game_variables->Set(information_identifier + 3, battler->IsDefending());
+				Main_Data::game_variables->Set(information_identifier + 4, battler->IsCharged());
+				Main_Data::game_variables->Set(information_identifier + 5, !battler->IsHidden());
+				break;
+		}
+	};
+
+	auto executeOperationMany = [information_flags](Game_Battler* battler) {
+		switch (information_flags)
+		{
+			case 0:
+				// list of members
+				return true;
+			case 1:
+				// list of members alive
+				return !battler->IsDead();
+			case 2:
+				// list of members who can move
+				return battler->CanAct();
+		}
+
+		return false;
+	};
+
+	switch (target_flags) {
+		case 0:
+			// actor
+			if (target_id > 0) {
+				executeOperationSingle(Main_Data::game_actors->GetActor(target_id), Actor);
+			}
+			break;
+		case 1:
+			// party member
+			executeOperationSingle(Main_Data::game_party->GetActor(target_id), Member);
+			break;
+		case 2:
+		{
+			// entire party
+			auto count = 0;
+			for (Game_Battler* member : Main_Data::game_party->GetActors()) {
+				count += executeOperationMany(member);
+			}
+			Main_Data::game_variables->Set(information_identifier, count);
+			break;
+		}
+		case 3:
+			// troop member
+			if (target_id > 0) {
+				executeOperationSingle(Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
+			}
+			break;
+		case 4:
+		{
+			// entire troop
+			auto count = 0;
+			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
+				count += executeOperationMany(member);
+			}
+			Main_Data::game_variables->Set(information_identifier, count);
+			break;
+		}
+	}
+
 	return true;
 }
 

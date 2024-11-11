@@ -27,7 +27,7 @@
 #include "game_interpreter.h"
 #include "async_handler.h"
 #include "audio.h"
-#include "dynrpg.h"
+#include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_destiny.h"
 #include "game_map.h"
@@ -2002,11 +2002,17 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
-	// DynRpg command
-	if (Player::IsPatchDynRpg()) {
+	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
 			return true;
+		}
+
+		if (!Player::IsPatchDynRpg() && Player::HasEasyRpgExtensions()) {
+			// Only accept commands starting with @easyrpg_
+			if (!StringView(com.string).starts_with("@easyrpg_")) {
+				return true;
+			}
 		}
 
 		auto& frame = GetFrame();
@@ -2025,7 +2031,7 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 			}
 		}
 
-		return DynRpg::Invoke(command);
+		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
 
 

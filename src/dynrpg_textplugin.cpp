@@ -138,12 +138,12 @@ public:
 	std::vector<uint8_t> Save(const std::string& id) {
 		std::stringstream ss;
 		ss << x << "," << y << ",";
-		for (size_t i = 0; i < texts.size(); ++i) {
+		for (int i = 0; i < static_cast<int>(texts.size()); ++i) {
 			std::string t = texts[i];
 			// Replace , with a sentinel 0x01 to not mess up the tokenizer
 			std::replace(t.begin(), t.end(), ',', '\1');
 			ss << t;
-			if (i < texts.size() - 1) {
+			if (i < static_cast<int>(texts.size()) - 1) {
 				ss << "\n";
 			}
 
@@ -399,14 +399,23 @@ static bool RemoveAll(dyn_arg_list) {
 	return true;
 }
 
-void DynRpg::TextPlugin::RegisterFunctions() {
-	DynRpg::RegisterFunction("write_text", WriteText);
-	DynRpg::RegisterFunction("append_line", AppendLine);
-	DynRpg::RegisterFunction("append_text", AppendText);
-	DynRpg::RegisterFunction("change_text", ChangeText);
-	DynRpg::RegisterFunction("change_position", ChangePosition);
-	DynRpg::RegisterFunction("remove_text", RemoveText);
-	DynRpg::RegisterFunction("remove_all", RemoveAll);
+bool DynRpg::TextPlugin::Invoke(StringView func, dyn_arg_list args, bool&, Game_Interpreter*) {
+	if (func == "write_text") {
+		return WriteText(args);
+	} else if (func == "append_line") {
+		return AppendLine(args);
+	} else if (func == "append_text") {
+		return AppendText(args);
+	} else if (func == "change_text") {
+		return ChangeText(args);
+	} else if (func == "change_position") {
+		return ChangePosition(args);
+	} else if (func == "remove_text") {
+		return RemoveText(args);
+	} else if (func == "remove_all") {
+		return RemoveAll(args);
+	}
+	return false;
 }
 
 void DynRpg::TextPlugin::Update() {
