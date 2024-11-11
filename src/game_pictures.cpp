@@ -499,7 +499,7 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	CreateSprite();
 
 	auto bmp = std::make_shared<Bitmap>(window.GetWidth(), window.GetHeight(), data.use_transparent_color);
-	bmp->SetId(fmt::format("W:{}{}{}", (void*)&window, window.GetWidth(), window.GetHeight()));
+	bmp->SetId(fmt::format("Window:addr={},w={},h={}", (void*)&window, window.GetWidth(), window.GetHeight()));
 
 	sprite->SetBitmap(bmp);
 	sprite->OnPictureShow();
