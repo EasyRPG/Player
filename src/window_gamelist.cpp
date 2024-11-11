@@ -54,8 +54,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 			continue;
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular) {
-			auto sv = StringView(dir.second.name);
-			if (sv.ends_with(".zip") || sv.ends_with(".easyrpg")) {
+			if (FileFinder::IsSupportedArchiveExtension(dir.second.name)) {
 				game_directories.emplace_back(dir.second.name);
 			}
 		} else if (dir.second.type == DirectoryTree::FileType::Directory) {

@@ -474,6 +474,8 @@ void Utils::SwapByteOrder(uint16_t& us) {
 #ifdef WORDS_BIGENDIAN
 	us =	(us >> 8) |
 			(us << 8);
+#else
+	(void)us;
 #endif
 }
 
@@ -483,6 +485,8 @@ void Utils::SwapByteOrder(uint32_t& ui) {
 			((ui<<8) & 0x00FF0000) |
 			((ui>>8) & 0x0000FF00) |
 			(ui << 24);
+#else
+	(void)ui;
 #endif
 }
 
@@ -494,6 +498,8 @@ void Utils::SwapByteOrder(double& d) {
 	uint32_t tmp = p[0];
 	p[0] = p[1];
 	p[1] = tmp;
+#else
+	(void)d;
 #endif
 }
 

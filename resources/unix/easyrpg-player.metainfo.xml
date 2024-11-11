@@ -2,7 +2,7 @@
 <component type="desktop-application">
 	<id>org.easyrpg.player</id>
 	<name>EasyRPG Player</name>
-	<summary>Play your RPG Maker games everywhere</summary>
+	<summary>RPG Maker 2000/2003 interpreter</summary>
 	<developer_name>EasyRPG Team</developer_name>
 	<update_contact>easyrpg_AT_easyrpg.org</update_contact>
 
@@ -43,21 +43,22 @@
 	<url type="contact">https://easyrpg.org/contact</url>
 	<url type="bugtracker">https://github.com/EasyRPG/Player/issues</url>
 	<url type="translate">https://translate.easyrpg.org</url>
-	<!-- these tags are reported as invalid currently, old appstream-util: https://github.com/ximion/appstream/blob/v0.15.4/NEWS#L31
-		<url type="contribute">https://easyrpg.org/contribute</url>
-		<url type="vcs-browser">https://github.com/EasyRPG/Player</url>
-	-->
+	<url type="contribute">https://easyrpg.org/contribute</url>
+	<url type="vcs-browser">https://github.com/EasyRPG/Player</url>
 
 	<launchable type="desktop-id">easyrpg-player.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
 			<image>https://easyrpg.org/images/player/testgame.png</image>
+			<caption>Our TestGame</caption>
 		</screenshot>
 		<screenshot>
 			<image>https://easyrpg.org/images/player/name_input.png</image>
+			<caption>Name Input Scene</caption>
 		</screenshot>
 		<screenshot>
 			<image>https://easyrpg.org/images/player/yume_nikki.png</image>
+			<caption>Yume Nikki freeware game</caption>
 		</screenshot>
 	</screenshots>
 
@@ -66,6 +67,16 @@
 	</content_rating>
 
 	<releases>
+		<release version="0.8" date="2023-04-29">
+			<description>
+				<p>
+					"Paralyze"
+				</p>
+				<p>
+					https://blog.easyrpg.org/2023/04/easyrpg-player-0-8-paralyze/
+				</p>
+			</description>
+		</release>
 		<release version="0.7.0" date="2021-10-29" />
 		<release version="0.6.2.3" date="2020-10-03" />
 		<release version="0.6.2.2" date="2020-09-08" />

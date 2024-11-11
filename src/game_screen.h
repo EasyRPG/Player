@@ -137,6 +137,11 @@ public:
 	 */
 	bool IsBattleAnimationWaiting();
 
+	/**
+	 * Updates the event reference when the event vector was altered e.g. by SpawnMapEvent.
+	 */
+	void UpdateUnderlyingEventReferences();
+
 	/** @return current pan_x offset for screen effects in 1/16 pixels */
 	int GetPanX() const;
 
@@ -173,7 +178,7 @@ public:
 	void OnMapScrolled(int dx, int dy);
 
 private:
-	std::unique_ptr<BattleAnimation> animation;
+	std::unique_ptr<BattleAnimationMap> animation;
 	std::unique_ptr<Weather> weather;
 
 	lcf::rpg::SaveScreen data;

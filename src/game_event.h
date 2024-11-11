@@ -39,6 +39,11 @@ public:
 	 */
 	Game_Event(int map_id, const lcf::rpg::Event* event);
 
+	/** @param ev Event referenced */
+	void SetUnderlyingEvent(const lcf::rpg::Event* ev) {
+		event = ev;
+	}
+
 	/** Load from saved game */
 	void SetSaveData(lcf::rpg::SaveMapEvent save);
 
@@ -49,7 +54,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	Drawable::Z_t GetScreenZ(bool apply_shift = false) const override;
+	Drawable::Z_t GetScreenZ(int x_offset, int y_offset) const override;
 	bool Move(int dir) override;
 	void UpdateNextMovementAction() override;
 	bool IsVisible() const override;
@@ -212,6 +217,8 @@ private:
 	const lcf::rpg::Event* event = nullptr;
 	const lcf::rpg::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
+
+	friend class Scene_Debug;
 };
 
 inline int Game_Event::GetNumPages() const {

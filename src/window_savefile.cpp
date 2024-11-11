@@ -82,8 +82,12 @@ void Window_SaveFile::SetCorrupted(bool corrupted) {
 	this->corrupted = corrupted;
 }
 
-bool Window_SaveFile::IsValid() {
+bool Window_SaveFile::IsValid() const {
 	return has_save && !corrupted;
+}
+
+bool Window_SaveFile::HasParty() const {
+	return has_party;
 }
 
 void Window_SaveFile::SetHasSave(bool valid) {

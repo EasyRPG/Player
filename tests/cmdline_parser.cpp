@@ -69,6 +69,23 @@ TEST_CASE("ParseMulti") {
 	REQUIRE_EQ(li, 2);
 }
 
+TEST_CASE("Parse Optional Value") {
+	std::vector<std::string> args = { "testapp", "--arg1", "--arg2", "1", "--arg3", "a", "b" };
+
+	CmdlineParser cp(args);
+
+	CmdlineArg arg;
+
+	REQUIRE(cp.ParseNext(arg, 1, "--arg1"));
+	REQUIRE(arg.NumValues() == 0);
+
+	REQUIRE(cp.ParseNext(arg, 2, "--arg2"));
+	REQUIRE(arg.NumValues() == 1);
+
+	REQUIRE(cp.ParseNext(arg, 3, "--arg3"));
+	REQUIRE(arg.NumValues() == 2);
+}
+
 TEST_CASE("ParseNull") {
 	std::vector<std::string> args;
 	CmdlineParser cp(args);

@@ -25,19 +25,19 @@
 
 #include "game_strings.h"
 
-class Game_Interpreter;
+class Game_BaseInterpreterContext;
 
 namespace ManiacPatch {
-	int32_t ParseExpression(Span<const int32_t> op_codes, const Game_Interpreter& interpreter);
+	int32_t ParseExpression(Span<const int32_t> op_codes, const Game_BaseInterpreterContext& interpreter);
 
 	std::array<bool, 50> GetKeyRange();
 
 	bool GetKeyState(uint32_t key_id);
 
-	bool CheckString(std::string str_l, std::string str_r, int op, bool ignore_case);
+	bool CheckString(StringView str_l, StringView str_r, int op, bool ignore_case);
 
-	Game_Strings::Str_t GetLcfName(int data_type, int id, bool is_dynamic);
-	Game_Strings::Str_t GetLcfDescription(int data_type, int id, bool is_dynamic);
+	StringView GetLcfName(int data_type, int id, bool is_dynamic);
+	StringView GetLcfDescription(int data_type, int id, bool is_dynamic);
 }
 
 #endif

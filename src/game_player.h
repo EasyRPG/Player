@@ -47,7 +47,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	Drawable::Z_t GetScreenZ(bool apply_shift = false) const override;
+	Drawable::Z_t GetScreenZ(int x_offset, int y_offset) const override;
 	bool IsVisible() const override;
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	void UpdateNextMovementAction() override;
@@ -59,6 +59,8 @@ public:
 	bool IsPendingTeleport() const;
 	TeleportTarget GetTeleportTarget() const;
 	void ResetTeleportTarget(TeleportTarget tt = {});
+
+	bool TriggerEventAt(int x, int y);
 
 	/**
 	 * Sets the map, position and direction that the game player must have after the teleport is over

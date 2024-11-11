@@ -37,6 +37,14 @@
  * insensitive files paths.
  */
 namespace FileFinder {
+	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp", ".png", ".xyz");
+	constexpr const auto MUSIC_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
+	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
+			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
+	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
+	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
+
 	/**
 	 * Quits FileFinder.
 	 */
@@ -245,19 +253,27 @@ namespace FileFinder {
 	std::string GetPathInsideGamePath(StringView path_in);
 
 	/**
-	 * @param p tree Tree to check
+	 * Checks whether a passed path ends with a supported extension for an archive, e.g. ".zip"
+	 *
+	 * @param path path to check
+	 * @return true when the path ends on an archive extension
+	 */
+	bool IsSupportedArchiveExtension(std::string path);
+
+	/**
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) or EasyRPG project
 	 */
 	bool IsValidProject(const FilesystemView& fs);
 
 	/**
-	 * @param p tree Tree to check
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid RPG2k(3) project
 	 */
 	bool IsRPG2kProject(const FilesystemView& fs);
 
 	/**
-	 * @param p tree Tree to check
+	 * @param p fs Tree to check
 	 * @return Whether the tree contains a valid EasyRPG project
 	 */
 	bool IsEasyRpgProject(const FilesystemView& fs);
@@ -266,10 +282,19 @@ namespace FileFinder {
 	 * Determines if the directory in question represents an RPG2k project with non-standard
 	 *   database, map tree, or map file names.
 	 *
-	 * @param tree The directory tree in question
+	 * @param fs The directory tree in question
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
 	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
+
+	/**
+	 * Determines if the directory contains a single file/directory ending in ".easyrpg" for use in the
+	 * autostart feature.
+	 *
+	 * @param fs The directory tree to check. Is replaced with a view to the game for autorun.
+	 * @return true when autorun is possible, fs contains the new view; when false fs is not modified
+	 */
+	bool OpenViewToEasyRpgFile(FilesystemView& fs);
 
 	/**
 	 * Checks whether the save directory contains any savegame with name
@@ -328,6 +353,16 @@ namespace FileFinder {
 	 * @param fs Filesystem to use
 	 */
 	void DumpFilesystem(FilesystemView fs);
+
+	/**
+	 * Searches recursively for game directories.
+	 *
+	 * @param fs Filesystem where the search starts
+	 * @param recursion_limit Recursion depth
+	 * @param game_limit Abort the search when this amount of games was found.
+	 * @return Vector of views to the found game directories
+	 */
+	std::vector<FilesystemView> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

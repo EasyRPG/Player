@@ -35,6 +35,7 @@
 #include "system.h"
 #include "options.h"
 #include "utils.h"
+#include "directory_tree.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "filesystem.h"
@@ -57,18 +58,9 @@ namespace {
 	auto MOVIE_TYPES = { ".avi", ".mpg" };
 #endif
 
-	std::string fonts_path;
 	std::shared_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
 	FilesystemView save_fs;
-
-	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp",  ".png", ".xyz");
-	constexpr const auto MUSIC_TYPES = Utils::MakeSvArray(
-			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
-	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(
-			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
-	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
-	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ".svg", ".xml", ".json", ".yml", ".yaml");
 }
 
 FilesystemView FileFinder::Game() {
@@ -90,7 +82,7 @@ FilesystemView FileFinder::Save() {
 
 	if (!game_fs) {
 		// Filesystem not initialized yet (happens on startup)
-		return FilesystemView();
+		return {};
 	}
 
 	// Not overwritten, check if game fs is writable. If not redirect the write operation.
@@ -285,6 +277,19 @@ std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
 	return FileFinder::GetPathInsidePath(Game().GetFullPath(), path_in);
 }
 
+bool FileFinder::IsSupportedArchiveExtension(std::string path) {
+	Utils::LowerCaseInPlace(path);
+	StringView pv = path;
+
+#ifdef HAVE_LHASA
+	if (pv.ends_with(".lzh")) {
+		return true;
+	}
+#endif
+
+	return pv.ends_with(".zip") || pv.ends_with(".easyrpg");
+}
+
 void FileFinder::Quit() {
 	root_fs.reset();
 }
@@ -305,6 +310,40 @@ bool FileFinder::IsEasyRpgProject(const FilesystemView& fs){
 
 bool FileFinder::IsRPG2kProjectWithRenames(const FilesystemView& fs) {
 	return !FileExtGuesser::GetRPG2kProjectWithRenames(fs).Empty();
+}
+
+bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
+	auto files = fs.ListDirectory();
+	if (!files) {
+		return false;
+	}
+
+	int items = 0;
+	std::string filename;
+
+	for (auto& file : *files) {
+		if (StringView(file.second.name).ends_with(".easyrpg")) {
+			++items;
+			if (items == 2) {
+				// Contains more than one game
+				return false;
+			}
+			filename = file.second.name;
+		}
+	}
+
+	if (filename.empty()) {
+		return false;
+	}
+
+	// One candidate to check
+	auto ep_fs = fs.Create(filename);
+	if (FileFinder::IsValidProject(ep_fs)) {
+		fs = ep_fs;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 bool FileFinder::HasSavegame() {
@@ -339,7 +378,7 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string find_generic_with_fallback(DirectoryTree::Args& args) {
-	std::string found = FileFinder::Save().FindFile(args); 
+	std::string found = FileFinder::Save().FindFile(args);
 	if (found.empty()) {
 		return find_generic(args);
 	}
@@ -393,7 +432,7 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 }
 
 Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
-	auto is = FileFinder::Save().OpenFile(args); 
+	auto is = FileFinder::Save().OpenFile(args);
 	if (!is) { is = open_generic(dir, name, args); }
 	if (!is) {
 		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
@@ -492,4 +531,33 @@ void FileFinder::DumpFilesystem(FilesystemView fs) {
 		Output::Debug("{}: {}", i++, cur_fs.Describe());
 		cur_fs = cur_fs.GetOwner().GetParent();
 	}
+}
+
+std::vector<FilesystemView> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
+	std::vector<FilesystemView> games;
+
+	std::function<void(FilesystemView, int)> find_recursive = [&](FilesystemView subfs, int rec_limit) -> void {
+		if (!subfs || rec_limit == 0 || games.size() >= game_limit) {
+			return;
+		}
+
+		if (IsValidProject(subfs)) {
+			games.push_back(subfs);
+			return;
+		}
+
+		auto entries = subfs.ListDirectory();
+
+		for (auto& [name_lower, entry]: *entries) {
+			if (entry.type == DirectoryTree::FileType::Directory) {
+				find_recursive(subfs.Subtree(entry.name), rec_limit - 1);
+			} else if (entry.type == DirectoryTree::FileType::Regular && IsSupportedArchiveExtension(entry.name)) {
+				find_recursive(fs.Create(entry.name), rec_limit - 1);
+			}
+		}
+	};
+
+	find_recursive(fs, recursion_limit);
+
+	return games;
 }

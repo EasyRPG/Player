@@ -68,7 +68,7 @@ void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
 
-void BaseUi::SetGameResolution(GameResolution resolution) {
+void BaseUi::SetGameResolution(ConfigEnum::GameResolution resolution) {
 	vcfg.game_resolution.Set(resolution);
 }
 
@@ -85,11 +85,8 @@ Game_ConfigVideo BaseUi::GetConfig() const {
 	cfg.window_width.Set(metrics.width);
 	cfg.window_height.Set(metrics.height);
 
-	if (cfg.fullscreen.IsOptionVisible()) {
-		cfg.fps_render_window.SetLocked(cfg.fullscreen.Get());
-		if (cfg.fps_render_window.IsLocked()) {
-			cfg.fps_render_window.SetDescription("This options requires to be in windowed mode");
-		}
+	if (!cfg.fullscreen.IsOptionVisible()) {
+		cfg.fps.RemoveFromValidSet(ConfigEnum::ShowFps::Overlay);
 	}
 
 	if (cfg.vsync.IsOptionVisible()

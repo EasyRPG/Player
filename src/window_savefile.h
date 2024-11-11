@@ -67,7 +67,12 @@ public:
 	 *
 	 * @return Whether save is valid
 	 */
-	bool IsValid();
+	bool IsValid() const;
+
+	/**
+	 * @return Whether the save slot contains party information from a save file.
+	 */
+	bool HasParty() const;
 
 	/**
 	 * Sets if there is a savegame in the slot.

@@ -29,6 +29,7 @@
 #include "system.h"
 #include "game_interpreter.h"
 
+class Game_Enemy;
 class Game_Event;
 class Game_CommonEvent;
 

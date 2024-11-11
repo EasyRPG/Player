@@ -198,7 +198,7 @@ public:
 	 * @param os output stream that PNG will be output.
 	 * @return true if success, otherwise false.
 	 */
-	bool WritePNG(Filesystem_Stream::OutputStream&) const;
+	bool WritePNG(std::ostream& os) const;
 
 	/**
 	 * Gets the background color
@@ -217,12 +217,28 @@ public:
 	Color GetShadowColor() const;
 
 	/**
-	 * Gets the filename this bitmap was loaded from.
-	 * This will be empty when the origin was not a file.
+	 * Returns an identifier for the bitmap.
+	 * When the bitmap was loaded from a file this contains the filename.
+	 * In all other cases this is implementation defined (and can be empty).
 	 *
-	 * @return filename
+	 * @return Bitmap identifier
 	 */
-	StringView GetFilename() const;
+	StringView GetId() const;
+
+	/**
+	 * Sets the identifier of the bitmap.
+	 * To avoid bugs the function will reject changing non-empty IDs.
+	 *
+	 * @param id new identifier
+	 */
+	void SetId(std::string id);
+
+	/**
+	 * Gets bpp of the source image.
+	 *
+	 * @return Bpp
+	 */
+	int GetOriginalBpp() const;
 
 	void CheckPixels(uint32_t flags);
 
@@ -234,7 +250,7 @@ public:
 	Color GetColorAt(int x, int y) const;
 
 	/**
-	 * Draws text to bitmap using the Font::Default() font.
+	 * Draws text to bitmap using the configured Font or the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
@@ -246,7 +262,7 @@ public:
 	Point TextDraw(int x, int y, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap using the Font::Default() font.
+	 * Draws text to bitmap using the configured Font or the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color system color index.
@@ -257,7 +273,7 @@ public:
 	Point TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap using the Font::Default() font.
+	 * Draws text to bitmap using the configured Font or the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
@@ -268,7 +284,7 @@ public:
 	Point TextDraw(int x, int y, Color color, StringView text);
 
 	/**
-	 * Draws text to bitmap using the Font::Default() font.
+	 * Draws text to bitmap using the configured Font or the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color text color.
@@ -587,6 +603,9 @@ public:
 	int bpp() const;
 	int pitch() const;
 
+	FontRef GetFont() const;
+	void SetFont(FontRef font);
+
 	ImageOpacity ComputeImageOpacity() const;
 	ImageOpacity ComputeImageOpacity(Rect rect) const;
 
@@ -596,8 +615,12 @@ protected:
 	ImageOpacity image_opacity = ImageOpacity::Alpha_8Bit;
 	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
+	FontRef font;
 
-	std::string filename;
+	std::string id;
+
+	/** Bpp of the source image */
+	int original_bpp;
 
 	/** Bitmap data. */
 	PixmanImagePtr bitmap;
@@ -636,6 +659,13 @@ protected:
 	bool read_only = false;
 };
 
+struct ImageOut {
+	int width = 0;
+	int height = 0;
+	void* pixels = nullptr;
+	int bpp = 0;
+};
+
 inline ImageOpacity Bitmap::GetImageOpacity() const {
 	return image_opacity;
 }
@@ -668,8 +698,25 @@ inline bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
 }
 
-inline StringView Bitmap::GetFilename() const {
-	return filename;
+inline StringView Bitmap::GetId() const {
+	return id;
+}
+
+inline void Bitmap::SetId(std::string id) {
+	assert(this->id.empty());
+	this->id = id;
+}
+
+inline FontRef Bitmap::GetFont() const {
+	return font;
+}
+
+inline void Bitmap::SetFont(FontRef font) {
+	this->font = font;
+}
+
+inline int Bitmap::GetOriginalBpp() const {
+	return original_bpp;
 }
 
 #endif

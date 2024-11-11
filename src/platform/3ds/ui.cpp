@@ -48,16 +48,22 @@ using namespace std::chrono_literals;
 
 namespace {
 	Point touch_pos;
+	bool released_touch = true;
 	enum class screen_state { off, keep, touched, refresh };
 	screen_state bottom_state = screen_state::refresh;
+	// texture data
+	u32* screen_buffer = nullptr;
+	BitmapRef screen_surface; // contains screen_buffer, linear heap allocated
+	C3D_Tex tex, keyb_tex;
 	Tex3DS_SubTexture subt3x;
+	Tex3DS_Texture keyb_t3x;
+	struct _render_parms {
+		int top, left;
+		float stretch_x, stretch_y;
+	} renderer;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
-	constexpr int width_pow2 = 512;
-	constexpr int height_pow2 = 256;
 	constexpr int z = 0.5f;
-	u32* screen_buffer;
-	BitmapRef screen_surface; // contains screen_surface, linear heap allocated
 	aptHookCookie cookie;
 #ifndef _DEBUG
 	struct _batt {
@@ -70,6 +76,11 @@ namespace {
 	struct _batt battery;
 	Game_Clock::time_point info_tick;
 #endif
+}
+
+__attribute__ ((const)) static inline u32 tex_dim(u32 x) {
+	if (x < 32) return 32;
+	return 1 << (32 - __builtin_clz(x - 1));
 }
 
 static void _aptHook(APT_HookType hook, void*) {
@@ -122,8 +133,7 @@ void CtrUi::ToggleBottomScreen(bool state) {
 	}
 }
 
-CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
-{
+CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg) {
 	SetIsFullscreen(true);
 	aptHook(&cookie, _aptHook, 0);
 	ptmuInit();
@@ -141,30 +151,31 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, Color(0, 0, 0, 255));
 
+	// compute render params to center/stretch image correctly
+	renderer.top = (GSP_SCREEN_WIDTH - height) / 2;
+	renderer.left = (GSP_SCREEN_HEIGHT_TOP - width) / 2;
+	renderer.stretch_x = (float)GSP_SCREEN_HEIGHT_TOP / width;
+	renderer.stretch_y = (float)GSP_SCREEN_WIDTH / height;
+
+	if(!C3D_TexInit(&tex, tex_dim(width), tex_dim(height), GPU_RGB8))
+		Output::Error("Could not create main texture.");
+	memset(tex.data, 0, tex.size);
+	tex.border = 0xFFFFFFFF;
+	C3D_TexSetWrap(&tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
+
 	const auto screen_format = format_A8B8G8R8_n().format();
-	screen_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
-	screen_surface = Bitmap::Create(screen_buffer, width, height, width_pow2*4, screen_format);
+	if(!(screen_buffer = (u32*)linearAlloc(tex.width * tex.height * 4)))
+		Output::Error("Could not create main buffer.");
+	screen_surface = Bitmap::Create(screen_buffer, width, height, tex.width * 4, screen_format);
 
-	// default for both screens
-	subt3x.width = width_pow2;
-	subt3x.height = height_pow2;
-	subt3x.left = 0.0f;
-	subt3x.top = 1.0f;
-	subt3x.right = 1.0f;
-	subt3x.bottom = 0.0f;
-
-	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
-	C3D_TexInit(tex, width_pow2, height_pow2, GPU_RGB8);
-	memset(tex->data, 0, tex->size);
-	tex->border = 0xFFFFFFFF;
-	C3D_TexSetWrap(tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
-	top_image.tex = tex;
-	top_image.subtex = &subt3x;
+	// only show actual image, texture dimensions are bigger
+	subt3x = { (u16)width, (u16)height, 0.0f, 1.0f,
+		width/(float)tex.width, 1.0f - height/(float)tex.height };
 
 	if (vcfg.stretch.Get()) {
-		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+		C3D_TexSetFilter(&tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
-		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+		C3D_TexSetFilter(&tex, GPU_NEAREST, GPU_NEAREST);
 	}
 
 #ifdef SUPPORT_AUDIO
@@ -174,11 +185,7 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 #ifndef _DEBUG
 	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-	C3D_Tex* keyb_tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
-	Tex3DS_Texture keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, keyb_tex, nullptr, false);
-	Tex3DS_TextureFree(keyb_t3x);
-	bottom_image.tex = keyb_tex;
-	bottom_image.subtex = &subt3x;
+	keyb_t3x = Tex3DS_TextureImport(keyboard_t3x, keyboard_t3x_size, &keyb_tex, nullptr, false);
 
 	battery.sheet = C2D_SpriteSheetLoadFromMem(battery_t3x, battery_t3x_size);
 	battery.image = C2D_SpriteSheetGetImage(battery.sheet, 0);
@@ -191,12 +198,11 @@ CtrUi::CtrUi(int width, int height, const Game_Config& cfg) : BaseUi(cfg)
 }
 
 CtrUi::~CtrUi() {
-	C3D_TexDelete(top_image.tex);
-	free(top_image.tex);
+	C3D_TexDelete(&tex);
 
 #ifndef _DEBUG
-	C3D_TexDelete(bottom_image.tex);
-	free(bottom_image.tex);
+	C3D_TexDelete(&keyb_tex);
+	Tex3DS_TextureFree(keyb_t3x);
 
 	C2D_SpriteSheetFree(battery.sheet);
 #endif
@@ -211,9 +217,10 @@ CtrUi::~CtrUi() {
 	ToggleBottomScreen(true);
 }
 
-void CtrUi::ProcessEvents() {
-	if (!aptMainLoop())
-		Player::Exit();
+bool CtrUi::ProcessEvents() {
+	if (!aptMainLoop()) {
+		return false;
+	}
 
 	hidScanInput();
 	u32 input = hidKeysHeld();
@@ -265,16 +272,27 @@ void CtrUi::ProcessEvents() {
 
 			// Turn off touchscreen for top right button
 			if (row == 0 && col == 3) {
-				ToggleBottomScreen(false);
+				if(released_touch) {
+					ToggleBottomScreen(false);
+					released_touch = false;
+				}
 			} else {
 				keys[keys_tbl[col + (row * 4)]] = true;
 			}
 
 			touch_pos.x = pos.px;
 			touch_pos.y = pos.py;
-		} else {
+		} else if (released_touch) {
+			// Turn on touch screen
 			ToggleBottomScreen(true);
+			released_touch = false;
 		}
+	}
+
+	// Reset touch state
+	u32 input_up = hidKeysUp();
+	if (input_up & KEY_TOUCH) {
+		released_touch = true;
 	}
 
 	// info display, query every 10s
@@ -307,6 +325,8 @@ void CtrUi::ProcessEvents() {
 		}
 	}
 #endif
+
+	return true;
 }
 
 void CtrUi::UpdateDisplay() {
@@ -314,36 +334,34 @@ void CtrUi::UpdateDisplay() {
 	// required because pixman has no fast-paths for non AXXX buffers and 3DS wants RGBA
 	screen_surface->BlitFast(0, 0, *main_surface, main_surface->GetRect(), Opacity::Opaque());
 
-	GSPGPU_FlushDataCache(screen_buffer, (width_pow2*height_pow2*4));
+	GSPGPU_FlushDataCache(screen_buffer, tex.width * tex.height * 4);
 
+	// Convert the texture before starting a frame, so this uses a safe transfer
 	// Using RGB8 as output format is faster and improves framerate ¯\_(ツ)_/¯
-	const u32 flags = (GX_TRANSFER_FLIP_VERT(0) |
-		GX_TRANSFER_OUT_TILED(1) |
-		GX_TRANSFER_RAW_COPY(0) |
-		GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
-		GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
-		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO));
-
-	// Doing this after FrameBegin corrupts the output, probably because this
-	// is asynchronous and FrameBegin will block until it finishes
-	C3D_SyncDisplayTransfer(
-		(u32*)screen_buffer,
-		GX_BUFFER_DIM(width_pow2, height_pow2),
-		(u32*)top_image.tex->data,
-		GX_BUFFER_DIM(width_pow2, height_pow2),
-		flags
+	u32 dim = GX_BUFFER_DIM(tex.width, tex.height);
+	C3D_SyncDisplayTransfer(screen_buffer, dim, (u32*)tex.data, dim,
+		(GX_TRANSFER_FLIP_VERT(0) | GX_TRANSFER_OUT_TILED(1) | GX_TRANSFER_RAW_COPY(0) |
+		GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) | GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
+		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO))
 	 );
 
-	C3D_FrameBegin(0);
+	// start frame, clear targets
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
+#ifndef _DEBUG
+	// only clear if needed
+	if (bottom_state > screen_state::keep)
+		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+#endif
 
 	// top screen
 	C2D_SceneBegin(top_screen);
-	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
 
+	C2D_Image img = { &tex, &subt3x };
 	if (vcfg.stretch.Get()) {
-		C2D_DrawImageAt(top_image, 0, 0, z, nullptr, 1.25f, 1.0f);
+		C2D_DrawImageAt(img, 0, 0, z, nullptr, renderer.stretch_x, renderer.stretch_y);
 	} else {
-		C2D_DrawImageAt(top_image, 40, 0, z);
+		C2D_DrawImageAt(img, renderer.left, renderer.top, z);
 	}
 
 	// bottom screen
@@ -355,6 +373,7 @@ void CtrUi::UpdateDisplay() {
 		int x = col * w;
 		int y = row * h;
 		int b = 2; // border width
+		int z = 0.6f;
 		constexpr u32 white = C2D_Color32f(1, 1, 1, 1);
 		constexpr u32 darkgray = C2D_Color32f(0.5f, 0.5f, 0.5f, 1);
 		constexpr u32 lightgray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
@@ -369,11 +388,19 @@ void CtrUi::UpdateDisplay() {
 
 	// "circle" cursor
 	auto draw_cursor = [this](Point p) {
+		int z = 0.7f;
 		constexpr u32 green = C2D_Color32f(0.1f, 0.7f, 0.1f, 0.9f);
 		C2D_DrawRectSolid(p.x-1, p.y, z, 3, 1, green);
 		C2D_DrawRectSolid(p.x, p.y-1, z, 1, 3, green);
 		// real circle, requires state change, so slower
 		//C2D_DrawCircleSolid(p.x, p.y, z, 2, green);
+	};
+
+	// battery indicator
+	auto draw_battery = [this](int x, int y) {
+		int w = battery.image.subtex->width;
+		int h = battery.image.subtex->height;
+		C2D_DrawImageAt(battery.image, x-w, y-h, 0.8f);
 	};
 
 	/* More low hanging fruit optimisation: Only refresh the bottom screen
@@ -383,8 +410,7 @@ void CtrUi::UpdateDisplay() {
 	if (bottom_state > screen_state::keep) {
 		C2D_SceneBegin(bottom_screen);
 
-		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-		C2D_DrawImageAt(bottom_image, 0, 0, z);
+		C2D_DrawImageAt({&keyb_tex, Tex3DS_GetSubTexture(keyb_t3x, 0)}, 0, 0, z);
 
 		if (bottom_state == screen_state::touched) {
 			draw_button(touch_pos, button_width, button_height);
@@ -397,35 +423,22 @@ void CtrUi::UpdateDisplay() {
 			bottom_state = screen_state::keep;
 		}
 
-		// image is 41*12, position with 2 pixels border at bottom right
-		C2D_DrawImageAt(battery.image, 320-41-2, 240-12-2, z);
+		// position with 2 pixels border at bottom right
+		draw_battery(GSP_SCREEN_HEIGHT_BOTTOM-2, GSP_SCREEN_WIDTH-2);
 	}
 #endif
 
+	// show everything
 	C3D_FrameEnd(0);
-}
-
-bool CtrUi::LogMessage(const std::string &message) {
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
-
-	// HLE in citra emulator
-	svcOutputDebugString(m.c_str(), m.length());
-
-#ifdef _DEBUG
-	// log additionally to bottom console
-	return false;
-#else
-	return true;
-#endif
 }
 
 void CtrUi::ToggleStretch() {
 	vcfg.stretch.Toggle();
 
 	if (vcfg.stretch.Get()) {
-		C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+		C3D_TexSetFilter(&tex, GPU_LINEAR, GPU_LINEAR);
 	} else {
-		C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+		C3D_TexSetFilter(&tex, GPU_NEAREST, GPU_NEAREST);
 	}
 }
 
@@ -441,4 +454,16 @@ void CtrUi::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.touch_ui.SetName("Backlight");
 	cfg.touch_ui.SetDescription("Toggle the backlight of the bottom screen");
 	cfg.touch_ui.Set(bottom_state != screen_state::off);
+}
+
+bool CtrUi::HandleErrorOutput(const std::string &message) {
+	errorConf errCnf;
+	std::string error = Player::GetFullVersionString();
+	error += "\n\n" + message;
+
+	errorInit(&errCnf, ERROR_TEXT_WORD_WRAP, CFG_LANGUAGE_EN);
+	errorText(&errCnf, error.c_str());
+	errorDisp(&errCnf);
+
+	return true;
 }

@@ -19,6 +19,10 @@
 
 #include <utility>
 
+#ifdef USE_CUSTOM_FILEBUF
+#  include <unistd.h>
+#endif
+
 Filesystem_Stream::InputStream::InputStream(std::streambuf* sb, std::string name) :
 	std::istream(sb), name(std::move(name)) {}
 
@@ -122,3 +126,123 @@ Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf(std::vector<uint8_
 		: InputMemoryStreamBufView(buffer), buffer(std::move(buffer)) {
 
 }
+
+#ifdef USE_CUSTOM_FILEBUF
+
+Filesystem_Stream::FdStreamBuf::FdStreamBuf(int fd, bool is_read) : fd(fd), is_read(is_read) {
+	if (is_read) {
+		clear_buffer();
+	} else {
+		setp(buffer.end(), buffer.end());
+	}
+}
+
+Filesystem_Stream::FdStreamBuf::~FdStreamBuf() {
+	if (!is_read) {
+		sync();
+	}
+
+	close(fd);
+}
+
+Filesystem_Stream::FdStreamBuf::int_type Filesystem_Stream::FdStreamBuf::underflow() {
+	assert(gptr() == egptr());
+
+	auto bytes_read = read(fd, buffer.begin(), buffer.size());
+	if (bytes_read <= 0) {
+		return traits_type::eof();
+	}
+	file_offset += bytes_read;
+
+	setg(buffer.begin(), buffer.begin(), buffer.begin() + bytes_read);
+
+	return traits_type::to_int_type(*gptr());
+}
+
+std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) {
+	// Not implemented for writing
+	assert(is_read);
+
+	if (dir == std::ios_base::beg) {
+		offset = offset - file_offset + bytes_remaining();
+		dir = std::ios_base::cur;
+	}
+
+	if (dir == std::ios_base::cur) {
+		if (offset < 0) {
+			auto dist = std::distance(gptr(), gptr() - offset);
+			if (gptr() + offset < eback()) {
+				// Not cached: Outside of the buffer: Reposition the stream
+				file_offset = lseek(fd, -dist - bytes_remaining(), SEEK_CUR);
+				clear_buffer();
+			} else {
+				setg(buffer.begin(), gptr() - dist, egptr());
+			}
+		} else if (offset > 0) {
+			auto dist = std::distance(gptr(), gptr() + offset);
+			if (gptr() + offset > egptr()) {
+				// Not cached: Outside of the buffer: Reposition the stream
+				file_offset = lseek(fd, dist - bytes_remaining(), SEEK_CUR);
+				clear_buffer();
+			} else {
+				setg(buffer.begin(), gptr() + dist, egptr());
+			}
+		}
+		return file_offset - bytes_remaining();
+	} else {
+		// Not cached: Seek to end
+		clear_buffer();
+		file_offset = lseek(fd, offset, SEEK_END);
+
+		if (file_offset < 0) {
+			file_offset = 0;
+			return -1;
+		}
+
+		return file_offset;
+	}
+
+	assert(false);
+}
+
+std::streambuf::pos_type Filesystem_Stream::FdStreamBuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) {
+	return seekoff(pos, std::ios_base::beg, mode);
+}
+
+
+Filesystem_Stream::FdStreamBuf::int_type Filesystem_Stream::FdStreamBuf::overflow(int c) {
+	assert(pptr() == epptr());
+
+	if (c == traits_type::eof() || sync() == -1) {
+		return traits_type::eof();
+	}
+
+	*pptr() = traits_type::to_char_type(c);
+
+	pbump(1);
+	return c;
+}
+
+int Filesystem_Stream::FdStreamBuf::sync() {
+	char *p = pbase();
+	while (p < pptr()) {
+		int written = write(fd, p, pptr() - p);
+		if (written <= 0) {
+			return -1;
+		}
+		p += written;
+	}
+
+	setp(buffer.begin(), buffer.end());
+	return 0;
+}
+
+void Filesystem_Stream::FdStreamBuf::clear_buffer() {
+	setg(buffer.begin(), buffer.end(), buffer.end());
+}
+
+ssize_t Filesystem_Stream::FdStreamBuf::bytes_remaining() const {
+	return egptr() - gptr();
+}
+
+#endif

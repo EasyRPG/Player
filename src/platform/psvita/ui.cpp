@@ -35,7 +35,6 @@
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
-#include <psp2/kernel/clib.h>
 #include <vita2d.h>
 #include <cstring>
 #include <stdio.h>
@@ -98,7 +97,7 @@ static int renderThread(unsigned int args, void* arg){
 			vita2d_draw_texture(touch_texture, 0, 0);
 		}
 
-		if (vcfg_ref->scaling_mode.Get() == ScalingMode::Nearest) {
+		if (vcfg_ref->scaling_mode.Get() == ConfigEnum::ScalingMode::Nearest) {
 			if (!vcfg_ref->stretch.Get()) {
 				// 725x544 (scaled)
 				vita2d_draw_texture_scale(gpu_texture, 117, 0, 2.266, 2.266);
@@ -106,7 +105,7 @@ static int renderThread(unsigned int args, void* arg){
 				// 960x544 (full-stretched)
 				vita2d_draw_texture_scale(gpu_texture, 0, 0, 3, 2.266);
 			}
-		} else if (vcfg_ref->scaling_mode.Get() == ScalingMode::Integer) {
+		} else if (vcfg_ref->scaling_mode.Get() == ConfigEnum::ScalingMode::Integer) {
 			if (!vcfg_ref->stretch.Get()) {
 				// 640x480 (doubled)
 				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
@@ -208,7 +207,7 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::ProcessEvents() {
+bool Psp2Ui::ProcessEvents() {
 	SceCtrlData input;
 	SceTouchData touch;
 
@@ -262,6 +261,8 @@ void Psp2Ui::ProcessEvents() {
 			}
 		}
 	}
+
+	return true;
 }
 
 void Psp2Ui::UpdateDisplay() {
@@ -272,15 +273,7 @@ void Psp2Ui::UpdateDisplay() {
 	sceKernelSignalSema(GPU_Mutex, 1);
 }
 
-bool Psp2Ui::LogMessage(const std::string &message) {
-	// HLE in psp2shell
-	sceClibPrintf("[%s] %s\n", GAME_TITLE, message.c_str());
-
-	// skip useless stderr output
-	return true;
-}
-
-void Psp2Ui::SetScalingMode(ScalingMode mode) {
+void Psp2Ui::SetScalingMode(ConfigEnum::ScalingMode mode) {
 	vcfg.scaling_mode.Set(mode);
 }
 
@@ -304,7 +297,7 @@ void Psp2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.vsync.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
 	cfg.scaling_mode.SetOptionVisible(true);
-	cfg.scaling_mode.RemoveFromValidSet(ScalingMode::Bilinear);
+	cfg.scaling_mode.RemoveFromValidSet(ConfigEnum::ScalingMode::Bilinear);
 	cfg.stretch.SetOptionVisible(true);
 	cfg.touch_ui.SetOptionVisible(!is_pstv);
 

@@ -1,0 +1,7 @@
+Met EasyRPG Player kun je spellen spelen die gemaakt zijn met RPG Maker 2000 en RPG Maker 2003. Nieuwere engines zoals XP, VX, MV en MZ worden niet ondersteund.
+
+EasyRPG Player is geen editor. Je kunt er geen eigen spellen mee maken.
+
+Startpagina: https://easyrpg.org/
+
+Deze app is niet verbonden aan Kadokawa Corporation.

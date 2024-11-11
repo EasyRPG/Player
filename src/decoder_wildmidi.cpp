@@ -84,7 +84,7 @@ WildMidiDecoder::~WildMidiDecoder() {
 		WildMidi_Close(handle);
 }
 
-bool WildMidiDecoder::Initialize(std::string& error_message) {
+bool WildMidiDecoder::Initialize(std::string& status_message) {
 	std::string config_file;
 	bool found = false;
 
@@ -112,7 +112,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 			found = FileFinder::Root().Exists(config_file);
 		}
 	}
-#elif defined(GEKKO)
+#elif defined(__wii__)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
 	found = FileFinder::Root().Exists(config_file);
@@ -138,6 +138,21 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 	}
 	if (!found) {
 		config_file = "timidity.cfg";
+		found = FileFinder::Root().Exists(config_file);
+	}
+#elif defined(__WIIU__)
+	// preferred SD card directory
+	config_file = "fs:/vol/external01/wiiu/data/easyrpg-player/wildmidi.cfg";
+	found = FileFinder::Root().Exists(config_file);
+
+	// shipped
+	if (!found) {
+		config_file = "fs:/vol/content/wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+	}
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
 	}
 #elif defined(__3DS__)
@@ -272,10 +287,11 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 
 	// bail, if nothing found
 	if (!found) {
-		error_message = "WildMidi: Could not find configuration file.";
+		status_message = "Could not find configuration file.";
 		return false;
 	}
-	Output::Debug("WildMidi: Using {} as configuration file...", config_file);
+
+	status_message = fmt::format("Using {} as configuration file...", config_file);
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 	init = (WildMidi_InitVIO(&vio, config_file.c_str(), EP_MIDI_FREQ, WILDMIDI_OPTS) == 0);
@@ -284,7 +300,7 @@ bool WildMidiDecoder::Initialize(std::string& error_message) {
 #endif
 
 	if (!init) {
-		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
+		status_message = std::string("WildMidi_Init() failed: ") + WildMidi_GetError();
 		return false;
 	}
 

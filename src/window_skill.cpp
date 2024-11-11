@@ -30,12 +30,12 @@
 #include "game_battle.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
+	Window_Selectable(ix, iy, iwidth, iheight), subset(0) {
 	column_max = 2;
 }
 
-void Window_Skill::SetActor(int actor_id) {
-	this->actor_id = actor_id;
+void Window_Skill::SetActor(const Game_Actor& actor) {
+	this->actor = &actor;
 	Refresh();
 }
 
@@ -50,7 +50,7 @@ const lcf::rpg::Skill* Window_Skill::GetSkill() const {
 void Window_Skill::Refresh() {
 	data.clear();
 
-	const std::vector<int16_t>& skills = Main_Data::game_actors->GetActor(actor_id)->GetSkills();
+	const std::vector<int16_t>& skills = actor->GetSkills();
 	for (size_t i = 0; i < skills.size(); ++i) {
 		if (CheckInclude(skills[i]))
 			data.push_back(skills[i]);
@@ -78,7 +78,6 @@ void Window_Skill::DrawItem(int index) {
 	int skill_id = data[index];
 
 	if (skill_id > 0) {
-		const Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
 		int costs = actor->CalculateSkillCost(skill_id);
 
 		bool enabled = CheckEnable(skill_id);
@@ -119,8 +118,6 @@ bool Window_Skill::CheckInclude(int skill_id) {
 }
 
 bool Window_Skill::CheckEnable(int skill_id) {
-	const Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
-
 	return actor->IsSkillLearned(skill_id) && actor->IsSkillUsable(skill_id);
 }
 

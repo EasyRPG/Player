@@ -84,9 +84,8 @@ ImageBMP::BitmapHeader ImageBMP::ParseHeader(const uint8_t*& ptr, uint8_t const*
 	return hdr;
 }
 
-bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
-					   int& width, int& height, void*& pixels) {
-	pixels = nullptr;
+bool ImageBMP::Read(const uint8_t* data, unsigned len, bool transparent, ImageOut& output) {
+	output.pixels = nullptr;
 
 	if (len < 64) {
 		Output::Warning("Not a valid BMP file.");
@@ -142,13 +141,13 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	int line_width = (hdr.depth == 4) ? (hdr.w + 1) >> 1 : hdr.w;
 	int padding = (-line_width)&3;
 
-	pixels = malloc(hdr.w * hdr.h * 4);
-	if (!pixels) {
+	output.pixels = malloc(hdr.w * hdr.h * 4);
+	if (!output.pixels) {
 		Output::Warning("Error allocating BMP pixel buffer.");
 		return false;
 	}
 
-	uint8_t* dst = (uint8_t*) pixels;
+	uint8_t* dst = (uint8_t*) output.pixels;
 	for (int y = 0; y < hdr.h; y++) {
 		const uint8_t* src = src_pixels + (vflip ? hdr.h - 1 - y : y) * (line_width + padding);
 		for (int x = 0; x < hdr.w; x += 2) {
@@ -182,13 +181,13 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		}
 	}
 
-	width = hdr.w;
-	height = hdr.h;
+	output.width = hdr.w;
+	output.height = hdr.h;
+	output.bpp = hdr.depth; // Currently only 4 and 8 bit (indexed) are supported
 	return true;
 }
 
-bool ImageBMP::ReadBMP(Filesystem_Stream::InputStream& stream, bool transparent,
-					int& width, int& height, void*& pixels) {
+bool ImageBMP::Read(Filesystem_Stream::InputStream& stream, bool transparent, ImageOut& output) {
 	std::vector<uint8_t> buffer = Utils::ReadStream(stream);
-	return ReadBMP(&buffer.front(), (unsigned) buffer.size(), transparent, width, height, pixels);
+	return Read(&buffer.front(), (unsigned) buffer.size(), transparent, output);
 }

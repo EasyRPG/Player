@@ -24,6 +24,7 @@
 #include "window_command.h"
 #include "window_command_horizontal.h"
 #include "window_about.h"
+#include "window_help.h"
 #include "window_selectable.h"
 #include "window_settings.h"
 #include "window_input_settings.h"
@@ -43,6 +44,7 @@ public:
 	Scene_Settings();
 
 	void Start() override;
+	void Refresh() override;
 	void vUpdate() override;
 
 	/**
@@ -63,6 +65,7 @@ private:
 
 	void UpdateMain();
 	void UpdateOptions();
+	void UpdateFont(bool mincho);
 	void UpdateButtonOption();
 	void UpdateButtonAdd();
 	void UpdateButtonRemove();
@@ -72,6 +75,7 @@ private:
 
 	std::unique_ptr<Window_Command> main_window;
 	std::unique_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window2;
 	std::unique_ptr<Window_About> about_window;
 	std::unique_ptr<Window_Settings> options_window;
 	std::unique_ptr<Window_InputSettings> input_window;
@@ -79,6 +83,7 @@ private:
 	std::unique_ptr<Window_Command_Horizontal> input_mode_window;
 	std::unique_ptr<Window_Command> picker_window;
 	std::unique_ptr<Window_NumberInput> number_window;
+	std::unique_ptr<Window_Help> font_size_window;
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;

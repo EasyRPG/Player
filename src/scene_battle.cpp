@@ -143,7 +143,7 @@ void Scene_Battle::InitEscapeChance() {
 	int avg_actor_agi = Main_Data::game_party->GetAverageAgility();
 
 	int base_chance = Utils::RoundTo<int>(100.0 * static_cast<double>(avg_enemy_agi) / static_cast<double>(avg_actor_agi));
-	this->escape_chance = Utils::Clamp(150 - base_chance, 64, 100);
+	this->escape_chance = Utils::Clamp(150 - base_chance, 0, 100);
 }
 
 bool Scene_Battle::TryEscape() {

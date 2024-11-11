@@ -161,7 +161,7 @@ static std::optional<std::string> CommandCodeInserterNoRecurse(char ch, const ch
 		*iter = parse_ret.next;
 		int value = parse_ret.value;
 
-		std::string str = Main_Data::game_strings->Get(value);
+		std::string str = ToString(Main_Data::game_strings->Get(value));
 
 		// \t[] is evaluated but command codes inside it are not evaluated again
 		return PendingMessage::ApplyTextInsertingCommands(str, escape_char, PendingMessage::DefaultCommandInserter);
@@ -176,7 +176,7 @@ std::optional<std::string> Game_Message::CommandCodeInserter(char ch, const char
 		*iter = parse_ret.next;
 		int value = parse_ret.value;
 
-		std::string str = Main_Data::game_strings->Get(value);
+		std::string str = ToString(Main_Data::game_strings->Get(value));
 
 		// Command codes in \t[] are evaluated once.
 		return PendingMessage::ApplyTextInsertingCommands(str, escape_char, CommandCodeInserterNoRecurse);

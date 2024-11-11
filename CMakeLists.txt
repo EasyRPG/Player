@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.24 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16...3.28 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
@@ -14,6 +14,9 @@ include(PlayerBuildType)
 include(PlayerMisc)
 include(GetGitRevisionDescription)
 
+# Dependencies provided by CMake Presets
+list(APPEND CMAKE_PREFIX_PATH "${PLAYER_PREFIX_PATH_APPEND}")
+
 # C++17 is required
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,9 +25,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
-	option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
-endif()
+option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
 # Source Files
 add_library(${PROJECT_NAME} OBJECT
@@ -122,6 +123,10 @@ add_library(${PROJECT_NAME} OBJECT
 	src/fileext_guesser.h
 	src/filesystem.cpp
 	src/filesystem.h
+	src/filesystem_hook.cpp
+	src/filesystem_hook.h
+	src/filesystem_lzh.cpp
+	src/filesystem_lzh.h
 	src/filesystem_native.cpp
 	src/filesystem_native.h
 	src/filesystem_root.cpp
@@ -176,6 +181,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_interpreter.h
 	src/game_interpreter_map.cpp
 	src/game_interpreter_map.h
+	src/game_interpreter_shared.cpp
+	src/game_interpreter_shared.h
 	src/game_map.cpp
 	src/game_map.h
 	src/game_message.cpp
@@ -418,6 +425,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_input_settings.h
 	src/window_item.cpp
 	src/window_item.h
+	src/window_interpreter.cpp
+	src/window_interpreter.h
 	src/window_keyboard.cpp
 	src/window_keyboard.h
 	src/window_menustatus.cpp
@@ -452,13 +461,14 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_skill.h
 	src/window_skillstatus.cpp
 	src/window_skillstatus.h
+	src/window_stringview.cpp
+	src/window_stringview.h
 	src/window_targetstatus.cpp
 	src/window_targetstatus.h
 	src/window_teleport.cpp
 	src/window_teleport.h
 	src/window_varlist.cpp
 	src/window_varlist.h
-	src/external/rang.hpp
 )
 
 # These are actually unused when building in CMake
@@ -503,12 +513,12 @@ if(NOT GIT_TAG)
 			list(GET GIT_DESCRIPTION 2 GIT_HASH)
 			string(APPEND GIT_MESSAGE "${GIT_COMMITS} commits since tag \"${GIT_TAG}\", ")
 			string(PREPEND GIT_COMMITS "+")
+			# strip the g prefix
+			string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
 		else()
 			# no tags found, only hash
 			list(GET GIT_DESCRIPTION 0 GIT_HASH)
 		endif()
-		# strip the g prefix
-		string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
 		set(PLAYER_VERSION_GIT "git${GIT_COMMITS}@${GIT_HASH}")
 		string(APPEND GIT_MESSAGE "object hash is ${GIT_HASH}")
 		git_local_changes(GIT_DIRTY)
@@ -535,8 +545,22 @@ set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
 )
 
 # Platform setup
-set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1 libretro psvita 3ds switch wii amigaos4")
-set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro psvita 3ds switch wii amigaos4)
+if(NINTENDO_3DS)
+	set(PLAYER_TARGET_PLATFORM "3ds" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_SWITCH)
+	set(PLAYER_TARGET_PLATFORM "switch" CACHE STRING "Platform to compile for.")
+elseif(VITA)
+	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_WII)
+	set(PLAYER_TARGET_PLATFORM "wii" CACHE STRING "Platform to compile for.")
+elseif(NINTENDO_WIIU)
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
+elseif(AMIGA)
+	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "Platform to compile for.")
+else()
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1 libretro")
+	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro)
+endif()
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
 
@@ -551,8 +575,8 @@ endif()
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
@@ -569,13 +593,23 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	endif()
 
 	if(ANDROID)
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
+	endif()
+
+	if(NINTENDO_WIIU)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/wiiu/main.h
+			src/platform/wiiu/input_buttons.cpp)
+	endif()
+
+	if(WIN32)
+		target_link_libraries(${PROJECT_NAME} "Dwmapi")
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
@@ -588,9 +622,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
-	if(NOT NINTENDO_3DS)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/3DS.cmake' option.")
-	endif()
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi PLAYER_NINTENDO)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
 	# generate gfx assets
@@ -621,9 +652,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/ui.h)
 	target_link_libraries(${PROJECT_NAME} 3ds-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
-	if(NOT VITA)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake' option.")
-	endif()
 	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=Psp2Ui)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
@@ -636,9 +664,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		src/platform/psvita/ui.cpp
 		src/platform/psvita/ui.h)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
-	if(NOT NINTENDO_SWITCH)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Switch.cmake' option.")
-	endif()
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi PLAYER_NINTENDO)
 	find_package(OpenGL CONFIG REQUIRED)
 	find_library(GLAD glad REQUIRED)
@@ -658,51 +683,40 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/ui.h)
 	target_link_libraries(${PROJECT_NAME} switch-assets)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
-	if(NOT NINTENDO_WII)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=$DEVKITPRO/cmake/Wii.cmake' option.")
-	endif()
 	find_package(SDL REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/audio.cpp
+		src/platform/wii/audio.h
 		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
 		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
-	if(NOT AMIGAOS4)
-		message(FATAL_ERROR "Missing toolchain file! Use '-DCMAKE_TOOLCHAIN_FILE=path/to/ppc-amigaos.cmake' option.")
-	endif()
-	find_package(SDL REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/audio.cpp
-		src/platform/sdl/audio.h
-		src/platform/sdl/axis.h
-		src/platform/sdl/sdl_ui.cpp
-		src/platform/sdl/sdl_ui.h)
+else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
 # Shared by homebrew platforms
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$")
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$" OR NINTENDO_WIIU)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
 	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
 endif()
-# Make romfs available
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$")
-	option(PLAYER_ROMFS "Embedd a directory in the executable" OFF)
-	set(PLAYER_ROMFS_PATH "romfs" CACHE PATH "Directory to include in executable as romfs:/ path")
-	set(ROMFS_ARG "NO_ROMFS_IGNORE_ME")
-	if(PLAYER_ROMFS)
-		set(ROMFS_ARG "ROMFS")
+# Make content available (romfs/wuhb bundle)
+if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$" OR NINTENDO_WIIU)
+	option(PLAYER_BUNDLE "Embed a directory in the executable" OFF)
+	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
+	set(BUNDLE_ARG "_IGNORE_ME")
+	if(PLAYER_BUNDLE)
+		if(NINTENDO_WIIU)
+			set(BUNDLE_ARG "CONTENT")
+		else()
+			set(BUNDLE_ARG "ROMFS")
+		endif()
 	endif()
 endif()
 
@@ -734,8 +748,10 @@ endif()
 
 if(NOT PLAYER_BUILD_EXECUTABLE AND BUILD_SHARED_LIBS)
 	# Need fPIC when compiling a shared library (e.g. libretro.so)
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+	include(CheckPIESupported)
+	check_pie_supported()
+	set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+	set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 endif()
 
 if(ANDROID)
@@ -752,9 +768,10 @@ if(WIN32)
 endif()
 
 if(APPLE)
+	enable_language(OBJCXX)
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/macos/utils.mm
-		src/platform/macos/utils.h
+		src/platform/macos/macos_utils.mm
+		src/platform/macos/macos_utils.h
 		src/platform/macos/midiout_device_coreaudio.cpp
 		src/platform/macos/midiout_device_coreaudio.h)
 
@@ -769,7 +786,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
 	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
 	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
-	target_sources(${PROJECT_NAME} PRIVATE src/external/picojson.h)
 endif()
 
 # Endianess check
@@ -829,12 +845,14 @@ endif()
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
 player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
 
-# Do not use player_find_package. enable_language used by pixman on Android does work properly inside function calls
+# Do not use player_find_package. enable_language used by pixman on Android does not work properly inside function calls
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows"
+	AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$"
+	AND NOT NINTENDO_WIIU)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -859,6 +877,32 @@ if(TARGET freetype)
 		CONFIG_BROKEN)
 endif()
 
+# lzh archive support
+option(PLAYER_WITH_LHASA "Support running games in lzh archives" ON)
+
+player_find_package(NAME lhasa
+	CONDITION PLAYER_WITH_LHASA
+	DEFINITION HAVE_LHASA
+	TARGET LHASA::liblhasa
+)
+
+# json support
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+	player_find_package(NAME nlohmann_json
+		DEFINITION HAVE_NLOHMANN_JSON
+		TARGET nlohmann_json::nlohmann_json
+		REQUIRED
+	)
+else()
+	option(PLAYER_WITH_NLOHMANN_JSON "Support processing of JSON files" ON)
+	player_find_package(NAME nlohmann_json
+		CONDITION PLAYER_WITH_NLOHMANN_JSON
+		DEFINITION HAVE_NLOHMANN_JSON
+		TARGET nlohmann_json::nlohmann_json
+		ONLY_CONFIG
+	)
+endif()
+
 # Sound system to use
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
@@ -871,21 +915,17 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
 else()
+	# Assuming that all platforms not targeting SDL have only one audio backend
 	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Default OFF)
-
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Default")
-		# Assuming that all platforms not targeting SDL have only one audio backend
-		set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM})
-	endif()
 endif()
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "libretro")
+	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
@@ -894,11 +934,9 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 	if(WIN32 OR APPLE)
 		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(UNIX)
-		if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.12)
-			find_package(ALSA)
-			if(ALSA_FOUND)
-				set(SUPPORT_NATIVE_MIDI ON)
-			endif()
+		find_package(ALSA)
+		if(ALSA_FOUND)
+			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
 	endif()
 
@@ -942,7 +980,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|amigaos4)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -1029,7 +1067,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 		player_find_package(NAME FluidLite
 			CONDITION PLAYER_WITH_FLUIDLITE
 			DEFINITION HAVE_FLUIDLITE
-			TARGET FluidLite::fluidlite)
+			TARGET "fluidlite::fluidlite;fluidlite::fluidlite-static")
 	endif()
 
 	# xmp (lite)
@@ -1058,7 +1096,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii|a
 endif()
 
 # Executable
-if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1"))
+if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL[12]$" AND NOT NINTENDO_WIIU)
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1106,7 +1144,12 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		set(PLAYER_JS_POSTJS "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-post.js")
 		set(PLAYER_JS_SHELL "${CMAKE_CURRENT_SOURCE_DIR}/resources/emscripten/emscripten-shell.html")
 
-		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH -s EXIT_RUNTIME -s ASYNCIFY -s ASYNCIFY_IGNORE_INDIRECT -s MINIFY_HTML=0 --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext','$dynCall']")
+		set_property(TARGET ${EXE_NAME} PROPERTY LINK_FLAGS
+			"-sALLOW_MEMORY_GROWTH -sMINIFY_HTML=0 -sMODULARIZE -sEXPORT_NAME=createEasyRpgPlayer \
+			 -sEXIT_RUNTIME --bind --pre-js ${PLAYER_JS_PREJS} --post-js ${PLAYER_JS_POSTJS} \
+			 -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=['$autoResumeAudioContext','$dynCall'] \
+			 -sEXPORTED_RUNTIME_METHODS=['FS'] \
+			 -sEXPORTED_FUNCTIONS=_main,_malloc,_free")
 		set_source_files_properties("src/platform/sdl/main.cpp" PROPERTIES
 			OBJECT_DEPENDS "${PLAYER_JS_PREJS};${PLAYER_JS_POSTJS};${PLAYER_JS_SHELL}")
 
@@ -1114,6 +1157,13 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 			set_target_properties(${EXE_NAME} PROPERTIES SUFFIX ".html")
 			set_property(TARGET ${EXE_NAME} APPEND_STRING PROPERTY LINK_FLAGS " --shell-file ${PLAYER_JS_SHELL}")
 		endif()
+
+		target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions)
+
+		target_sources(${PROJECT_NAME} PRIVATE
+				src/platform/emscripten/clock.h
+				src/platform/emscripten/interface.cpp
+				src/platform/emscripten/interface.h)
 
 		target_link_libraries(${EXE_NAME} "idbfs.js")
 
@@ -1148,7 +1198,8 @@ if(${PLAYER_BUILD_EXECUTABLE} AND (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2" OR 
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
+elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO_WIIU)
+	set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
 	if(NINTENDO_3DS)
 		add_executable(easyrpg-player src/platform/3ds/main.cpp)
 		target_link_libraries(easyrpg-player
@@ -1162,7 +1213,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 			ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/3ds/icon.png)
 		ctr_create_3dsx(easyrpg-player
 			SMDH easyrpg-player.smdh
-			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.3dsx
 				resources/3ds/easyrpg-player.xml # consider removing, *hax² is mostly obsolete
 			DESTINATION easyrpg-player COMPONENT 3ds)
@@ -1178,13 +1229,11 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		nx_create_nro(easyrpg-player
 			NACP easyrpg-player.nacp
 			ICON "${PROJECT_SOURCE_DIR}/resources/switch/icon.jpg"
-			${ROMFS_ARG} ${PLAYER_ROMFS_PATH})
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.nro
 			DESTINATION easyrpg-player COMPONENT switch)
 	elseif(NINTENDO_WII)
-		add_executable(easyrpg-player
-			src/platform/wii/main.h
-			src/platform/wii/main.cpp)
+		add_executable(easyrpg-player src/platform/wii/main.cpp)
 		target_link_libraries(easyrpg-player
 			${PROJECT_NAME}
 			${SDL_LIBRARIES}
@@ -1200,6 +1249,22 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 		install(FILES resources/wii/icon.png
 			${CMAKE_CURRENT_BINARY_DIR}/resources/wii/meta.xml
 			DESTINATION easyrpg-player COMPONENT wii)
+	elseif(NINTENDO_WIIU)
+		add_executable(easyrpg-player src/platform/wiiu/main.cpp)
+		target_link_libraries(easyrpg-player ${PROJECT_NAME})
+		wut_create_rpx(easyrpg-player)
+		wut_create_wuhb(easyrpg-player
+			NAME "EasyRPG Player ${PLAYER_VERSION_FULL}"
+			SHORTNAME "EasyRPG Player"
+			AUTHOR "EasyRPG Team"
+			ICON resources/wiiu/icon.png
+			TVSPLASH resources/wiiu/splash-tv.png
+			DRCSPLASH resources/wiiu/splash-drc.png
+			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
+		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.rpx
+				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.wuhb
+			DESTINATION . COMPONENT wiiu)
+		set(CPACK_PLATFORM "wiiu")
 	elseif(VITA)
 		set(CMAKE_EXECUTABLE_SUFFIX .elf)
 		add_executable(easyrpg-player src/platform/psvita/main.cpp)
@@ -1234,7 +1299,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	endif()
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	# debug information
-	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$")
+	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$" OR NINTENDO_WIIU)
 		dkp_target_generate_symbol_list(easyrpg-player)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.map
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
@@ -1248,16 +1313,10 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$")
 	if(PLAYER_VERSIONED_PACKAGES)
 		string(APPEND CPACK_PACKAGE_FILE_NAME "-${PLAYER_VERSION}")
 	endif()
-	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${PLAYER_TARGET_PLATFORM}-debug")
+	set(CPACK_ARCHIVE_DEBUG_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-${CPACK_PLATFORM}-debug")
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
 	include(CPack)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "amigaos4")
-	add_executable(easyrpg-player "src/platform/sdl/main.cpp")
-	target_link_libraries(easyrpg-player
-		${PROJECT_NAME}
-		${SDL_LIBRARIES})
-	# FIXME: packaging?
-else()
+else() # library
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 		add_library(easyrpg_libretro
 			src/platform/libretro/audio.cpp
@@ -1282,6 +1341,7 @@ else()
 		endif()
 	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		add_library(easyrpg_android
+			src/platform/android/android.cpp
 			src/platform/android/android.h
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp
 			src/platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h
@@ -1292,6 +1352,7 @@ else()
 			src/platform/sdl/main.cpp)
 		target_link_libraries(easyrpg_android ${PROJECT_NAME})
 		set_target_properties(easyrpg_android PROPERTIES DEBUG_POSTFIX "")
+		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/android/app/src/gamebrowser)
 		set(PLAYER_TEST_LIBRARIES "easyrpg_android")
 	else()
 		message(FATAL_ERROR "Unsupported library target platform ${PLAYER_TARGET_PLATFORM}")
@@ -1381,7 +1442,10 @@ if(PLAYER_ENABLE_TESTS)
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 		target_compile_definitions(test_runner_player PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"/assets\")
+		target_compile_definitions(test_runner_player PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
+
 		target_link_libraries(test_runner_player "nodefs.js")
+		set_property(TARGET test_runner_player PROPERTY LINK_FLAGS "-sALLOW_MEMORY_GROWTH --bind")
 	else()
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	endif()
@@ -1395,10 +1459,6 @@ if(PLAYER_ENABLE_TESTS)
 	endif()
 	add_dependencies(check_player test_runner_player)
 	add_dependencies(check check_player)
-
-	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		set_property(TARGET test_runner_player APPEND_STRING PROPERTY LINK_FLAGS "-s ALLOW_MEMORY_GROWTH")
-	endif()
 endif()
 
 # Instrumentation framework
@@ -1428,9 +1488,15 @@ endif()
 
 # Print summary
 message(STATUS "")
-message(STATUS "Target system: ${PLAYER_TARGET_PLATFORM}")
-if(PLAYER_ROMFS)
-	message(STATUS "RomFS: Embedding directory \"${PLAYER_ROMFS_PATH}\"")
+set(TARGET_STATUS "${PLAYER_TARGET_PLATFORM}")
+if(NINTENDO_WIIU)
+	set(TARGET_STATUS "Wii U (SDL2)")
+elseif(AMIGA)
+	set(TARGET_STATUS "Amiga (SDL1)")
+endif()
+message(STATUS "Target system: ${TARGET_STATUS}")
+if(PLAYER_BUNDLE)
+	message(STATUS "Embedding directory \"${PLAYER_BUNDLE_PATH}\"")
 endif()
 message(STATUS "")
 
@@ -1440,7 +1506,7 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	message(STATUS "")
 
 	set(WAV_LIBS)
@@ -1454,14 +1520,14 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(WAV_LIBS)
 		message(STATUS "WAV playback: ${WAV_LIBS}")
 	else()
-		message(STATUS "WAV playback: None")
+		message(STATUS "WAV playback: No")
 	endif()
 
 	set(MIDI_LIBS)
 	if(TARGET FluidSynth::libfluidsynth)
 		list(APPEND MIDI_LIBS "FluidSynth")
 	endif()
-	if(TARGET FluidLite::fluidlite)
+	if(TARGET fluidlite::fluidlite OR TARGET fluidlite::fluidlite-static)
 		list(APPEND MIDI_LIBS "FluidLite")
 	endif()
 	if(TARGET WildMidi::libwildmidi OR TARGET WildMidi::libwildmidi-static)
@@ -1477,13 +1543,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	if(MIDI_LIBS)
 		message(STATUS "MIDI playback: ${MIDI_LIBS}")
 	else()
-		message(STATUS "MIDI playback: None")
+		message(STATUS "MIDI playback: No")
 	endif()
 
 	if(TARGET MPG123::libmpg123)
 		message(STATUS "MP3 playback: mpg123")
 	else()
-		message(STATUS "MP3 playback: None")
+		message(STATUS "MP3 playback: No")
 	endif()
 
 	if(TARGET Vorbis::vorbisfile)
@@ -1491,19 +1557,19 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	elseif(TARGET Tremor::Tremor)
 		message(STATUS "Ogg Vorbis playback: tremor")
 	else()
-		message(STATUS "Ogg Vorbis playback: None")
+		message(STATUS "Ogg Vorbis playback: No")
 	endif()
 
 	if(TARGET XMP::XMP)
 		message(STATUS "MOD playback: libxmp")
 	else()
-		message(STATUS "MOD playback: None")
+		message(STATUS "MOD playback: No")
 	endif()
 
 	if(TARGET OpusFile::opusfile)
 		message(STATUS "Opus playback: opusfile")
 	else()
-		message(STATUS "Opus playback: None")
+		message(STATUS "Opus playback: No")
 	endif()
 
 	if(TARGET speexdsp::speexdsp)
@@ -1511,7 +1577,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|SDL1|libretro|psvita|3ds|switch|wii)$
 	elseif(TARGET Samplerate::Samplerate)
 		message(STATUS "Resampler: libsamplerate")
 	else()
-		message(STATUS "Resampler: None")
+		message(STATUS "Resampler: No")
 	endif()
 endif()
 
@@ -1523,6 +1589,18 @@ elseif(TARGET freetype)
 	message(STATUS "Font rendering: Freetype and built-in")
 else()
 	message(STATUS "Font rendering: built-in")
+endif()
+
+if(TARGET LHASA::liblhasa)
+	message(STATUS "LZH archive support: lhasa")
+else()
+	message(STATUS "LZH archive support: No")
+endif()
+
+if(TARGET nlohmann_json::nlohmann_json)
+	message(STATUS "JSON support: nlohmann_json")
+else()
+	message(STATUS "JSON support: No")
 endif()
 
 message(STATUS "")

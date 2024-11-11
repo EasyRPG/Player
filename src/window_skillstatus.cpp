@@ -24,13 +24,13 @@
 #include "player.h"
 
 Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), actor_id(-1) {
+	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 }
 
-void Window_SkillStatus::SetActor(int actor_id) {
-	this->actor_id = actor_id;
+void Window_SkillStatus::SetActor(const Game_Actor& actor) {
+	this->actor = &actor;
 	Refresh();
 }
 
@@ -38,19 +38,17 @@ void Window_SkillStatus::Refresh() {
 	contents->ClearRect(Rect(0, 0, contents->GetWidth(), 16));
 
 	// Actors are guaranteed to be valid
-	const Game_Actor& actor = *Main_Data::game_actors->GetActor(actor_id);
-
 	int x = 0;
 	int y = 2;
-	DrawActorName(actor, x, y);
+	DrawActorName(*actor, x, y);
 	x += 80;
-	DrawActorLevel(actor, x, y);
+	DrawActorLevel(*actor, x, y);
 	x += 44;
-	DrawActorState(actor, x, y);
-	int hpdigits = (actor.MaxHpValue() >= 1000) ? 4 : 3;
-	int spdigits = (actor.MaxSpValue() >= 1000) ? 4 : 3;
+	DrawActorState(*actor, x, y);
+	int hpdigits = (actor->MaxHpValue() >= 1000) ? 4 : 3;
+	int spdigits = (actor->MaxSpValue() >= 1000) ? 4 : 3;
 	x += (96 - hpdigits * 6 - spdigits * 6);
-	DrawActorHp(actor, x, y, hpdigits);
+	DrawActorHp(*actor, x, y, hpdigits);
 	x += (66 + hpdigits * 6 - spdigits * 6);
-	DrawActorSp(actor, x, y, spdigits);
+	DrawActorSp(*actor, x, y, spdigits);
 }

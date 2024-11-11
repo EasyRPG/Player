@@ -271,15 +271,15 @@ void Scene_Menu::UpdateActorSelection() {
 				return;
 			}
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Scene::Push(std::make_shared<Scene_Skill>(menustatus_window->GetIndex()));
+			Scene::Push(std::make_shared<Scene_Skill>(Main_Data::game_party->GetActors(), menustatus_window->GetIndex()));
 			break;
 		case Equipment:
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Scene::Push(std::make_shared<Scene_Equip>(*menustatus_window->GetActor()));
+			Scene::Push(std::make_shared<Scene_Equip>(Main_Data::game_party->GetActors(), menustatus_window->GetIndex()));
 			break;
 		case Status:
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-			Scene::Push(std::make_shared<Scene_Status>(menustatus_window->GetIndex()));
+			Scene::Push(std::make_shared<Scene_Status>(Main_Data::game_party->GetActors(), menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{

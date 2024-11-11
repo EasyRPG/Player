@@ -29,6 +29,6 @@
         android:layout_centerVertical="true"
         android:padding="0dp"
 
-        android:src="@drawable/ic_action_settings_black" />
+        android:src="@drawable/ic_settings_black" />
 
 </RelativeLayout>

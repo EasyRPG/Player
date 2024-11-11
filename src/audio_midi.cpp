@@ -18,6 +18,7 @@
 // Headers
 #include "audio_midi.h"
 #include "audio_decoder_midi.h"
+#include "audio.h"
 #include "decoder_fluidsynth.h"
 #include "decoder_fmmidi.h"
 #include "decoder_wildmidi.h"
@@ -43,17 +44,23 @@ bool MidiDecoder::SetFormat(int frequency, AudioDecoderBase::Format format, int 
 static struct {
 	bool fluidsynth = true;
 	bool wildmidi = true;
+	std::string fluidsynth_status;
+	std::string wildmidi_status;
 } works;
 
 std::unique_ptr<AudioDecoderBase> MidiDecoder::Create(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
-	mididec = CreateFluidsynth(resample);
-	if (!mididec) {
+	if (Audio().GetFluidsynthEnabled()) {
+		mididec = CreateFluidsynth(resample);
+	}
+
+	if (!mididec && Audio().GetWildMidiEnabled()) {
 		mididec = CreateWildMidi(resample);
-		if (!mididec) {
-			mididec = CreateFmMidi(resample);
-		}
+	}
+
+	if (!mididec) {
+		mididec = CreateFmMidi(resample);
 	}
 
 	return mididec;
@@ -63,13 +70,12 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-	std::string error_message;
-	if (works.fluidsynth && FluidSynthDecoder::Initialize(error_message)) {
+	if (works.fluidsynth && FluidSynthDecoder::Initialize(works.fluidsynth_status)) {
 		auto dec = std::make_unique<FluidSynthDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
 	}
 	else if (!mididec && works.fluidsynth) {
-		Output::Debug("{}", error_message);
+		Output::Debug("Fluidsynth: {}", works.fluidsynth_status);
 		works.fluidsynth = false;
 	}
 #endif
@@ -87,13 +93,12 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(bool resample) {
 	std::unique_ptr<AudioDecoderBase> mididec;
 
 #ifdef HAVE_LIBWILDMIDI
-	std::string error_message;
-	if (!mididec && works.wildmidi && WildMidiDecoder::Initialize(error_message)) {
+	if (!mididec && works.wildmidi && WildMidiDecoder::Initialize(works.wildmidi_status)) {
 		auto dec = std::make_unique<WildMidiDecoder>();
 		mididec = std::make_unique<AudioDecoderMidi>(std::move(dec));
 	}
 	else if (!mididec && works.wildmidi) {
-		Output::Debug("{}", error_message);
+		Output::Debug("WildMidi: {}", works.wildmidi_status);
 		works.wildmidi = false;
 	}
 #endif
@@ -124,6 +129,39 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 #endif
 
 	return mididec;
+}
+
+bool MidiDecoder::CheckFluidsynth(std::string& status_message) {
+	if (works.fluidsynth && works.fluidsynth_status.empty()) {
+		CreateFluidsynth(true);
+	}
+
+	status_message = works.fluidsynth_status;
+	return works.fluidsynth;
+}
+
+void MidiDecoder::ChangeFluidsynthSoundfont(StringView sf_path) {
+	if (!works.fluidsynth || works.fluidsynth_status.empty()) {
+		// Fluidsynth was not initialized yet or failed, will use the path from the config automatically
+		works.fluidsynth = true;
+		CreateFluidsynth(true);
+		return;
+	}
+
+#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
+	// Was initialized before
+	works.fluidsynth = FluidSynthDecoder::ChangeGlobalSoundfont(sf_path, works.fluidsynth_status);
+	Output::Debug("Fluidsynth: {}", works.fluidsynth_status);
+#endif
+}
+
+bool MidiDecoder::CheckWildMidi(std::string &status_message) {
+	if (works.wildmidi && works.wildmidi_status.empty()) {
+		CreateWildMidi(true);
+	}
+
+	status_message = works.wildmidi_status;
+	return works.wildmidi;
 }
 
 void MidiDecoder::Reset() {

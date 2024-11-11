@@ -208,8 +208,6 @@ bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {
 }
 
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
-	using CloneType = Sprite_Character::CloneType;
-
 	auto add_sprite = [&](auto&& chara) {
 		chara->SetRenderOx(map_render_ox);
 		chara->SetRenderOy(map_render_oy);
@@ -218,20 +216,22 @@ void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone,
 
 	add_sprite(std::make_unique<Sprite_Character>(character));
 	if (create_x_clone) {
-		add_sprite(std::make_unique<Sprite_Character>(character, CloneType::XClone));
+		add_sprite(std::make_unique<Sprite_Character>(character, -map_tiles_x, 0));
+		add_sprite(std::make_unique<Sprite_Character>(character, map_tiles_x, 0));
 	}
 	if (create_y_clone) {
-		add_sprite(std::make_unique<Sprite_Character>(character, CloneType::YClone));
+		add_sprite(std::make_unique<Sprite_Character>(character, 0, -map_tiles_y));
+		add_sprite(std::make_unique<Sprite_Character>(character, 0, map_tiles_y));
 	}
 	if (create_x_clone && create_y_clone) {
-		add_sprite(std::make_unique<Sprite_Character>(character,
-			(CloneType)(CloneType::XClone | CloneType::YClone)));
+		add_sprite(std::make_unique<Sprite_Character>(character, map_tiles_x, map_tiles_y));
+		add_sprite(std::make_unique<Sprite_Character>(character, -map_tiles_x, map_tiles_y));
+		add_sprite(std::make_unique<Sprite_Character>(character, map_tiles_x, -map_tiles_y));
+		add_sprite(std::make_unique<Sprite_Character>(character, -map_tiles_x, -map_tiles_y));
 	}
 }
 
 void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone) {
-	using CloneType = Sprite_AirshipShadow::CloneType;
-
 	auto add_sprite = [&](auto&& chara) {
 		chara->SetRenderOx(map_render_ox);
 		chara->SetRenderOy(map_render_oy);
@@ -240,14 +240,18 @@ void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y
 
 	add_sprite(std::make_unique<Sprite_AirshipShadow>());
 	if (create_x_clone) {
-		add_sprite(std::make_unique<Sprite_AirshipShadow>(CloneType::XClone));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(-map_tiles_x, 0));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(map_tiles_x, 0));
 	}
 	if (create_y_clone) {
-		add_sprite(std::make_unique<Sprite_AirshipShadow>(CloneType::YClone));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(0, -map_tiles_y));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(0, map_tiles_y));
 	}
 	if (create_x_clone && create_y_clone) {
-		add_sprite(std::make_unique<Sprite_AirshipShadow>(
-			(CloneType)(CloneType::XClone | CloneType::YClone)));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(map_tiles_x, map_tiles_y));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(-map_tiles_x, map_tiles_y));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(map_tiles_x, -map_tiles_y));
+		add_sprite(std::make_unique<Sprite_AirshipShadow>(-map_tiles_x, -map_tiles_y));
 	}
 }
 
@@ -277,8 +281,10 @@ void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 void Spriteset_Map::CalculateMapRenderOffset() {
 	map_render_ox = 0;
 	map_render_oy = 0;
-	map_tiles_x = 0;
-	map_tiles_y = 0;
+
+	// Smallest possible map. Smaller maps are hacked
+	map_tiles_x = std::max<int>(Game_Map::GetTilesX(), 20) * TILE_SIZE;
+	map_tiles_y = std::max<int>(Game_Map::GetTilesY(), 15) * TILE_SIZE;
 
 	panorama->SetRenderOx(0);
 	panorama->SetRenderOy(0);
@@ -286,7 +292,6 @@ void Spriteset_Map::CalculateMapRenderOffset() {
 
 	if (Player::game_config.fake_resolution.Get()) {
 		// Resolution hack for tiles and sprites
-		// Smallest possible map. Smaller maps are hacked
 		map_tiles_x = std::max<int>(Game_Map::GetTilesX(), 20) * TILE_SIZE;
 		map_tiles_y = std::max<int>(Game_Map::GetTilesY(), 15) * TILE_SIZE;
 

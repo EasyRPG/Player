@@ -100,7 +100,7 @@ lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
 	lcf::rpg::SaveEventExecState state;
 	if (page && page->trigger == lcf::rpg::EventPage::Trigger_parallel) {
 		if (interpreter) {
-			state = interpreter->GetState();
+			state = interpreter->GetSaveState();
 		}
 
 		if (state.stack.empty() && page->event_commands.empty()) {
@@ -115,10 +115,10 @@ lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
 	return save;
 }
 
-Drawable::Z_t Game_Event::GetScreenZ(bool apply_shift) const {
+Drawable::Z_t Game_Event::GetScreenZ(int x_offset, int y_offset) const {
 	// Lowest 16 bit are reserved for the ID
 	// See base function for full explanation
-	return Game_Character::GetScreenZ(apply_shift) + GetId();
+	return Game_Character::GetScreenZ(x_offset, y_offset) + GetId();
 }
 
 int Game_Event::GetOriginalMoveRouteIndex() const {
@@ -256,33 +256,9 @@ bool Game_Event::AreConditionsMet(const lcf::rpg::EventPage& page) {
 			return false;
 		}
 	} else {
-		if (page.condition.flags.variable) {
-			switch (page.condition.compare_operator) {
-			case 0: // ==
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) == page.condition.variable_value))
-					return false;
-				break;
-			case 1: // >=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) >= page.condition.variable_value))
-					return false;
-				break;
-			case 2: // <=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) <= page.condition.variable_value))
-					return false;
-				break;
-			case 3: // >
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) > page.condition.variable_value))
-					return false;
-				break;
-			case 4: // <
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) < page.condition.variable_value))
-					return false;
-				break;
-			case 5: // !=
-				if (!(Main_Data::game_variables->Get(page.condition.variable_id) != page.condition.variable_value))
-					return false;
-				break;
-			}
+		if (page.condition.flags.variable && page.condition.compare_operator >= 0 && page.condition.compare_operator <= 5) {
+			if (!Game_Interpreter_Shared::CheckOperator(Main_Data::game_variables->Get(page.condition.variable_id), page.condition.variable_value, page.condition.compare_operator))
+				return false;
 		}
 	}
 
@@ -349,7 +325,7 @@ bool Game_Event::ScheduleForegroundExecution(bool by_decision_key, bool face_pla
 	}
 
 	if (face_player && !(IsFacingLocked() || IsSpinning())) {
-		SetFacing(GetDirectionToHero());
+		SetFacing(GetDirectionToCharacter(GetPlayer()));
 	}
 
 	data()->waiting_execution = true;
@@ -570,8 +546,8 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 			dir = Rand::GetRandomNumber(0, 3);
 		} else {
 			dir = towards
-				? GetDirectionToHero()
-				: GetDirectionAwayHero();
+				? GetDirectionToCharacter(GetPlayer())
+				: GetDirectionAwayCharacter(GetPlayer());
 		}
 	}
 

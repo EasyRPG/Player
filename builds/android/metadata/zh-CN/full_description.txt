@@ -1,4 +1,4 @@
-EasyRPG Player可以游玩使用RPG Maker 2000和RPG Maker 2003制作的游戏（不支持新的RPG引擎，例如XP、VX、VX Ace和MV。）
+EasyRPG Player可以用于游玩使用RPG Maker 2000和RPG Maker 2003制作的游戏（不支持更新的RPG Maker 引擎，例如XP、VX、VX Ace和MV、MZ。）
 
 主页: https://easyrpg.org/
 更新日志: https://blog.easyrpg.org/

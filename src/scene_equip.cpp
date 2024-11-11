@@ -27,10 +27,11 @@
 #include "scene_menu.h"
 #include <lcf/rpg/item.h>
 
-Scene_Equip::Scene_Equip(Game_Actor& actor, int equip_index) :
-	actor(actor),
-	equip_index(equip_index) {
+Scene_Equip::Scene_Equip(std::vector<Game_Actor*> actors, int actor_index, int equip_index) :
+	actors(actors), actor_index(actor_index), equip_index(equip_index) {
 	type = Scene::Equip;
+
+	assert(!actors.empty());
 }
 
 void Scene_Equip::Start() {
@@ -40,14 +41,16 @@ void Scene_Equip::Start() {
 	int menu_equip_status_height = 96;
 	int menu_equip_height = 96;
 
+	const auto& actor = *actors[actor_index];
+
 	help_window.reset(new Window_Help(Player::menu_offset_x, Player::menu_offset_y, MENU_WIDTH, menu_help_height));
-	equipstatus_window.reset(new Window_EquipStatus(Player::menu_offset_x, Player::menu_offset_y + menu_help_height, menu_equip_status_width, menu_equip_status_height, actor.GetId()));
-	equip_window.reset(new Window_Equip(Player::menu_offset_x + menu_equip_status_width, Player::menu_offset_y + menu_help_height, (MENU_WIDTH - menu_equip_status_width), menu_equip_height, actor.GetId()));
+	equipstatus_window.reset(new Window_EquipStatus(Player::menu_offset_x, Player::menu_offset_y + menu_help_height, menu_equip_status_width, menu_equip_status_height, actor));
+	equip_window.reset(new Window_Equip(Player::menu_offset_x + menu_equip_status_width, Player::menu_offset_y + menu_help_height, (MENU_WIDTH - menu_equip_status_width), menu_equip_height, actor));
 
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(std::make_shared<Window_EquipItem>(Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height,actor.GetId(), i));
+		item_windows.push_back(std::make_shared<Window_EquipItem>(Player::menu_offset_x, Player::menu_offset_y + menu_help_height + menu_equip_status_height, MENU_WIDTH, MENU_HEIGHT - menu_help_height - menu_equip_status_height, actor, i));
 	}
 
 	// Assign the help windows
@@ -94,6 +97,7 @@ void Scene_Equip::UpdateStatusWindow() {
 		const lcf::rpg::Item* current_item = item_window->GetItem();
 
 		const auto eidx = equip_window->GetIndex();
+		const auto& actor = *actors[actor_index];
 
 		auto atk = actor.GetBaseAtk(Game_Battler::WeaponAll, true, false);
 		auto def = actor.GetBaseDef(Game_Battler::WeaponAll, true, false);
@@ -167,6 +171,7 @@ void Scene_Equip::UpdateEquipSelection() {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
+		const auto& actor = *actors[actor_index];
 		if (!CanRemoveEquipment(actor, equip_window->GetIndex())) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
@@ -176,16 +181,17 @@ void Scene_Equip::UpdateEquipSelection() {
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+	} else if (actors.size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
-		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+		actor_index = (actor_index + 1) % actors.size();
+		Scene::Push(std::make_shared<Scene_Equip>(actors, actor_index, equip_window->GetIndex()), true);
+	} else if (actors.size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
-		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
-		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
+		actor_index = actor_index - 1;
+		if (actor_index < 0) {
+			actor_index = actors.size() - 1;
+		}
+		Scene::Push(std::make_shared<Scene_Equip>(actors, actor_index, equip_window->GetIndex()), true);
 	}
 }
 
@@ -200,6 +206,7 @@ void Scene_Equip::UpdateItemSelection() {
 
 		const lcf::rpg::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
+		auto& actor = *actors[actor_index];
 
 		actor.ChangeEquipment(
 			equip_window->GetIndex() + 1, current_item_id);

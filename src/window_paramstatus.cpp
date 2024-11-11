@@ -23,9 +23,9 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
+Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor) :
 	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id)
+	actor(actor)
 {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
@@ -35,8 +35,6 @@ Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, 
 
 void Window_ParamStatus::Refresh() {
 	contents->Clear();
-
-	auto* actor = Main_Data::game_actors->GetActor(actor_id);
 
 	auto draw = [this](int y, StringView name, int value) {
 		// Draw Term
@@ -48,9 +46,9 @@ void Window_ParamStatus::Refresh() {
 	};
 
 	int y = 2;
-	y = draw(y, lcf::Data::terms.attack, actor->GetAtk());
-	y = draw(y, lcf::Data::terms.defense, actor->GetDef());
-	y = draw(y, lcf::Data::terms.spirit, actor->GetSpi());
-	y = draw(y, lcf::Data::terms.agility, actor->GetAgi());
+	y = draw(y, lcf::Data::terms.attack, actor.GetAtk());
+	y = draw(y, lcf::Data::terms.defense, actor.GetDef());
+	y = draw(y, lcf::Data::terms.spirit, actor.GetSpi());
+	y = draw(y, lcf::Data::terms.agility, actor.GetAgi());
 }
 

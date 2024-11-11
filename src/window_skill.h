@@ -36,9 +36,9 @@ public:
 	/**
 	 * Sets the actor whose skills are displayed.
 	 *
-	 * @param actor_id ID of the actor.
+	 * @param actor actor.
 	 */
-	void SetActor(int actor_id);
+	void SetActor(const Game_Actor& actor);
 
 	/**
 	 * Gets skill.
@@ -88,7 +88,7 @@ public:
 protected:
 	std::vector<int> data;
 
-	int actor_id;
+	const Game_Actor* actor;
 
 	int subset;
 };

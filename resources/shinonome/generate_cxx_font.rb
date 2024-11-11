@@ -4,6 +4,8 @@ $KCODE = 'UTF8' unless RUBY_VERSION > "1.9.0"
 
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
+OUTPUT_FOLDER='../../src/generated'
+
 
 def skip_until(f, regex)
   while(not f.eof?)
@@ -194,19 +196,19 @@ print "Generating Gothic..."
 gothic_final = gothic.merge(hankaku) \
 	.merge(korean).merge(chinese).merge(latin) \
     .merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
-code_max = write_all(File.new("../../src/shinonome_gothic.h", "w"), "SHINONOME_GOTHIC", gothic_final)
+code_max = write_all(File.new("#{OUTPUT_FOLDER}/shinonome_gothic.h", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
-code_max = [write_all(File.new("../../src/shinonome_mincho.h", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+code_max = [write_all(File.new("#{OUTPUT_FOLDER}/shinonome_mincho.h", "w"), "SHINONOME_MINCHO", mincho), code_max].max
 print "done\n"
 
 print "Generating RMG2000..."
-code_max = [write_all(File.new("../../src/bitmapfont_rmg2000.h", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
+code_max = [write_all(File.new("#{OUTPUT_FOLDER}/bitmapfont_rmg2000.h", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
 print "done\n"
 
 print "Generating ttyp0..."
-code_max = [write_all(File.new("../../src/bitmapfont_ttyp0.h", "w"), "BITMAPFONT_TTYP0", ttyp0), code_max].max
+code_max = [write_all(File.new("#{OUTPUT_FOLDER}/bitmapfont_ttyp0.h", "w"), "BITMAPFONT_TTYP0", ttyp0), code_max].max
 print "done\n"
 
 print "done\n"

@@ -24,9 +24,8 @@
 #include "output.h"
 #include "image_xyz.h"
 
-bool ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
-					   int& width, int& height, void*& pixels) {
-	pixels = nullptr;
+bool ImageXYZ::Read(const uint8_t* data, unsigned len, bool transparent, ImageOut& output) {
+	output.pixels = nullptr;
 
 	if (len < 8) {
 		Output::Warning("Not a valid XYZ file.");
@@ -47,13 +46,13 @@ bool ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
 	}
 	const uint8_t (*palette)[3] = (const uint8_t(*)[3]) &dst_buffer.front();
 
-	pixels = malloc(w * h * 4);
-	if (!pixels) {
+	output.pixels = malloc(w * h * 4);
+	if (!output.pixels) {
 		Output::Warning("Error allocating XYZ pixel buffer.");
 		return false;
 	}
 
-	uint8_t* dst = (uint8_t*) pixels;
+	uint8_t* dst = (uint8_t*) output.pixels;
 	const uint8_t* src = (const uint8_t*) &dst_buffer[768];
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
@@ -66,13 +65,14 @@ bool ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
 		}
 	}
 
-	width = w;
-	height = h;
+	output.width = w;
+	output.height = h;
+	output.bpp = 8;
+
 	return true;
 }
 
-bool ImageXYZ::ReadXYZ(Filesystem_Stream::InputStream& stream, bool transparent,
-					   int& width, int& height, void*& pixels) {
+bool ImageXYZ::Read(Filesystem_Stream::InputStream& stream, bool transparent, ImageOut& output) {
 	std::vector<uint8_t> buffer = Utils::ReadStream(stream);
-	return ReadXYZ(&buffer.front(), (unsigned) buffer.size(), transparent, width, height, pixels);
+	return Read(&buffer.front(), (unsigned) buffer.size(), transparent, output);
 }

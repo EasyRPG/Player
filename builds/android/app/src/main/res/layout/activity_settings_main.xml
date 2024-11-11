@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/video"
-        android:drawableStart="@drawable/ic_video_label_black_36dp"
+        android:drawableStart="@drawable/ic_video_label_black"
         style="?android:attr/borderlessButtonStyle" />
 
     <Button
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/audio"
-        android:drawableStart="@drawable/ic_volume_up_black_36dp"
+        android:drawableStart="@drawable/ic_volume_up_black"
         style="?android:attr/borderlessButtonStyle" />
 
     <Button
@@ -24,7 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/input"
-        android:drawableStart="@drawable/ic_gamepad_black_36dp"
+        android:drawableStart="@drawable/ic_gamepad_black"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
+        android:id="@+id/settings_main_font"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/font"
+        android:drawableStart="@drawable/ic_article_black"
         style="?android:attr/borderlessButtonStyle" />
 
     <Button
@@ -32,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/easyrpg_folders"
-        android:drawableStart="@drawable/ic_folder_open_black_36dp"
+        android:drawableStart="@drawable/ic_folder_open_black"
         style="?android:attr/borderlessButtonStyle" />
 
 </LinearLayout>

@@ -226,7 +226,7 @@ namespace Input {
 			KEYS_COUNT
 		};
 
-		constexpr auto kNames = lcf::makeEnumTags<InputKey>(
+		constexpr auto kInputKeyNames = lcf::makeEnumTags<InputKey>(
 			"NONE",
 			"BACKSPACE",
 			"TAB",

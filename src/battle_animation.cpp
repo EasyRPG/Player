@@ -230,8 +230,12 @@ static int CalculateOffset(int pos, int target_height) {
 /////////
 
 BattleAnimationMap::BattleAnimationMap(const lcf::rpg::Animation& anim, Game_Character& target, bool global) :
-	BattleAnimation(anim), target(target), global(global)
+	BattleAnimation(anim), target(&target), global(global)
 {
+}
+
+void BattleAnimationMap::SetTarget(Game_Character& target) {
+	this->target = &target;
 }
 
 void BattleAnimationMap::Draw(Bitmap& dst) {
@@ -263,8 +267,8 @@ void BattleAnimationMap::DrawSingle(Bitmap& dst) {
 		return;
 	}
 	const int character_height = 24;
-	int x_off = target.GetScreenX();
-	int y_off = target.GetScreenY(false, false);
+	int x_off = target->GetScreenX();
+	int y_off = target->GetScreenY(false);
 	if (Scene::instance->type == Scene::Map) {
 		x_off += static_cast<Scene_Map*>(Scene::instance.get())->spriteset->GetRenderOx();
 		y_off += static_cast<Scene_Map*>(Scene::instance.get())->spriteset->GetRenderOy();
@@ -276,7 +280,7 @@ void BattleAnimationMap::DrawSingle(Bitmap& dst) {
 }
 
 void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
-	target.Flash(r, g, b, p, 0);
+	target->Flash(r, g, b, p, 0);
 }
 
 void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time */) {

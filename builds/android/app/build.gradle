@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 33
-    buildToolsVersion '33.0.0'
+    namespace "org.easyrpg.player"
     ndkVersion '21.4.7075529'
     assetPacks = [":assets"]
     defaultConfig {
         applicationId "org.easyrpg.player"
+        compileSdk 34
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
     }
@@ -74,10 +74,10 @@ allprojects {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation 'org.ini4j:ini4j:0.5.4'

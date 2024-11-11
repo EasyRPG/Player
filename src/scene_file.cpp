@@ -32,6 +32,11 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#  include "platform/emscripten/interface.h"
+#endif
+
 constexpr int arrow_animation_frames = 20;
 
 Scene_File::Scene_File(std::string message) :
@@ -137,18 +142,35 @@ void Scene_File::Start() {
 	index = latest_slot;
 	top_index = std::max(0, index - 2);
 
-	Refresh();
+	RefreshWindows();
 
 	for (auto& fw: file_windows) {
 		fw->Update();
 	}
+
+	std::vector<std::string> commands;
+#ifdef EMSCRIPTEN
+	commands.emplace_back("Download Savegame");
+	commands.emplace_back("Upload Savegame");
+#endif
+	extra_commands_window = std::make_unique<Window_Command>(commands);
+	extra_commands_window->SetZ(Priority_Window + 100);
+	extra_commands_window->SetVisible(false);
 }
 
-void Scene_File::Refresh() {
+void Scene_File::RefreshWindows() {
 	for (int i = 0; i < (int)file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
+		w->Refresh();
+	}
+}
+
+void Scene_File::Refresh() {
+	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+		Window_SaveFile *w = file_windows[i].get();
+		PopulateSaveWindow(*w, i);
 		w->Refresh();
 	}
 }
@@ -163,6 +185,10 @@ void Scene_File::vUpdate() {
 		return;
 	}
 
+	if (HandleExtraCommandsWindow()) {
+		return;
+	}
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
@@ -174,6 +200,14 @@ void Scene_File::vUpdate() {
 		else {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
+	} else if (Input::IsTriggered(Input::SHIFT)) {
+#ifdef EMSCRIPTEN
+		extra_commands_window->SetX(SCREEN_TARGET_WIDTH - extra_commands_window->GetWidth() - 8);
+		extra_commands_window->SetY(file_windows[index]->GetY() + 8);
+		extra_commands_window->SetItemEnabled(0, file_windows[index]->IsValid() && file_windows[index]->HasParty());
+		extra_commands_window->SetVisible(true);
+		return;
+#endif
 	}
 
 	int old_top_index = top_index;
@@ -220,7 +254,7 @@ void Scene_File::vUpdate() {
 	//top_index = std::min(top_index, std::max(top_index, index - 3 + 1));
 
 	if (top_index != old_top_index || index != old_index)
-		Refresh();
+		RefreshWindows();
 
 	for (auto& fw: file_windows) {
 		fw->Update();
@@ -255,4 +289,37 @@ void Scene_File::UpdateArrows() {
 	bool arrow_visible = (arrow_frame < arrow_animation_frames);
 	up_arrow->SetVisible(show_up_arrow && arrow_visible);
 	down_arrow->SetVisible(show_down_arrow && arrow_visible);
+}
+
+bool Scene_File::HandleExtraCommandsWindow() {
+	if (!extra_commands_window->IsVisible()) {
+		return false;
+	}
+
+	extra_commands_window->Update();
+
+#ifdef EMSCRIPTEN
+	if (Input::IsTriggered(Input::DECISION)) {
+		if (extra_commands_window->GetIndex() == 0) {
+			// Download
+			if (!extra_commands_window->IsItemEnabled(0)) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+				return true;
+			}
+
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+			Emscripten_Interface::DownloadSavegame(index + 1);
+			extra_commands_window->SetVisible(false);
+		} else {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+			Emscripten_Interface::UploadSavegame(index + 1);
+			extra_commands_window->SetVisible(false);
+		}
+	} else if (Input::IsTriggered(Input::CANCEL)) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
+		extra_commands_window->SetVisible(false);
+	}
+#endif
+
+	return true;
 }

@@ -31,6 +31,10 @@ enum class LogLevel {
 	Debug
 };
 
+using LogCallbackUserData = void*;
+using LogCallbackFn = void (*)(LogLevel lvl, std::string const& message,
+	LogCallbackUserData userdata);
+
 /**
  * Output Namespace.
  */
@@ -43,7 +47,7 @@ namespace Output {
 	 *
 	 * @param ll the new log level
 	 */
-	void SetLogLevel(LogLevel ll);
+	void SetLogLevel(LogLevel lvl);
 
 	/**
 	 * Sets terminal log colors
@@ -78,7 +82,7 @@ namespace Output {
 	 * @param os output stream that PNG will be stored.
 	 * @return true if success, otherwise false.
 	 */
-	bool TakeScreenshot(Filesystem_Stream::OutputStream& os);
+	bool TakeScreenshot(std::ostream& os);
 
 	/**
 	 * Shows/Hides the output log overlay.
@@ -91,6 +95,17 @@ namespace Output {
 	 * @param val whether to ignore pause.
 	 */
 	void IgnorePause(bool val);
+
+	/**
+	 * Outputs debug messages over custom logger. Useful for emulators.
+	 *
+	 * @param fn custom callback function
+	 * @param userdata passed as is to callback
+	 */
+	void SetLogCallback(LogCallbackFn fn, LogCallbackUserData userdata = nullptr);
+
+	/** @return the Loglevel as string */
+	std::string LogLevelToString(LogLevel lvl);
 
 	/**
 	 * Displays an info string with formatted string.

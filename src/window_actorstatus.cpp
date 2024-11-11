@@ -24,9 +24,9 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
+Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor) :
 	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+	actor(actor) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -40,9 +40,6 @@ void Window_ActorStatus::Refresh() {
 }
 
 void Window_ActorStatus::DrawStatus() {
-
-	Game_Actor* actor = Main_Data::game_actors->GetActor(actor_id);
-
 	int have, max;
 	auto fontcolor = [&have, &max](bool can_knockout) {
 		if (can_knockout && have == 0) return Font::ColorKnockout;
@@ -52,14 +49,14 @@ void Window_ActorStatus::DrawStatus() {
 
 	// Draw Hp
 	contents->TextDraw(1, 2, 1, lcf::Data::terms.health_points);
-	have = actor->GetHp();
-	max = actor->GetMaxHp();
+	have = actor.GetHp();
+	max = actor.GetMaxHp();
 	DrawMinMax(90, 2, have, max, fontcolor(true));
 
 	// Draw Sp
 	contents->TextDraw(1, 18, 1, lcf::Data::terms.spirit_points);
-	have = actor->GetSp();
-	max = actor->GetMaxSp();
+	have = actor.GetSp();
+	max = actor.GetMaxSp();
 	DrawMinMax(90, 18, have, max, fontcolor(false));
 
 	// Draw Exp
@@ -69,16 +66,18 @@ void Window_ActorStatus::DrawStatus() {
 
 void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max, int color) {
 	std::stringstream ss;
-	if (max >= 0)
+	if (max >= 0) {
 		ss << min;
-	else
-		ss << Main_Data::game_actors->GetActor(actor_id)->GetExpString(true);
+	} else {
+		ss << actor.GetExpString(true);
+	}
 	contents->TextDraw(cx, cy, color, ss.str(), Text::AlignRight);
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 	ss.str("");
-	if (max >= 0)
+	if (max >= 0) {
 		ss << max;
-	else
-		ss << Main_Data::game_actors->GetActor(actor_id)->GetNextExpString(true);
+	} else {
+		ss << actor.GetNextExpString(true);
+	}
 	contents->TextDraw(cx + 48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }

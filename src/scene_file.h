@@ -25,6 +25,7 @@
 #include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"
+#include "window_command.h"
 #include "sprite.h"
 
 
@@ -43,6 +44,7 @@ public:
 
 	void Start() override;
 	void vUpdate() override;
+	void Refresh() override;
 
 	virtual void Action(int index) = 0;
 
@@ -58,9 +60,10 @@ protected:
 	static std::unique_ptr<Sprite> MakeBorderSprite(int y);
 	static std::unique_ptr<Sprite> MakeArrowSprite(bool down);
 
-	void Refresh();
+	void RefreshWindows();
 	void MoveFileWindows(int dy, int dt);
 	void UpdateArrows();
+	bool HandleExtraCommandsWindow();
 
 	int index = 0;
 	int top_index = 0;
@@ -70,6 +73,7 @@ protected:
 	std::unique_ptr<Sprite> border_bottom;
 	std::unique_ptr<Sprite> up_arrow;
 	std::unique_ptr<Sprite> down_arrow;
+	std::unique_ptr<Window_Command> extra_commands_window;
 	std::string message;
 
 	FilesystemView fs;
@@ -78,6 +82,7 @@ protected:
 	int latest_slot = 0;
 
 	int arrow_frame = 0;
+
 };
 
 #endif

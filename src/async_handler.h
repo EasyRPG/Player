@@ -39,7 +39,7 @@ namespace AsyncHandler {
 	void CreateRequestMapping(const std::string& file);
 
 	/**
-	 * Clears all requests. They will hit the server again.
+	 * Clears all finished requests. They will hit the server again.
 	 * Called after changing the language to ensure the assets are replaced.
 	 */
 	void ClearRequests();

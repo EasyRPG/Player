@@ -63,7 +63,7 @@
                 android:id="@+id/settings_fast_forward_multiplier"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:max="8"
+                android:max="98"
                 android:progress="1"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/settings_fast_forward"
@@ -172,7 +172,7 @@
                 android:layout_centerVertical="true"
                 android:padding="0dp"
 
-                android:src="@drawable/ic_action_settings_black" />
+                android:src="@drawable/ic_settings_black" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -201,7 +201,7 @@
                 android:layout_centerVertical="true"
                 android:padding="0dp"
 
-                android:src="@drawable/ic_action_settings_black" />
+                android:src="@drawable/ic_settings_black" />
         </RelativeLayout>
         <TextView
             android:layout_width="match_parent"

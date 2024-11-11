@@ -20,13 +20,28 @@
 #include <vector>
 #include <psp2/io/stat.h>
 #include <psp2/kernel/processmgr.h>
+#include <psp2/kernel/clib.h>
 #include <psp2/appmgr.h>
 #include "player.h"
+#include "output.h"
 
 int _newlib_heap_size_user = 330 * 1024 * 1024;
 
+static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+	std::string prefix = Output::LogLevelToString(lvl);
+
+	// HLE in psp2shell
+	sceClibPrintf("[%s] %s: %s\n", GAME_TITLE, prefix.c_str(), msg.c_str());
+}
+
+void VitaExit() {
+	sceKernelExitProcess(Player::exit_code);
+}
+
 int main(int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv + argc);
+
+	Output::SetLogCallback(LogCallback);
 
 	// Check if app is invoked with an externalized game path
 	char boot_params[1024] = {};
@@ -41,6 +56,8 @@ int main(int argc, char* argv[]) {
 		bp.assign(bp, start);
 
 		if (!bp.empty()) {
+			Output::Debug("Running with boot params.");
+
 			// based on Utils::Tokenize()
 			std::string cur = "--";
 			for (auto &c : bp) {
@@ -68,6 +85,7 @@ int main(int argc, char* argv[]) {
 		// Check if app0 filesystem contains the title id reference file
 		FILE* f = fopen("app0:/titleid.txt", "r");
 		if (f != NULL) {
+			Output::Debug("Running packaged game from app0.");
 			char title_id[10];
 			std::string save_dir = "ux0:/data/";
 			psp2_dir = "app0:/";
@@ -88,11 +106,13 @@ int main(int argc, char* argv[]) {
 		args.push_back(psp2_dir);
 	}
 
+	// Setup teardown code
+	atexit(VitaExit);
+
 	// Run Player
 	Player::Init(std::move(args));
 	Player::Run();
 
 	// Close
-	sceKernelExitProcess(EXIT_SUCCESS);
-	return EXIT_SUCCESS;
+	return Player::exit_code;
 }

@@ -50,7 +50,7 @@
 #  include <SDL_system.h>
 #elif defined(__APPLE__) && TARGET_OS_OSX
 #  include <sys/syslimits.h>
-#  include "platform/macos/utils.h"
+#  include "platform/macos/macos_utils.h"
 #endif
 
 // Global variables.
@@ -73,6 +73,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Quit> game_quit;
 	std::unique_ptr<Game_Ineluki> game_ineluki;
 	std::unique_ptr<Game_Destiny> game_destiny;
+	bool global_save_opened = false;
 	std::unique_ptr<Game_Switches> game_switches_global;
 	std::unique_ptr<Game_Variables> game_variables_global;
 
@@ -128,6 +129,9 @@ void Main_Data::Cleanup() {
 	game_system.reset();
 	game_ineluki.reset();
 	game_destiny.reset();
+	global_save_opened = false;
+	game_switches_global.reset();
+	game_variables_global.reset();
 }
 
 const std::string& Main_Data::GetDefaultProjectPath() {

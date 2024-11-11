@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -29,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Helper {
 	/**
@@ -112,6 +112,7 @@ public class Helper {
             createFolder(context, easyRPGFolder, SettingsManager.GAMES_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.SOUND_FONTS_FOLDER_NAME);
             createFolder(context, easyRPGFolder, SettingsManager.SAVES_FOLDER_NAME);
+            createFolder(context, easyRPGFolder, SettingsManager.FONTS_FOLDER_NAME);
 
             // The .nomedia file (avoid media app to scan games and RTP folders)
             if (Helper.findFile(context, easyRPGFolder.getUri(), ".nomedia") == null) {
@@ -178,7 +179,7 @@ public class Helper {
                 return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_READ;
             }
 
-            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "r")) {
+            try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(testFile.getUri(), "w")) {
             } catch (IOException | IllegalArgumentException e) {
                 return GameBrowserHelper.SafError.BAD_CONTENT_PROVIDER_WRITE;
             }
@@ -215,17 +216,21 @@ public class Helper {
         return filesList;
     }
 
-    /** List files (with DOCUMENT_ID and MIME_TYPE) in the folder pointed by "folderURI" */
-    public static List<String[]> listChildrenDocumentIDAndType(Context context, Uri folderUri){
+    /**
+     * List files in the folder pointed by "folderURI"
+     * @return Array of Document ID, mimeType, display name (filename)
+     */
+    public static List<String[]> listChildrenDocuments(Context context, Uri folderUri){
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         List<String[]> filesList = new ArrayList<>();
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_MIME_TYPE }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_MIME_TYPE, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
                 String mimeType = c.getString(1);
-                filesList.add(new String[] {documentID, mimeType});
+                String fileName = c.getString(2);
+                filesList.add(new String[] {documentID, mimeType, fileName});
             }
             c.close();
         } catch (Exception e) {
@@ -238,10 +243,10 @@ public class Helper {
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
-                String fileName = getFileNameFromDocumentID(documentID);
+                String fileName = c.getString(1);
                 if (fileName.equals(fileNameToFind)) {
                     Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
                     c.close();
@@ -261,10 +266,10 @@ public class Helper {
         final ContentResolver resolver = context.getContentResolver();
         final Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(folderUri, DocumentsContract.getDocumentId(folderUri));
         try {
-            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID }, null, null, null);
+            Cursor c = resolver.query(childrenUri, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null);
             while (c.moveToNext()) {
                 String documentID = c.getString(0);
-                String fileName = getFileNameFromDocumentID(documentID);
+                String fileName = c.getString(1);
                 if (fileName.matches(regex)) {
                     Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, documentID);
                     uriList.add(uri);
@@ -280,13 +285,6 @@ public class Helper {
     public static DocumentFile findFile(Context context, Uri folderUri, String fileNameToFind) {
         Uri uri = findFileUri(context, folderUri, fileNameToFind);
         return getFileFromURI(context, uri);
-    }
-
-    public static String getFileNameFromDocumentID(String documentID) {
-        if (documentID != null) {
-            return documentID.substring(documentID.lastIndexOf('/') + 1);
-        }
-        return "";
     }
 
     public static DocumentFile getFileFromURI (Context context, Uri fileURI) {
@@ -331,4 +329,27 @@ public class Helper {
 
         return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels) / (float) outLargestSize.x;
     }
+
+    public static Bitmap createBitmapFromRGBA(byte[] rgba, int width, int height) {
+        if (rgba == null || rgba.length != width * height * 4) {
+            throw new IllegalArgumentException("Invalid RGBA array length");
+        }
+
+        int[] pixels = new int[width * height];
+
+        for (int i = 0; i < width * height; i++) {
+            int r = rgba[i * 4] & 0xFF;
+            int g = rgba[i * 4 + 1] & 0xFF;
+            int b = rgba[i * 4 + 2] & 0xFF;
+            int a = rgba[i * 4 + 3] & 0xFF;
+
+            pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+
+        return bitmap;
+    }
+
 }

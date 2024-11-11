@@ -99,9 +99,7 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 		return;
 	}
 
-	int w = 0;
-	int h = 0;
-	void* pixels = nullptr;
+	ImageOut image_out;
 
 	uint8_t data[4] = {};
 	size_t bytes = stream.read(reinterpret_cast<char*>(data),  4).gcount();
@@ -109,57 +107,58 @@ Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t
 
 	bool img_okay = false;
 
-	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
-		img_okay = ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
-		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
-	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG(stream, transparent, w, h, pixels);
-	else
+	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0) {
+		img_okay = ImageXYZ::Read(stream, transparent, image_out);
+	} else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0) {
+		img_okay = ImageBMP::Read(stream, transparent, image_out);
+	} else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0) {
+		img_okay = ImagePNG::Read(stream, transparent, image_out);
+	} else
 		Output::Warning("Unsupported image file {} (Magic: {:02X})", stream.GetName(), *reinterpret_cast<uint32_t*>(data));
 
 	if (!img_okay) {
-		free(pixels);
-		pixels = nullptr;
+		free(image_out.pixels);
 		return;
 	}
 
-	Init(w, h, nullptr);
+	Init(image_out.width, image_out.height, nullptr);
 
-	ConvertImage(w, h, pixels, transparent);
+	ConvertImage(image_out.width, image_out.height, image_out.pixels, transparent);
 
 	CheckPixels(flags);
 
-	filename = ToString(stream.GetName());
+	original_bpp = image_out.bpp;
+
+	id = ToString(stream.GetName());
 }
 
 Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	int w = 0, h = 0;
-	void* pixels = nullptr;
+	ImageOut image_out;
 
 	bool img_okay = false;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		img_okay = ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageXYZ::Read(data, bytes, transparent, image_out);
 	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
-		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageBMP::Read(data, bytes, transparent, image_out);
 	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		img_okay = ImagePNG::ReadPNG((const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::Read((const void*) data, transparent, image_out);
 	else
 		Output::Warning("Unsupported image (Magic: {:02X})", bytes >= 4 ? *reinterpret_cast<const uint32_t*>(data) : 0);
 
 	if (!img_okay) {
-		free(pixels);
-		pixels = nullptr;
+		free(image_out.pixels);
 		return;
 	}
 
-	Init(w, h, nullptr);
+	Init(image_out.width, image_out.height, nullptr);
 
-	ConvertImage(w, h, pixels, transparent);
+	ConvertImage(image_out.width, image_out.height, image_out.pixels, transparent);
+
+	original_bpp = image_out.bpp;
 
 	CheckPixels(flags);
 }
@@ -173,7 +172,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
-bool Bitmap::WritePNG(Filesystem_Stream::OutputStream& os) const {
+bool Bitmap::WritePNG(std::ostream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 
@@ -183,7 +182,7 @@ bool Bitmap::WritePNG(Filesystem_Stream::OutputStream& os) const {
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap.get(), NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
 
-	return ImagePNG::WritePNG(os, width, height, &data.front());
+	return ImagePNG::Write(os, width, height, &data.front());
 }
 
 size_t Bitmap::GetSize() const {
@@ -334,20 +333,20 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 }
 
 Point Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align) {
-	FontRef font = Font::Default();
-
 	switch (align) {
 	case Text::AlignLeft:
 		return TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter: {
-		Rect text_rect = Text::GetSize(*font, text);
+		auto f = font ? font : Font::Default();
+		Rect text_rect = Text::GetSize(*f, text);
 		int dx = rect.x + (rect.width - text_rect.width) / 2;
 		return TextDraw(dx, rect.y, color, text);
 		break;
 	}
 	case Text::AlignRight: {
-		Rect text_rect = Text::GetSize(*font, text);
+		auto f = font ? font : Font::Default();
+		Rect text_rect = Text::GetSize(*f, text);
 		int dx = rect.x + rect.width - text_rect.width;
 		return TextDraw(dx, rect.y, color, text);
 		break;
@@ -355,30 +354,30 @@ Point Bitmap::TextDraw(Rect const& rect, int color, StringView text, Text::Align
 	default: assert(false);
 	}
 
-	return Point();
+	return {};
 }
 
 Point Bitmap::TextDraw(int x, int y, int color, StringView text, Text::Alignment align) {
-	auto font = Font::Default();
+	auto f = font ? font : Font::Default();
 	auto system = Cache::SystemOrBlack();
-	return Text::Draw(*this, x, y, *font, *system, color, text, align);
+	return Text::Draw(*this, x, y, *f, *system, color, text, align);
 }
 
 Point Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Alignment align) {
-	FontRef font = Font::Default();
-
 	switch (align) {
 	case Text::AlignLeft:
 		return TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter: {
-		Rect text_rect = Text::GetSize(*font, text);
+		auto f = font ? font : Font::Default();
+		Rect text_rect = Text::GetSize(*f, text);
 		int dx = rect.x + (rect.width - text_rect.width) / 2;
 		return TextDraw(dx, rect.y, color, text);
 		break;
 	}
 	case Text::AlignRight: {
-		Rect text_rect = Text::GetSize(*font, text);
+		auto f = font ? font : Font::Default();
+		Rect text_rect = Text::GetSize(*f, text);
 		int dx = rect.x + rect.width - text_rect.width;
 		return TextDraw(dx, rect.y, color, text);
 		break;
@@ -386,12 +385,12 @@ Point Bitmap::TextDraw(Rect const& rect, Color color, StringView text, Text::Ali
 	default: assert(false);
 	}
 
-	return Point();
+	return {};
 }
 
 Point Bitmap::TextDraw(int x, int y, Color color, StringView text) {
-	auto font = Font::Default();
-	return Text::Draw(*this, x, y, *font, color, text);
+	auto f = font ? font : Font::Default();
+	return Text::Draw(*this, x, y, *f, color, text);
 }
 
 Rect Bitmap::TransformRectangle(const Transform& xform, const Rect& rect) {

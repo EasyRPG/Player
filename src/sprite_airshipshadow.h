@@ -31,19 +31,14 @@
  */
 class Sprite_AirshipShadow : public Sprite {
 public:
-	enum CloneType {
-		Original = 1,
-		XClone = 2,
-		YClone = 4
-	};
-
-	Sprite_AirshipShadow(CloneType type = CloneType::Original);
+	Sprite_AirshipShadow(int x_offset = 0, int y_offset = 0);
+	void Draw(Bitmap& dst) override;
 	void Update();
 	void RecreateShadow();
 
 private:
-	bool x_shift = false;
-	bool y_shift = false;
+	int x_offset = 0;
+	int y_offset = 0;
 };
 
 #endif

@@ -83,7 +83,7 @@
     <string name="easyrpg_folders">EasyRPG 文件夹</string>
     <string name="screen_size">屏幕缩放:</string>
     <string name="settings_custom_soundfont">自定义 Soundfont：</string>
-    <string name="open_the_sound_fonts_folder">打开 soundfonts 文件夹</string>
+    <string name="open_the_sound_fonts_folder">打开 \"soundfonts\" 文件夹</string>
     <string name="select_the_games_folder">选择 EasyRPG 文件夹</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player 需要一个专用文件夹。触碰按钮后，系统会要求您选择一个文件夹。
 \n
@@ -95,7 +95,7 @@
     <string name="rtp_explanation">RTP 提供一些游戏所使用的共享素材。
 \n将 \"RPG Maker 2000 RTP\" 放入 \"rtp/2000\" 路径，将 \"RPG Maker 2003 RTP\" 放入 \"rtp/2000\" 路径。
 \n请注意，启用 RTP 支持将显著增加游戏的初始加载时间。</string>
-    <string name="open_rtp_folder">打开 RTP 文件夹</string>
+    <string name="open_rtp_folder">打开 \"rtp\" 文件夹</string>
     <string name="music_volume">音乐音量</string>
     <string name="sound_volume">音效音量</string>
     <string name="launch_debug_mode">以调试模式启动</string>
@@ -109,18 +109,17 @@
     <string name="no_games_found_and_explanation_android_30">找不到 RPG Maker 2000/2003 游戏。
 \n
 \n您选择的 EasyRPG 文件夹包含一个 \"games\" 文件夹。使用文件管理器应用程序将您的游戏放在此文件夹中。
-\n游戏可以放在子文件夹或 ZIP 档案中。
+\n游戏可以放在子文件夹或 ZIP/LZH 档案中。
 \n
 \nEasyRPG 文件夹可以在设置中更改。</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">将您的 RPG Maker 2000/200 3游戏放在“游戏”文件夹的子目录中。
-\n游戏必须解压缩或保存在 ZIP 档案中。
-\n不支持 RAR、LZH 和 EXE 文件。
+\n游戏必须解压缩或保存在 ZIP/LZH 档案中。
+\n不支持 RAR、7z 和 EXE 文件。
 \n
 \n可选功能（请参阅设置）：
 \n-RTP（一些游戏所使用的共享素材）
 \n-一种自定义 soundfont，用于更改 MIDI 音乐的提供方式</string>
     <string name="settings_soundfont_explanation">将 SF2 格式的 sounfonts 放在 \"soundfonts\" 文件夹中，用于改变 MIDI 音乐的声音。</string>
-    <string name="settings_soundfont_restart_app">请在选择 soundfont 后退出并重启应用程序。</string>
     <string name="settings_soundfont_found">找到的 soundfonts：</string>
     <string name="settings_default_soundfont">默认 soundfont</string>
     <string name="horizontal_input_layout">水平（横向）按键布局</string>
@@ -132,7 +131,7 @@
     <string name="scale_bilinear">按屏幕尺寸缩放并应用双线性滤波器（速度慢、质量好）</string>
     <string name="stretch">忽略纵横比（拉伸到屏幕宽度）</string>
     <string name="error_no_games_folder">\"games\" 文件夹不存在或不是文件夹。请为 EasyRPG 手动创建文件夹或选择其他位置。EasyRPG 文件夹可以在设置中更改。</string>
-    <string name="settings_resolution_widescreen">宽屏（416x240，16:9，试验性）</string>
+    <string name="settings_resolution_widescreen">宽屏（416x240，16:9，实验性）</string>
     <string name="settings_resolution_ultrawide">超宽（560x240，21:9，实验性）</string>
     <string name="watch_explanation_video">入门和添加游戏（视频指南）</string>
     <string name="error_saf_title">选择了错误的文件夹</string>

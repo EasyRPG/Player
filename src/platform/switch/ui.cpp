@@ -390,7 +390,7 @@ NxUi::~NxUi() {
 	appletUnhook(&applet_hook_cookie);
 }
 
-void NxUi::ProcessEvents() {
+bool NxUi::ProcessEvents() {
 	// handle system events
 	appletMainLoop();
 
@@ -439,7 +439,7 @@ void NxUi::ProcessEvents() {
 
 	// do not handle touch when not displaying buttons or no touch happened
 	if (is_docked || vcfg.touch_ui.IsLocked() || !vcfg.touch_ui.Get() || !hidGetTouchScreenStates(&touch, 1))
-		return;
+		return true;
 
 	for (int32_t i = 0; i < touch.count; ++i) {
 		if (touch.touches[i].x < 160) {
@@ -453,6 +453,8 @@ void NxUi::ProcessEvents() {
 			}
 		}
 	}
+
+	return true;
 }
 
 void NxUi::UpdateDisplay() {
@@ -486,19 +488,6 @@ void NxUi::UpdateDisplay() {
 
 	// display
 	eglSwapBuffers(eglDisplay, eglSurface);
-}
-
-bool NxUi::LogMessage(const std::string &message) {
-	std::string m = std::string("[" GAME_TITLE "] ") + message + "\n";
-
-	// HLE in yuzu emulator
-	svcOutputDebugString(m.c_str(), m.length());
-
-	// additional to nxlink server
-	if(envHasArgv())
-		return false;
-	else
-		return true;
 }
 
 void NxUi::ToggleStretch() {

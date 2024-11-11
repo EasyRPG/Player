@@ -17,15 +17,19 @@
 
 // Headers
 #include "game_destiny.h"
+#include <cstring>
 
 #ifndef EMSCRIPTEN
 #include "exe_reader.h"
 #endif // !EMSCRIPTEN
 #include "output.h"
 
+using Destiny::InterpretFlag;
+using Destiny::MainFunctions::Interpreter;
 
 using lcf::ToString;
 using lcf::rpg::EventCommand;
+using lcf::rpg::SaveEventExecFrame;
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -35,8 +39,10 @@ using lcf::rpg::EventCommand;
 void Game_Destiny::Load()
 {
 	// Do not load Destiny whether player cannot find "Destiny.dll"
-	if (!FileFinder::Game().Exists(DESTINY_DLL))
+	if (! FileFinder::Game().Exists(DESTINY_DLL))
+	{
 		return;
+	}
 
 	uint32_t dllVersion = 0;
 	uint32_t language = 0;
@@ -49,7 +55,8 @@ void Game_Destiny::Load()
 #ifndef EMSCRIPTEN
 	Filesystem_Stream::InputStream exe = FileFinder::Game().OpenFile(EXE_NAME);
 
-	if (exe) {
+	if (exe)
+	{
 		exe.seekg(0x00030689, std::ios_base::beg);
 		exe.read(reinterpret_cast<char*>(&stringSize), sizeof(uint32_t));
 		exe.seekg(1, std::ios_base::cur);
@@ -67,7 +74,7 @@ void Game_Destiny::Load()
 		exe.seekg(1, std::ios_base::cur);
 	}
 #else
-	// TODO [Dr.XGB]: Find to manage Destiny initialization parameters on Emscripten
+	// TODO [XGB]: Find to manage Destiny initialization parameters on Emscripten
 	dllVersion = 0x20000;
 	language = ENGLISH;
 	gameVersion = 0x20000107;
@@ -84,7 +91,10 @@ Game_Destiny::Game_Destiny()
 	_gameVersion = {};
 	_language = Destiny::Language::DEUTSCH;
 	_extra = 0U;
+	_trueColor = 0U;
 	_decimalComma = false;
+	_rm2k3 = false;
+	_protect = false;
 }
 
 Game_Destiny::~Game_Destiny()
@@ -99,13 +109,19 @@ void Game_Destiny::Initialize(
 	uint32_t extra,
 	uint32_t dwordSize,
 	uint32_t floatSize,
-	uint32_t stringSize)
+	uint32_t stringSize
+)
 {
 	_dllVersion = Destiny::Version(dllVersion);
 	_gameVersion = Destiny::Version(gameVersion);
-	_language = static_cast<Destiny::Language>(language);
+	_language = language <= 1
+		? static_cast<Destiny::Language>(language)
+		: Destiny::Language::ENGLISH;
 	_extra = extra;
-	_decimalComma = _language == Destiny::Language::ENGLISH;
+	_decimalComma = _language == Destiny::Language::DEUTSCH;
+
+	EvaluateExtraFlags();
+	CheckVersionInfo();
 
 	// Init containers
 	_dwords.resize(dwordSize);
@@ -116,12 +132,13 @@ void Game_Destiny::Initialize(
 	// TODO: Init ClientSocket container
 
 	// Debug
-	Output::Debug("Destiny Initialized");
-	Output::Debug("Language: {}", _decimalComma ? "English" : "Deutsch");
-	Output::Debug("DLL Version: {}", _dllVersion.toString());
-	Output::Debug("Dwords: {}", dwordSize);
-	Output::Debug("Floats: {}", floatSize);
-	Output::Debug("Strings: {}", stringSize);
+	Output::Debug("[Destiny] Initialized");
+	Output::Debug("[Destiny] Language: {}", _decimalComma ? "Deutsch" : "English");
+	Output::Debug("[Destiny] DLL Version: {}", _dllVersion.toString());
+	Output::Debug("[Destiny] Dwords: {}", dwordSize);
+	Output::Debug("[Destiny] Floats: {}", floatSize);
+	Output::Debug("[Destiny] Strings: {}", stringSize);
+	Output::Debug("[Destiny] RPG Maker version: {}", _rm2k3 ? 2003 : 2000);
 }
 
 void Game_Destiny::Terminate()
@@ -130,30 +147,204 @@ void Game_Destiny::Terminate()
 	_floats.clear();
 	_strings.clear();
 
-	// TODO: Clear File container
-	// TODO: Clear ClientSocket container
+	// TODO [XGB]: Clear File container
+	// TODO [XGB]: Clear ClientSocket container
 }
 
-std::string Game_Destiny::MakeString(lcf::rpg::SaveEventExecFrame& scriptData)
+bool Game_Destiny::Main(SaveEventExecFrame& frame)
+{
+	const char* script;
+	InterpretFlag flag;
+
+	script = _interpreter.MakeString(frame);
+	flag = InterpretFlag::IF_EXIT;
+
+	_interpreter.CleanUpData();
+	_interpreter.LoadInterpretStack();
+
+	while (! _interpreter.IsEndOfScript())
+	{
+		if (_interpreter.IsEndOfLine())
+		{
+			_interpreter.ScriptNextChar();
+		}
+
+		flag = _interpreter.Interpret();
+		if (flag == InterpretFlag::IF_EXIT)
+		{
+			break;
+		}
+	}
+
+	Output::Debug("DestinyScript Code:\n{}", script);
+	_interpreter.FreeString();
+
+	return true;
+}
+
+void Game_Destiny::EvaluateExtraFlags()
+{
+	_trueColor = (_extra & Destiny::DF_TRUECOLOR) << 9;
+	_protect = _extra & Destiny::DF_PROTECT;
+}
+
+void Game_Destiny::CheckVersionInfo()
+{
+	uint32_t gameVersionMajor;
+
+	gameVersionMajor = _gameVersion.major;
+
+	if (! (gameVersionMajor == 0x2000 || gameVersionMajor == 0x2003))
+	{
+		Output::Error("[Destiny]: {} is not a valid version", gameVersionMajor);
+	}
+
+	_rm2k3 = gameVersionMajor == 0x2003;
+}
+
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//			MainFunctions / Interpreter
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Interpreter::Interpreter()
+{
+	CleanUpData();
+	_destinyScript = nullptr;
+	_scriptPtr = nullptr;
+}
+
+const char* Interpreter::MakeString(SaveEventExecFrame& frame)
 {
 	std::string code;
+	size_t length;
+	char* destinyScript;
 
-	int32_t& current = scriptData.current_command;
-	const std::vector<EventCommand>& cmdList = scriptData.commands;
+	int32_t& current = frame.current_command;
+	const std::vector<EventCommand>& cmdList = frame.commands;
 	std::vector<EventCommand>::const_iterator it = cmdList.begin() + current++;
 
-	code = ToString((*it++).string).substr(1);
-	while (it != cmdList.cend() && it->code == static_cast<int32_t>(EventCommand::Code::Comment_2)) {
+	code = ToString((*it++).string);
+
+	while (it != cmdList.cend() && it->code == static_cast<int32_t>(EventCommand::Code::Comment_2))
+	{
 		code += '\n';
 		code += ToString((*it++).string);
 		++current;
 	}
 
-	return code;
+	length = code.length() + 1;
+	destinyScript = new char[length];
+	strcpy_s(destinyScript, length, code.c_str());
+
+	return _destinyScript = _scriptPtr = destinyScript;
 }
 
-bool Game_Destiny::Interpret(const std::string& code)
+void Interpreter::FreeString()
 {
-	// TODO [Dr.XGB]: DestinyScript Interpret
+	delete[] _destinyScript;
+	_destinyScript = nullptr;
+	_scriptPtr = nullptr;
+}
+
+void Interpreter::SkipWhiteSpace()
+{
+	while (IsWhiteSpace(*_scriptPtr))
+	{
+		++_scriptPtr;
+	}
+}
+
+const size_t Interpreter::GetWordLen()
+{
+	char* endPtr = _scriptPtr;
+
+	while (IsWordChar(*endPtr))
+	{
+		++endPtr;
+	}
+
+	return endPtr - _scriptPtr;
+}
+
+const InterpretFlag Interpreter::Interpret()
+{
+	char* code;
+	uint8_t flags[4];
+	InterpretFlag returnType;
+
+	size_t wordLen;
+
+	code = nullptr;
+	returnType = IF_COMMAND;
+
+	SkipSpace();
+	wordLen = GetWordLen();
+
+	return IF_EXIT;
+}
+
+void Interpreter::LoadInterpretStack()
+{
+	//
+}
+
+void Interpreter::SkipSpace()
+{
+	bool finished = false;
+	char next = '\0';
+
+	while (! finished)
+	{
+		if (! IsWhiteSpace(*++_scriptPtr))
+		{
+			if (*_scriptPtr == '/')
+			{
+				next = *(_scriptPtr + 1);
+
+				if (next == '/')
+				{
+					finished = LineComment();
+				}
+				else if (next == '*')
+				{
+					finished = BlockComment();
+				}
+			}
+			else
+			{
+				finished = true;
+			}
+		}
+	}
+}
+
+const bool Interpreter::LineComment()
+{
+	_scriptPtr += 2;
+
+	while (*(++_scriptPtr))
+	{
+		if (*_scriptPtr == 0x0A)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+const bool Interpreter::BlockComment()
+{
+	_scriptPtr += 2;
+
+	while (*(++_scriptPtr))
+	{
+		if (*_scriptPtr == '*' && *(++_scriptPtr) == '/')
+		{
+			return false;
+		}
+	}
+
 	return true;
 }

@@ -36,7 +36,8 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Logo(unsigned current_logo_index = 0);
+ 	Scene_Logo();
+	Scene_Logo(std::vector<std::vector<uint8_t>> logos, unsigned current_logo_index);
 
 	void Start() override;
 	void vUpdate() override;
@@ -46,11 +47,14 @@ public:
 	void DrawBackground(Bitmap& dst) override;
 	void DrawTextOnLogo(bool verbose);
 
+	static std::vector<std::vector<uint8_t>> LoadLogos();
+
 private:
 	std::unique_ptr<Sprite> logo;
 	BitmapRef logo_img;
 	int frame_counter;
-	unsigned current_logo_index;
+	std::vector<std::vector<uint8_t>> logos;
+	unsigned current_logo_index = 0;
 	bool skip_logos = false;
 	bool detected_game = false;
 

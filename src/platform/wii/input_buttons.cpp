@@ -24,12 +24,12 @@
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
 		// Wiimote
-		{CANCEL, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
-		{DECISION, Keys::JOY_OTHER_1}, // B, shared with CC
+		{DECISION, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
+		{CANCEL, Keys::JOY_OTHER_1}, // B, shared with CC
 		{CANCEL, Keys::JOY_OTHER_2}, // 1
 		{DECISION, Keys::JOY_OTHER_3}, // 2
 		{RESET, Keys::JOY_OTHER_4}, // -, shared with CC
-		{FAST_FORWARD, Keys::JOY_OTHER_5}, // +, shared with CC
+		{FAST_FORWARD_A, Keys::JOY_OTHER_5}, // +, shared with CC
 		{SETTINGS_MENU, Keys::JOY_OTHER_6}, // Home, shared with CC
 
 		// Nunchuck
@@ -40,7 +40,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{SHIFT, Keys::JOY_OTHER_9}, // X
 		{CANCEL, Keys::JOY_OTHER_10}, // Y
 		{N0, Keys::JOY_OTHER_11}, // L
-		{FAST_FORWARD_PLUS, Keys::JOY_OTHER_12}, // R
+		{FAST_FORWARD_B, Keys::JOY_OTHER_12}, // R
 		{N5, Keys::JOY_OTHER_13}, // ZL
 		{TOGGLE_FPS, Keys::JOY_OTHER_14}, // ZR
 

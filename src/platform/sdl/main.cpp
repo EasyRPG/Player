@@ -20,6 +20,7 @@
 #include <vector>
 #include "player.h"
 #include "utils.h"
+#include "output.h"
 
 #ifdef USE_SDL // This is needed on Windows, SDL wraps main()
 #  include <SDL.h>
@@ -27,6 +28,25 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shellapi.h>
+#elif defined(__ANDROID__)
+#  include <android/log.h>
+#  include "platform/android/android.h"
+#endif
+
+#ifdef __ANDROID__
+static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
+#  ifdef NDEBUG
+	// docs say debugging logs should be disabled for release builds
+	if (lvl == LogLevel::Debug || lvl == LogLevel::Info) return;
+#  endif
+
+	int prio = (lvl == LogLevel::Error) ? ANDROID_LOG_ERROR :
+		(lvl == LogLevel::Warning) ? ANDROID_LOG_WARN :
+		(lvl == LogLevel::Debug) ? ANDROID_LOG_DEBUG :
+		ANDROID_LOG_INFO;
+
+	__android_log_write(prio, GAME_TITLE, msg.c_str());
+}
 #endif
 
 /**
@@ -36,7 +56,7 @@
 extern "C" int main(int argc, char* argv[]) {
 	std::vector<std::string> args;
 
-#if defined(_WIN32) && !defined(__WINRT__)
+#if defined(_WIN32)
 	// Use widestring args
 	int argc_w;
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
@@ -51,8 +71,17 @@ extern "C" int main(int argc, char* argv[]) {
 	args.assign(argv, argv + argc);
 #endif
 
+#ifdef __ANDROID__
+	Output::SetLogCallback(LogCallback);
+#endif
+
+#if defined(__ANDROID__)
+	EpAndroid::env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+#endif
+
 	Player::Init(std::move(args));
 	Player::Run();
 
-	return EXIT_SUCCESS;
+	// Close
+	return Player::exit_code;
 }

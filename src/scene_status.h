@@ -19,6 +19,7 @@
 #define EP_SCENE_STATUS_H
 
 // Headers
+#include <vector>
 #include "scene.h"
 #include "window_actorinfo.h"
 #include "window_actorstatus.h"
@@ -35,14 +36,16 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor_index party index of the actor.
+	 * @param actors list of actors
+	 * @param index index in the vector to show
 	 */
-	Scene_Status(int actor_index);
+	Scene_Status(std::vector<Game_Actor*> actors, int actor_index);
 
 	void Start() override;
 	void vUpdate() override;
 
 private:
+	std::vector<Game_Actor*> actors;
 	int actor_index;
 
 	std::unique_ptr<Window_ActorInfo> actorinfo_window;

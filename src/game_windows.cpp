@@ -34,7 +34,7 @@ static std::optional<std::string> CommandCodeInserter(char ch, const char **iter
 		int value = parse_ret.value;
 
 		// Contrary to Messages, the content of \t[]-strings is not evaluated
-		return Main_Data::game_strings->Get(value);
+		return ToString(Main_Data::game_strings->Get(value));
 	}
 
 	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
@@ -355,6 +355,8 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 	window->SetVisible(false);
 
 	BitmapRef system;
+	// FIXME: Transparency setting is currently not applied to the system graphic
+	// Disabling transparency breaks the rendering of the system graphic
 	if (!data.system_name.empty()) {
 		system = Cache::System(data.system_name);
 	} else {
@@ -380,7 +382,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 		auto style_guard = apply_style(font, text);
 
 		int x = text.position_x;
-		int y = text.position_y;
+		int y = text.position_y + 2; // +2 to match the offset RPG_RT uses
 		int text_color = 0;
 		for (const auto& line: pm.GetLines()) {
 			std::u32string line32;

@@ -85,6 +85,14 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     SurfaceView surface;
 
     @Override
+    protected String[] getLibraries() {
+        return new String[] {
+            "SDL2",
+            "easyrpg_android"
+        };
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (mBrokenLibraries) {
@@ -145,9 +153,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         mLayout.addView(surface);
         updateScreenPosition();
 
-        // Set speed multiplier
-        setFastForwardMultiplier(SettingsManager.getFastForwardMultiplier());
-
         showInputLayout();
     }
 
@@ -176,10 +181,14 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         } else if (item.getItemId() == R.id.toggle_ui) {
             uiVisible = !uiVisible;
             showInputLayout();
+        } else if (item.getItemId() == R.id.toggle_fps) {
+            toggleFps();
         } else if (item.getItemId() == R.id.edit_layout) {
             editLayout();
         } else if (item.getItemId() == R.id.report_bug) {
             reportBug();
+        } else if (item.getItemId() == R.id.reset_game) {
+            showResetGameDialog();
         } else if (item.getItemId() == R.id.end_game) {
             showEndGameDialog();
         }
@@ -307,6 +316,20 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         }
     }
 
+    private void showResetGameDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.app_name);
+
+        // set dialog message
+        alertDialogBuilder.setMessage(R.string.do_want_reset).setCancelable(false)
+            .setPositiveButton(R.string.yes, (dialog, id) -> resetGame()).setNegativeButton(R.string.no, (dialog, id) -> dialog.cancel());
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
     private void showEndGameDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.app_name);
@@ -325,7 +348,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
     public static native void endGame();
 
-    public static native void setFastForwardMultiplier(int m);
+    public static native void resetGame();
+
+    public static native void toggleFps();
 
     protected String[] getArguments() {
         return getIntent().getStringArrayExtra(TAG_COMMAND_LINE);
@@ -356,7 +381,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         return "";
     }
 
-    public SafFile getHandleForPath(String path) {
+    public static SafFile getHandleForPath(String path) {
         return SafFile.fromPath(getContext(), path);
     }
 
@@ -412,8 +437,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
      *
      * @return asset manager
      */
-    public AssetManager getAssetManager() {
-        return getAssets();
+    public static AssetManager getAssetManager() {
+        return getContext().getAssets();
     }
 
     /**

@@ -65,12 +65,14 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-	void ProcessEvents() override;
-	void SetScalingMode(ScalingMode) override;
+	bool ProcessEvents() override;
+	void SetScalingMode(ConfigEnum::ScalingMode) override;
 	void ToggleStretch() override;
 	void ToggleVsync() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
+	bool OpenURL(StringView url) override;
 	Rect GetWindowMetrics() const override;
+	bool HandleErrorOutput(const std::string &message) override;
 
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
@@ -143,7 +145,9 @@ private:
 
 	uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
 
+#ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
+#endif
 };
 
 #endif

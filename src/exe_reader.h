@@ -41,6 +41,7 @@ public:
 	// Extracts an EXFONT resource with BMP header if present
 	// and returns exfont buffer on success.
 	std::vector<uint8_t> GetExFont();
+	std::vector<std::vector<uint8_t>> GetLogos();
 
 	struct FileInfo {
 		uint64_t version = 0;

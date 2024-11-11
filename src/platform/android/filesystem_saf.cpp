@@ -18,6 +18,7 @@
 #include "filesystem_saf.h"
 #include "filefinder.h"
 #include "output.h"
+#include "android.h"
 
 #include <unistd.h>
 #include <SDL_system.h>
@@ -25,16 +26,11 @@
 static jobject get_jni_handle(const SafFilesystem* fs, StringView path) {
 	std::string combined_path = FileFinder::MakePath(fs->GetPath(), path);
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getFilesystemForPath = env->GetMethodID(cls, "getHandleForPath", "(Ljava/lang/String;)Lorg/easyrpg/player/player/SafFile;");
+	JNIEnv* env = EpAndroid::env;
+	jclass cls = env->FindClass("org/easyrpg/player/player/EasyRpgPlayerActivity");
+	jmethodID jni_getFilesystemForPath = env->GetStaticMethodID(cls, "getHandleForPath", "(Ljava/lang/String;)Lorg/easyrpg/player/player/SafFile;");
 	jstring jpath = env->NewStringUTF(combined_path.c_str());
-	jobject obj_res = env->CallObjectMethod(sdl_activity, jni_getFilesystemForPath, jpath);
-
-	env->DeleteLocalRef(jpath);
-	env->DeleteLocalRef(cls);
-	env->DeleteLocalRef(sdl_activity);
+	jobject obj_res = env->CallStaticObjectMethod(cls, jni_getFilesystemForPath, jpath);
 
 	return obj_res;
 }
@@ -49,13 +45,10 @@ bool SafFilesystem::IsFile(StringView path) const {
 		return false;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "isFile", "()Z");
 	jboolean res = env->CallBooleanMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	return res > 0;
 }
@@ -66,13 +59,10 @@ bool SafFilesystem::IsDirectory(StringView dir, bool) const {
 		return false;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "isDirectory", "()Z");
 	jboolean res = env->CallBooleanMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	return res > 0;
 }
@@ -83,13 +73,10 @@ bool SafFilesystem::Exists(StringView filename) const {
 		return false;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "exists", "()Z");
 	jboolean res = env->CallBooleanMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	return res > 0;
 }
@@ -100,13 +87,10 @@ int64_t SafFilesystem::GetFilesize(StringView path) const {
 		return -1;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "getFilesize", "()J");
 	jlong res = env->CallLongMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	return static_cast<int64_t>(res);
 }
@@ -159,13 +143,10 @@ std::streambuf* SafFilesystem::CreateInputStreambuffer(StringView path, std::ios
 		return nullptr;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "createInputFileDescriptor", "()I");
 	jint fd = env->CallIntMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	if (fd < 0) {
 		return nullptr;
@@ -238,14 +219,11 @@ std::streambuf* SafFilesystem::CreateOutputStreambuffer(StringView path, std::io
 		return nullptr;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "createOutputFileDescriptor", "(Z)I");
 	jboolean append = static_cast<uint8_t>(((mode & std::ios_base::app) == std::ios_base::app) ? 1u : 0u);
 	jint fd = env->CallIntMethod(obj, jni_method, append);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	if (fd < 0) {
 		return nullptr;
@@ -260,13 +238,10 @@ bool SafFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 		return false;
 	}
 
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = EpAndroid::env;
 	jclass cls = env->GetObjectClass(obj);
 	jmethodID jni_method = env->GetMethodID(cls, "getDirectoryContent", "()Lorg/easyrpg/player/player/DirectoryTree;");
 	jobject directory_tree = env->CallObjectMethod(obj, jni_method);
-
-	env->DeleteLocalRef(obj);
-	env->DeleteLocalRef(cls);
 
 	if (!directory_tree) {
 		return false;
@@ -286,13 +261,10 @@ bool SafFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 		jstring elem = reinterpret_cast<jstring>(env->GetObjectArrayElement(names_arr, static_cast<jsize>(i)));
 		const char* str = env->GetStringUTFChars(elem, nullptr);
 		entries.emplace_back(str, types[i] == 0 ? DirectoryTree::FileType::Regular : DirectoryTree::FileType::Directory);
+		// These are explicitly deleted, otherwise this garbabge collects after the loop
 		env->ReleaseStringUTFChars(elem, str);
 		env->DeleteLocalRef(elem);
 	}
-
-	env->DeleteLocalRef(cls_directory_tree);
-	env->DeleteLocalRef(names_arr);
-	env->DeleteLocalRef(types_arr);
 
 	return true;
 }

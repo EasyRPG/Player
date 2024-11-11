@@ -35,9 +35,9 @@ public:
 	 * @param iy window y position.
 	 * @param iwidth window width.
 	 * @param iheight window height.
-	 * @param actor_id actor whose stats are displayed.
+	 * @param actor actor whose stats are displayed.
 	 */
-	Window_ParamStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
+	Window_ParamStatus(int ix, int iy, int iwidth, int iheight,  const Game_Actor& actor);
 
 	/**
 	 * Refreshes screen.
@@ -45,7 +45,7 @@ public:
 	void Refresh();
 
 private:
-	int actor_id = 0;
+	 const Game_Actor& actor;
 };
 
 #endif

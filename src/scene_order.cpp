@@ -26,6 +26,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "scene_map.h"
+#include "player.h"
 
 Scene_Order::Scene_Order() :
 	actor_counter(0) {

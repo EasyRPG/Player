@@ -16,7 +16,7 @@
  */
 
 // FIXME: Move in platform/generic (?) and handle with CMake
-#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO) || defined(__vita__) || defined(__3DS__) || defined(__SWITCH__))
+#if !(defined(OPENDINGUX) || defined(PLAYER_NINTENDO) || defined(PLAYER_UI))
 
 // Headers
 #include "input_buttons.h"
@@ -99,8 +99,8 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{PAGE_UP, Keys::PGUP},
 		{PAGE_DOWN, Keys::PGDN},
 		{RESET, Keys::F12},
-		{FAST_FORWARD, Keys::F},
-		{FAST_FORWARD_PLUS, Keys::G},
+		{FAST_FORWARD_A, Keys::F},
+		{FAST_FORWARD_B, Keys::G},
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 		{MOUSE_LEFT, Keys::MOUSE_LEFT},
@@ -155,8 +155,8 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N7, Keys::JOY_RSTICK_UP_LEFT},
 		{N8, Keys::JOY_RSTICK_UP},
 		{N9, Keys::JOY_RSTICK_UP_RIGHT},
-		{FAST_FORWARD, Keys::JOY_RTRIGGER_SOFT},
-		{FAST_FORWARD_PLUS, Keys::JOY_RTRIGGER_FULL},
+		{FAST_FORWARD_A, Keys::JOY_RTRIGGER_SOFT},
+		{FAST_FORWARD_B, Keys::JOY_RTRIGGER_FULL},
 		{DEBUG_THROUGH, Keys::JOY_LTRIGGER_SOFT},
 		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
 #endif

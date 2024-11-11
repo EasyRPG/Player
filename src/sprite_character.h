@@ -32,19 +32,16 @@ struct FileRequestResult;
  */
 class Sprite_Character : public Sprite {
 public:
-	enum CloneType {
-		Original = 1,
-		XClone = 2,
-		YClone = 4
-	};
-
 	/**
 	 * Constructor.
 	 *
 	 * @param character game character to display
-	 * @param type Type of the sprite for multiple renderings on looping maps
+	 * @param x_offset X Render offset when being a clone
+	 * @param y_offset Y Render offset when being a clone
 	 */
-	Sprite_Character(Game_Character* character, CloneType type = CloneType::Original);
+	Sprite_Character(Game_Character* character, int x_offset = 0, int y_offset = 0);
+
+	void Draw(Bitmap& dst) override;
 
 	/**
 	 * Updates sprite state.
@@ -94,8 +91,8 @@ private:
 	/** Returns true for charset sprites; false for tiles. */
 	bool UsesCharset() const;
 
-	bool x_shift = false;
-	bool y_shift = false;
+	int x_offset = 0;
+	int y_offset = 0;
 	bool refresh_bitmap = false;
 
 	void OnTileSpriteReady(FileRequestResult*);

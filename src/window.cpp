@@ -25,7 +25,7 @@
 #include "bitmap.h"
 #include "drawable_mgr.h"
 
-constexpr int pause_animation_frames = 20;
+constexpr int arrow_animation_frames = 20;
 
 Window::Window(Drawable::Flags flags): Drawable(Priority_Window, flags)
 {
@@ -146,22 +146,30 @@ void Window::Draw(Bitmap& dst) {
 		}
 	}
 
-	if ((pause && pause_frame < pause_animation_frames && animation_frames <= 0) || down_arrow) {
+	auto show_arrow = [&](bool which) {
+		if (!which || !animate_arrows) {
+			return which;
+		}
+
+		return (arrow_animation_frame < arrow_animation_frames) && animation_frames <= 0;
+	};
+
+	if ((pause && arrow_animation_frame < arrow_animation_frames && animation_frames <= 0) || show_arrow(down_arrow)) {
 		Rect src_rect(40, 16, 16, 8);
 		dst.Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 
-	if (up_arrow) {
+	if (show_arrow(up_arrow)) {
 		Rect src_rect(40, 8, 16, 8);
 		dst.Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
 	}
 
-	if (right_arrow) {
+	if (show_arrow(right_arrow)) {
 		Rect src_rect(40, 16, 16, 8);
 		dst.RotateZoomOpacityBlit(x + width - 8, y + height / 2 - 8, 16, 0, *windowskin, src_rect, -M_PI / 2, 1.0, 1.0, 255);
 	}
 
-	if (left_arrow) {
+	if (show_arrow(left_arrow)) {
 		Rect src_rect(40, 8, 16, 8);
 		dst.RotateZoomOpacityBlit(x, y + height / 2 - 8, 16, 0, *windowskin, src_rect, -M_PI / 2, 1.0, 1.0, 255);
 	}
@@ -170,7 +178,7 @@ void Window::Draw(Bitmap& dst) {
 void Window::RefreshBackground() {
 	background_needs_refresh = false;
 
-	BitmapRef bitmap = Bitmap::Create(width, height, false);
+	BitmapRef bitmap = Bitmap::Create(width, height);
 
 	if (stretch) {
 		bitmap->StretchBlit(*windowskin, Rect(0, 0, 32, 32), 255);
@@ -302,8 +310,8 @@ void Window::Update() {
 	if (active) {
 		cursor_frame += 1;
 		if (cursor_frame > 20) cursor_frame = 0;
-		if (pause) {
-			pause_frame = (pause_frame + 1) % (pause_animation_frames * 2);
+		if (pause || animate_arrows) {
+			arrow_animation_frame = (arrow_animation_frame + 1) % (arrow_animation_frames * 2);
 		}
 	}
 

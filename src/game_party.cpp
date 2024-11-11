@@ -690,14 +690,14 @@ void Game_Party::RemoveInvalidData() {
 		if (Main_Data::game_actors->ActorExists(*it)) {
 			data.party.push_back(*it);
 		} else {
-			Output::Warning("Removing invalid party member {}", *it);
+			Output::Debug("Removing invalid party member {}", *it);
 		}
 	}
 
 	// Remove non existing items
 	for (it = data.item_ids.begin(); it != data.item_ids.end(); ) {
 		if (!lcf::ReaderUtil::GetElement(lcf::Data::items, *it)) {
-			Output::Warning("Removing invalid item {} from party", *it);
+			Output::Debug("Removing invalid item {} from party", *it);
 			it = data.item_ids.erase(it);
 		} else {
 			++it;

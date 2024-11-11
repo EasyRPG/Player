@@ -69,7 +69,7 @@
 
         <ImageButton
             android:id="@+id/game_browser_thumbnail_option_button"
-            android:src="@drawable/ic_action_settings_white"
+            android:src="@drawable/ic_settings_white"
             android:background="@android:color/transparent"
 
             android:layout_width="wrap_content"

@@ -63,8 +63,7 @@ public:
 	void UpdateDisplay() override;
 	void SetTitle(const std::string &title) override;
 	bool ShowCursor(bool flag) override;
-	bool LogMessage(const std::string &message) override;
-	void ProcessEvents() override;
+	bool ProcessEvents() override;
 	void vGetConfig(Game_ConfigVideo& cfg) const override;
 
 #ifdef SUPPORT_AUDIO
@@ -127,7 +126,9 @@ private:
 	/** SDL_Surface handle to main_surface */
 	SDL_Surface* main_surface_sdl;
 
+#ifdef SUPPORT_AUDIO
 	std::unique_ptr<AudioInterface> audio_;
+#endif
 
 	SdlAxis sdl_axis;
 };

@@ -25,9 +25,9 @@
 #include "font.h"
 #include "feature.h"
 
-Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id) :
+Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, const Game_Actor& actor) :
 	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+	actor(actor) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -43,11 +43,9 @@ void Window_ActorInfo::Refresh() {
 void Window_ActorInfo::DrawInfo() {
 	if (Feature::HasRow()) {
 		// Draw Row formation.
-		std::string battle_row = Main_Data::game_actors->GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_back, "Back") : lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_front, "Front");
+		std::string battle_row = actor.GetBattleRow() == Game_Actor::RowType::RowType_back ? lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_back, "Back") : lcf::rpg::Terms::TermOrDefault(lcf::Data::terms.easyrpg_status_scene_front, "Front");
 		contents->TextDraw(contents->GetWidth(), 2, Font::ColorDefault, battle_row, Text::AlignRight);
 	}
-
-	const Game_Actor& actor = *Main_Data::game_actors->GetActor(actor_id);
 
 	// Draw Face
 	DrawActorFace(actor, 0, 0);

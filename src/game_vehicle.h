@@ -72,7 +72,7 @@ public:
 	bool IsAboard() const;
 	void SyncWithRider(const Game_Character* rider);
 	bool AnimateAscentDescent();
-	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
+	int GetScreenY(bool apply_jump = true) const override;
 	bool CanLand() const;
 	void StartAscent();
 	void StartDescent();

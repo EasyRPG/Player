@@ -127,9 +127,9 @@ void Input::LogSource::Update() {
 		}
 		if (Main_Data::game_system->GetFrameCounter() == last_read_frame) {
 			for (const auto& key : keys) {
-				auto it = std::find(Input::kButtonNames.begin(), Input::kButtonNames.end(), key);
-				if (it != Input::kButtonNames.end()) {
-					pressed_buttons[std::distance(Input::kButtonNames.begin(), it)] = true;
+				Input::InputButton btn;
+				if (Input::kInputButtonNames.etag(key.c_str(), btn)) {
+					pressed_buttons[(int)btn] = true;
 				}
 			}
 			last_read_frame = -1;
@@ -193,7 +193,7 @@ void Input::Source::Record() {
 					continue;
 				}
 
-				*record_log << ',' << Input::kButtonNames[i];
+				*record_log << ',' << Input::kInputButtonNames[i];
 			}
 
 			*record_log << '\n';
@@ -334,4 +334,13 @@ void Input::LogSource::UpdateSystem() {
 	// input log does not record actions outside of logical frames.
 }
 
+void Input::TouchInput::Down(int id, int x, int y) {
+	this->id = id;
+	this->position = { x, y };
+	this->pressed = true;
+}
 
+void Input::TouchInput::Up() {
+	id = -1;
+	pressed = false;
+}

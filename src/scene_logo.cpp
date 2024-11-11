@@ -19,6 +19,7 @@
 #include "scene_logo.h"
 #include "async_handler.h"
 #include "bitmap.h"
+#include "exe_reader.h"
 #include "filefinder.h"
 #include "game_battle.h"
 #include "input.h"
@@ -35,16 +36,21 @@
 #include "text.h"
 #include "version.h"
 #include <ctime>
+#include <memory>
 
-Scene_Logo::Scene_Logo(unsigned current_logo_index) :
-	frame_counter(0), current_logo_index(current_logo_index) {
+Scene_Logo::Scene_Logo() :
+	frame_counter(0) {
+	type = Scene::Logo;
+	skip_logos = Player::debug_flag || Game_Battle::battle_test.enabled;
+}
+
+Scene_Logo::Scene_Logo(std::vector<std::vector<uint8_t>> logos, unsigned current_logo_index) :
+	frame_counter(0), logos(std::move(logos)), current_logo_index(current_logo_index) {
+
 	type = Scene::Logo;
 
-	if (current_logo_index > 0) {
-		detected_game = true;
-	}
-
-	skip_logos = Player::debug_flag || Game_Battle::battle_test.enabled;
+	assert(current_logo_index > 0);
+	detected_game = true;
 }
 
 void Scene_Logo::Start() {
@@ -57,10 +63,14 @@ void Scene_Logo::Start() {
 
 void Scene_Logo::vUpdate() {
 	if (current_logo_index == 0 && frame_counter == 0) {
+		Font::ResetDefault();
+
 		if (!DetectGame()) {
 			// async delay for emscripten
 			return;
 		}
+
+		logos = LoadLogos();
 	}
 
 	++frame_counter;
@@ -86,8 +96,8 @@ void Scene_Logo::vUpdate() {
 		if (detected_game) {
 			if (!skip_logos) {
 				// Check for another logo
-				if (!FileFinder::FindImage("Logo", "LOGO" + std::to_string(current_logo_index + 1)).empty()) {
-					Scene::Push(std::make_shared<Scene_Logo>(current_logo_index + 1), true);
+				if (current_logo_index < logos.size()) {
+					Scene::Push(std::make_shared<Scene_Logo>(std::move(logos), current_logo_index + 1), true);
 					return;
 				}
 			}
@@ -139,7 +149,8 @@ bool Scene_Logo::DetectGame() {
 	}
 #endif
 
-	if (FileFinder::IsValidProject(fs)) {
+	if (FileFinder::IsValidProject(fs) || FileFinder::OpenViewToEasyRpgFile(fs)) {
+		FileFinder::SetGameFilesystem(fs);
 		Player::CreateGameObjects();
 		detected_game = true;
 	}
@@ -162,9 +173,8 @@ BitmapRef Scene_Logo::LoadLogo() {
 		}
 	} else {
 		// Load external logos
-		// FIXME: Also get the LOGO1,LOGO2,LOGO3 from RPG_RT
-		auto logo_stream = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(current_logo_index));
-		current_logo = Bitmap::Create(std::move(logo_stream), false);
+		const auto& logo_bytes = logos[current_logo_index - 1];
+		current_logo = Bitmap::Create(logo_bytes.data(), logo_bytes.size(), false);
 	}
 
 	return current_logo;
@@ -200,7 +210,37 @@ void Scene_Logo::DrawTextOnLogo(bool verbose) {
 		text_rect.x--;
 		text_rect.y--;
 	}
+}
 
+std::vector<std::vector<uint8_t>> Scene_Logo::LoadLogos() {
+	if (Player::player_config.show_startup_logos.Get() == ConfigEnum::StartupLogos::None) {
+		return {};
+	}
+
+	std::vector<std::vector<uint8_t>> logos;
+
+	for (int i = 1; i < 100; ++i) {
+		auto is = FileFinder::OpenImage("Logo", "LOGO" + std::to_string(i));
+		if (is) {
+			logos.push_back(Utils::ReadStream(is));
+		} else {
+			break;
+		}
+	}
+
+#ifndef EMSCRIPTEN
+	if (logos.empty()) {
+		// Attempt reading Logos from RPG_RT.exe (not supported on Emscripten)
+		auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+
+		if (exeis) {
+			std::unique_ptr<EXEReader> exe_reader = std::make_unique<EXEReader>(std::move(exeis));
+			logos = exe_reader->GetLogos();
+		}
+	}
+#endif
+
+	return logos;
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {

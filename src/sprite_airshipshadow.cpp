@@ -25,16 +25,14 @@
 #include "sprite_airshipshadow.h"
 #include <string>
 
-Sprite_AirshipShadow::Sprite_AirshipShadow(CloneType type) {
+Sprite_AirshipShadow::Sprite_AirshipShadow(int x_offset, int y_offset) :
+	x_offset(x_offset), y_offset(y_offset) {
 	SetBitmap(Bitmap::Create(16,16));
 
 	SetOx(TILE_SIZE/2);
 	SetOy(TILE_SIZE);
 
 	RecreateShadow();
-
-	x_shift = ((type & XClone) == XClone);
-	y_shift = ((type & YClone) == YClone);
 }
 
 // Draws the two shadow sprites to a single intermediate bitmap to be blit to the map
@@ -56,6 +54,19 @@ void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Blit(0, 0, *system, Rect(128+16,32,16,16), opacity);
 }
 
+void Sprite_AirshipShadow::Draw(Bitmap &dst) {
+	Game_Vehicle* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
+	const int altitude = airship->GetAltitude();
+	const int max_altitude = TILE_SIZE;
+	const double opacity = (double)altitude / max_altitude;
+	SetOpacity(opacity * 255);
+
+	SetX(Main_Data::game_player->GetScreenX() + x_offset);
+	SetY(Main_Data::game_player->GetScreenY() + y_offset + Main_Data::game_player->GetJumpHeight());
+
+	Sprite::Draw(dst);
+}
+
 void Sprite_AirshipShadow::Update() {
 	if (!Main_Data::game_player->InAirship()) {
 		SetVisible(false);
@@ -65,13 +76,6 @@ void Sprite_AirshipShadow::Update() {
 
 	Game_Vehicle* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
 
-	const int altitude = airship->GetAltitude();
-	const int max_altitude = TILE_SIZE;
-	const double opacity = (double)altitude / max_altitude;
-	SetOpacity(opacity * 255);
-
-	SetX(Main_Data::game_player->GetScreenX(x_shift));
-	SetY(Main_Data::game_player->GetScreenY(y_shift) + Main_Data::game_player->GetJumpHeight());
 	// Synchronized with airship priority
-	SetZ(airship->GetScreenZ(y_shift) - 1);
+	SetZ(airship->GetScreenZ(x_offset, y_offset) - 1);
 }

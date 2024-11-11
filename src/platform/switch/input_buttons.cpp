@@ -37,7 +37,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
 		{SETTINGS_MENU, Keys::JOY_START},
 		{RESET, Keys::JOY_BACK},
-		{FAST_FORWARD, Keys::JOY_RTRIGGER_FULL},
+		{FAST_FORWARD_A, Keys::JOY_RTRIGGER_FULL},
 		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
 #endif
 		// Touchscreen

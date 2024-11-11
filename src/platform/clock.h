@@ -25,7 +25,7 @@
 #if defined(__3DS__)
 #include "platform/3ds/clock.h"
 using Platform_Clock = CtrClock;
-#elif defined(GEKKO)
+#elif defined(__wii__)
 #include "platform/wii/clock.h"
 using Platform_Clock = WiiClock;
 #elif defined(__SWITCH__)
@@ -34,6 +34,9 @@ using Platform_Clock = NxClock;
 #elif defined(__vita__)
 #include "platform/psvita/clock.h"
 using Platform_Clock = Psp2Clock;
+#elif defined(EMSCRIPTEN)
+#include "platform/emscripten/clock.h"
+using Platform_Clock = EmscriptenClock;
 #elif defined(USE_LIBRETRO)
 // Only use libretro clock on platforms with no custom clock
 #include "platform/libretro/clock.h"

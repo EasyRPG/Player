@@ -19,6 +19,7 @@
 #define EP_SCENE_SKILL_H
 
 // Headers
+#include <vector>
 #include "scene.h"
 #include "window_help.h"
 #include "window_skill.h"
@@ -33,7 +34,8 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Skill(int actor_index, int skill_index = 0);
+
+	Scene_Skill(std::vector<Game_Actor*> actors, int actor_index, int skill_index = 0);
 
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
@@ -41,7 +43,8 @@ public:
 	void TransitionOut(SceneType next_scene) override;
 
 private:
-	/** Actor in the party whose skills are displayed. */
+	std::vector<Game_Actor*> actors;
+	/** Actor in the vector whose skills are displayed. */
 	int actor_index;
 	/** Skill to select at startup. */
 	int skill_index;

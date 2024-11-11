@@ -312,7 +312,9 @@ void SelectEnemyAiActionRpgRtCompat(Game_Enemy& source, bool emulate_bugs) {
 
 	if (max_prio) {
 		for (auto& pr: prios) {
-			pr = std::max<int>(0, pr - max_prio + 10);
+			if (pr > 0) {
+				pr = std::max<int>(0, pr - max_prio + 10);
+			}
 		}
 	}
 

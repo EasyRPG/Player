@@ -24,7 +24,6 @@
 #include <iomanip>
 #include <fstream>
 #include <memory>
-#include <thread>
 
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
@@ -42,6 +41,7 @@
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
+#include "filesystem_hook.h"
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_destiny.h"
@@ -84,13 +84,10 @@
 #include "baseui.h"
 #include "game_clock.h"
 #include "message_overlay.h"
+#include "audio_midi.h"
 
 #ifdef __ANDROID__
 #include "platform/android/android.h"
-#endif
-
-#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-#include "decoder_fluidsynth.h"
 #endif
 
 #ifndef EMSCRIPTEN
@@ -107,9 +104,9 @@ namespace Player {
 	int menu_offset_y = (screen_height - MENU_HEIGHT) / 2;
 	int message_box_offset_x = (screen_width - MENU_WIDTH) / 2;
 	bool has_custom_resolution = false;
-
-	bool exit_flag;
-	bool reset_flag;
+	int exit_code = EXIT_SUCCESS;
+	bool exit_flag = false;
+	bool reset_flag = false;
 	bool debug_flag;
 	bool hide_title_flag;
 	int load_game_id;
@@ -133,8 +130,8 @@ namespace Player {
 	std::string replay_input_path;
 	std::string record_input_path;
 	std::string command_line;
-	int speed_modifier;
-	int speed_modifier_plus;
+	int speed_modifier_a;
+	int speed_modifier_b;
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
@@ -200,8 +197,8 @@ void Player::Init(std::vector<std::string> args) {
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);
-	speed_modifier = cfg.input.speed_modifier.Get();
-	speed_modifier_plus = cfg.input.speed_modifier_plus.Get();
+	speed_modifier_a = cfg.input.speed_modifier_a.Get();
+	speed_modifier_b = cfg.input.speed_modifier_b.Get();
 }
 
 void Player::Run() {
@@ -215,8 +212,10 @@ void Player::Run() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
+#if defined(USE_LIBRETRO) || defined(EMSCRIPTEN)
+	// emscripten implemented in main.cpp
 	// libretro invokes the MainLoop through a retro_run-callback
-#ifndef USE_LIBRETRO
+#else
 	while (Transition::instance().IsActive() || (Scene::instance && Scene::instance->type != Scene::Null)) {
 		MainLoop();
 	}
@@ -231,10 +230,22 @@ void Player::MainLoop() {
 
 	Player::UpdateInput();
 
+	if (!DisplayUi->ProcessEvents()) {
+		Scene::PopUntil(Scene::Null);
+		Player::Exit();
+		return;
+	}
+
 	int num_updates = 0;
 	while (Game_Clock::NextGameTimeStep()) {
 		if (num_updates > 0) {
 			Player::UpdateInput();
+
+			if (!DisplayUi->ProcessEvents()) {
+				Scene::PopUntil(Scene::Null);
+				Player::Exit();
+				return;
+			}
 		}
 
 		Scene::old_instances.clear();
@@ -260,9 +271,6 @@ void Player::MainLoop() {
 
 	auto frame_limit = DisplayUi->GetFrameLimit();
 	if (frame_limit == Game_Clock::duration()) {
-#ifdef EMSCRIPTEN
-		emscripten_sleep(0);
-#endif
 		return;
 	}
 
@@ -272,11 +280,6 @@ void Player::MainLoop() {
 	if (Game_Clock::now() < next) {
 		iframe.End();
 		Game_Clock::SleepFor(next - now);
-	} else {
-#ifdef EMSCRIPTEN
-		// Yield back to browser once per frame
-		emscripten_sleep(0);
-#endif
 	}
 }
 
@@ -305,20 +308,17 @@ void Player::UpdateInput() {
 		DisplayUi->ToggleZoom();
 	}
 	float speed = 1.0;
-	if (Input::IsSystemPressed(Input::FAST_FORWARD)) {
-		speed = speed_modifier;
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_A)) {
+		speed = speed_modifier_a;
 	}
-	if (Input::IsSystemPressed(Input::FAST_FORWARD_PLUS)) {
-		speed = speed_modifier_plus;
+	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
+		speed = speed_modifier_b;
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 
 	if (Main_Data::game_quit) {
 		reset_flag |= Main_Data::game_quit->ShouldQuit();
 	}
-
-	// Update Logic:
-	DisplayUi->ProcessEvents();
 }
 
 void Player::Update(bool update_scene) {
@@ -619,11 +619,11 @@ Game_Config Player::ParseCommandLine() {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-audio") || cp.ParseNext(arg, 0, "--disable-audio")) {
+		if (cp.ParseNext(arg, 0, {"--no-audio", "--disable-audio"})) {
 			no_audio_flag = true;
 			continue;
 		}
-		if (cp.ParseNext(arg, 0, "--no-rtp") || cp.ParseNext(arg, 0, "--disable-rtp")) {
+		if (cp.ParseNext(arg, 0, {"--no-rtp", "--disable-rtp"})) {
 			no_rtp_flag = true;
 			continue;
 		}
@@ -646,14 +646,6 @@ Game_Config Player::ParseCommandLine() {
 			}
 			continue;
 		}
-#if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
-		if (cp.ParseNext(arg, 1, "--soundfont")) {
-			if (arg.NumValues() > 0) {
-				FluidSynthDecoder::SetSoundfont(arg.Value(0));
-			}
-			continue;
-		}
-#endif
 		if (cp.ParseNext(arg, 0, "--version", 'v')) {
 			std::cout << GetFullVersionString() << std::endl;
 			exit(0);
@@ -683,6 +675,9 @@ void Player::CreateGameObjects() {
 	CmdlineParser cp(arguments);
 	game_config = Game_ConfigGame::Create(cp);
 
+	// Reinit MIDI
+	MidiDecoder::Reset();
+
 	// Load the meta information file.
 	// Note: This should eventually be split across multiple folders as described in Issue #1210
 	std::string meta_file = FileFinder::Game().FindFile(META_NAME);
@@ -697,6 +692,9 @@ void Player::CreateGameObjects() {
 		Output::Error("Invalid encoding: {}.", encoding);
 	}
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
+
+	// Special handling for games with altered files
+	FileFinder::SetGameFilesystem(HookFilesystem::Detect(FileFinder::Game()));
 
 	// Check for translation-related directories and load language names.
 	translation.InitTranslations();
@@ -770,9 +768,6 @@ void Player::CreateGameObjects() {
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
 		Cache::exfont_custom = exe_reader->GetExFont();
-		if (!Cache::exfont_custom.empty()) {
-			Output::Debug("ExFont loaded from RPG_RT");
-		}
 
 		if (engine == EngineNone) {
 			auto version_info = exe_reader->GetFileInfo();
@@ -841,6 +836,7 @@ void Player::CreateGameObjects() {
 
 	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} destiny={}",
 		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), Player::IsPatchDestiny());
+	game_config.PrintActivePatches();
 
 	ResetGameObjects();
 
@@ -897,7 +893,7 @@ void Player::ResetGameObjects() {
 
 	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
 	if (min_var == 0) {
-		if (Player::IsPatchManiac()) {
+		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
 			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
 		} else {
 			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
@@ -905,7 +901,7 @@ void Player::ResetGameObjects() {
 	}
 	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
 	if (max_var == 0) {
-		if (Player::IsPatchManiac()) {
+		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
 		} else {
 			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
@@ -1080,18 +1076,26 @@ void Player::LoadFonts() {
 	// Look for bundled fonts
 	auto gothic = FileFinder::OpenFont("Font");
 	if (gothic) {
-		Font::SetDefault(Font::CreateFtFont(std::move(gothic), 12, false, false), false);
+		auto ft = Font::CreateFtFont(std::move(gothic), 12, false, false);
+		player_config.font1.SetLocked(ft != nullptr);
+		if (ft) {
+			Font::SetDefault(ft, false);
+		}
 	}
 
 	auto mincho = FileFinder::OpenFont("Font2");
 	if (mincho) {
-		Font::SetDefault(Font::CreateFtFont(std::move(mincho), 12, false, false), true);
+		auto ft = Font::CreateFtFont(std::move(mincho), 12, false, false);
+		player_config.font2.SetLocked(ft != nullptr);
+		if (ft) {
+			Font::SetDefault(ft, true);
+		}
 	}
 #endif
 }
 
 static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
-	auto map = Game_Map::loadMapFile(Main_Data::game_player->GetMapId());
+	auto map = Game_Map::LoadMapFile(Main_Data::game_player->GetMapId());
 	Game_Map::SetupFromSave(
 			std::move(map),
 			std::move(save.map_info),
@@ -1169,7 +1173,6 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	if (!load_on_map) {
 		Scene::PopUntil(Scene::Title);
 	}
-	Game_Map::Dispose();
 
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 	Main_Data::game_switches->SetData(std::move(save->system.switches));
@@ -1188,18 +1191,26 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	int map_id = Main_Data::game_player->GetMapId();
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
-	save_request_id = map->Bind([save=std::move(*save)](auto* request) { OnMapSaveFileReady(request, std::move(save)); });
-	map->SetImportantFile(true);
+	save_request_id = map->Bind(
+		[save=std::move(*save), load_on_map, save_id](auto* request) {
+			Game_Map::Dispose();
+
+			OnMapSaveFileReady(request, std::move(save));
+
+			if (load_on_map) {
+				// Increment frame counter for consistency with a normal savegame load
+				IncFrame();
+				static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
+			}
+		}
+	);
 
 	Main_Data::game_system->ReloadSystemGraphic();
 
 	map->Start();
+	// load_on_map is handled in the async callback
 	if (!load_on_map) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
-	} else {
-		// Increment frame counter for consistency with a normal savegame load
-		IncFrame();
-		static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
 	}
 }
 
@@ -1241,7 +1252,6 @@ void Player::SetupPlayerSpawn() {
 
 	FileRequestAsync* request = Game_Map::RequestMap(map_id);
 	map_request_id = request->Bind(&OnMapFileReady);
-	request->SetImportantFile(true);
 	request->Start();
 }
 
@@ -1406,23 +1416,40 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --font1 FILE         Font to use for the first font. The system graphic of the
+                      game determines whether font 1 or 2 is used.
+ --font1-size PX      Size of font 1 in pixel. The default is 12.
+ --font2 FILE         Font to use for the second font.
+ --font2-size PX      Size of font 2 in pixel. The default is 12.
+ --font-path PATH     The path in which the settings scene looks for fonts.
+                      The default is config-path/Font.
  --language LANG      Load the game translation in language/LANG folder.
  --load-game-id N     Skip the title scene and load SaveN.lsd (N is padded to
                       two digits).
  --new-game           Skip the title scene and start a new game directly.
  --no-log-color       Disable colors in terminal log.
  --no-rtp             Disable support for the Runtime Package (RTP).
- --patch PATCH...     Instead of autodetecting patches used by this game, force
-                      emulation of certain patches.
-                      Options:
-                       common-this - "This Event" in common events
-                       dynrpg      - DynRPG patch by Cherry
-                       key-patch   - Key Patch by Ineluki
-                       maniac      - Maniac Patch by BingShan
-                       pic-unlock  - Pictures are not blocked by messages
-                       rpg2k3-cmds - Support all RPG Maker 2003 event commands
-                                     in any version of the engine
- --no-patch           Disable all engine patches.
+ --patch-antilag-switch SWITCH
+                      Disables event page refreshing when the switch SWITCH is
+                      enabled.
+ --patch-common-this  Enable usage of "This Event" in common events in any
+                      version of the engine.
+ --patch-direct-menu VAR
+                      Directly access subscreens of the default menu by setting
+                      VAR.
+ --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
+ --patch-easyrpg      Enable EasyRPG extensions.
+ --patch-key-patch    Enable Key Patch by Ineluki.
+ --patch-maniac [N]   Enable Maniac Patch by BingShan. Values for N:
+                       - 1: Enable the patch (default)
+                       - 2: Enable the patch but do not adjust variable ranges
+                            to 32 bit.
+ --patch-pic-unlock   Picture movement is not interrupted by messages in any
+                      version of the engine.
+ --patch-rpg2k3-cmds  Support all RPG Maker 2003 event commands in any version
+                      of the engine.
+ --no-patch           Disable all engine patches. To disable a single patch,
+                      prefix any of the patch options with --no-
  --project-path PATH  Instead of using the working directory, the game in PATH
                       is used.
  --record-input FILE  Record all button inputs to FILE.
@@ -1435,13 +1462,12 @@ Engine options:
                       will share the same save directory!
  --seed N             Seeds the random number generator with N.
 
+Providing any patch option disables the patch autodetection of the engine.
+
 Video options:
  --fps-limit          In combination with --no-vsync sets a custom frames per
                       second limit. The default is 60 FPS. Use --no-fps-limit
                       to run with unlimited frames per second.
- --fps-render-window  Render the frames per second counter in both fullscreen
-                      and windowed mode.
-                      Disable with --no-fps-render-window.
  --fullscreen         Start in fullscreen mode.
  --game-resolution R  Force a different game resolution. This is experimental
                       and can cause glitches or break games!
@@ -1449,6 +1475,8 @@ Video options:
                        original   - 320x240 (4:3). Recommended
                        widescreen - 416x240 (16:9)
                        ultrawide  - 560x240 (21:9)
+ --pause-focus-lost   Pause the game when the window has no focus.
+                      Disable with --no-pause-focus-lost.
  --scaling S          How the video output is scaled.
                       Options:
                        nearest  - Scale to screen size. Fast, but causes scaling
@@ -1457,6 +1485,10 @@ Video options:
                        bilinear - Like nearest, but applies a bilinear filter to
                                   avoid artifacts.
  --show-fps           Enable display of the frames per second counter.
+                      When in windowed mode it is shown inside the window.
+                      When in fullscreen mode it is shown in the titlebar.
+                      Use --fps-render-window to always show the counter inside
+                      the window.
                       Disable with --no-show-fps.
  --stretch            Ignore the aspect ratio and stretch video output to the
                       entire width of the screen.
@@ -1470,6 +1502,8 @@ Audio options:
  --music-volume V     Set volume of background music to V (0-100).
  --sound-volume V     Set volume of sound effects to V (0-100).
  --soundfont FILE     Soundfont in sf2 format to use when playing MIDI files.
+ --soundfont-path P   The path in which the settings scene looks for soundfonts.
+                      The default is config-path/Soundfont.
 
 Debug options:
  --battle-test N...   Start a battle test.
@@ -1563,4 +1597,3 @@ std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
 }
-

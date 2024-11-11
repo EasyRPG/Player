@@ -40,6 +40,7 @@ public:
 	void TransitionIn(SceneType prev_scene) override;
 	void Suspend(SceneType next_scene) override;
 	void vUpdate() override;
+	void Refresh() override;
 
 	void OnTranslationChanged() override;
 

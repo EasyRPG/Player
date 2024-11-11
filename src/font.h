@@ -99,6 +99,11 @@ class Font {
 	virtual ~Font() = default;
 
 	/**
+	 * @return Name of the font
+	 */
+	 StringView GetName() const;
+
+	/**
 	 * Determines the size of a bitmap required to render a single character.
 	 * The dimensions of the Rect describe a bounding box to fit the text.
 	 * To get the real height the glyph must be rendered. For performance reasons the height matches the size of the
@@ -257,6 +262,9 @@ class Font {
 	Style original_style;
 	Style current_style;
 	FontRef fallback_font;
+
+private:
+	bool RenderImpl(Bitmap& dest, int const x, int const y, const Bitmap& sys, int color, const GlyphRet& gret) const;
 };
 
 #endif

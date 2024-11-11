@@ -19,10 +19,10 @@
 #include "output.h"
 #include "system.h"
 
-AlsaMidiOutDevice::AlsaMidiOutDevice() {
+AlsaMidiOutDevice::AlsaMidiOutDevice(std::string& status_message) {
 	int status = snd_seq_open(&midi_out, "default", SND_SEQ_OPEN_DUPLEX, 0);
 	if (status < 0) {
-		Output::Debug("ALSA MIDI: snd_seq_open failed: {}", snd_strerror(status));
+		status_message = fmt::format("ALSA MIDI: snd_seq_open failed: {}", snd_strerror(status));
 		return;
 	}
 
@@ -75,16 +75,17 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 	done:;
 
 	if (!candidate_found) {
-		Output::Debug("ALSA MIDI: No suitable client found");
+		status_message = "ALSA MIDI: No suitable client found";
 		return;
 	}
 
-	Output::Debug("ALSA MIDI: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+	status_message = fmt::format("ALSA MIDI: Using client {}:{}:{}", dst_client, dst_port_name, dst_port);
+	Output::DebugStr(status_message);
 
 	status = snd_seq_create_simple_port(midi_out, "Harmony",
 		SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE, SND_SEQ_PORT_TYPE_APPLICATION);
 	if (status < 0) {
-		Output::Debug("ALSA MIDI: snd_seq_create_simple_port failed: {}", snd_strerror(status));
+		status_message = fmt::format("ALSA MIDI: snd_seq_create_simple_port failed: {}", snd_strerror(status));
 		return;
 	}
 
@@ -92,19 +93,19 @@ AlsaMidiOutDevice::AlsaMidiOutDevice() {
 
 	status = snd_seq_connect_to(midi_out, 0, dst_client, dst_port);
 	if (status < 0) {
-		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
+		status_message = fmt::format("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
 		return;
 	}
 
 	queue = snd_seq_alloc_named_queue(midi_out, GAME_TITLE);
 	if (queue < 0) {
-		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(queue));
+		status_message = fmt::format("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(queue));
 		return;
 	}
 
 	status = snd_seq_start_queue(midi_out, queue, nullptr);
 	if (status < 0) {
-		Output::Debug("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
+		status_message = fmt::format("ALSA MIDI: snd_seq_connect_to failed: {}", snd_strerror(status));
 		return;
 	}
 

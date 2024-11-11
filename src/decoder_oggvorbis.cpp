@@ -92,21 +92,29 @@ bool OggVorbisDecoder::Open(Filesystem_Stream::InputStream stream) {
 	vorbis_comment* vc = ov_comment(ovf, -1);
 	if (vc) {
 		// RPG VX loop support
-		const char* str = vorbis_comment_query(vc, "LOOPSTART", 0);
+		// Workaround conversion of string constant to char warning because
+		// of tremor using a different signature.
+#if defined(HAVE_TREMOR)
+		using char_type = char*;
+#else
+		using char_type = const char*;
+#endif
+
+		const char* str = vorbis_comment_query(vc, (char_type)"LOOPSTART", 0);
 		if (str) {
 			auto total = ov_pcm_total(ovf, -1) ;
 			loop.start = std::min<int64_t>(atoi(str), total);
 			if (loop.start >= 0) {
 				loop.looping = true;
 				loop.end = total;
-				str = vorbis_comment_query(vc, "LOOPLENGTH", 0);
+				str = vorbis_comment_query(vc, (char_type)"LOOPLENGTH", 0);
 				if (str) {
 					int len = atoi(str);
 					if (len >= 0) {
 						loop.end = std::min<int64_t>(loop.start + len, total);
 					}
 				} else {
-					str = vorbis_comment_query(vc, "LOOPEND", 0);
+					str = vorbis_comment_query(vc, (char_type)"LOOPEND", 0);
 					if (str) {
 						int end = atoi(str);
 						if (end >= 0) {
