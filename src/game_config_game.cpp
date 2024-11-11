@@ -241,6 +241,7 @@ void Game_ConfigGame::PrintActivePatches() {
 	};
 
 	add_bool(patch_easyrpg);
+	add_bool(patch_destiny);
 	add_bool(patch_dynrpg);
 	add_bool(patch_common_this_event);
 	add_bool(patch_unlock_pics);

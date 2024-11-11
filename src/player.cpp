@@ -833,8 +833,6 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	Output::Debug("Patch configuration: dynrpg={} maniac={} key-patch={} common-this={} pic-unlock={} 2k3-commands={} destiny={}",
-		Player::IsPatchDynRpg(), Player::IsPatchManiac(), Player::IsPatchKeyPatch(), game_config.patch_common_this_event.Get(), game_config.patch_unlock_pics.Get(), game_config.patch_rpg2k3_commands.Get(), Player::IsPatchDestiny());
 	game_config.PrintActivePatches();
 
 	ResetGameObjects();

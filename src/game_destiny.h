@@ -304,7 +304,7 @@ namespace Destiny
 
 		private:
 			// Member data
-			char* _destinyScript;
+			std::string _destinyScript;
 			char* _scriptPtr;
 			uint32_t _breaks;
 			uint32_t _continues;
@@ -335,7 +335,7 @@ namespace Destiny
 			const bool BlockComment();
 
 			/**
-			 * Check whether character is a whitespace..
+			 * Check whether character is a whitespace.
 			 *
 			 * @return Flag of whitespace character.
 			 */
@@ -348,6 +348,11 @@ namespace Destiny
 					ch == 0x0B;			// Vertical Tabulator (VT)
 			}
 
+			/**
+			 * Check whether character is a part of a word.
+			 *
+			 * @return Flag of word character.
+			 */
 			inline const bool IsWordChar(const char ch) const
 			{
 				return ch == '_' ||

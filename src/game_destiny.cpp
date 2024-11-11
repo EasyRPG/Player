@@ -17,7 +17,6 @@
 
 // Headers
 #include "game_destiny.h"
-#include <cstring>
 
 #ifndef EMSCRIPTEN
 #include "exe_reader.h"
@@ -210,15 +209,12 @@ void Game_Destiny::CheckVersionInfo()
 Interpreter::Interpreter()
 {
 	CleanUpData();
-	_destinyScript = nullptr;
 	_scriptPtr = nullptr;
 }
 
 const char* Interpreter::MakeString(SaveEventExecFrame& frame)
 {
 	std::string code;
-	size_t length;
-	char* destinyScript;
 
 	int32_t& current = frame.current_command;
 	const std::vector<EventCommand>& cmdList = frame.commands;
@@ -233,18 +229,14 @@ const char* Interpreter::MakeString(SaveEventExecFrame& frame)
 		++current;
 	}
 
-	length = code.length() + 1;
-	destinyScript = new char[length];
-	strcpy_s(destinyScript, length, code.c_str());
-
-	return _destinyScript = _scriptPtr = destinyScript;
+	_destinyScript = code;
+	return _scriptPtr = _destinyScript.data();
 }
 
 void Interpreter::FreeString()
 {
-	delete[] _destinyScript;
-	_destinyScript = nullptr;
-	_scriptPtr = nullptr;
+	_destinyScript = "";
+	_scriptPtr = _destinyScript.data();
 }
 
 void Interpreter::SkipWhiteSpace()
@@ -270,7 +262,7 @@ const size_t Interpreter::GetWordLen()
 const InterpretFlag Interpreter::Interpret()
 {
 	char* code;
-	uint8_t flags[4];
+	//uint8_t flags[4];
 	InterpretFlag returnType;
 
 	size_t wordLen;
