@@ -425,6 +425,19 @@ public:
 	 */
 	bool Main(lcf::rpg::SaveEventExecFrame& frame);
 
+
+	// Inline functions
+
+	/**
+	 * Retrieves the Destiny interpreter.
+	 *
+	 * @returns The Destiny interpreter.
+	 */
+	inline Destiny::MainFunctions::Interpreter& Interpreter()
+	{
+		return _interpreter;
+	}
+
 private:
 	// Member data
 

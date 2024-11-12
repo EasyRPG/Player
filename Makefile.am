@@ -738,6 +738,7 @@ test_runner_SOURCES = \
 	tests/game_character_flash.cpp \
 	tests/game_character_move.cpp \
 	tests/game_character_moveto.cpp \
+	tests/game_destiny.cpp \
 	tests/game_enemy.cpp \
 	tests/game_event.cpp \
 	tests/game_player_input.cpp \
