@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_destiny.h"
+#include "filefinder.h"
 
 #ifndef EMSCRIPTEN
 #include "exe_reader.h"
@@ -75,7 +76,7 @@ void Game_Destiny::Load()
 #else
 	// TODO [XGB]: Find to manage Destiny initialization parameters on Emscripten
 	dllVersion = 0x20000;
-	language = ENGLISH;
+	language = Destiny::Language::ENGLISH;
 	gameVersion = 0x20000107;
 	extra = 0x01;
 	dwordSize = floatSize = stringSize = 0x64;
