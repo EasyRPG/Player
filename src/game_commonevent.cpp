@@ -63,6 +63,10 @@ AsyncOp Game_CommonEvent::Update(bool resume_async) {
 	return {};
 }
 
+int Game_CommonEvent::GetId() const {
+	return common_event_id;
+}
+
 int Game_CommonEvent::GetIndex() const {
 	return common_event_id;
 }

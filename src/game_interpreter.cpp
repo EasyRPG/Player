@@ -3427,21 +3427,33 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
 		}
 		break;
-	case 4:
+	case 4: {
 		// Item
+		int item_id = com.parameters[1];
+
+		if (Player::IsPatchManiac()) {
+			item_id = ValueOrVariable(com.parameters[3], item_id);
+		}
+
 		if (com.parameters[2] == 0) {
 			// Having
-			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) > 0;
+			result = Main_Data::game_party->GetItemCount(item_id)
+				+ Main_Data::game_party->GetEquippedItemCount(item_id) > 0;
 		} else {
 			// Not having
-			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) == 0;
+			result = Main_Data::game_party->GetItemCount(item_id)
+				+ Main_Data::game_party->GetEquippedItemCount(item_id) == 0;
 		}
 		break;
+	}
 	case 5:
 		// Hero
 		actor_id = com.parameters[1];
+
+		if (Player::IsPatchManiac()) {
+			actor_id = ValueOrVariable(com.parameters[4], actor_id);
+		}
+
 		actor = Main_Data::game_actors->GetActor(actor_id);
 
 		if (!actor) {
@@ -3491,13 +3503,20 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			;
 		}
 		break;
-	case 6:
+	case 6: {
 		// Orientation of char
-		character = GetCharacter(com.parameters[1]);
+		int chara_id = com.parameters[1];
+
+		if (Player::IsPatchManiac()) {
+			chara_id = ValueOrVariable(com.parameters[3], chara_id);
+		}
+
+		character = GetCharacter(chara_id);
 		if (character != NULL) {
 			result = character->GetFacing() == com.parameters[2];
 		}
 		break;
+	}
 	case 7: {
 		// Vehicle in use
 		Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[1] + 1);
@@ -3594,7 +3613,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		}
 		break;
 	case 15:
-		// Maniac: string comparison
+		// Maniac: String comparison
 		if (Player::IsPatchManiac()) {
 			int modes[] = {
 				(com.parameters[1]     ) & 15, //str_l mode: 0 = direct, 1 = indirect
@@ -4291,9 +4310,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	// x03 -> indirect reference
 	// for the displayed string, the id argument is in com.parameters[22]
 	// here we are capturing all the delimiters, but currently only need to support reading the first one
-	int i = 0;
 	std::vector<int> delims;
-	auto components = Utils::Tokenize(com.string, [p = &delims, &i](char32_t ch) {
+	auto components = Utils::Tokenize(com.string, [p = &delims](char32_t ch) {
 		if (ch == '\x01' || ch == '\x02' || ch == '\x03') {
 			p->push_back(static_cast<int>(ch));
 			return true;

@@ -79,6 +79,7 @@ void Sprite_Enemy::OnMonsterSpriteReady(FileRequestResult* result) {
 	if (hue_change) {
 		BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
 		new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), hue);
+		new_graphic->SetId(fmt::format("{},hue={}", graphic->GetId(), hue));
 		graphic = new_graphic;
 	}
 

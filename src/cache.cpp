@@ -463,8 +463,16 @@ BitmapRef Cache::Tile(StringView filename, int tile_id) {
 }
 
 BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend) {
+	std::string id = ToString(src_bitmap->GetId());
+
+	if (id.empty()) {
+		// assert caused too many regressions, use the pointer as the unique key and log instead
+		Output::Debug("Bitmap has no ID. Please report a bug!");
+		id = fmt::format("{}", (void*)(src_bitmap.get()));
+	}
+
 	const effect_key_type key {
-		src_bitmap->GetId(),
+		id,
 		src_bitmap->GetTransparent(),
 		rect,
 		flip_x,
@@ -472,8 +480,6 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 		tone,
 		blend
 	};
-
-	assert(!src_bitmap->GetId().empty());
 
 	const auto it = cache_effects.find(key);
 

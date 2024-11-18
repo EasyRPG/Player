@@ -106,12 +106,15 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 		return -1;
 	}
 
-	int splits = 0;
 	std::string str = ToString(Get(params.string_id));
 
 	params.string_id = string_out_id;
 
+	int components = 0;
+
 	if (delimiter.empty()) {
+		// Count the characters (or the codepoints in our case)
+		components = 0;
 		const char* iter = str.data();
 		const auto end = str.data() + str.size();
 
@@ -127,19 +130,20 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 			Set(params, std::string(start_copy, iter - start_copy));
 
 			params.string_id++;
-			splits++;
+			components++;
 		}
 	} else {
+		components = 1;
+
 		if (str.find(delimiter) == std::string::npos) {
-			// token not found -> 1 split
-			splits = 1;
+			// token not found
 		} else {
 			std::string token;
 			for (auto index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
 				token = str.substr(0, index);
 				Set(params, token);
 				params.string_id++;
-				splits++;
+				components++;
 				str.erase(0, index + delimiter.length());
 			}
 		}
@@ -147,8 +151,8 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 
 	// set the remaining string
 	Set(params, str);
-	variables.Set(var_id, splits);
-	return splits;
+	variables.Set(var_id, components);
+	return components;
 }
 
 std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_yield) {
@@ -171,6 +175,11 @@ std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_y
 	if (encoding == 0) {
 		lcf::Encoder enc(Player::encoding);
 		enc.Encode(file_content);
+	} else {
+		// UTF-8: Remove Byte Order Mask
+		if (file_content.size() >= 3 && file_content[0] == '\xEF' && file_content[1] == '\xBB' && file_content[2] == '\xBF') {
+			file_content.erase(0, 3);
+		}
 	}
 
 	return file_content;
