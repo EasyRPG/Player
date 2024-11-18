@@ -39,6 +39,7 @@ struct Game_ConfigGame {
 	StringConfigParam engine_str{ "Engine", "", "Game", "Engine", std::string() };
 	BoolConfigParam fake_resolution{ "Fake Metrics", "Makes games run on higher resolutions (with some success)", "Game", "FakeResolution", false };
 	BoolConfigParam patch_easyrpg{ "EasyRPG", "EasyRPG Engine Extensions", "Patch", "EasyRPG", false };
+	BoolConfigParam patch_destiny{ "Destiny Patch", "", "Patch", "Destiny", false };
 	BoolConfigParam patch_dynrpg{ "DynRPG", "", "Patch", "DynRPG", false };
 	ConfigParam<int> patch_maniac{ "Maniac Patch", "", "Patch", "Maniac", 0 };
 	BoolConfigParam patch_common_this_event{ "Common This Event", "Support \"This Event\" in Common Events", "Patch", "CommonThisEvent", false };

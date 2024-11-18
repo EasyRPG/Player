@@ -161,6 +161,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_config.h
 	src/game_config_game.cpp
 	src/game_config_game.h
+	src/game_destiny.cpp
+	src/game_destiny.h
 	src/game_dynrpg.cpp
 	src/game_dynrpg.h
 	src/game_enemy.cpp

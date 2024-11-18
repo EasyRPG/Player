@@ -293,6 +293,11 @@ namespace Player {
 	bool IsPatchKeyPatch();
 
 	/**
+	 * @return True when Destiny Patch is active
+	 */
+	bool IsPatchDestiny();
+
+	/**
 	 * @return True when EasyRpg extensions are on
 	 */
 	bool HasEasyRpgExtensions();
@@ -486,6 +491,10 @@ inline bool Player::IsPatchManiac() {
 
 inline bool Player::IsPatchKeyPatch() {
 	return game_config.patch_key_patch.Get();
+}
+
+inline bool Player::IsPatchDestiny() {
+	return game_config.patch_destiny.Get();
 }
 
 inline bool Player::HasEasyRpgExtensions() {

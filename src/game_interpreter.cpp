@@ -29,6 +29,7 @@
 #include "audio.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
+#include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
 #include "game_enemyparty.h"
@@ -2032,6 +2033,18 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 
 		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
+
+
+	// DestinyScript
+	if (Player::IsPatchDestiny()) {
+		if (com.string.empty() || com.string[0] != '$') {
+			// Not a DestinyScript
+			return true;
+		}
+
+		return Main_Data::game_destiny->Main(GetFrame());
+	}
+
 	return true;
 }
 
