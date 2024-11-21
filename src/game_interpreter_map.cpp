@@ -608,15 +608,6 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 	int speed;
 	bool waiting_pan_screen = false;
 
-	// Maniac has new functions for pixel scrolling, which also have X and Y offsets
-	bool is_maniac = Player::IsPatchManiac();
-	int h;
-	int v;
-	double h_speed;
-	double v_speed;
-	bool centered = false;
-	bool relative = false;
-
 	auto& player = *Main_Data::game_player;
 
 	switch (com.parameters[0]) {
@@ -645,9 +636,13 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 		distance /= SCREEN_TILE_SIZE;
 		break;
 	}
-	if (is_maniac && com.parameters.size() > 5) {
-		h = ValueOrVariableBitfield(com, 1, 0, 2);
-		v = ValueOrVariableBitfield(com, 1, 1, 3);
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 5) {
+		// Pixel scrolling with h/v offsets
+		bool centered = false; // absolute from default pan (centered on hero)
+		bool relative = false; // relative to current camera
+		int h = ValueOrVariableBitfield(com, 1, 0, 2);
+		int v = ValueOrVariableBitfield(com, 1, 1, 3);
 		waiting_pan_screen = (com.parameters[4] & 0x01) != 0;
 		speed = ValueOrVariableBitfield(com, 1, 2, 5);
 		switch (com.parameters[0]) {

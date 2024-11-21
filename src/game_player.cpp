@@ -772,8 +772,6 @@ void Game_Player::UnlockPan() {
 }
 
 void Game_Player::StartPan(int direction, int distance, int speed) {
-	bool is_maniac = Player::IsPatchManiac();
-
 	distance *= SCREEN_TILE_SIZE;
 
 	if (direction == PanUp) {
@@ -790,47 +788,43 @@ void Game_Player::StartPan(int direction, int distance, int speed) {
 		data()->pan_finish_x = new_pan;
 	}
 
-	// Maniac uses separate horizontal/vertical pan doubles for everything
-	if (is_maniac) {
-		data()->maniac_horizontal_pan_speed = static_cast<double>(2 << speed);
-		data()->maniac_vertical_pan_speed = static_cast<double>(2 << speed);
-	}
 	data()->pan_speed = 2 << speed;
+
+	if (Player::IsPatchManiac()) {
+		// Maniac uses separate horizontal/vertical pan for everything
+		data()->maniac_horizontal_pan_speed = data()->pan_speed;
+		data()->maniac_vertical_pan_speed = data()->pan_speed;
+	}
 }
 
 void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool centered, bool relative) {
-	const bool is_maniac = Player::IsPatchManiac();
-
-	if (!is_maniac) {
+	if (!Player::IsPatchManiac()) {
 		return;
 	}
 
 	h *= TILE_SIZE;
 	v *= TILE_SIZE;
 
+	maniac_pan_current_x = static_cast<double>(data()->pan_current_x);
+	maniac_pan_current_y = static_cast<double>(data()->pan_current_y);
+
 	int new_pan_x;
 	int new_pan_y;
 
-	double h_speed;
-	double v_speed;
-
-	int pan_current_x = data()->pan_current_x;
-	int pan_current_y = data()->pan_current_y;
-	maniac_pan_current_x = static_cast<double>(pan_current_x);
-	maniac_pan_current_y = static_cast<double>(pan_current_y);
-
+	// FIXME: Fails when relative and centered are used in combination
 	if (relative) {
 		new_pan_x = data()->pan_finish_x - h;
 		new_pan_y = data()->pan_finish_y - v;
+	} else if (centered) {
+		new_pan_x = GetSpriteX() + GetDefaultPanX() - h;
+		new_pan_y = GetSpriteY() + GetDefaultPanY() - v;
 	} else {
-		if (centered) {
-			new_pan_x = GetSpriteX() + GetDefaultPanX() - h;
-			new_pan_y = GetSpriteY() + GetDefaultPanY() - v;
-		} else {
-			new_pan_x = GetSpriteX() - h;
-			new_pan_y = GetSpriteY() - v;
-		}
+		new_pan_x = GetSpriteX() - h;
+		new_pan_y = GetSpriteY() - v;
 	}
+
+	double h_speed;
+	double v_speed;
 
 	if (speed == 0) {
 		// Instant pan if speed is zero
@@ -853,15 +847,15 @@ void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool
 }
 
 void Game_Player::ResetPan(int speed) {
-	bool is_maniac = Player::IsPatchManiac();
 	data()->pan_finish_x = GetDefaultPanX();
 	data()->pan_finish_y = GetDefaultPanY();
-	// Maniac uses separate horizontal/vertical pan doubles for everything
-	if (is_maniac) {
-		data()->maniac_horizontal_pan_speed = static_cast<double>(2 << speed);
-		data()->maniac_vertical_pan_speed = static_cast<double>(2 << speed);
-	}
 	data()->pan_speed = 2 << speed;
+
+	if (Player::IsPatchManiac()) {
+		// Maniac uses separate horizontal/vertical pan for everything
+		data()->maniac_horizontal_pan_speed = data()->pan_speed;
+		data()->maniac_vertical_pan_speed = data()->pan_speed;
+	}
 }
 
 int Game_Player::GetPanWait() {
@@ -880,31 +874,30 @@ void Game_Player::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	bool is_maniac = Player::IsPatchManiac();
 	const int step = data()->pan_speed;
 	const int pan_remain_x = data()->pan_current_x - data()->pan_finish_x;
 	const int pan_remain_y = data()->pan_current_y - data()->pan_finish_y;
 
-	// Maniac
-	const double step_x = data()->maniac_horizontal_pan_speed;
-	const double step_y = data()->maniac_vertical_pan_speed;
-
 	int dx;
 	int dy;
-	if (is_maniac) {
+
+	if (Player::IsPatchManiac()) {
+		const double step_x = data()->maniac_horizontal_pan_speed;
+		const double step_y = data()->maniac_vertical_pan_speed;
+
 		// Maniac uses doubles for smoother screen scrolling
-		double ddx = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
-		double ddy = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
+		double dx2 = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
+		double dy2 = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
 
-		ddx = pan_remain_x >= 0 ? ddx : -ddx;
-		ddy = pan_remain_y >= 0 ? ddy : -ddy;
+		dx2 = pan_remain_x >= 0 ? dx2 : -dx2;
+		dy2 = pan_remain_y >= 0 ? dy2 : -dy2;
 
-		maniac_pan_current_x -= ddx;
-		maniac_pan_current_y -= ddy;
+		maniac_pan_current_x -= dx2;
+		maniac_pan_current_y -= dy2;
 
-		// Depending on the position decimal, floor or ceil the value.
-		dx = std::round(std::abs(maniac_pan_current_x)) == std::ceil(std::abs(maniac_pan_current_x)) ? static_cast<int>(std::floor(ddx)) : static_cast<int>(std::ceil(ddx));
-		dy = std::round(std::abs(maniac_pan_current_y)) == std::ceil(std::abs(maniac_pan_current_y)) ? static_cast<int>(std::floor(ddy)) : static_cast<int>(std::ceil(ddy));
+		// Depending on the position, floor or ceil the value
+		dx = Utils::RoundTo<double>(std::abs(maniac_pan_current_x)) == std::ceil(std::abs(maniac_pan_current_x)) ? static_cast<int>(std::floor(dx2)) : static_cast<int>(std::ceil(dx2));
+		dy = Utils::RoundTo<double>(std::abs(maniac_pan_current_y)) == std::ceil(std::abs(maniac_pan_current_y)) ? static_cast<int>(std::floor(dy2)) : static_cast<int>(std::ceil(dy2));
 	} else {
 		dx = std::min(step, std::abs(pan_remain_x));
 		dy = std::min(step, std::abs(pan_remain_y));
