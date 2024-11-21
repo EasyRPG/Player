@@ -20,67 +20,15 @@
 #ifdef HAVE_NLOHMANN_JSON
 
 #include "output.h"
+#include <nlohmann/json.hpp>
 #include <sstream>
 #include <unordered_map>
+#include "string_view.h"
 
-namespace Json_Helper {
+using json = nlohmann::json;
 
-	const std::string k_invalid_str = "<<INVALID_OUTPUT>>";
-
-	std::unordered_map<std::string, nlohmann::json> json_cache;
-
-	nlohmann::json* GetObjectAtPath(nlohmann::json& json_obj, std::string_view json_path, bool allow_path_creation = false) {
-		nlohmann::json* current_obj = &json_obj;
-
-		std::stringstream path_stream(json_path.data());
-		std::string token;
-
-		while (std::getline(path_stream, token, '.')) {
-			if (token.back() == ']') {
-				size_t bracket_pos = token.find('[');
-				std::string array_name = token.substr(0, bracket_pos);
-				int index = std::stoi(token.substr(bracket_pos + 1, token.length() - bracket_pos - 2));
-
-				if (!current_obj->contains(array_name)) {
-					if (allow_path_creation) {
-						(*current_obj)[array_name] = nlohmann::json::array();
-					}
-					else {
-						return nullptr;
-					}
-				}
-
-				nlohmann::json& array_obj = (*current_obj)[array_name];
-
-				if (index >= array_obj.size()) {
-					if (allow_path_creation) {
-						array_obj.get_ref<nlohmann::json::array_t&>().resize(index + 1);
-					}
-					else {
-						return nullptr;
-					}
-				}
-
-				current_obj = &(array_obj[index]);
-			}
-			else {
-				if (!current_obj->contains(token)) {
-					if (allow_path_creation) {
-						(*current_obj)[token] = nlohmann::json::object();
-					}
-					else {
-						return nullptr;
-					}
-				}
-
-				current_obj = &((*current_obj)[token]);
-			}
-		}
-
-		return current_obj;
-	}
-
-	std::string GetValueAsString(const nlohmann::json& json_obj) {
+namespace {
+	std::string GetValueAsString(const json& json_obj) {
 		std::string result;
 
 		if (json_obj.is_string()) {
@@ -101,72 +49,66 @@ namespace Json_Helper {
 
 		return result;
 	}
+}
 
-	std::string GetValue(std::string_view json_data, std::string_view json_path) {
-		try {
-			nlohmann::json json_obj;
-			auto it = json_cache.find(json_data.data());
-
-			if (it != json_cache.end()) {
-				json_obj = it->second;
-			}
-			else {
-				json_obj = nlohmann::json::parse(json_data);
-				json_cache[json_data.data()] = json_obj;
-			}
-
-			nlohmann::json* current_obj = GetObjectAtPath(json_obj, json_path);
-
-			if (current_obj == nullptr) {
-				Output::Warning("JSON_ERROR - Invalid path: {}", json_path);
-				return k_invalid_str;
-			}
-
-			return GetValueAsString(*current_obj);
+namespace Json_Helper {
+	std::optional<nlohmann::json> Parse(std::string_view json_data) {
+		json json_obj = json::parse(json_data, nullptr, false);
+		if (json_obj.is_discarded()) {
+    		return {};
 		}
-		catch (const std::exception& e) {
-			Output::Warning("JSON_ERROR - {}", e.what());
-			return k_invalid_str;
+
+		return json_obj;
+	}
+
+	std::optional<std::string> GetValue(std::string_view json_data, std::string_view json_path) {
+		auto json_obj = Parse(json_data);
+
+		if (!json_obj) {
+			Output::Warning("JSON: Parse error for {}", json_data);
+    		return {};
 		}
+
+		json::json_pointer ptr((std::string(json_path)));
+
+		if (ptr.empty()) {
+			Output::Warning("JSON: Bad json pointer {}", json_path);
+			return {};
+		}
+
+		if (!json_obj->contains(ptr)) {
+			return "";
+		}
+
+		return GetValueAsString((*json_obj)[ptr]);
 	}
 
 	std::string SetValue(std::string_view json_data, std::string_view json_path, std::string_view value) {
-		try {
-			nlohmann::json json_obj;
-			auto it = json_cache.find(json_data.data());
+		auto json_obj = Parse(json_data);
 
-			if (it != json_cache.end()) {
-				json_obj = it->second;
-			}
-			else {
-				json_obj = nlohmann::json::parse(json_data);
-				json_cache[json_data.data()] = json_obj;
-			}
-
-			nlohmann::json* current_obj = GetObjectAtPath(json_obj, json_path, true);
-
-			if (current_obj == nullptr) {
-				Output::Warning("JSON_ERROR - Invalid path: {}", json_path);
-				return std::string(json_data);
-			}
-
-			// Parse the value string and set the appropriate JSON type
-			try {
-				*current_obj = nlohmann::json::parse(value);
-			}
-			catch (const nlohmann::json::parse_error&) {
-				// If parsing fails, treat it as a string value
-				*current_obj = value;
-			}
-
-			return json_obj.dump();
+		if (!json_obj) {
+			Output::Warning("JSON Parse error for {}", json_data);
+    		return std::string(json_data);
 		}
-		catch (const std::exception& e) {
-			Output::Warning("JSON_ERROR - {}", e.what());
-			return std::string(json_data);
+
+		json::json_pointer ptr((std::string(json_path)));
+
+		if (ptr.empty()) {
+			Output::Warning("JSON: Bad json pointer {}", json_path);
+			return {};
 		}
+
+		json obj_value = json::parse(value, nullptr, false);
+
+		if (obj_value.is_discarded()) {
+			// If parsing fails, treat it as a string value
+			(*json_obj)[ptr] = std::string(value);
+		} else {
+			(*json_obj)[ptr] = obj_value;
+		}
+
+		return (*json_obj).dump();
 	}
-
 }
 
 #endif // HAVE_NLOHMANN_JSON
