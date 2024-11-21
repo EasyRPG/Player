@@ -5080,7 +5080,12 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
 
 	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
-	std::string json_data = ToString(Main_Data::game_strings->Get(source_var_id));
+	auto* json_data = Main_Data::game_strings->ParseJson(source_var_id);
+
+	if (!json_data) {
+		Output::Warning("JSON Parse error for {}", Main_Data::game_strings->Get(source_var_id));
+		return true;
+	}
 
 	if (target_var_type == 2 && !Player::IsPatchManiac()) {
 		Output::Warning("CommandEasyRpgProcessJson: String operations require Maniac Patch support");
@@ -5090,7 +5095,7 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	std::optional<std::string> result;
 
 	if (operation == 0) { // Get operation: Extract a value from JSON data
-		result = Json_Helper::GetValue(json_data, json_path);
+		result = Json_Helper::GetValue(*json_data, json_path);
 
 		if (result) {
 			switch (target_var_type) {
@@ -5127,7 +5132,7 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 			return true;
 		}
 
-		result = Json_Helper::SetValue(json_data, json_path, new_value);
+		result = Json_Helper::SetValue(*json_data, json_path, new_value);
 
 		if (result) {
 			Main_Data::game_strings->Asg({ source_var_id }, *result);

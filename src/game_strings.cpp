@@ -28,10 +28,33 @@
 #include "player.h"
 #include "utils.h"
 
+#ifdef HAVE_NLOHMANN_JSON
+#include "json_helper.h"
+#endif
+
 void Game_Strings::WarnGet(int id) const {
 	Output::Debug("Invalid read strvar[{}]!", id);
 	--_warnings;
 }
+
+#ifdef HAVE_NLOHMANN_JSON
+nlohmann::json* Game_Strings::ParseJson(int id) {
+	auto it = _json_cache.find(id);
+	if (it != _json_cache.end()) {
+		return &(it->second);
+	}
+
+	auto str = ToString(Get(id));
+	auto res = Json_Helper::Parse(str);
+
+	if (!res) {
+		return nullptr;
+	} else {
+		_json_cache[id] = *res;
+		return &_json_cache[id];
+	}
+}
+#endif
 
 StringView Game_Strings::Asg(Str_Params params, StringView string) {
 	Set(params, string);

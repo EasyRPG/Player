@@ -15,7 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
- // Headers
+// Headers
+#include "system.h"
 #include <cstdint>
 #include <string>
 #include <lcf/data.h>
@@ -26,6 +27,10 @@
 #include "pending_message.h"
 #include "player.h"
 #include "string_view.h"
+
+#ifdef HAVE_NLOHMANN_JSON
+#include <nlohmann/json.hpp>
+#endif
 
 /**
  * Game_Strings class.
@@ -59,6 +64,10 @@ public:
 	StringView GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const;
 	StringView GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables);
 
+#ifdef HAVE_NLOHMANN_JSON
+	nlohmann::json* ParseJson(int id);
+#endif
+
 	StringView Asg(Str_Params params, StringView string);
 	StringView Cat(Str_Params params, StringView string);
 	int ToNum(Str_Params params, int var_id, Game_Variables& variables);
@@ -85,8 +94,11 @@ private:
 
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
-};
 
+#ifdef HAVE_NLOHMANN_JSON
+	std::unordered_map<int, nlohmann::json> _json_cache;
+#endif
+};
 
 inline void Game_Strings::Set(Str_Params params, StringView string) {
 	if (params.string_id <= 0) {
@@ -108,10 +120,18 @@ inline void Game_Strings::Set(Str_Params params, StringView string) {
 	} else {
 		it->second = ins_string;
 	}
+
+#ifdef HAVE_NLOHMANN_JSON
+	_json_cache.erase(params.string_id);
+#endif
 }
 
 inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
+
+#ifdef HAVE_NLOHMANN_JSON
+	_json_cache.clear();
+#endif
 }
 
 inline void Game_Strings::SetData(const std::vector<lcf::DBString>& s) {
@@ -122,6 +142,10 @@ inline void Game_Strings::SetData(const std::vector<lcf::DBString>& s) {
 		}
 		++i;
 	}
+
+#ifdef HAVE_NLOHMANN_JSON
+	_json_cache.clear();
+#endif
 }
 
 inline const Game_Strings::Strings_t& Game_Strings::GetData() const {

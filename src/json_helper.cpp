@@ -61,14 +61,7 @@ namespace Json_Helper {
 		return json_obj;
 	}
 
-	std::optional<std::string> GetValue(std::string_view json_data, std::string_view json_path) {
-		auto json_obj = Parse(json_data);
-
-		if (!json_obj) {
-			Output::Warning("JSON: Parse error for {}", json_data);
-    		return {};
-		}
-
+	std::optional<std::string> GetValue(nlohmann::json& json_obj, std::string_view json_path) {
 		json::json_pointer ptr((std::string(json_path)));
 
 		if (ptr.empty()) {
@@ -76,21 +69,14 @@ namespace Json_Helper {
 			return {};
 		}
 
-		if (!json_obj->contains(ptr)) {
+		if (!json_obj.contains(ptr)) {
 			return "";
 		}
 
-		return GetValueAsString((*json_obj)[ptr]);
+		return GetValueAsString(json_obj[ptr]);
 	}
 
-	std::string SetValue(std::string_view json_data, std::string_view json_path, std::string_view value) {
-		auto json_obj = Parse(json_data);
-
-		if (!json_obj) {
-			Output::Warning("JSON Parse error for {}", json_data);
-    		return std::string(json_data);
-		}
-
+	std::string SetValue(nlohmann::json& json_obj, std::string_view json_path, std::string_view value) {
 		json::json_pointer ptr((std::string(json_path)));
 
 		if (ptr.empty()) {
@@ -102,12 +88,12 @@ namespace Json_Helper {
 
 		if (obj_value.is_discarded()) {
 			// If parsing fails, treat it as a string value
-			(*json_obj)[ptr] = std::string(value);
+			json_obj[ptr] = std::string(value);
 		} else {
-			(*json_obj)[ptr] = obj_value;
+			json_obj[ptr] = obj_value;
 		}
 
-		return (*json_obj).dump();
+		return json_obj.dump();
 	}
 }
 

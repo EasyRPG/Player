@@ -28,8 +28,8 @@
 
 namespace Json_Helper {
 	std::optional<nlohmann::json> Parse(std::string_view json_data);
-	std::optional<std::string> GetValue(std::string_view json_data, std::string_view json_path);
-	std::string SetValue(std::string_view json_data, std::string_view json_path, std::string_view value);
+	std::optional<std::string> GetValue(nlohmann::json& json_obj, std::string_view json_path);
+	std::string SetValue(nlohmann::json& json_obj, std::string_view json_path, std::string_view value);
 }
 
 #endif // HAVE_NLOHMANN_JSON
