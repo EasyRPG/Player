@@ -793,6 +793,23 @@ void Game_Character::CancelMoveRoute() {
 	SetMoveRouteFinished(false);
 }
 
+bool Game_Character::isStuck(int i) {
+	if(i == 0 ) i =1;
+    int currentPose = 500;
+    if (GetMoveRouteIndex() < GetMoveRoute().move_commands.size()) {
+        if (IsStopping() && GetMoveRoute().move_commands[GetMoveRouteIndex()].command_id < 12) {
+            failsMove++;
+        } else {
+            failsMove = 0;
+        }
+    } else {
+        failsMove = 0;
+    }
+
+    //Output::Warning("stuck? - {} {} {} -- {}", failsMove, IsPaused(), i, GetMaxStopCount());
+	return failsMove > i && (GetStopCount() == 0 || GetStopCount() > GetMaxStopCount());
+}
+
 int Game_Character::GetSpriteX() const {
 	int x = GetX() * SCREEN_TILE_SIZE;
 

@@ -234,6 +234,8 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandToggleAtbMode(com);
 		case Cmd::EasyRpg_TriggerEventAt:
 			return CommandEasyRpgTriggerEventAt(com);
+		case Cmd::EasyRpg_CallMovementAction:
+			return CommandEasyRpgCallMovementAction(com);
 		case Cmd::EasyRpg_WaitForSingleMovement:
 			return CommandEasyRpgWaitForSingleMovement(com);
 		default:
@@ -828,6 +830,78 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
 
 	Main_Data::game_player->TriggerEventAt(x, y);
+
+	return true;
+}
+
+
+bool Game_Interpreter_Map::CommandEasyRpgCallMovementAction(lcf::rpg::EventCommand const& com) {
+	// CommandSetMovement("moveCommand",[useVarID, ID, useVarOutput, output])
+
+	int eventID = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int outputParam = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	int outputParamB = ValueOrVariable(com.parameters[4], com.parameters[5]);
+
+	Game_Character* event = GetCharacter(eventID);
+	Game_Character* target;
+
+	std::string moveCommand = ToString(com.string);
+	std::string outputString = event->GetSpriteName();
+
+	std::size_t pos = moveCommand.find('/');
+
+	if (pos != std::string::npos) {
+		outputString = moveCommand.substr(pos + 1);
+		moveCommand = moveCommand.substr(0, pos);
+	}
+
+	if (moveCommand == "SetMoveSpeed")event->SetMoveSpeed(outputParam);
+	if (moveCommand == "SetMoveFrequency")event->SetMoveFrequency(outputParam);
+	if (moveCommand == "SetTransparency")event->SetTransparency(outputParam);
+	if (moveCommand == "SetAnimationType")event->SetAnimationType(static_cast<Game_Character::AnimType>(outputParam));
+
+
+	if (moveCommand == "Event2Event") {
+		target = GetCharacter(outputParam);
+		if (!target) {
+			return true;
+		}
+		event->SetFacing(target->GetFacing());
+		event->SetDirection(target->GetDirection());
+		event->SetX(target->GetX());
+		event->SetY(target->GetY());
+	}
+
+	if (moveCommand == "FaceTowards"){
+		if(!event->IsMoving()) {
+			target = GetCharacter(outputParam);
+			if (!target) {
+				return true;
+			}
+			event->TurnTowardCharacter(*target);
+			event->UpdateFacing();
+		}
+	}
+
+	if (moveCommand == "FaceAway"){
+		if (!event->IsMoving()) {
+			target = GetCharacter(outputParam);
+			if (!target) {
+				return true;
+			}
+			event->TurnAwayFromCharacter(*target);
+			event->UpdateFacing();
+		}
+	}
+
+	if (moveCommand == "SetFacingLocked")event->SetFacingLocked(outputParam);
+	if (moveCommand == "SetLayer")event->SetLayer(outputParam);
+	if (moveCommand == "SetFlying")event->SetFlying(outputParam); //FIXME: I wish any event could imitate an airship, lacks more work.
+	if (moveCommand == "ChangeCharset")event->SetSpriteGraphic(outputString,outputParam); // syntax ChangeCharset/actor1
+
+	if (moveCommand == "JumpTo")event->Game_Character::Jump(outputParam, outputParamB);
+
+	if (moveCommand == "StopMovement")event->CancelMoveRoute();
 
 	return true;
 }

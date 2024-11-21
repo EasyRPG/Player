@@ -789,9 +789,9 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
-		case static_cast<Cmd>(2056): //EasyRPG_CloneMapEvent
+		case Cmd::EasyRpg_CloneMapEvent:
 			return CommandEasyRpgCloneMapEvent(com);
-		case static_cast<Cmd>(2057): //EasyRPG_DestroyMapEvent
+		case Cmd::EasyRpg_DestroyMapEvent:
 			return CommandEasyRpgDestroyMapEvent(com);
 		default:
 			return true;
