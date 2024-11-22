@@ -298,6 +298,7 @@ protected:
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com);
 

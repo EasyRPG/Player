@@ -217,6 +217,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/input_source.h \
 	src/instrumentation.cpp \
 	src/instrumentation.h \
+	src/json_helper.cpp \
+	src/json_helper.h \
 	src/keys.h \
 	src/main_data.cpp \
 	src/main_data.h \
