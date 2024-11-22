@@ -637,6 +637,38 @@ bool Game_Interpreter_Map::CommandPanScreen(lcf::rpg::EventCommand const& com) {
 		break;
 	}
 
+	if (Player::IsPatchManiac() && com.parameters.size() > 5) {
+		// Pixel scrolling with h/v offsets
+		bool centered = false; // absolute from default pan (centered on hero)
+		bool relative = false; // relative to current camera
+		int h = ValueOrVariableBitfield(com, 1, 0, 2);
+		int v = ValueOrVariableBitfield(com, 1, 1, 3);
+		waiting_pan_screen = (com.parameters[4] & 0x01) != 0;
+		speed = ValueOrVariableBitfield(com, 1, 2, 5);
+		switch (com.parameters[0]) {
+		case 4: // Relative Pixel Pan (speed)
+			centered = false;
+			relative = true;
+			player.StartPixelPan(h, v, speed, false, centered, relative);
+			break;
+		case 5: // Relative Pixel Pan (interpolated)
+			centered = false;
+			relative = true;
+			player.StartPixelPan(h, v, speed, true, centered, relative);
+			break;
+		case 6: // Absolute Pixel Pan (speed)
+			centered = (com.parameters[4] & 0x02) != 0;
+			relative = (com.parameters[4] & 0x04) != 0;
+			player.StartPixelPan(h, v, speed, false, centered, relative);
+			break;
+		case 7: // Absolute Pixel Pan (interpolated)
+			centered = (com.parameters[4] & 0x02) != 0;
+			relative = (com.parameters[4] & 0x04) != 0;
+			player.StartPixelPan(h, v, speed, true, centered, relative);
+			break;
+		}
+	}
+
 	if (waiting_pan_screen) {
 		// RPG_RT uses the max wait for all pending pan commands, not just the current one.
 		_state.wait_time = player.GetPanWait();

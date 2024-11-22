@@ -139,9 +139,14 @@ public:
 	static int GetDefaultPanX();
 	static int GetDefaultPanY();
 
+	// Maniac uses these coordinates for smooth panning
+	double maniac_pan_current_x;
+	double maniac_pan_current_y;
+
 	void LockPan();
 	void UnlockPan();
 	void StartPan(int direction, int distance, int speed);
+	void StartPixelPan(int h, int v, int speed, bool interpolated, bool centered, bool relative);
 	void ResetPan(int speed);
 
 	/** @return how many frames it'll take to finish the current pan */
