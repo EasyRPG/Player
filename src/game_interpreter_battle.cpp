@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+ // Headers
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_enemyparty.h"
@@ -45,13 +45,19 @@ enum TargetType {
 
 // Implemented as a static map, since maniac hooks can only have one common event callback at a time.
 // Subsequent calls will simply override the previous common event callback.
-std::map<Game_Interpreter_Battle::ManiacBattleHookType, std::tuple<int, int>> Game_Interpreter_Battle::maniac_hooks = {
-		{AtbIncrement, std::make_tuple(0, 0)},
-		{DamagePop, std::make_tuple(0, 0)},
-		{Targetting, std::make_tuple(0, 0)},
-		{SetState, std::make_tuple(0, 0)},
-		{StatChange, std::make_tuple(0, 0)}
-};
+std::map<Game_Interpreter_Battle::ManiacBattleHookType, std::tuple<int, int>> Game_Interpreter_Battle::maniac_hooks;
+
+void Game_Interpreter_Battle::InitBattle() {
+	if (Player::IsPatchManiac()) {
+		Game_Interpreter_Battle::maniac_hooks = {
+			{Game_Interpreter_Battle::ManiacBattleHookType::AtbIncrement, std::make_tuple(0, 0)},
+			{Game_Interpreter_Battle::ManiacBattleHookType::DamagePop, std::make_tuple(0, 0)},
+			{Game_Interpreter_Battle::ManiacBattleHookType::Targetting, std::make_tuple(0, 0)},
+			{Game_Interpreter_Battle::ManiacBattleHookType::SetState, std::make_tuple(0, 0)},
+			{Game_Interpreter_Battle::ManiacBattleHookType::StatChange, std::make_tuple(0, 0)}
+		};
+	}
+}
 
 static const char* target_text[] = { "actor", "party member", "enemy" };
 

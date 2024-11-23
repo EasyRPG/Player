@@ -123,7 +123,7 @@ protected:
 	void RefreshCommandWindow(const Game_Actor* actor);
 	void SetActiveActor(int idx);
 
-	enum FloatTextType {
+	enum class FloatTextType {
 		Damage = 0,
 		Heal = 1,
 		Miss = 2,

@@ -61,10 +61,12 @@ public:
 
 	bool ExecuteCommand(lcf::rpg::EventCommand const& com) override;
 
+	static void InitBattle();
+
 	/**
 	 * All possible hook type events that maniacs offers.
 	 */
-	enum ManiacBattleHookType {
+	enum class ManiacBattleHookType {
 		AtbIncrement,
 		DamagePop,
 		Targetting,

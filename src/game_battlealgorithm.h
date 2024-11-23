@@ -630,6 +630,9 @@ class None : public AlgorithmBase {
 public:
 	None(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
 	/** @return the id associated with this action */
 	int GetActionId() override;
 };
@@ -644,6 +647,12 @@ public:
 		Style_MultiHit,
 	};
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	static Style GetDefaultStyle();
 
 	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
@@ -651,6 +660,7 @@ public:
 
 	bool vExecute() override;
 	bool vStart() override;
+	bool IsDualAttack() const;
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
@@ -752,6 +762,9 @@ class Defend : public AlgorithmBase {
 public:
 	Defend(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
 	/** @return the id associated with this action */
 	int GetActionId() override;
 
@@ -763,6 +776,9 @@ class Observe : public AlgorithmBase {
 public:
 	Observe(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
 	/** @return the id associated with this action */
 	int GetActionId() override;
 
@@ -772,6 +788,9 @@ public:
 class Charge : public AlgorithmBase {
 public:
 	Charge(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
 
 	/** @return the id associated with this action */
 	int GetActionId() override;
@@ -783,6 +802,9 @@ public:
 class SelfDestruct : public AlgorithmBase {
 public:
 	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
 
 	/** @return the id associated with this action */
 	int GetActionId() override;
@@ -798,6 +820,9 @@ private:
 class Escape : public AlgorithmBase {
 public:
 	Escape(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
 
 	/** @return the id associated with this action */
 	int GetActionId() override;
@@ -829,6 +854,9 @@ private:
 class DoNothing : public AlgorithmBase {
 public:
 	DoNothing(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
 
 	/** @return the id associated with this action */
 	int GetActionId() override;

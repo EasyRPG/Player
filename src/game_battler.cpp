@@ -368,7 +368,7 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	}
 
 	Game_Battle::ManiacBattleHook(
-		Game_Interpreter_Battle::SetState,
+		Game_Interpreter_Battle::ManiacBattleHookType::SetState,
 		GetType() == Game_Battler::Type_Enemy,
 		GetPartyIndex(),
 		state_id

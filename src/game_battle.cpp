@@ -221,7 +221,7 @@ void Game_Battle::UpdateAtbGauges() {
 			}
 
 			ManiacBattleHook(
-				Game_Interpreter_Battle::AtbIncrement,
+				Game_Interpreter_Battle::ManiacBattleHookType::AtbIncrement,
 				bat->GetType() == Game_Battler::Type_Enemy,
 				bat->GetPartyIndex(),
 				bat->GetAtbGauge(),
