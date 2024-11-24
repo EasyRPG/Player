@@ -377,6 +377,36 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 	return { iter, 0 };
 }
 
+Utils::UtfNextResult Utils::UTF8Skip(const char* iter, const char* end, int skip) {
+	UtfNextResult ret;
+
+	if (skip == 0) {
+		ret = UTF8Next(iter, end);
+		return { iter, ret.ch };
+	}
+
+	for (int i = skip; iter < end && skip > 0; --skip) {
+		ret = UTF8Next(iter, end);
+		iter = ret.next;
+	}
+
+	return ret;
+}
+
+int Utils::UTF8Length(StringView str) {
+	size_t len = 0;
+
+	const char* iter = str.data();
+	const char* const e = str.data() + str.size();
+	while (iter < e) {
+		auto ret = Utils::UTF8Next(iter, e);
+		iter = ret.next;
+		++len;
+	}
+
+	return len;
+}
+
 Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 	ExFontRet ret;
 	if (end - iter >= 2 && *iter == '$') {

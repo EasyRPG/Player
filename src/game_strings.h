@@ -27,6 +27,9 @@
 #include "pending_message.h"
 #include "player.h"
 #include "string_view.h"
+#include "utils.h"
+
+#include <regex>
 
 #ifdef HAVE_NLOHMANN_JSON
 #include <nlohmann/json.hpp>
@@ -34,6 +37,13 @@
 
 /**
  * Game_Strings class.
+ * For all operations codepoints are used (instead of bytes).
+ * This way operations that use the length or the index work almost like in Maniac Patch.
+ * And using codepoints is better anyway because this is a single character.
+ * With bytes you have the risk to "chop" a character in half.
+ *
+ * Where simple to implement UTF8 is used directly.
+ * In other cases the code does a roundtrip through UTF32.
  */
 class Game_Strings {
 public:
@@ -62,7 +72,7 @@ public:
 	StringView Get(int id) const;
 	StringView GetIndirect(int id, const Game_Variables& variables) const;
 	StringView GetWithMode(StringView str_data, int mode, int arg, const Game_Variables& variables) const;
-	StringView GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables);
+	std::string GetWithModeAndPos(StringView str_data, int mode, int arg, int& pos, const Game_Variables& variables);
 
 #ifdef HAVE_NLOHMANN_JSON
 	nlohmann::json* ParseJson(int id);
@@ -83,6 +93,10 @@ public:
 
 	static std::string PrependMin(StringView string, int min_size, char c);
 	static std::string Extract(StringView string, bool as_hex);
+	static std::string Substring(StringView source, int begin, int length = -1);
+	static std::string Insert(StringView source, StringView what, int where);
+	static std::string Erase(StringView source, int begin, int length);
+	static std::string RegExReplace(StringView str, StringView search, StringView replace, std::regex_constants::match_flag_type flags = std::regex_constants::match_default);
 
 	static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
 	static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);
@@ -197,18 +211,23 @@ inline StringView Game_Strings::GetWithMode(StringView str_data, int mode, int a
 	}
 }
 
-inline StringView Game_Strings::GetWithModeAndPos(StringView str_data, int mode, int arg, int* pos, const Game_Variables& variables) {
-	StringView ret;
+inline std::string Game_Strings::GetWithModeAndPos(StringView str_data, int mode, int arg, int& pos, const Game_Variables& variables) {
+	std::string ret;
 	switch (mode) {
-		case StringEvalMode::eStringEval_Text:
-			assert(pos);
-			ret = str_data.substr(*pos, arg);
-			*pos += arg;
+		case StringEvalMode::eStringEval_Text: {
+			const auto end = str_data.data() + str_data.size();
+
+			auto left = Utils::UTF8Skip(str_data.begin(), end, pos);
+			auto right = Utils::UTF8Skip(left.next, end, arg);
+
+			ret = std::string(left.next, right.next);
+			pos += arg;
 			return ret;
+		}
 		case StringEvalMode::eStringEval_Direct:
-			return Get(arg);
+			return ToString(Get(arg));
 		case StringEvalMode::eStringEval_Indirect:
-			return GetIndirect(arg, variables);
+			return ToString(GetIndirect(arg, variables));
 		default:
 			return ret;
 	}

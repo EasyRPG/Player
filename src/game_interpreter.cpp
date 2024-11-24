@@ -4823,7 +4823,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string op_string;
 			for (int i = 0; i < 3; i++) {
-				op_string += ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[i], args[i], &pos, *Main_Data::game_variables));
+				op_string += Main_Data::game_strings->GetWithModeAndPos(str_param, modes[i], args[i], pos, *Main_Data::game_variables);
 			}
 			result = std::move(op_string);
 			break;
@@ -4834,10 +4834,10 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			std::string base, insert;
 
 			args[1] = ValueOrVariable(modes[1], args[1]);
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
-			insert = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
+			base = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], pos, *Main_Data::game_variables);
+			insert = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], pos, *Main_Data::game_variables);
 
-			result = base.insert(args[1], insert);
+			result = Game_Strings::Insert(base, insert, args[1]);
 			break;
 		}
 		case 8: //Replace (rep) <fn(string base, string search, string replacement)>
@@ -4845,23 +4845,19 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
-			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], &pos, *Main_Data::game_variables));
-			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
+			base = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], pos, *Main_Data::game_variables);
+			search = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], pos, *Main_Data::game_variables);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], pos, *Main_Data::game_variables);
+			result = Utils::ReplaceAll(base, search, replacement);
 
-			std::size_t index = base.find(search);
-			while (index != std::string::npos) {
-				base.replace(index, search.length(), replacement);
-				index = base.find(search, index + replacement.length());
-			}
-
-			result = std::move(base);
 			break;
 		}
 		case 9: //Substring (subs) <fn(string base, int index, int size)>
 			args[1] = ValueOrVariable(modes[1], args[1]);
 			args[2] = ValueOrVariable(modes[2], args[2]);
-			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables).substr(args[1], args[2]));
+
+			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
+			result = Game_Strings::Substring(result, args[1], args[2]);
 			break;
 		case 10: //Join (join) <fn(string delimiter, int id, int size)>
 		{
@@ -4906,21 +4902,24 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 			args[1] = ValueOrVariable(modes[1], args[1]);
 			args[2] = ValueOrVariable(modes[2], args[2]);
 			result = ToString(Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables));
-			result = result.erase(args[1], args[2]);
+			result = Game_Strings::Erase(result, args[1], args[2]);
 			break;
 		case 14: //Replace Ex (exRep) <fn(string base, string search, string replacement, bool first)>, edge case: the arg "first" is at ((flags >> 19) & 1). Wtf BingShan
 		{
 			int pos = 0;
 			std::string base, search, replacement;
 
-			base = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], &pos, *Main_Data::game_variables));
-			search = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], &pos, *Main_Data::game_variables));
-			replacement = ToString(Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], &pos, *Main_Data::game_variables));
+			base = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[0], args[0], pos, *Main_Data::game_variables);
+			search = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[1], args[1], pos, *Main_Data::game_variables);
+			replacement = Main_Data::game_strings->GetWithModeAndPos(str_param, modes[2], args[2], pos, *Main_Data::game_variables);
 
-			std::regex rexp(search);
+			auto flags = std::regex_constants::match_default;
 
-			if (first_flag) result = std::regex_replace(base, rexp, replacement, std::regex_constants::format_first_only);
-			else result =            std::regex_replace(base, rexp, replacement);
+			if (first_flag) {
+				flags = std::regex_constants::format_first_only;
+			}
+
+			result = Game_Strings::RegExReplace(base, search, replacement, flags);
 			break;
 		}
 		default:
