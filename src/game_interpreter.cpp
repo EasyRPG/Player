@@ -882,6 +882,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	// Set first line
 	pm.PushLine(ToString(com.string));
@@ -978,6 +979,7 @@ bool Game_Interpreter::CommandShowChoices(lcf::rpg::EventCommand const& com) { /
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	// Choices setup
 	std::vector<std::string> choices = GetChoices(4);
@@ -1009,6 +1011,7 @@ bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { /
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetIsEventMessage(true);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	int variable_id = com.parameters[1];
 	int digits = com.parameters[0];
@@ -1651,6 +1654,7 @@ bool Game_Interpreter::CommandChangeExp(lcf::rpg::EventCommand const& com) { // 
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeExp(actor->GetExp() + value, show_msg ? &pm : nullptr);
@@ -1681,6 +1685,7 @@ bool Game_Interpreter::CommandChangeLevel(lcf::rpg::EventCommand const& com) { /
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeLevel(actor->GetLevel() + value, show_msg ? &pm : nullptr);
@@ -3956,6 +3961,7 @@ bool Game_Interpreter::CommandChangeClass(lcf::rpg::EventCommand const& com) { /
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetEnableFace(false);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	const lcf::rpg::Class* cls = lcf::ReaderUtil::GetElement(lcf::Data::classes, class_id);
 	if (!cls && class_id != 0) {

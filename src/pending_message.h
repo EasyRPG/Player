@@ -68,6 +68,9 @@ class PendingMessage {
 
 		void SetIsEventMessage(bool value) { is_event_message = value; }
 		bool IsEventMessage() const { return is_event_message; }
+
+		void SetFromForegroundInterpreter(bool value) { from_fg_interpreter = value; }
+		bool IsFromForegroundInterpreter() const { return from_fg_interpreter; }
 		static std::string ApplyTextInsertingCommands(std::string input, uint32_t escape_char, const CommandInserter& cmd_fn);
 
 	private:
@@ -85,6 +88,7 @@ class PendingMessage {
 		bool show_gold_window = false;
 		bool enable_face = true;
 		bool is_event_message = false;
+		bool from_fg_interpreter = false;
 };
 
 

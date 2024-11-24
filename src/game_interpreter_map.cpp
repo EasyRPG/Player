@@ -90,6 +90,11 @@ void Game_Interpreter_Map::OnMapChange() {
 	for (auto& frame: _state.stack) {
 		frame.event_id = 0;
 	}
+
+	// When the message was created by a parallel process, close it
+	if (Game_Message::IsMessageActive() && !Game_Message::GetWindow()->GetPendingMessage().IsFromForegroundInterpreter()) {
+		Game_Message::GetWindow()->FinishMessageProcessing();
+	}
 }
 
 bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_index, bool is_db_actor) {
@@ -457,6 +462,7 @@ bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { /
 	}
 
 	PendingMessage pm(Game_Message::CommandCodeInserter);
+	pm.SetFromForegroundInterpreter(main_flag);
 
 	StringView greeting_1, greeting_2, greeting_3, accept, cancel;
 
