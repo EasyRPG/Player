@@ -424,8 +424,7 @@ Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escap
 	return ret;
 }
 
-#if _WIN32
-
+// Please report an issue when you get a compile error here because your toolchain is broken and lacks wchar_t
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(StringView);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
@@ -463,8 +462,6 @@ std::string FromWideStringImpl<2>(const std::wstring& str) {
 std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
-
-#endif
 
 int Utils::PositiveModulo(int i, int m) {
 	return (i % m + m) % m;

@@ -131,9 +131,7 @@ namespace Utils {
 	 */
 	UtfNextResult UTF8Next(const char* iter, const char* end);
 
-// Some platforms do not like UTF16
-#if _WIN32
-
+	// Please report an issue when you get a compile error here because your toolchain is broken and lacks wchar_t
 	/**
 	 * Converts UTF-8 string to std::wstring.
 	 *
@@ -149,8 +147,6 @@ namespace Utils {
 	 * @return the converted string.
 	 */
 	std::string FromWideString(const std::wstring& str);
-
-#endif
 
 	struct ExFontRet {
 		const char* next = nullptr;
