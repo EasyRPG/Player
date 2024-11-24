@@ -811,8 +811,12 @@ void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool
 	int new_pan_x;
 	int new_pan_y;
 
-	// FIXME: Fails when relative and centered are used in combination
-	if (relative) {
+	if (relative && centered) {
+		int screen_width = static_cast<int>(std::ceil(static_cast<float>(Player::screen_width) / 2)) * TILE_SIZE;
+		int screen_height = static_cast<int>(std::ceil(static_cast<float>(Player::screen_height) / 2)) * TILE_SIZE;
+		new_pan_x = data()->pan_finish_x - (h - screen_width) * 0.5;
+		new_pan_y = data()->pan_finish_y - (v - screen_height) * 0.5;
+	} else if (relative) {
 		new_pan_x = data()->pan_finish_x - h;
 		new_pan_y = data()->pan_finish_y - v;
 	} else if (centered) {
