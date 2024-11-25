@@ -93,10 +93,11 @@ public:
 
 	static std::string PrependMin(StringView string, int min_size, char c);
 	static std::string Extract(StringView string, bool as_hex);
-	static std::string Substring(StringView source, int begin, int length = -1);
+	static std::string Substring(StringView source, int begin, int length);
 	static std::string Insert(StringView source, StringView what, int where);
 	static std::string Erase(StringView source, int begin, int length);
 	static std::string RegExReplace(StringView str, StringView search, StringView replace, std::regex_constants::match_flag_type flags = std::regex_constants::match_default);
+	static int AdjustIndex(StringView str, int index);
 
 	static std::optional<std::string> ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char);
 	static std::optional<std::string> ManiacsCommandInserterHex(char ch, const char** iter, const char* end, uint32_t escape_char);

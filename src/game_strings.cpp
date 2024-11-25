@@ -297,7 +297,8 @@ StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id
 		expr = Extract(expr, params.hex);
 	}
 
-	std::string base = Substring(Get(params.string_id), begin);
+	auto source = Get(params.string_id);
+	std::string base = Substring(source, begin, Utils::UTF8Length(source));
 
 	std::wsmatch match;
 	auto wbase = Utils::ToWideString(base);
@@ -356,7 +357,15 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
 	int len = Utils::UTF8Length(string);
 
-	if (len < min_size) {
+	if (min_size < 0) {
+		// Left adjust
+		min_size = abs(min_size);
+		if (len < min_size) {
+			int s = min_size - len;
+			return ToString(string) + std::string(s, c);
+		}
+	} else if (len < min_size) {
+		// Right adjust
 		int s = min_size - len;
 		return std::string(s, c) + ToString(string);
 	}
@@ -379,8 +388,10 @@ std::string Game_Strings::Substring(StringView source, int begin, int length) {
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
-	if (length == -1) {
-		length = Utils::UTF8Length(source) - begin;
+	begin = AdjustIndex(source, begin);
+
+	if (length < 0) {
+		length = 0;
 	}
 
 	// Points at start of the substring
@@ -400,6 +411,8 @@ std::string Game_Strings::Insert(StringView source, StringView what, int where) 
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
+	where = AdjustIndex(source, where);
+
 	// Points at insertion location
 	auto ret = Utils::UTF8Skip(iter, end, where);
 
@@ -410,8 +423,18 @@ std::string Game_Strings::Erase(StringView source, int begin, int length) {
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
+	begin = AdjustIndex(source, begin);
+
+	if (length < 0) {
+		length = 0;
+	}
+
 	// Points at start of deletion
 	auto left = Utils::UTF8Skip(iter, end, begin);
+
+	if (left.next == nullptr) {
+		return ToString(source);
+	}
 
 	// Points at end of deletion
 	auto right = Utils::UTF8Skip(left.next, end, length);
@@ -436,6 +459,14 @@ std::string Game_Strings::RegExReplace(StringView str, StringView search, String
 	auto result = std::regex_replace(wstr, rexp, wreplace, flags);
 
 	return Utils::FromWideString(result);
+}
+
+int Game_Strings::AdjustIndex(StringView str, int index) {
+	if (index >= 0) {
+		return index;
+	}
+
+	return std::max(Utils::UTF8Length(str) - abs(index), 0);
 }
 
 std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
