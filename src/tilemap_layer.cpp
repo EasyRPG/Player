@@ -140,6 +140,59 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
     {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}
 };
 
+// Set of neighboring autotiles -> autotile variant
+// Each neighbor is represented by a single bit (1 - same autotile, 0 - any other case)
+// The bits are ordered as follows (from most to least significant bit): NW N NE W E SW S SE
+static const std::unordered_map<uint8_t, int> AUTOTILE_VARIANTS_MAP = {
+	{0b11111111, 0},
+	{0b01111111, 1},
+	{0b11011111, 2},
+	{0b01011111, 3},
+	{0b11111110, 4},
+	{0b01111110, 5},
+	{0b11011110, 6},
+	{0b01011110, 7},
+	{0b11111011, 8},
+	{0b01111011, 9},
+	{0b11011011, 10},
+	{0b01011011, 11},
+	{0b11111010, 12},
+	{0b01111010, 13},
+	{0b11011010, 14},
+	{0b01011010, 15},
+	{0b01101011, 16},
+	{0b01001011, 17},
+	{0b01101010, 18},
+	{0b01001010, 19},
+	{0b00011111, 20},
+	{0b00011110, 21},
+	{0b00011011, 22},
+	{0b00011010, 23},
+	{0b11010110, 24},
+	{0b11010010, 25},
+	{0b01010110, 26},
+	{0b01010010, 27},
+	{0b11111000, 28},
+	{0b01111000, 29},
+	{0b11011000, 30},
+	{0b01011000, 31},
+	{0b01000010, 32},
+	{0b00011000, 33},
+	{0b00001011, 34},
+	{0b00001010, 35},
+	{0b00010110, 36},
+	{0b00010010, 37},
+	{0b11010000, 38},
+	{0b01010000, 39},
+	{0b01101000, 40},
+	{0b01001000, 41},
+	{0b00000010, 42},
+	{0b00001000, 43},
+	{0b01000000, 44},
+	{0b00010000, 45},
+	{0b00000000, 46}
+};
+
 TilemapLayer::TilemapLayer(int ilayer) :
 	substitutions(Game_Map::GetTilesLayer(ilayer)),
 	layer(ilayer),
