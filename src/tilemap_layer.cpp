@@ -376,37 +376,39 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 	data_cache_vec.resize(width * height);
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
-			TileData tile;
-
-			// Get the tile ID
-			tile.ID = nmap_data[x + y * width];
-
-			tile.z = TileBelow;
-
-			// Calculate the tile Z
-			if (!passable.empty()) {
-				if (tile.ID >= BLOCK_F) { // Upper layer
-					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-						tile.z = TileAbove + 1; // Upper sublayer
-					else
-						tile.z = TileBelow + 1; // Lower sublayer
-
-				} else { // Lower layer
-					int chip_index =
-						tile.ID >= BLOCK_E ? substitutions[tile.ID - BLOCK_E] + 18 :
-						tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
-						tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
-						tile.ID / 1000;
-					if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
-						tile.z = TileAbove; // Upper sublayer
-					else
-						tile.z = TileBelow; // Lower sublayer
-
-				}
-			}
-			GetDataCache(x, y) = tile;
+			auto tile_id = nmap_data[x + y * width];
+			CreateTileCacheAt(x, y, tile_id);
 		}
 	}
+}
+
+void TilemapLayer::CreateTileCacheAt(int x, int y, int tile_id) {
+	TileData tile;
+	tile.ID = static_cast<short>(tile_id);
+	tile.z = TileBelow;
+
+	// Calculate the tile Z
+	if (!passable.empty()) {
+		if (tile.ID >= BLOCK_F) { // Upper layer
+			if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
+				tile.z = TileAbove + 1; // Upper sublayer
+			else
+				tile.z = TileBelow + 1; // Lower sublayer
+
+		} else { // Lower layer
+			int chip_index =
+					tile.ID >= BLOCK_E ? substitutions[tile.ID - BLOCK_E] + 18 :
+					tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
+					tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
+					tile.ID / 1000;
+			if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
+				tile.z = TileAbove; // Upper sublayer
+			else
+				tile.z = TileBelow; // Lower sublayer
+
+		}
+	}
+	GetDataCache(x, y) = tile;
 }
 
 void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
@@ -660,6 +662,17 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 
 	map_data = std::move(nmap_data);
 }
+
+void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
+	substitutions = Game_Map::GetTilesLayer(layer);
+
+	if (disable_autotile) {
+		CreateTileCacheAt(x, y, tile_id);
+	} else {
+		// TODO: handle autotiles
+	}
+}
+
 
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 	passable = std::move(npassable);

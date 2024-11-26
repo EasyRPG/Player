@@ -30,6 +30,7 @@
 #include "bitmap.h"
 #include "player.h"
 #include "drawable_list.h"
+#include "map_data.h"
 
 Spriteset_Map::Spriteset_Map() {
 	panorama = std::make_unique<Plane>();
@@ -171,6 +172,18 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	if (num_subst) {
 		tilemap->OnSubstituteUp();
 	}
+}
+
+void Spriteset_Map::ReplaceDownAt(int x, int y, int tile_index, bool disable_autotile) {
+	auto tile_id = IndexToChipId(tile_index);
+	Game_Map::ReplaceDownAt(x, y, tile_id);
+	tilemap->SetMapTileDataDownAt(x, y, tile_id, disable_autotile);
+}
+
+void Spriteset_Map::ReplaceUpAt(int x, int y, int tile_index) {
+	auto tile_id = IndexToChipId(tile_index);
+	Game_Map::ReplaceUpAt(x, y, tile_id);
+	tilemap->SetMapTileDataUpAt(x, y, tile_id);
 }
 
 bool Spriteset_Map::RequireClear(DrawableList& drawable_list) {

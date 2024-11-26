@@ -72,6 +72,16 @@ public:
 	void SubstituteUp(int old_id, int new_id);
 
 	/**
+	 * Replaces a single tile in lower layer at the given coordinates.
+	 */
+	void ReplaceDownAt(int x, int y, int tile_index, bool disable_autotile);
+
+	/**
+	 * Replaces a single tile in upper layer at the given coordinates.
+	 */
+	void ReplaceUpAt(int x, int y, int tile_index);
+
+	/**
 	 * @return true if we should clear the screen before drawing the map
 	 */
 	bool RequireClear(DrawableList& drawable_list);
