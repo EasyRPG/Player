@@ -1879,6 +1879,19 @@ int Game_Map::SubstituteUp(int old_id, int new_id) {
 	return DoSubstitute(map_info.upper_tiles, old_id, new_id);
 }
 
+static void DoReplaceAt(std::vector<int16_t>& layer, int x, int y, int new_id, int map_width) {
+	auto pos = x + y * map_width;
+	layer[pos] = static_cast<int16_t>(new_id);
+}
+
+void Game_Map::ReplaceDownAt(int x, int y, int new_id) {
+	DoReplaceAt(map->lower_layer, x, y, new_id, map->width);
+}
+
+void Game_Map::ReplaceUpAt(int x, int y, int new_id) {
+	DoReplaceAt(map->upper_layer, x, y, new_id, map->width);
+}
+
 std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id;
