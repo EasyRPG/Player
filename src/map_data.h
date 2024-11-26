@@ -94,4 +94,26 @@ inline int ChipIdToIndex(int chip_id) {
 	return 0;
 }
 
+inline int IndexToChipId(int index) {
+	if (index >= BLOCK_A_INDEX && index < BLOCK_B_INDEX) {
+		return BLOCK_A + (index - BLOCK_A_INDEX) * BLOCK_A_STRIDE;
+	}
+	else if (index >= BLOCK_B_INDEX && index < BLOCK_C_INDEX) {
+		return BLOCK_B + (index - BLOCK_B_INDEX) * BLOCK_B_STRIDE;
+	}
+	else if (index >= BLOCK_C_INDEX && index < BLOCK_D_INDEX) {
+		return BLOCK_C + (index - BLOCK_C_INDEX) * BLOCK_C_STRIDE;
+	}
+	else if (index >= BLOCK_D_INDEX && index < BLOCK_E_INDEX) {
+		return BLOCK_D + (index - BLOCK_D_INDEX) * BLOCK_D_STRIDE;
+	}
+	else if (index >= BLOCK_E_INDEX && index < BLOCK_F_INDEX) {
+		return BLOCK_E + (index - BLOCK_E_INDEX) * BLOCK_E_STRIDE;
+	}
+	else if (index >= BLOCK_F_INDEX) {
+		return BLOCK_F + (index - BLOCK_F_INDEX) * BLOCK_F_STRIDE;
+	}
+	return 0;
+}
+
 #endif
