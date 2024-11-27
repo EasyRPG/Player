@@ -742,7 +742,14 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 				{-1,  1}, { 0,  1}, { 1,  1}
 		};
 
-		RecalculateAutotile(x, y, tile_id);
+		// TODO: make it work for AB autotiles
+		if (IsAutotileAB(tile_id)) {
+			RecreateTileDataAt(x, y, tile_id);
+			Output::Warning("Maniac Patch: Command RewriteMap is only partially supported.");
+		} else {
+			RecalculateAutotile(x, y, tile_id);
+		}
+
 		for (const auto& adj : adjacent) {
 			auto nx = x + adj.dx;
 			auto ny = y + adj.dy;
