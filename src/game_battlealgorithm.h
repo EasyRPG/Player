@@ -83,13 +83,6 @@ class AlgorithmBase {
 public:
 	virtual ~AlgorithmBase() {}
 
-	enum ActionType {
-		Basic,
-		Skill,
-		Transformation,
-		Item
-	};
-
 	/** @return the category associated with this action */
 	virtual int GetActionType();
 
