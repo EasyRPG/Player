@@ -641,8 +641,7 @@ namespace Game_Map {
 	Game_Vehicle* GetVehicle(Game_Vehicle::Type which);
 	int SubstituteDown(int old_id, int new_id);
 	int SubstituteUp(int old_id, int new_id);
-	void ReplaceDownAt(int x, int y, int new_id);
-	void ReplaceUpAt(int x, int y, int new_id);
+	void ReplaceTileAt(int x, int y, int new_id, int layer);
 
 	/**
 	 * Checks if its possible to step onto the tile at (x,y)

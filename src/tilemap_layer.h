@@ -121,6 +121,7 @@ private:
 	void GenerateAutotileD(short ID);
 	void DrawTile(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit = true);
 	void DrawTileImpl(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit);
+	void RecalculateAutotile(int x, int y, int tile_id);
 
 	static const int TILES_PER_ROW = 64;
 
@@ -163,6 +164,8 @@ private:
 	TilemapSubLayer upper_layer;
 
 	Tone tone;
+
+	bool IsInMapBounds(int x, int y) const;
 };
 
 inline BitmapRef const& TilemapLayer::GetChipset() const {
@@ -261,5 +264,8 @@ inline TilemapLayer::TileData& TilemapLayer::GetDataCache(int x, int y) {
 	return data_cache_vec[x + y * width];
 }
 
+inline bool TilemapLayer::IsInMapBounds(int x, int y) const {
+	return x >= 0 && x < width && y >= 0 && y < height;
+}
 
 #endif

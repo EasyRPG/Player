@@ -59,6 +59,17 @@ static constexpr int NUM_LOWER_TILES = BLOCK_F_INDEX;
 static constexpr int NUM_UPPER_TILES = BLOCK_F_TILES;
 static constexpr int NUM_TILES = NUM_LOWER_TILES + NUM_UPPER_TILES;
 
+// Bit positions for neighbors
+static constexpr uint8_t NEIGHBOR_NW = 0x80; // 0b10000000
+static constexpr uint8_t NEIGHBOR_N  = 0x40; // 0b01000000
+static constexpr uint8_t NEIGHBOR_NE = 0x20; // 0b00100000
+static constexpr uint8_t NEIGHBOR_W  = 0x10; // 0b00010000
+static constexpr uint8_t NEIGHBOR_E  = 0x08; // 0b00001000
+static constexpr uint8_t NEIGHBOR_SW = 0x04; // 0b00000100
+static constexpr uint8_t NEIGHBOR_S  = 0x02; // 0b00000010
+static constexpr uint8_t NEIGHBOR_SE = 0x01; // 0b00000001
+
+
 /** Passability flags. */
 namespace Passable {
 	enum Passable {

@@ -176,13 +176,11 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 
 void Spriteset_Map::ReplaceDownAt(int x, int y, int tile_index, bool disable_autotile) {
 	auto tile_id = IndexToChipId(tile_index);
-	Game_Map::ReplaceDownAt(x, y, tile_id);
 	tilemap->SetMapTileDataDownAt(x, y, tile_id, disable_autotile);
 }
 
 void Spriteset_Map::ReplaceUpAt(int x, int y, int tile_index) {
 	auto tile_id = IndexToChipId(tile_index);
-	Game_Map::ReplaceUpAt(x, y, tile_id);
 	tilemap->SetMapTileDataUpAt(x, y, tile_id);
 }
 

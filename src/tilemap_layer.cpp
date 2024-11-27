@@ -717,15 +717,108 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 }
 
 void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
+	if(!IsInMapBounds(x, y))
+		return;
+
 	substitutions = Game_Map::GetTilesLayer(layer);
 
 	if (disable_autotile) {
+		map_data[x + y * width] = static_cast<short>(tile_id);
+		Game_Map::ReplaceTileAt(x, y, tile_id, layer);
 		CreateTileCacheAt(x, y, tile_id);
 	} else {
-		// TODO: handle autotiles
+		// Recalculate the replaced tile itself + every neighboring tile
+		static constexpr struct { int dx; int dy; } adjacent[8] = {
+				{-1, -1}, { 0, -1}, { 1, -1},
+				{-1,  0}, { 1,  0},
+				{-1,  1}, { 0,  1}, { 1,  1}
+		};
+
+		RecalculateAutotile(x, y, tile_id);
+		for (const auto& adj : adjacent) {
+			auto nx = x + adj.dx;
+			auto ny = y + adj.dy;
+			if (IsInMapBounds(nx, ny)) {
+				RecalculateAutotile(nx, ny, GetDataCache(nx, ny).ID);
+			}
+		}
+	}
+
+	SetMapData(map_data);
+}
+
+static inline bool IsAutotileAB(int tile_id) {
+	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
+}
+
+static inline bool IsAutotileD(int tile_id) {
+	return tile_id >= BLOCK_D && tile_id < BLOCK_E;
+}
+
+static inline bool IsSameAutotileD(int current_tile_id, int neighbor_tile_id) {
+	return ChipIdToIndex(current_tile_id) == ChipIdToIndex(neighbor_tile_id);
+}
+
+static inline void ApplyCornerFixups(uint8_t& neighbors) {
+	// Northwest corner
+	if ((neighbors & NEIGHBOR_NW) && (neighbors & (NEIGHBOR_N | NEIGHBOR_W)) != (NEIGHBOR_N | NEIGHBOR_W)) {
+		neighbors &= ~NEIGHBOR_NW;
+	}
+
+	// Northeast corner
+	if ((neighbors & NEIGHBOR_NE) && (neighbors & (NEIGHBOR_N | NEIGHBOR_E)) != (NEIGHBOR_N | NEIGHBOR_E)) {
+		neighbors &= ~NEIGHBOR_NE;
+	}
+
+	// Southwest corner
+	if ((neighbors & NEIGHBOR_SW) && (neighbors & (NEIGHBOR_S | NEIGHBOR_W)) != (NEIGHBOR_S | NEIGHBOR_W)) {
+		neighbors &= ~NEIGHBOR_SW;
+	}
+
+	// Southeast corner
+	if ((neighbors & NEIGHBOR_SE) && (neighbors & (NEIGHBOR_S | NEIGHBOR_E)) != (NEIGHBOR_S | NEIGHBOR_E)) {
+		neighbors &= ~NEIGHBOR_SE;
 	}
 }
 
+void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
+	// TODO: make it work for AB autotiles
+	if (IsAutotileAB(tile_id)) {
+		Output::Warning("Maniac Patch: Command RewriteMap is only partially supported.");
+		return;
+	}
+
+	if (!IsAutotileD(tile_id)) {
+		return;
+	}
+
+	const int block = (tile_id - BLOCK_D) / BLOCK_D_STRIDE;
+	uint8_t neighbors = 0;
+
+	// Get all neighboring tiles in a single pass
+	static constexpr struct { int dx; int dy; uint8_t bit; } adjacent[8] = {
+			{-1, -1, NEIGHBOR_NW}, { 0, -1, NEIGHBOR_N}, { 1, -1, NEIGHBOR_NE},
+			{-1,  0, NEIGHBOR_W }, { 1,  0, NEIGHBOR_E},
+			{-1,  1, NEIGHBOR_SW}, { 0,  1, NEIGHBOR_S}, { 1,  1, NEIGHBOR_SE}
+	};
+
+	// Build the neighbors mask and fixup corners
+	for (const auto& adj : adjacent) {
+		auto nx = x + adj.dx;
+		auto ny = y + adj.dy;
+		auto adj_tile_id = IsInMapBounds(nx, ny) ? GetDataCache(nx, ny).ID : tile_id;
+		if (IsSameAutotileD(tile_id, adj_tile_id)) {
+			neighbors |= adj.bit;
+		}
+	}
+	ApplyCornerFixups(neighbors);
+
+	// Recalculate tile id using the neighbors -> variant map
+	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_VARIANTS_MAP.at(neighbors);
+	map_data[x + y * width] = static_cast<short>(new_tile_id);
+	Game_Map::ReplaceTileAt(x, y, new_tile_id, layer);
+	CreateTileCacheAt(x, y, tile_id);
+}
 
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 	passable = std::move(npassable);
