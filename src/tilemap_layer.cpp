@@ -143,7 +143,7 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 // Set of neighboring autotiles -> autotile variant
 // Each neighbor is represented by a single bit (1 - same autotile, 0 - any other case)
 // The bits are ordered as follows (from most to least significant bit): NW N NE W E SW S SE
-static const std::unordered_map<uint8_t, int> AUTOTILE_VARIANTS_MAP = {
+static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = {
 	{0b11111111, 0},
 	{0b01111111, 1},
 	{0b11011111, 2},
@@ -814,7 +814,7 @@ void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 	ApplyCornerFixups(neighbors);
 
 	// Recalculate tile id using the neighbors -> variant map
-	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_VARIANTS_MAP.at(neighbors);
+	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_D_VARIANTS_MAP.at(neighbors);
 	map_data[x + y * width] = static_cast<short>(new_tile_id);
 	Game_Map::ReplaceTileAt(x, y, new_tile_id, layer);
 	CreateTileCacheAt(x, y, tile_id);
