@@ -464,6 +464,12 @@ void TilemapLayer::CreateTileCacheAt(int x, int y, int tile_id) {
 	GetDataCache(x, y) = tile;
 }
 
+void TilemapLayer::RecreateTileDataAt(int x, int y, int tile_id) {
+	map_data[x + y * width] = static_cast<short>(tile_id);
+	Game_Map::ReplaceTileAt(x, y, tile_id, layer);
+	CreateTileCacheAt(x, y, tile_id);
+}
+
 void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the block to use
 	//	1: A1 + Upper B (Grass + Coast)
@@ -716,6 +722,10 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	map_data = std::move(nmap_data);
 }
 
+static inline bool IsAutotileAB(int tile_id) {
+	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
+}
+
 void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
 	if(!IsInMapBounds(x, y))
 		return;
@@ -723,9 +733,7 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 	substitutions = Game_Map::GetTilesLayer(layer);
 
 	if (disable_autotile) {
-		map_data[x + y * width] = static_cast<short>(tile_id);
-		Game_Map::ReplaceTileAt(x, y, tile_id, layer);
-		CreateTileCacheAt(x, y, tile_id);
+		RecreateTileDataAt(x, y, tile_id);
 	} else {
 		// Recalculate the replaced tile itself + every neighboring tile
 		static constexpr struct { int dx; int dy; } adjacent[8] = {
@@ -745,10 +753,6 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 	}
 
 	SetMapData(map_data);
-}
-
-static inline bool IsAutotileAB(int tile_id) {
-	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
 }
 
 static inline bool IsAutotileD(int tile_id) {
@@ -815,9 +819,7 @@ void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 
 	// Recalculate tile id using the neighbors -> variant map
 	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_D_VARIANTS_MAP.at(neighbors);
-	map_data[x + y * width] = static_cast<short>(new_tile_id);
-	Game_Map::ReplaceTileAt(x, y, new_tile_id, layer);
-	CreateTileCacheAt(x, y, tile_id);
+	RecreateTileDataAt(x, y, new_tile_id);
 }
 
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {

@@ -117,6 +117,7 @@ private:
 
 	void CreateTileCache(const std::vector<short>& nmap_data);
 	void CreateTileCacheAt(int x, int y, int tile_id);
+	void RecreateTileDataAt(int x, int y, int tile_id);
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
 	void DrawTile(Bitmap& dst, Bitmap& tile, Bitmap& tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit = true);
