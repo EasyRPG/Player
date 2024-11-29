@@ -73,6 +73,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/bitmap_hslrgb.h
 	src/cache.cpp
 	src/cache.h
+	src/callback.h
 	src/cmdline_parser.cpp
 	src/cmdline_parser.h
 	src/color.h

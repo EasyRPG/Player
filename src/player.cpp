@@ -16,7 +16,6 @@
  */
 
 // Headers
-
 #include <algorithm>
 #include <cstring>
 #include <cstdlib>
@@ -81,6 +80,7 @@
 #include "instrumentation.h"
 #include "transition.h"
 #include <lcf/scope_guard.h>
+#include <lcf/log_handler.h>
 #include "baseui.h"
 #include "game_clock.h"
 #include "message_overlay.h"
@@ -152,6 +152,10 @@ namespace {
 }
 
 void Player::Init(std::vector<std::string> args) {
+	lcf::LogHandler::SetHandler([](lcf::LogHandler::Level level, StringView message, lcf::LogHandler::UserData) {
+		Output::Debug("lcf ({}): {}", lcf::LogHandler::kLevelTags.tag(level), message);
+	});
+
 	frames = 0;
 
 	// Must be called before the first call to Output

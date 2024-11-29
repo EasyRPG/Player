@@ -9,7 +9,6 @@ Building:
     - .github/**
     - CMakeLists.txt
     - builds/**
-    - '!builds/android/app/**'
     - Makefile.am
     - configure.ac
 
@@ -37,6 +36,22 @@ Audio:
 - changed-files:
   - any-glob-to-any-file: [ src/**/*audio* ]
 
+Battle:
+- changed-files:
+  - any-glob-to-any-file:
+    - src/**/scene_battle*
+    - src/**/window_battle*
+    - src/**/game_battle.*
+    - src/**/game_battlealgorithm.*
+
+Bitmaps:
+- changed-files:
+  - any-glob-to-any-file:
+    - src/**/bitmap.*
+    - src/**/bitmap_*
+    - src/**/sprite.*
+    - src/**/sprite_*
+
 FileFinder:
 - changed-files:
   - any-glob-to-any-file: [ src/**/filefinder*, src/**/filesystem* ]
@@ -51,9 +66,25 @@ Fonts:
     - src/**/*font*
     - src/generated/bitmapfont_*
 
+Input:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/*input* ]
+
+Messages:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/*message* ]
+
 MIDI:
 - changed-files:
   - any-glob-to-any-file: [ src/**/*midi* ]
+
+Settings:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/*config* ]
+
+Translation:
+- changed-files:
+  - any-glob-to-any-file: [ src/**/translation* ]
 
 # platforms
 
