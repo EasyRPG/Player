@@ -796,6 +796,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandEasyRpgCloneMapEvent(com);
 		case Cmd::EasyRpg_DestroyMapEvent:
 			return CommandEasyRpgDestroyMapEvent(com);
+		case static_cast<Cmd>(3021): //Maniac_GetGameInfo
+			return CommandManiacGetGameInfo(com);
 		default:
 			return true;
 	}
@@ -4061,6 +4063,71 @@ bool Game_Interpreter::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* 
 	++index;
 	return false;
 }
+
+bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	for (int i = 0; i < com.parameters.size(); i++) {
+		Output::Debug("GetGameInfo, Param {} = {}", i, com.parameters[i]);
+	}
+
+	// Com 0 seems to be for bitfield var CharAirship
+	// Com 1 is the type of function
+	// Com 2 onward are the arguments for value
+
+	switch (com.parameters[1]) {
+		case 0: // Get map size
+			Main_Data::game_variables->Set(com.parameters[2], Game_Map::GetMap().width);
+			Main_Data::game_variables->Set(com.parameters[2] + 1, Game_Map::GetMap().height);
+			return true;
+		case 1: // Get tile info
+			Output::Warning("Maniac_GetGameInfo - Option 'Tile Info' not implemented.");
+			return true;
+		case 2: // Get window size
+			Output::Debug("Maniac_GetGameInfo - Screen Size: {} - {}", Player::screen_width, Player::screen_height);
+			Main_Data::game_variables->Set(com.parameters[2], Player::screen_width);
+			Main_Data::game_variables->Set(com.parameters[2] + 1, Player::screen_height);
+			return true;
+		case 4: // Get command interpreter state
+			Output::Warning("Maniac_GetGameInfo - Option 'Command Interpreter State' not implemented.");
+			return true;
+		case 5: // Get tileset ID
+			Output::Debug("Maniac_GetGameInfo - Tileset ID: {}", Game_Map::GetChipset());
+			Main_Data::game_variables->Set(com.parameters[2], Game_Map::GetChipset());
+			return true;
+		case 6: // Get Face ID
+			// Param 2: String index
+			// Param 3: ID index
+			// Param 4: Window avatar?
+			// Param 5: Actor ID
+			// Param 6: Dynamic?
+			if (com.parameters[4] == 1) {
+
+			} else {
+				int actor_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
+				Game_Strings::Str_Params param = {com.parameters[2], 0, 0};
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					auto* actor = Main_Data::game_actors->GetActor(actor_id);
+					Main_Data::game_strings->Asg(param, actor->GetFaceName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetFaceIndex());
+				} else {
+					// Default one
+					auto* dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, actor_id);
+					Main_Data::game_strings->Asg(param, StringView(dbActor->face_name));
+					Main_Data::game_variables->Set(com.parameters[3], dbActor->face_index);
+				}
+			}
+			return true;
+		default:
+			Output::Warning("Maniac_GetGameInfo - Option {} not implemented.", com.parameters[1]);
+			return true;
+	}
+	return true;
+}
+
 
 bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
