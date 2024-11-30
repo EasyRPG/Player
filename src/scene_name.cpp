@@ -24,23 +24,14 @@
 #include "player.h"
 #include "output.h"
 
-Scene_Name::Scene_Name(int actor_id, int charset, bool use_default_name)
-	: actor_id(actor_id), layout_index(charset), use_default_name(use_default_name)
+Scene_Name::Scene_Name(Game_Actor& actor, int charset, bool use_default_name)
+	: actor(actor), layout_index(charset), use_default_name(use_default_name)
 {
 	Scene::type = Scene::Name;
-
-	auto *actor = Main_Data::game_actors->GetActor(actor_id);
-	if (!actor) {
-		Output::Error("EnterHeroName: Invalid actor ID {}", actor_id);
-	}
 }
 
 void Scene_Name::Start() {
 	// Create the windows
-
-	auto *actor = Main_Data::game_actors->GetActor(actor_id);
-	assert(actor);
-
 	int margin_x = 32;
 	int margin_y = 8;
 	int window_face_width = 64;
@@ -51,11 +42,11 @@ void Scene_Name::Start() {
 	int window_keyboard_height = 160;
 
 	face_window.reset(new Window_Face(Player::menu_offset_x + margin_x, Player::menu_offset_y + margin_y, window_face_width, window_face_height));
-	face_window->Set(actor_id);
+	face_window->Set(actor);
 	face_window->Refresh();
 
 	name_window.reset(new Window_Name(Player::menu_offset_x + window_face_width + margin_x, Player::menu_offset_y + margin_y + 32, window_name_width, window_name_height));
-	name_window->Set(use_default_name ? ToString(actor->GetName()) : "");
+	name_window->Set(use_default_name ? ToString(actor.GetName()) : "");
 	name_window->Refresh();
 
 	const char* done = Window_Keyboard::DONE;
@@ -118,15 +109,12 @@ void Scene_Name::vUpdate() {
 		assert(!s.empty());
 
 		if (s == Window_Keyboard::DONE) {
-			auto* actor = Main_Data::game_actors->GetActor(actor_id);
-			if (actor != nullptr) {
-				if (name_window->Get().empty()) {
-					name_window->Set(ToString(actor->GetName()));
-					name_window->Refresh();
-				} else {
-					actor->SetName(name_window->Get());
-					Scene::Pop();
-				}
+			if (name_window->Get().empty()) {
+				name_window->Set(ToString(actor.GetName()));
+				name_window->Refresh();
+			} else {
+				actor.SetName(name_window->Get());
+				Scene::Pop();
 			}
 		} else if (s == Window_Keyboard::NEXT_PAGE) {
 			++layout_index;

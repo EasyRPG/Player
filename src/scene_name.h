@@ -32,18 +32,19 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Name(int actor_id, int charset, bool use_default_name);
+	Scene_Name(Game_Actor& actor, int charset, bool use_default_name);
 
 	void Start() override;
 	void vUpdate() override;
 
 protected:
 	std::vector<Window_Keyboard::Mode> layouts;
-	int actor_id = 0;
 	int layout_index = 0;
 	bool use_default_name = false;
 
 private:
+	Game_Actor& actor;
+
 	std::unique_ptr<Window_Keyboard> kbd_window;
 	std::unique_ptr<Window_Name> name_window;
 	std::unique_ptr<Window_Face> face_window;

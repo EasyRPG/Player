@@ -35,7 +35,7 @@ public:
 
 	virtual void Update();
 	BitmapRef const& GetWindowskin() const;
-	void SetWindowskin(BitmapRef const& nwindowskin);
+	void SetWindowskin(BitmapRef const& nwindowskin, bool transparent = false);
 	BitmapRef GetContents() const;
 	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
@@ -129,6 +129,7 @@ private:
 	void RefreshFrame();
 	void RefreshCursor();
 
+	bool background_alpha = false;
 	bool background_needs_refresh;
 	bool frame_needs_refresh;
 	bool cursor_needs_refresh;
