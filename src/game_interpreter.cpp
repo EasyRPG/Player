@@ -4564,17 +4564,6 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 
 	bool disable_autotile = com.parameters[8] != 0;
 
-	Output::Debug("RewriteMap | Mode: {}, SingleRange: {}, Layer: {}, IdOrArrayStart: {}, LeftEnd: {}, TopValue: {}, Width: {}, Height: {}, Autotile: {}",
-				  mode,
-				  is_replace_range,
-				  is_upper_layer,
-				  tile_index,
-				  x_start,
-				  y_start,
-				  width,
-				  height,
-				  disable_autotile);
-
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 	if (!scene)
 		return true;

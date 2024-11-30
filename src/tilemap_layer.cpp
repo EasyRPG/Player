@@ -745,7 +745,7 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 		// TODO: make it work for AB autotiles
 		if (IsAutotileAB(tile_id)) {
 			RecreateTileDataAt(x, y, tile_id);
-			Output::Warning("Maniac Patch: Command RewriteMap is only partially supported.");
+			Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
 		} else {
 			RecalculateAutotile(x, y, tile_id);
 		}
@@ -795,7 +795,7 @@ static inline void ApplyCornerFixups(uint8_t& neighbors) {
 void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 	// TODO: make it work for AB autotiles
 	if (IsAutotileAB(tile_id)) {
-		Output::Warning("Maniac Patch: Command RewriteMap is only partially supported.");
+		Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
 		return;
 	}
 
