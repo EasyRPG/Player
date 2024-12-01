@@ -59,6 +59,17 @@ static constexpr int NUM_LOWER_TILES = BLOCK_F_INDEX;
 static constexpr int NUM_UPPER_TILES = BLOCK_F_TILES;
 static constexpr int NUM_TILES = NUM_LOWER_TILES + NUM_UPPER_TILES;
 
+// Bit positions for neighbors
+static constexpr uint8_t NEIGHBOR_NW = 0x80; // 0b10000000
+static constexpr uint8_t NEIGHBOR_N  = 0x40; // 0b01000000
+static constexpr uint8_t NEIGHBOR_NE = 0x20; // 0b00100000
+static constexpr uint8_t NEIGHBOR_W  = 0x10; // 0b00010000
+static constexpr uint8_t NEIGHBOR_E  = 0x08; // 0b00001000
+static constexpr uint8_t NEIGHBOR_SW = 0x04; // 0b00000100
+static constexpr uint8_t NEIGHBOR_S  = 0x02; // 0b00000010
+static constexpr uint8_t NEIGHBOR_SE = 0x01; // 0b00000001
+
+
 /** Passability flags. */
 namespace Passable {
 	enum Passable {
@@ -90,6 +101,28 @@ inline int ChipIdToIndex(int chip_id) {
 	}
 	else if (chip_id >= BLOCK_F && chip_id < BLOCK_F_END) {
 		return BLOCK_F_INDEX + (chip_id - BLOCK_F) / BLOCK_F_STRIDE;
+	}
+	return 0;
+}
+
+inline int IndexToChipId(int index) {
+	if (index >= BLOCK_A_INDEX && index < BLOCK_B_INDEX) {
+		return BLOCK_A + (index - BLOCK_A_INDEX) * BLOCK_A_STRIDE;
+	}
+	else if (index >= BLOCK_B_INDEX && index < BLOCK_C_INDEX) {
+		return BLOCK_B + (index - BLOCK_B_INDEX) * BLOCK_B_STRIDE;
+	}
+	else if (index >= BLOCK_C_INDEX && index < BLOCK_D_INDEX) {
+		return BLOCK_C + (index - BLOCK_C_INDEX) * BLOCK_C_STRIDE;
+	}
+	else if (index >= BLOCK_D_INDEX && index < BLOCK_E_INDEX) {
+		return BLOCK_D + (index - BLOCK_D_INDEX) * BLOCK_D_STRIDE;
+	}
+	else if (index >= BLOCK_E_INDEX && index < BLOCK_F_INDEX) {
+		return BLOCK_E + (index - BLOCK_E_INDEX) * BLOCK_E_STRIDE;
+	}
+	else if (index >= BLOCK_F_INDEX) {
+		return BLOCK_F + (index - BLOCK_F_INDEX) * BLOCK_F_STRIDE;
 	}
 	return 0;
 }
