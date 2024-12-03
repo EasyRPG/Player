@@ -4069,61 +4069,159 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 		return true;
 	}
 
-	for (int i = 0; i < com.parameters.size(); i++) {
-		Output::Debug("GetGameInfo, Param {} = {}", i, com.parameters[i]);
-	}
-
-	// Com 0 seems to be for bitfield var CharAirship
-	// Com 1 is the type of function
-	// Com 2 onward are the arguments for value
+	int event_id;
+	const Game_Strings::Str_Params param = {com.parameters[2], 0, 0};
 
 	switch (com.parameters[1]) {
 		case 0: // Get map size
 			Main_Data::game_variables->Set(com.parameters[2], Game_Map::GetMap().width);
 			Main_Data::game_variables->Set(com.parameters[2] + 1, Game_Map::GetMap().height);
-			return true;
+			break;
 		case 1: // Get tile info
-			Output::Warning("Maniac_GetGameInfo - Option 'Tile Info' not implemented.");
-			return true;
+			// FIXME: figure out how 'Tile Info' works
+			Output::Warning("GetGameInfo: Option 'Tile Info' not implemented.");
+			break;
 		case 2: // Get window size
-			Output::Debug("Maniac_GetGameInfo - Screen Size: {} - {}", Player::screen_width, Player::screen_height);
 			Main_Data::game_variables->Set(com.parameters[2], Player::screen_width);
 			Main_Data::game_variables->Set(com.parameters[2] + 1, Player::screen_height);
-			return true;
+			break;
+		case 3: // Get pixel info
+			// FIXME: figure out how 'Pixel info' works
+			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
+			break;
 		case 4: // Get command interpreter state
-			Output::Warning("Maniac_GetGameInfo - Option 'Command Interpreter State' not implemented.");
-			return true;
+			// FIXME: figure out how 'command interpreter state' works
+			Output::Warning("GetGameInfo: Option 'Command Interpreter State' not implemented.");
+			break;
 		case 5: // Get tileset ID
-			Output::Debug("Maniac_GetGameInfo - Tileset ID: {}", Game_Map::GetChipset());
 			Main_Data::game_variables->Set(com.parameters[2], Game_Map::GetChipset());
-			return true;
-		case 6: // Get Face ID
-			// Param 2: String index
-			// Param 3: ID index
-			// Param 4: Window avatar?
-			// Param 5: Actor ID
-			// Param 6: Dynamic?
+			break;
+		case 6: // Get actor/message face graphic
 			if (com.parameters[4] == 1) {
-
+				// Message
+				Main_Data::game_strings->Asg(param, Main_Data::game_system->GetMessageFaceName());
+				Main_Data::game_variables->Set(com.parameters[3], Main_Data::game_system->GetMessageFaceIndex());
 			} else {
-				int actor_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
-				Game_Strings::Str_Params param = {com.parameters[2], 0, 0};
+				// Actor
+				event_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
 				if (com.parameters[6] == 1) {
 					// Dynamic
-					auto* actor = Main_Data::game_actors->GetActor(actor_id);
+					auto* actor = Main_Data::game_actors->GetActor(event_id);
 					Main_Data::game_strings->Asg(param, actor->GetFaceName());
 					Main_Data::game_variables->Set(com.parameters[3], actor->GetFaceIndex());
 				} else {
 					// Default one
-					auto* dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, actor_id);
+					auto* dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, event_id);
 					Main_Data::game_strings->Asg(param, StringView(dbActor->face_name));
 					Main_Data::game_variables->Set(com.parameters[3], dbActor->face_index);
 				}
 			}
-			return true;
-		default:
-			Output::Warning("Maniac_GetGameInfo - Option {} not implemented.", com.parameters[1]);
-			return true;
+			break;
+		case 7: // Get actor/event body graphic
+			event_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
+			Game_Event *event;
+			Game_Vehicle *vehicle;
+			Game_Character *character;
+			if (com.parameters[4] == 1) {
+				// Get event graphic
+				// Bug: .static 10001 gives current sprite of Player. .dynamic 10001 gives out nothing.
+				// Bug: Cannot get .static 10005 sprite of self. .dynamic 10005 works however
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					if (event_id == Game_Character::CharPlayer) {
+							// Return nothing as per Maniac Patch
+							Main_Data::game_strings->Asg(param, "");
+							Main_Data::game_variables->Set(com.parameters[3], 0);
+							break;
+					}
+					character = GetCharacter(event_id);
+					if (character == nullptr) {
+						Output::Warning("GetGameInfo: Requested invalid event id ({})", event_id);
+						break;
+					}
+					Main_Data::game_strings->Asg(param, StringView(character->GetSpriteName()));
+					Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
+					break;
+				} else {
+					// Static
+					switch (event_id) {
+						case Game_Character::CharPlayer:
+							// Return dyamic player sprite
+							character = GetCharacter(event_id);
+							Main_Data::game_strings->Asg(param, StringView(character->GetSpriteName()));
+							Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
+							break;
+						case Game_Character::CharBoat:
+							Main_Data::game_strings->Asg(param, StringView(lcf::Data::system.boat_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.boat_index);
+							break;
+						case Game_Character::CharShip:
+							Main_Data::game_strings->Asg(param, StringView(lcf::Data::system.ship_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.ship_index);
+							break;
+						case Game_Character::CharAirship:
+							Main_Data::game_strings->Asg(param, StringView(lcf::Data::system.airship_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.airship_index);
+							break;
+						case Game_Character::CharThisEvent:
+						default:
+							if (event_id == Game_Character::CharThisEvent) {
+								event_id = GetThisEventId();
+								// Is a common event
+								if (event_id == 0) {
+									// With no map parent
+									break;
+								}
+							}
+							event = Game_Map::GetEvent(event_id);
+							if (event == nullptr ) {
+								Output::Warning("GetGameInfo: Requested invalid event id ({})", event_id);
+								break;
+							}
+							auto *page = event->GetActivePage();
+							if (page == nullptr) {
+								// return nothing
+								Main_Data::game_strings->Asg(param, "");
+								Main_Data::game_variables->Set(com.parameters[3], 0);
+							} else {
+								Main_Data::game_strings->Asg(param, StringView(event->GetActivePage()->character_name));
+								Main_Data::game_variables->Set(com.parameters[3], event->GetActivePage()->character_index);
+							}
+					}
+				}
+			} else {
+				// Get actor graphic
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					auto* actor = Main_Data::game_actors->GetActor(event_id);
+					Main_Data::game_strings->Asg(param, actor->GetSpriteName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetSpriteIndex());
+				} else {
+					// Default one
+					auto* dbActor = lcf::ReaderUtil::GetElement(lcf::Data::actors, event_id);
+					Main_Data::game_strings->Asg(param, StringView(dbActor->character_name));
+					Main_Data::game_variables->Set(com.parameters[3], dbActor->character_index);
+				}
+			}
+			break;
+		case 8:
+			// Screen position
+			Main_Data::game_variables->Set(com.parameters[2], Game_Map::GetPositionX() >> 4);
+			Main_Data::game_variables->Set(com.parameters[2] + 1, Game_Map::GetPositionY() >> 4);
+			break;
+		case 9:
+			// Screen shake
+			Main_Data::game_variables->Set(com.parameters[2], Main_Data::game_screen->GetShakeOffsetX());
+			Main_Data::game_variables->Set(com.parameters[2] + 1, 0); // Maniac probably supports ShakeOffsetY in its code
+			break;
+		case 10:
+			// Current BGM
+			Main_Data::game_strings->Asg(param, Main_Data::game_system->GetCurrentBGM().name);
+			Main_Data::game_variables->Set(com.parameters[3], Main_Data::game_system->GetCurrentBGM().fadein);
+			Main_Data::game_variables->Set(com.parameters[3] + 1, Main_Data::game_system->GetCurrentBGM().volume);
+			Main_Data::game_variables->Set(com.parameters[3] + 2, Main_Data::game_system->GetCurrentBGM().tempo);
+			Main_Data::game_variables->Set(com.parameters[3] + 3, Main_Data::game_system->GetCurrentBGM().balance);
+			break;
 	}
 	return true;
 }
