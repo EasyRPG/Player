@@ -780,7 +780,7 @@ bool ManiacPatch::CheckString(StringView str_l, StringView str_r, int op, bool i
 }
 
 StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
-	auto get_name = [id](StringView type, const auto& vec) -> StringView {
+	auto get_name = [&id](StringView type, const auto& vec) -> StringView {
 		auto* data = lcf::ReaderUtil::GetElement(vec, id);
 		if (!data) {
 			Output::Warning("Unable to read {} name: {}", type, id);
@@ -833,7 +833,7 @@ StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
 		}
 		break;
 	}
-	case 18: //.member[a].name
+	case 18: //.member[a].name, index starts from 0
 	{
 		auto actor = Main_Data::game_party->GetActor(id);
 		if (actor != nullptr) {
