@@ -88,6 +88,14 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	party_target = target;
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetActionType() {
+	return -1;
+}
+
+int Game_BattleAlgorithm::AlgorithmBase::GetActionId() {
+	return -1;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	hp = 0;
 	sp = 0;
@@ -185,7 +193,20 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 			// Only absorb the sp that were left
 			source->ChangeSp(-sp);
 		}
+
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				3,
+				sp
+			);
+		}
 	}
+
 	return sp;
 }
 
@@ -197,6 +218,18 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 		atk = target->ChangeAtkModifier(atk);
 		if (IsAbsorbAtk()) {
 			source->ChangeAtkModifier(-atk);
+		}
+
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				4,
+				atk
+			);
 		}
 	}
 	return atk;
@@ -211,6 +244,18 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 		if (IsAbsorbDef()) {
 			source->ChangeDefModifier(-def);
 		}
+
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				5,
+				def
+			);
+		}
 	}
 	return def;
 }
@@ -224,6 +269,18 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 		if (IsAbsorbSpi()) {
 			source->ChangeSpiModifier(-spi);
 		}
+
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				6,
+				spi
+			);
+		}
 	}
 	return spi;
 }
@@ -236,6 +293,18 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 		agi = target->ChangeAgiModifier(agi);
 		if (IsAbsorbAgi()) {
 			source->ChangeAgiModifier(-agi);
+		}
+
+		if (Player::IsPatchManiac()) {
+			Game_Battle::ManiacBattleHook(
+				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+				target->GetType() == Game_Battler::Type_Enemy,
+				target->GetPartyIndex(),
+				target->GetDisplayX(),
+				target->GetDisplayY(),
+				7,
+				agi
+			);
 		}
 	}
 	return agi;
@@ -532,6 +601,26 @@ AlgorithmBase(Type::None, source, source) {
 	// no-op
 }
 
+int Game_BattleAlgorithm::None::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_nothing;
+}
+
+int Game_BattleAlgorithm::None::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::Normal::GetActionId() {
+	if (IsDualAttack()) {
+		return lcf::rpg::EnemyAction::Basic_dual_attack;
+	}
+
+	return lcf::rpg::EnemyAction::Basic_attack;
+}
+
+int Game_BattleAlgorithm::Normal::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier, Style style) :
 	AlgorithmBase(Type::Normal, source, target), hits_multiplier(hits_multiplier)
 {
@@ -740,12 +829,16 @@ bool Game_BattleAlgorithm::Normal::vExecute() {
 	return SetIsSuccess();
 }
 
+bool Game_BattleAlgorithm::Normal::IsDualAttack() const {
+	return GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2;
+}
+
 std::string Game_BattleAlgorithm::Normal::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
 			return BattleMessage::GetNormalAttackStartMessage2k(*GetSource());
 		}
-		if (GetSource()->GetType() == Game_Battler::Type_Enemy && hits_multiplier == 2) {
+		if (IsDualAttack()) {
 			return BattleMessage::GetDoubleAttackStartMessage2k3(*GetSource());
 		}
 	}
@@ -847,6 +940,14 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item) :
 	Skill(source, source, skill, item)
 {
+}
+
+int Game_BattleAlgorithm::Skill::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_skill;
+}
+
+int Game_BattleAlgorithm::Skill::GetActionId() {
+	return skill.ID;
 }
 
 void Game_BattleAlgorithm::Skill::Init() {
@@ -1236,6 +1337,14 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 		// no-op
 }
 
+int Game_BattleAlgorithm::Item::GetActionType() {
+	return 3;
+}
+
+int Game_BattleAlgorithm::Item::GetActionId() {
+	return item.ID;
+}
+
 bool Game_BattleAlgorithm::Item::vStart() {
 	Main_Data::game_party->ConsumeItemUse(item.ID);
 	return true;
@@ -1340,6 +1449,14 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 		source->SetIsDefending(true);
 }
 
+int Game_BattleAlgorithm::Defend::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::Defend::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_defense;
+}
+
 std::string Game_BattleAlgorithm::Defend::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1360,6 +1477,14 @@ AlgorithmBase(Type::Observe, source, source) {
 	// no-op
 }
 
+int Game_BattleAlgorithm::Observe::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::Observe::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_observe;
+}
+
 std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1374,6 +1499,14 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage(int line) const {
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
 AlgorithmBase(Type::Charge, source, source) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::Charge::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::Charge::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_charge;
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage(int line) const {
@@ -1394,6 +1527,14 @@ void Game_BattleAlgorithm::Charge::ApplyCustomEffect() {
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
 AlgorithmBase(Type::SelfDestruct, source, target) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::SelfDestruct::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::SelfDestruct::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_autodestruction;
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage(int line) const {
@@ -1450,6 +1591,14 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 	// no-op
 }
 
+int Game_BattleAlgorithm::Escape::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::Escape::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_escape;
+}
+
 std::string Game_BattleAlgorithm::Escape::GetStartMessage(int line) const {
 	if (line == 0) {
 		if (Feature::HasRpg2kBattleSystem()) {
@@ -1487,6 +1636,14 @@ AlgorithmBase(Type::Transform, source, source), new_monster_id(new_monster_id) {
 	// no-op
 }
 
+int Game_BattleAlgorithm::Transform::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_transformation;
+}
+
+int Game_BattleAlgorithm::Transform::GetActionId() {
+	return new_monster_id;
+}
+
 std::string Game_BattleAlgorithm::Transform::GetStartMessage(int line) const {
 	if (line == 0 && Feature::HasRpg2kBattleSystem()) {
 		auto* enemy = lcf::ReaderUtil::GetElement(lcf::Data::enemies, new_monster_id);
@@ -1507,5 +1664,13 @@ void Game_BattleAlgorithm::Transform::ApplyCustomEffect() {
 Game_BattleAlgorithm::DoNothing::DoNothing(Game_Battler* source) :
 AlgorithmBase(Type::DoNothing, source, source) {
 	// no-op
+}
+
+int Game_BattleAlgorithm::DoNothing::GetActionType() {
+	return lcf::rpg::EnemyAction::Kind_basic;
+}
+
+int Game_BattleAlgorithm::DoNothing::GetActionId() {
+	return lcf::rpg::EnemyAction::Basic_nothing;
 }
 

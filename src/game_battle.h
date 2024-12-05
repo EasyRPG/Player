@@ -23,6 +23,7 @@
 #include <lcf/rpg/system.h>
 #include <lcf/rpg/troop.h>
 #include "teleport_target.h"
+#include "game_interpreter_battle.h"
 #include "utils.h"
 #include "point.h"
 
@@ -108,6 +109,15 @@ namespace Game_Battle {
 	 * Updates the gauge of all battlers based on the highest agi of all.
 	 */
 	void UpdateAtbGauges();
+
+	/**
+	 * Convenience function to call a maniacs battle hook, which processes sub-events at any time.
+	 */
+	bool ManiacBattleHook(Game_Interpreter_Battle::ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4 = 0, int var5 = 0, int var6 = 0);
+	/**
+	 * Convenience function to process all maniacs sub-events, and return whether they're currently running
+	 */
+	bool ManiacProcessSubEvents();
 
 	void ChangeBackground(const std::string& name);
 
