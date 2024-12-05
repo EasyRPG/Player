@@ -358,7 +358,7 @@ void FileRequestAsync::Start() {
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
-		if (file_mapping.empty()) {
+		if (file_mapping.empty() || Player::game_config.patch_web_skip_index_json.Get()) {
 			// index.json not fetched yet, fallthrough and fetch
 			request_path += path;
 		} else {

@@ -5095,6 +5095,8 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 		Player::game_config.patch_rpg2k3_commands.Set(flag_value);
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
+	if (flag_name == "web-skipindexjson")
+		Player::game_config.patch_web_skip_index_json.Set(flag_value);
 
 	return true;
 }
