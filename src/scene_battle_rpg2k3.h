@@ -123,7 +123,12 @@ protected:
 	void RefreshCommandWindow(const Game_Actor* actor);
 	void SetActiveActor(int idx);
 
-	void DrawFloatText(int x, int y, int color, StringView text);
+	enum class FloatTextType {
+		Damage = 0,
+		Heal = 1,
+		Miss = 2,
+	};
+	void DrawFloatText(int x, int y, int color, StringView text, Game_Battler* battler, FloatTextType type);
 
 	bool IsTransparent() const;
 
@@ -158,6 +163,8 @@ protected:
 
 	void SetSceneActionSubState(int substate);
 	void ReturnToMainBattleState();
+
+	void CallBattleBeginCommonEvents();
 
 	// SceneAction State Machine Driver
 	SceneActionReturn ProcessSceneAction();
@@ -255,6 +262,9 @@ protected:
 	int GetNextReadyActor();
 
 	std::vector<int> atb_order;
+
+	std::vector<Game_CommonEvent*> battle_parallel_events;
+	Game_Interpreter_Battle parallel_interpreter;
 };
 
 #endif

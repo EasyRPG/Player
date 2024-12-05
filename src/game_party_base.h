@@ -108,6 +108,13 @@ public:
 	 */
 	int GetAverageAgility();
 
+	/**
+	 * Gets the index of the battler in the party
+	 *
+	 * @return the battlers party index, or -1 if not in the party
+	*/
+	int GetMemberIndex(Game_Battler* battler);
+
 private:
 
 };

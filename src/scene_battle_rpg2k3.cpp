@@ -34,11 +34,13 @@
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
+#include "game_map.h"
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_interpreter_battle.h"
 #include "game_battlealgorithm.h"
 #include "game_screen.h"
+#include "game_switches.h"
 #include <lcf/reader_util.h>
 #include "scene_gameover.h"
 #include "utils.h"
@@ -60,9 +62,12 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
+	Game_Interpreter_Battle::InitBattle();
 	InitBattleCondition(Game_Battle::GetBattleCondition());
 	CreateEnemySprites();
 	CreateActorSprites();
+
+	Game_Battle::GetInterpreterBattle();
 
 	// We need to wait for actor and enemy graphics to load before we can finish initializing the battle.
 	AsyncNext([this]() { Start2(); });
@@ -498,7 +503,24 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text, Game_Battler* battler, FloatTextType type) {
+	std::stringstream ss(text.to_string());
+	int value = 0;
+	ss >> value;
+	bool should_override = Game_Battle::ManiacBattleHook(
+		Game_Interpreter_Battle::ManiacBattleHookType::DamagePop,
+		battler->GetType() == Game_Battler::Type_Enemy,
+		battler->GetPartyIndex(),
+		x,
+		y,
+		static_cast<int>(type),
+		value
+	);
+
+	if (should_override) {
+		return;
+	}
+
 	Rect rect = Text::GetSize(*Font::Default(), text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
@@ -953,6 +975,22 @@ void Scene_Battle_Rpg2k3::vUpdate() {
 			break;
 		}
 
+		if (state != State_Victory && state != State_Defeat) {
+			parallel_interpreter.Update();
+			if (!parallel_interpreter.IsRunning()) {
+				for (auto common_event : battle_parallel_events)
+				{
+					parallel_interpreter.Push(common_event);
+				}
+			}
+		}
+
+		// this is checked separately because we want normal events to be processed
+		// just not sub-events called by maniacs battle hooks.
+		if (state != State_Victory && state != State_Defeat && Game_Battle::ManiacProcessSubEvents()) {
+			break;
+		}
+
 		if (!CheckWait()) {
 			break;
 		}
@@ -1089,6 +1127,23 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	return SceneActionReturn::eWaitTillNextFrame;
 }
 
+void Scene_Battle_Rpg2k3::CallBattleBeginCommonEvents() {
+	for (auto data_common_event : lcf::Data::commonevents) {
+		if ((!data_common_event.switch_flag || Main_Data::game_switches->Get(data_common_event.switch_id))) {
+			if (data_common_event.trigger == data_common_event.Trigger_battle_begin) {
+				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
+
+				Game_Battle::GetInterpreterBattle().Push(common_event);
+			}
+			else if (data_common_event.trigger == data_common_event.Trigger_battle_parallel) {
+				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
+
+				battle_parallel_events.push_back(common_event);
+			}
+		}
+	}
+}
+
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionStart() {
 	enum SubState {
 		eStartMessage,
@@ -1128,6 +1183,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSt
 		EndNotification();
 		UpdateEnemiesDirection();
 		UpdateActorsDirection();
+		CallBattleBeginCommonEvents();
 		SetSceneActionSubState(eUpdateEvents);
 		return SceneActionReturn::eContinueThisFrame;
 	}
@@ -2209,7 +2265,9 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 					b->GetBattlePosition().x,
 					b->GetBattlePosition().y,
 					damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-					std::to_string(std::abs(damageTaken)));
+					std::to_string(std::abs(damageTaken)),
+					b,
+					damageTaken < 0 ? Scene_Battle_Rpg2k3::FloatTextType::Damage : Scene_Battle_Rpg2k3::FloatTextType::Heal);
 		}
 		if (b->GetType() == Game_Battler::Type_Ally) {
 			auto* sprite = static_cast<Game_Actor*>(b)->GetActorBattleSprite();
@@ -2632,14 +2690,18 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 						target->GetBattlePosition().x,
 						target->GetBattlePosition().y,
 						hp > 0 ? Font::ColorHeal : Font::ColorDefault,
-						std::to_string(std::abs(hp)));
+						std::to_string(std::abs(hp)),
+						target,
+						hp > 0 ? Scene_Battle_Rpg2k3::FloatTextType::Heal : Scene_Battle_Rpg2k3::FloatTextType::Damage);
 
 				if (action->IsAbsorbHp()) {
 					DrawFloatText(
 							source->GetBattlePosition().x,
 							source->GetBattlePosition().y,
 							hp > 0 ? Font::ColorDefault : Font::ColorHeal,
-							std::to_string(std::abs(hp)));
+							std::to_string(std::abs(hp)),
+							source,
+							hp > 0 ? Scene_Battle_Rpg2k3::FloatTextType::Damage : Scene_Battle_Rpg2k3::FloatTextType::Heal);
 				}
 			}
 
@@ -2660,7 +2722,9 @@ Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction
 				target->GetBattlePosition().x,
 				target->GetBattlePosition().y,
 				0,
-				lcf::Data::terms.miss);
+				lcf::Data::terms.miss,
+				target,
+				Scene_Battle_Rpg2k3::FloatTextType::Miss);
 	}
 
 	status_window->Refresh();
@@ -2821,6 +2885,21 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 }
 
 void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
+	auto single_target = for_battler->GetBattleAlgorithm()->GetOriginalSingleTarget();
+	auto group_targets = for_battler->GetBattleAlgorithm()->GetOriginalPartyTarget();
+	// Target: 0 None, 1 Single Enemy, 2 All Enemies, 3 Single Ally, 4 All Allies
+	Game_Battle::ManiacBattleHook(
+		Game_Interpreter_Battle::ManiacBattleHookType::Targetting,
+		for_battler->GetType() == Game_Battler::Type_Enemy,
+		for_battler->GetPartyIndex(),
+		for_battler->GetBattleAlgorithm()->GetActionType(),
+		for_battler->GetBattleAlgorithm()->GetActionId(),
+		single_target
+			? (single_target->GetType() != Game_Battler::Type_Enemy ? 1 : 3)
+			: (group_targets->GetRandomActiveBattler()->GetType() != Game_Battler::Type_Enemy ? 2 : 4),
+		single_target ? single_target->GetPartyIndex() : 0
+	);
+
 	for_battler->SetAtbGauge(0);
 
 	if (for_battler == active_actor) {
@@ -2905,7 +2984,9 @@ void Scene_Battle_Rpg2k3::OnEventHpChanged(Game_Battler* battler, int hp) {
 			battler->GetBattlePosition().x,
 			battler->GetBattlePosition().y,
 			hp < 0 ? Font::ColorDefault : Font::ColorHeal,
-			std::to_string(std::abs(hp)));
+			std::to_string(std::abs(hp)),
+			battler,
+			hp < 0 ? Scene_Battle_Rpg2k3::FloatTextType::Damage : Scene_Battle_Rpg2k3::FloatTextType::Heal);
 }
 
 void Scene_Battle_Rpg2k3::RecreateSpWindow(Game_Battler* battler) {
