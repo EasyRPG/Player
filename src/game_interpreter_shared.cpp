@@ -166,7 +166,7 @@ StringView Game_Interpreter_Shared::CommandStringOrVariable(lcf::rpg::EventComma
 	assert(mode_idx != val_idx);
 
 	if (static_cast<int>(com.parameters.size()) > std::max(mode_idx, val_idx)) {
-		return game_strings->GetWithMode(ToString(com.string), com.parameters[mode_idx], com.parameters[val_idx], *game_variables);
+		return game_strings->GetWithMode(com.string, com.parameters[mode_idx], com.parameters[val_idx], *game_variables);
 	}
 
 	return com.string;
@@ -181,7 +181,7 @@ StringView Game_Interpreter_Shared::CommandStringOrVariableBitfield(lcf::rpg::Ev
 
 	if (static_cast<int>(com.parameters.size()) >= std::max(mode_idx, val_idx) + 1) {
 		int mode = com.parameters[mode_idx];
-		return game_strings->GetWithMode(ToString(com.string), (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *game_variables);
+		return game_strings->GetWithMode(com.string, (mode & (0xF << shift * 4)) >> shift * 4, com.parameters[val_idx], *game_variables);
 	}
 
 	return com.string;

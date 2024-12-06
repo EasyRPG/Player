@@ -127,13 +127,29 @@ namespace Utils {
 	 *
 	 * @param iter begginning of the range to convert from
 	 * @param end end of the range to convert from
-	 * @return the converted string.
+	 * @return iter to the next character and codepoint number
 	 */
 	UtfNextResult UTF8Next(const char* iter, const char* end);
 
-// Some platforms do not like UTF16
-#if _WIN32
+	/**
+	 * Like UTF8Next but skips "skip" characters.
+	 *
+	 * @param iter begginning of the range to convert from
+	 * @param end end of the range to convert from
+	 * @param skip how many characters to skip
+	 * @return iter to the next character and codepoint number
+	 */
+	UtfNextResult UTF8Skip(const char* iter, const char* end, int skip);
 
+	/**
+	 * Determines how many codepoints are in the passed string.
+	 *
+	 * @param str unicode string
+	 * @return amount of codepoints
+	 */
+	int UTF8Length(StringView str);
+
+	// Please report an issue when you get a compile error here because your toolchain is broken and lacks wchar_t
 	/**
 	 * Converts UTF-8 string to std::wstring.
 	 *
@@ -149,8 +165,6 @@ namespace Utils {
 	 * @return the converted string.
 	 */
 	std::string FromWideString(const std::wstring& str);
-
-#endif
 
 	struct ExFontRet {
 		const char* next = nullptr;

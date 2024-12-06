@@ -92,20 +92,22 @@ int Game_Strings::ToNum(Str_Params params, int var_id, Game_Variables& variables
 		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 0));
 
 	variables.Set(var_id, num);
-	Game_Map::SetNeedRefresh(true);
+
+	Game_Map::SetNeedRefreshForVarChange(var_id);
+
 	return num;
 }
 
 int Game_Strings::GetLen(Str_Params params, int var_id, Game_Variables& variables) const {
-	// Note: The length differs between Maniac and EasyRPG due to different internal encoding (utf-8 vs. ansi)
-
 	if (params.string_id <= 0) {
 		return -1;
 	}
 
-	int len = Get(params.string_id).length();
+	int len = Utils::UTF8Length(Get(params.string_id));
 	variables.Set(var_id, len);
-	Game_Map::SetNeedRefresh(true);
+
+	Game_Map::SetNeedRefreshForVarChange(var_id);
+
 	return len;
 }
 
@@ -118,9 +120,14 @@ int Game_Strings::InStr(Str_Params params, std::string search, int var_id, int b
 		search = Extract(search, params.hex);
 	}
 
-	int index = Get(params.string_id).find(search, begin);
+	auto search32 = Utils::DecodeUTF32(search);
+	auto string32 = Utils::DecodeUTF32(Get(params.string_id));
+
+	int index = string32.find(search32, begin);
 	variables.Set(var_id, index);
-	Game_Map::SetNeedRefresh(true);
+
+	Game_Map::SetNeedRefreshForVarChange(var_id);
+
 	return index;
 }
 
@@ -161,6 +168,7 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 		if (str.find(delimiter) == std::string::npos) {
 			// token not found
 		} else {
+			// This works for UTF-8
 			std::string token;
 			for (auto index = str.find(delimiter); index != std::string::npos; index = str.find(delimiter)) {
 				token = str.substr(0, index);
@@ -175,6 +183,9 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 	// set the remaining string
 	Set(params, str);
 	variables.Set(var_id, components);
+
+	Game_Map::SetNeedRefreshForVarChange(var_id);
+
 	return components;
 }
 
@@ -277,24 +288,31 @@ StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_i
 }
 
 StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables) {
+	// std::regex only works with char and wchar, not char32
+	// For full Unicode support requires the w-API, even on non-Windows systems
 	int var_result;
 	std::string str_result;
-	std::smatch match;
 
 	if (params.extract) {
 		expr = Extract(expr, params.hex);
 	}
 
-	std::string base = ToString(Get(params.string_id)).erase(0, begin);
-	std::regex r(expr);
+	auto source = Get(params.string_id);
+	std::string base = Substring(source, begin, Utils::UTF8Length(source));
 
-	std::regex_search(base, match, r);
+	std::wsmatch match;
+	auto wbase = Utils::ToWideString(base);
+	auto wexpr = Utils::ToWideString(expr);
+
+	std::wregex r(wexpr);
+
+	std::regex_search(wbase, match, r);
+	str_result = Utils::FromWideString(match.str());
 
 	var_result = match.position() + begin;
 	variables.Set(var_id, var_result);
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefreshForVarChange(var_id);
 
-	str_result = match.str();
 	if (string_out_id > 0) {
 		params.string_id = string_out_id;
 		Set(params, str_result);
@@ -337,8 +355,18 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 }
 
 std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
-	if (static_cast<int>(string.size()) < min_size) {
-		int s = min_size - string.size();
+	int len = Utils::UTF8Length(string);
+
+	if (min_size < 0) {
+		// Left adjust
+		min_size = abs(min_size);
+		if (len < min_size) {
+			int s = min_size - len;
+			return ToString(string) + std::string(s, c);
+		}
+	} else if (len < min_size) {
+		// Right adjust
+		int s = min_size - len;
 		return std::string(s, c) + ToString(string);
 	}
 	return ToString(string);
@@ -354,6 +382,91 @@ std::string Game_Strings::Extract(StringView string, bool as_hex) {
 	}
 
 	return PendingMessage::ApplyTextInsertingCommands(ToString(string), Player::escape_char, cmd_fn);
+}
+
+std::string Game_Strings::Substring(StringView source, int begin, int length) {
+	const char* iter = source.data();
+	const auto end = source.data() + source.size();
+
+	begin = AdjustIndex(source, begin);
+
+	if (length < 0) {
+		length = 0;
+	}
+
+	// Points at start of the substring
+	auto left = Utils::UTF8Skip(iter, end, begin);
+
+	// Points at end of the substring
+	auto right = Utils::UTF8Skip(left.next, end, length);
+
+	if (right.next == nullptr) {
+		return std::string(left.next, end);
+	} else {
+		return std::string(left.next, right.next);
+	}
+}
+
+std::string Game_Strings::Insert(StringView source, StringView what, int where) {
+	const char* iter = source.data();
+	const auto end = source.data() + source.size();
+
+	where = AdjustIndex(source, where);
+
+	// Points at insertion location
+	auto ret = Utils::UTF8Skip(iter, end, where);
+
+	return std::string(source.data(), ret.next) + ToString(what) + std::string(ret.next, end);
+}
+
+std::string Game_Strings::Erase(StringView source, int begin, int length) {
+	const char* iter = source.data();
+	const auto end = source.data() + source.size();
+
+	begin = AdjustIndex(source, begin);
+
+	if (length < 0) {
+		length = 0;
+	}
+
+	// Points at start of deletion
+	auto left = Utils::UTF8Skip(iter, end, begin);
+
+	if (left.next == nullptr) {
+		return ToString(source);
+	}
+
+	// Points at end of deletion
+	auto right = Utils::UTF8Skip(left.next, end, length);
+
+	std::string ret = std::string(source.data(), left.next);
+	if (right.next != nullptr) {
+		ret += std::string(right.next, end);
+	}
+
+	return ret;
+}
+
+std::string Game_Strings::RegExReplace(StringView str, StringView search, StringView replace, std::regex_constants::match_flag_type flags) {
+	// std::regex only works with char and wchar, not char32
+	// For full Unicode support requires the w-API, even on non-Windows systems
+	auto wstr = Utils::ToWideString(str);
+	auto wsearch = Utils::ToWideString(search);
+	auto wreplace = Utils::ToWideString(replace);
+
+	std::wregex rexp(wsearch);
+
+	auto result = std::regex_replace(wstr, rexp, wreplace, flags);
+
+	return Utils::FromWideString(result);
+}
+
+int Game_Strings::AdjustIndex(StringView str, int index) {
+	if (index >= 0) {
+		return index;
+	}
+
+	return std::max(Utils::UTF8Length(str) - abs(index), 0);
 }
 
 std::optional<std::string> Game_Strings::ManiacsCommandInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {

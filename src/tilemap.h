@@ -36,9 +36,11 @@ public:
 
 	const std::vector<short>& GetMapDataDown() const;
 	void SetMapDataDown(std::vector<short> down);
+	void SetMapTileDataDownAt(int x, int y, int tile_id, bool disable_autotile);
 
 	const std::vector<short>& GetMapDataUp() const;
 	void SetMapDataUp(std::vector<short> up);
+	void SetMapTileDataUpAt(int x, int y, int tile_id);
 
 	const std::vector<unsigned char>& GetPassableUp() const;
 	void SetPassableUp(std::vector<unsigned char> up);
@@ -81,12 +83,20 @@ inline void Tilemap::SetMapDataDown(std::vector<short> down) {
 	layer_down.SetMapData(std::move(down));
 }
 
+inline void Tilemap::SetMapTileDataDownAt(int x, int y, int tile_id, bool disable_autotile) {
+	layer_down.SetMapTileDataAt(x, y, tile_id, disable_autotile);
+}
+
 inline const std::vector<short>& Tilemap::GetMapDataUp() const {
 	return layer_up.GetMapData();
 }
 
 inline void Tilemap::SetMapDataUp(std::vector<short> up) {
 	layer_up.SetMapData(std::move(up));
+}
+
+inline void Tilemap::SetMapTileDataUpAt(int x, int y, int tile_id) {
+	layer_down.SetMapTileDataAt(x, y, tile_id, true);
 }
 
 inline const std::vector<unsigned char>& Tilemap::GetPassableDown() const {

@@ -140,6 +140,59 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
     {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}
 };
 
+// Set of neighboring autotiles -> autotile variant
+// Each neighbor is represented by a single bit (1 - same autotile, 0 - any other case)
+// The bits are ordered as follows (from most to least significant bit): NW N NE W E SW S SE
+static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = {
+	{0b11111111, 0},
+	{0b01111111, 1},
+	{0b11011111, 2},
+	{0b01011111, 3},
+	{0b11111110, 4},
+	{0b01111110, 5},
+	{0b11011110, 6},
+	{0b01011110, 7},
+	{0b11111011, 8},
+	{0b01111011, 9},
+	{0b11011011, 10},
+	{0b01011011, 11},
+	{0b11111010, 12},
+	{0b01111010, 13},
+	{0b11011010, 14},
+	{0b01011010, 15},
+	{0b01101011, 16},
+	{0b01001011, 17},
+	{0b01101010, 18},
+	{0b01001010, 19},
+	{0b00011111, 20},
+	{0b00011110, 21},
+	{0b00011011, 22},
+	{0b00011010, 23},
+	{0b11010110, 24},
+	{0b11010010, 25},
+	{0b01010110, 26},
+	{0b01010010, 27},
+	{0b11111000, 28},
+	{0b01111000, 29},
+	{0b11011000, 30},
+	{0b01011000, 31},
+	{0b01000010, 32},
+	{0b00011000, 33},
+	{0b00001011, 34},
+	{0b00001010, 35},
+	{0b00010110, 36},
+	{0b00010010, 37},
+	{0b11010000, 38},
+	{0b01010000, 39},
+	{0b01101000, 40},
+	{0b01001000, 41},
+	{0b00000010, 42},
+	{0b00001000, 43},
+	{0b01000000, 44},
+	{0b00010000, 45},
+	{0b00000000, 46}
+};
+
 TilemapLayer::TilemapLayer(int ilayer) :
 	substitutions(Game_Map::GetTilesLayer(ilayer)),
 	layer(ilayer),
@@ -376,37 +429,45 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 	data_cache_vec.resize(width * height);
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
-			TileData tile;
-
-			// Get the tile ID
-			tile.ID = nmap_data[x + y * width];
-
-			tile.z = TileBelow;
-
-			// Calculate the tile Z
-			if (!passable.empty()) {
-				if (tile.ID >= BLOCK_F) { // Upper layer
-					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-						tile.z = TileAbove + 1; // Upper sublayer
-					else
-						tile.z = TileBelow + 1; // Lower sublayer
-
-				} else { // Lower layer
-					int chip_index =
-						tile.ID >= BLOCK_E ? substitutions[tile.ID - BLOCK_E] + 18 :
-						tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
-						tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
-						tile.ID / 1000;
-					if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
-						tile.z = TileAbove; // Upper sublayer
-					else
-						tile.z = TileBelow; // Lower sublayer
-
-				}
-			}
-			GetDataCache(x, y) = tile;
+			auto tile_id = nmap_data[x + y * width];
+			CreateTileCacheAt(x, y, tile_id);
 		}
 	}
+}
+
+void TilemapLayer::CreateTileCacheAt(int x, int y, int tile_id) {
+	TileData tile;
+	tile.ID = static_cast<short>(tile_id);
+	tile.z = TileBelow;
+
+	// Calculate the tile Z
+	if (!passable.empty()) {
+		if (tile.ID >= BLOCK_F) { // Upper layer
+			if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
+				tile.z = TileAbove + 1; // Upper sublayer
+			else
+				tile.z = TileBelow + 1; // Lower sublayer
+
+		} else { // Lower layer
+			int chip_index =
+					tile.ID >= BLOCK_E ? substitutions[tile.ID - BLOCK_E] + 18 :
+					tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
+					tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
+					tile.ID / 1000;
+			if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
+				tile.z = TileAbove; // Upper sublayer
+			else
+				tile.z = TileBelow; // Lower sublayer
+
+		}
+	}
+	GetDataCache(x, y) = tile;
+}
+
+void TilemapLayer::RecreateTileDataAt(int x, int y, int tile_id) {
+	map_data[x + y * width] = static_cast<short>(tile_id);
+	Game_Map::ReplaceTileAt(x, y, tile_id, layer);
+	CreateTileCacheAt(x, y, tile_id);
 }
 
 void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
@@ -659,6 +720,113 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	}
 
 	map_data = std::move(nmap_data);
+}
+
+static inline bool IsAutotileAB(int tile_id) {
+	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
+}
+
+void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
+	if(!IsInMapBounds(x, y))
+		return;
+
+	substitutions = Game_Map::GetTilesLayer(layer);
+
+	if (disable_autotile) {
+		RecreateTileDataAt(x, y, tile_id);
+	} else {
+		// Recalculate the replaced tile itself + every neighboring tile
+		static constexpr struct { int dx; int dy; } adjacent[8] = {
+				{-1, -1}, { 0, -1}, { 1, -1},
+				{-1,  0}, { 1,  0},
+				{-1,  1}, { 0,  1}, { 1,  1}
+		};
+
+		// TODO: make it work for AB autotiles
+		if (IsAutotileAB(tile_id)) {
+			RecreateTileDataAt(x, y, tile_id);
+			Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
+		} else {
+			RecalculateAutotile(x, y, tile_id);
+		}
+
+		for (const auto& adj : adjacent) {
+			auto nx = x + adj.dx;
+			auto ny = y + adj.dy;
+			if (IsInMapBounds(nx, ny)) {
+				RecalculateAutotile(nx, ny, GetDataCache(nx, ny).ID);
+			}
+		}
+	}
+
+	SetMapData(map_data);
+}
+
+static inline bool IsAutotileD(int tile_id) {
+	return tile_id >= BLOCK_D && tile_id < BLOCK_E;
+}
+
+static inline bool IsSameAutotileD(int current_tile_id, int neighbor_tile_id) {
+	return ChipIdToIndex(current_tile_id) == ChipIdToIndex(neighbor_tile_id);
+}
+
+static inline void ApplyCornerFixups(uint8_t& neighbors) {
+	// Northwest corner
+	if ((neighbors & NEIGHBOR_NW) && (neighbors & (NEIGHBOR_N | NEIGHBOR_W)) != (NEIGHBOR_N | NEIGHBOR_W)) {
+		neighbors &= ~NEIGHBOR_NW;
+	}
+
+	// Northeast corner
+	if ((neighbors & NEIGHBOR_NE) && (neighbors & (NEIGHBOR_N | NEIGHBOR_E)) != (NEIGHBOR_N | NEIGHBOR_E)) {
+		neighbors &= ~NEIGHBOR_NE;
+	}
+
+	// Southwest corner
+	if ((neighbors & NEIGHBOR_SW) && (neighbors & (NEIGHBOR_S | NEIGHBOR_W)) != (NEIGHBOR_S | NEIGHBOR_W)) {
+		neighbors &= ~NEIGHBOR_SW;
+	}
+
+	// Southeast corner
+	if ((neighbors & NEIGHBOR_SE) && (neighbors & (NEIGHBOR_S | NEIGHBOR_E)) != (NEIGHBOR_S | NEIGHBOR_E)) {
+		neighbors &= ~NEIGHBOR_SE;
+	}
+}
+
+void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
+	// TODO: make it work for AB autotiles
+	if (IsAutotileAB(tile_id)) {
+		Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
+		return;
+	}
+
+	if (!IsAutotileD(tile_id)) {
+		return;
+	}
+
+	const int block = (tile_id - BLOCK_D) / BLOCK_D_STRIDE;
+	uint8_t neighbors = 0;
+
+	// Get all neighboring tiles in a single pass
+	static constexpr struct { int dx; int dy; uint8_t bit; } adjacent[8] = {
+			{-1, -1, NEIGHBOR_NW}, { 0, -1, NEIGHBOR_N}, { 1, -1, NEIGHBOR_NE},
+			{-1,  0, NEIGHBOR_W }, { 1,  0, NEIGHBOR_E},
+			{-1,  1, NEIGHBOR_SW}, { 0,  1, NEIGHBOR_S}, { 1,  1, NEIGHBOR_SE}
+	};
+
+	// Build the neighbors mask and fixup corners
+	for (const auto& adj : adjacent) {
+		auto nx = x + adj.dx;
+		auto ny = y + adj.dy;
+		auto adj_tile_id = IsInMapBounds(nx, ny) ? GetDataCache(nx, ny).ID : tile_id;
+		if (IsSameAutotileD(tile_id, adj_tile_id)) {
+			neighbors |= adj.bit;
+		}
+	}
+	ApplyCornerFixups(neighbors);
+
+	// Recalculate tile id using the neighbors -> variant map
+	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_D_VARIANTS_MAP.at(neighbors);
+	RecreateTileDataAt(x, y, new_tile_id);
 }
 
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {

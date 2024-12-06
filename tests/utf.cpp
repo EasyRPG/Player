@@ -86,6 +86,29 @@ TEST_CASE("next") {
 	}
 }
 
+TEST_CASE("length") {
+	for (auto& ts: tests) {
+		REQUIRE_EQ(Utils::UTF8Length(ts.u8), ts.u32.length());
+	}
+}
+
+TEST_CASE("skip") {
+	auto test = tests[0];
+
+	// First 3 characters
+	auto res = Utils::UTF8Skip(test.u8.data(), test.u8.data() + test.u8.size(), 3);
+	REQUIRE_EQ(std::string((const char*)test.u8.data(), res.next), "κόσ");
+
+	// 2 - 4
+	auto beg = Utils::UTF8Skip(test.u8.data(), test.u8.data() + test.u8.size(), 1);
+	auto end = Utils::UTF8Skip(beg.next, test.u8.data() + test.u8.size(), 3);
+	REQUIRE_EQ(std::string(beg.next, end.next), "όσμ");
+
+	// 0 characters (return iter to start)
+	res = Utils::UTF8Skip(test.u8.data(), test.u8.data() + test.u8.size(), 0);
+	REQUIRE_EQ(res.ch, tests[0].u32[0]);
+}
+
 TEST_CASE("TextNext") {
 	std::string text = u8"H $A$B\\\\\\^\\n\nぽ";
 	const auto* iter = text.data();
