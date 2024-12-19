@@ -119,3 +119,18 @@ int Game_Party_Base::GetAverageAgility() {
 	return battlers.empty() ? 1 : agi /= battlers.size();
 }
 
+int Game_Party_Base::GetMemberIndex(Game_Battler* battler) {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	auto iterator = std::find(battlers.begin(), battlers.end(), battler);
+
+	if (iterator != battlers.end()) {
+		int index = std::distance(battlers.begin(), iterator);
+		return index;
+	}
+	else {
+		return -1;
+	}
+}
+

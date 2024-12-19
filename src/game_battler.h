@@ -770,6 +770,13 @@ public:
 	Game_Party_Base& GetParty() const;
 
 	/**
+	 * Convenience function to access the battlers party member index.
+	 * 
+	 * @return Index of this member in their party.
+	 */
+	int GetPartyIndex();
+
+	/**
 	 * Gets the maximal atb gauge value.
 	 * When GetAtbGauge() >= this, the battler can act.
 	 * Used by RPG2k3 battle system.
