@@ -3049,7 +3049,9 @@ bool Game_Interpreter::CommandPlayerVisibility(lcf::rpg::EventCommand const& com
 }
 
 bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // code 11330
-	int event_id = com.parameters[0];
+	int event_id = ValueOrVariableBitfield(com.parameters[2], 2, com.parameters[0]);
+	int repeat = ManiacBitmask(com.parameters[2], 0x1);
+	
 	Game_Character* event = GetCharacter(event_id);
 	if (event != NULL) {
 		// If the event is a vehicle in use, push the commands to the player instead
@@ -3065,7 +3067,7 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 			move_freq = 6;
 		}
 
-		route.repeat = com.parameters[2] != 0;
+		route.repeat = repeat != 0;
 		route.skippable = com.parameters[3] != 0;
 
 		for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
