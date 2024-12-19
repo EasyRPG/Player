@@ -2853,21 +2853,6 @@ void Scene_Battle_Rpg2k3::RowSelected() {
 }
 
 void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
-	auto single_target = for_battler->GetBattleAlgorithm()->GetOriginalSingleTarget();
-	auto group_targets = for_battler->GetBattleAlgorithm()->GetOriginalPartyTarget();
-	// Target: 0 None, 1 Single Enemy, 2 All Enemies, 3 Single Ally, 4 All Allies
-	Game_Battle::ManiacBattleHook(
-		Game_Interpreter_Battle::ManiacBattleHookType::Targetting,
-		for_battler->GetType() == Game_Battler::Type_Enemy,
-		for_battler->GetPartyIndex(),
-		for_battler->GetBattleAlgorithm()->GetActionType(),
-		for_battler->GetBattleAlgorithm()->GetActionId(),
-		single_target
-			? (single_target->GetType() != Game_Battler::Type_Enemy ? 1 : 3)
-			: (group_targets->GetRandomActiveBattler()->GetType() != Game_Battler::Type_Enemy ? 2 : 4),
-		single_target ? single_target->GetPartyIndex() : 0
-	);
-
 	for_battler->SetAtbGauge(0);
 
 	if (for_battler == active_actor) {
