@@ -3854,7 +3854,7 @@ bool Game_Interpreter::CommandEraseEvent(lcf::rpg::EventCommand const& com) { //
 	int event_id = 0; // default rm values
 	bool is_active = 0; // In Vanilla RM event is always itself and it always becomes inactive
 
-	if (Player::IsPatchManiac()) {
+	if (Player::IsPatchManiac() && com.parameters.size() >= 3) {
 		event_id = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
 		is_active = com.parameters[1];
 	}
