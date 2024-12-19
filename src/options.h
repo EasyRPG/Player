@@ -56,6 +56,10 @@
 #define INI_NAME "RPG_RT.ini"
 #define EASYRPG_INI_NAME "EasyRPG.ini"
 
+#ifndef EASYRPG_CONFIG_NAME
+#  define EASYRPG_CONFIG_NAME "config.ini"
+#endif
+
 /** Prefix for .ldb and .lmt files; used when guessing non-standard extensions. */
 #define RPG_RT_PREFIX "RPG_RT"
 #define EASY_RT_PREFIX "EASY_RT"

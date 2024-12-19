@@ -37,7 +37,7 @@ namespace {
 	std::string config_path;
 	std::string soundfont_path;
 	std::string font_path;
-	StringView config_name = "config.ini";
+	StringView config_name = EASYRPG_CONFIG_NAME;
 }
 
 void Game_ConfigPlayer::Hide() {

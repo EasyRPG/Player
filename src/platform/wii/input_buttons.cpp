@@ -19,10 +19,11 @@
 #include "input_buttons.h"
 #include "keys.h"
 #include "game_config.h"
-#include "platform/sdl/axis.h"
+
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 	return {
+#if USE_SDL==1
 		// Wiimote
 		{DECISION, Keys::JOY_OTHER_0}, // A, shared with Classic Controller (CC)
 		{CANCEL, Keys::JOY_OTHER_1}, // B, shared with CC
@@ -43,7 +44,47 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{FAST_FORWARD_B, Keys::JOY_OTHER_12}, // R
 		{N5, Keys::JOY_OTHER_13}, // ZL
 		{TOGGLE_FPS, Keys::JOY_OTHER_14}, // ZR
+#else
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+		{UP, Keys::JOY_DPAD_UP},
+		{DOWN, Keys::JOY_DPAD_DOWN},
+		{LEFT, Keys::JOY_DPAD_LEFT},
+		{RIGHT, Keys::JOY_DPAD_RIGHT},
+		{DECISION, Keys::JOY_B},
+		{CANCEL, Keys::JOY_A},
+		{CANCEL, Keys::JOY_Y},
+		{SHIFT, Keys::JOY_X},
+		{N0, Keys::JOY_LSTICK},
+		{N5, Keys::JOY_RSTICK},
+		{DEBUG_ABORT_EVENT, Keys::JOY_SHOULDER_LEFT},
+		{TOGGLE_FPS, Keys::JOY_SHOULDER_RIGHT},
+		{SETTINGS_MENU, Keys::JOY_START},
+		{RESET, Keys::JOY_BACK},
+#endif
 
+#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+		{UP, Keys::JOY_LSTICK_UP},
+		{DOWN, Keys::JOY_LSTICK_DOWN},
+		{LEFT, Keys::JOY_LSTICK_LEFT},
+		{RIGHT, Keys::JOY_LSTICK_RIGHT},
+		{N1, Keys::JOY_RSTICK_DOWN_LEFT},
+		{N2, Keys::JOY_RSTICK_DOWN},
+		{N3, Keys::JOY_RSTICK_DOWN_RIGHT},
+		{N4, Keys::JOY_RSTICK_LEFT},
+		{N6, Keys::JOY_RSTICK_RIGHT},
+		{N7, Keys::JOY_RSTICK_UP_LEFT},
+		{N8, Keys::JOY_RSTICK_UP},
+		{N9, Keys::JOY_RSTICK_UP_RIGHT},
+		{FAST_FORWARD_A, Keys::JOY_RTRIGGER_FULL},
+		{DEBUG_MENU, Keys::JOY_LTRIGGER_FULL},
+#endif
+
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+		{MOUSE_LEFT, Keys::ONE_FINGER},
+		{MOUSE_RIGHT, Keys::TWO_FINGERS},
+		{MOUSE_MIDDLE, Keys::THREE_FINGERS},
+#endif
+#endif
 		{UP, Keys::JOY_LSTICK_UP},
 		{DOWN, Keys::JOY_LSTICK_DOWN},
 		{LEFT, Keys::JOY_LSTICK_LEFT},
@@ -97,6 +138,8 @@ void Input::GetSupportedConfig(Game_ConfigInput& cfg) {
 	cfg.gamepad_swap_dpad_with_buttons.SetOptionVisible(true);
 }
 
+#if USE_SDL==1
+#include "platform/sdl/axis.h"
 SdlAxis Input::GetSdlAxis() {
 	// Classic Controller L/R Trigger axis do not report proper values
 	// Handled above as Button 11/12
@@ -104,4 +147,5 @@ SdlAxis Input::GetSdlAxis() {
 		0, 1, 2, 3, -1, -1, false, false
 	};
 }
+#endif
 

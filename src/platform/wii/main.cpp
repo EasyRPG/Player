@@ -38,9 +38,6 @@ namespace {
 	bool is_emu = false;
 }
 
-// in sdl-wii
-extern "C" void OGC_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
-
 static void GekkoResetCallback(u32 /* irq */ , void* /* ctx */) {
 	Player::reset_flag = true;
 }
@@ -85,9 +82,6 @@ extern "C" int main(int argc, char* argv[]) {
 	}
 
 	SYS_SetResetCallback(GekkoResetCallback);
-
-	// Eliminate overscan / add 5% borders
-	OGC_ChangeSquare(304, 228, 0, 0);
 
 	// Working directory not correctly handled, provide it manually
 	bool want_cwd = true;

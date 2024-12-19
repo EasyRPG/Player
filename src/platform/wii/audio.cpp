@@ -53,15 +53,17 @@ static void VoiceStreamCallback(AESNDPB *pb, u32 state) {
 
 static void *AudioThread (void *) {
 	while (!stopaudio) {
+		instance->LockMutex();
+
 		// clear old data
 		memset(buffer[cur_buf], 0, SNDBUFFERSIZE);
 
-		instance->LockMutex();
 		instance->Decode(buffer[cur_buf], SNDBUFFERSIZE);
-		instance->UnlockMutex();
 
 		// make sure data is in main memory
 		DCFlushRange(buffer[cur_buf], SNDBUFFERSIZE);
+
+		instance->UnlockMutex();
 
 		LWP_ThreadSleep(audioqueue);
 	}
