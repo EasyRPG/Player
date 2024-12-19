@@ -65,8 +65,6 @@ void Scene_Battle_Rpg2k3::Start() {
 	CreateEnemySprites();
 	CreateActorSprites();
 
-	Game_Battle::GetInterpreterBattle();
-
 	// We need to wait for actor and enemy graphics to load before we can finish initializing the battle.
 	AsyncNext([this]() { Start2(); });
 }
