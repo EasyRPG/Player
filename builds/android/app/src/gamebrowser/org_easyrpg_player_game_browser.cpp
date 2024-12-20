@@ -402,11 +402,6 @@ Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject th
 	if (encoding == "auto") {
 		auto det_encodings = lcf::ReaderUtil::DetectEncodings(title);
 		for (auto &det_enc: det_encodings) {
-			if (det_enc == "UTF-16BE" || det_enc == "UTF-16LE") {
-				// Skip obviously wrong title encodings
-				continue;
-			}
-
 			if (lcf::Encoder encoder(det_enc); encoder.IsOk()) {
 				encoder.Encode(title);
 				break;
