@@ -364,6 +364,11 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 			env->CallVoidMethod(jgame_object, jset_title_method, jtitle);
 		}
 
+		// Set folder name
+		jstring jfolder = env->NewStringUTF(game_dir_name.c_str());
+		jmethodID jset_folder_name_method = env->GetMethodID(jgame_class, "setGameFolderName", "(Ljava/lang/String;)V");
+		env->CallVoidMethod(jgame_object, jset_folder_name_method, jfolder);
+
 		env->SetObjectArrayElement(jgame_array, i, jgame_object);
 	}
 
