@@ -29,6 +29,7 @@ enum SettingsEnum {
     FONT1_SIZE("Font1Size"),
     FONT2_SIZE("Font2Size"),
     GAME_BROWSER_LABEL_MODE("GAME_BROWSER_LABEL_MODE"),
+    SHOW_ZX_AS_AB("SHOW_ZX_AS_AB")
     ;
 
 
