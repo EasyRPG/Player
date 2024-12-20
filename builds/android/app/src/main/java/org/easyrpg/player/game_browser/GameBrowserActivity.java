@@ -131,7 +131,10 @@ public class GameBrowserActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.refresh) {
+        if (id == R.id.view) {
+            openView();
+            return true;
+        } else if (id == R.id.refresh) {
             scanGamesAndDisplayResult(true);
             return true;
         } else if (id == R.id.menu) {
@@ -159,6 +162,26 @@ public class GameBrowserActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void openView() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        String[] choices_list = {
+            this.getResources().getString(R.string.view_show_game_title),
+            this.getResources().getString(R.string.view_show_game_folder)
+        };
+
+        builder
+            .setTitle(R.string.view_show_title_desc)
+            .setSingleChoiceItems(choices_list, SettingsManager.getGameBrowserLabelMode(), null)
+            .setPositiveButton(R.string.ok, (dialog, id) -> {
+                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                SettingsManager.setGameBrowserLabelMode(selectedPosition);
+                displayGamesList();
+            })
+            .setNegativeButton(R.string.cancel, null);
+        builder.show();
     }
 
     public void scanGamesAndDisplayResult(boolean forceScan) {
@@ -307,7 +330,7 @@ public class GameBrowserActivity extends AppCompatActivity
             final Game game = gameList.get(position);
 
             // Title
-            holder.title.setText(game.getTitle());
+            holder.title.setText(game.getDisplayTitle());
             holder.title.setOnClickListener(v -> launchGame(position, false));
 
             // TitleScreen Image
@@ -391,7 +414,7 @@ public class GameBrowserActivity extends AppCompatActivity
 
                     if (!selectedEncoding.equals(encoding)) {
                         game.setEncoding(selectedEncoding);
-                        holder.title.setText(game.getTitle());
+                        holder.title.setText(game.getDisplayTitle());
                     }
                 })
                 .setNegativeButton(R.string.cancel, null);
@@ -411,12 +434,12 @@ public class GameBrowserActivity extends AppCompatActivity
                 .setTitle(R.string.game_rename)
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
                     game.setCustomTitle(input.getText().toString());
-                    holder.title.setText(game.getTitle());
+                    holder.title.setText(game.getDisplayTitle());
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .setNeutralButton(R.string.revert, (dialog, id) -> {
                     game.setCustomTitle("");
-                    holder.title.setText(game.getTitle());
+                    holder.title.setText(game.getDisplayTitle());
                 });
             builder.show();
         }
