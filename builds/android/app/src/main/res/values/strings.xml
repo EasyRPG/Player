@@ -50,6 +50,10 @@
     <string name="error_saf_download_selected">The Download folder cannot be used as the EasyRPG folder.</string>
     <string name="error_saf_folder_not_empty">The selected folder contains other files and cannot be used as the EasyRPG folder. When you remove all files inside the folder you can use it as the EasyRPG folder.</string>
     <string name="error_saf_bad_content_provider">The selected folder cannot be used as the EasyRPG folder. This problem can occur for various reasons, for example if you have selected the root directory or a storage location in the cloud.\n\n</string>
+    <string name="view">View</string>
+    <string name="view_show_title_desc">Choose how games are named</string>
+    <string name="view_show_game_title">Use the title</string>
+    <string name="view_show_game_folder">Use the folder name</string>
 
     <!--Ingame menu-->
     <string name="toggle_ui">Toggle virtual buttons</string>
@@ -93,6 +97,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="sound_volume">Sound effect volume</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
+    <string name="settings_input_show_zx_as_ab">Display Z and X buttons as A and B</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="quick_access">Quick access</string>
     <string name="fast_forward">Fast-forward button mode:</string>

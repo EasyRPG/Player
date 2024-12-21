@@ -25,6 +25,13 @@
             android:text="@string/vibrate_when_sliding_direction"
             android:textSize="20sp"/>
 
+        <CheckBox
+            android:id="@+id/settings_show_zx_as_ab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_input_show_zx_as_ab"
+            android:textSize="20sp"/>
+
         <include layout="@layout/separator"/>
 
         <RelativeLayout
