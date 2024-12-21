@@ -3852,11 +3852,21 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 	return true;
 }
 
-bool Game_Interpreter::CommandEraseEvent(lcf::rpg::EventCommand const& /* com */) { // code 12320
+bool Game_Interpreter::CommandEraseEvent(lcf::rpg::EventCommand const& com) { // code 12320
+	int event_id = 0; // default rm values
+	bool is_active = 0; // In Vanilla RM event is always itself and it always becomes inactive
+
+	if (Player::IsPatchManiac() && com.parameters.size() >= 3) {
+		event_id = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+		is_active = com.parameters[1];
+	}
+
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
-	auto event_id = GetThisEventId();
+	if (event_id == 0) {
+		event_id = GetThisEventId();
+	}
 
 	// When a common event and not RPG2k3E engine ignore the call, otherwise
 	// operate on last map_event
@@ -3865,7 +3875,7 @@ bool Game_Interpreter::CommandEraseEvent(lcf::rpg::EventCommand const& /* com */
 
 	Game_Event* evnt = Game_Map::GetEvent(event_id);
 	if (evnt) {
-		evnt->SetActive(false);
+		evnt->SetActive(is_active);
 
 		// Parallel map events shall stop immediately
 		if (!main_flag) {
