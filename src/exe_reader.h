@@ -43,6 +43,18 @@ public:
 	std::vector<uint8_t> GetExFont();
 	std::vector<std::vector<uint8_t>> GetLogos();
 
+	enum class MachineType {
+		Unknown,
+		i386,
+		amd64
+	};
+
+	static constexpr auto kMachineTypes = lcf::makeEnumTags<MachineType>(
+		"Unknown",
+		"i386",
+		"amd64"
+	);
+
 	struct FileInfo {
 		uint64_t version = 0;
 		int logos = 0;
@@ -50,7 +62,7 @@ public:
 		uint32_t code_size = 0;
 		uint32_t cherry_size = 0;
 		uint32_t geep_size = 0;
-		bool is_i386 = true;
+		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
 
 		int GetEngineType(bool& is_maniac_patch) const;
