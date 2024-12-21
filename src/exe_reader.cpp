@@ -34,19 +34,46 @@ namespace {
 EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(core)) {
 	// The Incredibly Dumb PE parser (tm)
 	// Extracts data from the resource section for engine detection and can read ExFont.
-	uint32_t ofs = GetU32(0x3C);
+	uint32_t ofs = GetU32(0x3C); // PE header offset
 	uint16_t machine = GetU16(ofs + 4);
-	if (machine != 0x14c) {
-		// FIXME: Newer versions of Maniac Patch can be 64 Bit
-		Output::Debug("EXEReader: Machine type is not i386 ({:#x})", machine);
-		file_info.is_i386 = false;
-		return;
+
+	switch (machine) {
+		case 0x14c:
+			file_info.machine_type = MachineType::i386;
+			break;
+		case 0x8664:
+			file_info.machine_type = MachineType::amd64;
+			break;
+		default:
+			Output::Debug("EXEReader: Unsupported machine type ({:#x})", machine);
+			file_info.machine_type = MachineType::Unknown;
+			return;
 	}
 
 	// The largest known exe has 11 segments, guard against bogus section data here
 	uint16_t sections = std::min<uint16_t>(GetU16(ofs + 6), 11);
-	uint32_t sectionsOfs = ofs + 0x18 + GetU16(ofs + 0x14);
-	resource_rva = GetU32(ofs + 0x88);
+	uint32_t optional_header = ofs + 0x18;
+	uint32_t oh_magic = GetU16(optional_header);
+
+	bool format_pe32;
+
+	switch (oh_magic) {
+		case 0x10b:
+			format_pe32 = true;
+			break;
+		case 0x20b:
+			// PE32+ (for 64 bit executables)
+			format_pe32 = false;
+			break;
+		default:
+			Output::Debug("EXEReader: Unknown PE header magic ({:#x})", oh_magic);
+			file_info.machine_type = MachineType::Unknown;
+			return;
+	}
+
+	uint32_t sectionsOfs = optional_header + GetU16(ofs + 0x14); // skip opt header
+	uint32_t data_directory_ofs = (format_pe32 ? 0x60 : 0x70);
+	resource_rva = GetU32(optional_header + data_directory_ofs + 16);
 	if (!resource_rva) {
 		// Is some kind of encrypted EXE -> Give up
 		return;
@@ -379,13 +406,13 @@ bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 }
 
 void EXEReader::FileInfo::Print() const {
-	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} i386={} easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, is_i386, is_easyrpg_player);
+	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} arch={} easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, kMachineTypes[machine_type], is_easyrpg_player);
 }
 
 int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 	is_maniac_patch = false;
 
-	if (is_easyrpg_player || !is_i386) {
+	if (is_easyrpg_player || machine_type == MachineType::Unknown) {
 		return Player::EngineNone;
 	}
 
