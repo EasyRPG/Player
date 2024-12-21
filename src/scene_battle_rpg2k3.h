@@ -123,7 +123,12 @@ protected:
 	void RefreshCommandWindow(const Game_Actor* actor);
 	void SetActiveActor(int idx);
 
-	void DrawFloatText(int x, int y, int color, StringView text);
+	enum class FloatTextType {
+		Damage = 0,
+		Heal = 1,
+		Miss = 2,
+	};
+	void DrawFloatText(int x, int y, int color, StringView text, Game_Battler* battler, FloatTextType type);
 
 	bool IsTransparent() const;
 

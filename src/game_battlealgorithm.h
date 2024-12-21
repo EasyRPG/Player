@@ -83,6 +83,12 @@ class AlgorithmBase {
 public:
 	virtual ~AlgorithmBase() {}
 
+	/** @return the category associated with this action */
+	virtual int GetActionType();
+
+	/** @return the unique identifier associated with this specific action */
+	virtual int GetActionId();
+
 	/** @return the source of the battle action. */
 	Game_Battler* GetSource() const;
 
@@ -616,6 +622,12 @@ private:
 class None : public AlgorithmBase {
 public:
 	None(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 };
 
 
@@ -628,6 +640,12 @@ public:
 		Style_MultiHit,
 	};
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	static Style GetDefaultStyle();
 
 	Normal(Game_Battler* source, Game_Battler* target, int hits_multiplier = 1, Style style = GetDefaultStyle());
@@ -635,6 +653,7 @@ public:
 
 	bool vExecute() override;
 	bool vStart() override;
+	bool IsDualAttack() const;
 
 	int GetAnimationId(int i) const override;
 	std::string GetStartMessage(int line) const override;
@@ -666,6 +685,12 @@ public:
 	Skill(Game_Battler* source, Game_Battler* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 	Skill(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
 	Skill(Game_Battler* source, const lcf::rpg::Skill& skill, const lcf::rpg::Item* item = NULL);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 
 	bool IsTargetValid(const Game_Battler&) const override;
 	bool vExecute() override;
@@ -704,6 +729,12 @@ public:
 	Item(Game_Battler* source, Game_Party_Base* target, const lcf::rpg::Item& item);
 	Item(Game_Battler* source, const lcf::rpg::Item& item);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	bool IsTargetValid(const Game_Battler&) const override;
 	bool vExecute() override;
 	bool vStart() override;
@@ -724,6 +755,12 @@ class Defend : public AlgorithmBase {
 public:
 	Defend(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 };
@@ -732,12 +769,24 @@ class Observe : public AlgorithmBase {
 public:
 	Observe(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	std::string GetStartMessage(int line) const override;
 };
 
 class Charge : public AlgorithmBase {
 public:
 	Charge(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 
 	std::string GetStartMessage(int line) const override;
 	void ApplyCustomEffect() override;
@@ -746,6 +795,12 @@ public:
 class SelfDestruct : public AlgorithmBase {
 public:
 	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 
 	std::string GetStartMessage(int line) const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
@@ -759,6 +814,12 @@ class Escape : public AlgorithmBase {
 public:
 	Escape(Game_Battler* source);
 
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
+
 	std::string GetStartMessage(int line) const override;
 	int GetSourcePose() const override;
 	const lcf::rpg::Sound* GetStartSe() const override;
@@ -768,6 +829,12 @@ public:
 class Transform : public AlgorithmBase {
 public:
 	Transform(Game_Battler* source, int new_monster_id);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 
 	std::string GetStartMessage(int line) const override;
 	void ApplyCustomEffect() override;
@@ -780,6 +847,12 @@ private:
 class DoNothing : public AlgorithmBase {
 public:
 	DoNothing(Game_Battler* source);
+
+	/** @return the type associated with this action */
+	int GetActionType() override;
+
+	/** @return the id associated with this action */
+	int GetActionId() override;
 };
 
 inline Type AlgorithmBase::GetType() const {

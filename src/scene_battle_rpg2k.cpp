@@ -205,6 +205,12 @@ void Scene_Battle_Rpg2k::vUpdate() {
 			break;
 		}
 
+		// this is checked separately because we want normal events to be processed
+		// just not sub-events called by maniacs battle hooks.
+		if (state != State_Victory && state != State_Defeat && Game_Battle::ManiacProcessSubEvents()) {
+			break;
+		}
+
 		if (!CheckWait()) {
 			break;
 		}
