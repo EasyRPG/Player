@@ -316,8 +316,6 @@ void Scene_Debug::PushUiInterpreterView() {
 
 	Push(eUiInterpreterView);
 
-	auto& idx = prev[mode];
-
 	if (!was_range_list) {
 		SetupUiRangeList();
 	}
@@ -1249,7 +1247,7 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 		state = Game_Interpreter::GetForegroundInterpreter().GetState();
 		first_line = Game_Battle::IsBattleRunning() ? "Foreground (Battle)" : "Foreground (Map)";
 		valid = true;
-	} else if (index <= state_interpreter.ev.size()) {
+	} else if (index <= static_cast<int>(state_interpreter.ev.size())) {
 		evt_id = state_interpreter.ev[index - 1];
 		state = state_interpreter.state_ev[index - 1];
 		first_line = fmt::format("EV{:04d}: {}", evt_id, Game_Map::GetEvent(evt_id)->GetName());

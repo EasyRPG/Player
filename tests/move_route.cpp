@@ -7,10 +7,21 @@
 #include "game_switches.h"
 #include <climits>
 #include <initializer_list>
+#include <lcf/rpg/movecommand.h>
 
 #include "test_move_route.h"
 
 TEST_SUITE_BEGIN("MoveRoute");
+
+lcf::rpg::MoveRoute MakeRoute(int code, bool repeat = false, bool skip = false) {
+	lcf::rpg::MoveRoute mr;
+	lcf::rpg::MoveCommand mc;
+	mc.command_id = code;
+	mr.move_commands = { mc };
+	mr.repeat = repeat;
+	mr.skippable = skip;
+	return mr;
+}
 
 lcf::rpg::MoveRoute MakeRoute(std::initializer_list<lcf::rpg::MoveCommand> cmds, bool repeat = false, bool skip = false) {
 	lcf::rpg::MoveRoute mr;
@@ -154,7 +165,7 @@ TEST_CASE("ForceMoveRouteDiffFreq") {
 
 static void testInvalidCmd(bool repeat, bool skip) {
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ -1 }}, repeat, skip);
+	auto mr = MakeRoute(-1, repeat, skip);
 
 	ch.ForceMoveRoute(mr, 3);
 	testMoveRoute(ch, false, 3, 0xFFFF, 64, 0, true, false, mr);
@@ -188,7 +199,7 @@ static void testMove(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetFacing(face);
 	ch.SetAllowMovement(success);
 
-	auto mr = MakeRoute({{ static_cast<int>(code) }}, repeat, skip);
+	auto mr = MakeRoute(static_cast<int>(code), repeat, skip);
 
 	CAPTURE(code);
 	CAPTURE(x);
@@ -444,7 +455,7 @@ static void testTurn(lcf::rpg::MoveCommand::Code code, int orig_dir, int dir, in
 	ch.SetY(y);
 	ch.SetDirection(orig_dir);
 	ch.SetFacing(orig_dir);
-	auto mr = MakeRoute({{ static_cast<int>(code) }});
+	auto mr = MakeRoute(static_cast<int>(code));
 
 	CAPTURE(code);
 	CAPTURE(orig_dir);
@@ -496,7 +507,7 @@ TEST_CASE("CommandTurnRandom") {
 
 	for (int i = 0; i < 10; ++i) {
 		auto ch = MoveRouteVehicle();
-		auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::face_random_direction) }});
+		auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::face_random_direction));
 
 		ch.ForceMoveRoute(mr, 3);
 		testMoveRouteDir(ch, Down, Down, false, 3, 0xFFFF, 64, 0, true, false, mr);
@@ -514,7 +525,7 @@ TEST_CASE("CommandWait") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::wait) }});
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::wait));
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRouteDir(ch, Down, Down, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -540,12 +551,16 @@ static void testJump(lcf::rpg::MoveCommand::Code code, int x, int y, int dir, in
 	ch.SetFacing(face);
 	ch.SetAllowMovement(success);
 
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::begin_jump) }}, repeat, skip);
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::begin_jump), repeat, skip);
 	if (code != lcf::rpg::MoveCommand::Code::end_jump) {
-		mr.move_commands.push_back({  static_cast<int>(code) });
+		lcf::rpg::MoveCommand mc;
+		mc.command_id = static_cast<int>(code);
+		mr.move_commands.push_back(mc);
 	}
 	if (end) {
-		mr.move_commands.push_back({ static_cast<int>(lcf::rpg::MoveCommand::Code::end_jump) });
+		lcf::rpg::MoveCommand mc;
+		mc.command_id = static_cast<int>(lcf::rpg::MoveCommand::Code::end_jump);
+		mr.move_commands.push_back(mc);
 	}
 	auto num_cmds = static_cast<int>(mr.move_commands.size());
 
@@ -883,7 +898,7 @@ void testLockFacing(lcf::rpg::EventPage::AnimType at) {
 
 	auto ch = MoveRouteVehicle();
 	ch.SetAnimationType(at);
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::lock_facing) }});
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::lock_facing));
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -893,7 +908,7 @@ void testLockFacing(lcf::rpg::EventPage::AnimType at) {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	REQUIRE(ch.IsFacingLocked());
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::unlock_facing) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::unlock_facing));
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.IsFacingLocked());
@@ -913,8 +928,8 @@ TEST_CASE("CommandSpeedChange") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_speed) }});
-	const int n = 10;
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_speed));
+	//const int n = 10;
 
 	ch.SetMoveSpeed(1);
 	int prev = ch.GetMoveSpeed();
@@ -930,7 +945,7 @@ TEST_CASE("CommandSpeedChange") {
 		prev= ch.GetMoveSpeed();
 	}
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_speed) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_speed));
 	for (int i = 0; i < 10; ++i) {
 		ch.ForceMoveRoute(mr, 2);
 		testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
@@ -948,8 +963,7 @@ TEST_CASE("CommandFreqChange") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_frequence) }});
-	const int n = 10;
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::increase_movement_frequence));
 
 	for (int i = 1; i < 10; ++i) {
 		const int freq = Utils::Clamp(i, 1, 8);
@@ -957,7 +971,7 @@ TEST_CASE("CommandFreqChange") {
 		ch.ForceMoveRoute(mr, freq);
 		testMoveRoute(ch, false, freq, 0xFFFF, (i == 0 && freq == 2 ? 0 : Game_Character::GetMaxStopCountForStep(freq)), 0, true, false, mr);
 
-		const int next_freq = Utils::Clamp(freq + 1, 1, 8);
+		//const int next_freq = Utils::Clamp(freq + 1, 1, 8);
 		ForceUpdate(ch);
 		// FIXME: Need another command for the frequency to not get reset when move route is done.
 		//testMoveRoute(ch, false, next_freq, 0xFFFF + 1, Game_Character::GetMaxStopCountForStep(next_freq), 1, false, false, mr);
@@ -966,7 +980,7 @@ TEST_CASE("CommandFreqChange") {
 
 	}
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_frequence) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_movement_frequence));
 
 	for (int i = 1; i < 10; ++i) {
 		const int freq = Utils::Clamp(i, 1, 8);
@@ -974,7 +988,7 @@ TEST_CASE("CommandFreqChange") {
 		ch.ForceMoveRoute(mr, freq);
 		testMoveRoute(ch, false, freq, 0xFFFF, Game_Character::GetMaxStopCountForStep(freq), 0, true, false, mr);
 
-		const int next_freq = Utils::Clamp(freq - 1, 1, 8);
+		//const int next_freq = Utils::Clamp(freq - 1, 1, 8);
 		ForceUpdate(ch);
 		// FIXME: Need another command for the frequency to not get reset when move route is done.
 		//testMoveRoute(ch, false, next_freq, 0xFFFF + 1, Game_Character::GetMaxStopCountForStep(next_freq), 1, false, false, mr);
@@ -986,8 +1000,8 @@ TEST_CASE("CommandTranspChange") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::increase_transp) }});
-	const int n = 10;
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::increase_transp));
+	//const int n = 10;
 
 	ch.SetTransparency(0);
 	int prev = ch.GetTransparency();
@@ -1003,7 +1017,7 @@ TEST_CASE("CommandTranspChange") {
 		prev = ch.GetTransparency();
 	}
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_transp) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::decrease_transp));
 	for (int i = 0; i < 10; ++i) {
 		ch.ForceMoveRoute(mr, 2);
 		testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
@@ -1021,7 +1035,7 @@ TEST_CASE("CommandThrough") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on) }});
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on));
 
 	auto testoff = [&]() {
 		REQUIRE(!ch.GetThrough());
@@ -1047,7 +1061,7 @@ TEST_CASE("CommandThrough") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	teston();
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off));
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	teston();
@@ -1058,7 +1072,7 @@ TEST_CASE("CommandThrough") {
 
 	ch.SetThrough(true);
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_off));
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.GetThrough());
@@ -1068,7 +1082,7 @@ TEST_CASE("CommandThrough") {
 	testoff();
 
 	ch.SetThrough(true);
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::walk_everywhere_on));
 	ch.ForceMoveRoute(mr, 2);
 	REQUIRE(ch.GetThrough());
 
@@ -1081,7 +1095,7 @@ TEST_CASE("CommandStopAnimation") {
 	const MapGuard mg;
 
 	auto ch = MoveRouteVehicle();
-	auto mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::stop_animation) }});
+	auto mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::stop_animation));
 
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 0, 0, true, false, mr);
@@ -1091,7 +1105,7 @@ TEST_CASE("CommandStopAnimation") {
 	testMoveRoute(ch, false, 2, 0xFFFF + 1, 128, 1, false, false, mr);
 	REQUIRE(ch.IsAnimPaused());
 
-	mr = MakeRoute({{ static_cast<int>(lcf::rpg::MoveCommand::Code::start_animation) }});
+	mr = MakeRoute(static_cast<int>(lcf::rpg::MoveCommand::Code::start_animation));
 	ch.ForceMoveRoute(mr, 2);
 	testMoveRoute(ch, false, 2, 0xFFFF, 128, 0, true, false, mr);
 	REQUIRE(ch.IsAnimPaused());

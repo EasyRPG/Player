@@ -4756,7 +4756,7 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 	}
 
 	int mode = com.parameters[0];
-	bool is_replace_range = com.parameters[1] != 0;
+	//bool is_replace_range = com.parameters[1] != 0; FIXME not implemented
 	bool is_upper_layer = com.parameters[2] != 0;
 
 	int tile_index = ValueOrVariableBitfield(mode, 0, com.parameters[3]);

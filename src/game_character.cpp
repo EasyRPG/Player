@@ -40,9 +40,6 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 {
 }
 
-Game_Character::~Game_Character() {
-}
-
 void Game_Character::SanitizeData(StringView name) {
 	SanitizeMoveRoute(name, data()->move_route, data()->move_route_index, "move_route_index");
 }

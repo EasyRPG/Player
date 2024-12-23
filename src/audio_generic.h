@@ -109,7 +109,6 @@ private:
 	BgmChannel BGM_Channels[nr_of_bgm_channels];
 	SeChannel SE_Channels[nr_of_se_channels];
 	mutable bool BGM_PlayedOnceIndicator;
-	bool Muted;
 
 	std::vector<int16_t> sample_buffer = {};
 	std::vector<uint8_t> scrap_buffer = {};
