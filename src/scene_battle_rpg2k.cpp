@@ -505,11 +505,14 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 							SetState(State_Escape);
 						}
 						break;
-					case Win:
-						// FIXME
+					case Win: // Win
+						for (Game_Enemy* enemy : Main_Data::game_enemyparty->GetEnemies()) {
+							enemy->Kill();
+						}
+						SetState(State_Victory);
 						break;
-					case Lose:
-						// FIXME
+					case Lose: // Lose
+						SetState(State_Defeat);
 						break;
 				}
 			}
