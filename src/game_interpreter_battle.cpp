@@ -707,8 +707,7 @@ bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand 
 	}
 
 	ManiacBattleHookType control_type_flags = static_cast<ManiacBattleHookType>(com.parameters[0]);
-	int common_event_flags = com.parameters[1];
-	int common_event_identifier = com.parameters[2];
+	int common_event_identifier = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int value_reference_identifier = com.parameters[3];
 
 	// Sets the maniacs battle event hook to:
