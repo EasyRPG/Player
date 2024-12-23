@@ -40,10 +40,6 @@ template <typename... Args>
 static void DebugLog(const char*, Args&&...) {}
 #endif
 
-constexpr decltype(RpgRtCompat::name) RpgRtCompat::name;
-constexpr decltype(AttackOnly::name) AttackOnly::name;
-constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
-
 std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
 		return std::make_unique<RpgRtImproved>();

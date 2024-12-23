@@ -238,14 +238,14 @@ namespace Destiny
 			 *
 			 * @returns The word found length.
 			 */
-			const size_t GetWordLen();
+			size_t GetWordLen();
 
 			/*
 			 * Evaluates the DestinyScript code.
 			 *
 			 * @returns The interpreter state flag.
 			 */
-			const InterpretFlag Interpret();
+			InterpretFlag Interpret();
 
 			/**
 			 * Loads the interpreter stack.
@@ -286,7 +286,7 @@ namespace Destiny
 			 *
 			 * @return
 			 */
-			inline const bool IsEndOfLine() const
+			inline bool IsEndOfLine() const
 			{
 				return _scriptPtr && *_scriptPtr == ';';
 			}
@@ -297,7 +297,7 @@ namespace Destiny
 			 *
 			 * @return
 			 */
-			inline const bool IsEndOfScript() const
+			inline bool IsEndOfScript() const
 			{
 				return _scriptPtr && *_scriptPtr == '\0';
 			}
@@ -325,21 +325,21 @@ namespace Destiny
 			 *
 			 * @return Flag to finish spaces skipping.
 			 */
-			const bool LineComment();
+			bool LineComment();
 
 			/**
 			 * Read a line block.
 			 *
 			 * @return Flag to finish spaces skipping.
 			 */
-			const bool BlockComment();
+			bool BlockComment();
 
 			/**
 			 * Check whether character is a whitespace.
 			 *
 			 * @return Flag of whitespace character.
 			 */
-			inline const bool IsWhiteSpace(const char ch) const
+			inline bool IsWhiteSpace(const char ch) const
 			{
 				return ch == ' ' ||
 					ch == 0x09 ||		// Horizontal Tabulator (HT)
@@ -353,7 +353,7 @@ namespace Destiny
 			 *
 			 * @return Flag of word character.
 			 */
-			inline const bool IsWordChar(const char ch) const
+			inline bool IsWordChar(const char ch) const
 			{
 				return ch == '_' ||
 					(ch >= '0' && ch <= '9') ||

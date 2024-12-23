@@ -41,9 +41,6 @@ template <typename... Args>
 static void DebugLog(const char*, Args&&...) {}
 #endif
 
-constexpr decltype(RpgRtCompat::name) RpgRtCompat::name;
-constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
-
 static std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> MakeAttack(Game_Enemy& enemy, int hits) {
 	return std::make_shared<Game_BattleAlgorithm::Normal>(&enemy, Main_Data::game_party->GetRandomActiveBattler(), hits);
 }

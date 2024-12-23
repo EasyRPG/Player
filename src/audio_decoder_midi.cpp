@@ -24,8 +24,6 @@
 
 using namespace std::chrono_literals;
 
-constexpr int AudioDecoderMidi::midi_default_tempo;
-
 constexpr int bytes_per_sample = sizeof(int16_t) * 2;
 
 // ~1.5 ms of MIDI message resolution

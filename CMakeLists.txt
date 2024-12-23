@@ -648,7 +648,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		$<TARGET_OBJECTS:3ds-assets> PRIVATE
 		src/platform/3ds/audio.cpp
 		src/platform/3ds/audio.h
-		src/platform/3ds/clock.cpp
 		src/platform/3ds/clock.h
 		src/platform/3ds/input_buttons.cpp
 		src/platform/3ds/ui.cpp
@@ -661,7 +660,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/psvita/audio.cpp
 		src/platform/psvita/audio.h
-		src/platform/psvita/clock.cpp
 		src/platform/psvita/clock.h
 		src/platform/psvita/input_buttons.cpp
 		src/platform/psvita/ui.cpp
@@ -679,7 +677,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		$<TARGET_OBJECTS:switch-assets> PRIVATE
 		src/platform/switch/audio.cpp
 		src/platform/switch/audio.h
-		src/platform/switch/clock.cpp
 		src/platform/switch/clock.h
 		src/platform/switch/input_buttons.cpp
 		src/platform/switch/ui.cpp
@@ -692,7 +689,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
 		src/platform/wii/audio.h
-		src/platform/wii/clock.cpp
 		src/platform/wii/clock.h
 		src/platform/wii/input_buttons.cpp
 		src/platform/sdl/axis.h

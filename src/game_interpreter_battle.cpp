@@ -61,10 +61,9 @@ void Game_Interpreter_Battle::InitBattle() {
 
 static const char* target_text[] = { "actor", "party member", "enemy" };
 
-static const void MissingTargetWarning(const char* command_name, TargetType target_type, int target_id) {
+static void MissingTargetWarning(const char* command_name, TargetType target_type, int target_id) {
 	Output::Warning("{}: Invalid {} ID: {}", command_name, target_text[target_type], target_id);
 }
-
 
 // Provides a facility for battle sub-events to be run immediately
 // without blocking the standard interpreter from actually processing them.
@@ -711,8 +710,6 @@ bool Game_Interpreter_Battle::CommandManiacControlBattle(lcf::rpg::EventCommand 
 	int common_event_flags = com.parameters[1];
 	int common_event_identifier = com.parameters[2];
 	int value_reference_identifier = com.parameters[3];
-
-	int common_event_id = ValueOrVariable(common_event_flags, common_event_identifier);
 
 	// Sets the maniacs battle event hook to:
 	// the common event id and the variable id the developer would like to use.

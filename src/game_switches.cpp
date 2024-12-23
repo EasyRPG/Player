@@ -21,8 +21,6 @@
 #include <lcf/reader_util.h>
 #include <lcf/data.h>
 
-constexpr int Game_Switches::kMaxWarnings;
-
 void Game_Switches::WarnGet(int variable_id) const {
 	Output::Debug("Invalid read sw[{}]!", variable_id);
 	--_warnings;

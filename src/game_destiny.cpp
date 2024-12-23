@@ -248,7 +248,7 @@ void Interpreter::SkipWhiteSpace()
 	}
 }
 
-const size_t Interpreter::GetWordLen()
+size_t Interpreter::GetWordLen()
 {
 	char* endPtr = _scriptPtr;
 
@@ -260,19 +260,19 @@ const size_t Interpreter::GetWordLen()
 	return endPtr - _scriptPtr;
 }
 
-const InterpretFlag Interpreter::Interpret()
+InterpretFlag Interpreter::Interpret()
 {
-	char* code;
-	//uint8_t flags[4];
+	/*char* code;
+	uint8_t flags[4];
 	InterpretFlag returnType;
 
 	size_t wordLen;
 
 	code = nullptr;
-	returnType = IF_COMMAND;
+	returnType = IF_COMMAND;*/
 
 	SkipSpace();
-	wordLen = GetWordLen();
+	//wordLen = GetWordLen();
 
 	return IF_EXIT;
 }
@@ -312,7 +312,7 @@ void Interpreter::SkipSpace()
 	}
 }
 
-const bool Interpreter::LineComment()
+bool Interpreter::LineComment()
 {
 	_scriptPtr += 2;
 
@@ -327,7 +327,7 @@ const bool Interpreter::LineComment()
 	return true;
 }
 
-const bool Interpreter::BlockComment()
+bool Interpreter::BlockComment()
 {
 	_scriptPtr += 2;
 

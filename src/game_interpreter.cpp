@@ -78,10 +78,6 @@ enum BranchSubcommand {
 	eOptionBranchElse = 1
 };
 
-constexpr int Game_Interpreter::loop_limit;
-constexpr int Game_Interpreter::call_stack_limit;
-constexpr int Game_Interpreter::subcommand_sentinel;
-
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 

@@ -25,7 +25,7 @@
 #include "output.h"
 
 Scene_Name::Scene_Name(Game_Actor& actor, int charset, bool use_default_name)
-	: actor(actor), layout_index(charset), use_default_name(use_default_name)
+	: layout_index(charset), use_default_name(use_default_name), actor(actor)
 {
 	Scene::type = Scene::Name;
 }

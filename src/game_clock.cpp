@@ -22,7 +22,6 @@
 #include <cinttypes>
 #include <algorithm>
 
-constexpr bool Game_Clock::is_steady;
 Game_Clock::Data Game_Clock::data;
 
 // Damping factor fps computation.

@@ -155,7 +155,7 @@ void Scene_Debug::UpdateFrameValueFromUi() {
 		case eUiChoices:
 			frame.value = choices_window->GetIndex();
 			break;
-		eUiStringView:
+		case eUiStringView:
 			frame.value = stringview_window->GetIndex();
 			break;
 		case eUiInterpreterView:
@@ -185,8 +185,9 @@ int Scene_Debug::GetSelectedIndexFromRange() const {
 	switch (mode) {
 		case eInterpreter:
 			return range_page * 10 + range_index + 1;
+		default:
+			return range_page * 100 + range_index * 10 + 1;
 	}
-	return range_page * 100 + range_index * 10 + 1;
 }
 
 void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
@@ -200,7 +201,7 @@ void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
 			range_page = value / 100;
 			break;
 	}
-} 
+}
 
 void Scene_Debug::SetupUiRangeList() {
 	auto& idx = prev[mode];
@@ -276,7 +277,7 @@ void Scene_Debug::PushUiChoices(std::vector<std::string> choices, std::vector<bo
 	choices_window->SetActive(true);
 	choices_window->Refresh();
 
-	for (int i = 0; i < choices_enabled.size(); i++) {
+	for (int i = 0; i < static_cast<int>(choices_enabled.size()); i++) {
 		choices_window->SetItemEnabled(i, choices_enabled[i]);
 	}
 
@@ -333,8 +334,6 @@ void Scene_Debug::PushUiInterpreterView() {
 
 
 void Scene_Debug::Pop() {
-	auto pui = GetFrame().uimode;
-
 	range_window->SetActive(false);
 	var_window->SetActive(false);
 	numberinput_window->SetActive(false);
@@ -829,7 +828,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 					skip_items = 1;
 					count_items = 1;
 				}
-				for (int i = 0; i < state_interpreter.ev.size() && count_items < 10; i++) {
+				for (int i = 0; i < static_cast<int>(state_interpreter.ev.size()) && count_items < 10; i++) {
 					if (skip_items > 0) {
 						skip_items--;
 						continue;
@@ -838,7 +837,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 					addItem(fmt::format("{}EV{:04d}: {}", state_interpreter.state_ev[i].wait_movement ? "(W) " : "", evt_id, Game_Map::GetEvent(evt_id)->GetName()));
 					count_items++;
 				}
-				for (int i = 0; i < state_interpreter.ce.size() && count_items < 10; i++) {
+				for (int i = 0; i < static_cast<int>(state_interpreter.ce.size()) && count_items < 10; i++) {
 					if (skip_items > 0) {
 						skip_items--;
 						continue;
@@ -866,7 +865,7 @@ void Scene_Debug::UpdateDetailWindow() {
 		//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
 		//	var_window->SetInterpreterFrame(&interpreter_frame);
 		//	var_window->UpdateList(GetSelectedIndexFromRange());
-		//	
+		//
 		//	interpreter_window->SetVisible(false);
 		//	interpreter_window->SetActive(false);
 		//} else {
@@ -979,10 +978,10 @@ int Scene_Debug::GetLastPage() {
 		case eInterpreter:
 			//if (state_interpreter.show_frame_switches) {
 			//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
-			//	return interpreter_frame.easyrpg_frame_switches.size();	
+			//	return interpreter_frame.easyrpg_frame_switches.size();
 			//} else if (state_interpreter.show_frame_vars) {
 			//		auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
-			//		return interpreter_frame.easyrpg_frame_variables.size();					
+			//		return interpreter_frame.easyrpg_frame_variables.size();
 			//} else {
 				num_elements = 1 + state_interpreter.ev.size() + state_interpreter.ce.size();
 				return (static_cast<int>(num_elements) - 1) / 10;
@@ -1270,7 +1269,7 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 
 	if (valid) {
 		state_interpreter.selected_state = index;
-		interpreter_window->SetStackState(index > state_interpreter.ev.size(), evt_id, first_line, state);
+		interpreter_window->SetStackState(index > static_cast<int>(state_interpreter.ev.size()), evt_id, first_line, state);
 	} else {
 		state_interpreter.selected_state = -1;
 		interpreter_window->SetStackState(0, 0, "", {});
@@ -1289,7 +1288,7 @@ lcf::rpg::SaveEventExecFrame& Scene_Debug::GetSelectedInterpreterFrameFromUiStat
 	if (index == 1) {
 		auto& state = Game_Interpreter::GetForegroundInterpreter()._state;
 		return state.stack[state_interpreter.selected_frame];
-	} else if (index <= state_interpreter.ev.size()) {
+	} else if (index <= static_cast<int>(state_interpreter.ev.size())) {
 		int evt_id = state_interpreter.ev[index - 1];
 		auto ev = Game_Map::GetEvent(evt_id);
 

@@ -81,7 +81,7 @@ void Window_Settings::Push(UiMode ui, int arg) {
 
 	++stack_index;
 	assert(stack_index < static_cast<int>(stack.size()));
-	stack[stack_index] = { ui, arg, 0, 0};
+	stack[stack_index] = { ui, arg, 0, 0, {}};
 
 	Refresh();
 	RestorePosition();

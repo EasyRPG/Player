@@ -385,7 +385,7 @@ Utils::UtfNextResult Utils::UTF8Skip(const char* iter, const char* end, int skip
 		return { iter, ret.ch };
 	}
 
-	for (int i = skip; iter < end && skip > 0; --skip) {
+	for (; iter < end && skip > 0; --skip) {
 		ret = UTF8Next(iter, end);
 		iter = ret.next;
 	}

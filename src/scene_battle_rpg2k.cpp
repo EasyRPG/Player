@@ -505,6 +505,12 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionFigh
 							SetState(State_Escape);
 						}
 						break;
+					case Win:
+						// FIXME
+						break;
+					case Lose:
+						// FIXME
+						break;
 				}
 			}
 			return SceneActionReturn::eWaitTillNextFrame;
