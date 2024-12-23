@@ -39,7 +39,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 
 	switch (machine) {
 		case 0x14c:
-			file_info.machine_type = MachineType::i386;
+			file_info.machine_type = MachineType::x86;
 			break;
 		case 0x8664:
 			file_info.machine_type = MachineType::amd64;

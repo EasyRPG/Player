@@ -45,13 +45,13 @@ public:
 
 	enum class MachineType {
 		Unknown,
-		i386,
+		x86,
 		amd64
 	};
 
 	static constexpr auto kMachineTypes = lcf::makeEnumTags<MachineType>(
 		"Unknown",
-		"i386",
+		"x86",
 		"amd64"
 	);
 
