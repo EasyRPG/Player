@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <iosfwd>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include "filesystem_stream.h"
 
 enum class LogLevel {
