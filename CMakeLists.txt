@@ -841,6 +841,8 @@ else()
 endif()
 
 # Detect all required libraries
+# PNG pulls in zlib which has a broken config when not both static and shared library are installed
+player_find_package(NAME PNG TARGET PNG::PNG REQUIRED CONFIG_BROKEN)
 player_find_package(NAME fmt TARGET fmt::fmt VERSION 5.2 REQUIRED)
 
 # Do not use player_find_package. enable_language used by pixman on Android does not work properly inside function calls
