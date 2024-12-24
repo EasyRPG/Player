@@ -69,7 +69,7 @@ function(player_find_package)
 				set(DEP_FOUND TRUE)
 
 				if(${PLAYER_FIND_PACKAGE_NAME}_DIR)
-					message(STATUS "Found ${PLAYER_FIND_PACKAGE_NAME}: ${${PLAYER_FIND_PACKAGE_NAME}_DIR} (${TARGET_ITEM})")
+					message(STATUS "Found ${PLAYER_FIND_PACKAGE_NAME}: ${${PLAYER_FIND_PACKAGE_NAME}_DIR} (${TARGET_ITEM}, v${${PLAYER_FIND_PACKAGE_NAME}_VERSION})")
 				endif()
 
 				target_link_libraries(${PROJECT_NAME} ${TARGET_ITEM})
