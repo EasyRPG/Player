@@ -841,8 +841,7 @@ else()
 endif()
 
 # Detect all required libraries
-player_find_package(NAME PNG TARGET PNG::PNG REQUIRED)
-player_find_package(NAME fmt TARGET fmt::fmt REQUIRED)
+player_find_package(NAME fmt TARGET fmt::fmt VERSION 5.2 REQUIRED)
 
 # Do not use player_find_package. enable_language used by pixman on Android does not work properly inside function calls
 find_package(Pixman REQUIRED)
