@@ -8,9 +8,15 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_refresh_white"/>
     <item
+        android:id="@+id/view"
+        android:orderInCategory="100"
+        android:title="@string/view"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_view_list_white"/>
+    <item
         android:id="@+id/menu"
         android:orderInCategory="100"
-        android:title="@string/refresh"
+        android:title="@string/settings"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_settings_white"/>
 </menu>

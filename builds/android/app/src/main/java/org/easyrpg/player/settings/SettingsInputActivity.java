@@ -37,6 +37,10 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         enableVibrateWhenSlidingCheckbox.setChecked(SettingsManager.isVibrateWhenSlidingDirectionEnabled());
         enableVibrateWhenSlidingCheckbox.setOnClickListener(this);
 
+        CheckBox showZXasABcheckbox = findViewById(R.id.settings_show_zx_as_ab);
+        showZXasABcheckbox.setChecked(SettingsManager.getShowZXasAB());
+        showZXasABcheckbox.setOnClickListener(this);
+
         configureFastForwardButton();
         configureLayoutTransparencySystem();
         configureLayoutSizeSystem();
@@ -57,6 +61,8 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
             enableVibrateWhenSlidingCheckbox.setEnabled(c.isChecked());
         } else if (id == R.id.settings_vibrate_when_sliding){
             SettingsManager.setVibrateWhenSlidingDirectionEnabled(((CheckBox) v).isChecked());
+        } else if (id == R.id.settings_show_zx_as_ab) {
+            SettingsManager.setShowZXasAB(((CheckBox)v).isChecked());
         }
     }
 

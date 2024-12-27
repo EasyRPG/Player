@@ -364,6 +364,11 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 			env->CallVoidMethod(jgame_object, jset_title_method, jtitle);
 		}
 
+		// Set folder name
+		jstring jfolder = env->NewStringUTF(game_dir_name.c_str());
+		jmethodID jset_folder_name_method = env->GetMethodID(jgame_class, "setGameFolderName", "(Ljava/lang/String;)V");
+		env->CallVoidMethod(jgame_object, jset_folder_name_method, jfolder);
+
 		env->SetObjectArrayElement(jgame_array, i, jgame_object);
 	}
 
@@ -397,11 +402,6 @@ Java_org_easyrpg_player_game_1browser_Game_reencodeTitle(JNIEnv *env, jobject th
 	if (encoding == "auto") {
 		auto det_encodings = lcf::ReaderUtil::DetectEncodings(title);
 		for (auto &det_enc: det_encodings) {
-			if (det_enc == "UTF-16BE" || det_enc == "UTF-16LE") {
-				// Skip obviously wrong title encodings
-				continue;
-			}
-
 			if (lcf::Encoder encoder(det_enc); encoder.IsOk()) {
 				encoder.Encode(title);
 				break;

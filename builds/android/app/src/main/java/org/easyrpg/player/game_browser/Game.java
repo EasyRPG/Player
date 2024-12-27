@@ -16,10 +16,15 @@ import java.io.ByteArrayOutputStream;
 
 public class Game implements Comparable<Game> {
     final static char escapeCode = '\u0001';
+    final static String cacheVersion = "1";
     /** The title shown in the Game Browser */
     private String title;
     /** Bytes of the title string in an unspecified encoding */
     private byte[] titleRaw = null;
+    /** Human readable version of the game directory. Shown in the game browser
+     *  when the specific setting is enabled.
+     */
+    private String gameFolderName;
     /** Path to the game folder (forwarded via --project-path */
     private final String gameFolderPath;
     /** Relative path to the save directory, made absolute by launchGame (forwarded via --save-path) */
@@ -46,12 +51,20 @@ public class Game implements Comparable<Game> {
         this.isFavorite = isFavoriteFromSettings();
     }
 
-    public String getTitle() {
+    public String getDisplayTitle() {
         String customTitle = getCustomTitle();
         if (!customTitle.isEmpty()) {
             return customTitle;
         }
 
+        if (SettingsManager.getGameBrowserLabelMode() == 0) {
+            return getTitle();
+        } else {
+            return gameFolderName;
+        }
+    }
+
+    public String getTitle() {
         return title;
     }
 
@@ -81,6 +94,14 @@ public class Game implements Comparable<Game> {
         savePath = path;
     }
 
+    public String getGameFolderName() {
+        return gameFolderName;
+    }
+
+    public void setGameFolderName(String gameFolderName) {
+        this.gameFolderName = gameFolderName;
+    }
+
     public boolean isFavorite() {
         return isFavorite;
     }
@@ -106,7 +127,7 @@ public class Game implements Comparable<Game> {
         if (!this.isFavorite() && game.isFavorite()) {
             return 1;
         }
-        return this.getTitle().compareTo(game.getTitle());
+        return this.getDisplayTitle().compareTo(game.getDisplayTitle());
     }
 
     /**
@@ -149,41 +170,45 @@ public class Game implements Comparable<Game> {
     @NonNull
     @Override
     public String toString() {
-        return getTitle();
+        return getDisplayTitle();
     }
 
     public static Game fromCacheEntry(Context context, String cache) {
         String[] entries = cache.split(String.valueOf(escapeCode));
 
-        if (entries.length != 5) {
+        if (entries.length != 7 || !entries[0].equals(cacheVersion)) {
             return null;
         }
 
-        String savePath = entries[0];
-        DocumentFile gameFolder = DocumentFile.fromTreeUri(context, Uri.parse(entries[1]));
+        String savePath = entries[1];
+        DocumentFile gameFolder = DocumentFile.fromTreeUri(context, Uri.parse(entries[2]));
         if (gameFolder == null) {
             return null;
         }
 
-        String title = entries[2];
+        String gameFolderName = entries[3];
+
+        String title = entries[4];
 
         byte[] titleRaw = null;
-        if (!entries[3].equals("null")) {
-            titleRaw = Base64.decode(entries[3], 0);
+        if (!entries[5].equals("null")) {
+            titleRaw = Base64.decode(entries[5], 0);
         }
 
         byte[] titleScreen = null;
-        if (!entries[4].equals("null")) {
-            titleScreen = Base64.decode(entries[4], 0);
+        if (!entries[6].equals("null")) {
+            titleScreen = Base64.decode(entries[6], 0);
         }
 
-        Game g = new Game(entries[1], savePath, titleScreen);
+        Game g = new Game(entries[2], savePath, titleScreen);
         g.setTitle(title);
         g.titleRaw = titleRaw;
 
         if (g.titleRaw != null) {
             g.reencodeTitle();
         }
+
+        g.setGameFolderName(gameFolderName);
 
         return g;
     }
@@ -192,19 +217,23 @@ public class Game implements Comparable<Game> {
         StringBuilder sb = new StringBuilder();
 
         // Cache structure: savePath | gameFolderPath | title | titleRaw | titleScreen
-        sb.append(savePath);
+        sb.append(cacheVersion); // 0
         sb.append(escapeCode);
-        sb.append(gameFolderPath);
+        sb.append(savePath); // 1
         sb.append(escapeCode);
-        sb.append(title);
+        sb.append(gameFolderPath); // 2
         sb.append(escapeCode);
-        if (titleRaw != null) {
+        sb.append(gameFolderName); // 3
+        sb.append(escapeCode);
+        sb.append(title); // 4
+        sb.append(escapeCode);
+        if (titleRaw != null) { // 5
             sb.append(Base64.encodeToString(titleRaw, Base64.NO_WRAP));
         } else {
             sb.append("null");
         }
         sb.append(escapeCode);
-        if (titleScreen != null) {
+        if (titleScreen != null) { // 6
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             titleScreen.compress(Bitmap.CompressFormat.PNG, 90, baos);
             byte[] b = baos.toByteArray();
@@ -215,4 +244,5 @@ public class Game implements Comparable<Game> {
 
         return sb.toString();
     }
+
 }
