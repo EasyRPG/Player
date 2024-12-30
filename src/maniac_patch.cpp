@@ -424,6 +424,7 @@ int Process(std::vector<int32_t>::iterator& it, std::vector<int32_t>::iterator e
 						Output::Warning("Maniac: Expression actor args {} != 2", imm2);
 						return 0;
 					}
+					imm3 = Process(it, end, ip);
 					return ControlVariables::Actor(Process(it, end, ip), imm3);
 				case Fn::Party:
 					if (imm2 != 2) {
@@ -568,6 +569,35 @@ int32_t ManiacPatch::ParseExpression(Span<const int32_t> op_codes, const Game_Ba
 	}
 	auto beg = ops.begin();
 	return Process(beg, ops.end(), interpreter);
+}
+
+std::vector<int32_t> ManiacPatch::ParseExpressions(Span<const int32_t> op_codes, const Game_BaseInterpreterContext& interpreter) {
+	std::vector<int32_t> ops;
+	for (auto& o : op_codes) {
+		auto uo = static_cast<uint32_t>(o);
+		ops.push_back(static_cast<int32_t>(uo & 0x000000FF));
+		ops.push_back(static_cast<int32_t>((uo & 0x0000FF00) >> 8));
+		ops.push_back(static_cast<int32_t>((uo & 0x00FF0000) >> 16));
+		ops.push_back(static_cast<int32_t>((uo & 0xFF000000) >> 24));
+	}
+
+	if (ops.empty()) {
+		return {};
+	}
+
+	auto it = ops.begin();
+
+	std::vector<int32_t> results;
+
+	while (true) {
+		results.push_back(Process(it, ops.end(), interpreter));
+
+		if (it == ops.end() || static_cast<Op>(*it) == Op::Null) {
+			break;
+		}
+	}
+
+	return results;
 }
 
 std::array<bool, 50> ManiacPatch::GetKeyRange() {
