@@ -695,7 +695,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(lcf::rpg::EventCommand con
 	bool waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
-	Game_Character* chara = GetCharacter(evt_id);
+	Game_Character* chara = GetCharacter(evt_id, "ShowBattleAnimation");
 	if (chara == NULL)
 		return true;
 
@@ -720,7 +720,7 @@ bool Game_Interpreter_Map::CommandFlashSprite(lcf::rpg::EventCommand const& com)
 
 	int tenths = com.parameters[5];
 	bool wait = com.parameters[6] > 0;
-	Game_Character* event = GetCharacter(event_id);
+	Game_Character* event = GetCharacter(event_id, "FlashSprite");
 
 	if (event != NULL) {
 		event->Flash(r, g, b, p, tenths * DEFAULT_FPS / 10);
@@ -901,7 +901,7 @@ bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCo
 
 	_state.easyrpg_active = false;
 
-	Game_Character* chara = GetCharacter(event_id);
+	Game_Character* chara = GetCharacter(event_id, "EasyRpgWaitForSingleMovement");
 	if (chara == nullptr) {
 		return true;
 	}
