@@ -43,6 +43,8 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.button_mapping_activity);
 
+        SettingsManager.init(getApplicationContext());
+
         // Menu configuration
         this.drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -79,6 +81,14 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
             drawButtons();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Retrieve User's preferences
+        SettingsManager.init(getApplicationContext());
     }
 
     @Override

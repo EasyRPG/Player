@@ -7,9 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 
-public class SettingsMainActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsMainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

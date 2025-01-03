@@ -12,11 +12,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.InputLayout;
 
-public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsInputActivity extends BaseActivity implements View.OnClickListener {
     private CheckBox enableVibrateWhenSlidingCheckbox;
     private SeekBar layoutTransparencyLayout, layoutSizeSeekBar, fastForwardMultiplierSeekBar;
     private TextView layoutTransparencyTextView, layoutSizeTextView, fastForwardMultiplierTextView;
@@ -25,8 +26,6 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_inputs);
-
-        SettingsManager.init(getApplicationContext());
 
         // Setting UI components
         CheckBox enableVibrationCheckBox = findViewById(R.id.settings_enable_vibration);

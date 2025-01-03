@@ -7,13 +7,14 @@ import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SettingsVideoActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsVideoActivity extends BaseActivity implements View.OnClickListener {
     List<RadioButton> imageSizeRadioButtonList;
     List<RadioButton> gameResolutionRadioButtonList;
 
@@ -21,8 +22,6 @@ public class SettingsVideoActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_video);
-
-        SettingsManager.init(getApplicationContext());
 
         // Setting UI components
         CheckBox forceLandscapeModeCheckbox = findViewById(R.id.force_landscape_mode);

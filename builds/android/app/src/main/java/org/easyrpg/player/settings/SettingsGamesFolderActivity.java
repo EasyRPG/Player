@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.libsdl.app.SDL;
 
-public class SettingsGamesFolderActivity extends AppCompatActivity {
+public class SettingsGamesFolderActivity extends BaseActivity {
     private GameBrowserHelper.SafError safError = GameBrowserHelper.SafError.OK;
 
     @Override
@@ -27,8 +28,6 @@ public class SettingsGamesFolderActivity extends AppCompatActivity {
         SDL.setContext(getApplicationContext());
 
         safError = GameBrowserHelper.SafError.OK;
-
-        SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
         Button setGamesFolderButton = findViewById(R.id.set_games_folder);
