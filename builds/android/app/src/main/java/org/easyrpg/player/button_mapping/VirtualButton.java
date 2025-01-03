@@ -205,16 +205,16 @@ public class VirtualButton extends View {
         char charButton;
 
         if (keyCode == ENTER) {
-            if (SettingsManager.getShowZXasAB()) {
-                charButton = 'A';
-            } else {
+            if (SettingsManager.getShowABasZX()) {
                 charButton = 'Z';
+            } else {
+                charButton = 'A';
             }
         } else if (keyCode == CANCEL) {
-            if (SettingsManager.getShowZXasAB()) {
-                charButton = 'B';
-            } else {
+            if (SettingsManager.getShowABasZX()) {
                 charButton = 'X';
+            } else {
+                charButton = 'B';
             }
         } else if (keyCode == SHIFT) {
             charButton = 'S';
