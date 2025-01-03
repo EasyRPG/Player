@@ -47,6 +47,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -65,6 +66,7 @@ import org.libsdl.app.SDLActivity;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
@@ -239,12 +241,27 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
                     // Attach to the email : the easyrpg log file and savefiles
                     ArrayList<Uri> files = new ArrayList<>();
-                    // The easyrpg_log.txt
+
                     String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
 
                     if (getIntent().getBooleanExtra(TAG_STANDALONE, false)) {
-                        // FIXME: Attaching files does not work because the files are in /data and
-                        // other apps have no permission
+                        File logFile = new File(savepath, "easyrpg_log.txt");
+                        if (logFile.exists()) {
+                            Uri logUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", logFile);
+                            if (logUri != null) {
+                                files.add(logUri);
+                            }
+                        }
+
+                        for (int i = 1; i <= 15; ++i) {
+                            File saveFile = new File(savepath, String.format(Locale.ROOT, "Save%02d.lsd", i));
+                            if (saveFile.exists()) {
+                                Uri saveUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", saveFile);
+                                if (saveUri != null) {
+                                    files.add(saveUri);
+                                }
+                            }
+                        }
                     } else {
                         Uri saveFolder = Uri.parse(savepath);
                         Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
