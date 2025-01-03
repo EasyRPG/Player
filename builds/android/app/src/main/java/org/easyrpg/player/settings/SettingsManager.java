@@ -309,7 +309,7 @@ public class SettingsManager {
     }
 
     public static Uri getGamesFolderURI(Context context) {
-        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
         if (easyRPGFolder != null) {
             return Helper.findFileUri(context, easyRPGFolder.getUri(), GAMES_FOLDER_NAME);
         } else {
@@ -318,7 +318,7 @@ public class SettingsManager {
     }
 
     public static Uri getRTPFolderURI(Context context) {
-        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
         if (easyRPGFolder != null) {
             return Helper.findFileUri(context, easyRPGFolder.getUri(), RTP_FOLDER_NAME);
         } else {
@@ -327,7 +327,7 @@ public class SettingsManager {
     }
 
     public static Uri getFontsFolderURI(Context context) {
-        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
         if (easyRPGFolder != null) {
             return Helper.findFileUri(context, easyRPGFolder.getUri(), FONTS_FOLDER_NAME);
         } else {
@@ -336,7 +336,7 @@ public class SettingsManager {
     }
 
     public static Uri getSoundFontsFolderURI(Context context) {
-        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, easyRPGFolderURI);
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
         if (easyRPGFolder != null) {
             return Helper.findFileUri(context, easyRPGFolder.getUri(), SOUND_FONTS_FOLDER_NAME);
         } else {
