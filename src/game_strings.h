@@ -54,6 +54,9 @@ public:
 
 	struct Str_Params {
 		int string_id = 0, hex = 0, extract = 0;
+
+		Str_Params(int string_id) : string_id(string_id) {}
+		Str_Params(int string_id, int hex, int extract) : string_id(string_id), hex(hex), extract(extract) {}
 	};
 
 	enum StringEvalMode : std::int8_t { // 4 bits

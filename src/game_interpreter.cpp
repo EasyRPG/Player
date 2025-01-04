@@ -788,6 +788,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacControlStrings(com);
 		case Cmd::Maniac_CallCommand:
 			return CommandManiacCallCommand(com);
+		case Cmd::Maniac_GetGameInfo:
+			return CommandManiacGetGameInfo(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -1507,20 +1509,20 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int event_id) const {
+Game_Character* Game_Interpreter::GetCharacter(int event_id, StringView origin) const {
 	if (event_id == Game_Character::CharThisEvent) {
 		event_id = GetThisEventId();
 		// Is a common event
 		if (event_id == 0) {
 			// With no map parent
-			Output::Warning("Can't use ThisEvent in common event: Not called from a map event");
+			Output::Warning("{}: Can't use ThisEvent in common event: Not called from a map event", origin);
 			return nullptr;
 		}
 	}
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
 	if (!ch) {
-		Output::Warning("Unknown event with id {}", event_id);
+		Output::Warning("{}: Unknown event with id {}", origin, event_id);
 	}
 	return ch;
 }
@@ -2274,7 +2276,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(lcf::rpg::EventCommand const& c
 
 bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
-	Game_Character *event = GetCharacter(event_id);
+	Game_Character *event = GetCharacter(event_id, "ChangeEventLocation");
 	if (event != nullptr) {
 		const auto x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 		const auto y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -2299,8 +2301,8 @@ bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& 
 	int event1_id = com.parameters[0];
 	int event2_id = com.parameters[1];
 
-	Game_Character *event1 = GetCharacter(event1_id);
-	Game_Character *event2 = GetCharacter(event2_id);
+	Game_Character *event1 = GetCharacter(event1_id, "TradeEventLocations");
+	Game_Character *event2 = GetCharacter(event2_id, "TradeEventLocations");
 
 	if (event1 != nullptr && event2 != nullptr) {
 		auto m1 = event1->GetMapId();
@@ -3060,8 +3062,8 @@ bool Game_Interpreter::CommandPlayerVisibility(lcf::rpg::EventCommand const& com
 bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // code 11330
 	int event_id = ValueOrVariableBitfield(com.parameters[2], 2, com.parameters[0]);
 	int repeat = ManiacBitmask(com.parameters[2], 0x1);
-	
-	Game_Character* event = GetCharacter(event_id);
+
+	Game_Character* event = GetCharacter(event_id, "MoveEvent");
 	if (event != NULL) {
 		// If the event is a vehicle in use, push the commands to the player instead
 		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
@@ -3530,7 +3532,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			chara_id = ValueOrVariable(com.parameters[3], chara_id);
 		}
 
-		character = GetCharacter(chara_id);
+		character = GetCharacter(chara_id, "ConditionalBranch");
 		if (character != NULL) {
 			result = character->GetFacing() == com.parameters[2];
 		}
@@ -3939,7 +3941,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 		return true;
 	}
 
-	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
+	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id, "CallEvent"));
 	if (!event) {
 		Output::Warning("CallEvent: Can't call non-existent event {}", evt_id);
 		return true;
@@ -4070,6 +4072,168 @@ bool Game_Interpreter::CommandOpenVideoOptions(lcf::rpg::EventCommand const& /* 
 	++index;
 	return false;
 }
+
+bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	int event_id;
+	int var = com.parameters[2];
+
+	switch (com.parameters[1]) {
+		case 0: // Get map size
+			Main_Data::game_variables->Set(var, Game_Map::GetTilesX());
+			Main_Data::game_variables->Set(var + 1, Game_Map::GetTilesY());
+			break;
+		case 1: // Get tile info
+			// FIXME: figure out how 'Tile Info' works
+			Output::Warning("GetGameInfo: Option 'Tile Info' not implemented.");
+			break;
+		case 2: // Get window size
+			Main_Data::game_variables->Set(var, Player::screen_width);
+			Main_Data::game_variables->Set(var + 1, Player::screen_height);
+			break;
+		case 3: // Get pixel info
+			// FIXME: figure out how 'Pixel info' works
+			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
+			break;
+		case 4: // Get command interpreter state
+			// FIXME: figure out how 'command interpreter state' works
+			Output::Warning("GetGameInfo: Option 'Command Interpreter State' not implemented.");
+			break;
+		case 5: // Get tileset ID
+			Main_Data::game_variables->Set(var, Game_Map::GetChipset());
+			break;
+		case 6: // Get actor/message face graphic
+			if (com.parameters[4] == 1) {
+				// Message
+				Main_Data::game_strings->Asg(var, Main_Data::game_system->GetMessageFaceName());
+				Main_Data::game_variables->Set(com.parameters[3], Main_Data::game_system->GetMessageFaceIndex());
+			} else {
+				// Actor
+				event_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
+
+				auto* actor = Main_Data::game_actors->GetActor(event_id);
+				if (!actor) {
+					Output::Warning("GetGameInfo: Invalid actor ID {}", event_id);
+					return true;
+				}
+
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					Main_Data::game_strings->Asg(var, actor->GetFaceName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetFaceIndex());
+				} else {
+					// Original
+					Main_Data::game_strings->Asg(var, actor->GetOriginalFaceName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetOriginalFaceIndex());
+				}
+			}
+			break;
+		case 7: { // Get actor/event body graphic
+			event_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[5]);
+			auto* character = GetCharacter(event_id, "GetGameInfo");
+			if (!character) {
+				return true;
+			}
+
+			if (com.parameters[4] == 1) {
+				// Get event graphic
+				// Bug: .static 10001 gives current sprite of Player. .dynamic 10001 gives out nothing.
+				// Bug: Cannot get .static 10005 sprite of self. .dynamic 10005 works however
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					if (event_id == Game_Character::CharPlayer) {
+							// Return nothing as per Maniac Patch
+							Main_Data::game_strings->Asg(var, "");
+							Main_Data::game_variables->Set(com.parameters[3], 0);
+							break;
+					}
+					Main_Data::game_strings->Asg(var, StringView(character->GetSpriteName()));
+					Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
+					break;
+				} else {
+					// Static
+					switch (event_id) {
+						case Game_Character::CharPlayer:
+							// Return dynamic player sprite
+							Main_Data::game_strings->Asg(var, StringView(character->GetSpriteName()));
+							Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
+							break;
+						case Game_Character::CharBoat:
+							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.boat_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.boat_index);
+							break;
+						case Game_Character::CharShip:
+							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.ship_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.ship_index);
+							break;
+						case Game_Character::CharAirship:
+							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.airship_name));
+							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.airship_index);
+							break;
+						default: {
+							auto* event = static_cast<Game_Event*>(character);
+							auto* page = event->GetActivePage();
+							if (page == nullptr) {
+								// return nothing
+								Main_Data::game_strings->Asg(var, "");
+								Main_Data::game_variables->Set(com.parameters[3], 0);
+							} else {
+								Main_Data::game_strings->Asg(var, StringView(page->character_name));
+								Main_Data::game_variables->Set(com.parameters[3], page->character_index);
+							}
+						}
+					}
+				}
+			} else {
+				// Get actor graphic
+				auto* actor = Main_Data::game_actors->GetActor(event_id);
+				if (!actor) {
+					Output::Warning("GetGameInfo: Invalid actor ID {}", event_id);
+					return true;
+				}
+
+				if (com.parameters[6] == 1) {
+					// Dynamic
+					Main_Data::game_strings->Asg(var, actor->GetSpriteName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetSpriteIndex());
+				} else {
+					// Default one
+					Main_Data::game_strings->Asg(var, actor->GetOriginalSpriteName());
+					Main_Data::game_variables->Set(com.parameters[3], actor->GetOriginalSpriteIndex());
+				}
+			}
+			break;
+		}
+		case 8:
+			// Screen position
+			Main_Data::game_variables->Set(var, Game_Map::GetPositionX() >> 4);
+			Main_Data::game_variables->Set(var + 1, Game_Map::GetPositionY() >> 4);
+			break;
+		case 9:
+			// Screen shake
+			Main_Data::game_variables->Set(var, Main_Data::game_screen->GetShakeOffsetX());
+			Main_Data::game_variables->Set(var + 1, Main_Data::game_screen->GetShakeOffsetY());
+			break;
+		case 10: {
+			// Current BGM
+			const auto& bgm = Main_Data::game_system->GetCurrentBGM();
+			Main_Data::game_strings->Asg(var, bgm.name);
+			Main_Data::game_variables->Set(com.parameters[3], bgm.fadein);
+			Main_Data::game_variables->Set(com.parameters[3] + 1, bgm.volume);
+			Main_Data::game_variables->Set(com.parameters[3] + 2, bgm.tempo);
+			Main_Data::game_variables->Set(com.parameters[3] + 3, bgm.balance);
+			break;
+		}
+	}
+
+	Game_Map::SetNeedRefresh(true);
+
+	return true;
+}
+
 
 bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {

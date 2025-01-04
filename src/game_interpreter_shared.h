@@ -145,7 +145,7 @@ public:
 	virtual ~Game_BaseInterpreterContext() {}
 
 	virtual int GetThisEventId() const = 0;
-	virtual Game_Character* GetCharacter(int event_id) const = 0;
+	virtual Game_Character* GetCharacter(int event_id, StringView origin) const = 0;
 	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
 
 protected:

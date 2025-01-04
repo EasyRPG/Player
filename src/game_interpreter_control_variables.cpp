@@ -156,7 +156,7 @@ int ControlVariables::Party(int op, int party_idx) {
 }
 
 int ControlVariables::Event(int op, int event_id, const Game_BaseInterpreterContext& interpreter) {
-	auto character = interpreter.GetCharacter(event_id);
+	auto character = interpreter.GetCharacter(event_id, "ControlVariables::Event");
 	if (character) {
 		switch (op) {
 			case 0:
@@ -212,8 +212,6 @@ int ControlVariables::Event(int op, int event_id, const Game_BaseInterpreterCont
 		}
 
 		Output::Warning("ControlVariables::Event: Unknown op {}", op);
-	} else {
-		Output::Warning("ControlVariables::Event: Bad event_id {}", event_id);
 	}
 
 	return 0;
