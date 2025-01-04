@@ -2112,8 +2112,17 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 	}
 
 	auto file = ToString(CommandStringOrVariableBitfield(com, 3, 1, 4));
-	int idx = ValueOrVariableBitfield(com, 3, 2, 1);
-	bool transparent = com.parameters[2] != 0;
+
+	int idx = 0;
+	if (com.parameters.size() > 1) {
+		idx = ValueOrVariableBitfield(com, 3, 2, 1);
+	}
+
+	bool transparent = false;
+	if (com.parameters.size() > 2) {
+		transparent = com.parameters[2] != 0;
+	}
+
 	actor->SetSprite(file, idx, transparent);
 	Main_Data::game_player->ResetGraphic();
 	return true;
