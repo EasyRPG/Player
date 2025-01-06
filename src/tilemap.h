@@ -96,7 +96,7 @@ inline void Tilemap::SetMapDataUp(std::vector<short> up) {
 }
 
 inline void Tilemap::SetMapTileDataUpAt(int x, int y, int tile_id) {
-	layer_down.SetMapTileDataAt(x, y, tile_id, true);
+	layer_up.SetMapTileDataAt(x, y, tile_id, true);
 }
 
 inline const std::vector<unsigned char>& Tilemap::GetPassableDown() const {

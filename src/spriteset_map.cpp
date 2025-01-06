@@ -180,6 +180,9 @@ void Spriteset_Map::ReplaceDownAt(int x, int y, int tile_index, bool disable_aut
 }
 
 void Spriteset_Map::ReplaceUpAt(int x, int y, int tile_index) {
+	tile_index += BLOCK_F_INDEX;
+	if (tile_index >= NUM_UPPER_TILES + BLOCK_F_INDEX) tile_index = 0;
+
 	auto tile_id = IndexToChipId(tile_index);
 	tilemap->SetMapTileDataUpAt(x, y, tile_id);
 }
