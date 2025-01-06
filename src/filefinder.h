@@ -45,6 +45,30 @@ namespace FileFinder {
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
 	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
 
+    /**
+     * Type of the project. Used to differentiate between supported games (2kX or EasyRPG)
+     * and known but unsupported (i.e. newer RPG Makers).
+     */
+    enum ProjectType {
+        Unknown,
+        // 2kX or EasyRPG
+        Supported,
+        // Known unsupported engines
+        RpgMakerXp,
+        RpgMakerVx,
+        RpgMakerVxAce,
+        RpgMakerMvMz,
+        WolfRpgEditor,
+    };
+
+    /**
+     * Helper struct combining the project's directory and its type.
+     */
+    struct GameEntry {
+        FilesystemView fs;
+        ProjectType type;
+    };
+
 	/**
 	 * Quits FileFinder.
 	 */
@@ -286,6 +310,12 @@ namespace FileFinder {
 	 * @return true if this is likely an RPG2k project; false otherwise
 	 */
 	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
+
+    /**
+     * @param p fs Tree to check
+     * @return Project type whether the tree contains a supported project type, known but unsupported engines, or something unknown
+     */
+    ProjectType GetProjectType(const FilesystemView& fs);
 
 	/**
 	 * Determines if the directory contains a single file/directory ending in ".easyrpg" for use in the

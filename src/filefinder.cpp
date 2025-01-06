@@ -312,6 +312,35 @@ bool FileFinder::IsRPG2kProjectWithRenames(const FilesystemView& fs) {
 	return !FileExtGuesser::GetRPG2kProjectWithRenames(fs).Empty();
 }
 
+FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
+    if (IsValidProject(fs)) {
+        return FileFinder::ProjectType::Supported;
+    }
+
+    // TODO: Find remaining RGSS dlls
+    if (!fs.FindFile("RGSS104E.dll").empty()) {
+        return FileFinder::ProjectType::RpgMakerXp;
+    }
+
+    if (!fs.FindFile("RGSS202E.dll").empty()) {
+        return FileFinder::ProjectType::RpgMakerVx;
+    }
+
+    if (!fs.FindFile("System", "RGSS301.dll").empty()) {
+        return FileFinder::ProjectType::RpgMakerVxAce;
+    }
+
+    if (!fs.FindFile("nw.dll").empty()) {
+        return FileFinder::ProjectType::RpgMakerMvMz;
+    }
+
+    if (!fs.FindFile("GuruGuruSMF4.dll").empty()) {
+        return FileFinder::ProjectType::WolfRpgEditor;
+    }
+
+    return FileFinder::ProjectType::Unknown;
+}
+
 bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
 	auto files = fs.ListDirectory();
 	if (!files) {
