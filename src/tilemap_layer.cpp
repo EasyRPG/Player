@@ -722,8 +722,16 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	map_data = std::move(nmap_data);
 }
 
-static inline bool IsAutotileAB(int tile_id) {
-	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
+static inline bool IsTileFromBlock(int tile_id, int block) {
+	switch (block) {
+	case BLOCK_A: return tile_id >= BLOCK_A && tile_id < BLOCK_A_END;
+	case BLOCK_B: return tile_id >= BLOCK_B && tile_id < BLOCK_B_END;
+	case BLOCK_C: return tile_id >= BLOCK_C && tile_id < BLOCK_C_END;
+	case BLOCK_D: return tile_id >= BLOCK_D && tile_id < BLOCK_D_END;
+	case BLOCK_E: return tile_id >= BLOCK_E && tile_id < BLOCK_E_END;
+	case BLOCK_F: return tile_id >= BLOCK_F && tile_id < BLOCK_F_END;
+	default: return false;
+	}
 }
 
 void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
@@ -732,7 +740,9 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 
 	substitutions = Game_Map::GetTilesLayer(layer);
 
-	if (disable_autotile) {
+	bool is_autotile = IsTileFromBlock(tile_id, BLOCK_A) || IsTileFromBlock(tile_id, BLOCK_B) || IsTileFromBlock(tile_id, BLOCK_D);
+
+	if (disable_autotile || !is_autotile) {
 		RecreateTileDataAt(x, y, tile_id);
 	} else {
 		// Recalculate the replaced tile itself + every neighboring tile
@@ -743,12 +753,7 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 		};
 
 		// TODO: make it work for AB autotiles
-		if (IsAutotileAB(tile_id)) {
-			RecreateTileDataAt(x, y, tile_id);
-			Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
-		} else {
-			RecalculateAutotile(x, y, tile_id);
-		}
+		RecalculateAutotile(x, y, tile_id);
 
 		for (const auto& adj : adjacent) {
 			auto nx = x + adj.dx;
@@ -794,8 +799,10 @@ static inline void ApplyCornerFixups(uint8_t& neighbors) {
 
 void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 	// TODO: make it work for AB autotiles
-	if (IsAutotileAB(tile_id)) {
-		Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
+	bool is_tileAB = IsTileFromBlock(tile_id, BLOCK_A) || IsTileFromBlock(tile_id, BLOCK_B);
+	if (is_tileAB) {
+		RecreateTileDataAt(x, y, tile_id);
+		Output::Warning("Maniac Patch: Autotiles AB in RewriteMap are only partially supported.");
 		return;
 	}
 
