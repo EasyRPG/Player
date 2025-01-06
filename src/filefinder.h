@@ -390,9 +390,9 @@ namespace FileFinder {
 	 * @param fs Filesystem where the search starts
 	 * @param recursion_limit Recursion depth
 	 * @param game_limit Abort the search when this amount of games was found.
-	 * @return Vector of views to the found game directories
+	 * @return Vector of game entries (filesystem view + project type) found
 	 */
-	std::vector<FilesystemView> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
+	std::vector<GameEntry> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

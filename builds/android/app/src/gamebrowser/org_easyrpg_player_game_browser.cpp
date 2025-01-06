@@ -189,7 +189,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	auto root = FileFinder::Root().Create(spath);
 	root.ClearCache();
 
-	std::vector<FilesystemView> fs_list = FileFinder::FindGames(root);
+	std::vector<FileFinder::GameEntry> fs_list = FileFinder::FindGames(root);
 
 	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
 	jobjectArray jgame_array = env->NewObjectArray(fs_list.size(), jgame_class, nullptr);
@@ -204,13 +204,19 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	std::string root_path = FileFinder::GetFullFilesystemPath(root);
 	bool game_in_main_dir = false;
 	if (fs_list.size() == 1) {
-		if (root_path == FileFinder::GetFullFilesystemPath(fs_list[0])) {
-			game_in_main_dir = true;
-		}
+        if (fs_list[0].type == FileFinder::ProjectType::Supported &&
+            root_path == FileFinder::GetFullFilesystemPath(fs_list[0].fs)) {
+            game_in_main_dir = true;
+        }
 	}
 
 	for (size_t i = 0; i < fs_list.size(); ++i) {
-		auto& fs = fs_list[i];
+		auto& ge = fs_list[i];
+        if (ge.type > FileFinder::ProjectType::Supported) {
+            continue;
+        }
+
+        auto& fs = ge.fs;
 
 		std::string full_path = FileFinder::GetFullFilesystemPath(fs);
 		std::string game_dir_name;
