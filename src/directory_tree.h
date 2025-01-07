@@ -145,15 +145,27 @@ private:
 	/** lowered dir (full path from root) of missing directories */
 	mutable std::vector<std::string> dir_missing_cache;
 
+	static bool WildcardMatch(const StringView& pattern, const StringView& text);
+
 	template<class T>
 	auto Find(T& cache, StringView what) const {
-		auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {
-			return e.first < w;
-		});
-		if (it != cache.end() && it->first == what) {
-			return it;
+		// No wildcard - binary search
+		if (what.find('?') == StringView::npos) {
+			auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {
+				return e.first < w;
+			});
+			if (it != cache.end() && it->first == what) {
+				return it;
+			}
+			return cache.end();
 		}
 
+		// Has wildcard - linear search
+		for (auto it = cache.begin(); it != cache.end(); ++it) {
+			if (WildcardMatch(what, it->first)) {
+				return it;
+			}
+		}
 		return cache.end();
 	}
 

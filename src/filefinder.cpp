@@ -317,16 +317,15 @@ FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
         return FileFinder::ProjectType::Supported;
     }
 
-    // TODO: Find remaining RGSS dlls
-    if (!fs.FindFile("RGSS104E.dll").empty()) {
+    if (!fs.FindFile("RGSS10??.dll").empty()) {
         return FileFinder::ProjectType::RpgMakerXp;
     }
 
-    if (!fs.FindFile("RGSS202E.dll").empty()) {
+    if (!fs.FindFile("RGSS20??.dll").empty()) {
         return FileFinder::ProjectType::RpgMakerVx;
     }
 
-    if (!fs.FindFile("System", "RGSS301.dll").empty()) {
+    if (!fs.FindFile("System", "RGSS30?.dll").empty()) {
         return FileFinder::ProjectType::RpgMakerVxAce;
     }
 

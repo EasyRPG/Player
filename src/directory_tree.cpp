@@ -51,6 +51,21 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(Filesystem& fs) {
 	return tree;
 }
 
+bool DirectoryTree::WildcardMatch(const StringView& pattern, const StringView& text) {
+	if (pattern.length() != text.length()) {
+		return false;
+	}
+
+	std::string pattern_norm = make_key(pattern);
+	std::string text_norm = make_key(text);
+
+	return std::equal(pattern_norm.begin(), pattern_norm.end(),
+					  text_norm.begin(),
+					  [](char p, char t) {
+						  return p == '?' || p == t;
+					  });
+}
+
 DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
 	std::vector<Entry> entries;
 	std::string fs_path = ToString(path);
