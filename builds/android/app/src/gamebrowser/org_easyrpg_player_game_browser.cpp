@@ -189,12 +189,12 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	auto root = FileFinder::Root().Create(spath);
 	root.ClearCache();
 
-	std::vector<FileFinder::GameEntry> fs_list = FileFinder::FindGames(root);
+	std::vector<FileFinder::GameEntry> ge_list = FileFinder::FindGames(root);
 
 	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
-	jobjectArray jgame_array = env->NewObjectArray(fs_list.size(), jgame_class, nullptr);
+	jobjectArray jgame_array = env->NewObjectArray(ge_list.size(), jgame_class, nullptr);
 
-	if (fs_list.empty()) {
+	if (ge_list.empty()) {
 		// No games found
 		return jgame_array;
 	}
@@ -204,15 +204,15 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 
 	std::string root_path = FileFinder::GetFullFilesystemPath(root);
 	bool game_in_main_dir = false;
-	if (fs_list.size() == 1) {
-        if (fs_list[0].type == FileFinder::ProjectType::Supported &&
-            root_path == FileFinder::GetFullFilesystemPath(fs_list[0].fs)) {
+	if (ge_list.size() == 1) {
+        if (ge_list[0].type == FileFinder::ProjectType::Supported &&
+            root_path == FileFinder::GetFullFilesystemPath(ge_list[0].fs)) {
             game_in_main_dir = true;
         }
 	}
 
-	for (size_t i = 0; i < fs_list.size(); ++i) {
-		auto& ge = fs_list[i];
+	for (size_t i = 0; i < ge_list.size(); ++i) {
+		auto& ge = ge_list[i];
         auto& fs = ge.fs;
 
         // If game is unsupported, create a Game object with only directory name as title and project type id and continue early
@@ -253,7 +253,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 			}
 
 			// Append subdirectory when the archive contains more than one game
-			if (fs_list.size() > 1) {
+			if (ge_list.size() > 1) {
 				save_path += FileFinder::GetFullFilesystemPath(fs).substr(root_path.size());
 			}
 
