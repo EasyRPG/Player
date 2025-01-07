@@ -130,6 +130,14 @@ public class Game implements Comparable<Game> {
 
     @Override
     public int compareTo(Game game) {
+        // Unsupported games last
+        if (this.projectType == ProjectType.SUPPORTED && game.projectType.ordinal() > ProjectType.SUPPORTED.ordinal()) {
+            return -1;
+        }
+        if (this.projectType.ordinal() > ProjectType.SUPPORTED.ordinal() && game.projectType == ProjectType.SUPPORTED) {
+            return 1;
+        }
+        // Favorites first
         if (this.isFavorite() && !game.isFavorite()) {
             return -1;
         }
