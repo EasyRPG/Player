@@ -152,4 +152,6 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
     <string name="unsupported_engine">Unsupported engine:</string>
+    <string name="unsupported_engine_explanation">The selected game cannot be launched because it uses an unsupported engine: $ENGINE. EasyRPG supports ONLY games made in RPG Maker 2000 and 2003, other engines are out of scope of the project. For games created in newer versions of RPG Maker (XP and up), consider using alternative emulators available on the Play Store.</string>
+    <string name="information">Information</string>
 </resources>

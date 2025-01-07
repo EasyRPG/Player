@@ -342,6 +342,12 @@ public class GameBrowserActivity extends BaseActivity
 
                 // Hide settings button
                 holder.settingsButton.setVisibility(View.INVISIBLE);
+
+                // Add click listeners
+                holder.title.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
+                holder.subtitle.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
+                holder.titleScreen.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
+
                 return;
             }
 
@@ -457,6 +463,18 @@ public class GameBrowserActivity extends BaseActivity
                     game.setCustomTitle("");
                     holder.title.setText(game.getDisplayTitle());
                 });
+            builder.show();
+        }
+
+        private void showUnsupportedProjectTypeExplaination(final Context context, String projectType) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            String message = context.getString(R.string.unsupported_engine_explanation)
+                    .replace("$ENGINE", projectType);
+            builder
+                .setTitle(R.string.information)
+                .setMessage(message)
+                .setNeutralButton(R.string.ok, null);
             builder.show();
         }
 
