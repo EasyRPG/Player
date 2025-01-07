@@ -333,6 +333,18 @@ public class GameBrowserActivity extends BaseActivity
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             final Game game = gameList.get(position);
 
+            if (game.isProjectTypeUnsupported()) {
+                // Title
+                holder.title.setText(game.getDisplayTitle());
+
+                // Subtitle - engine unsupported message
+                holder.subtitle.setText(String.format("%s\n%s", activity.getResources().getString(R.string.unsupported_engine), game.getProjectTypeLabel()));
+
+                // Hide settings button
+                holder.settingsButton.setVisibility(View.INVISIBLE);
+                return;
+            }
+
             // Title
             holder.title.setText(game.getDisplayTitle());
             holder.title.setOnClickListener(v -> launchGame(position, false));
@@ -450,12 +462,14 @@ public class GameBrowserActivity extends BaseActivity
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public TextView title;
+            public TextView subtitle;
             public ImageView titleScreen;
             public ImageButton settingsButton, favoriteButton;
 
             public ViewHolder(View v) {
                 super(v);
                 this.title = v.findViewById(R.id.title);
+                this.subtitle = v.findViewById(R.id.subtitle);
                 this.titleScreen = v.findViewById(R.id.screen);
                 this.settingsButton = v.findViewById(R.id.game_browser_thumbnail_option_button);
                 this.favoriteButton = v.findViewById(R.id.game_browser_thumbnail_favorite_button);

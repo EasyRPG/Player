@@ -55,6 +55,21 @@
             android:gravity="center_horizontal"
             />
 
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentStart="true"
+
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+
         <ImageButton
             android:id="@+id/game_browser_thumbnail_favorite_button"
             android:background="@android:color/transparent"

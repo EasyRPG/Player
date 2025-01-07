@@ -261,4 +261,11 @@ public class Game implements Comparable<Game> {
         return sb.toString();
     }
 
+    public boolean isProjectTypeUnsupported() {
+        return this.projectType.ordinal() > ProjectType.SUPPORTED.ordinal();
+    }
+
+    public String getProjectTypeLabel() {
+        return this.projectType.getLabel();
+    }
 }

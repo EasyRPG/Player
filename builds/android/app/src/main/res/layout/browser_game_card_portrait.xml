@@ -36,6 +36,22 @@
             android:textColor="#222"
             android:textSize="20sp"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/subtitle"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/title"
+            android:layout_toStartOf="@+id/game_browser_thumbnail_option_button"
+            android:layout_toEndOf="@+id/screen"
+            android:padding="4dp"
+
+            android:textColor="#666"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
         <ImageButton
             android:id="@+id/game_browser_thumbnail_option_button"
 
