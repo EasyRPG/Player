@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,13 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -344,9 +341,9 @@ public class GameBrowserActivity extends BaseActivity
                 holder.settingsButton.setVisibility(View.INVISIBLE);
 
                 // Add click listeners
-                holder.title.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
-                holder.subtitle.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
-                holder.titleScreen.setOnClickListener(v -> showUnsupportedProjectTypeExplaination(activity, game.getProjectTypeLabel()));
+                holder.title.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
+                holder.subtitle.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
+                holder.titleScreen.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
 
                 return;
             }
@@ -466,16 +463,16 @@ public class GameBrowserActivity extends BaseActivity
             builder.show();
         }
 
-        private void showUnsupportedProjectTypeExplaination(final Context context, String projectType) {
+        private void showUnsupportedProjectTypeExplanation(final Context context, String projectType) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
             String part1 = context.getString(R.string.unsupported_engine_explanation_1).replace("$ENGINE", projectType);
             String part2 = context.getString(R.string.unsupported_engine_explanation_2);
             String part3 = context.getString(R.string.unsupported_engine_explanation_3);
-            
+
             builder
                 .setTitle(R.string.information)
-                .setMessage(part1 + '\n' + part2 + '\n' + part3)
+                .setMessage(part1 + '\n' + '\n' + part2 + '\n' + '\n' + part3)
                 .setNeutralButton(R.string.ok, null);
             builder.show();
         }
