@@ -34,7 +34,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		return false;
 	}
 
-	game_directories.clear();
+	game_entries.clear();
 
 	this->show_dotdot = show_dotdot;
 
@@ -55,25 +55,28 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular) {
 			if (FileFinder::IsSupportedArchiveExtension(dir.second.name)) {
-				game_directories.emplace_back(dir.second.name);
+				auto fs = base_fs.Create(dir.second.name);
+				game_entries.push_back({ fs, FileFinder::GetProjectType(fs) });
 			}
 		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
-			game_directories.emplace_back(dir.second.name);
+			auto fs = base_fs.Create(dir.second.name);
+			game_entries.push_back({ fs, FileFinder::GetProjectType(fs) });
 		}
 	}
 
 	// Sort game list in place
-	std::sort(game_directories.begin(), game_directories.end(),
-			  [](const std::string& s, const std::string& s2) {
-				  return strcmp(Utils::LowerCase(s).c_str(), Utils::LowerCase(s2).c_str()) <= 0;
+	std::sort(game_entries.begin(), game_entries.end(),
+			  [](const FileFinder::GameEntry &ge1, const FileFinder::GameEntry &ge2) {
+				  return strcmp(Utils::LowerCase(ge1.fs.GetSubPath()).c_str(),
+								Utils::LowerCase(ge2.fs.GetSubPath()).c_str()) <= 0;
 			  });
 
 	if (show_dotdot) {
-		game_directories.insert(game_directories.begin(), "..");
+		game_entries.insert(game_entries.begin(), { base_fs.Create(".."), FileFinder::ProjectType::Unknown });
 	}
 
 	if (HasValidEntry()) {
-		item_max = game_directories.size();
+		item_max = game_entries.size();
 
 		CreateContents();
 
@@ -102,13 +105,14 @@ void Window_GameList::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
 
-	std::string text;
+	auto& ge = game_entries[index];
+	auto dir_name = FileFinder::GetPathAndFilename(ge.fs.GetSubPath()).second;
+	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, dir_name);
 
-	if (HasValidEntry()) {
-		text = game_directories[index];
+	if (ge.type > FileFinder::ProjectType::Supported) {
+		auto notice = fmt::format("Unsupported: {}", FileFinder::GetProjectTypeLabel(ge.type));
+		contents->TextDraw(rect.width, rect.y, Font::ColorDisabled, notice, Text::AlignRight);
 	}
-
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
 }
 
 void Window_GameList::DrawErrorText(bool show_dotdot) {
@@ -151,10 +155,9 @@ void Window_GameList::DrawErrorText(bool show_dotdot) {
 
 bool Window_GameList::HasValidEntry() {
 	size_t minval = show_dotdot ? 1 : 0;
-	return game_directories.size() > minval;
+	return game_entries.size() > minval;
 }
 
 FileFinder::GameEntry Window_GameList::GetGameEntry() const {
-	auto fs = base_fs.Create(game_directories[GetIndex()]);
-	return { fs, FileFinder::GetProjectType(fs) };
+	return game_entries[GetIndex()];
 }

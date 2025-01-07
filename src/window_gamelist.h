@@ -61,7 +61,7 @@ public:
 
 private:
 	FilesystemView base_fs;
-	std::vector<std::string> game_directories;
+	std::vector<FileFinder::GameEntry> game_entries;
 
 	bool show_dotdot = false;
 };
