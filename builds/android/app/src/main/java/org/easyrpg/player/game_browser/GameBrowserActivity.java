@@ -469,11 +469,13 @@ public class GameBrowserActivity extends BaseActivity
         private void showUnsupportedProjectTypeExplaination(final Context context, String projectType) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-            String message = context.getString(R.string.unsupported_engine_explanation)
-                    .replace("$ENGINE", projectType);
+            String part1 = context.getString(R.string.unsupported_engine_explanation_1).replace("$ENGINE", projectType);
+            String part2 = context.getString(R.string.unsupported_engine_explanation_2);
+            String part3 = context.getString(R.string.unsupported_engine_explanation_3);
+            
             builder
                 .setTitle(R.string.information)
-                .setMessage(message)
+                .setMessage(part1 + '\n' + part2 + '\n' + part3)
                 .setNeutralButton(R.string.ok, null);
             builder.show();
         }
