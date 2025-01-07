@@ -154,6 +154,7 @@ bool Window_GameList::HasValidEntry() {
 	return game_directories.size() > minval;
 }
 
-std::pair<FilesystemView, std::string> Window_GameList::GetGameFilesystem() const {
-	return { base_fs.Create(game_directories[GetIndex()]), game_directories[GetIndex()] };
+FileFinder::GameEntry Window_GameList::GetGameEntry() const {
+	auto fs = base_fs.Create(game_directories[GetIndex()]);
+	return { fs, FileFinder::GetProjectType(fs) };
 }

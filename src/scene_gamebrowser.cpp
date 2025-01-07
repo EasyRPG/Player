@@ -188,32 +188,43 @@ void Scene_GameBrowser::BootGame() {
 		return;
 	}
 
-	FilesystemView fs;
-	std::string entry;
-	std::tie(fs, entry) = gamelist_window->GetGameFilesystem();
+	auto ge = gamelist_window->GetGameEntry();
 
-	if (!fs) {
+	if (!ge.fs) {
 		Output::Warning("The selected file or directory cannot be opened");
 		load_window->SetVisible(false);
 		game_loading = false;
 		return;
 	}
 
-	if (!FileFinder::IsValidProject(fs) && !FileFinder::OpenViewToEasyRpgFile(fs)) {
+    if (ge.type > FileFinder::ProjectType::Supported) {
+        // Game is using a known unsupported engine
+        Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+        Output::Warning(
+                "[{}] Detected an unsupported game engine: {}",
+                FileFinder::GetPathAndFilename(ge.fs.GetFullPath()).second,
+                FileFinder::GetProjectTypeLabel(ge.type)
+        );
+        load_window->SetVisible(false);
+        game_loading = false;
+        return;
+    }
+
+	if (ge.type == FileFinder::ProjectType::Unknown && !FileFinder::OpenViewToEasyRpgFile(ge.fs)) {
 		// Not a game: Open as directory
 		load_window->SetVisible(false);
 		game_loading = false;
-		if (!gamelist_window->Refresh(fs, true)) {
+		if (!gamelist_window->Refresh(ge.fs, true)) {
 			Output::Warning("The selected file or directory cannot be opened");
 			return;
 		}
-		stack.push_back({ fs, gamelist_window->GetIndex() });
+		stack.push_back({ ge.fs, gamelist_window->GetIndex() });
 		gamelist_window->SetIndex(0);
 
 		return;
 	}
 
-	FileFinder::SetGameFilesystem(fs);
+	FileFinder::SetGameFilesystem(ge.fs);
 	Player::CreateGameObjects();
 
 	game_loading = false;

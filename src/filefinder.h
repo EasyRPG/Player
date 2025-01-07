@@ -69,7 +69,10 @@ namespace FileFinder {
         ProjectType type;
     };
 
-	/**
+    /** @return Human readable project type label */
+    static const char* GetProjectTypeLabel(ProjectType pt);
+
+    /**
 	 * Quits FileFinder.
 	 */
 	void Quit();
@@ -402,6 +405,25 @@ std::string FileFinder::MakePath(lcf::Span<T> components) {
 		path = MakePath(path, c);
 	}
 	return path;
+}
+
+static inline const char* FileFinder::GetProjectTypeLabel(ProjectType pt) {
+    switch (pt) {
+        case Supported:
+            return "Supported";
+        case RpgMakerXp:
+            return "RPG Maker XP";
+        case RpgMakerVx:
+            return "RPG Maker VX";
+        case RpgMakerVxAce:
+            return "RPG Maker VX Ace";
+        case RpgMakerMvMz:
+            return "RPG Maker MV/MZ";
+        case WolfRpgEditor:
+            return "Wolf RPG Editor";
+		default:
+			return "Unknown";
+    }
 }
 
 #endif

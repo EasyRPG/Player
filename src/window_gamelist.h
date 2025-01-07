@@ -55,9 +55,9 @@ public:
 	bool HasValidEntry();
 
 	/**
-	 * @return filesystem and entry name of the selected game
+	 * @return game entry containing filesystem view and project type
 	 */
-	std::pair<FilesystemView, std::string> GetGameFilesystem() const;
+	FileFinder::GameEntry GetGameEntry() const;
 
 private:
 	FilesystemView base_fs;
