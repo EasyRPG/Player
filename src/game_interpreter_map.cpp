@@ -712,11 +712,11 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(lcf::rpg::EventCommand con
 }
 
 bool Game_Interpreter_Map::CommandFlashSprite(lcf::rpg::EventCommand const& com) { // code 11320
-	int event_id = com.parameters[0];
-	int r = com.parameters[1];
-	int g = com.parameters[2];
-	int b = com.parameters[3];
-	int p = com.parameters[4];
+	int event_id = ValueOrVariableBitfield(com, 7, 0, 0);
+	int r = ValueOrVariableBitfield(com, 7, 1, 1);
+	int g = ValueOrVariableBitfield(com, 7, 2, 2);
+	int b = ValueOrVariableBitfield(com, 7, 3, 3);
+	int p = ValueOrVariableBitfield(com, 7, 4, 4);
 
 	int tenths = com.parameters[5];
 	bool wait = com.parameters[6] > 0;
