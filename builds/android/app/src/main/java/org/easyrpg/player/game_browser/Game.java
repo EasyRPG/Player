@@ -191,7 +191,10 @@ public class Game implements Comparable<Game> {
 
         int parsedProjectType = Integer.parseInt(entries[7]);
         if (parsedProjectType > ProjectType.SUPPORTED.ordinal()) {
-            return new Game(parsedProjectType);
+            Game g = new Game(parsedProjectType);
+            g.setTitle(entries[4]);
+
+            return g;
         }
 
         String savePath = entries[1];
