@@ -35,9 +35,18 @@ public class Game implements Comparable<Game> {
     private Bitmap titleScreen = null;
     /** Game is launched from the APK via standalone mode */
     private boolean standalone = false;
+    /** Associated project type. Used to differentiane between supported engines and known but unsupported engines */
+    private ProjectType projectType = ProjectType.UNKNOWN;
 
-    public Game(String gameFolderPath, String saveFolder, byte[] titleScreen) {
+    public Game(int projectTypeId) {
+        this.gameFolderPath = "";
+        this.gameFolderName = "";
+        this.projectType = ProjectType.getProjectType(projectTypeId);
+    }
+
+    public Game(String gameFolderPath, String saveFolder, byte[] titleScreen, int projectTypeId) {
         this.gameFolderPath = gameFolderPath;
+        this.projectType = ProjectType.getProjectType(projectTypeId);
 
         // is only relative here, launchGame will put this in the "saves" directory
         if (!saveFolder.isEmpty()) {
@@ -176,8 +185,13 @@ public class Game implements Comparable<Game> {
     public static Game fromCacheEntry(Context context, String cache) {
         String[] entries = cache.split(String.valueOf(escapeCode));
 
-        if (entries.length != 7 || !entries[0].equals(cacheVersion)) {
+        if (entries.length != 8 || !entries[0].equals(cacheVersion)) {
             return null;
+        }
+
+        int parsedProjectType = Integer.parseInt(entries[7]);
+        if (parsedProjectType > ProjectType.SUPPORTED.ordinal()) {
+            return new Game(parsedProjectType);
         }
 
         String savePath = entries[1];
@@ -200,7 +214,7 @@ public class Game implements Comparable<Game> {
             titleScreen = Base64.decode(entries[6], 0);
         }
 
-        Game g = new Game(entries[2], savePath, titleScreen);
+        Game g = new Game(entries[2], savePath, titleScreen, parsedProjectType);
         g.setTitle(title);
         g.titleRaw = titleRaw;
 
@@ -216,7 +230,7 @@ public class Game implements Comparable<Game> {
     public String toCacheEntry() {
         StringBuilder sb = new StringBuilder();
 
-        // Cache structure: savePath | gameFolderPath | title | titleRaw | titleScreen
+        // Cache structure: savePath | gameFolderPath | title | titleRaw | titleScreen | projectType
         sb.append(cacheVersion); // 0
         sb.append(escapeCode);
         sb.append(savePath); // 1
@@ -241,6 +255,8 @@ public class Game implements Comparable<Game> {
         } else {
             sb.append("null");
         }
+        sb.append(escapeCode);
+        sb.append(projectType.ordinal());
 
         return sb.toString();
     }
