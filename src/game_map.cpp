@@ -1886,6 +1886,10 @@ void Game_Map::ReplaceTileAt(int x, int y, int new_id, int layer) {
 }
 
 int Game_Map::GetTileIdAt(int x, int y, int layer, bool chipIdOrIndex) {
+	if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
+		return 0;  // Return 0 for out-of-bounds coordinates
+	}
+
 	auto pos = x + y * map->width;
 	auto& layer_vec = layer >= 1 ? map->upper_layer : map->lower_layer;
 

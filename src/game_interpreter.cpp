@@ -4102,6 +4102,8 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			tile_coords.w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
 			tile_coords.h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[6]);
 
+			if (tile_coords.w <= 0 || tile_coords.h <= 0) return true;
+
 			auto tiles = Game_Map::GetTilesIdAt(tile_coords.x, tile_coords.y, tile_coords.w, tile_coords.h, tile_layer);
 			
 			for (int i = 0; i < tile_coords.w * tile_coords.h; i++) {
