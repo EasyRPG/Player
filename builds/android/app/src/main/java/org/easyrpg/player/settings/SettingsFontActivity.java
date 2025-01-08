@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.libsdl.app.SDL;
@@ -26,7 +27,7 @@ import org.libsdl.app.SDL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsFontActivity extends AppCompatActivity {
+public class SettingsFontActivity extends BaseActivity {
     private LinearLayout fonts1ListLayout;
     private LinearLayout fonts2ListLayout;
     private String[] extensions = new String[] {".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff"};
@@ -43,7 +44,6 @@ public class SettingsFontActivity extends AppCompatActivity {
         fonts1ListLayout = findViewById(R.id.settings_font1_list);
         fonts2ListLayout = findViewById(R.id.settings_font2_list);
 
-        SettingsManager.init(getApplicationContext());
         SDL.setContext(getApplicationContext());
 
         // Setup UI components

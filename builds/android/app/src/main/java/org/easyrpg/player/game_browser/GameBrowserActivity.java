@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDL;
@@ -42,7 +43,7 @@ import org.libsdl.app.SDL;
 import java.util.Collections;
 import java.util.List;
 
-public class GameBrowserActivity extends AppCompatActivity
+public class GameBrowserActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static Boolean libraryLoaded = false;
 
@@ -178,7 +179,10 @@ public class GameBrowserActivity extends AppCompatActivity
             .setPositiveButton(R.string.ok, (dialog, id) -> {
                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                 SettingsManager.setGameBrowserLabelMode(selectedPosition);
-                displayGamesList();
+                if (displayedGamesList != null) {
+                    // handle error case (no games displayed)
+                    displayGamesList();
+                }
             })
             .setNegativeButton(R.string.cancel, null);
         builder.show();

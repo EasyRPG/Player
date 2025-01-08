@@ -26,10 +26,10 @@
             android:textSize="20sp"/>
 
         <CheckBox
-            android:id="@+id/settings_show_zx_as_ab"
+            android:id="@+id/settings_show_ab_as_zx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_input_show_zx_as_ab"
+            android:text="@string/settings_input_show_ab_as_zx"
             android:textSize="20sp"/>
 
         <include layout="@layout/separator"/>

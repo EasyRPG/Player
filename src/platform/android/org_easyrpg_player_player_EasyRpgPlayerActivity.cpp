@@ -57,7 +57,7 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_togg
 JNIEXPORT void JNICALL
 Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings(JNIEnv *, jclass) {
 	EpAndroid::schedule([]() {
-		if (Scene::instance->type != Scene::Logo && !Scene::Find(Scene::Settings)) {
+		if (Scene::instance->type != Scene::Logo && !Scene::Find(Scene::Settings) && !Scene::IsAsyncPending()) {
 			Scene::Push(std::make_shared<Scene_Settings>());
 		}
 	});

@@ -26,7 +26,7 @@ import java.io.File;
  * To start the standalone mode : put your project in assets/games
  * ("game" is the project directory, no sub folder)
  */
-public class InitActivity extends AppCompatActivity {
+public class InitActivity extends BaseActivity {
     private boolean standaloneMode = false;
     private GameBrowserHelper.SafError safError = GameBrowserHelper.SafError.OK;
 
@@ -36,9 +36,6 @@ public class InitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_init);
 
         safError = GameBrowserHelper.SafError.OK;
-
-        // Retrieve User's preferences
-        SettingsManager.init(getApplicationContext());
 
         Activity thisActivity = this;
         (findViewById(R.id.set_games_folder)).setOnClickListener(v -> GameBrowserHelper.pickAGamesFolder(thisActivity));

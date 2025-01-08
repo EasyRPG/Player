@@ -97,7 +97,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="sound_volume">Sound effect volume</string>
     <string name="input_layout_transparency">Input layout transparency:</string>
     <string name="ignore_size_settings">Ignore button size settings and use this instead:</string>
-    <string name="settings_input_show_zx_as_ab">Display Z and X buttons as A and B</string>
+    <string name="settings_input_show_ab_as_zx">Display A and B buttons as Z and X</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="quick_access">Quick access</string>
     <string name="fast_forward">Fast-forward button mode:</string>

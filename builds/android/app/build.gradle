@@ -5,9 +5,9 @@ android {
     assetPacks = [":assets"]
     defaultConfig {
         applicationId "org.easyrpg.player"
-        compileSdk 34
+        compileSdk 35
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
     }
@@ -53,12 +53,14 @@ android {
                         "-DBUILD_SHARED_LIBS=ON",
                         "-DPLAYER_ENABLE_TESTS=OFF"
 
-                if (project.hasProperty("toolchainDirs")) {
-                    arguments.add('-DPLAYER_ANDROID_TOOLCHAIN_PATH=' + project.properties['toolchainDirs'])
+                if (project.hasProperty("toolchainDirs") && project.toolchainDirs) {
+                    arguments.add('-DPLAYER_ANDROID_TOOLCHAIN_PATH=' + project.toolchainDirs)
+                } else if (System.getenv('EASYRPG_BUILDSCRIPTS')) {
+                    arguments.add('-DPLAYER_ANDROID_TOOLCHAIN_PATH=' + System.getenv('EASYRPG_BUILDSCRIPTS') + '/android')
                 }
 
                 if (project.hasProperty("cmakeOptions")) {
-                    arguments.addAll(project.properties['cmakeOptions'].split(" "))
+                    arguments.addAll(project.cmakeOptions.split(" "))
                 }
             }
         }

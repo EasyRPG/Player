@@ -288,6 +288,10 @@ public class Helper {
     }
 
     public static DocumentFile getFileFromURI (Context context, Uri fileURI) {
+        if (fileURI == null) {
+            return null;
+        }
+
         try {
             return DocumentFile.fromTreeUri(context, fileURI);
         } catch (Exception e) {

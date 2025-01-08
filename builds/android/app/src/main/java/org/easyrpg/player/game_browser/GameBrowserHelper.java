@@ -58,13 +58,19 @@ public class GameBrowserHelper {
 
         String savePath = path;
         if (!game.getSavePath().isEmpty()) {
-            DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
-
-            // In error case the native code will try to put a save folder next to the zip
-            if (saveFolder != null) {
-                savePath = saveFolder.getUri().toString();
+            if (game.isStandalone()) {
+                savePath = game.getSavePath();
                 args.add("--save-path");
                 args.add(savePath);
+            } else {
+                DocumentFile saveFolder = Helper.createFolderInSave(context, game.getSavePath());
+
+                // In error case the native code will try to put a save folder next to the zip
+                if (saveFolder != null) {
+                    savePath = saveFolder.getUri().toString();
+                    args.add("--save-path");
+                    args.add(savePath);
+                }
             }
         }
 

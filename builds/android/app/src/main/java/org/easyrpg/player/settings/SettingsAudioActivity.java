@@ -16,13 +16,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsAudioActivity extends AppCompatActivity {
+public class SettingsAudioActivity extends BaseActivity {
     private LinearLayout soundfontsListLayout;
     List<SoundfontItemList> soundfontList;
 
@@ -32,8 +33,6 @@ public class SettingsAudioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings_audio);
 
         soundfontsListLayout = findViewById(R.id.settings_sound_fonts_list);
-
-        SettingsManager.init(getApplicationContext());
 
         // Setup UI components
         // The Soundfont Button

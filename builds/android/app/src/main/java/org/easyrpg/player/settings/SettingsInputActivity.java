@@ -9,14 +9,14 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.InputLayout;
 
-public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsInputActivity extends BaseActivity implements View.OnClickListener {
     private CheckBox enableVibrateWhenSlidingCheckbox;
     private SeekBar layoutTransparencyLayout, layoutSizeSeekBar, fastForwardMultiplierSeekBar;
     private TextView layoutTransparencyTextView, layoutSizeTextView, fastForwardMultiplierTextView;
@@ -25,8 +25,6 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_inputs);
-
-        SettingsManager.init(getApplicationContext());
 
         // Setting UI components
         CheckBox enableVibrationCheckBox = findViewById(R.id.settings_enable_vibration);
@@ -37,9 +35,9 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         enableVibrateWhenSlidingCheckbox.setChecked(SettingsManager.isVibrateWhenSlidingDirectionEnabled());
         enableVibrateWhenSlidingCheckbox.setOnClickListener(this);
 
-        CheckBox showZXasABcheckbox = findViewById(R.id.settings_show_zx_as_ab);
-        showZXasABcheckbox.setChecked(SettingsManager.getShowZXasAB());
-        showZXasABcheckbox.setOnClickListener(this);
+        CheckBox showABasZXcheckbox = findViewById(R.id.settings_show_ab_as_zx);
+        showABasZXcheckbox.setChecked(SettingsManager.getShowABasZX());
+        showABasZXcheckbox.setOnClickListener(this);
 
         configureFastForwardButton();
         configureLayoutTransparencySystem();
@@ -61,8 +59,8 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
             enableVibrateWhenSlidingCheckbox.setEnabled(c.isChecked());
         } else if (id == R.id.settings_vibrate_when_sliding){
             SettingsManager.setVibrateWhenSlidingDirectionEnabled(((CheckBox) v).isChecked());
-        } else if (id == R.id.settings_show_zx_as_ab) {
-            SettingsManager.setShowZXasAB(((CheckBox)v).isChecked());
+        } else if (id == R.id.settings_show_ab_as_zx) {
+            SettingsManager.setShowABasZX(((CheckBox)v).isChecked());
         }
     }
 
