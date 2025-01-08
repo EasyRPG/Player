@@ -4080,10 +4080,6 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 
 	int event_id;
 	int var = com.parameters[2];
-
-	struct rect {
-		int x, y, w, h;
-	};
 	
 	switch (com.parameters[1]) {
 		case 0: // Get map size
@@ -4095,18 +4091,18 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			var = com.parameters[7];
 
 			auto tile_layer = com.parameters[2]; // 0: Lower || 1: Upper
-			auto tile_coords = rect{};
+			Rect tile_coords;
 
 			tile_coords.x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
 			tile_coords.y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
-			tile_coords.w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
-			tile_coords.h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[6]);
+			tile_coords.width = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
+			tile_coords.height = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[6]);
 
-			if (tile_coords.w <= 0 || tile_coords.h <= 0) return true;
+			if (tile_coords.width <= 0 || tile_coords.height <= 0) return true;
 
-			auto tiles = Game_Map::GetTilesIdAt(tile_coords.x, tile_coords.y, tile_coords.w, tile_coords.h, tile_layer);
+			auto tiles = Game_Map::GetTilesIdAt(tile_coords, tile_layer);
 			
-			for (int i = 0; i < tile_coords.w * tile_coords.h; i++) {
+			for (int i = 0; i < tile_coords.width * tile_coords.height; i++) {
 				Main_Data::game_variables->Set(var + i, tiles[i]);
 			}
 			break;

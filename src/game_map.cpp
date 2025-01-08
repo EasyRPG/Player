@@ -1898,11 +1898,11 @@ int Game_Map::GetTileIdAt(int x, int y, int layer, bool chipIdOrIndex) {
 	return tile_output;
 }
 
-std::vector<int> Game_Map::GetTilesIdAt(int x, int y, int width, int height, int layer, bool chipIdOrIndex) {
+std::vector<int> Game_Map::GetTilesIdAt(Rect coords, int layer, bool chipIdOrIndex) {
 	std::vector<int> tiles_collection;
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			tiles_collection.emplace_back(Game_Map::GetTileIdAt(x + j, y + i, layer, chipIdOrIndex));
+	for (int i = 0; i < coords.height; ++i) {
+		for (int j = 0; j < coords.width; ++j) {
+			tiles_collection.emplace_back(Game_Map::GetTileIdAt(coords.x + j, coords.y + i, layer, chipIdOrIndex));
 		}
 	}
 	return tiles_collection;
