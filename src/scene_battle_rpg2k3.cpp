@@ -1739,8 +1739,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBa
 			return SceneActionReturn::eWaitTillNextFrame;
 		}
 
-		auto* battler = pending_battle_action->GetSource();
-		assert(battler != active_actor);
+		assert(pending_battle_action->GetSource() != active_actor);
 
 		pending_battle_action = {};
 		RemoveCurrentAction();

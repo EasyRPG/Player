@@ -62,9 +62,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	type(ty), source(source), targets(std::move(in_targets))
 {
 	assert(source != nullptr);
-	for (auto* t: targets) {
-		assert(t != nullptr);
-	}
+
+	assert(std::none_of(targets.begin(), targets.end(), [](auto* t) {
+		return t == nullptr;
+	}));
 
 	Reset();
 
