@@ -4081,15 +4081,34 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 	int event_id;
 	int var = com.parameters[2];
 
+	struct rect {
+		int x, y, w, h;
+	};
+	
 	switch (com.parameters[1]) {
 		case 0: // Get map size
 			Main_Data::game_variables->Set(var, Game_Map::GetTilesX());
 			Main_Data::game_variables->Set(var + 1, Game_Map::GetTilesY());
 			break;
-		case 1: // Get tile info
-			// FIXME: figure out how 'Tile Info' works
-			Output::Warning("GetGameInfo: Option 'Tile Info' not implemented.");
+		case 1: { // Get tile info
+
+			var = com.parameters[7];
+
+			auto tile_layer = com.parameters[2]; // 0: Lower || 1: Upper
+			auto tile_coords = rect{};
+
+			tile_coords.x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
+			tile_coords.y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+			tile_coords.w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
+			tile_coords.h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[6]);
+
+			auto tiles = Game_Map::GetTilesIdAt(tile_coords.x, tile_coords.y, tile_coords.w, tile_coords.h, tile_layer);
+			
+			for (int i = 0; i < tile_coords.w * tile_coords.h; i++) {
+				Main_Data::game_variables->Set(var + i, tiles[i]);
+			}
 			break;
+		}
 		case 2: // Get window size
 			Main_Data::game_variables->Set(var, Player::screen_width);
 			Main_Data::game_variables->Set(var + 1, Player::screen_height);

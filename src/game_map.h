@@ -643,6 +643,9 @@ namespace Game_Map {
 	int SubstituteUp(int old_id, int new_id);
 	void ReplaceTileAt(int x, int y, int new_id, int layer);
 
+	int GetTileIdAt(int x, int y, int layer, bool chipIdOrIndex = false);
+	std::vector<int> GetTilesIdAt(int x, int y, int width, int height, int layer, bool chipIdOrIndex = false);
+
 	/**
 	 * Checks if its possible to step onto the tile at (x,y)
 	 * The check includes tile graphic events checks.

@@ -1885,6 +1885,25 @@ void Game_Map::ReplaceTileAt(int x, int y, int new_id, int layer) {
 	layer_vec[pos] = static_cast<int16_t>(new_id);
 }
 
+int Game_Map::GetTileIdAt(int x, int y, int layer, bool chipIdOrIndex) {
+	auto pos = x + y * map->width;
+	auto& layer_vec = layer >= 1 ? map->upper_layer : map->lower_layer;
+
+	int tile_output = chipIdOrIndex ? layer_vec[pos] : ChipIdToIndex(layer_vec[pos]);
+	if (layer >= 1) tile_output -= BLOCK_F_INDEX;
+	return tile_output;
+}
+
+std::vector<int> Game_Map::GetTilesIdAt(int x, int y, int width, int height, int layer, bool chipIdOrIndex) {
+	std::vector<int> tiles_collection;
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			tiles_collection.emplace_back(Game_Map::GetTileIdAt(x + j, y + i, layer, chipIdOrIndex));
+		}
+	}
+	return tiles_collection;
+}
+
 std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id;
