@@ -300,7 +300,7 @@ void SelectAutoBattleAction(Game_Actor& source,
 				}
 			}
 		}
-		DebugLog("AUTOBATTLE: Actor {} Best Skill Rank : {}({}): {}", source.GetName(), skill->name, skill->ID, skill_rank);
+		DebugLog("AUTOBATTLE: Actor {} Best Skill Rank : {}({}): {}", source.GetName(), skill ? skill->name : "None", skill ? skill->ID : 0, skill_rank);
 	}
 
 	double normal_attack_rank = CalcNormalAttackAutoBattleRank(source, weapon, cond, attack_variance, emulate_bugs);

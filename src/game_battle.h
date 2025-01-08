@@ -114,6 +114,7 @@ namespace Game_Battle {
 	 * Convenience function to call a maniacs battle hook, which processes sub-events at any time.
 	 */
 	bool ManiacBattleHook(Game_Interpreter_Battle::ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4 = 0, int var5 = 0, int var6 = 0);
+
 	/**
 	 * Convenience function to process all maniacs sub-events, and return whether they're currently running
 	 */
