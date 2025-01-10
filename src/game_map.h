@@ -643,8 +643,8 @@ namespace Game_Map {
 	int SubstituteUp(int old_id, int new_id);
 	void ReplaceTileAt(int x, int y, int new_id, int layer);
 
-	int GetTileIdAt(int x, int y, int layer, bool chipIdOrIndex = false);
-	std::vector<int> GetTilesIdAt(Rect coords, int layer, bool chipIdOrIndex = false);
+	int GetTileIdAt(int x, int y, int layer, bool chip_id_or_index = false);
+	std::vector<int> GetTilesIdAt(Rect coords, int layer, bool chip_id_or_index = false);
 
 	/**
 	 * Checks if its possible to step onto the tile at (x,y)

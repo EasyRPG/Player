@@ -4080,17 +4080,16 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 
 	int event_id;
 	int var = com.parameters[2];
-	
+
 	switch (com.parameters[1]) {
 		case 0: // Get map size
 			Main_Data::game_variables->Set(var, Game_Map::GetTilesX());
 			Main_Data::game_variables->Set(var + 1, Game_Map::GetTilesY());
 			break;
 		case 1: { // Get tile info
-
 			var = com.parameters[7];
 
-			auto tile_layer = com.parameters[2]; // 0: Lower || 1: Upper
+			int32_t tile_layer = com.parameters[2]; // 0: Lower || 1: Upper
 			Rect tile_coords;
 
 			tile_coords.x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
@@ -4101,7 +4100,7 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			if (tile_coords.width <= 0 || tile_coords.height <= 0) return true;
 
 			auto tiles = Game_Map::GetTilesIdAt(tile_coords, tile_layer);
-			
+
 			for (int i = 0; i < tile_coords.width * tile_coords.height; i++) {
 				Main_Data::game_variables->Set(var + i, tiles[i]);
 			}
