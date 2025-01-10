@@ -5247,21 +5247,14 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	}
 
 	enum class ProcessingMode {
-		VariableSequence = 0,
-		VariableSequenceAlt = 1,
-		Dynamic = 3,
-		Expression = 4
+		Constant = 0, // 0 and 1: Parameters read from variables
+		Variable = 1,
+		//VariableIndirect = 2, // Somehow not implemented by ManiacPatch
+		Inline = 3, // Parameters are directly provided by the command
+		Expression = 4 // Like 3, but the parameters are calculated from expressions
 	};
 
-	struct CmdArrayData {
-		int start_index = 0;
-		int length = 0;
-		std::vector<int32_t> values;
-		int interpretation_bits = 0;
-		bool has_interpretation_bits = false;
-	};
-
-	constexpr int INTERPRETATION_MODE_SHIFT = 2;
+	std::vector<int32_t> values;
 
 	// Create command with basic parameters
 	lcf::rpg::EventCommand cmd;
@@ -5271,75 +5264,57 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 
 	// Determine processing mode
 	auto processing_mode = static_cast<ProcessingMode>((com.parameters[0] >> 4) & 0b1111);
-	CmdArrayData arr_data;
-
-	// Helper to populate values based on start_index and length
-	auto populate_values = [&](auto get_value) {
-		arr_data.values.reserve(arr_data.length);
-		for (int i = 0; i < arr_data.length; ++i) {
-			arr_data.values.push_back(get_value(i));
-		}
-		};
 
 	switch (processing_mode) {
-	case ProcessingMode::VariableSequence:
-	case ProcessingMode::VariableSequenceAlt: {
-		arr_data.start_index = ValueOrVariable(static_cast<int>(processing_mode), com.parameters[2]);
-		arr_data.length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+	case ProcessingMode::Constant:
+	case ProcessingMode::Variable: {
+		int start_index = ValueOrVariable(static_cast<int>(processing_mode), com.parameters[2]);
+		int length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
 
-		if (arr_data.length > 0) {
-			populate_values([&](int i) {
-				return Main_Data::game_variables->Get(arr_data.start_index + i);
-				});
+		for (int i = 0; i < length; ++i) {
+			values.push_back(Main_Data::game_variables->Get(start_index + i));
 		}
 		break;
 	}
-	case ProcessingMode::Dynamic: {
-		arr_data.start_index = com.parameters[2];
-		arr_data.length = com.parameters[3];
-		populate_values([&](int i) { return com.parameters[5 + i]; });
+	case ProcessingMode::Inline: {
+		int value_index = 5; // Start of the values
+		int mode_index = com.parameters[2]; // Mode of the values
+		int length = com.parameters[3];
 
-		int interpretation_index = 5 + arr_data.length;
-		if (interpretation_index < static_cast<int>(com.parameters.size())) {
-			arr_data.interpretation_bits = com.parameters[interpretation_index];
-			arr_data.has_interpretation_bits = true;
-
-			for (int i = 0; i < arr_data.length; ++i) {
-				int mode = (arr_data.interpretation_bits >> (i * INTERPRETATION_MODE_SHIFT)) & 0x3;
-				arr_data.values[i] = ValueOrVariable<true, true>(mode, arr_data.values[i]);
+		for (int i = 0; i < length; ++i) {
+			// The mode is the typical 4 bit packing
+			// Always 4 modes (16 bit) are packing into one parameter
+			// Then the mode_index increments
+			if (i != 0 && i % 4 == 0) {
+				++mode_index;
 			}
+
+			values.push_back(ValueOrVariableBitfield(com, mode_index, i % 4, value_index + i));
 		}
 		break;
 	}
 	case ProcessingMode::Expression: {
-		auto values = ManiacPatch::ParseExpressions(
-			MakeSpan(com.parameters).subspan(5), *this);
-		arr_data.values.insert(arr_data.values.end(), values.begin(), values.end());
+		values = ManiacPatch::ParseExpressions(MakeSpan(com.parameters).subspan(5), *this);
 		break;
 	}
 	default:
-		Output::Warning("Call Command - Unsupported Processing Mode: {}",
-			static_cast<int>(processing_mode));
+		Output::Warning("Call Command: Unsupported Processing Mode: {}", static_cast<int>(processing_mode));
 		return true;
 	}
 
 	// Finalize command parameters
-	cmd.parameters = lcf::DBArray<int32_t>(arr_data.values.begin(), arr_data.values.end());
+	cmd.parameters = lcf::DBArray<int32_t>(values.begin(), values.end());
 
 	// Debug output
-	auto debug_callcmd_output = [&]() {
-		Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
-		Output::Warning("Command code: {}", cmd.code);
-		Output::Warning("Command string: {}", cmd.string);
-		std::string params_str;
-		for (const auto& param : arr_data.values) {
-			params_str += " " + std::to_string(param);
-		}
-		Output::Warning("Command parameters:{}", params_str);
-		Output::Info("--------------------\n");
-		};
-
-	debug_callcmd_output();
+	/*Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
+	Output::Warning("Command code: {}", cmd.code);
+	Output::Warning("Command string: {}", cmd.string);
+	std::string params_str;
+	for (const auto& param : values) {
+		params_str += " " + std::to_string(param);
+	}
+	Output::Warning("Command parameters:{}", params_str);
+	Output::Info("--------------------\n");*/
 
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
