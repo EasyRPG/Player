@@ -65,7 +65,7 @@ jobs:
           VER="(GA, `date +%Y-%m-%d`)"
           cmake -G Ninja -B build . \
             -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
-            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wdeprecated" \
+            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wdeprecated -fsanitize=address,undefined" \
             -DPLAYER_BUILD_LIBLCF=ON -DPLAYER_VERSION_APPEND="$VER"
           cmake --build build
 
