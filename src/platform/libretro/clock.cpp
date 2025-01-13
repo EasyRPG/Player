@@ -16,6 +16,4 @@
  */
 #include "clock.h"
 
-constexpr bool LibretroClock::is_steady;
-
 retro_usec_t LibretroClock::time_in_microseconds = 0;

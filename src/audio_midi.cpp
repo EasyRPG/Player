@@ -84,6 +84,8 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFluidsynth(bool resample) {
 	if (mididec && resample) {
 		mididec = std::make_unique<AudioResampler>(std::move(mididec));
 	}
+#else
+	(void)resample;
 #endif
 
 	return mididec;
@@ -107,6 +109,8 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateWildMidi(bool resample) {
 	if (mididec && resample) {
 		mididec = std::make_unique<AudioResampler>(std::move(mididec));
 	}
+#else
+	(void)resample;
 #endif
 
 	return mididec;
@@ -126,6 +130,8 @@ std::unique_ptr<AudioDecoderBase> MidiDecoder::CreateFmMidi(bool resample) {
 	if (mididec && resample) {
 		mididec = std::make_unique<AudioResampler>(std::move(mididec));
 	}
+#else
+	(void)resample;
 #endif
 
 	return mididec;
@@ -152,6 +158,8 @@ void MidiDecoder::ChangeFluidsynthSoundfont(StringView sf_path) {
 	// Was initialized before
 	works.fluidsynth = FluidSynthDecoder::ChangeGlobalSoundfont(sf_path, works.fluidsynth_status);
 	Output::Debug("Fluidsynth: {}", works.fluidsynth_status);
+#else
+	(void)sf_path;
 #endif
 }
 

@@ -20,7 +20,7 @@
 
 #include <lcf/string_view.h>
 #include <lcf/dbstring.h>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #if FMT_VERSION < 60000
 // Remove after 0.8.1 in 2024: allow building with fmt 5
 #  include <fmt/ostream.h>

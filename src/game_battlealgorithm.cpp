@@ -62,9 +62,10 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source
 	type(ty), source(source), targets(std::move(in_targets))
 {
 	assert(source != nullptr);
-	for (auto* t: targets) {
-		assert(t != nullptr);
-	}
+
+	assert(std::none_of(targets.begin(), targets.end(), [](auto* t) {
+		return t == nullptr;
+	}));
 
 	Reset();
 
@@ -194,17 +195,15 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpEffect() {
 			source->ChangeSp(-sp);
 		}
 
-		if (Player::IsPatchManiac()) {
-			Game_Battle::ManiacBattleHook(
-				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
-				target->GetType() == Game_Battler::Type_Enemy,
-				target->GetPartyIndex(),
-				target->GetDisplayX(),
-				target->GetDisplayY(),
-				3,
-				sp
-			);
-		}
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			3,
+			sp
+		);
 	}
 
 	return sp;
@@ -220,17 +219,15 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAtkEffect() {
 			source->ChangeAtkModifier(-atk);
 		}
 
-		if (Player::IsPatchManiac()) {
-			Game_Battle::ManiacBattleHook(
-				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
-				target->GetType() == Game_Battler::Type_Enemy,
-				target->GetPartyIndex(),
-				target->GetDisplayX(),
-				target->GetDisplayY(),
-				4,
-				atk
-			);
-		}
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			4,
+			atk
+		);
 	}
 	return atk;
 }
@@ -245,17 +242,15 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyDefEffect() {
 			source->ChangeDefModifier(-def);
 		}
 
-		if (Player::IsPatchManiac()) {
-			Game_Battle::ManiacBattleHook(
-				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
-				target->GetType() == Game_Battler::Type_Enemy,
-				target->GetPartyIndex(),
-				target->GetDisplayX(),
-				target->GetDisplayY(),
-				5,
-				def
-			);
-		}
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			5,
+			def
+		);
 	}
 	return def;
 }
@@ -270,17 +265,15 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplySpiEffect() {
 			source->ChangeSpiModifier(-spi);
 		}
 
-		if (Player::IsPatchManiac()) {
-			Game_Battle::ManiacBattleHook(
-				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
-				target->GetType() == Game_Battler::Type_Enemy,
-				target->GetPartyIndex(),
-				target->GetDisplayX(),
-				target->GetDisplayY(),
-				6,
-				spi
-			);
-		}
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			6,
+			spi
+		);
 	}
 	return spi;
 }
@@ -295,17 +288,15 @@ int Game_BattleAlgorithm::AlgorithmBase::ApplyAgiEffect() {
 			source->ChangeAgiModifier(-agi);
 		}
 
-		if (Player::IsPatchManiac()) {
-			Game_Battle::ManiacBattleHook(
-				Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
-				target->GetType() == Game_Battler::Type_Enemy,
-				target->GetPartyIndex(),
-				target->GetDisplayX(),
-				target->GetDisplayY(),
-				7,
-				agi
-			);
-		}
+		Game_Battle::ManiacBattleHook(
+			Game_Interpreter_Battle::ManiacBattleHookType::StatChange,
+			target->GetType() == Game_Battler::Type_Enemy,
+			target->GetPartyIndex(),
+			target->GetDisplayX(),
+			target->GetDisplayY(),
+			7,
+			agi
+		);
 	}
 	return agi;
 }

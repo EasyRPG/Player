@@ -38,9 +38,6 @@
 #define DEBUG_VALIDATE(x) do {} while(0)
 #endif
 
-
-constexpr int Scene::kStartGameDelayFrames;
-constexpr int Scene::kReturnTitleDelayFrames;
 std::shared_ptr<Scene> Scene::instance;
 std::vector<std::shared_ptr<Scene> > Scene::old_instances;
 std::vector<std::shared_ptr<Scene> > Scene::instances;

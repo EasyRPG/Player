@@ -1328,6 +1328,7 @@ bool Sdl2Ui::OpenURL(StringView url) {
 
 	return true;
 #else
+	(void)url;
 	Output::Warning("Cannot Open URL: SDL2 version too old (must be 2.0.14)");
 	return false;
 #endif

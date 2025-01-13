@@ -40,10 +40,6 @@ template <typename... Args>
 static void DebugLog(const char*, Args&&...) {}
 #endif
 
-constexpr decltype(RpgRtCompat::name) RpgRtCompat::name;
-constexpr decltype(AttackOnly::name) AttackOnly::name;
-constexpr decltype(RpgRtImproved::name) RpgRtImproved::name;
-
 std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
 	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
 		return std::make_unique<RpgRtImproved>();
@@ -304,7 +300,7 @@ void SelectAutoBattleAction(Game_Actor& source,
 				}
 			}
 		}
-		DebugLog("AUTOBATTLE: Actor {} Best Skill Rank : {}({}): {}", source.GetName(), skill->name, skill->ID, skill_rank);
+		DebugLog("AUTOBATTLE: Actor {} Best Skill Rank : {}({}): {}", source.GetName(), skill ? skill->name : "None", skill ? skill->ID : 0, skill_rank);
 	}
 
 	double normal_attack_rank = CalcNormalAttackAutoBattleRank(source, weapon, cond, attack_variance, emulate_bugs);

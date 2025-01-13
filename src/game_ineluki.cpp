@@ -28,8 +28,6 @@
 
 #include <lcf/inireader.h>
 
-constexpr std::array<Game_Ineluki::Mapping, 61> Game_Ineluki::key_to_ineluki;
-
 namespace {
 #if defined(SUPPORT_KEYBOARD)
 	void mask_kb(bool mask) {

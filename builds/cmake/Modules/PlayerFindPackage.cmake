@@ -51,6 +51,8 @@ function(player_find_package)
 
 	set(MODULE "")
 	if(PLAYER_FIND_PACKAGE_CONFIG_BROKEN)
+		set(CMAKE_FIND_PACKAGE_PREFER_CONFIG_OLD ${CMAKE_FIND_PACKAGE_PREFER_CONFIG})
+		set(CMAKE_FIND_PACKAGE_PREFER_CONFIG OFF)
 		set(MODULE "MODULE")
 	endif()
 
@@ -69,7 +71,7 @@ function(player_find_package)
 				set(DEP_FOUND TRUE)
 
 				if(${PLAYER_FIND_PACKAGE_NAME}_DIR)
-					message(STATUS "Found ${PLAYER_FIND_PACKAGE_NAME}: ${${PLAYER_FIND_PACKAGE_NAME}_DIR} (${TARGET_ITEM})")
+					message(STATUS "Found ${PLAYER_FIND_PACKAGE_NAME}: ${${PLAYER_FIND_PACKAGE_NAME}_DIR} (${TARGET_ITEM}, v${${PLAYER_FIND_PACKAGE_NAME}_VERSION})")
 				endif()
 
 				target_link_libraries(${PROJECT_NAME} ${TARGET_ITEM})
@@ -84,5 +86,9 @@ function(player_find_package)
 		if (PLAYER_FIND_PACKAGE_ONLY_CONFIG AND NOT DEP_FOUND)
 			message(STATUS "Could NOT find ${PLAYER_FIND_PACKAGE_NAME} (missing: ${PLAYER_FIND_PACKAGE_NAME}Config.cmake)")
 		endif()
+	endif()
+
+	if(PLAYER_FIND_PACKAGE_CONFIG_BROKEN)
+		set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ${CMAKE_FIND_PACKAGE_PREFER_CONFIG_OLD})
 	endif()
 endfunction()

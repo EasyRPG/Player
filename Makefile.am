@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 
-EXTRA_DIST = CMakeLists.txt README.md builds docs resources
+EXTRA_DIST = CMakeLists.txt CMakePresets.json README.md builds docs resources
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
@@ -528,13 +528,13 @@ EXTRA_DIST += \
 	bench/variables.cpp \
 	src/platform/3ds/audio.cpp \
 	src/platform/3ds/audio.h \
-	src/platform/3ds/clock.cpp \
 	src/platform/3ds/clock.h \
 	src/platform/3ds/input_buttons.cpp \
 	src/platform/3ds/main.cpp \
 	src/platform/3ds/ui.cpp \
 	src/platform/3ds/ui.h \
 	src/platform/amigaos4/cmath \
+	src/platform/android/android.cpp \
 	src/platform/android/android.h \
 	src/platform/android/filesystem_apk.cpp \
 	src/platform/android/filesystem_apk.h \
@@ -560,7 +560,6 @@ EXTRA_DIST += \
 	src/platform/psp/psp_input_buttons.cpp \
 	src/platform/psvita/audio.cpp \
 	src/platform/psvita/audio.h \
-	src/platform/psvita/clock.cpp \
 	src/platform/psvita/clock.h \
 	src/platform/psvita/input_buttons.cpp \
 	src/platform/psvita/main.cpp \
@@ -568,16 +567,19 @@ EXTRA_DIST += \
 	src/platform/psvita/ui.h \
 	src/platform/switch/audio.cpp \
 	src/platform/switch/audio.h \
-	src/platform/switch/clock.cpp \
 	src/platform/switch/clock.h \
 	src/platform/switch/input_buttons.cpp \
 	src/platform/switch/main.cpp \
 	src/platform/switch/ui.cpp \
 	src/platform/switch/ui.h \
-	src/platform/wii/clock.cpp \
+	src/platform/wii/audio.cpp \
+	src/platform/wii/audio.h \
 	src/platform/wii/clock.h \
 	src/platform/wii/input_buttons.cpp \
 	src/platform/wii/main.cpp \
+	src/platform/wiiu/input_buttons.cpp \
+	src/platform/wiiu/main.cpp \
+	src/platform/wiiu/main.h \
 	src/platform/windows/midiout_device_win32.cpp \
 	src/platform/windows/midiout_device_win32.h \
 	src/platform/windows/utils.cpp \

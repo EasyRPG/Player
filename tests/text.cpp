@@ -8,7 +8,6 @@
 
 TEST_SUITE_BEGIN("Text");
 
-constexpr char32_t escape = '\\';
 constexpr int width = 240;
 constexpr int height = 80;
 constexpr int ch = 12;

@@ -23,7 +23,7 @@
 #include <ios>
 #include <string>
 #include <vector>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "filesystem_stream.h"
 #include "system.h"

@@ -198,7 +198,6 @@ FluidSynthDecoder::FluidSynthDecoder() {
 	// Sharing is only not possible when a Midi is played as a SE (unlikely)
 	if (instances > 1) {
 		std::string error_message;
-		int unused = -1;
 		local_synth = create_synth(error_message);
 		if (!local_synth) {
 			// unlikely, the SF was already allocated once

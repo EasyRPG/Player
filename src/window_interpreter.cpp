@@ -27,15 +27,6 @@
 #include "player.h"
 #include "lcf/reader_util.h"
 
-namespace {
-	std::vector<std::string> CreateEmptyLines(int c) {		
-		std::vector<std::string> vars;
-		for (int i = 0; i < c; i++)
-			vars.push_back("");
-		return vars;
-	}
-}
-
 Window_Interpreter::Window_Interpreter(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 1;
@@ -111,7 +102,7 @@ void Window_Interpreter::Refresh() {
 			}
 		}
 
-		if (state.stack[i].commands.size() > max_cmd_count)
+		if (static_cast<int>(state.stack[i].commands.size()) > max_cmd_count)
 			max_cmd_count = state.stack[i].commands.size();
 
 		stack_display_items.push_back(item);
@@ -142,7 +133,7 @@ void Window_Interpreter::Refresh() {
 
 	DrawDescriptionLines();
 
-	for (int i = 0; i < stack_display_items.size(); ++i) {
+	for (int i = 0; i < static_cast<int>(stack_display_items.size()); ++i) {
 		DrawStackLine(i);
 	}
 }
@@ -167,7 +158,7 @@ void Window_Interpreter::DrawDescriptionLines() {
 		contents->ClearRect(rect);
 		contents->TextDraw(rect.x, rect.y, Font::ColorCritical, "[WAITING for EV movement!]");
 	}
-	
+
 	rect = GetItemRect(i++);
 	contents->ClearRect(rect);
 
@@ -196,7 +187,7 @@ void Window_Interpreter::DrawStackLine(int index) {
 	max_length -= digits_stackitemno;
 	max_length -= digits_evt_combined_id;
 	max_length -= digits_cmdcount * 2;
-	if (name.length() > max_length) {
+	if (static_cast<int>(name.length()) > max_length) {
 		name = name.substr(0, max_length - 3) + "...";
 	}
 	contents->TextDraw(rect.x + ((digits_stackitemno + digits_evt_combined_id) * 6) + 16, rect.y, Font::ColorDefault, name, Text::AlignLeft);

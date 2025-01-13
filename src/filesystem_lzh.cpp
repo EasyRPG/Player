@@ -30,7 +30,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "lhasa.h"
 

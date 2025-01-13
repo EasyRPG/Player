@@ -28,7 +28,7 @@
 #include <sstream>
 #include <cassert>
 #include <algorithm>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 constexpr char end_of_central_directory[] = "\x50\x4b\x05\x06";
 constexpr int32_t end_of_central_directory_size = 18;

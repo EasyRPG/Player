@@ -45,10 +45,10 @@ public:
 
 	static StringView TypeToStr(Type t);
 
-	/**
-	 * Destructor.
-	 */
-	virtual ~Game_Character();
+	virtual ~Game_Character() = default;
+	Game_Character(Game_Character&&) = default;
+	Game_Character& operator=(const Game_Character&) = default;
+	Game_Character& operator=(Game_Character&&) = default;
 
 	/** @return the type of character this is */
 	Type GetType() const;

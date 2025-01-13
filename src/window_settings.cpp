@@ -81,7 +81,7 @@ void Window_Settings::Push(UiMode ui, int arg) {
 
 	++stack_index;
 	assert(stack_index < static_cast<int>(stack.size()));
-	stack[stack_index] = { ui, arg, 0, 0};
+	stack[stack_index] = { ui, arg, 0, 0, {}};
 
 	Refresh();
 	RestorePosition();
@@ -386,11 +386,15 @@ void Window_Settings::RefreshAudioSoundfont() {
 #endif
 }
 
+#ifdef __clang__
+// FIXME: Binding &cfg in the lambdas below is not needed and generates a warning in clang but MSVC requires it
+#pragma clang diagnostic ignored "-Wunused-lambda-capture"
+#endif
+
 void Window_Settings::RefreshEngine() {
 	auto& cfg = Player::player_config;
 	cfg.Hide();
 
-	// FIXME: Binding &cfg is not needed and generates a warning but MSVC requires it
 	AddOption(cfg.font1, [this, &cfg]() {
 		font_size.Set(cfg.font1_size.Get());
 		Push(eEngineFont1);

@@ -24,12 +24,6 @@
 #include "rand.h"
 #include <cmath>
 
-constexpr int Game_Variables::max_warnings;
-constexpr Game_Variables::Var_t Game_Variables::min_2k;
-constexpr Game_Variables::Var_t Game_Variables::max_2k;
-constexpr Game_Variables::Var_t Game_Variables::min_2k3;
-constexpr Game_Variables::Var_t Game_Variables::max_2k3;
-
 namespace {
 using Var_t = Game_Variables::Var_t;
 
