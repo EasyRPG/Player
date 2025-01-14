@@ -153,9 +153,6 @@ int Game_Map::GetMapSaveCount() {
 void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 	Dispose();
 
-	screen_width = (Player::screen_width / 16.0) * SCREEN_TILE_SIZE;
-	screen_height = (Player::screen_height / 16.0) * SCREEN_TILE_SIZE;
-
 	map = std::move(map_in);
 
 	SetupCommon();
@@ -337,6 +334,9 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 }
 
 void Game_Map::SetupCommon() {
+	screen_width = (Player::screen_width / 16.0) * SCREEN_TILE_SIZE;
+	screen_height = (Player::screen_height / 16.0) * SCREEN_TILE_SIZE;
+
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		TranslateMapMessages(GetMapId(), *map);
 	}
