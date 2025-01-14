@@ -313,31 +313,35 @@ bool FileFinder::IsRPG2kProjectWithRenames(const FilesystemView& fs) {
 }
 
 FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
-    if (IsValidProject(fs)) {
-        return FileFinder::ProjectType::Supported;
-    }
+	if (IsValidProject(fs)) {
+		return FileFinder::ProjectType::Supported;
+	}
 
-    if (!fs.FindFile("RGSS10??.dll").empty()) {
-        return FileFinder::ProjectType::RpgMakerXp;
-    }
+	if (!fs.FindFile("RGSS10??.dll").empty()) {
+		return FileFinder::ProjectType::RpgMakerXp;
+	}
 
-    if (!fs.FindFile("RGSS20??.dll").empty()) {
-        return FileFinder::ProjectType::RpgMakerVx;
-    }
+	if (!fs.FindFile("RGSS20??.dll").empty()) {
+		return FileFinder::ProjectType::RpgMakerVx;
+	}
 
-    if (!fs.FindFile("System", "RGSS30?.dll").empty()) {
-        return FileFinder::ProjectType::RpgMakerVxAce;
-    }
+	if (!fs.FindFile("System", "RGSS30?.dll").empty()) {
+		return FileFinder::ProjectType::RpgMakerVxAce;
+	}
 
-    if (!fs.FindFile("nw.dll").empty()) {
-        return FileFinder::ProjectType::RpgMakerMvMz;
-    }
+	if (!fs.FindFile("nw.dll").empty()) {
+		return FileFinder::ProjectType::RpgMakerMvMz;
+	}
 
-    if (!fs.FindFile("GuruGuruSMF4.dll").empty()) {
-        return FileFinder::ProjectType::WolfRpgEditor;
-    }
+	if (!fs.FindFile("GuruGuruSMF4.dll").empty()) {
+		return FileFinder::ProjectType::WolfRpgEditor;
+	}
 
-    return FileFinder::ProjectType::Unknown;
+	if (!fs.FindFile("RPG_RT.rs1").empty()) {
+		return FileFinder::ProjectType::Encrypted2k3Maniacs;
+	}
+
+	return FileFinder::ProjectType::Unknown;
 }
 
 bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
@@ -569,11 +573,11 @@ std::vector<FileFinder::GameEntry> FileFinder::FindGames(FilesystemView fs, int 
 			return;
 		}
 
-        auto project_type = GetProjectType(subfs);
-        if (project_type != ProjectType::Unknown) {
-            games.push_back({ subfs, project_type });
-            return;
-        }
+		auto project_type = GetProjectType(subfs);
+		if (project_type != ProjectType::Unknown) {
+			games.push_back({ subfs, project_type });
+			return;
+		}
 
 		auto entries = subfs.ListDirectory();
 

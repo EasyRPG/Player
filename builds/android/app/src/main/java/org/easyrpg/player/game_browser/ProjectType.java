@@ -11,7 +11,8 @@ public enum ProjectType {
     , RPG_MAKER_VX("RPG Maker VX")
     , RPG_MAKER_VX_ACE("RPG Maker VX Ace")
     , RPG_MAKER_MV_MZ("RPG Maker MV/MZ")
-    , WOLF_RPG_EDITOR("Wolf RPG Editor");
+    , WOLF_RPG_EDITOR("Wolf RPG Editor")
+    , ENCRYPTED_2K3_MANIACS("Encrypted 2k3 (Maniacs Patch)");
 
     private final String label;
 

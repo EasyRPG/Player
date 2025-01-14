@@ -45,34 +45,35 @@ namespace FileFinder {
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
 	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
 
-    /**
-     * Type of the project. Used to differentiate between supported games (2kX or EasyRPG)
-     * and known but unsupported (i.e. newer RPG Makers).
-     */
-    enum ProjectType {
-        Unknown,
-        // 2kX or EasyRPG
-        Supported,
-        // Known unsupported engines
-        RpgMakerXp,
-        RpgMakerVx,
-        RpgMakerVxAce,
-        RpgMakerMvMz,
-        WolfRpgEditor,
-    };
+	/**
+	 * Type of the project. Used to differentiate between supported games (2kX or EasyRPG)
+	 * and known but unsupported (i.e. newer RPG Makers).
+	 */
+	enum ProjectType {
+		Unknown,
+		// 2kX or EasyRPG
+		Supported,
+		// Known unsupported engines
+		RpgMakerXp,
+		RpgMakerVx,
+		RpgMakerVxAce,
+		RpgMakerMvMz,
+		WolfRpgEditor,
+		Encrypted2k3Maniacs,
+	};
 
-    /**
-     * Helper struct combining the project's directory and its type.
-     */
-    struct GameEntry {
-        FilesystemView fs;
-        ProjectType type;
-    };
+	/**
+	 * Helper struct combining the project's directory and its type.
+	 */
+	struct GameEntry {
+		FilesystemView fs;
+		ProjectType type;
+	};
 
-    /** @return Human readable project type label */
-    static const char* GetProjectTypeLabel(ProjectType pt);
+	/** @return Human readable project type label */
+	static const char* GetProjectTypeLabel(ProjectType pt);
 
-    /**
+	/**
 	 * Quits FileFinder.
 	 */
 	void Quit();
@@ -314,11 +315,11 @@ namespace FileFinder {
 	 */
 	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
 
-    /**
-     * @param p fs Tree to check
-     * @return Project type whether the tree contains a supported project type, known but unsupported engines, or something unknown
-     */
-    ProjectType GetProjectType(const FilesystemView& fs);
+	/**
+	 * @param p fs Tree to check
+	 * @return Project type whether the tree contains a supported project type, known but unsupported engines, or something unknown
+	 */
+	ProjectType GetProjectType(const FilesystemView& fs);
 
 	/**
 	 * Determines if the directory contains a single file/directory ending in ".easyrpg" for use in the
@@ -355,18 +356,18 @@ namespace FileFinder {
 	bool IsMajorUpdatedTree();
 
 	/** RPG_RT.exe file size thresholds
-         *
-         * 2k v1.51 (Japanese)    : 746496
-         * 2k v1.50 (Japanese)    : 745984
-         *  -- threshold (2k) --  : 735000
-         * 2k v1.10 (Japanese)    : 726016
-         *
-         * 2k3 v1.09a (Japanese)  : 950784
-         * 2k3 v1.06 (Japanese)   : 949248
-         * 2k3 v1.05 (Japanese)   : unknown
-         *  -- threshold (2k3) -- : 927000
-         * 2k3 v1.04 (Japanese)   : 913408
-         */
+		 *
+		 * 2k v1.51 (Japanese)    : 746496
+		 * 2k v1.50 (Japanese)    : 745984
+		 *  -- threshold (2k) --  : 735000
+		 * 2k v1.10 (Japanese)    : 726016
+		 *
+		 * 2k3 v1.09a (Japanese)  : 950784
+		 * 2k3 v1.06 (Japanese)   : 949248
+		 * 2k3 v1.05 (Japanese)   : unknown
+		 *  -- threshold (2k3) -- : 927000
+		 * 2k3 v1.04 (Japanese)   : 913408
+		 */
 	enum RpgrtMajorUpdateThreshold {
 		RPG2K = 735000,
 		RPG2K3 = 927000,
@@ -408,22 +409,24 @@ std::string FileFinder::MakePath(lcf::Span<T> components) {
 }
 
 static inline const char* FileFinder::GetProjectTypeLabel(ProjectType pt) {
-    switch (pt) {
-        case Supported:
-            return "Supported";
-        case RpgMakerXp:
-            return "RPG Maker XP";
-        case RpgMakerVx:
-            return "RPG Maker VX";
-        case RpgMakerVxAce:
-            return "RPG Maker VX Ace";
-        case RpgMakerMvMz:
-            return "RPG Maker MV/MZ";
-        case WolfRpgEditor:
-            return "Wolf RPG Editor";
+	switch (pt) {
+		case Supported:
+			return "Supported";
+		case RpgMakerXp:
+			return "RPG Maker XP";
+		case RpgMakerVx:
+			return "RPG Maker VX";
+		case RpgMakerVxAce:
+			return "RPG Maker VX Ace";
+		case RpgMakerMvMz:
+			return "RPG Maker MV/MZ";
+		case WolfRpgEditor:
+			return "Wolf RPG Editor";
+		case Encrypted2k3Maniacs:
+			return "Encrypted 2k3MP";
 		default:
 			return "Unknown";
-    }
+	}
 }
 
 #endif
