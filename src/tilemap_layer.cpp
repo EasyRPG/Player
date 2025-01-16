@@ -143,7 +143,7 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 // Set of neighboring autotiles -> autotile variant
 // Each neighbor is represented by a single bit (1 - same autotile, 0 - any other case)
 // The bits are ordered as follows (from most to least significant bit): NW N NE W E SW S SE
-static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = {
+static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = { //it also works with A 
 	{0b11111111, 0},
 	{0b01111111, 1},
 	{0b11011111, 2},
@@ -722,8 +722,16 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	map_data = std::move(nmap_data);
 }
 
-static inline bool IsAutotileAB(int tile_id) {
-	return tile_id >= BLOCK_A && tile_id < BLOCK_C;
+static inline bool IsTileFromBlock(int tile_id, int block) {
+	switch (block) {
+	case BLOCK_A: return tile_id >= BLOCK_A && tile_id < BLOCK_A_END;
+	case BLOCK_B: return tile_id >= BLOCK_B && tile_id < BLOCK_B_END;
+	case BLOCK_C: return tile_id >= BLOCK_C && tile_id < BLOCK_C_END;
+	case BLOCK_D: return tile_id >= BLOCK_D && tile_id < BLOCK_D_END;
+	case BLOCK_E: return tile_id >= BLOCK_E && tile_id < BLOCK_E_END;
+	case BLOCK_F: return tile_id >= BLOCK_F && tile_id < BLOCK_F_END;
+	default: return false;
+	}
 }
 
 void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
@@ -732,7 +740,9 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 
 	substitutions = Game_Map::GetTilesLayer(layer);
 
-	if (disable_autotile) {
+	bool is_autotile = IsTileFromBlock(tile_id, BLOCK_A) || IsTileFromBlock(tile_id, BLOCK_B) || IsTileFromBlock(tile_id, BLOCK_D);
+
+	if (disable_autotile || !is_autotile) {
 		RecreateTileDataAt(x, y, tile_id);
 	} else {
 		// Recalculate the replaced tile itself + every neighboring tile
@@ -743,12 +753,7 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 		};
 
 		// TODO: make it work for AB autotiles
-		if (IsAutotileAB(tile_id)) {
-			RecreateTileDataAt(x, y, tile_id);
-			Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
-		} else {
-			RecalculateAutotile(x, y, tile_id);
-		}
+		RecalculateAutotile(x, y, tile_id);
 
 		for (const auto& adj : adjacent) {
 			auto nx = x + adj.dx;
@@ -764,6 +769,27 @@ void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_auto
 
 static inline bool IsAutotileD(int tile_id) {
 	return tile_id >= BLOCK_D && tile_id < BLOCK_E;
+}
+
+static inline bool IsSameAutotileAB(int current_tile_id, int neighbor_tile_id) {
+	// Special case for water tiles - allow mixing of A and B blocks
+	bool current_is_water = (IsTileFromBlock(current_tile_id, BLOCK_A) ||
+		IsTileFromBlock(current_tile_id, BLOCK_B));
+	bool neighbor_is_water = (IsTileFromBlock(neighbor_tile_id, BLOCK_A) ||
+		IsTileFromBlock(neighbor_tile_id, BLOCK_B));
+
+	if (current_is_water && neighbor_is_water) {
+		return true;
+	}
+
+	// For non-water tiles, keep original behavior of requiring same block
+	if (IsTileFromBlock(current_tile_id, BLOCK_A) && IsTileFromBlock(neighbor_tile_id, BLOCK_A)) {
+		return true;
+	}
+	if (IsTileFromBlock(current_tile_id, BLOCK_B) && IsTileFromBlock(neighbor_tile_id, BLOCK_B)) {
+		return true;
+	}
+	return false;
 }
 
 static inline bool IsSameAutotileD(int current_tile_id, int neighbor_tile_id) {
@@ -793,42 +819,44 @@ static inline void ApplyCornerFixups(uint8_t& neighbors) {
 }
 
 void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
-	// TODO: make it work for AB autotiles
-	if (IsAutotileAB(tile_id)) {
-		Output::Warning("Maniac Patch: Autotiles A and B in RewriteMap are only partially supported.");
-		return;
-	}
-
-	if (!IsAutotileD(tile_id)) {
-		return;
-	}
-
-	const int block = (tile_id - BLOCK_D) / BLOCK_D_STRIDE;
-	uint8_t neighbors = 0;
-
-	// Get all neighboring tiles in a single pass
 	static constexpr struct { int dx; int dy; uint8_t bit; } adjacent[8] = {
-			{-1, -1, NEIGHBOR_NW}, { 0, -1, NEIGHBOR_N}, { 1, -1, NEIGHBOR_NE},
-			{-1,  0, NEIGHBOR_W }, { 1,  0, NEIGHBOR_E},
-			{-1,  1, NEIGHBOR_SW}, { 0,  1, NEIGHBOR_S}, { 1,  1, NEIGHBOR_SE}
+		{-1, -1, NEIGHBOR_NW}, { 0, -1, NEIGHBOR_N}, { 1, -1, NEIGHBOR_NE},
+		{-1,  0, NEIGHBOR_W }, { 1,  0, NEIGHBOR_E},
+		{-1,  1, NEIGHBOR_SW}, { 0,  1, NEIGHBOR_S}, { 1,  1, NEIGHBOR_SE}
 	};
 
-	// Build the neighbors mask and fixup corners
-	for (const auto& adj : adjacent) {
-		auto nx = x + adj.dx;
-		auto ny = y + adj.dy;
-		auto adj_tile_id = IsInMapBounds(nx, ny) ? GetDataCache(nx, ny).ID : tile_id;
-		if (IsSameAutotileD(tile_id, adj_tile_id)) {
-			neighbors |= adj.bit;
+	auto calculateNeighbors = [&](auto isSameAutotileFn) {
+		uint8_t neighbors = 0;
+		for (const auto& adj : adjacent) {
+			auto nx = x + adj.dx;
+			auto ny = y + adj.dy;
+			auto adj_tile_id = IsInMapBounds(nx, ny) ? GetDataCache(nx, ny).ID : tile_id;
+			if (isSameAutotileFn(tile_id, adj_tile_id)) {
+				neighbors |= adj.bit;
+			}
 		}
+		ApplyCornerFixups(neighbors);
+		return neighbors;
+		};
+
+	auto processBlock = [&](int blockType, int blockStride, int blockBase, auto isSameAutotileFn) {
+		uint8_t neighbors = calculateNeighbors(isSameAutotileFn);
+		int block = (tile_id - blockBase) / blockStride;
+		int variant = AUTOTILE_D_VARIANTS_MAP.at(neighbors);
+		int new_tile_id = blockBase + (block * blockStride) + variant;
+		RecreateTileDataAt(x, y, new_tile_id);
+		};
+
+	if (IsTileFromBlock(tile_id, BLOCK_A)) {
+		processBlock(BLOCK_A, BLOCK_A_STRIDE, BLOCK_A, IsSameAutotileAB);
 	}
-	ApplyCornerFixups(neighbors);
-
-	// Recalculate tile id using the neighbors -> variant map
-	const int new_tile_id = BLOCK_D + block * BLOCK_D_STRIDE + AUTOTILE_D_VARIANTS_MAP.at(neighbors);
-	RecreateTileDataAt(x, y, new_tile_id);
+	if (IsTileFromBlock(tile_id, BLOCK_B)) {
+		processBlock(BLOCK_B, BLOCK_B_STRIDE, BLOCK_B, IsSameAutotileAB);
+	}
+	if (IsTileFromBlock(tile_id, BLOCK_D)) {
+		processBlock(BLOCK_D, BLOCK_D_STRIDE, BLOCK_D, IsSameAutotileD);
+	}
 }
-
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 	passable = std::move(npassable);
 
