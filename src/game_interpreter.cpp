@@ -5242,23 +5242,75 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 		return true;
 	}
 
+	enum class ProcessingMode {
+		Constant = 0, // 0 and 1: Parameters read from variables
+		Variable = 1,
+		//VariableIndirect = 2, // Somehow not implemented by ManiacPatch
+		Inline = 3, // Parameters are directly provided by the command
+		Expression = 4 // Like 3, but the parameters are calculated from expressions
+	};
+
+	std::vector<int32_t> values;
+
+	// Create command with basic parameters
 	lcf::rpg::EventCommand cmd;
 	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
 	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
 
-	int arr_begin = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
-	int arr_length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+	// Determine processing mode
+	auto processing_mode = static_cast<ProcessingMode>((com.parameters[0] >> 4) & 0b1111);
 
-	std::vector<int32_t> output_args;
-	if (arr_length > 0) {
-		output_args.reserve(arr_length);
-		for (int i = 0; i < arr_length; ++i) {
-			output_args.push_back(Main_Data::game_variables->Get(arr_begin + i));
+	switch (processing_mode) {
+	case ProcessingMode::Constant:
+	case ProcessingMode::Variable: {
+		int start_index = ValueOrVariable(static_cast<int>(processing_mode), com.parameters[2]);
+		int length = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+
+		for (int i = 0; i < length; ++i) {
+			values.push_back(Main_Data::game_variables->Get(start_index + i));
 		}
+		break;
+	}
+	case ProcessingMode::Inline: {
+		int value_index = 5; // Start of the values
+		int mode_index = com.parameters[2]; // Mode of the values
+		int length = com.parameters[3];
+
+		for (int i = 0; i < length; ++i) {
+			// The mode is the typical 4 bit packing
+			// Always 4 modes (16 bit) are packing into one parameter
+			// Then the mode_index increments
+			if (i != 0 && i % 4 == 0) {
+				++mode_index;
+			}
+
+			values.push_back(ValueOrVariableBitfield(com, mode_index, i % 4, value_index + i));
+		}
+		break;
+	}
+	case ProcessingMode::Expression: {
+		values = ManiacPatch::ParseExpressions(MakeSpan(com.parameters).subspan(5), *this);
+		break;
+	}
+	default:
+		Output::Warning("Call Command: Unsupported Processing Mode: {}", static_cast<int>(processing_mode));
+		return true;
 	}
 
-	cmd.parameters = lcf::DBArray<int32_t>(output_args.begin(), output_args.end());
+	// Finalize command parameters
+	cmd.parameters = lcf::DBArray<int32_t>(values.begin(), values.end());
+
+	// Debug output
+	/*Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
+	Output::Warning("Command code: {}", cmd.code);
+	Output::Warning("Command string: {}", cmd.string);
+	std::string params_str;
+	for (const auto& param : values) {
+		params_str += " " + std::to_string(param);
+	}
+	Output::Warning("Command parameters:{}", params_str);
+	Output::Info("--------------------\n");*/
 
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.

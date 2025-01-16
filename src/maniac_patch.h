@@ -21,6 +21,7 @@
 
 #include <array>
 #include <cstdint>
+#include <vector>
 #include "span.h"
 
 #include "game_strings.h"
@@ -29,6 +30,8 @@ class Game_BaseInterpreterContext;
 
 namespace ManiacPatch {
 	int32_t ParseExpression(Span<const int32_t> op_codes, const Game_BaseInterpreterContext& interpreter);
+	std::vector<int32_t> ParseExpressions(Span<const int32_t> op_codes, const Game_BaseInterpreterContext& interpreter);
+
 
 	std::array<bool, 50> GetKeyRange();
 
