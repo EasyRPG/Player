@@ -601,7 +601,6 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	elseif(NINTENDO_WII)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
 		target_sources(${PROJECT_NAME} PRIVATE
-			src/platform/wii/clock.cpp
 			src/platform/wii/clock.h
 			src/platform/wii/input_buttons.cpp)
 	elseif(NINTENDO_WIIU)
@@ -620,7 +619,6 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
 		target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
 		target_sources(${PROJECT_NAME} PRIVATE
-			src/platform/wii/clock.cpp
 			src/platform/wii/clock.h
 			src/platform/wii/input_buttons.cpp)
 	else()
