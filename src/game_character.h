@@ -713,7 +713,9 @@ public:
 		int32_t search_max = std::numeric_limits<int32_t>::max();
 		bool allow_diagonal = false;
 		bool debug_print = false;
+		bool skip_when_failed = false;
 		Span<int> event_id_ignore_list;
+		int frequency = 3;
 	};
 
 	bool CalculateMoveRoute(const CalculateMoveRouteArgs& args);
