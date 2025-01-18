@@ -251,7 +251,7 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y,
 			bool check_events_and_vehicles,
-			std::unordered_set<int> *ignore_some_events_by_id);
+			Span<int> ignore_some_events_by_id);
 
 	/** Shorter version of CheckWay. */
 	bool CheckWay(const Game_Character& self,
@@ -281,7 +281,7 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y,
 			bool check_events_and_vehicles,
-			std::unordered_set<int> *ignore_some_events_by_id,
+			Span<int> ignore_some_events_by_id,
 			bool make_way);
 
 	/**

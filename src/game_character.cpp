@@ -33,6 +33,7 @@
 #include "rand.h"
 #include <cmath>
 #include <cassert>
+#include <limits>
 #include <unordered_set>
 
 Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
@@ -470,7 +471,7 @@ bool Game_Character::CheckWay(int from_x, int from_y, int to_x, int to_y) {
 
 bool Game_Character::CheckWay(
 		int from_x, int from_y, int to_x, int to_y, bool ignore_all_events,
-		std::unordered_set<int> *ignore_some_events_by_id) {
+		Span<int> ignore_some_events_by_id) {
 	return Game_Map::CheckWay(*this, from_x, from_y, to_x, to_y,
 		ignore_all_events, ignore_some_events_by_id);
 }
@@ -788,6 +789,308 @@ void Game_Character::CancelMoveRoute() {
 	}
 	SetMoveRouteOverwritten(false);
 	SetMoveRouteFinished(false);
+}
+
+struct SearchNode {
+	int x = 0;
+	int y = 0;
+	int cost = 0;
+	int direction = 0;
+
+	int id = 0;
+	int parent_id = -1;
+	int parent_x = -1;
+	int parent_y = -1;
+
+	friend bool operator==(const SearchNode& n1, const SearchNode& n2)
+	{
+		return n1.x == n2.x && n1.y == n2.y;
+	}
+
+	bool operator()(SearchNode const& a, SearchNode const& b)
+	{
+		return a.id > b.id;
+	}
+};
+
+struct SearchNodeHash {
+	size_t operator()(const SearchNode &p) const {
+		return (p.x ^ (p.y + (p.y >> 12)));
+	}
+};
+
+bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
+	CancelMoveRoute();
+
+	// Set up helper variables:
+	SearchNode start = {GetX(), GetY(), 0, -1};
+	if ((start.x == args.dest_x && start.y == args.dest_y) || args.steps_max == 0) {
+		return true;
+	}
+	std::vector<SearchNode> queue;
+	std::unordered_map<int, SearchNode> graph;
+	std::map<std::pair<int, int>, SearchNode> graph_by_coord;
+	queue.push_back(start);
+	int id = 0;
+	int idd = 0;
+	int steps_taken = 0;
+	SearchNode closest_node = {args.dest_x, args.dest_y, std::numeric_limits<int>::max(), -1}; // Initialize with a very high cost.
+	int closest_distance = std::numeric_limits<int>::max(); // Initialize with a very high distance.
+	std::unordered_set<SearchNode, SearchNodeHash> seen;
+
+	int steps_max = args.steps_max;
+	if (steps_max == -1) {
+		steps_max = std::numeric_limits<int>::max();
+	}
+
+	if (args.debug_print) {
+		Output::Debug("Game_Interpreter::CommandSearchPath: "
+			"start search, character x{} y{}, to x{}, y{}, "
+			"ignored event ids count: {}",
+			start.x, start.y, args.dest_x, args.dest_y, args.event_id_ignore_list.size());
+	}
+
+	bool loops_horizontal = Game_Map::LoopHorizontal();
+	bool loops_vertical = Game_Map::LoopVertical();
+	std::vector<SearchNode> neighbour;
+	neighbour.reserve(8);
+	while (!queue.empty() && steps_taken < steps_max) {
+		SearchNode n = queue[0];
+		queue.erase(queue.begin());
+		steps_taken++;
+		graph[n.id] = n;
+		graph_by_coord.insert({{n.x, n.y}, n});
+
+		if (n.x == args.dest_x && n.y == args.dest_y) {
+			// Reached the destination.
+			closest_node = n;
+			closest_distance = 0;
+			break;	// Exit the loop to build final route.
+		}
+		else {
+			neighbour.clear();
+			SearchNode nn = {n.x + 1, n.y, n.cost + 1, 1}; // Right
+			neighbour.push_back(nn);
+			nn = {n.x, n.y - 1, n.cost + 1, 0}; // Up
+			neighbour.push_back(nn);
+			nn = {n.x - 1, n.y, n.cost + 1, 3}; // Left
+			neighbour.push_back(nn);
+			nn = {n.x, n.y + 1, n.cost + 1, 2}; // Down
+			neighbour.push_back(nn);
+
+			if (args.allow_diagonal) {
+				nn = {n.x - 1, n.y + 1, n.cost + 1, 6}; // Down Left
+				neighbour.push_back(nn);
+				nn = {n.x + 1, n.y - 1, n.cost + 1, 4}; // Up Right
+				neighbour.push_back(nn);
+				nn = {n.x - 1, n.y - 1, n.cost + 1, 7}; // Up Left
+				neighbour.push_back(nn);
+				nn = {n.x + 1, n.y + 1, n.cost + 1, 5}; // Down Right
+				neighbour.push_back(nn);
+			}
+
+			for (SearchNode a : neighbour) {
+				idd++;
+				a.parent_x = n.x;
+				a.parent_y = n.y;
+				a.id = idd;
+				a.parent_id = n.id;
+
+				// Adjust neighbor coordinates for map looping
+				if (loops_horizontal) {
+					if (a.x >= Game_Map::GetTilesX())
+						a.x -= Game_Map::GetTilesX();
+					else if (a.x < 0)
+						a.x += Game_Map::GetTilesX();
+				}
+
+				if (loops_vertical) {
+					if (a.y >= Game_Map::GetTilesY())
+						a.y -= Game_Map::GetTilesY();
+					else if (a.y < 0)
+						a.y += Game_Map::GetTilesY();
+				}
+
+				auto check = seen.find(a);
+				if (check != seen.end()) {
+					SearchNode old_entry = graph[(*check).id];
+					if (a.cost < old_entry.cost) {
+						// Found a shorter path to previous node, update & reinsert:
+						if (args.debug_print) {
+							Output::Debug("Game_Interpreter::CommandSearchPath: "
+								"found shorter path to x:{} y:{}"
+								"from x:{} y:{} direction: {}",
+								a.x, a.y, n.x, n.y, a.direction);
+						}
+						graph.erase(old_entry.id);
+						old_entry.cost = a.cost;
+						old_entry.parent_id = n.id;
+						old_entry.parent_x = n.x;
+						old_entry.parent_y = n.y;
+						old_entry.direction = a.direction;
+						graph[old_entry.id] = old_entry;
+					}
+					continue;
+				} else if (a.x == start.x && a.y == start.y) {
+					continue;
+				}
+				bool added = false;
+				if (CheckWay(n.x, n.y, a.x, a.y, true, args.event_id_ignore_list) ||
+						(a.x == args.dest_x && a.y == args.dest_y &&
+						CheckWay(n.x, n.y, a.x, a.y, false, {}))) {
+					if (a.direction == 4) {
+						if (CheckWay(n.x, n.y, n.x + 1, n.y,
+									true, args.event_id_ignore_list) ||
+								CheckWay(n.x, n.y, n.x, n.y - 1,
+									true, args.event_id_ignore_list)) {
+							added = true;
+							queue.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 5) {
+						if (CheckWay(n.x, n.y, n.x + 1, n.y,
+									true, args.event_id_ignore_list) ||
+								CheckWay(n.x, n.y, n.x, n.y + 1,
+									true, args.event_id_ignore_list)) {
+							added = true;
+							queue.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 6) {
+						if (CheckWay(n.x, n.y, n.x - 1, n.y,
+									true, args.event_id_ignore_list) ||
+								CheckWay(n.x, n.y, n.x, n.y + 1,
+									true, args.event_id_ignore_list)) {
+							added = true;
+							queue.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else if (a.direction == 7) {
+						if (CheckWay(n.x, n.y, n.x - 1, n.y,
+									true, args.event_id_ignore_list) ||
+								CheckWay(n.x, n.y, n.x, n.y - 1,
+									true, args.event_id_ignore_list)) {
+							added = true;
+							queue.push_back(a);
+							seen.insert(a);
+						}
+					}
+					else {
+						added = true;
+						queue.push_back(a);
+						seen.insert(a);
+					}
+				}
+				if (added && args.debug_print) {
+					Output::Debug("Game_Interpreter::CommandSearchPath: "
+						"discovered id:{} x:{} y:{} parentX:{} parentY:{}"
+						"parentID:{} direction: {}",
+					queue[queue.size() - 1].id,
+					queue[queue.size() - 1].x, queue[queue.size() - 1].y,
+					queue[queue.size() - 1].parent_x,
+					queue[queue.size() - 1].parent_y,
+					queue[queue.size() - 1].parent_id,
+					queue[queue.size() - 1].direction);
+				}
+			}
+		}
+		id++;
+		// Calculate the Manhattan distance between the current node and the destination
+		int manhattan_dist = abs(args.dest_x - n.x) + abs(args.dest_y - n.y);
+
+		// Check if this node is closer to the destination
+		if (manhattan_dist < closest_distance) {
+			closest_node = n;
+			closest_distance = manhattan_dist;
+			if (args.debug_print) {
+				Output::Debug("Game_Interpreter::CommandSearchPath: "
+						"new closest node at x:{} y:{} id:{}",
+					closest_node.x, closest_node.y,
+					closest_node.id);
+			}
+		}
+	}
+
+	// Check if a path to the closest node was found.
+	if (closest_distance != std::numeric_limits<int>::max()) {
+		// Build a route to the closest reachable node.
+		if (args.debug_print) {
+			Output::Debug("Game_Interpreter::CommandSearchPath: "
+					"trying to return route from x:{} y:{} to "
+					"x:{} y:{} (id:{})",
+				start.x, start.y, closest_node.x, closest_node.y,
+				closest_node.id);
+		}
+		std::vector<SearchNode> list_move;
+
+		//Output::Debug("Chemin :");
+		SearchNode node = closest_node;
+		while (list_move.size() < steps_max) {
+			list_move.push_back(node);
+			bool found_parent = false;
+			if (graph_by_coord.find({node.parent_x,
+					node.parent_y}) == graph_by_coord.end())
+				break;
+			SearchNode node2 = graph_by_coord[
+				{node.parent_x, node.parent_y}
+			];
+			if (args.debug_print) {
+				Output::Debug(
+					"Game_Interpreter::CommandSearchPath: "
+					"found parent leading to x:{} y:{}, "
+					"it's at x:{} y:{} dir:{}",
+					node.x, node.y,
+					node2.x, node2.y, node2.direction);
+			}
+			node = node2;
+		}
+
+		std::reverse(list_move.rbegin(), list_move.rend());
+
+		std::string debug_output_path("");
+		if (list_move.size() > 0) {
+			lcf::rpg::MoveRoute route;
+			// route.skippable = true;
+			route.repeat = false;
+
+			for (SearchNode node2 : list_move) {
+				if (node2.direction >= 0) {
+					lcf::rpg::MoveCommand cmd;
+					cmd.command_id = node2.direction;
+					route.move_commands.push_back(cmd);
+					if (args.debug_print >= 1) {
+						if (debug_output_path.length() > 0)
+							debug_output_path += ",";
+						std::ostringstream dirnum;
+						dirnum << node2.direction;
+						debug_output_path += std::string(dirnum.str());
+					}
+				}
+			}
+
+			lcf::rpg::MoveCommand cmd;
+			cmd.command_id = 23;
+			route.move_commands.push_back(cmd);
+
+			ForceMoveRoute(route, 8);
+		}
+		if (args.debug_print) {
+			Output::Debug(
+				"Game_Interpreter::CommandSearchPath: "
+				"setting route {} for character x{} y{}",
+				" (ignored event ids count: {})",
+				debug_output_path, start.x, start.y,
+				args.event_id_ignore_list.size()
+			);
+		}
+		return true;
+	}
+
+	// No path to the destination, return failure.
+	return false;
 }
 
 int Game_Character::GetSpriteX() const {
