@@ -1053,7 +1053,7 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 		std::string debug_output_path("");
 		if (list_move.size() > 0) {
 			lcf::rpg::MoveRoute route;
-			// route.skippable = true;
+			route.skippable = args.skip_when_failed;
 			route.repeat = false;
 
 			for (SearchNode node2 : list_move) {
@@ -1075,7 +1075,7 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 			cmd.command_id = 23;
 			route.move_commands.push_back(cmd);
 
-			ForceMoveRoute(route, 8);
+			ForceMoveRoute(route, args.frequency);
 		}
 		if (args.debug_print) {
 			Output::Debug(
