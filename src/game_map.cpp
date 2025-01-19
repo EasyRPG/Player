@@ -634,7 +634,9 @@ void Game_Map::Scroll(int dx, int dy) {
 // that acc changed by.
 static void ClampingAdd(int low, int high, int& acc, int& inc) {
 	int original_acc = acc;
-	acc = std::clamp(acc + inc, low, high);
+	// Do not use std::clamp here. When the map is smaller than the screen the
+	// upper bound is smaller than the lower bound making the function fail.
+	acc = std::max(low, std::min(high, acc + inc));
 	inc = acc - original_acc;
 }
 
@@ -1648,7 +1650,9 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
 	} else {
-		x = std::clamp(x, 0, map_width - screen_width);
+		// Do not use std::clamp here. When the map is smaller than the screen the
+		// upper bound is smaller than the lower bound making the function fail.
+		x = std::max(0, std::min(map_width - screen_width, x));
 	}
 	map_info.position_x = x;
 	if (reset_panorama) {
@@ -1670,7 +1674,9 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
 	} else {
-		y = std::clamp(y, 0, map_height - screen_height);
+		// Do not use std::clamp here. When the map is smaller than the screen the
+		// upper bound is smaller than the lower bound making the function fail.
+		y = std::max(0, std::min(map_height - screen_height, y));
 	}
 	map_info.position_y = y;
 	if (reset_panorama) {
