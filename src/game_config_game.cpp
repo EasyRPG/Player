@@ -177,6 +177,10 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, { "--debug-routes", "--debug-move-routes" })) {
+			debug_moveroutes.Set(true);
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -229,6 +233,8 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	if (patch_direct_menu.FromIni(ini)) {
 		patch_override = true;
 	}
+
+	debug_moveroutes.FromIni(ini);
 }
 
 void Game_ConfigGame::PrintActivePatches() {

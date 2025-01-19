@@ -436,7 +436,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		if (_state.wait_movement) {
-			if (ShouldAssertMoveRoutes()) {
+			if (Player::game_config.debug_moveroutes.Get()) {
 				Debug::AssertBlockedMoves(main_flag);
 			}
 			if (Game_Map::IsAnyMovePending()) {
@@ -5355,6 +5355,8 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 		Player::game_config.patch_key_patch.Set(flag_value);
 	if (flag_name == "rpg2k3-cmds" || flag_name == "rpg2k3-commands")
 		Player::game_config.patch_rpg2k3_commands.Set(flag_value);
+	if (flag_name == "debug-routes" || flag_name == "debug-move-routes")
+		Player::game_config.debug_moveroutes.Set(flag_value);
 	if (flag_name == "rpg2k-battle")
 		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
 
@@ -5652,11 +5654,4 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 	}
 
 	return value;
-}
-
-bool Game_Interpreter::ShouldAssertMoveRoutes() const {
-	//FIXME: Needs liblcf update
-	//return (main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_main) > 0)
-	//	|| (!main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_parallel) > 0);
-	return true;
 }
