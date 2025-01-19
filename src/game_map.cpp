@@ -728,19 +728,18 @@ static bool WouldCollide(const Game_Character& self, const T& other, bool self_c
 	if (self.GetLayer() == other.GetLayer()) {
 		if constexpr (impl == Game_Map::eImpl_AssertWayBackground) {
 			// check if 'self' is blocked by player
-			// if the blocked movement doesn't occur in foreground
-			// context, then they could just walk away
+			// (if the blocked movement doesn't occur inside
+			// 'foreground' context, then they might just walk away)
 
 			if (other.GetType() == Game_Character::Player) {
 				return false;
 			}
-			//TODO: should maybe check if offscreen
 			if (other.GetType() == Game_Character::Vehicle) {
 				return false;
 			}
 		}
 		if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
-			constexpr auto rng_moves = {
+			const auto rng_moves = {
 				lcf::rpg::EventPage::MoveType_random,
 				lcf::rpg::EventPage::MoveType_toward,
 				lcf::rpg::EventPage::MoveType_away
@@ -764,26 +763,25 @@ static bool WouldCollide(const Game_Character& self, const T& other, bool self_c
 					auto* page = reinterpret_cast<Game_Event const&>(other).GetActivePage();
 					auto move_type = page ? page->move_type : 0;
 
-					//TODO: only when !main_flag
 					if (move_type == lcf::rpg::EventPage::MoveType_vertical) {
-						//check if other event culd still move up/down...
+						//check if 'other' event could still move up/down...
 						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Up), true, ignore_list)
 							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Down), true, ignore_list)) {
 							return false;
 						}
 					} else if (move_type == lcf::rpg::EventPage::MoveType_horizontal) {
-						//check if other event culd still move left/right...
+						//check if 'other' event could still move left/right...
 						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Left), other.GetY(), true, ignore_list)
 							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Right), other.GetY(), true, ignore_list)) {
 							return false;
 						}
 					} else if (std::any_of(rng_moves.begin(), rng_moves.end(), [&move_type](auto mt) { return move_type == mt; })) {
-						//check if other event culd still move in any direction...
+						//check if 'other' event could still move in any direction...
 						if (check_rng_move(other, ignore_list)) {
 							return false;
 						}
 					} else if (move_type == lcf::rpg::EventPage::MoveType_custom) {
-						//check if other events custom route would make it possible for this event to move...
+						//check if the other event's custom route would make it possible for this event to move...
 						do_check_next_move_command = true;
 					}
 				}
@@ -824,6 +822,8 @@ static bool WouldCollide(const Game_Character& self, const T& other, bool self_c
 						} else {
 							move_success = other.CheckMove(other.GetDirectionAwayCharacter(*Main_Data::game_player));
 						}
+						break;
+					default:
 						break;
 				}
 				if (move_success) {

@@ -832,7 +832,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 						skip_items--;
 						continue;
 					}
-					auto& [evt_id, state] = bg_states.GetEventInterpreter(i);
+					const auto& [evt_id, state] = bg_states.GetEventInterpreter(i);
 					addItem(fmt::format("{}EV{:04d}: {}", state.wait_movement ? "(W) " : "", evt_id, Game_Map::GetEvent(evt_id)->GetName()));
 					count_items++;
 				}
@@ -841,7 +841,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 						skip_items--;
 						continue;
 					}
-					auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(i);
+					const auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(i);
 					auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, ce_id);
 					addItem(fmt::format("{}CE{:04d}: {}", state.wait_movement ? "(W) " : "", ce_id, ce->name));
 					count_items++;
