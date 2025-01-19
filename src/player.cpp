@@ -1549,6 +1549,11 @@ Debug options:
  --start-position X Y Overwrite the party start position and move the party to
                       position (X, Y).
                       Incompatible with --load-game-id.
+ --debug-routes       This option enables a range of asserts whenever a
+                      scripting stack is halted due to a WaitForAllMovement
+                      command. If the Interpreter is not able to resume operation,
+                      due to a blocked route, detailed warnings will be printed to
+                      the output.
  --test-play          Enable TestPlay (Debug) mode.
 
 Other options:

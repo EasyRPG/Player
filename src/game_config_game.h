@@ -48,6 +48,7 @@ struct Game_ConfigGame {
 	BoolConfigParam patch_rpg2k3_commands{ "RPG2k3 Event Commands", "Enable support for RPG2k3 event commands", "Patch", "RPG2k3Commands", false };
 	ConfigParam<int> patch_anti_lag_switch{ "Anti-Lag Switch", "Disable event page refreshes when switch is set", "Patch", "AntiLagSwitch", 0 };
 	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
+	BoolConfigParam debug_moveroutes{ "Debug MoveRoutes", "Generate Interpreter warnings whenever \"MoveRoute\" commands are blocked", "Game", "DebugMoveRoutes", false };
 
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };

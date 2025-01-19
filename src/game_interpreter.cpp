@@ -456,7 +456,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		}
 
 		if (_state.wait_movement) {
-			if (ShouldAssertMoveRoutes()) {
+			if (Player::game_config.debug_moveroutes.Get()) {
 				Debug::AssertBlockedMoves(main_flag);
 			}
 			if (Game_Map::IsAnyMovePending()) {
@@ -5886,11 +5886,4 @@ bool Game_Interpreter_Inspector::IsInActiveExcecution(Game_CommonEvent const& ce
 		return false;
 	}
 	return ce.interpreter && ce.interpreter->IsRunning();
-}
-
-bool Game_Interpreter::ShouldAssertMoveRoutes() const {
-	//FIXME: Needs liblcf update
-	//return (main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_main) > 0)
-	//	|| (!main_flag && (_state.easyrpg_debug_flags & lcf::rpg::SaveEventExecState::DebugFlags_warn_on_blocked_movement_parallel) > 0);
-	return true;
 }
