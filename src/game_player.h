@@ -60,7 +60,7 @@ public:
 	TeleportTarget GetTeleportTarget() const;
 	void ResetTeleportTarget(TeleportTarget tt = {});
 
-	bool TriggerEventAt(int x, int y);
+	bool TriggerEventAt(int x, int y, bool triggered_by_decision_key, bool face_player);
 
 	/**
 	 * Sets the map, position and direction that the game player must have after the teleport is over
@@ -163,8 +163,8 @@ private:
 	void UpdatePan();
 	void UpdateEncounterSteps();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key);
-	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key);
+	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key, bool face_player = true);
+	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key, bool face_player = true);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	bool UpdateAirship();
