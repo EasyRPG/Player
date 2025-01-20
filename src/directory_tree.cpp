@@ -223,12 +223,12 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	}
 
 	std::string dir_key = make_key(dir);
-	auto dir_it = Find(dir_cache, dir_key);
+	auto dir_it = Find(dir_cache, dir_key, args.process_wildcards);
 	assert(dir_it != dir_cache.end());
 
 	std::string name_key = make_key(name);
 	if (args.exts.empty()) {
-		auto entry_it = Find(*entries, name_key);
+		auto entry_it = Find(*entries, name_key, args.process_wildcards);
 		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 			auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 			DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
@@ -237,7 +237,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	} else {
 		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
-			auto entry_it = Find(*entries, full_name_key);
+			auto entry_it = Find(*entries, full_name_key, args.process_wildcards);
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 				DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);

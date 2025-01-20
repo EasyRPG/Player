@@ -73,6 +73,10 @@ public:
 		 * Off by default because file probing would spam the terminal alot.
 		 */
 		bool file_not_found_warning = false;
+		/**
+		 * Processes ? in filenames as placeholders
+		 */
+		bool process_wildcards = false;
 	};
 
 	using DirectoryListType = std::vector<std::pair<std::string, Entry>>;
@@ -148,9 +152,9 @@ private:
 	static bool WildcardMatch(const StringView& pattern, const StringView& text);
 
 	template<class T>
-	auto Find(T& cache, StringView what) const {
-		// No wildcard - binary search
-		if (what.find('?') == StringView::npos) {
+	auto Find(T& cache, StringView what, bool process_wildcards = false) const {
+		if (!process_wildcards) {
+			// No wildcard - binary search
 			auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {
 				return e.first < w;
 			});
@@ -158,14 +162,15 @@ private:
 				return it;
 			}
 			return cache.end();
-		}
-
-		// Has wildcard - linear search
-		for (auto it = cache.begin(); it != cache.end(); ++it) {
-			if (WildcardMatch(what, it->first)) {
-				return it;
+		} else {
+			// Has wildcard - linear search
+			for (auto it = cache.begin(); it != cache.end(); ++it) {
+				if (WildcardMatch(what, it->first)) {
+					return it;
+				}
 			}
 		}
+
 		return cache.end();
 	}
 

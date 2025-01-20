@@ -19,6 +19,7 @@
 #include <iomanip>
 #include <sstream>
 #include "window_gamelist.h"
+#include "filefinder.h"
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
@@ -110,7 +111,7 @@ void Window_GameList::DrawItem(int index) {
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, dir_name);
 
 	if (ge.type > FileFinder::ProjectType::Supported) {
-		auto notice = fmt::format("Unsupported: {}", FileFinder::GetProjectTypeLabel(ge.type));
+		auto notice = fmt::format("Unsupported: {}", FileFinder::kProjectType.tag(ge.type));
 		contents->TextDraw(rect.width, rect.y, Font::ColorDisabled, notice, Text::AlignRight);
 	}
 }

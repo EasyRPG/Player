@@ -197,18 +197,18 @@ void Scene_GameBrowser::BootGame() {
 		return;
 	}
 
-    if (ge.type > FileFinder::ProjectType::Supported) {
-        // Game is using a known unsupported engine
-        Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-        Output::Warning(
-                "[{}] Detected an unsupported game engine: {}",
-                FileFinder::GetPathAndFilename(ge.fs.GetFullPath()).second,
-                FileFinder::GetProjectTypeLabel(ge.type)
-        );
-        load_window->SetVisible(false);
-        game_loading = false;
-        return;
-    }
+	if (ge.type > FileFinder::ProjectType::Supported) {
+		// Game is using a known unsupported engine
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		Output::Warning(
+				"[{}] Detected an unsupported game engine: {}",
+				FileFinder::GetPathAndFilename(ge.fs.GetFullPath()).second,
+				FileFinder::kProjectType.tag(ge.type)
+		);
+		load_window->SetVisible(false);
+		game_loading = false;
+		return;
+	}
 
 	if (ge.type == FileFinder::ProjectType::Unknown && !FileFinder::OpenViewToEasyRpgFile(ge.fs)) {
 		// Not a game: Open as directory

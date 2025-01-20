@@ -317,15 +317,21 @@ FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
 		return FileFinder::ProjectType::Supported;
 	}
 
-	if (!fs.FindFile("RGSS10??.dll").empty()) {
+	DirectoryTree::Args args;
+	args.process_wildcards = true;
+	args.path = "RGSS10??.dll";
+
+	if (!fs.FindFile(args).empty()) {
 		return FileFinder::ProjectType::RpgMakerXp;
 	}
 
-	if (!fs.FindFile("RGSS20??.dll").empty()) {
+	args.path = "RGSS20??.dll";
+	if (!fs.FindFile(args).empty()) {
 		return FileFinder::ProjectType::RpgMakerVx;
 	}
 
-	if (!fs.FindFile("System", "RGSS30?.dll").empty()) {
+	args.path = "System/RGSS30?.dll";
+	if (!fs.FindFile(args).empty()) {
 		return FileFinder::ProjectType::RpgMakerVxAce;
 	}
 
@@ -339,6 +345,14 @@ FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
 
 	if (!fs.FindFile("RPG_RT.rs1").empty()) {
 		return FileFinder::ProjectType::Encrypted2k3Maniacs;
+	}
+
+	if (!fs.FindFile("Game.RPG").empty()) {
+		return FileFinder::ProjectType::RpgMaker95;
+	}
+
+	if (!fs.FindFile("Game.DAT").empty()) {
+		return FileFinder::ProjectType::SimRpgMaker95;
 	}
 
 	return FileFinder::ProjectType::Unknown;

@@ -25,6 +25,7 @@
 #include "string_view.h"
 #include "directory_tree.h"
 
+#include <lcf/enum_tags.h>
 #include <string>
 #include <cstdio>
 #include <ios>
@@ -60,7 +61,22 @@ namespace FileFinder {
 		RpgMakerMvMz,
 		WolfRpgEditor,
 		Encrypted2k3Maniacs,
+		RpgMaker95,
+		SimRpgMaker95
 	};
+
+	constexpr auto kProjectType = lcf::makeEnumTags<ProjectType>(
+		"Unknown",
+		"Supported",
+		"RPG Maker XP",
+		"RPG Maker VX",
+		"RPG Maker VX Ace",
+		"RPG Maker MV/MZ",
+		"Wolf RPG Editor",
+		"Encrypted 2k3MP",
+		"RPG Maker 95",
+		"Sim RPG Maker 95"
+	);
 
 	/**
 	 * Helper struct combining the project's directory and its type.
@@ -69,9 +85,6 @@ namespace FileFinder {
 		FilesystemView fs;
 		ProjectType type;
 	};
-
-	/** @return Human readable project type label */
-	static const char* GetProjectTypeLabel(ProjectType pt);
 
 	/**
 	 * Quits FileFinder.
@@ -356,18 +369,18 @@ namespace FileFinder {
 	bool IsMajorUpdatedTree();
 
 	/** RPG_RT.exe file size thresholds
-		 *
-		 * 2k v1.51 (Japanese)    : 746496
-		 * 2k v1.50 (Japanese)    : 745984
-		 *  -- threshold (2k) --  : 735000
-		 * 2k v1.10 (Japanese)    : 726016
-		 *
-		 * 2k3 v1.09a (Japanese)  : 950784
-		 * 2k3 v1.06 (Japanese)   : 949248
-		 * 2k3 v1.05 (Japanese)   : unknown
-		 *  -- threshold (2k3) -- : 927000
-		 * 2k3 v1.04 (Japanese)   : 913408
-		 */
+	 *
+	 * 2k v1.51 (Japanese)    : 746496
+	 * 2k v1.50 (Japanese)    : 745984
+	 *  -- threshold (2k) --  : 735000
+	 * 2k v1.10 (Japanese)    : 726016
+	 *
+	 * 2k3 v1.09a (Japanese)  : 950784
+	 * 2k3 v1.06 (Japanese)   : 949248
+	 * 2k3 v1.05 (Japanese)   : unknown
+	 *  -- threshold (2k3) -- : 927000
+	 * 2k3 v1.04 (Japanese)   : 913408
+	 */
 	enum RpgrtMajorUpdateThreshold {
 		RPG2K = 735000,
 		RPG2K3 = 927000,
@@ -406,27 +419,6 @@ std::string FileFinder::MakePath(lcf::Span<T> components) {
 		path = MakePath(path, c);
 	}
 	return path;
-}
-
-static inline const char* FileFinder::GetProjectTypeLabel(ProjectType pt) {
-	switch (pt) {
-		case Supported:
-			return "Supported";
-		case RpgMakerXp:
-			return "RPG Maker XP";
-		case RpgMakerVx:
-			return "RPG Maker VX";
-		case RpgMakerVxAce:
-			return "RPG Maker VX Ace";
-		case RpgMakerMvMz:
-			return "RPG Maker MV/MZ";
-		case WolfRpgEditor:
-			return "Wolf RPG Editor";
-		case Encrypted2k3Maniacs:
-			return "Encrypted 2k3MP";
-		default:
-			return "Unknown";
-	}
 }
 
 #endif
