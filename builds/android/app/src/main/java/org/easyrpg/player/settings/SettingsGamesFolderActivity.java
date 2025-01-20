@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.easyrpg.player.BaseActivity;
+import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
@@ -41,39 +42,11 @@ public class SettingsGamesFolderActivity extends BaseActivity {
         // Setup UI components
         // The "Open Game Folder" Button
         Button openGameFolderButton = this.findViewById(R.id.open_game_folder);
-        // We can open the file picker in a specific folder only with API >= 26
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            openGameFolderButton.setOnClickListener(v -> {
-                // Open the file explorer in the "soundfont" folder
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("*/*");
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getGamesFolderURI(this));
-                startActivity(intent);
-            });
-        } else {
-            ViewGroup layout = (ViewGroup) openGameFolderButton.getParent();
-            if(layout != null) {
-                layout.removeView(openGameFolderButton);
-            }
-        }
+        Helper.attachOpenFolderButton(this, openGameFolderButton, SettingsManager.getGamesFolderURI(this));
 
         // The "Open RTP Folder" Button
         Button openRTPFolderButton = this.findViewById(R.id.open_rtp_folder);
-        // We can open the file picker in a specific folder only with API >= 26
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            openRTPFolderButton.setOnClickListener(v -> {
-                // Open the file explorer in the "soundfont" folder
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("*/*");
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getRTPFolderURI(this));
-                startActivity(intent);
-            });
-        } else {
-            ViewGroup layout = (ViewGroup) openRTPFolderButton.getParent();
-            if(layout != null) {
-                layout.removeView(openRTPFolderButton);
-            }
-        }
+        Helper.attachOpenFolderButton(this, openRTPFolderButton, SettingsManager.getRTPFolderURI(this));
 
         // Video button
         findViewById(R.id.watch_video).setOnClickListener(v -> {

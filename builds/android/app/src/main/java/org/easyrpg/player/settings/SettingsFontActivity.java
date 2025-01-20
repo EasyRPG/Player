@@ -49,21 +49,7 @@ public class SettingsFontActivity extends BaseActivity {
         // Setup UI components
         // The Font Button
         Button button = this.findViewById(R.id.button_open_font_folder);
-        // We can open the file picker in a specific folder only with API >= 26
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            button.setOnClickListener(v -> {
-                // Open the file explorer in the "fonts" folder
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("*/*");
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, SettingsManager.getFontsFolderURI(this));
-                startActivity(intent);
-            });
-        } else {
-            ViewGroup layout = (ViewGroup) button.getParent();
-            if(layout != null) {
-                layout.removeView(button);
-            }
-        }
+        Helper.attachOpenFolderButton(this, button, SettingsManager.getFontsFolderURI(this));
 
         configureFont1Size();
         configureFont2Size();

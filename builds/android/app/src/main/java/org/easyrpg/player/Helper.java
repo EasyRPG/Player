@@ -3,6 +3,7 @@ package org.easyrpg.player;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +18,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -356,4 +359,41 @@ public class Helper {
         return bitmap;
     }
 
+    public static void attachOpenFolderButton(Context context, Button button, Uri uri) {
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            button.setOnClickListener(v -> {
+                openFileBrowser(context, uri);
+            });
+        } else {
+            // ACTION_OPEN_DOCUMENT does not support providing an URI
+            // Useless, remove the button
+            ViewGroup layout = (ViewGroup) button.getParent();
+            if(layout != null) {
+                layout.removeView(button);
+            }
+        }
+    }
+
+    public static boolean openFileBrowser(Context context, Uri uri) {
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            // Open the file explorer in the folder specified by URI
+            // This opens a real file browser which allows file operations like view, copy, etc.
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, DocumentsContract.Document.MIME_TYPE_DIR);
+            context.startActivity(intent);
+        } else if (android.os.Build.VERSION.SDK_INT >= 26) {
+            // Open the file explorer in the folder specified by URI
+            // This opens a (useless) file chooser which closes itself after selecting a file
+            // Still better than nothing because the user can see where the folder is
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+            context.startActivity(intent);
+        } else {
+            // ACTION_OPEN_DOCUMENT does not support providing an URI
+            return false;
+        }
+
+        return true;
+    }
 }
