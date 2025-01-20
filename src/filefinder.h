@@ -79,9 +79,17 @@ namespace FileFinder {
 	);
 
 	/**
-	 * Helper struct combining the project's directory and its type.
+	 * Helper struct combining the project's directory and its type (used by Game Browser)
 	 */
 	struct GameEntry {
+		std::string dir_name;
+		ProjectType type;
+	};
+
+	/**
+	 * Helper struct combining project type and filesystem (used by Android Game Browser)
+	 */
+	struct FsEntry {
 		FilesystemView fs;
 		ProjectType type;
 	};
@@ -409,7 +417,7 @@ namespace FileFinder {
 	 * @param game_limit Abort the search when this amount of games was found.
 	 * @return Vector of game entries (filesystem view + project type) found
 	 */
-	std::vector<GameEntry> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
+	std::vector<FsEntry> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

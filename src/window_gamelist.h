@@ -20,7 +20,6 @@
 
 // Headers
 #include <vector>
-#include "window_help.h"
 #include "window_selectable.h"
 #include "filefinder.h"
 
@@ -55,9 +54,9 @@ public:
 	bool HasValidEntry();
 
 	/**
-	 * @return game entry containing filesystem view and project type
+	 * @return fs entry containing filesystem view and project type
 	 */
-	FileFinder::GameEntry GetGameEntry() const;
+	FileFinder::FsEntry GetFilesystemEntry() const;
 
 private:
 	FilesystemView base_fs;

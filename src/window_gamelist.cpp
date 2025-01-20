@@ -16,13 +16,11 @@
  */
 
 // Headers
-#include <iomanip>
-#include <sstream>
 #include "window_gamelist.h"
 #include "filefinder.h"
-#include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "system.h"
 
 Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -56,24 +54,34 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular) {
 			if (FileFinder::IsSupportedArchiveExtension(dir.second.name)) {
+				// The type is only determined on platforms with fast file IO (Windows and UNIX systems)
+				// A platform is considered "fast" when it does not require our custom IO buffer
+#ifndef USE_CUSTOM_FILEBUF
 				auto fs = base_fs.Create(dir.second.name);
-				game_entries.push_back({ fs, FileFinder::GetProjectType(fs) });
+				game_entries.push_back({ dir.second.name, FileFinder::GetProjectType(fs) });
+#else
+				game_entries.push_back({ dir.second.name, FileFinder::ProjectType::Unknown });
+#endif
 			}
 		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
+#ifndef USE_CUSTOM_FILEBUF
 			auto fs = base_fs.Create(dir.second.name);
-			game_entries.push_back({ fs, FileFinder::GetProjectType(fs) });
+			game_entries.push_back({ dir.second.name, FileFinder::GetProjectType(fs) });
+#else
+			game_entries.push_back({ dir.second.name, FileFinder::ProjectType::Unknown });
+#endif
 		}
 	}
 
 	// Sort game list in place
 	std::sort(game_entries.begin(), game_entries.end(),
 			  [](const FileFinder::GameEntry &ge1, const FileFinder::GameEntry &ge2) {
-				  return strcmp(Utils::LowerCase(ge1.fs.GetSubPath()).c_str(),
-								Utils::LowerCase(ge2.fs.GetSubPath()).c_str()) <= 0;
+				  return strcmp(Utils::LowerCase(ge1.dir_name).c_str(),
+								Utils::LowerCase(ge2.dir_name).c_str()) <= 0;
 			  });
 
 	if (show_dotdot) {
-		game_entries.insert(game_entries.begin(), { base_fs.Create(".."), FileFinder::ProjectType::Unknown });
+		game_entries.insert(game_entries.begin(), { "..", FileFinder::ProjectType::Unknown });
 	}
 
 	if (HasValidEntry()) {
@@ -107,12 +115,23 @@ void Window_GameList::DrawItem(int index) {
 	contents->ClearRect(rect);
 
 	auto& ge = game_entries[index];
-	auto dir_name = FileFinder::GetPathAndFilename(ge.fs.GetSubPath()).second;
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, dir_name);
+
+#ifndef USE_CUSTOM_FILEBUF
+	auto color = Font::ColorDefault;
+	if (ge.type == FileFinder::Unknown) {
+		color = Font::ColorHeal;
+	} else if (ge.type > FileFinder::ProjectType::Supported) {
+		color = Font::ColorKnockout;
+	}
+#else
+	auto color = Font::ColorDefault;
+#endif
+
+	contents->TextDraw(rect.x, rect.y, color, ge.dir_name);
 
 	if (ge.type > FileFinder::ProjectType::Supported) {
-		auto notice = fmt::format("Unsupported: {}", FileFinder::kProjectType.tag(ge.type));
-		contents->TextDraw(rect.width, rect.y, Font::ColorDisabled, notice, Text::AlignRight);
+		auto notice = fmt::format("{}", FileFinder::kProjectType.tag(ge.type));
+		contents->TextDraw(rect.width, rect.y, color, notice, Text::AlignRight);
 	}
 }
 
@@ -159,6 +178,7 @@ bool Window_GameList::HasValidEntry() {
 	return game_entries.size() > minval;
 }
 
-FileFinder::GameEntry Window_GameList::GetGameEntry() const {
-	return game_entries[GetIndex()];
+FileFinder::FsEntry Window_GameList::GetFilesystemEntry() const {
+	const auto& entry = game_entries[GetIndex()];
+	return { base_fs.Create(entry.dir_name), entry.type };
 }

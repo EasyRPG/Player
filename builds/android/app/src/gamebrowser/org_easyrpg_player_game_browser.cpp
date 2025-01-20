@@ -189,7 +189,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	auto root = FileFinder::Root().Create(spath);
 	root.ClearCache();
 
-	std::vector<FileFinder::GameEntry> ge_list = FileFinder::FindGames(root);
+	auto ge_list = FileFinder::FindGames(root);
 
 	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
 	jobjectArray jgame_array = env->NewObjectArray(ge_list.size(), jgame_class, nullptr);

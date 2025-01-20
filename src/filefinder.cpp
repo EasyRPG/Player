@@ -579,8 +579,8 @@ void FileFinder::DumpFilesystem(FilesystemView fs) {
 	}
 }
 
-std::vector<FileFinder::GameEntry> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
-	std::vector<FileFinder::GameEntry> games;
+std::vector<FileFinder::FsEntry> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
+	std::vector<FileFinder::FsEntry> games;
 
 	std::function<void(FilesystemView, int)> find_recursive = [&](FilesystemView subfs, int rec_limit) -> void {
 		if (!subfs || rec_limit == 0 || static_cast<int>(games.size()) >= game_limit) {
