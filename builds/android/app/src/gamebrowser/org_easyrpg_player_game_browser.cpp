@@ -187,6 +187,10 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	// jpath is the SAF path to the game, is converted to FilesystemView "root"
 	std::string spath = jstring_to_string(env, jpath);
 	auto root = FileFinder::Root().Create(spath);
+	if (!root) {
+		return nullptr;
+	}
+
 	root.ClearCache();
 
 	std::vector<FilesystemView> fs_list = FileFinder::FindGames(root);
@@ -196,7 +200,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 
 	if (fs_list.empty()) {
 		// No games found
-		return jgame_array;
+		return nullptr;
 	}
 
 	jmethodID jgame_constructor = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
