@@ -52,18 +52,37 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(Filesystem& fs) {
 }
 
 bool DirectoryTree::WildcardMatch(const StringView& pattern, const StringView& text) {
-	if (pattern.length() != text.length()) {
-		return false;
+	// Limitations: * and ? cannot be mixed, * only at beginning and end of string
+	// Pattern and text are already normalized
+	if (pattern.empty() && text.empty()) {
+		return true;
 	}
 
-	std::string pattern_norm = make_key(pattern);
-	std::string text_norm = make_key(text);
+	bool begin_wildcard = pattern.starts_with('*');
+	bool end_wildcard = pattern.ends_with('*');
 
-	return std::equal(pattern_norm.begin(), pattern_norm.end(),
-					  text_norm.begin(),
-					  [](char p, char t) {
-						  return p == '?' || p == t;
-					  });
+	if ((begin_wildcard || end_wildcard) && text.size() > 0) {
+		// * handling
+		bool found = false;
+		if (begin_wildcard) {
+			found |= text.ends_with(pattern.substr(1));
+		}
+		if (end_wildcard) {
+			found |= text.starts_with(pattern.substr(0, pattern.size() - 1));
+		}
+		return found;
+	} else {
+		// ? handling
+		if (pattern.length() != text.length()) {
+			return false;
+		}
+
+		return std::equal(pattern.begin(), pattern.end(),
+						text.begin(),
+						[](char p, char t) {
+							return p == '?' || p == t;
+						});
+	}
 }
 
 DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {

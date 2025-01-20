@@ -347,12 +347,12 @@ FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
 		return FileFinder::ProjectType::Encrypted2k3Maniacs;
 	}
 
-	if (!fs.FindFile("Game.RPG").empty()) {
-		return FileFinder::ProjectType::RpgMaker95;
-	}
-
-	if (!fs.FindFile("Game.DAT").empty()) {
-		return FileFinder::ProjectType::SimRpgMaker95;
+	if (!fs.FindFile("SWNAME.DAT").empty()) {
+		if (!fs.FindFile("GEOLOGY.DAT").empty()) {
+			return FileFinder::ProjectType::SimRpgMaker95;
+		} else if (args.path = "*.RPG"; !fs.FindFile(args).empty()) {
+			return FileFinder::ProjectType::RpgMaker95;
+		}
 	}
 
 	return FileFinder::ProjectType::Unknown;
