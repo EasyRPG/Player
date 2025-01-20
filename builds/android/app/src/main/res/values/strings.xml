@@ -151,9 +151,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
-    <string name="unsupported_engine">Unsupported engine:</string>
-    <string name="unsupported_engine_explanation_1">This game cannot be played in EasyRPG because it was created with $ENGINE.</string>
-    <string name="unsupported_engine_explanation_2">EasyRPG is designed to support only RPG Maker 2000 and 2003 games, with no plans to expand to other engines.</string>
-    <string name="unsupported_engine_explanation_3">For software capable of launching this game, please check the Play Store.</string>
-    <string name="information">Information</string>
+    <string name="unsupported_engine_card">$ENGINE is unsupported</string>
+    <string name="unsupported_engine_title">Unsupported engine</string>
+    <string name="unsupported_engine_explanation">This game cannot be played in EasyRPG Player because it was created with $ENGINE.\n\nEasyRPG Player is designed to support only RPG Maker 2000 and 2003 games, with no plans to expand to other engines.\n\nFor software capable of launching this game, please check the Play Store.</string>
 </resources>

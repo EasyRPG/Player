@@ -335,7 +335,7 @@ public class GameBrowserActivity extends BaseActivity
                 holder.title.setText(game.getDisplayTitle());
 
                 // Subtitle - engine unsupported message
-                holder.subtitle.setText(String.format("%s\n%s", activity.getResources().getString(R.string.unsupported_engine), game.getProjectTypeLabel()));
+                holder.subtitle.setText(activity.getResources().getString(R.string.unsupported_engine_card).replace("$ENGINE", game.getProjectTypeLabel()));
 
                 // Hide settings button
                 holder.settingsButton.setVisibility(View.INVISIBLE);
@@ -466,13 +466,11 @@ public class GameBrowserActivity extends BaseActivity
         private void showUnsupportedProjectTypeExplanation(final Context context, String projectType) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-            String part1 = context.getString(R.string.unsupported_engine_explanation_1).replace("$ENGINE", projectType);
-            String part2 = context.getString(R.string.unsupported_engine_explanation_2);
-            String part3 = context.getString(R.string.unsupported_engine_explanation_3);
+            String message = context.getString(R.string.unsupported_engine_explanation).replace("$ENGINE", projectType);
 
             builder
-                .setTitle(R.string.information)
-                .setMessage(part1 + '\n' + '\n' + part2 + '\n' + '\n' + part3)
+                .setTitle(R.string.unsupported_engine_title)
+                .setMessage(message)
                 .setNeutralButton(R.string.ok, null);
             builder.show();
         }

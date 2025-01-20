@@ -205,29 +205,14 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	std::string root_path = FileFinder::GetFullFilesystemPath(root);
 	bool game_in_main_dir = false;
 	if (ge_list.size() == 1) {
-        if (ge_list[0].type == FileFinder::ProjectType::Supported &&
-            root_path == FileFinder::GetFullFilesystemPath(ge_list[0].fs)) {
-            game_in_main_dir = true;
-        }
+		if (root_path == FileFinder::GetFullFilesystemPath(ge_list[0].fs)) {
+			game_in_main_dir = true;
+		}
 	}
 
 	for (size_t i = 0; i < ge_list.size(); ++i) {
 		auto& ge = ge_list[i];
-        auto& fs = ge.fs;
-
-        // If game is unsupported, create a Game object with only directory name as title and project type id and continue early
-        if (ge.type > FileFinder::ProjectType::Supported) {
-            jobject jgame_object = env->NewObject(jgame_class, jgame_constructor_unsupported, (int)ge.type);
-
-            // Use the directory name as the title
-            auto dir = jstring_to_string(env, jmain_dir_name);
-            jstring jtitle = env->NewStringUTF(dir.c_str());
-            jmethodID jset_title_method = env->GetMethodID(jgame_class, "setTitle", "(Ljava/lang/String;)V");
-            env->CallVoidMethod(jgame_object, jset_title_method, jtitle);
-
-            env->SetObjectArrayElement(jgame_array, i, jgame_object);
-            continue;
-        }
+		auto& fs = ge.fs;
 
 		std::string full_path = FileFinder::GetFullFilesystemPath(fs);
 		std::string game_dir_name;
@@ -237,6 +222,19 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 		} else {
 			// In all other cases the folder name is "clean" and can be used
 			game_dir_name = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+		}
+
+		// If game is unsupported, create a Game object with only directory name as title and project type id and continue early
+		if (ge.type > FileFinder::ProjectType::Supported) {
+			jobject jgame_object = env->NewObject(jgame_class, jgame_constructor_unsupported, (int)ge.type);
+
+			// Use the directory name as the title
+			jstring jfolder = env->NewStringUTF(game_dir_name.c_str());
+			jmethodID jset_folder_name_method = env->GetMethodID(jgame_class, "setGameFolderName", "(Ljava/lang/String;)V");
+			env->CallVoidMethod(jgame_object, jset_folder_name_method, jfolder);
+
+			env->SetObjectArrayElement(jgame_array, i, jgame_object);
+			continue;
 		}
 
 		std::string save_path;
