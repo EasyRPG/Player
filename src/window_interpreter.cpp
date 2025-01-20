@@ -60,15 +60,6 @@ constexpr std::array <RuntimeFlagInfo, 8> runtime_flags = { {
 } };
 #endif
 
-namespace {
-	std::vector<std::string> CreateEmptyLines(int c) {		
-		std::vector<std::string> vars;
-		for (int i = 0; i < c; i++)
-			vars.push_back("");
-		return vars;
-	}
-}
-
 Window_Interpreter::Window_Interpreter(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 1;
