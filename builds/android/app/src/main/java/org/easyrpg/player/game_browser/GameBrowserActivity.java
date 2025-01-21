@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,13 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -333,6 +330,24 @@ public class GameBrowserActivity extends BaseActivity
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             final Game game = gameList.get(position);
 
+            if (game.isProjectTypeUnsupported()) {
+                // Title
+                holder.title.setText(game.getDisplayTitle());
+
+                // Subtitle - engine unsupported message
+                holder.subtitle.setText(activity.getResources().getString(R.string.unsupported_engine_card).replace("$ENGINE", game.getProjectTypeLabel()));
+
+                // Hide settings button
+                holder.settingsButton.setVisibility(View.INVISIBLE);
+
+                // Add click listeners
+                holder.title.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
+                holder.subtitle.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
+                holder.titleScreen.setOnClickListener(v -> showUnsupportedProjectTypeExplanation(activity, game.getProjectTypeLabel()));
+
+                return;
+            }
+
             // Title
             holder.title.setText(game.getDisplayTitle());
             holder.title.setOnClickListener(v -> launchGame(position, false));
@@ -448,14 +463,28 @@ public class GameBrowserActivity extends BaseActivity
             builder.show();
         }
 
+        private void showUnsupportedProjectTypeExplanation(final Context context, String projectType) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            String message = context.getString(R.string.unsupported_engine_explanation).replace("$ENGINE", projectType);
+
+            builder
+                .setTitle(R.string.unsupported_engine_title)
+                .setMessage(message)
+                .setNeutralButton(R.string.ok, null);
+            builder.show();
+        }
+
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public TextView title;
+            public TextView subtitle;
             public ImageView titleScreen;
             public ImageButton settingsButton, favoriteButton;
 
             public ViewHolder(View v) {
                 super(v);
                 this.title = v.findViewById(R.id.title);
+                this.subtitle = v.findViewById(R.id.subtitle);
                 this.titleScreen = v.findViewById(R.id.screen);
                 this.settingsButton = v.findViewById(R.id.game_browser_thumbnail_option_button);
                 this.favoriteButton = v.findViewById(R.id.game_browser_thumbnail_favorite_button);

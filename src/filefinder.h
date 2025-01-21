@@ -25,6 +25,7 @@
 #include "string_view.h"
 #include "directory_tree.h"
 
+#include <lcf/enum_tags.h>
 #include <string>
 #include <cstdio>
 #include <ios>
@@ -44,6 +45,54 @@ namespace FileFinder {
 			".opus", ".oga", ".ogg", ".wav", ".mp3", ".wma");
 	constexpr const auto FONTS_TYPES = Utils::MakeSvArray(".fon", ".fnt", ".bdf", ".ttf", ".ttc", ".otf", ".woff2", ".woff");
 	constexpr const auto TEXT_TYPES = Utils::MakeSvArray(".txt", ".csv", ""); // "" = Complete Filename (incl. extension) provided by the user
+
+	/**
+	 * Type of the project. Used to differentiate between supported games (2kX or EasyRPG)
+	 * and known but unsupported (i.e. newer RPG Makers).
+	 */
+	enum ProjectType {
+		Unknown,
+		// 2kX or EasyRPG
+		Supported,
+		// Known unsupported engines
+		RpgMakerXp,
+		RpgMakerVx,
+		RpgMakerVxAce,
+		RpgMakerMvMz,
+		WolfRpgEditor,
+		Encrypted2k3Maniacs,
+		RpgMaker95,
+		SimRpgMaker95
+	};
+
+	constexpr auto kProjectType = lcf::makeEnumTags<ProjectType>(
+		"Unknown",
+		"Supported",
+		"RPG Maker XP",
+		"RPG Maker VX",
+		"RPG Maker VX Ace",
+		"RPG Maker MV/MZ",
+		"Wolf RPG Editor",
+		"Encrypted 2k3MP",
+		"RPG Maker 95",
+		"Sim RPG Maker 95"
+	);
+
+	/**
+	 * Helper struct combining the project's directory and its type (used by Game Browser)
+	 */
+	struct GameEntry {
+		std::string dir_name;
+		ProjectType type;
+	};
+
+	/**
+	 * Helper struct combining project type and filesystem (used by Android Game Browser)
+	 */
+	struct FsEntry {
+		FilesystemView fs;
+		ProjectType type;
+	};
 
 	/**
 	 * Quits FileFinder.
@@ -288,6 +337,12 @@ namespace FileFinder {
 	bool IsRPG2kProjectWithRenames(const FilesystemView& fs);
 
 	/**
+	 * @param p fs Tree to check
+	 * @return Project type whether the tree contains a supported project type, known but unsupported engines, or something unknown
+	 */
+	ProjectType GetProjectType(const FilesystemView& fs);
+
+	/**
 	 * Determines if the directory contains a single file/directory ending in ".easyrpg" for use in the
 	 * autostart feature.
 	 *
@@ -322,18 +377,18 @@ namespace FileFinder {
 	bool IsMajorUpdatedTree();
 
 	/** RPG_RT.exe file size thresholds
-         *
-         * 2k v1.51 (Japanese)    : 746496
-         * 2k v1.50 (Japanese)    : 745984
-         *  -- threshold (2k) --  : 735000
-         * 2k v1.10 (Japanese)    : 726016
-         *
-         * 2k3 v1.09a (Japanese)  : 950784
-         * 2k3 v1.06 (Japanese)   : 949248
-         * 2k3 v1.05 (Japanese)   : unknown
-         *  -- threshold (2k3) -- : 927000
-         * 2k3 v1.04 (Japanese)   : 913408
-         */
+	 *
+	 * 2k v1.51 (Japanese)    : 746496
+	 * 2k v1.50 (Japanese)    : 745984
+	 *  -- threshold (2k) --  : 735000
+	 * 2k v1.10 (Japanese)    : 726016
+	 *
+	 * 2k3 v1.09a (Japanese)  : 950784
+	 * 2k3 v1.06 (Japanese)   : 949248
+	 * 2k3 v1.05 (Japanese)   : unknown
+	 *  -- threshold (2k3) -- : 927000
+	 * 2k3 v1.04 (Japanese)   : 913408
+	 */
 	enum RpgrtMajorUpdateThreshold {
 		RPG2K = 735000,
 		RPG2K3 = 927000,
@@ -360,9 +415,9 @@ namespace FileFinder {
 	 * @param fs Filesystem where the search starts
 	 * @param recursion_limit Recursion depth
 	 * @param game_limit Abort the search when this amount of games was found.
-	 * @return Vector of views to the found game directories
+	 * @return Vector of game entries (filesystem view + project type) found
 	 */
-	std::vector<FilesystemView> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
+	std::vector<FsEntry> FindGames(FilesystemView fs, int recursion_limit = 3, int game_limit = 5);
 } // namespace FileFinder
 
 template<typename T>

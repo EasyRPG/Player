@@ -189,28 +189,30 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 	auto root = FileFinder::Root().Create(spath);
 	root.ClearCache();
 
-	std::vector<FilesystemView> fs_list = FileFinder::FindGames(root);
+	auto ge_list = FileFinder::FindGames(root);
 
 	jclass jgame_class = env->FindClass("org/easyrpg/player/game_browser/Game");
-	jobjectArray jgame_array = env->NewObjectArray(fs_list.size(), jgame_class, nullptr);
+	jobjectArray jgame_array = env->NewObjectArray(ge_list.size(), jgame_class, nullptr);
 
-	if (fs_list.empty()) {
+	if (ge_list.empty()) {
 		// No games found
 		return jgame_array;
 	}
 
-	jmethodID jgame_constructor = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[B)V");
+	jmethodID jgame_constructor_unsupported = env->GetMethodID(jgame_class, "<init>", "(I)V");
+	jmethodID jgame_constructor_supported = env->GetMethodID(jgame_class, "<init>", "(Ljava/lang/String;Ljava/lang/String;[BI)V");
 
 	std::string root_path = FileFinder::GetFullFilesystemPath(root);
 	bool game_in_main_dir = false;
-	if (fs_list.size() == 1) {
-		if (root_path == FileFinder::GetFullFilesystemPath(fs_list[0])) {
+	if (ge_list.size() == 1) {
+		if (root_path == FileFinder::GetFullFilesystemPath(ge_list[0].fs)) {
 			game_in_main_dir = true;
 		}
 	}
 
-	for (size_t i = 0; i < fs_list.size(); ++i) {
-		auto& fs = fs_list[i];
+	for (size_t i = 0; i < ge_list.size(); ++i) {
+		auto& ge = ge_list[i];
+		auto& fs = ge.fs;
 
 		std::string full_path = FileFinder::GetFullFilesystemPath(fs);
 		std::string game_dir_name;
@@ -220,6 +222,19 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 		} else {
 			// In all other cases the folder name is "clean" and can be used
 			game_dir_name = std::get<1>(FileFinder::GetPathAndFilename(fs.GetFullPath()));
+		}
+
+		// If game is unsupported, create a Game object with only directory name as title and project type id and continue early
+		if (ge.type > FileFinder::ProjectType::Supported) {
+			jobject jgame_object = env->NewObject(jgame_class, jgame_constructor_unsupported, (int)ge.type);
+
+			// Use the directory name as the title
+			jstring jfolder = env->NewStringUTF(game_dir_name.c_str());
+			jmethodID jset_folder_name_method = env->GetMethodID(jgame_class, "setGameFolderName", "(Ljava/lang/String;)V");
+			env->CallVoidMethod(jgame_object, jset_folder_name_method, jfolder);
+
+			env->SetObjectArrayElement(jgame_array, i, jgame_object);
+			continue;
 		}
 
 		std::string save_path;
@@ -236,7 +251,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 			}
 
 			// Append subdirectory when the archive contains more than one game
-			if (fs_list.size() > 1) {
+			if (ge_list.size() > 1) {
 				save_path += FileFinder::GetFullFilesystemPath(fs).substr(root_path.size());
 			}
 
@@ -348,7 +363,7 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 		/* Create an instance of "Game" */
 		jstring jgame_path = env->NewStringUTF(("content://" + full_path).c_str());
 		jstring jsave_path = env->NewStringUTF(save_path.c_str());
-		jobject jgame_object = env->NewObject(jgame_class, jgame_constructor, jgame_path, jsave_path, title_image);
+		jobject jgame_object = env->NewObject(jgame_class, jgame_constructor_supported, jgame_path, jsave_path, title_image, (int)ge.type);
 
 		if (title_from_ini) {
 			// Store the raw string in the Game instance so it can be reencoded later via user setting

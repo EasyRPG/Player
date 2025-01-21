@@ -15,6 +15,7 @@ import androidx.documentfile.provider.DocumentFile;
 import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
+import org.easyrpg.player.game_browser.ProjectType;
 import org.easyrpg.player.player.AssetUtils;
 import org.easyrpg.player.settings.SettingsManager;
 
@@ -122,7 +123,7 @@ public class InitActivity extends BaseActivity {
             String saveDir = getExternalFilesDir(null).getAbsolutePath() + "/Save";
             new File(saveDir).mkdirs();
 
-            Game project = new Game(gameDir, saveDir, null);
+            Game project = new Game(gameDir, saveDir, null, ProjectType.SUPPORTED.ordinal());
             project.setStandalone(true);
             GameBrowserHelper.launchGame(this, project);
             finish();

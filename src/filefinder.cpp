@@ -312,6 +312,52 @@ bool FileFinder::IsRPG2kProjectWithRenames(const FilesystemView& fs) {
 	return !FileExtGuesser::GetRPG2kProjectWithRenames(fs).Empty();
 }
 
+FileFinder::ProjectType FileFinder::GetProjectType(const FilesystemView &fs) {
+	if (IsValidProject(fs)) {
+		return FileFinder::ProjectType::Supported;
+	}
+
+	DirectoryTree::Args args;
+	args.process_wildcards = true;
+	args.path = "RGSS10??.dll";
+
+	if (!fs.FindFile(args).empty()) {
+		return FileFinder::ProjectType::RpgMakerXp;
+	}
+
+	args.path = "RGSS20??.dll";
+	if (!fs.FindFile(args).empty()) {
+		return FileFinder::ProjectType::RpgMakerVx;
+	}
+
+	args.path = "System/RGSS30?.dll";
+	if (!fs.FindFile(args).empty()) {
+		return FileFinder::ProjectType::RpgMakerVxAce;
+	}
+
+	if (!fs.FindFile("nw.dll").empty()) {
+		return FileFinder::ProjectType::RpgMakerMvMz;
+	}
+
+	if (!fs.FindFile("GuruGuruSMF4.dll").empty()) {
+		return FileFinder::ProjectType::WolfRpgEditor;
+	}
+
+	if (!fs.FindFile("RPG_RT.rs1").empty()) {
+		return FileFinder::ProjectType::Encrypted2k3Maniacs;
+	}
+
+	if (!fs.FindFile("SWNAME.DAT").empty()) {
+		if (!fs.FindFile("GEOLOGY.DAT").empty()) {
+			return FileFinder::ProjectType::SimRpgMaker95;
+		} else if (args.path = "*.RPG"; !fs.FindFile(args).empty()) {
+			return FileFinder::ProjectType::RpgMaker95;
+		}
+	}
+
+	return FileFinder::ProjectType::Unknown;
+}
+
 bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
 	auto files = fs.ListDirectory();
 	if (!files) {
@@ -533,16 +579,17 @@ void FileFinder::DumpFilesystem(FilesystemView fs) {
 	}
 }
 
-std::vector<FilesystemView> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
-	std::vector<FilesystemView> games;
+std::vector<FileFinder::FsEntry> FileFinder::FindGames(FilesystemView fs, int recursion_limit, int game_limit) {
+	std::vector<FileFinder::FsEntry> games;
 
 	std::function<void(FilesystemView, int)> find_recursive = [&](FilesystemView subfs, int rec_limit) -> void {
 		if (!subfs || rec_limit == 0 || static_cast<int>(games.size()) >= game_limit) {
 			return;
 		}
 
-		if (IsValidProject(subfs)) {
-			games.push_back(subfs);
+		auto project_type = GetProjectType(subfs);
+		if (project_type != ProjectType::Unknown) {
+			games.push_back({ subfs, project_type });
 			return;
 		}
 

@@ -51,6 +51,40 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(Filesystem& fs) {
 	return tree;
 }
 
+bool DirectoryTree::WildcardMatch(const StringView& pattern, const StringView& text) {
+	// Limitations: * and ? cannot be mixed, * only at beginning and end of string
+	// Pattern and text are already normalized
+	if (pattern.empty() && text.empty()) {
+		return true;
+	}
+
+	bool begin_wildcard = pattern.starts_with('*');
+	bool end_wildcard = pattern.ends_with('*');
+
+	if ((begin_wildcard || end_wildcard) && text.size() > 0) {
+		// * handling
+		bool found = false;
+		if (begin_wildcard) {
+			found |= text.ends_with(pattern.substr(1));
+		}
+		if (end_wildcard) {
+			found |= text.starts_with(pattern.substr(0, pattern.size() - 1));
+		}
+		return found;
+	} else {
+		// ? handling
+		if (pattern.length() != text.length()) {
+			return false;
+		}
+
+		return std::equal(pattern.begin(), pattern.end(),
+						text.begin(),
+						[](char p, char t) {
+							return p == '?' || p == t;
+						});
+	}
+}
+
 DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
 	std::vector<Entry> entries;
 	std::string fs_path = ToString(path);
@@ -208,12 +242,12 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	}
 
 	std::string dir_key = make_key(dir);
-	auto dir_it = Find(dir_cache, dir_key);
+	auto dir_it = Find(dir_cache, dir_key, args.process_wildcards);
 	assert(dir_it != dir_cache.end());
 
 	std::string name_key = make_key(name);
 	if (args.exts.empty()) {
-		auto entry_it = Find(*entries, name_key);
+		auto entry_it = Find(*entries, name_key, args.process_wildcards);
 		if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 			auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 			DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
@@ -222,7 +256,7 @@ std::string DirectoryTree::FindFile(const DirectoryTree::Args& args) const {
 	} else {
 		for (const auto& ext : args.exts) {
 			auto full_name_key = name_key + ToString(ext);
-			auto entry_it = Find(*entries, full_name_key);
+			auto entry_it = Find(*entries, full_name_key, args.process_wildcards);
 			if (entry_it != entries->end() && entry_it->second.type == FileType::Regular) {
 				auto full_path = FileFinder::MakePath(dir_it->second, entry_it->second.name);
 				DebugLog("FindFile Found: {} | {} | {}", dir, name, full_path);
