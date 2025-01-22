@@ -34,6 +34,7 @@
     <string name="change_the_layout">Change the layout</string>
     <string name="launch_debug_mode">Launch in debug mode</string>
     <string name="game_rename">Rename game</string>
+    <string name="open_save_folder">Open savegame folder</string>
     <string name="choose_layout">Choose a layout</string>
     <string name="unknown_region">Unknown region</string>
     <string name="region_modification_failed">Changing region failed</string>

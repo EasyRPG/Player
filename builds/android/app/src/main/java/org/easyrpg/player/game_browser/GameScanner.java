@@ -171,6 +171,10 @@ public class GameScanner {
 
             Game[] candidates = findGames(fileURIs.get(i).toString(), names.get(i));
 
+            if (candidates == null) {
+                continue;
+            }
+
             for (Game candidate: candidates) {
                 if (candidate != null) {
                     gameList.add(candidate);

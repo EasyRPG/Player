@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,10 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.easyrpg.player.BaseActivity;
+import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -358,22 +360,33 @@ public class GameBrowserActivity extends BaseActivity
 
             // Settings Button
             holder.settingsButton.setOnClickListener(v -> {
-                String[] choices_list = {
+                ArrayList<String> choices_list = new ArrayList<String>(Arrays.asList(
                     activity.getResources().getString(R.string.select_game_region),
                     activity.getResources().getString(R.string.game_rename),
                     activity.getResources().getString(R.string.launch_debug_mode)
-                };
+                ));
+
+                if (android.os.Build.VERSION.SDK_INT >= 26) {
+                    choices_list.add(activity.getResources().getString(R.string.open_save_folder));
+                }
+
+                // It's 2025 and converting an ArrayList to an Array is still hot-garbage in Java
+                // because of type erasure and ugly APIs
+                String[] choices_list_arr = new String[choices_list.size()];
+                choices_list.toArray(choices_list_arr);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder
                         .setTitle(R.string.settings)
-                        .setItems(choices_list, (dialog, which) -> {
+                        .setItems(choices_list_arr, (dialog, which) -> {
                             if (which == 0) {
-                                chooseRegion(activity, holder, gameList.get(position));
+                                chooseRegion(activity, holder, game);
                             } else if (which == 1) {
-                                renameGame(activity, holder, gameList.get(position));
+                                renameGame(activity, holder, game);
                             } else if (which == 2) {
                                 launchGame(position, true);
+                            } else if (which == 3) {
+                                Helper.openFileBrowser(activity, game.createSaveUri(activity));
                             }
                         });
                 builder.show();
