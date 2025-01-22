@@ -22,7 +22,9 @@
 #include "utils.h"
 #include "output.h"
 
-#ifdef USE_SDL // This is needed on Windows, SDL wraps main()
+#if USE_SDL == 3 // This is needed on Windows, SDL wraps main()
+#  include <SDL3/SDL.h>
+#elif USE_SDL <= 2
 #  include <SDL.h>
 #endif
 #ifdef _WIN32

@@ -452,11 +452,22 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_varlist.cpp \
 	src/window_varlist.h
 
+SOURCEFILES_SDL3 = \
+	src/platform/sdl/sdl3_ui.cpp \
+	src/platform/sdl/sdl3_ui.h \
+	src/platform/sdl/sdl3_audio.cpp \
+	src/platform/sdl/sdl3_audio.h
+if HAVE_SDL3
+libeasyrpg_player_a_SOURCES += $(SOURCEFILES_SDL3)
+else
+EXTRA_DIST += $(SOURCEFILES_SDL3)
+endif
+
 SOURCEFILES_SDL2 = \
 	src/platform/sdl/sdl2_ui.cpp \
 	src/platform/sdl/sdl2_ui.h \
-	src/platform/sdl/sdl_audio.cpp \
-	src/platform/sdl/sdl_audio.h
+	src/platform/sdl/sdl2_audio.cpp \
+	src/platform/sdl/sdl2_audio.h
 if HAVE_SDL2
 libeasyrpg_player_a_SOURCES += $(SOURCEFILES_SDL2)
 else

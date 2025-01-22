@@ -26,10 +26,18 @@
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
-#include "sdl_audio.h"
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
+#include "sdl2_audio.h"
 #include "output.h"
 
 using namespace std::chrono_literals;
+
+namespace {
+	SDL_AudioDeviceID audio_dev_id = 0;
+}
 
 void sdl_audio_callback(void* userdata, uint8_t* stream, int length) {
 	// no mutex locking required, SDL does this before calling
@@ -47,6 +55,10 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 			return AudioDecoder::Format::U16;
 		case AUDIO_S16SYS:
 			return AudioDecoder::Format::S16;
+		case AUDIO_S32:
+			return AudioDecoder::Format::S32;
+		case AUDIO_F32:
+			return AudioDecoder::Format::F32;
 		default:
 			Output::Warning("Couldn't find GenericAudio format for {:#x}", format);
 			assert(false);
@@ -55,7 +67,7 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 	return (AudioDecoder::Format)-1;
 }
 
-SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
+Sdl2Audio::Sdl2Audio(const Game_ConfigAudio& cfg) :
 	GenericAudio(cfg)
 {
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
@@ -63,7 +75,20 @@ SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
 		return;
 	}
 
+#ifdef EMSCRIPTEN
+	// Get preferred sample rate from Browser (-> OS)
+	const int frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
+#else
 	const int frequency = 44100;
+#endif
 
 	SDL_AudioSpec want = {};
 	SDL_AudioSpec have = {};
@@ -73,7 +98,9 @@ SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
 	want.samples = 2048;
 	want.callback = sdl_audio_callback;
 	want.userdata = this;
-	bool init_success = SDL_OpenAudio(&want, &have) >= 0;
+
+	audio_dev_id = SDL_OpenAudioDevice(nullptr, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
+	bool init_success = audio_dev_id > 0;
 
 	if (!init_success) {
 		Output::Warning("Couldn't open audio: {}", SDL_GetError());
@@ -83,19 +110,19 @@ SdlAudio::SdlAudio(const Game_ConfigAudio& cfg) :
 	SetFormat(have.freq, sdl_format_to_format(have.format), have.channels);
 
 	// Start Audio
-	SDL_PauseAudio(0);
+	SDL_PauseAudioDevice(audio_dev_id, 0);
 }
 
-SdlAudio::~SdlAudio() {
-	SDL_CloseAudio();
+Sdl2Audio::~Sdl2Audio() {
+	SDL_CloseAudioDevice(audio_dev_id);
 }
 
-void SdlAudio::LockMutex() const {
-	SDL_LockAudio();
+void Sdl2Audio::LockMutex() const {
+	SDL_LockAudioDevice(audio_dev_id);
 }
 
-void SdlAudio::UnlockMutex() const {
-	SDL_UnlockAudio();
+void Sdl2Audio::UnlockMutex() const {
+	SDL_UnlockAudioDevice(audio_dev_id);
 }
 
 #endif

@@ -564,8 +564,8 @@ elseif(NINTENDO_WIIU)
 elseif(AMIGA)
 	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "Platform to compile for.")
 else()
-	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1 libretro")
-	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1 libretro)
+	set(PLAYER_TARGET_PLATFORM "SDL3" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro")
+	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro)
 endif()
 set(PLAYER_BUILD_EXECUTABLE ON)
 set(PLAYER_TEST_LIBRARIES ${PROJECT_NAME})
@@ -579,7 +579,20 @@ if(ANDROID AND PLAYER_GRADLE_BUILD)
 	endforeach(f)
 endif()
 
-if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL3")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/sdl/sdl3_ui.cpp
+		src/platform/sdl/sdl3_ui.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=3)
+
+	player_find_package(NAME SDL3
+		TARGET SDL3::SDL3
+		REQUIRED)
+
+	if(ANDROID)
+		set(PLAYER_BUILD_EXECUTABLE OFF)
+	endif()
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
@@ -703,6 +716,9 @@ endif()
 # Sound system to use
 if(PLAYER_AUDIO_BACKEND)
 	# already set earlier in the platform config
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL3")
+	set(PLAYER_AUDIO_BACKEND "SDL3" CACHE STRING "Audio system to use. Options: SDL3 OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL3 OFF)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
@@ -720,14 +736,18 @@ else()
 endif()
 
 set(PLAYER_HAS_AUDIO ON)
-if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL1")
+if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL3")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h)
+		src/platform/sdl/sdl3_audio.cpp
+		src/platform/sdl/sdl3_audio.h)
 elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h)
+		src/platform/sdl/sdl2_audio.cpp
+		src/platform/sdl/sdl2_audio.h)
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL1")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/sdl/sdl1_audio.cpp
+		src/platform/sdl/sdl1_audio.h)
 elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "AESND")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
@@ -735,7 +755,7 @@ elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "AESND")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
 elseif(${PLAYER_AUDIO_BACKEND} STREQUAL ${PLAYER_TARGET_PLATFORM})
 
-elseif(${PLAYER_AUDIO_BACKED} STREQUAL "OFF")
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "OFF")
 	set(PLAYER_HAS_AUDIO OFF)
 else()
 	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}")
@@ -1366,7 +1386,7 @@ else() # library
 		if(WIN32)
 			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT easyrpg_libretro)
 		endif()
-	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+	elseif(ANDROID AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$")
 		add_library(easyrpg_android
 			src/platform/android/android.cpp
 			src/platform/android/android.h

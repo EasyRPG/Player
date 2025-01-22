@@ -525,10 +525,11 @@ void Window_Settings::RefreshLicense() {
 	AddOption(MenuItem("expat", "XML parser", "MIT"), [](){});
 	AddOption(MenuItem("ICU", "Unicode library", "ICU"), [](){});
 #if USE_SDL == 1
-	AddOption(MenuItem("SDL", "Abstraction layer for graphic, audio, input and more", "LGPLv2.1+"), [](){});
-#endif
-#if USE_SDL == 2
+	AddOption(MenuItem("SDL1", "Abstraction layer for graphic, audio, input and more", "LGPLv2.1+"), [](){});
+#elif USE_SDL == 2
 	AddOption(MenuItem("SDL2", "Abstraction layer for graphic, audio, input and more", "zlib"), [](){});
+#elif USE_SDL == 3
+	AddOption(MenuItem("SDL3", "Abstraction layer for graphic, audio, input and more", "zlib"), [](){});
 #endif
 #ifdef HAVE_FREETYPE
 	AddOption(MenuItem("Freetype", "Font parsing and rasterization library", "Freetype"), [](){});
