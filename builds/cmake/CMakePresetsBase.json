@@ -57,6 +57,30 @@
 			}
 		},
 		{
+			"name": "build-sdl1",
+			"displayName": "builds using SDL1 backend (deprecated)",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "SDL1"
+			}
+		},
+		{
+			"name": "build-sdl2",
+			"displayName": "builds using SDL2 backend",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "SDL2"
+			}
+		},
+		{
+			"name": "build-sdl3",
+			"displayName": "builds using SDL3 backend",
+			"hidden": true,
+			"cacheVariables": {
+				"PLAYER_TARGET_PLATFORM": "SDL3"
+			}
+		},
+		{
 			"name": "build-libretro",
 			"displayName": "enables building of a libretro core",
 			"hidden": true,

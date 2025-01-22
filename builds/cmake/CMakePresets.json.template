@@ -11,7 +11,8 @@
 	"configurePresets": [
 		{
 			"name": "",
-			"displayName": "Use system environment"
+			"displayName": "System environment",
+			"easyrpg_platforms": ["sdl3", "sdl2", "sdl1", "libretro"]
 		},
 		{
 			"name": "linux",
@@ -19,7 +20,8 @@
 			"toolchainFile": "${sourceDir}/builds/cmake/LinuxToolchain.cmake",
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/linux-static"
-			}
+			},
+			"easyrpg_platforms": ["sdl3", "sdl2", "sdl1", "libretro"]
 		},
 		{
 			"name": "windows",
@@ -27,7 +29,8 @@
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "$env{VSCMD_ARG_TGT_ARCH}-windows-static"
 			},
-			"inherits": "win-user"
+			"inherits": "win-user",
+			"easyrpg_platforms": ["sdl3", "sdl2", "libretro"]
 		},
 		{
 			"name": "windows-x86-vs2022",
@@ -37,7 +40,8 @@
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x86-windows-static"
 			},
-			"inherits": "win-user"
+			"inherits": "win-user",
+			"easyrpg_platforms": ["sdl3", "sdl2", "libretro"]
 		},
 		{
 			"name": "windows-x64-vs2022",
@@ -47,7 +51,8 @@
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
 			},
-			"inherits": "win-user"
+			"inherits": "win-user",
+			"easyrpg_platforms": ["sdl3", "sdl2", "libretro"]
 		},
 		{
 			"name": "macos",
@@ -60,17 +65,19 @@
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Darwin"
-			}
+			},
+			"easyrpg_platforms": ["sdl3", "sdl2", "libretro"]
 		},
 		{
 			"name": "emscripten",
-			"displayName": "Emscripten (Web)",
+			"displayName": "Emscripten Web",
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
 				"PLAYER_JS_BUILD_SHELL": "ON"
-			}
+			},
+			"easyrpg_platforms": ["sdl3", "sdl2"]
 		},
 		{
 			"name": "3ds",
@@ -88,7 +95,8 @@
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/switch"
 			},
-			"inherits": "dkp-user"
+			"inherits": "dkp-user",
+			"easyrpg_platforms": ["libretro"]
 		},
 		{
 			"name": "wii",
@@ -97,7 +105,8 @@
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wii"
 			},
-			"inherits": "dkp-user"
+			"inherits": "dkp-user",
+			"easyrpg_platforms": ["sdl2", "sdl1", "libretro"]
 		},
 		{
 			"name": "wiiu",
@@ -106,7 +115,8 @@
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/wiiu"
 			},
-			"inherits": "dkp-user"
+			"inherits": "dkp-user",
+			"easyrpg_platforms": ["libretro"]
 		},
 		{
 			"name": "psvita",
@@ -114,7 +124,8 @@
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/vita/vitasdk/share/vita.toolchain.cmake",
 			"cacheVariables": {
 				"BUILD_SHARED_LIBS": "OFF"
-			}
+			},
+			"easyrpg_platforms": ["libretro"]
 		}
 	],
 	"buildPresets": [],

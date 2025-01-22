@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16...3.31 FATAL_ERROR)
 project(retro_common VERSION 1.0 LANGUAGES C)
 
 # Only for ugly MD-MT patching on old versions, new CMAKE_MSVC_RUNTIME_LIBRARY is inherited
-if(${CMAKE_VERSION} VERSION_LESS "3.15.0") 
+if(${CMAKE_VERSION} VERSION_LESS "3.15.0")
 	include(ConfigureWindows)
 endif()
 

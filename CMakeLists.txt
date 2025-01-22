@@ -556,15 +556,13 @@ elseif(VITA)
 	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "Platform to compile for.")
 elseif(NINTENDO_WII)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1")
-	set(PLAYER_AUDIO_BACKEND "AESND" CACHE STRING "Audio system to use. Options: SDL2 SDL1 AESND OFF")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1)
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 SDL1 AESND)
 elseif(NINTENDO_WIIU)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
 elseif(AMIGA)
 	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "Platform to compile for.")
 else()
-	set(PLAYER_TARGET_PLATFORM "SDL3" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro")
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro)
 endif()
 set(PLAYER_BUILD_EXECUTABLE ON)
@@ -579,7 +577,7 @@ if(ANDROID AND PLAYER_GRADLE_BUILD)
 	endforeach(f)
 endif()
 
-if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL3")
+if(PLAYER_TARGET_PLATFORM STREQUAL "SDL3")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl3_ui.cpp
 		src/platform/sdl/sdl3_ui.h)
@@ -592,7 +590,7 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL3")
 	if(ANDROID)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
@@ -626,7 +624,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	if(WIN32)
 		target_link_libraries(${PROJECT_NAME} "Dwmapi")
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
 	if(NINTENDO_WII)
 		find_package(SDL REQUIRED)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
@@ -646,12 +644,12 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 		USE_SDL=1
 		EASYRPG_CONFIG_NAME="config_sdl1.ini"
 	)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "3ds")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=CtrUi PLAYER_NINTENDO)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after devkitarm ships newer gcc
 	# generate gfx assets
@@ -680,7 +678,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "3ds")
 		src/platform/3ds/ui.cpp
 		src/platform/3ds/ui.h)
 	target_link_libraries(${PROJECT_NAME} 3ds-assets)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "psvita")
 	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=Psp2Ui)
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-psabi) # Remove abi warning after vitasdk ships newer gcc
@@ -691,7 +689,7 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "psvita")
 		src/platform/psvita/input_buttons.cpp
 		src/platform/psvita/ui.cpp
 		src/platform/psvita/ui.h)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "switch")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi PLAYER_NINTENDO)
 	find_package(OpenGL CONFIG REQUIRED)
 	find_library(GLAD glad REQUIRED)
@@ -714,21 +712,25 @@ else()
 endif()
 
 # Sound system to use
-if(PLAYER_AUDIO_BACKEND)
-	# already set earlier in the platform config
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL3")
+if(PLAYER_TARGET_PLATFORM STREQUAL "SDL3")
 	set(PLAYER_AUDIO_BACKEND "SDL3" CACHE STRING "Audio system to use. Options: SDL3 OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL3 OFF)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
-	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
-
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
-		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
+	if(NINTENDO_WII)
+		set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 AESND OFF")
+		set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 AESND)
+	else()
+		set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
+		set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
-	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
+	if(NINTENDO_WII)
+		set(PLAYER_AUDIO_BACKEND "AESND" CACHE STRING "Audio system to use. Options: SDL1 AESND OFF")
+		set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 AESND)
+	else()
+		set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
+		set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
+	endif()
 else()
 	# Assuming that all platforms not targeting SDL have only one audio backend
 	set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM} CACHE STRING "Audio system to use. Options: ${PLAYER_TARGET_PLATFORM} OFF")
@@ -736,29 +738,34 @@ else()
 endif()
 
 set(PLAYER_HAS_AUDIO ON)
-if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL3")
+if(PLAYER_AUDIO_BACKEND STREQUAL "SDL3")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl3_audio.cpp
 		src/platform/sdl/sdl3_audio.h)
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2")
+elseif(PLAYER_AUDIO_BACKEND STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl2_audio.cpp
 		src/platform/sdl/sdl2_audio.h)
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL1")
+elseif(PLAYER_AUDIO_BACKEND STREQUAL "SDL1")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl1_audio.cpp
-		src/platform/sdl/sdl1_audio.h)
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "AESND")
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h)
+elseif(PLAYER_AUDIO_BACKEND STREQUAL "AESND")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
 		src/platform/wii/audio.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL ${PLAYER_TARGET_PLATFORM})
+elseif(PLAYER_AUDIO_BACKEND STREQUAL ${PLAYER_TARGET_PLATFORM})
 
-elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "OFF")
+elseif(PLAYER_AUDIO_BACKEND STREQUAL "OFF")
 	set(PLAYER_HAS_AUDIO OFF)
 else()
-	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}")
+	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}\nOptions: ${AUDIO_PROP}")
+endif()
+
+get_property(AUDIO_PROP CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS)
+if(NOT PLAYER_AUDIO_BACKEND IN_LIST AUDIO_PROP)
+	message(FATAL_ERROR "Incompatible audio backend configuration ${PLAYER_AUDIO_BACKEND}.\nPlease clear the CMake cache.\nOptions: ${AUDIO_PROP}")
 endif()
 
 # Shared by homebrew platforms
@@ -1660,5 +1667,5 @@ message(STATUS "")
 
 if (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	message(WARNING "SDL1 is deprecated!")
-	message(WARNING "Please migrate to SDL2!")
+	message(WARNING "Please migrate to SDL2 or SDL3!")
 endif()

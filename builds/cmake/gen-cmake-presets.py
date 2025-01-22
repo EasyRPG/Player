@@ -9,29 +9,32 @@ from copy import deepcopy
 import json
 import os
 
-# Omit libretro preset generation
-no_libretro = ["emscripten"]
-
 script_dir = os.path.dirname(os.path.abspath(__file__))
 repo_dir = f"{script_dir}/../.."
 
 with open(f"{script_dir}/CMakePresets.json.template", "r") as f:
 	j = json.load(f)
 
-cp = j["configurePresets"]
-cp_out = []
+conf_presets = j["configurePresets"]
+conf_presets_out = []
 
 def append_name(name):
 	if len(item["name"]) > 0:
 		item["name"] += "-"
 	item["name"] += name
 
+platform_display = dict(
+	sdl1="SDL1",
+	sdl2="SDL2",
+	sdl3="SDL3",
+	libretro="libretro core"
+)
+
 # This creates the following configurePresets from the one in the template:
 # - As specified in the template
-# - As specified but build a libretro core
-# - libretro
+# - For every entry in easyrpg_platforms (N)
 # For all of them the build types Debug, RelWithDebInfo and Release are generated.
-# Making this 4 * 3 entries per preset.
+# Making this (N+1) * 3 entries per preset.
 
 # The resulting "triplet" is always:
 # {name_from_template}-{libretro}-{build_type}
@@ -40,9 +43,9 @@ def append_name(name):
 # The build dirs are always:
 # build/{name_from_template}-{libretro}-{build_type}
 
-for base_item in cp:
+for base_item in conf_presets:
 	if base_item.get("hidden"):
-		cp_out.append(base_item)
+		conf_presets_out.append(base_item)
 		continue
 
 	# Create "base class" the build types inherit from
@@ -54,10 +57,15 @@ for base_item in cp:
 	if item.get("inherits") is None:
 		item["inherits"] = "base-user"
 
-	parent_item = item
-	cp_out.append(parent_item)
+	ep_platforms = ["default"]
+	if "easyrpg_platforms" in item:
+		ep_platforms += item["easyrpg_platforms"]
+		del item["easyrpg_platforms"]
 
-	for libretro in False, True:
+	parent_item = deepcopy(item)
+	conf_presets_out.append(parent_item)
+
+	for platform in ep_platforms:
 		# Ugly: Generates a huge amount of configurePresets
 		# Cannot be improved until limitations in buildPresets are resolved
 		# (see comment below)
@@ -65,27 +73,25 @@ for base_item in cp:
 			item = dict(name=base_item["name"], displayName=base_item["displayName"])
 			name = item["name"]
 
-			if libretro and name in no_libretro:
-				continue
-
 			item["inherits"] = [parent_item["name"]]
 
-			if libretro:
-				append_name("libretro")
-				item["displayName"] += " (libretro core)"
-				item["inherits"].insert(0, "build-libretro")
+			if platform != "default":
+				append_name(platform)
+				item["inherits"].insert(0, f"build-{platform}")
+				item["displayName"] += f" ({platform_display[platform]}, {build_type})"
+			else:
+				item["displayName"] += f" ({build_type})"
 
 			item["inherits"] += [f"type-{build_type.lower()}"]
 
 			append_name(build_type.lower())
-			item["displayName"] += f" ({build_type})"
 
-			cp_out.append(item)
+			conf_presets_out.append(item)
 
-j["configurePresets"] = cp_out
+j["configurePresets"] = conf_presets_out
 
 bp = j["buildPresets"]
-for item in cp_out:
+for item in conf_presets_out:
 	if item.get("hidden"):
 		continue
 
