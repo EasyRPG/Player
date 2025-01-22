@@ -5363,6 +5363,17 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
 
 	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
+
+	int extract_data_from_string = com.parameters[10];
+	bool pretty_print = com.parameters[11] == 1;
+
+	if (extract_data_from_string == 1) { // as string
+		json_path = Game_Strings::Extract(json_path, false);
+	}
+	if (extract_data_from_string == 2) { // as hex
+		json_path = Game_Strings::Extract(json_path, true);
+	}
+
 	auto* json_data = Main_Data::game_strings->ParseJson(source_var_id);
 
 	if (!json_data) {
@@ -5377,7 +5388,8 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 
 	std::optional<std::string> result;
 
-	if (operation == 0) { // Get operation: Extract a value from JSON data
+	switch (operation) {
+	case 0: { // Get operation: Extract a value from JSON data
 		result = Json_Helper::GetValue(*json_data, json_path);
 
 		if (result) {
@@ -5392,12 +5404,13 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 				Main_Data::game_strings->Asg({ target_var_id }, *result);
 				break;
 			default:
-				Output::Warning("CommandEasyRpgProcessJson: Unsupported target_var_type {}", operation);
+				Output::Warning("CommandEasyRpgProcessJson: Unsupported target_var_type {}", target_var_type);
 				return true;
 			}
 		}
+		break;
 	}
-	else if (operation == 1) { // Set operation: Update JSON data with a new value
+	case 1: { // Set operation: Update JSON data with a new value
 		std::string new_value;
 
 		switch (target_var_type) {
@@ -5420,9 +5433,74 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 		if (result) {
 			Main_Data::game_strings->Asg({ source_var_id }, *result);
 		}
+		break;
 	}
-	else {
+	case 2: { // GetLength operation
+		auto length = Json_Helper::GetLength(*json_data, json_path);
+		if (length) {
+			switch (target_var_type) {
+			case 0: // Switch
+				Main_Data::game_switches->Set(target_var_id, *length > 0);
+				break;
+			case 1: // Variable
+				Main_Data::game_variables->Set(target_var_id, static_cast<int>(*length));
+				break;
+			case 2: // String
+				Main_Data::game_strings->Asg({ target_var_id }, std::to_string(*length));
+				break;
+			}
+		}
+		break;
+	}
+	case 3: { // GetKeys operation
+		auto keys = Json_Helper::GetKeys(*json_data, json_path);
+		if (keys && target_var_type == 2) { // Keys can only be stored in strings
+			std::string keys_str;
+			for (size_t i = 0; i < keys->size(); ++i) {
+				if (i > 0) keys_str += ",";
+				keys_str += "\"" + (*keys)[i] + "\"";
+			}
+			Main_Data::game_strings->Asg({ target_var_id }, "{ \"keys\": [" + keys_str + "] }");
+		}
+		break;
+	}
+	case 4: { // GetType operation
+		auto type = Json_Helper::GetType(*json_data, json_path);
+		if (type) {
+			int type_code = 0;
+			switch (target_var_type) {
+			case 0: // Switch
+				// For switches, true if it's an object or array (for backward compatibility)
+				Main_Data::game_switches->Set(target_var_id, *type == "object" || *type == "array");
+				break;
+			case 1: // Variable
+				// For variables, return a numeric code for the type:
+				// 1=object, 2=array, 3=string, 4=number, 5=boolean, 6=null
+				if (*type == "object") type_code = 1;
+				else if (*type == "array") type_code = 2;
+				else if (*type == "string") type_code = 3;
+				else if (*type == "number") type_code = 4;
+				else if (*type == "boolean") type_code = 5;
+				else if (*type == "null") type_code = 6;
+				Main_Data::game_variables->Set(target_var_id, type_code);
+				break;
+			case 2: // String
+				Main_Data::game_strings->Asg({ target_var_id }, *type);
+				break;
+			}
+		}
+		break;
+	}
+	default:
 		Output::Warning("CommandEasyRpgProcessJson: Invalid Operation {}", operation);
+	}
+
+	if (target_var_type == 2 && pretty_print == 1) { // Only works with strings
+		std::string target_str = ToString(Main_Data::game_strings->Get(target_var_id));
+		if (auto parsed_json = Json_Helper::Parse(target_str)) {
+			std::string formatted = Json_Helper::PrettyPrint(*parsed_json, 2);
+			Main_Data::game_strings->Asg({ target_var_id }, formatted);
+		}
 	}
 
 	return true;
