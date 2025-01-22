@@ -839,7 +839,7 @@ void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 		return neighbors;
 		};
 
-	auto processBlock = [&](int blockType, int blockStride, int blockBase, auto isSameAutotileFn) {
+	auto processBlock = [&](int /*blockType*/, int blockStride, int blockBase, auto isSameAutotileFn) {
 		uint8_t neighbors = calculateNeighbors(isSameAutotileFn);
 		int block = (tile_id - blockBase) / blockStride;
 		int variant = AUTOTILE_D_VARIANTS_MAP.at(neighbors);

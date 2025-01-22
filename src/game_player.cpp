@@ -428,7 +428,7 @@ bool Game_Player::CheckActionEvent() {
 	return result || got_action;
 }
 
-bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key, bool face_player) {
 	if (InAirship()) {
 		return false;
 	}
@@ -444,13 +444,13 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key, bool face_player) {
 	if (InAirship()) {
 		return false;
 	}
@@ -465,7 +465,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 				&& trigger >= 0
 				&& triggers[trigger]) {
 			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, true);
+			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
 	}
 	return result;
@@ -927,6 +927,6 @@ void Game_Player::UpdatePan() {
 	data()->pan_current_y -= dy;
 }
 
-bool Game_Player::TriggerEventAt(int x, int y) {
-	return CheckEventTriggerThere({ lcf::rpg::EventPage::Trigger_action }, x, y, true);
+bool Game_Player::TriggerEventAt(int x, int y, bool triggered_by_decision_key, bool face_player) {
+	return CheckEventTriggerThere({ lcf::rpg::EventPage::Trigger_action }, x, y, triggered_by_decision_key, face_player);
 }

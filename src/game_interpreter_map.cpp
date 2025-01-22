@@ -871,7 +871,15 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[2], com.parameters[3]);
 
-	Main_Data::game_player->TriggerEventAt(x, y);
+	// backwards compatible with old (shorter) command
+	bool face_player = true;
+
+	if (com.parameters.size() > 4) {
+		int flags = com.parameters[4];
+		face_player = (flags & 1) > 0;
+	}
+
+	Main_Data::game_player->TriggerEventAt(x, y, GetFrame().triggered_by_decision_key, face_player);
 
 	return true;
 }
