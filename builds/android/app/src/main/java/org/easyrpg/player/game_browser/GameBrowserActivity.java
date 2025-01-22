@@ -44,8 +44,6 @@ import java.util.List;
 
 public class GameBrowserActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static Boolean libraryLoaded = false;
-
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 290;
     private static Game selectedGame;
 
@@ -57,17 +55,6 @@ public class GameBrowserActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (!libraryLoaded) {
-            try {
-                System.loadLibrary("easyrpg_android");
-                System.loadLibrary("gamebrowser");
-                libraryLoaded = true;
-            } catch (UnsatisfiedLinkError e) {
-                Log.e("EasyRPG Player", "Couldn't load libgamebrowser: " + e.getMessage());
-                throw e;
-            }
-        }
 
         SDL.setContext(getApplicationContext());
 
