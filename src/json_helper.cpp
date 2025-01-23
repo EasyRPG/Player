@@ -68,12 +68,18 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
-		const json& value = json_obj[ptr];
-		if (value.is_null()) {
+
+		if (!json_obj.contains(ptr)) {
 			return "";
+		}
+
+		const json& value = json_obj[ptr];
+		if (value.is_discarded()) {
+			return {};
 		}
 		return GetValueAsString(value);
 	}
+
 
 	std::string SetValue(nlohmann::json& json_obj, std::string_view json_path, std::string_view value) {
 		if (json_path.empty()) {
@@ -104,9 +110,14 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
+
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
 		const json& value = json_obj[ptr];
-		if (value.is_null()) {
-			return 0;
+		if (value.is_discarded()) {
+			return {};
 		}
 
 		if (!value.is_array() && !value.is_object()) {
@@ -123,9 +134,13 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
 		const json& value = json_obj[ptr];
-		if (value.is_null()) {
-			return std::vector<std::string>();
+		if (value.is_discarded()) {
+			return {};
 		}
 
 		std::vector<std::string> keys;
@@ -151,9 +166,13 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
 		const json& value = json_obj[ptr];
-		if (value.is_null()) {
-			return false;
+		if (value.is_discarded()) {
+			return {};
 		}
 		return value.is_object();
 	}
@@ -166,9 +185,13 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
 		const json& value = json_obj[ptr];
-		if (value.is_null()) {
-			return false;
+		if (value.is_discarded()) {
+			return {};
 		}
 		return value.is_array();
 	}
@@ -181,9 +204,13 @@ namespace Json_Helper {
 
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
 		const json& value = json_obj[ptr];
-		if (value.is_null()) {
-			return std::string("null");
+		if (value.is_discarded()) {
+			return {};
 		}
 
 		if (value.is_object()) return std::string("object");
@@ -191,7 +218,7 @@ namespace Json_Helper {
 		if (value.is_string()) return std::string("string");
 		if (value.is_number()) return std::string("number");
 		if (value.is_boolean()) return std::string("boolean");
-		if (value.is_null()) return std::string("null"); // Should not reach here, but for completeness
+		if (value.is_null()) return std::string("null"); // technically discarded is enough
 		return std::string("unknown");
 	}
 
