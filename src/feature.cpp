@@ -18,13 +18,19 @@
 // Headers
 #include "feature.h"
 #include "player.h"
+#include "game_interpreter_shared.h"
 #include <lcf/data.h>
 
 bool Feature::HasRpg2kBattleSystem() {
 	if (Player::IsRPG2k()) {
 		return true;
 	}
-
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	using Flags = lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags;
+	if (auto f = Player::GetRuntimeFlag(&Flags::use_rpg2k_battle_system_on, &Flags::use_rpg2k_battle_system_off)) {
+		return *f;
+	}
+#endif
 	return lcf::Data::system.easyrpg_use_rpg2k_battle_system;
 }
 
