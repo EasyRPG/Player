@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+ // Headers
 #include <vector>
 #include "window_interpreter.h"
 #include "bitmap.h"
@@ -26,10 +26,55 @@
 #include "input.h"
 #include "player.h"
 #include "lcf/reader_util.h"
+#include <cache.h>
+#include "feature.h"
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+namespace {
+	bool GlobalIsRPG2k3Commands() { return Player::game_config.patch_rpg2k3_commands.Get(); }
+	bool GlobalIsPatchDynRpg() { return Player::game_config.patch_dynrpg.Get(); }
+	bool GlobalIsPatchManiac() { return Player::game_config.patch_maniac.Get(); }
+	bool GlobalIsPatchKeyPatch() { return Player::game_config.patch_key_patch.Get(); }
+	bool GlobalIsPatchDestiny() { return Player::game_config.patch_destiny.Get(); }
+	bool GlobalIsPatchCommonThisEvent() { return Player::game_config.patch_common_this_event.Get(); }
+	bool GlobalIsPatchUnlockPics() { return Player::game_config.patch_unlock_pics.Get(); }
+	bool GlobalHasRpg2kBattleSystem() { return lcf::Data::system.easyrpg_use_rpg2k_battle_system; }
+}
+
+struct RuntimeFlagInfo {
+	bool (*config_fn)();
+	Game_Interpreter_Shared::StateRuntimeFlagRef field_on, field_off;
+	char* name;
+};
+
+using StateFlags = lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags;
+constexpr std::array <RuntimeFlagInfo, 8> runtime_flags = { {
+	{ &GlobalIsRPG2k3Commands, &StateFlags::patch_rpg2k3_cmds_on, &StateFlags::patch_rpg2k3_cmds_off, "rpg2k3_cmds"},
+	{ &GlobalIsPatchDynRpg, &StateFlags::patch_dynrpg_on, &StateFlags::patch_dynrpg_off, "dynrpg" },
+	{ &GlobalIsPatchManiac, &StateFlags::patch_maniac_on, &StateFlags::patch_maniac_off, "maniac" },
+	{ &GlobalIsPatchKeyPatch, &StateFlags::patch_keypatch_on, &StateFlags::patch_keypatch_off, "keypatch" },
+	{ &GlobalIsPatchDestiny, &StateFlags::patch_destiny_on, &StateFlags::patch_destiny_off, "destiny" },
+	{ &GlobalIsPatchCommonThisEvent, &StateFlags::patch_common_this_event_on, &StateFlags::patch_common_this_event_off, "common_this_event" },
+	{ &GlobalIsPatchUnlockPics, &StateFlags::patch_unlock_pics_on, &StateFlags::patch_unlock_pics_off, "unlock_pics" },
+	{ &GlobalHasRpg2kBattleSystem, &StateFlags::use_rpg2k_battle_system_on, &StateFlags::use_rpg2k_battle_system_off, "rpg2k_battle_system" }
+} };
+#endif
 
 Window_Interpreter::Window_Interpreter(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 1;
+
+	sub_actions = UiSubActionLine(
+		{ UiAction::ShowRuntimeFlags,		UiAction::ShowMovementInfo },
+		{ "[Flags]",						"WAITING for EV movement" },
+		{ Font::SystemColor::ColorHeal,		Font::SystemColor::ColorCritical },
+		{ [&] { return (this->state.easyrpg_runtime_flags.conf_override_active); }, [&] { return this->state.wait_movement; } }
+	);
+
+	sub_window_flags.reset(new Window_Selectable(Player::menu_offset_x + 15, Player::menu_offset_y + 16, 288, 208));
+	sub_window_flags->SetVisible(false);
+	sub_window_flags->SetActive(false);
+	sub_window_flags->SetIndex(-1);
 }
 
 Window_Interpreter::~Window_Interpreter() {
@@ -42,6 +87,14 @@ void Window_Interpreter::SetStackState(bool is_ce, int owner_evt_id, std::string
 }
 
 void Window_Interpreter::Refresh() {
+
+	if (sub_window_flags->GetActive()) {
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+		DrawRuntimeFlagsWindow();
+#endif
+		return;
+	}
+
 	stack_display_items.clear();
 
 	int max_cmd_count = 0, max_evt_id = 10, max_page_id = 0;
@@ -111,7 +164,7 @@ void Window_Interpreter::Refresh() {
 	item_max = stack_display_items.size() + lines_without_stack;
 	lines_without_stack = lines_without_stack_fixed;
 
-	if (state.wait_movement) {
+	if (sub_actions.IsVisible()) {
 		item_max++;
 		lines_without_stack++;
 	}
@@ -143,7 +196,39 @@ bool Window_Interpreter::IsValid() {
 }
 
 void Window_Interpreter::Update() {
+	if (sub_window_flags->GetActive()) {
+		if (Input::IsTriggered(Input::InputButton::CANCEL)) {
+			sub_window_flags->SetActive(false);
+			sub_window_flags->SetVisible(false);
+			sub_window_flags->SetIndex(-1);
+		} else {
+			sub_window_flags->Update();
+		}
+		return;
+	}
 	Window_Selectable::Update();
+
+	if (IsHoveringSubActionLine()) {
+		sub_actions.Update(*this);
+
+		if (Input::IsTriggered(Input::InputButton::DECISION)) {
+			if (GetSelectedAction() == UiAction::ShowRuntimeFlags) {
+				sub_window_flags->SetActive(true);
+				sub_window_flags->SetVisible(true);
+				this->Refresh();
+
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+			} else if (GetSelectedAction() == UiAction::ShowMovementInfo) {
+				Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			}
+		}
+	} else {
+		sub_actions.ClearIndex();
+	}
+}
+
+bool Window_Interpreter::IsHoveringSubActionLine() const {
+	return GetIndex() == 1 && sub_actions.IsVisible();
 }
 
 void Window_Interpreter::DrawDescriptionLines() {
@@ -153,10 +238,11 @@ void Window_Interpreter::DrawDescriptionLines() {
 
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, display_item.desc);
 
-	if (state.wait_movement) {
-		rect = GetItemRect(i++);
-		contents->ClearRect(rect);
-		contents->TextDraw(rect.x, rect.y, Font::ColorCritical, "[WAITING for EV movement!]");
+	rect = GetItemRect(i++);
+	contents->ClearRect(rect);
+
+	if (sub_actions.IsVisible()) {
+		sub_actions.Draw(contents, rect);
 	}
 
 	rect = GetItemRect(i++);
@@ -194,9 +280,140 @@ void Window_Interpreter::DrawStackLine(int index) {
 	contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorDefault, fmt::format("{:0" + std::to_string(digits_cmdcount) + "d}/{:0" + std::to_string(digits_cmdcount) + "d}", item.cmd_current, item.cmd_count), Text::AlignRight);
 }
 
-int Window_Interpreter::GetSelectedStackFrameLine() {
+Window_Interpreter::UiAction Window_Interpreter::GetSelectedAction() const {
+	if (GetIndex() >= lines_without_stack) {
+		return UiAction::ShowStackItem;
+	}
+	if (GetIndex() == 1 && sub_actions.IsVisible()) {
+		return sub_actions.GetSelectedAction();
+	}
+	return UiAction::None;
+}
+
+int Window_Interpreter::GetSelectedStackFrameLine() const {
 	if (GetIndex() < lines_without_stack) {
 		return -1;
 	}
 	return state.stack.size() - (GetIndex() - lines_without_stack) - 1;
 }
+
+bool Window_Interpreter::UiSubActionLine::IsVisible() const {
+	for (auto v : this->visibility_delegates) {
+		if (v())
+			return true;
+	}
+	return false;
+}
+
+void Window_Interpreter::UiSubActionLine::Update(Window_Selectable& parent) {
+	if (actions.size() == 0 || !visibility_delegates[this->index]())
+		return;
+
+	int i = this->index;
+
+	if (Input::IsRepeated(Input::RIGHT)) {
+		i++;
+
+		while (i != this->index) {
+			if (i >= actions.size())
+				i = 0;
+			if (visibility_delegates[i]())
+				break;
+			i++;
+		}
+	}
+	if (Input::IsRepeated(Input::LEFT)) {
+		i--;
+		while (i != this->index) {
+			if (i < 0)
+				i = actions.size() - 1;
+			if (visibility_delegates[i]())
+				break;
+			i--;
+		}
+	}
+
+	if (i != this->index) {
+		this->index = i;
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+	}
+	int offset_x = 0;
+	for (i = 0; i < this->index; i++) {
+		offset_x += (this->texts[i].length() + 1) * 6;
+	}
+	auto cursor_rect = parent.GetCursorRect();
+	parent.SetCursorRect(Rect(cursor_rect.x + offset_x, cursor_rect.y, (this->texts[this->index].length() + 1) * 6 + 2, cursor_rect.height));
+}
+
+namespace {
+	void TextDrawUnderlined(BitmapRef contents, int x, int y, int color, std::string_view text) {
+		auto sys = Cache::SystemOrBlack();
+		auto rect = Rect(x, y + 12, text.length() * 6, 1);
+		// Draw shadow first
+		contents->FillRect(Rect(rect.x + 1, rect.y + 1, rect.width, rect.height), sys->GetColorAt(18, 34));
+
+		//Draw the actual text
+		contents->TextDraw(x, y, color, text);
+
+		// Draw underline
+		contents->FillRect(rect, sys->GetColorAt(color % 10 * 16 + 2, color / 10 * 16 + 48 + 15));
+	}
+}
+
+void Window_Interpreter::UiSubActionLine::Draw(BitmapRef contents, Rect rect) const {
+	int offset_x = 0;
+
+	for (int i = 0; i < this->actions.size(); i++) {
+		if (!visibility_delegates[i]())
+			continue;
+		TextDrawUnderlined(contents, rect.x + offset_x, rect.y, colors[i], texts[i]);
+		offset_x += (texts[i].length() + 1) * 6;
+	}
+}
+
+void Window_Interpreter::UiSubActionLine::ClearIndex() {
+	this->index = 0;
+}
+
+Window_Interpreter::UiAction Window_Interpreter::UiSubActionLine::GetSelectedAction() const {
+	return this->actions[this->index];
+}
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+void Window_Interpreter::DrawRuntimeFlagsWindow() const {
+	sub_window_flags->CreateContents();
+	auto contents = sub_window_flags->GetContents();
+	Rect rect = sub_window_flags->GetItemRect(0);
+
+
+	contents->TextDraw(rect.x, rect.y, Font::ColorHeal, "Interpreter Flags:");
+	contents->TextDraw(rect.x + 19 * 6, rect.y, Font::ColorDefault, display_item.desc);
+
+	int i = 0;
+	for (auto info : runtime_flags) {
+		using Flags = lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags;
+		auto flag = Game_Interpreter_Shared::GetRuntimeFlag(state, info.field_on, info.field_off);;
+		if (!flag) {
+			continue;
+		}
+
+		rect = sub_window_flags->GetItemRect(i + 1);
+		contents->ClearRect(rect);
+
+		bool is_active = info.config_fn();
+		bool is_overridden = *flag;
+		contents->TextDraw(rect.x, rect.y, Font::ColorDefault, fmt::format("{}:", info.name));
+
+		int r = 16;
+		contents->TextDraw(sub_window_flags->GetWidth() - r, rect.y, Font::ColorCritical, is_overridden ? "[ON]" : "[OFF]", Text::AlignRight);
+		r += 3 * 8;
+		if (!is_overridden)
+			r += 8;
+		contents->TextDraw(sub_window_flags->GetWidth() - r, rect.y, Font::ColorDefault, "->", Text::AlignRight);
+		r += 16;
+		contents->TextDraw(sub_window_flags->GetWidth() - r, rect.y, Font::ColorDisabled, is_active ? "[ON]" : "[OFF]", Text::AlignRight);
+
+		++i;
+	}
+}
+#endif

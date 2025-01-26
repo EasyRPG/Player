@@ -620,7 +620,8 @@ void Scene_Debug::vUpdate() {
 				break;
 			case eInterpreter:
 				if (sz == 3) {
-					if (state_interpreter.selected_frame >= 0) {
+					auto action = interpreter_window->GetSelectedAction();
+					if (action == Window_Interpreter::UiAction::ShowStackItem) {
 						/*std::vector<std::string> choices;
 						std::vector<bool> choices_enabled;
 
@@ -631,8 +632,6 @@ void Scene_Debug::vUpdate() {
 						choices_enabled.push_back(GetSelectedInterpreterFrameFromUiState().easyrpg_frame_variables.size() > 0);
 
 						PushUiChoices(choices, choices_enabled);*/
-					} else {
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 					}
 				} else if (sz == 2) {
 					PushUiInterpreterView();

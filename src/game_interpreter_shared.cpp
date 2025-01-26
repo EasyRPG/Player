@@ -238,6 +238,24 @@ lcf::rpg::MoveCommand Game_Interpreter_Shared::DecodeMove(lcf::DBArray<int32_t>:
 	return cmd;
 }
 
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+
+std::optional<bool> Game_Interpreter_Shared::GetRuntimeFlag(lcf::rpg::SaveEventExecState const& state, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off) {
+	return GetRuntimeFlag(state.easyrpg_runtime_flags, field_on, field_off);
+}
+
+std::optional<bool> Game_Interpreter_Shared::GetRuntimeFlag(lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const& state_runtime_flags, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off) {
+	if (state_runtime_flags.conf_override_active) {
+		if (state_runtime_flags.*field_on)
+			return true;
+		if (state_runtime_flags.*field_off)
+			return false;
+	}
+	return std::nullopt;
+}
+
+#endif
+
 //explicit declarations for target evaluation logic shared between ControlSwitches/ControlVariables/ControlStrings
 template bool Game_Interpreter_Shared::DecodeTargetEvaluationMode<true, false, false, false, false>(lcf::rpg::EventCommand const&, int&, int&, Game_BaseInterpreterContext const&);
 template bool Game_Interpreter_Shared::DecodeTargetEvaluationMode<true, true, true, false, false>(lcf::rpg::EventCommand const&, int&, int&, Game_BaseInterpreterContext const&);
