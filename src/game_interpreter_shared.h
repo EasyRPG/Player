@@ -21,9 +21,13 @@
 
 #include <lcf/rpg/eventcommand.h>
 #include <lcf/rpg/movecommand.h>
+#include <lcf/rpg/saveeventexecstate.h>
 #include <lcf/rpg/saveeventexecframe.h>
 #include <string_view.h>
 #include "compiler.h"
+#include <optional>
+
+#define ENABLE_DYNAMIC_INTERPRETER_CONFIG
 
 class Game_Character;
 class Game_BaseInterpreterContext;
@@ -103,6 +107,14 @@ namespace Game_Interpreter_Shared {
 	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
 
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	typedef bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::* StateRuntimeFlagRef;
+
+	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState const& state, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
+
+	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const& state_runtime_flags, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
+#endif
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
@@ -147,7 +159,15 @@ public:
 
 	virtual int GetThisEventId() const = 0;
 	virtual Game_Character* GetCharacter(int event_id, std::string_view origin) const = 0;
+
+	virtual const lcf::rpg::SaveEventExecState& GetState() const = 0;
 	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	inline std::optional<bool> GetRuntimeFlag(Game_Interpreter_Shared::StateRuntimeFlagRef const field_on, Game_Interpreter_Shared::StateRuntimeFlagRef const field_off) const {
+		return Game_Interpreter_Shared::GetRuntimeFlag(GetState(), field_on, field_off);
+	};
+#endif
 
 protected:
 	template<bool validate_patches, bool support_range_indirect, bool support_expressions, bool support_bitmask, bool support_scopes, bool support_named = false>

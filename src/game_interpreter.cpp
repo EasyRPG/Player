@@ -314,7 +314,7 @@ bool Game_Interpreter::ReachedLoopLimit() const {
 int Game_Interpreter::GetThisEventId() const {
 	auto event_id = GetCurrentEventId();
 
-	if (event_id == 0 && (Player::IsRPG2k3E() || Player::game_config.patch_common_this_event.Get())) {
+	if (event_id == 0 && (Player::IsRPG2k3E() || Player::IsPatchCommonThisEvent())) {
 		// RM2k3E allows "ThisEvent" commands to run from called
 		// common events. It operates on the last map event in
 		// the call stack.
@@ -381,6 +381,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		EndEventProcessing();
 		return;
 	}
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	Player::active_interpreter_flags = &_state.easyrpg_runtime_flags;
+#endif
 
 	for (; loop_count < loop_limit; ++loop_count) {
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
@@ -526,6 +530,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	if (Game_Map::GetNeedRefresh()) {
 		Game_Map::Refresh();
 	}
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	Player::active_interpreter_flags = nullptr;
+#endif
 }
 
 // Setup Starting Event
@@ -827,6 +834,12 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	} else {
 		// If a called frame, or base frame of foreground interpreter, pop the stack.
 		_state.stack.pop_back();
+	}
+
+	if (is_base_frame) {
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+		ClearStateRuntimeFlags();
+#endif
 	}
 
 	return !is_base_frame;
@@ -2700,7 +2713,7 @@ namespace PicPointerPatch {
 
 bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { // code 11110
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::IsPatchUnlockPics() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2850,7 +2863,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { // code 11120
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::IsPatchUnlockPics() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -3005,7 +3018,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { // code 11130
 	// Older versions of RPG_RT block pictures when message active.
-	if (!Player::IsEnglish() && !Player::game_config.patch_unlock_pics.Get() && Game_Message::IsMessageActive()) {
+	if (!Player::IsEnglish() && !Player::IsPatchUnlockPics() && Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -5363,25 +5376,97 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 		return true;
 	}
 
-	// FIXME: Store them as part of the interpreter state
+#ifndef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	Output::Warning("CommandEasyRpgSetInterpreterFlag: Not supported on this platform");
+	return true;
+#else
+	constexpr std::array<std::pair<const char*, int>, 9> config_names = {{
+		{ "destiny",          1 },
+		{ "dynrpg",           2 },
+		{ "maniac",           3 },
+		{ "common-this",      4 },
+		{ "pic-unlock",       5 },
+		{ "key-patch",        6 },
+		{ "rpg2k3-cmds",      7 },
+		{ "rpg2k3-commands",  7 },
+		{ "rpg2k-battle",     8 }
+	}};
 
 	std::string flag_name = Utils::LowerCase(ToString(com.string));
 	int flag_value = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	int flag_id = 0;
 
-	if (flag_name == "dynrpg")
-		Player::game_config.patch_dynrpg.Set(flag_value);
-	if (flag_name == "maniac")
-		Player::game_config.patch_maniac.Set(flag_value);
-	if (flag_name == "common-this")
-		Player::game_config.patch_common_this_event.Set(flag_value);
-	if (flag_name == "pic-unlock")
-		Player::game_config.patch_unlock_pics.Set(flag_value);
-	if (flag_name == "key-patch")
-		Player::game_config.patch_key_patch.Set(flag_value);
-	if (flag_name == "rpg2k3-cmds" || flag_name == "rpg2k3-commands")
-		Player::game_config.patch_rpg2k3_commands.Set(flag_value);
-	if (flag_name == "rpg2k-battle")
-		lcf::Data::system.easyrpg_use_rpg2k_battle_system = flag_value;
+	if (flag_name.empty() && com.parameters.size() > 2) {
+		flag_id = com.parameters[2];
+	} else {
+		auto it = std::find_if(config_names.begin(), config_names.end(), [&flag_name](auto& p) { return p.first == flag_name; });
+		if (it != config_names.end()) {
+			flag_id = it->second;
+		}
+	}
+
+	switch (flag_id) {
+		case 1:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_destiny_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_destiny_off = true;
+			}
+			break;
+		case 2:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_dynrpg_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_dynrpg_off = true;
+			}
+			break;
+		case 3:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_maniac_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_maniac_off = true;
+			}
+			break;
+		case 4:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_common_this_event_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_common_this_event_off = true;
+			}
+			break;
+		case 5:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_unlock_pics_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_unlock_pics_off = true;
+			}
+			break;
+		case 6:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_keypatch_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_keypatch_off = true;
+			}
+			break;
+		case 7:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.patch_rpg2k3_cmds_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.patch_rpg2k3_cmds_off = true;
+			}
+			break;
+		case 8:
+			if (flag_value) {
+				_state.easyrpg_runtime_flags.use_rpg2k_battle_system_on = true;
+			} else {
+				_state.easyrpg_runtime_flags.use_rpg2k_battle_system_off = true;
+			}
+			break;
+		default:
+			return true;
+	}
+	_state.easyrpg_runtime_flags.conf_override_active = true;
+#endif
 
 	return true;
 }
