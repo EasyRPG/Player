@@ -25,6 +25,7 @@
 #include "game_clock.h"
 #include "game_config.h"
 #include "game_config_game.h"
+#include "game_variables.h"
 #include <vector>
 #include <memory>
 #include <cstdint>
@@ -435,6 +436,32 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
+
+	namespace Constants {
+		using Var_t = int32_t;
+
+		static constexpr int32_t max_level_2k = 50;
+		static constexpr int32_t max_level_2k3 = 99;
+
+		void GetVariableLimits(Var_t& min_var, Var_t& max_var);
+
+		int32_t MaxActorHpValue();
+		int32_t MaxActorSpValue();
+
+		int32_t MaxEnemyHpValue();
+		int32_t MaxEnemySpValue();
+
+		int32_t MaxStatBaseValue();
+		int32_t MaxStatBattleValue();
+		int32_t MaxDamageValue();
+
+		int32_t MaxExpValue();
+		int32_t MaxLevel();
+
+		int32_t MaxGoldValue();
+		int32_t MaxItemCount();
+		int32_t MaxSaveFiles();
+	}
 }
 
 inline bool Player::IsRPG2k() {
