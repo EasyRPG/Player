@@ -298,6 +298,8 @@ namespace Player {
 	 */
 	bool IsPatchDestiny();
 
+	bool IsPatchItalian();
+
 	/**
 	 * @return True when EasyRpg extensions are on
 	 */
@@ -524,8 +526,15 @@ inline bool Player::IsPatchDestiny() {
 	return game_config.patch_destiny.Get();
 }
 
+
+inline bool Player::IsPatchItalian() {
+	return false;
+	//return game_config.patch_italian.Get();
+}
+
 inline bool Player::HasEasyRpgExtensions() {
 	return game_config.patch_easyrpg.Get();
 }
+
 
 #endif
