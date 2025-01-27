@@ -892,22 +892,9 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
-	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
-	if (min_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		} else {
-			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-		}
-	}
-	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
-	if (max_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		} else {
-			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
-		}
-	}
+	int32_t min_var, max_var;
+	Player::Constants::GetVariableLimits(min_var, max_var);
+
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
@@ -1596,4 +1583,107 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
+	min_var = lcf::Data::system.easyrpg_variable_min_value;
+	if (min_var == 0) {
+		if (Player::IsPatchManiac()) {
+			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
+		} else {
+			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+		}
+	}
+	max_var = lcf::Data::system.easyrpg_variable_max_value;
+	if (max_var == 0) {
+		if (Player::IsPatchManiac()) {
+			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
+		} else {
+			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+		}
+	}
+}
+
+int32_t Player::Constants::MaxActorHpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_actor_hp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999 : 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxActorSpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_actor_sp;
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemyHpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_enemy_hp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 9'999 : 99'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemySpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_enemy_sp;
+	if (val == -1) {
+		return 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxStatBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxStatBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	if (val == -1) {
+		return 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDamageValue() {
+	auto& val = lcf::Data::system.easyrpg_max_damage;
+	if (val == -1) {
+		return (Player::IsRPG2k() ? 999 : 9'999);
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxExpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_exp;
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999'999 : 9'999'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxLevel() {
+	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
+	if (lcf::Data::system.easyrpg_max_level > -1) {
+		max_level = lcf::Data::system.easyrpg_max_level;
+	}
+	return max_level;
+}
+
+int32_t Player::Constants::MaxGoldValue() {
+	return 999'999;
+}
+
+int32_t Player::Constants::MaxItemCount() {
+	return (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);
+}
+
+int32_t Player::Constants::MaxSaveFiles() {
+	return Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
 }
