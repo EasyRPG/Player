@@ -28,7 +28,16 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 5> logo_crc32 = { 0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a };
+	std::array<uint32_t, 10> logo_crc32 = {
+		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
+
+		// Hellsoft's bootleg "RPG Maker PRO 1.15"
+		0x9307807f, 0x2e8271cb, 0x5e73987b,
+		// Hellsoft's translation of Rm2k3-1.0.4
+		0x59ab3986,
+		// French "Rabbi-Bodom" translation of Rm2k3-1.0.9.1
+		0x476138cb
+	};
 }
 
 EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(core)) {
