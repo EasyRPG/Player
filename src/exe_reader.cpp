@@ -28,7 +28,7 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 10> logo_crc32 = {
+	std::array<uint32_t, 17> logo_crc32 = {
 		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
 
 		// Hellsoft's bootleg "RPG Maker PRO 1.15"
@@ -36,7 +36,13 @@ namespace {
 		// Hellsoft's translation of Rm2k3-1.0.4
 		0x59ab3986,
 		// French "Rabbi-Bodom" translation of Rm2k3-1.0.9.1
-		0x476138cb
+		0x476138cb,
+		// "Thaiware" translation of Rm2k
+		0x29efaf6a, 0xfeb8f6b2, 0x265855ad,
+		// Thai "House of the Dev" translation of Rm2k
+		0xa8be4ed3, 0xc75ccc6d, 0xcea40e5f,
+		// Thai "Somprasongk Team" translation of Rm2k3-1.0.6
+		0xc9b2e174
 	};
 }
 
