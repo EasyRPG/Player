@@ -647,9 +647,9 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 		case Cmd::ChangeHeroTitle:
 			return CommandChangeHeroTitle(com);
 		case Cmd::ChangeSpriteAssociation:
-			return CommandChangeSpriteAssociation(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSpriteAssociation, 3>(com);
 		case Cmd::ChangeActorFace:
-			return CommandChangeActorFace(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeActorFace, 4>(com);
 		case Cmd::ChangeVehicleGraphic:
 			return CommandChangeVehicleGraphic(com);
 		case Cmd::ChangeSystemBGM:
@@ -2110,16 +2110,8 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 	}
 
 	auto file = ToString(CommandStringOrVariableBitfield(com, 3, 1, 4));
-
-	int idx = 0;
-	if (com.parameters.size() > 1) {
-		idx = ValueOrVariableBitfield(com, 3, 2, 1);
-	}
-
-	bool transparent = false;
-	if (com.parameters.size() > 2) {
-		transparent = com.parameters[2] != 0;
-	}
+	int idx = ValueOrVariableBitfield(com, 3, 2, 1);
+	bool transparent = com.parameters[2] != 0;
 
 	actor->SetSprite(file, idx, transparent);
 	Main_Data::game_player->ResetGraphic();
@@ -2129,15 +2121,14 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(lcf::rpg::EventCommand con
 bool Game_Interpreter::CommandChangeActorFace(lcf::rpg::EventCommand const& com) { // code 10640
 	int id = ValueOrVariableBitfield(com, 2, 0, 0);
 	Game_Actor* actor = Main_Data::game_actors->GetActor(id);
-
 	if (!actor) {
 		Output::Warning("CommandChangeActorFace: Invalid actor ID {}", id);
 		return true;
 	}
 
 	actor->SetFace(
-			ToString(CommandStringOrVariableBitfield(com, 2, 1, 3)),
-			ValueOrVariableBitfield(com, 2, 2, 1));
+		ToString(CommandStringOrVariableBitfield(com, 2, 1, 3)),
+		ValueOrVariableBitfield(com, 2, 2, 1));
 	return true;
 }
 
