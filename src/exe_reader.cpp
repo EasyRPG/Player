@@ -28,11 +28,15 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 17> logo_crc32 = {
+	std::array<uint32_t, 27> logo_crc32 = {
 		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
 
+		// Hellsoft's bootleg "RPG Maker PRO 1.05"
+		0x5ae12b1c, 0x3d1cb5f1, 0x04a7f11a,
+		// Hellsoft's bootleg "RPG Maker PRO 1.10"
+		0x9307807f, 0x652529ec, 0x5e73987b,
 		// Hellsoft's bootleg "RPG Maker PRO 1.15"
-		0x9307807f, 0x2e8271cb, 0x5e73987b,
+		0x2e8271cb,
 		// Hellsoft's translation of Rm2k3-1.0.4
 		0x59ab3986,
 		// French "Rabbi-Bodom" translation of Rm2k3-1.0.9.1
@@ -42,7 +46,13 @@ namespace {
 		// Thai "House of the Dev" translation of Rm2k
 		0xa8be4ed3, 0xc75ccc6d, 0xcea40e5f,
 		// Thai "Somprasongk Team" translation of Rm2k3-1.0.6
-		0xc9b2e174
+		0xc9b2e174,
+		// Italian Translation of Rm2k (Matteo S.& Christian C.)
+		0x1a1ed6dd, 0xad73ccf5, 0x4ad55e84,
+		// Italian "RPG Maker 4.0" Patch of Rm2k
+		0x8afe1239,
+		// Brazilian version of Rm2k3-1.0.9.1
+		0x089fb7d8
 	};
 }
 
