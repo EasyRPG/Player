@@ -4041,6 +4041,12 @@ bool Game_Interpreter::CommandToggleFullscreen(lcf::rpg::EventCommand const& /* 
 		return true;
 	}
 
+	auto cfg = DisplayUi->GetConfig();
+	if (!cfg.fullscreen.IsOptionVisible() || cfg.fullscreen.IsLocked()) {
+		Output::Debug("ToggleFullscreen: Not supported on this platform");
+		return true;
+	}
+
 	DisplayUi->ToggleFullscreen();
 	return true;
 }

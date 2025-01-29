@@ -37,7 +37,12 @@ namespace {
 	std::string config_path;
 	std::string soundfont_path;
 	std::string font_path;
-	StringView config_name = "config.ini";
+#if USE_SDL == 1
+	// For SDL1 hardcode a different config file because it uses a completely different mapping for gamepads
+	StringView config_name = "config_sdl1.ini";
+#else
+	StringView config_name = EASYRPG_CONFIG_NAME;
+#endif
 }
 
 void Game_ConfigPlayer::Hide() {
@@ -92,7 +97,6 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 #if defined(__WIIU__)
 	cfg.input.gamepad_swap_ab_and_xy.Set(true);
 #endif
-
 
 	cp.Rewind();
 

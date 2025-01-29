@@ -207,7 +207,14 @@ int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {
 #ifdef HAVE_TREMOR
 		read = ov_read(ovf, reinterpret_cast<char*>(buffer + length - to_read), to_read, &section);
 #else
-		read = ov_read(ovf, reinterpret_cast<char*>(buffer + length - to_read), to_read, 0/*LE*/, 2/*16bit*/, 1/*signed*/, &section);
+#  if defined(__WIIU__)
+		// FIXME: This is the endianess of the audio and not of the host but the byteswapping in ov_read does
+		// not sound like it works
+		int byte_order = 1; // BE
+#  else
+		int byte_order = 0; // LE
+#endif
+		read = ov_read(ovf, reinterpret_cast<char*>(buffer + length - to_read), to_read, byte_order, 2/*16bit*/, 1/*signed*/, &section);
 #endif
 		// stop decoding when error or end of file
 		if (read <= 0)

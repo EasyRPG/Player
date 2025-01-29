@@ -555,7 +555,10 @@ elseif(NINTENDO_SWITCH)
 elseif(VITA)
 	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "Platform to compile for.")
 elseif(NINTENDO_WII)
-	set(PLAYER_TARGET_PLATFORM "wii" CACHE STRING "Platform to compile for.")
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1")
+	set(PLAYER_AUDIO_BACKEND "AESND" CACHE STRING "Audio system to use. Options: SDL2 SDL1 AESND OFF")
+	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1)
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 SDL1 AESND)
 elseif(NINTENDO_WIIU)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
 elseif(AMIGA)
@@ -578,8 +581,6 @@ endif()
 
 if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/sdl2_ui.cpp
 		src/platform/sdl/sdl2_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
@@ -597,9 +598,12 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 
 	if(ANDROID)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
-	endif()
-
-	if(NINTENDO_WIIU)
+	elseif(NINTENDO_WII)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/wii/clock.h
+			src/platform/wii/input_buttons.cpp)
+	elseif(NINTENDO_WIIU)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/platform/wiiu/main.h
@@ -610,15 +614,25 @@ if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
 		target_link_libraries(${PROJECT_NAME} "Dwmapi")
 	endif()
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
+	if(NINTENDO_WII)
+		find_package(SDL REQUIRED)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_NINTENDO)
+		target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/wii/clock.h
+			src/platform/wii/input_buttons.cpp)
+	else()
+		player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
+	endif()
+
 	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/sdl/sdl_audio.cpp
-		src/platform/sdl/sdl_audio.h
 		src/platform/sdl/axis.h
 		src/platform/sdl/sdl_ui.cpp
 		src/platform/sdl/sdl_ui.h)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1)
-
-	player_find_package(NAME SDL1 TARGET SDL::SDLmain REQUIRED)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC
+		USE_SDL=1
+		EASYRPG_CONFIG_NAME="config_sdl1.ini"
+	)
 elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -682,31 +696,63 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "switch")
 		src/platform/switch/ui.cpp
 		src/platform/switch/ui.h)
 	target_link_libraries(${PROJECT_NAME} switch-assets)
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "wii")
-	find_package(SDL REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=1 PLAYER_NINTENDO)
-	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL_INCLUDE_DIR})
-	target_sources(${PROJECT_NAME} PRIVATE
-		src/platform/wii/audio.cpp
-		src/platform/wii/audio.h
-		src/platform/wii/clock.h
-		src/platform/wii/input_buttons.cpp
-		src/platform/sdl/axis.h
-		src/platform/sdl/sdl_ui.cpp
-		src/platform/sdl/sdl_ui.h)
 else()
 	message(FATAL_ERROR "Invalid target platform")
 endif()
 
+# Sound system to use
+if(PLAYER_AUDIO_BACKEND)
+	# already set earlier in the platform config
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
+
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
+		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
+	endif()
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
+	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
+else()
+	# Assuming that all platforms not targeting SDL have only one audio backend
+	set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM} CACHE STRING "Audio system to use. Options: ${PLAYER_TARGET_PLATFORM} OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS ${PLAYER_TARGET_PLATFORM} OFF)
+endif()
+
+set(PLAYER_HAS_AUDIO ON)
+if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL1")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h)
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/sdl/sdl_audio.cpp
+		src/platform/sdl/sdl_audio.h)
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "AESND")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/wii/audio.cpp
+		src/platform/wii/audio.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL ${PLAYER_TARGET_PLATFORM})
+
+elseif(${PLAYER_AUDIO_BACKED} STREQUAL "OFF")
+	set(PLAYER_HAS_AUDIO OFF)
+else()
+	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}")
+endif()
+
 # Shared by homebrew platforms
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|psvita|switch|wii)$" OR NINTENDO_WIIU)
+if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
 	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
+	set(PLAYER_CONSOLE_PORT ON)
+else()
+	set(PLAYER_CONSOLE_PORT OFF)
 endif()
 # Make content available (romfs/wuhb bundle)
-if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch)$" OR NINTENDO_WIIU)
+if(NINTENDO_3DS OR NINTENDO_WIIU OR NINTENDO_SWITCH)
 	option(PLAYER_BUNDLE "Embed a directory in the executable" OFF)
 	set(PLAYER_BUNDLE_PATH "content" CACHE PATH "Directory to include in executable")
 	set(BUNDLE_ARG "_IGNORE_ME")
@@ -851,8 +897,7 @@ target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 # Always enable Wine registry support on non-Windows, but not for console ports
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows"
-	AND NOT ${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$"
-	AND NOT NINTENDO_WIIU)
+	AND NOT PLAYER_CONSOLE)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -903,26 +948,8 @@ else()
 	)
 endif()
 
-# Sound system to use
-if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
-	set(PLAYER_AUDIO_BACKEND "SDL2" CACHE STRING "Audio system to use. Options: SDL2 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OFF)
-
-	if(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
-		message(FATAL_ERROR "SDL2_mixer is not supported anymore. Use SDL2 instead.")
-	endif()
-elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
-	set(PLAYER_AUDIO_BACKEND "SDL1" CACHE STRING "Audio system to use. Options: SDL1 OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL1 OFF)
-else()
-	# Assuming that all platforms not targeting SDL have only one audio backend
-	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
-	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Default OFF)
-endif()
-
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
-	set(PLAYER_HAS_AUDIO ON)
+if(PLAYER_HAS_AUDIO)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
@@ -964,10 +991,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 	if(PLAYER_ENABLE_FMMIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	endif()
-elseif(NOT PLAYER_AUDIO_BACKEND)
-	set(PLAYER_HAS_AUDIO OFF)
-else()
-	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}")
 endif()
 
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123" ON "PLAYER_HAS_AUDIO" OFF)
@@ -980,7 +1003,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
+if(PLAYER_HAS_AUDIO)
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -1096,7 +1119,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
 endif()
 
 # Executable
-if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL[12]$" AND NOT NINTENDO_WIIU)
+if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND NOT PLAYER_CONSOLE_PORT)
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1198,7 +1221,7 @@ if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL[12]$" 
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
-elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO_WIIU)
+elseif(PLAYER_CONSOLE_PORT)
 	set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
 	if(NINTENDO_3DS)
 		add_executable(easyrpg-player src/platform/3ds/main.cpp)
@@ -1240,6 +1263,10 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 			-laesnd
 			-lfat
 			-lwiikeyboard)
+		if(TARGET SDL2::SDL2main)
+			# Missing dependency?
+			target_link_libraries(SDL2::SDL2main INTERFACE -lfat)
+		endif()
 		ogc_create_dol(easyrpg-player)
 		string(TIMESTAMP WII_DATE "%Y%m%d000000")
 		configure_file(resources/wii/meta.xml.in resources/wii/meta.xml @ONLY)
@@ -1299,7 +1326,7 @@ elseif(${PLAYER_TARGET_PLATFORM} MATCHES "^(psvita|3ds|switch|wii)$" OR NINTENDO
 	endif()
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	# debug information
-	if(${PLAYER_TARGET_PLATFORM} MATCHES "^(3ds|switch|wii)$" OR NINTENDO_WIIU)
+	if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_SWITCH)
 		dkp_target_generate_symbol_list(easyrpg-player)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.map
 				${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.lst
@@ -1506,7 +1533,7 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL[12]|Default)$")
+if(PLAYER_HAS_AUDIO)
 	message(STATUS "")
 
 	set(WAV_LIBS)
