@@ -61,6 +61,40 @@ namespace Player {
 		PatchOverride = 1 << 16
 	};
 
+	enum class GameConstantType {
+		MinVarLimit,
+		MaxVarLimit,
+		MaxActorHP,
+		MaxActorSP,
+		MaxEnemyHP,
+		MaxEnemySP,
+		MaxStatBaseValue,
+		MaxStatBattleValue,
+		MaxDamageValue,
+		MaxExpValue,
+		MaxLevel,
+		MaxGoldValue,
+		MaxItemCount,
+		MaxSaveFiles
+	};
+
+	static constexpr auto kGameConstantType = lcf::makeEnumTags<GameConstantType>(
+		"MinVarLimit",
+		"MaxVarLimit",
+		"MaxActorHP",
+		"MaxActorSP",
+		"MaxEnemyHP",
+		"MaxEnemySP",
+		"MaxStatBaseValue",
+		"MaxStatBattleValue",
+		"MaxDamageValue",
+		"MaxExpValue",
+		"MaxLevel",
+		"MaxGoldValue",
+		"MaxItemCount",
+		"MaxSaveFiles"
+	);
+
 	/**
 	 * Initializes EasyRPG Player.
 	 *
@@ -469,6 +503,12 @@ namespace Player {
 		int32_t MaxGoldValue();
 		int32_t MaxItemCount();
 		int32_t MaxSaveFiles();
+
+		extern std::map<GameConstantType, int32_t> constant_overrides;
+
+		bool TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value);
+		void OverrideGameConstant(GameConstantType const_type, int32_t value);
+		void ResetOverrides();
 	}
 }
 
