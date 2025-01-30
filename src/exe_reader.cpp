@@ -28,17 +28,31 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 27> logo_crc32 = {
+	std::array<uint32_t, 29> logo_crc32 = {
 		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
 
+		/*
+			Note: The values below have been extracted from a wide range of
+			bootleg versions of RPG_RT.exe that	have historically been in
+			circulation in various communities (either as part of an Editor
+			translation or patch). The specified version strings here refer
+			to the info given in either the recovered Installer packages
+			or is taken from accompanying Readme files & do not necessarily
+			give reliable information about the actual, original RPG_RT
+			version on which these translations & patches were based on!
+		*/
 		// Hellsoft's bootleg "RPG Maker PRO 1.05"
 		0x5ae12b1c, 0x3d1cb5f1, 0x04a7f11a,
 		// Hellsoft's bootleg "RPG Maker PRO 1.10"
 		0x9307807f, 0x652529ec, 0x5e73987b,
 		// Hellsoft's bootleg "RPG Maker PRO 1.15"
 		0x2e8271cb,
-		// Hellsoft's translation of Rm2k3-1.0.4
+		// Hellsoft's translation of Rm2k3: "1.0.2"
+		0x4e3f7560,
+		// Hellsoft's translation of Rm2k3: "1.0.4" & "1.0.7"
 		0x59ab3986,
+		// Hellsoft's translation of Rm2k3: "1.0.8" & "1.0.9"
+		0xd333b2dd,
 		// French "Rabbi-Bodom" translation of Rm2k3-1.0.9.1
 		0x476138cb,
 		// "Thaiware" translation of Rm2k
