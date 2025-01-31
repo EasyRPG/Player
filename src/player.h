@@ -495,6 +495,7 @@ namespace Player {
 		bool TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value);
 		void OverrideGameConstant(GameConstantType const_type, int32_t value);
 		void ResetOverrides();
+		void PrintActiveOverrides();
 	}
 }
 

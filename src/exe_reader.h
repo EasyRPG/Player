@@ -71,6 +71,14 @@ public:
 
 	const FileInfo& GetFileInfo();
 
+	struct CodeAddressInfoU32 {
+		uint32_t default_val;
+		size_t code_offset;
+		std::vector<uint8_t> pre_data, post_data;
+	};
+
+	std::map<Player::GameConstantType, int32_t> GetOverridenGameConstants();
+
 private:
 	// Bounds-checked unaligned reader primitives.
 	// In case of out-of-bounds, returns 0 - this will usually result in a harmless error at some other level,
@@ -86,6 +94,8 @@ private:
 	// 0 if resource section was unfindable.
 	uint32_t resource_ofs = 0;
 	uint32_t resource_rva = 0;
+
+	uint32_t code_ofs = 0;
 
 	FileInfo file_info;
 	Filesystem_Stream::InputStream corefile;

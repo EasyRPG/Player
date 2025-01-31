@@ -90,6 +90,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 
 		if (secName == 0x45444F43) { // CODE
 			file_info.code_size = sectVs;
+			code_ofs = GetU32(sectionsOfs + 0x14);
 		} else if (secName == 0x52454843) { // CHER(RY)
 			file_info.cherry_size = sectVs;
 		} else if (secName == 0x50454547) { // GEEP
@@ -487,6 +488,66 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 	}
 
 	return Player::EngineNone;
+}
+
+namespace {
+
+	using Type = Player::GameConstantType;
+
+	using code_address_map = std::map<Type, struct EXEReader::CodeAddressInfoU32>;
+
+	const code_address_map const_addresses_106 = {
+		/*{
+			Type::DummyUnknownVar,
+			{ 9999, 0x9BDE0, { 0x8B, 0xD6, 0xB8 },  { 0xE8 } }
+		}*/
+	};
+	const code_address_map const_addresses_108 = {
+		/*{
+			Type::DummyUnknownVar,
+			{ 9999, 0x9C03C, { 0x8B, 0xD6, 0xB8 },  { 0xE8 } }
+		}*/
+	};
+}
+
+std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
+	std::map<Player::GameConstantType, int32_t> game_constants;
+
+	auto match_surrounding_data = [&](const EXEReader::CodeAddressInfoU32& info, const uint32_t const_ofs) {
+		for (int i = 0; i < info.pre_data.size(); i++) {
+			if (info.pre_data[i] != GetU8(const_ofs - info.pre_data.size() + i))
+				return false;
+		}
+		for (int i = 0; i < info.post_data.size(); i++) {
+			if (info.post_data[i] != GetU8(const_ofs + sizeof(uint32_t) + i))
+				return false;
+		}
+		//Is a hit -> constant value can be extracted
+		return true;
+	};
+
+	auto check_address_map = [&](const code_address_map& map) {
+		uint32_t const_ofs;
+
+		for (auto it = map.begin(); it != map.end();) {
+			auto& addr_info = it->second;
+			const_ofs = code_ofs + addr_info.code_offset;
+
+			if (match_surrounding_data(addr_info, const_ofs)) {
+				int32_t value = GetU32(const_ofs);
+				if (value != addr_info.default_val) {
+					game_constants[it->first] = value;
+				}
+			}
+			it++;
+		}
+	};
+
+	//TODO: do a proper version check prior to doing these reads
+	check_address_map(const_addresses_106);
+	check_address_map(const_addresses_108);
+
+	return game_constants;
 }
 
 #endif
