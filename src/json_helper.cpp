@@ -25,7 +25,7 @@
 #include <unordered_map>
 #include "string_view.h"
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 namespace {
 
@@ -60,7 +60,7 @@ namespace Json_Helper {
 		return json_obj;
 	}
 
-	std::optional<std::string> GetValue(nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<std::string> GetValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -81,7 +81,7 @@ namespace Json_Helper {
 	}
 
 
-	std::string SetValue(nlohmann::json& json_obj, std::string_view json_path, std::string_view value) {
+	std::string SetValue(nlohmann::ordered_json& json_obj, std::string_view json_path, std::string_view value) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -102,7 +102,7 @@ namespace Json_Helper {
 		return json_obj.dump();
 	}
 
-	std::optional<size_t> GetLength(const nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<size_t> GetLength(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -126,7 +126,7 @@ namespace Json_Helper {
 		return value.size();
 	}
 
-	std::optional<std::vector<std::string>> GetKeys(const nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<std::vector<std::string>> GetKeys(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -158,7 +158,7 @@ namespace Json_Helper {
 		return keys;
 	}
 
-	std::optional<bool> IsObject(const nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<bool> IsObject(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -177,7 +177,7 @@ namespace Json_Helper {
 		return value.is_object();
 	}
 
-	std::optional<bool> IsArray(const nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<bool> IsArray(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -196,7 +196,7 @@ namespace Json_Helper {
 		return value.is_array();
 	}
 
-	std::optional<std::string> GetType(const nlohmann::json& json_obj, std::string_view json_path) {
+	std::optional<std::string> GetType(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
 			return {};
@@ -222,7 +222,7 @@ namespace Json_Helper {
 		return std::string("unknown");
 	}
 
-	std::optional<std::string> GetPath(const nlohmann::json& json_obj, const nlohmann::json& search_value) {
+	std::optional<std::string> GetPath(const nlohmann::ordered_json& json_obj, const nlohmann::ordered_json& search_value) {
 		std::function<std::optional<std::string>(const json&, const json&, const std::string&)> find_path;
 
 		find_path = [&find_path](const json& obj, const json& target, const std::string& current_path) -> std::optional<std::string> {
@@ -249,7 +249,7 @@ namespace Json_Helper {
 		return path.value_or("");
 	}
 
-	std::string PrettyPrint(const nlohmann::json& json_obj, int indent) {
+	std::string PrettyPrint(const nlohmann::ordered_json& json_obj, int indent) {
 		return json_obj.dump(std::max(0, indent));
 	}
 
