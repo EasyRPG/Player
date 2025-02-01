@@ -621,7 +621,7 @@ int ControlVariables::InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, in
 		case InspectMapTreeInfoOp::Troop_Id:
 		{
 			// TODO: provide a way to conveniently copy values into a range of variables ("ControlVarArrayEx"?) 
-			if (arg1 >= 0 && arg1 < map_info.encounters.size()) {
+			if (arg1 >= 0 && arg1 < static_cast<int>(map_info.encounters.size())) {
 				return map_info.encounters[arg1].troop_id;
 			}
 			return 0;
@@ -660,6 +660,8 @@ int ControlVariables::InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, in
 							return map.area_rect.r - map.area_rect.l;
 						case InspectMapTreeInfoOp::Arena_Height:
 							return map.area_rect.b - map.area_rect.t;
+						default:
+							break;
 					}
 				}
 			}
@@ -723,6 +725,8 @@ int ControlVariables::MessageWindowState(MessageWindowStateOp op) {
 				if (window->GetPendingMessage().ShowGoldWindow())
 					return 3;
 				return 0;
+			case MessageWindowStateOp::IsMessageActive:
+				break;
 		}
 	}
 
