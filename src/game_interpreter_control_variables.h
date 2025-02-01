@@ -99,6 +99,29 @@ namespace ControlVariables {
 		Arena_Height
 	};
 	int InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, int arg1);
+
+	enum MessageSystemStateOp {
+		IsMessageTransparent = 0,
+		IsMessagePositionFixed,
+		IsContinueEvents,
+		MessagePosition,
+		IsMessageFaceRightPosition
+	};
+	int MessageSystemState(MessageSystemStateOp op);
+
+	enum MessageWindowStateOp {
+		IsMessageActive = 0,
+		IsFaceActive,
+		CanContinue,
+		WindowTop,
+		WindowLeft,
+		WindowBottom,
+		WindowRight,
+		WindowWidth,
+		WindowHeight,
+		WindowType
+	};
+	int MessageWindowState(MessageWindowStateOp op);
 }
 
 #endif

@@ -22,10 +22,12 @@
 #include "game_ineluki.h"
 #include "game_interpreter.h"
 #include "game_map.h"
+#include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "window_message.h"
 #include "output.h"
 #include "player.h"
 #include "rand.h"
@@ -528,6 +530,12 @@ bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& 
 			value = InspectMapTreeInfo(static_cast<InspectMapTreeInfoOp>(com.parameters[5]), map_id, arg1);
 			break;
 		}
+		case 213: //eVarOperand_EasyRpg_MessageSystemState
+			value = MessageSystemState(static_cast<MessageSystemStateOp>(com.parameters[5]));
+			break;
+		case 214: //eVarOperand_EasyRpg_MessageWindowState
+			value = MessageWindowState(static_cast<MessageWindowStateOp>(com.parameters[5]));
+			break;
 		default:
 			Output::Warning("ControlVariables: Unsupported operand {}", com.parameters[5]);
 			return false;
@@ -660,5 +668,64 @@ int ControlVariables::InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, in
 	}
 
 	Output::Warning("ControlVariables::InspectMapTreeInfo: Unknown op {}", static_cast<int>(op));
+	return 0;
+}
+
+int ControlVariables::MessageSystemState(MessageSystemStateOp op) {
+	switch (op)
+	{
+		case MessageSystemStateOp::IsMessageTransparent:
+			return Main_Data::game_system->IsMessageTransparent();
+		case MessageSystemStateOp::IsMessagePositionFixed:
+			return Main_Data::game_system->IsMessagePositionFixed();
+		case MessageSystemStateOp::IsContinueEvents:
+			return Main_Data::game_system->GetMessageContinueEvents();
+		case MessageSystemStateOp::MessagePosition:
+			return Main_Data::game_system->GetMessagePosition();
+		case MessageSystemStateOp::IsMessageFaceRightPosition:
+			return Main_Data::game_system->IsMessageFaceRightPosition();
+	}
+
+	Output::Warning("ControlVariables::MessageSystemState: Unknown op {}", static_cast<int>(op));
+	return 0;
+}
+
+int ControlVariables::MessageWindowState(MessageWindowStateOp op) {
+	if (op == MessageWindowStateOp::IsMessageActive) {
+		return Game_Message::IsMessageActive();
+	}
+
+	auto* window = Game_Message::GetWindow();
+	if (window) {
+		switch (op)
+		{
+			case MessageWindowStateOp::IsFaceActive:
+				return window->GetPendingMessage().IsFaceEnabled() && !Main_Data::game_system->GetMessageFaceName().empty();
+			case MessageWindowStateOp::CanContinue:
+				return !window->GetPause();
+			case MessageWindowStateOp::WindowTop:
+				return window->GetY();
+			case MessageWindowStateOp::WindowLeft:
+				return window->GetX();
+			case MessageWindowStateOp::WindowBottom:
+				return window->GetY() + window->GetHeight();
+			case MessageWindowStateOp::WindowRight:
+				return window->GetX() + window->GetWidth();
+			case MessageWindowStateOp::WindowWidth:
+				return window->GetWidth();
+			case MessageWindowStateOp::WindowHeight:
+				return window->GetHeight();
+			case MessageWindowStateOp::WindowType:
+				if (window->GetPendingMessage().HasChoices())
+					return 1;
+				if (window->GetPendingMessage().HasNumberInput())
+					return 2;
+				if (window->GetPendingMessage().ShowGoldWindow())
+					return 3;
+				return 0;
+		}
+	}
+
+	Output::Warning("ControlVariables::MessageWindowState: Unknown op {}", static_cast<int>(op));
 	return 0;
 }
