@@ -786,6 +786,12 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
+		//case static_cast<Cmd>(2020): // EasyRpg_ControlVariablesEx (Not yet implemented)
+		//	return CommandEasyRpgConditionalBranchEx(com);
+		//case static_cast<Cmd>(2021): // EasyRpg_ControlSwitchesEx (Not yet implemented)
+		//	return CommandEasyRpgControlSwitchesEx(com);
+		case static_cast<Cmd>(2022): // EasyRpg_ControlVariablesEx
+			return CommandEasyRpgControlVariablesEx(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -1058,13 +1064,20 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 	return true;
 }
 
+template<bool EasyRpgEx>
 bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com) { // code 10220
 	int value = 0;
 	int operand = com.parameters[4];
 
-	if (EP_UNLIKELY(operand >= 9 && !Player::IsPatchManiac())) {
-		Output::Warning("ControlVariables: Unsupported operand {}", operand);
-		return true;
+	if constexpr (EasyRpgEx) {
+		if (EP_UNLIKELY(operand >= 200) && !ControlVariables::EasyRpgExCommand(com, value)) {
+			return true;
+		}
+	} else {
+		if (EP_UNLIKELY(operand >= 9 && !Player::IsPatchManiac())) {
+			Output::Warning("ControlVariables: Unsupported operand {}", operand);
+			return true;
+		}
 	}
 
 	switch (operand) {
@@ -1234,18 +1247,36 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]), *this);
 			break;
 		default:
+			if constexpr (EasyRpgEx) {
+				if (operand >= 200) {
+					break;
+				}
+			}
 			Output::Warning("ControlVariables: Unsupported operand {}", operand);
 			return true;
 	}
 
 	int start, end;
-	bool target_eval_result = DecodeTargetEvaluationMode<
-		/* validate_patches */ true,
-		/* support_range_indirect */ true,
-		/* support_expressions */ true,
-		/* support_bitmask */ false,
-		/* support_scopes */ false
-	>(com, start, end);
+	bool target_eval_result;
+
+	if constexpr (EasyRpgEx) {
+		target_eval_result = DecodeTargetEvaluationMode <
+			/* validate_patches */ false,
+			/* support_range_indirect */ true,
+			/* support_expressions */ true,
+			/* support_bitmask */ true,
+			/* support_scopes */ true, // (Not yet implemented)
+			/* support_named */ true // (Not yet implemented)
+		>(com, start, end);
+	} else {
+		target_eval_result = DecodeTargetEvaluationMode <
+			/* validate_patches */ true,
+			/* support_range_indirect */ true,
+			/* support_expressions */ true,
+			/* support_bitmask */ false,
+			/* support_scopes */ false
+		>(com, start, end);
+	}
 	if (!target_eval_result) {
 		Output::Warning("ControlVariables: Unsupported target evaluation mode {}", com.parameters[0]);
 		return true;
@@ -5356,6 +5387,13 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	Push({ cmd }, GetCurrentEventId(), false); //FIXME: add some new flag, so the interpreter debug view (window_interpreter) can differentiate this frame from normal ones
 
 	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgControlVariablesEx(lcf::rpg::EventCommand const& com) { // 2022
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+	return CommandControlVariables<true>(com);
 }
 
 bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com) {

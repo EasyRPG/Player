@@ -487,3 +487,61 @@ int ControlVariables::Divmul(int arg1, int arg2, int arg3) {
 int ControlVariables::Between(int arg1, int arg2, int arg3) {
 	return (arg1 >= arg2 && arg2 <= arg3) ? 0 : 1;
 }
+
+//
+// New EasyRpgEx operations
+//
+
+bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value) {
+	int operand = com.parameters[4];
+
+	switch (operand) {
+		case 210: // eVarOperand_EasyRpg_DateTime
+			//
+			// Possible method for a string-based lookup (inspired by Jetrotal's initial suggestion):
+			/*
+			ControlVariables::DateTimeOp op;
+			if (!com.string.empty() && kDateTimeOpTags.etag(com.string.c_str(), op)) {
+				value = DateTime(op);
+			}
+			*/
+			value = DateTime(static_cast<DateTimeOp>(com.parameters[5]));
+		default:
+			Output::Warning("ControlVariables: Unsupported operand {}", com.parameters[5]);
+			return false;
+	}
+
+	return true;
+}
+
+int ControlVariables::DateTime(DateTimeOp op) {
+	std::time_t t = std::time(nullptr);
+	std::tm* tm = std::localtime(&t);
+
+	switch (op)
+	{
+		case DateTimeOp::Year:
+			return tm->tm_year + 1900;
+		case DateTimeOp::Month:
+			return tm->tm_mon + 1;
+		case DateTimeOp::Day:
+			return tm->tm_mday;
+		case DateTimeOp::Hour:
+			return tm->tm_hour;
+		case DateTimeOp::Minute:
+			return tm->tm_min;
+		case DateTimeOp::Second:
+			return tm->tm_sec;
+		case DateTimeOp::WeekDay:
+			return tm->tm_wday + 1;
+		case DateTimeOp::DayOfYear:
+			return tm->tm_yday + 1;
+		case DateTimeOp::IsDayLightSavings:
+			return tm->tm_isdst;
+		case DateTimeOp::TimeStamp:
+			return t;
+	}
+
+	Output::Warning("ControlVariables::GetTime: Unknown op {}", static_cast<int>(op));
+	return 0;
+}

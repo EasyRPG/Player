@@ -45,6 +45,37 @@ namespace ControlVariables {
 	int Muldiv(int arg1, int arg2, int arg3);
 	int Divmul(int arg1, int arg2, int arg3);
 	int Between(int arg1, int arg2, int arg3);
+
+	//
+	// New EasyRpgEx operations
+	//
+	bool EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value);
+
+	enum class DateTimeOp {
+		Year = 0,
+		Month,
+		Day,
+		Hour,
+		Minute,
+		Second,
+		WeekDay,
+		DayOfYear,
+		IsDayLightSavings,
+		TimeStamp
+	};
+	static constexpr auto kDateTimeOpTags = lcf::makeEnumTags<DateTimeOp>(
+		"getyear",
+		"getmonth",
+		"getday",
+		"gethour",
+		"getminute",
+		"getsecond",
+		"getweekday",
+		"getyearday",
+		"getdaylightsavings",
+		"gettimestamp"
+	);
+	int DateTime(DateTimeOp op);
 }
 
 #endif
