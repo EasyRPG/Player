@@ -21,6 +21,7 @@
 #include "game_enemyparty.h"
 #include "game_ineluki.h"
 #include "game_interpreter.h"
+#include "game_map.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
@@ -492,7 +493,9 @@ int ControlVariables::Between(int arg1, int arg2, int arg3) {
 // New EasyRpgEx operations
 //
 
-bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value) {
+bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value, const Game_BaseInterpreterContext& interpreter) {
+	using namespace Game_Interpreter_Shared;
+
 	int operand = com.parameters[4];
 
 	switch (operand) {
@@ -506,6 +509,25 @@ bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& 
 			}
 			*/
 			value = DateTime(static_cast<DateTimeOp>(com.parameters[5]));
+			break;
+		case 211: // eVarOperand_EasyRpg_ActiveMapInfo
+			value = ActiveMapInfo(static_cast<ActiveMapInfoOp>(com.parameters[5]));
+			break;
+		case 212: // eVarOperand_EasyRpg_InspectMapTreeInfo
+		{
+			int map_id = 0, arg1 = 0;
+			if (com.parameters.size() >= 9) {
+				map_id = ValueOrVariableBitfield(com.parameters[8], 0, com.parameters[6], interpreter);
+				arg1 = ValueOrVariableBitfield(com.parameters[8], 1, com.parameters[7], interpreter);
+			} else if (com.parameters.size() == 8) {
+				arg1 = com.parameters[7];
+			}
+			if (map_id == 0) {
+				map_id = Game_Map::GetMapId();
+			}
+			value = InspectMapTreeInfo(static_cast<InspectMapTreeInfoOp>(com.parameters[5]), map_id, arg1);
+			break;
+		}
 		default:
 			Output::Warning("ControlVariables: Unsupported operand {}", com.parameters[5]);
 			return false;
@@ -543,5 +565,100 @@ int ControlVariables::DateTime(DateTimeOp op) {
 	}
 
 	Output::Warning("ControlVariables::GetTime: Unknown op {}", static_cast<int>(op));
+	return 0;
+}
+
+int ControlVariables::ActiveMapInfo(ActiveMapInfoOp op) {
+	switch (op)
+	{
+		case ActiveMapInfoOp::MapTileWidth:
+			return Game_Map::GetTilesX();
+		case ActiveMapInfoOp::MapTileHeight:
+			return Game_Map::GetTilesY();
+		case ActiveMapInfoOp::LoopHorizontal:
+			return Game_Map::LoopHorizontal();
+		case ActiveMapInfoOp::LoopVertical:
+			return Game_Map::LoopVertical();
+	}
+
+	Output::Warning("ControlVariables::ActiveMapInfo: Unknown op {}", static_cast<int>(op));
+	return 0;
+}
+
+int ControlVariables::InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, int arg1) {
+	auto& map_info = Game_Map::GetMapInfo(map_id);
+	if (map_info.ID == 0) {
+		return 0;
+	}
+
+	switch (op)
+	{
+		case InspectMapTreeInfoOp::ParentMap:
+			return map_info.parent_map;
+		case InspectMapTreeInfoOp::OriginalEncounterSteps:
+			return map_info.encounter_steps;
+		case InspectMapTreeInfoOp::CountTroops:
+			return map_info.encounters.size();;
+		case InspectMapTreeInfoOp::CountArenas:
+		{
+			int cnt_arenas = 0;
+			for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
+				auto& map = lcf::Data::treemap.maps[i];
+				if (map.parent_map == map_info.ID && map.type == lcf::rpg::TreeMap::MapType_area) {
+					cnt_arenas++;
+				}
+			}
+			return cnt_arenas;
+		}
+		case InspectMapTreeInfoOp::Troop_Id:
+		{
+			// TODO: provide a way to conveniently copy values into a range of variables ("ControlVarArrayEx"?) 
+			if (arg1 >= 0 && arg1 < map_info.encounters.size()) {
+				return map_info.encounters[arg1].troop_id;
+			}
+			return 0;
+		}
+		case InspectMapTreeInfoOp::Arena_Top:
+		case InspectMapTreeInfoOp::Arena_Left:
+		case InspectMapTreeInfoOp::Arena_Bottom:
+		case InspectMapTreeInfoOp::Arena_Right:
+		case InspectMapTreeInfoOp::Arena_Width:
+		case InspectMapTreeInfoOp::Arena_Height:
+		{
+			// TODO: provide a way to conveniently copy values into a range of variables ("ControlVarArrayEx"?) 
+			if (arg1 < 0) {
+				return 0;
+			}
+
+			int cnt_arenas = 0;
+			for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
+				auto& map = lcf::Data::treemap.maps[i];
+				if (map.parent_map == map_info.ID && map.type == lcf::rpg::TreeMap::MapType_area) {
+					if (arg1 < cnt_arenas) {
+						cnt_arenas++;
+						continue;
+					}
+					switch (op)
+					{
+						case InspectMapTreeInfoOp::Arena_Top:
+							return map.area_rect.t;
+						case InspectMapTreeInfoOp::Arena_Left:
+							return map.area_rect.l;
+						case InspectMapTreeInfoOp::Arena_Bottom:
+							return map.area_rect.b;
+						case InspectMapTreeInfoOp::Arena_Right:
+							return map.area_rect.r;
+						case InspectMapTreeInfoOp::Arena_Width:
+							return map.area_rect.r - map.area_rect.l;
+						case InspectMapTreeInfoOp::Arena_Height:
+							return map.area_rect.b - map.area_rect.t;
+					}
+				}
+			}
+			return 0;
+		}
+	}
+
+	Output::Warning("ControlVariables::InspectMapTreeInfo: Unknown op {}", static_cast<int>(op));
 	return 0;
 }

@@ -1070,7 +1070,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 	int operand = com.parameters[4];
 
 	if constexpr (EasyRpgEx) {
-		if (EP_UNLIKELY(operand >= 200) && !ControlVariables::EasyRpgExCommand(com, value)) {
+		if (EP_UNLIKELY(operand >= 200) && !ControlVariables::EasyRpgExCommand(com, value, *this)) {
 			return true;
 		}
 	} else {

@@ -49,7 +49,7 @@ namespace ControlVariables {
 	//
 	// New EasyRpgEx operations
 	//
-	bool EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value);
+	bool EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value, const Game_BaseInterpreterContext& interpreter);
 
 	enum class DateTimeOp {
 		Year = 0,
@@ -76,6 +76,29 @@ namespace ControlVariables {
 		"gettimestamp"
 	);
 	int DateTime(DateTimeOp op);
+
+	enum ActiveMapInfoOp {
+		MapTileWidth = 0,
+		MapTileHeight,
+		LoopHorizontal,
+		LoopVertical
+	};
+	int ActiveMapInfo(ActiveMapInfoOp op);
+
+	enum InspectMapTreeInfoOp {
+		ParentMap = 0,
+		OriginalEncounterSteps,
+		CountTroops,
+		CountArenas,
+		Troop_Id,
+		Arena_Top,
+		Arena_Left,
+		Arena_Bottom,
+		Arena_Right,
+		Arena_Width,
+		Arena_Height
+	};
+	int InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, int arg1);
 }
 
 #endif
