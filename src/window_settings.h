@@ -51,6 +51,7 @@ public:
 		eSave,
 		eEnd,
 		eAbout,
+		eLanguage,
 		eLastMode
 	};
 

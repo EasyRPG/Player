@@ -29,6 +29,7 @@
 #include "baseui.h"
 #include "output.h"
 #include "utils.h"
+#include "scene_language.h"
 #include "scene_end.h"
 #include "window_about.h"
 #include "window_command_horizontal.h"
@@ -60,18 +61,27 @@ void Scene_Settings::CreateTitleGraphic() {
 }
 
 void Scene_Settings::CreateMainWindow() {
-	std::vector<std::string> options = {
-		"Video",
-		"Audio",
-		"Input",
-		"Engine",
-		"License",
-		"<Save Settings>"
-	};
+	root_options.clear();
+	root_options.insert(root_options.end(), {
+		{ Window_Settings::eVideo,	"Video" },
+		{ Window_Settings::eAudio,	"Audio" },
+		{ Window_Settings::eInput,	"Input"},
+		{ Window_Settings::eEngine,	"Engine"},
+		{ Window_Settings::eLicense,"License"},
+		{ Window_Settings::eSave,	"<Save Settings>"}
+	});
+
+	if (Player::translation.HasTranslations() && Scene::Peek()->type != SceneType::Title && Scene::Peek()->type != SceneType::Translation) {
+		root_options.insert(root_options.begin() + 3, { Window_Settings::eLanguage, "Language" });
+	}
 
 	if (Scene::Find(Scene::Title)) {
-		options.push_back("<Exit Game>");
+		root_options.insert(root_options.end(), { Window_Settings::eEnd, "<Exit Game>" });
 	}
+
+	std::vector<std::string> options;
+	options.reserve(root_options.size());
+	std::for_each(root_options.begin(), root_options.end(), [&](std::pair<Window_Settings::UiMode, std::string> v) { options.emplace_back(v.second); });
 
 	main_window = std::make_unique<Window_Command>(std::move(options));
 	main_window->SetHeight(176);
@@ -302,15 +312,6 @@ void Scene_Settings::OnTitleSpriteReady(FileRequestResult* result) {
 }
 
 void Scene_Settings::UpdateMain() {
-	const auto modes = Utils::MakeArray(
-		Window_Settings::eVideo,
-		Window_Settings::eAudio,
-		Window_Settings::eInput,
-		Window_Settings::eEngine,
-		Window_Settings::eLicense,
-		Window_Settings::eSave,
-		Window_Settings::eEnd
-	);
 
 	if (Input::IsTriggered(Input::DECISION)) {
 		auto idx = main_window->GetIndex();
@@ -322,10 +323,15 @@ void Scene_Settings::UpdateMain() {
 			return;
 		}
 
-		if (modes[idx] == Window_Settings::eSave) {
+		auto mode = root_options[idx].first;
+
+		if (mode == Window_Settings::eLanguage) {
+			Scene::Push(std::make_shared<Scene_Language>());
+			return;
+		} if (mode == Window_Settings::eSave) {
 			SaveConfig();
 			return;
-		} else if (modes[idx] == Window_Settings::eEnd) {
+		} else if (mode == Window_Settings::eEnd) {
 			if (Scene::Find(Scene::GameBrowser)) {
 				Scene::Push(std::make_unique<Scene_End>(Scene::GameBrowser));
 			} else {
@@ -334,8 +340,8 @@ void Scene_Settings::UpdateMain() {
 			return;
 		}
 
-		SetMode(modes[idx]);
-		options_window->Push(modes[idx]);
+		SetMode(mode);
+		options_window->Push(mode);
 	}
 }
 

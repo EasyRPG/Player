@@ -90,6 +90,8 @@ private:
 	int input_reset_counter = 0;
 
 	Window_Settings::UiMode mode = Window_Settings::eNone;
+
+	std::vector<std::pair<Window_Settings::UiMode, std::string>> root_options;
 };
 
 
