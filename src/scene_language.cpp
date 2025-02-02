@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scene_language.h"
+#include "scene_logo.h"
 #include "audio.h"
 #include "bitmap.h"
 #include "input.h"
@@ -63,7 +64,7 @@ void Scene_Language::CreateTitleGraphic() {
 void Scene_Language::CreateTranslationWindow() {
 	// Build a list of 'Default' and all known languages.
 	std::vector<std::string> lang_names;
-	lang_names.push_back("Default");
+	lang_names.push_back("Default Language");
 	lang_dirs.push_back("");
 	lang_helps.push_back("Play the game in its original language.");
 
@@ -136,9 +137,12 @@ void Scene_Language::vUpdate() {
 	else if (Input::IsTriggered(Input::CANCEL)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 
+		auto peek_scene = Scene::Peek();
+		if (!peek_scene || peek_scene->type == SceneType::Null || peek_scene->type == SceneType::Logo) {
+			Transition::instance().InitErase(Transition::TransitionFadeOut, this);
+		}
 		Scene::Pop();
 	}
-
 }
 
 void Scene_Language::OnTitleSpriteReady(FileRequestResult* result) {
@@ -160,7 +164,7 @@ void Scene_Language::ChangeLanguage(const std::string& lang_str) {
 
 	// No-op?
 	if (lang_str == Player::translation.GetCurrentLanguage().lang_dir) {
-		Scene::Pop();
+		PopOrTitle();
 		return;
 	}
 
@@ -171,7 +175,16 @@ void Scene_Language::ChangeLanguage(const std::string& lang_str) {
 void Scene_Language::OnTranslationChanged() {
 	Start();
 
-	Scene::Pop();
+	PopOrTitle();
 
 	Scene::OnTranslationChanged();
+}
+
+void Scene_Language::PopOrTitle() {
+	auto peek_scene = Scene::Peek();
+	if (!peek_scene || peek_scene->type == SceneType::Null || peek_scene->type == SceneType::Logo) {
+		Scene::Push(std::make_shared<Scene_Title>(), true);
+	} else {
+		Scene::Pop();
+	}
 }

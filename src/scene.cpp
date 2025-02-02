@@ -29,7 +29,9 @@
 #include "game_interpreter.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "scene_language.h"
 #include "scene_settings.h"
+#include "scene_title.h"
 #include "game_map.h"
 
 #ifndef NDEBUG
@@ -265,6 +267,12 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 	DEBUG_VALIDATE("Push");
 }
 
+std::shared_ptr<Scene> Scene::Peek() {
+	if (instances.size() == 1)
+		return nullptr;
+	return instances[instances.size() - 2];
+}
+
 void Scene::Pop() {
 	old_instances.push_back(instances.back());
 	instances.pop_back();
@@ -353,6 +361,19 @@ inline void Scene::DebugValidate(const char* caller) {
 	if (instances[0]->type != Null) {
 		Output::Error("Scene.instances[0] is of type={} in the Scene instances stack!", scene_names[instances[0]->type]);
 	}
+}
+
+void Scene::PushTitleScene(bool pop_stack_top) {
+	auto title_scene = Scene::Find(Scene::Title);
+	if (title_scene) {
+		return;
+	}
+
+	if (!Player::startup_language.empty()) {
+		Player::translation.SelectLanguage(Player::startup_language);
+	}
+
+	Scene::Push(std::make_shared<Scene_Title>(), pop_stack_top);
 }
 
 bool Scene::ReturnToTitleScene() {

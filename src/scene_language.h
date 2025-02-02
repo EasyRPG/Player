@@ -68,6 +68,7 @@ private:
 	void CreateTitleGraphic();
 	void OnTitleSpriteReady(FileRequestResult* result);
 
+	void PopOrTitle();
 
 	/** Displays all available translations (languages). */
 	std::unique_ptr<Window_Command> translate_window;

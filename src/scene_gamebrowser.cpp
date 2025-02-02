@@ -28,7 +28,6 @@
 #include "input.h"
 #include "player.h"
 #include "scene_logo.h"
-#include "scene_title.h"
 #include "bitmap.h"
 #include "audio.h"
 #include "output.h"
@@ -242,8 +241,5 @@ void Scene_GameBrowser::BootGame() {
 		return;
 	}
 
-	if (!Player::startup_language.empty()) {
-		Player::translation.SelectLanguage(Player::startup_language);
-	}
-	Scene::Push(std::make_shared<Scene_Title>());
+	Scene::PushTitleScene();
 }
