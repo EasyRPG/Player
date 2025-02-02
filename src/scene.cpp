@@ -24,6 +24,7 @@
 #include "player.h"
 #include "output.h"
 #include "audio.h"
+#include "filefinder.h"
 #include "transition.h"
 #include "game_actors.h"
 #include "game_interpreter.h"
@@ -371,6 +372,12 @@ void Scene::PushTitleScene(bool pop_stack_top) {
 
 	if (!Player::startup_language.empty()) {
 		Player::translation.SelectLanguage(Player::startup_language);
+	} else if (Player::translation.HasTranslations()) {
+		if (Player::player_config.lang_select_on_start.Get() == ConfigEnum::StartupLangSelect::Always
+			|| (!FileFinder::HasSavegame() && Player::player_config.lang_select_on_start.Get() == ConfigEnum::StartupLangSelect::FirstStartup)) {
+			Scene::Push(std::make_shared<Scene_Language>(), pop_stack_top);
+			return;
+		}
 	}
 
 	Scene::Push(std::make_shared<Scene_Title>(), pop_stack_top);

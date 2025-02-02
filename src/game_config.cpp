@@ -664,6 +664,8 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.settings_autosave.FromIni(ini);
 	player.settings_in_title.FromIni(ini);
 	player.settings_in_menu.FromIni(ini);
+	player.lang_select_on_start.FromIni(ini);
+	player.lang_select_in_title.FromIni(ini);
 	player.show_startup_logos.FromIni(ini);
 	player.font1.FromIni(ini);
 	player.font1_size.FromIni(ini);
@@ -751,13 +753,13 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.settings_autosave.ToIni(os);
 	player.settings_in_title.ToIni(os);
 	player.settings_in_menu.ToIni(os);
+	player.lang_select_on_start.ToIni(os);
+	player.lang_select_in_title.ToIni(os);
 	player.show_startup_logos.ToIni(os);
 	player.font1.ToIni(os);
 	player.font1_size.ToIni(os);
 	player.font2.ToIni(os);
 	player.font2_size.ToIni(os);
-	player.log_enabled.ToIni(os);
-	player.screenshot_scale.ToIni(os);
 
 	os << "\n";
 }
