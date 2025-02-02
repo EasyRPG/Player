@@ -51,6 +51,8 @@
 #include "scene_shop.h"
 #include "scene_debug.h"
 #include "scene_gameover.h"
+#include "scene_settings.h"
+#include "scene_language.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -161,17 +163,14 @@ bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_inde
 			Scene::instance->SetRequestedScene(std::make_shared<Scene_Order>());
 			return true;
 		}
-	/*
 	case 6: // Settings
 		Scene::instance->SetRequestedScene(std::make_shared<Scene_Settings>());
 		return true;
 	case 7: // Language
-		Scene::instance->SetRequestedScene(std::make_shared<Scene_Language>());
+		if (Player::translation.HasTranslations()) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Language>());
+		}
 		return true;
-	case 8: // Debug
-		Scene::instance->SetRequestedScene(std::make_shared<Scene_Debug>());
-		return true;
-		*/
 	}
 
 	Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
