@@ -122,6 +122,7 @@ namespace Player {
 	std::string escape_symbol;
 	uint32_t escape_char;
 	std::string game_title;
+	std::string game_title_original;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	std::string startup_language;
@@ -737,16 +738,7 @@ void Player::CreateGameObjects() {
 		}
 	}
 
-	std::stringstream title;
-	if (!game_title.empty()) {
-		Output::Debug("Loading game {}", game_title);
-		title << game_title << " - ";
-		Input::AddRecordingData(Input::RecordingData::GameTitle, game_title);
-	} else {
-		Output::Debug("Could not read game title.");
-	}
-	title << GAME_TITLE;
-	DisplayUi->SetTitle(title.str());
+	UpdateTitle(game_title);
 
 	if (no_rtp_warning_flag) {
 		Output::Debug("Game does not need RTP (FullPackageFlag=1)");
@@ -850,6 +842,28 @@ void Player::CreateGameObjects() {
 	if (Player::IsPatchDestiny()) {
 		Main_Data::game_destiny->Load();
 	}
+}
+
+void Player::UpdateTitle(std::string new_game_title) {
+	if (!game_title.empty() && game_title != new_game_title) {
+		if (game_title_original == new_game_title) {
+			game_title_original = "";
+		} else {
+			game_title_original = game_title;
+		}
+		game_title = new_game_title;
+	}
+
+	std::stringstream title;
+	if (!game_title.empty()) {
+		Output::Debug("Loading game {}", game_title);
+		title << new_game_title << " - ";
+		Input::AddRecordingData(Input::RecordingData::GameTitle, game_title);
+	} else {
+		Output::Debug("Could not read game title.");
+	}
+	title << GAME_TITLE;
+	DisplayUi->SetTitle(title.str());
 }
 
 bool Player::ChangeResolution(int width, int height) {

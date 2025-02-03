@@ -26,6 +26,7 @@
 #include <lcf/rpg/map.h>
 #include "lcf/rpg/mapinfo.h"
 
+#include "baseui.h"
 #include "cache.h"
 #include "font.h"
 #include "main_data.h"
@@ -116,6 +117,7 @@ void Translation::InitTranslations()
 				item.lang_desc = ini.GetString("Language", "Description", "");
 				item.lang_code = ini.GetString("Language", "Code", "");
 				item.lang_term = ini.GetString("Language", "Term", "Language");
+				item.game_title = ini.GetString("Language", "GameTitle", "");
 				item.use_builtin_font = Utils::LowerCase(ini.GetString("Language", "Font", "")) == "builtin";
 
 				if (item.lang_dir == "default") {
@@ -220,6 +222,12 @@ void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 		RewriteTreemapNames();
 		RewriteBattleEventMessages();
 		RewriteCommonEventMessages();
+	}
+
+	if (!current_language.game_title.empty()) {
+		Player::UpdateTitle(current_language.game_title);
+	} else if (!Player::game_title_original.empty()) {
+		Player::UpdateTitle(Player::game_title_original);
 	}
 
 	// Reset the cache, so that all images load fresh.
