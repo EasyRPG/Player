@@ -168,7 +168,7 @@ void Translation::SelectLanguage(StringView lang_id)
 	if (!lang_id.empty()) {
 		auto root = GetRootTree();
 		if (!root) {
-			Output::Error("Cannot load translation. 'Language' folder does not exist");
+			Output::Warning("Cannot load translation. 'Language' folder does not exist");
 			return;
 		}
 
