@@ -67,7 +67,9 @@ const char Scene::scene_names[SceneMax][12] =
 	"Logo",
 	"Order",
 	"GameBrowser",
-	"Teleport"
+	"Teleport",
+	"Settings",
+	"Language"
 };
 
 enum PushPopOperation {
@@ -98,6 +100,7 @@ lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
 		case Order:
 		case End:
 		case Settings:
+		case LanguageMenu:
 			return lcf::rpg::SaveSystem::Scene_menu;
 		case File:
 		case Save:

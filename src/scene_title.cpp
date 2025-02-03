@@ -119,7 +119,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 }
 
 void Scene_Title::Suspend(Scene::SceneType scene_type) {
-	if (scene_type == Scene::Settings || scene_type == Scene::Translation) {
+	if (scene_type == Scene::Settings || scene_type == Scene::LanguageMenu) {
 		restart_title_cache = true;
 	}
 

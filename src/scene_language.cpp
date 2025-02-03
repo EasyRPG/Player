@@ -45,7 +45,7 @@
 #endif
 
 Scene_Language::Scene_Language() {
-	Scene::type = Scene::Translation;
+	Scene::type = Scene::LanguageMenu;
 }
 
 void Scene_Language::CreateTitleGraphic() {

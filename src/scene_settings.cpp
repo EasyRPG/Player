@@ -71,7 +71,7 @@ void Scene_Settings::CreateMainWindow() {
 		{ Window_Settings::eSave,	"<Save Settings>"}
 	});
 
-	if (Player::translation.HasTranslations() && Scene::Peek()->type != SceneType::Title && Scene::Peek()->type != SceneType::Translation) {
+	if (Player::translation.HasTranslations() && Scene::Peek()->type != Scene::Title && Scene::Peek()->type != Scene::LanguageMenu) {
 		root_options.insert(root_options.begin() + 3, { Window_Settings::eLanguage, "Language" });
 	}
 
