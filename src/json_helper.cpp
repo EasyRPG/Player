@@ -253,6 +253,148 @@ namespace Json_Helper {
 		return json_obj.dump(std::max(0, indent));
 	}
 
-} // namespace Json_Helper
+	std::string RemoveValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
+		if (json_path.empty()) {
+			Output::Warning("JSON: Empty json pointer at: {}", json_path);
+			return {};
+		}
+
+		std::string path_str = std::string(json_path);
+		json::json_pointer ptr(path_str);
+
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
+		// Get parent path and key/index to remove
+		std::string parent_path;
+		std::string key;
+		size_t last_slash = path_str.find_last_of('/');
+
+		if (last_slash != std::string::npos) {
+			parent_path = path_str.substr(0, last_slash);
+			key = path_str.substr(last_slash + 1);
+		}
+		else {
+			// Top level removal
+			json_obj.erase(ptr);
+			return json_obj.dump();
+		}
+
+		json::json_pointer parent_ptr(parent_path);
+		json& parent = json_obj[parent_ptr];
+
+		if (parent.is_object()) {
+			parent.erase(key);
+		}
+		else if (parent.is_array()) {
+			// Check if key is a valid positive number
+			if (!key.empty() && key.find_first_not_of("0123456789") == std::string::npos) {
+				size_t index = 0;
+				std::istringstream(key) >> index;
+				if (index < parent.size()) {
+					parent.erase(index);
+				}
+			}
+			else {
+				Output::Warning("JSON: Invalid array index at: {}", json_path);
+				return {};
+			}
+		}
+
+		return json_obj.dump();
+	}
+
+	std::string PushValue(nlohmann::ordered_json& json_obj, std::string_view json_path, std::string_view value) {
+		if (json_path.empty()) {
+			Output::Warning("JSON: Empty json pointer at: {}", json_path);
+			return {};
+		}
+
+		std::string path_str = std::string(json_path);
+		json::json_pointer ptr(path_str);
+
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
+		json& array = json_obj[ptr];
+		if (!array.is_array()) {
+			Output::Warning("JSON: Path does not point to an array: {}", json_path);
+			return {};
+		}
+
+		json obj_value = json::parse(value, nullptr, false);
+		if (obj_value.is_discarded()) {
+			// If parsing fails, treat it as a string value
+			array.push_back(std::string(value));
+		}
+		else {
+			array.push_back(obj_value);
+		}
+
+		return json_obj.dump();
+	}
+
+	std::string PopValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
+		if (json_path.empty()) {
+			Output::Warning("JSON: Empty json pointer at: {}", json_path);
+			return {};
+		}
+
+		std::string path_str = std::string(json_path);
+		json::json_pointer ptr(path_str);
+
+		if (!json_obj.contains(ptr)) {
+			return {};
+		}
+
+		json& array = json_obj[ptr];
+		if (!array.is_array() || array.empty()) {
+			Output::Warning("JSON: Path does not point to a non-empty array: {}", json_path);
+			return {};
+		}
+
+		json popped = array[array.size() - 1];
+		array.erase(array.size() - 1);
+
+		return GetValueAsString(popped);
+	}
+
+	std::optional<bool> Contains(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
+		if (json_path.empty()) {
+			Output::Warning("JSON: Empty json pointer at: {}", json_path);
+			return {};
+		}
+
+		// Validate JSON pointer syntax (must start with / and contain valid tokens)
+		std::string path_str = std::string(json_path);
+		if (path_str[0] != '/') {
+			Output::Warning("JSON: Invalid pointer syntax - must start with /: {}", json_path);
+			return {};
+		}
+
+		// Split path and validate each token
+		std::string::size_type start = 1;
+		std::string::size_type pos;
+		while ((pos = path_str.find('/', start)) != std::string::npos) {
+			if (pos == start) {
+				Output::Warning("JSON: Invalid pointer syntax - empty reference token: {}", json_path);
+				return {};
+			}
+			start = pos + 1;
+		}
+
+		// Last token check
+		if (start < path_str.length() && path_str.back() == '/') {
+			Output::Warning("JSON: Invalid pointer syntax - trailing slash: {}", json_path);
+			return {};
+		}
+
+		json::json_pointer ptr(path_str);
+		return json_obj.contains(ptr);
+	}
+
+	} // namespace Json_Helper
 
 #endif // HAVE_NLOHMANN_JSON

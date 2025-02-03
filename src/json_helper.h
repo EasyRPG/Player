@@ -113,6 +113,39 @@ std::optional<std::string> GetPath(const nlohmann::ordered_json& json_obj, const
  */
 std::string PrettyPrint(const nlohmann::ordered_json& json_obj, int indent = 2);
 
+/**
+ * Removes a value at the specified path from a JSON object
+ * @param json_obj The JSON object to modify
+ * @param json_path The JSON pointer path to the value to remove
+ * @return The modified JSON object as a string, or empty string if path is invalid
+ */
+std::string RemoveValue(nlohmann::ordered_json& json_obj, std::string_view json_path);
+
+/**
+ * Pushes a value to the end of an array at the specified path
+ * @param json_obj The JSON object containing the array
+ * @param json_path The JSON pointer path to the array
+ * @param value The value to push (will be parsed as JSON if valid)
+ * @return The modified JSON object as a string, or empty string if path is invalid or not an array
+ */
+std::string PushValue(nlohmann::ordered_json& json_obj, std::string_view json_path, std::string_view value);
+
+/**
+ * Removes and returns the last element from an array at the specified path
+ * @param json_obj The JSON object containing the array
+ * @param json_path The JSON pointer path to the array
+ * @return The popped value as a string, or empty string if path is invalid or array is empty
+ */
+std::string PopValue(nlohmann::ordered_json& json_obj, std::string_view json_path);
+
+/**
+ * Checks if a key or array index exists at the specified path
+ * @param json_obj The JSON object to check
+ * @param json_path The JSON pointer path to check
+ * @return true if exists, false if not, empty if parent path is invalid
+ */
+std::optional<bool> Contains(const nlohmann::ordered_json& json_obj, std::string_view json_path);
+
 } // namespace Json_Helper
 
 #endif // HAVE_NLOHMANN_JSON
