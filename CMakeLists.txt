@@ -896,6 +896,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 else()
 	option(PLAYER_WITH_NLOHMANN_JSON "Support processing of JSON files" ON)
 	player_find_package(NAME nlohmann_json
+		VERSION 3.9.1
 		CONDITION PLAYER_WITH_NLOHMANN_JSON
 		DEFINITION HAVE_NLOHMANN_JSON
 		TARGET nlohmann_json::nlohmann_json
