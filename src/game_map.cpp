@@ -1393,7 +1393,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 		if (run_ce) {
-			interp.Push(run_ce);
+			interp.Push(run_ce, InterpreterExecutionType::AutoStart);
 		}
 
 		Game_Event* run_ev = nullptr;
@@ -1408,7 +1408,25 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 		if (run_ev) {
-			interp.Push(run_ev);
+			if (run_ev->WasStartedByDecisionKey()) {
+				interp.Push(run_ev, InterpreterExecutionType::Action);
+			} else {
+				switch (run_ev->GetTrigger()) {
+					case lcf::rpg::EventPage::Trigger_touched:
+						interp.Push(run_ev, InterpreterExecutionType::Touch);
+						break;
+					case lcf::rpg::EventPage::Trigger_collision:
+						interp.Push(run_ev, InterpreterExecutionType::Collision);
+						break;
+					case lcf::rpg::EventPage::Trigger_auto_start:
+						interp.Push(run_ev, InterpreterExecutionType::AutoStart);
+						break;
+					case lcf::rpg::EventPage::Trigger_action:
+					default:
+						interp.Push(run_ev, InterpreterExecutionType::Action);
+						break;
+				}
+			}
 			run_ev->ClearWaitingForegroundExecution();
 		}
 
@@ -1558,7 +1576,7 @@ static void OnEncounterEnd(BattleResult result) {
 	auto* ce = lcf::ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
 	if (ce) {
 		auto& interp = Game_Map::GetInterpreter();
-		interp.Push(ce);
+		interp.Push(ce, InterpreterExecutionType::DeathHandler);
 	}
 
 	auto tt = Game_Battle::GetDeathHandlerTeleport();

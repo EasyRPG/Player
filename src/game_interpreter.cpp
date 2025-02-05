@@ -101,9 +101,9 @@ bool Game_Interpreter::IsRunning() const {
 
 // Setup.
 void Game_Interpreter::Push(
+	InterpreterPush push_info,
 	std::vector<lcf::rpg::EventCommand> _list,
 	int event_id,
-	bool started_by_decision_key,
 	int event_page_id
 ) {
 	if (_list.empty()) {
@@ -114,14 +114,27 @@ void Game_Interpreter::Push(
 		Output::Error("Call Event limit ({}) has been exceeded", call_stack_limit);
 	}
 
+	auto type_ex = std::get<ExecutionType>(push_info);
+	auto type_src = std::get<EventType>(push_info);
+
 	lcf::rpg::SaveEventExecFrame frame;
 	frame.ID = _state.stack.size() + 1;
 	frame.commands = std::move(_list);
 	frame.current_command = 0;
-	frame.triggered_by_decision_key = started_by_decision_key;
-	frame.event_id = event_id;
+	frame.triggered_by_decision_key = type_ex == ExecutionType::Action;
+	if (type_src == EventType::MapEvent) {
+		frame.event_id = event_id;
+	}
 	frame.maniac_event_id = event_id;
 	frame.maniac_event_page_id = event_page_id;
+
+	if (type_ex <= ExecutionType::BattleParallel) {
+		frame.maniac_event_info = static_cast<int>(type_ex);
+	}
+
+	if (type_src <= EventType::BattleEvent) {
+		frame.maniac_event_info |= static_cast<int>(type_src);
+	}
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
 		Main_Data::game_system->ClearMessageFace();
@@ -536,16 +549,31 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 }
 
 // Setup Starting Event
-void Game_Interpreter::Push(Game_Event* ev) {
-	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey(), ev->GetActivePage() ? ev->GetActivePage()->ID : 0);
+void Game_Interpreter::Push(Game_Event* ev, ExecutionType ex_type) {
+	assert(ex_type <= ExecutionType::Call || ex_type == ExecutionType::DebugCall);
+
+	Push(
+		{ ex_type, EventType::MapEvent },
+		ev->GetList(), ev->GetId(), ev->GetActivePage() ? ev->GetActivePage()->ID : 0
+	);
 }
 
-void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key) {
-	Push(page->event_commands, ev->GetId(), triggered_by_decision_key, page->ID);
+void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, ExecutionType ex_type) {
+	assert(ex_type <= ExecutionType::Call || ex_type == ExecutionType::DebugCall);
+
+	Push(
+		{ ex_type, EventType::MapEvent },
+		page->event_commands, ev->GetId(), page->ID
+	);
 }
 
-void Game_Interpreter::Push(Game_CommonEvent* ev) {
-	Push(ev->GetList(), 0, false);
+void Game_Interpreter::Push(Game_CommonEvent* ev, ExecutionType ex_type) {
+	assert(ex_type == ExecutionType::AutoStart || ex_type == ExecutionType::Parallel
+		|| ex_type == ExecutionType::Call || ex_type == ExecutionType::DeathHandler
+		|| ex_type == ExecutionType::DebugCall
+	);
+
+	Push({ ex_type, EventType::CommonEvent }, ev->GetList(), ev->GetId());
 }
 
 bool Game_Interpreter::CheckGameOver() {
@@ -3984,7 +4012,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 			return true;
 		}
 
-		Push(common_event);
+		Push(common_event, ExecutionType::Call);
 
 		return true;
 	}
@@ -4012,7 +4040,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 		return true;
 	}
 
-	Push(page->event_commands, event->GetId(), false, page->ID);
+	Push({ ExecutionType::Call, EventType::MapEvent }, page->event_commands, event->GetId(), page->ID);
 
 	return true;
 }
@@ -5382,7 +5410,7 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push({ cmd }, GetCurrentEventId(), false); //FIXME: add some new flag, so the interpreter debug view (window_interpreter) can differentiate this frame from normal ones
+	Push({ ExecutionType::Eval, EventType::None }, { cmd }, GetCurrentEventId(), 0);
 
 	return true;
 }

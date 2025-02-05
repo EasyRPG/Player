@@ -38,6 +38,9 @@ class Game_Event;
 class Game_CommonEvent;
 class PendingMessage;
 
+
+using InterpreterPush = std::tuple<InterpreterExecutionType, InterpreterEventType>;
+
 /**
  * Game_Interpreter class
  */
@@ -65,14 +68,15 @@ public:
 	void Update(bool reset_loop_count=true);
 
 	void Push(
-			std::vector<lcf::rpg::EventCommand> _list,
-			int _event_id,
-			bool started_by_decision_key = false,
-			int event_page_id = 0
+		InterpreterPush push_info,
+		std::vector<lcf::rpg::EventCommand> _list,
+		int _event_id,
+		int event_page_id = 0
 	);
-	void Push(Game_Event* ev);
-	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
-	void Push(Game_CommonEvent* ev);
+
+	void Push(Game_Event* ev, InterpreterExecutionType ex_type);
+	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
+	void Push(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
 
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
