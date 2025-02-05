@@ -33,6 +33,8 @@
 #include <cassert>
 #include "scene_battle.h"
 
+using namespace Game_Interpreter_Shared;
+
 enum BranchBattleSubcommand {
 	eOptionBranchBattleElse = 1
 };
@@ -211,7 +213,7 @@ int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flag
 			continue;
 		}
 		Clear();
-		Push(page.event_commands, 0);
+		Push({ ExecutionType::Eval, EventType::None }, page.event_commands, 0); // FIXME: clarify type_src & type_ex for battle events
 		executed[i] = true;
 		return i + 1;
 	}
@@ -275,7 +277,7 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(lcf::rpg::EventCommand cons
 		return true;
 	}
 
-	Push(common_event);
+	Push(common_event, ExecutionType::Call);
 
 	return true;
 }
@@ -643,9 +645,9 @@ bool Game_Interpreter_Battle::ManiacBattleHook(ManiacBattleHookType hook_type, i
 		Output::Warning("CommandManiacControlBattle: Can't call invalid common event {}", common_event_id);
 		return false;
 	}
-
+	
 	// pushes the common event to be run into the queue of events.
-	maniac_interpreter->Push(common_event);
+	maniac_interpreter->Push(common_event, ExecutionType::Call); // FIXME: clarify type_src & type_ex for battle events
 
 	// pushes the change variable events into the interpreters
 	// event queue, so we don't run into a race condition.
@@ -683,7 +685,7 @@ bool Game_Interpreter_Battle::ManiacBattleHook(ManiacBattleHookType hook_type, i
 	}
 
 	// Push is actually "push_back", so this gets added before other events.
-	maniac_interpreter->Push(pre_commands, 0);
+	maniac_interpreter->Push({ ExecutionType::Eval, EventType::None }, pre_commands, 0);  // FIXME: clarify type_src & type_ex for battle events
 
 	// Necessary to start the sub-event.
 	maniac_interpreter->Update();
