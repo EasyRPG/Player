@@ -191,7 +191,7 @@ private:
 	bool interpreter_states_cached = false;
 
 	void UpdateInterpreterWindow(int index);
-	lcf::rpg::SaveEventExecFrame& GetSelectedInterpreterFrameFromUiState() const;
+	lcf::rpg::SaveEventExecFrame const& GetSelectedInterpreterFrameFromUiState() const;
 	struct {
 		Debug::ParallelInterpreterStates background_states;
 

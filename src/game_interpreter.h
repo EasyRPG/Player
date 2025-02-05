@@ -351,7 +351,23 @@ protected:
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
-	friend class Scene_Debug;
+	friend class Game_Interpreter_Inspector;
+};
+
+class Game_Interpreter_Inspector {
+public:
+	bool IsInActiveExcecution(Game_Event const& ev, bool background_only);
+
+	bool IsInActiveExcecution(Game_CommonEvent const& ce, bool background_only);
+
+	lcf::rpg::SaveEventExecState const& GetForegroundExecState();
+	lcf::rpg::SaveEventExecState& GetForegroundExecStateUnsafe();
+
+	lcf::rpg::SaveEventExecState const& GetExecState(Game_Event const& ev);
+	lcf::rpg::SaveEventExecState const& GetExecState(Game_CommonEvent const& ce);
+
+	lcf::rpg::SaveEventExecState& GetExecStateUnsafe(Game_Event& ev);
+	lcf::rpg::SaveEventExecState& GetExecStateUnsafe(Game_CommonEvent& ce);
 };
 
 inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {

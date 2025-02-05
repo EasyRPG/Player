@@ -66,6 +66,8 @@ namespace Debug {
 	std::vector<CallStackItem> CreateCallStack(const int owner_evt_id, const lcf::rpg::SaveEventExecState& state);
 
 	std::string FormatEventName(Game_Character const& ev);
+
+	std::string FormatEventName(Game_CommonEvent const& ce);
 }
 
 #endif

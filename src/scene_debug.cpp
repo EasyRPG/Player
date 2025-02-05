@@ -863,7 +863,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 					skip_items--;
 					continue;
 				}
-				auto& [evt_id, state] = bg_states.GetEventInterpreter(i);
+				const auto& [evt_id, state] = bg_states.GetEventInterpreter(i);
 				addItem(fmt::format("{}EV{:04d}: {}", state.wait_movement ? "(W) " : "", evt_id, Game_Map::GetEvent(evt_id)->GetName()));
 				count_items++;
 			}
@@ -872,7 +872,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 					skip_items--;
 					continue;
 				}
-				auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(i);
+				const auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(i);
 				auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, ce_id);
 				addItem(fmt::format("{}CE{:04d}: {}", state.wait_movement ? "(W) " : "", ce_id, ce->name));
 				count_items++;
@@ -1231,18 +1231,14 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 		first_line = Game_Battle::IsBattleRunning() ? "Foreground (Battle)" : "Foreground (Map)";
 		valid = true;
 	} else if (index <= bg_states.CountEventInterpreters()) {
-		auto tuple = bg_states.GetEventInterpreter(index - 1);
-		evt_id = std::get<0>(tuple);
-		state = std::get<1>(tuple);
-		first_line = fmt::format("EV{:04d}: {}", evt_id, Game_Map::GetEvent(evt_id)->GetName());
+		const auto& [evt_id, state] = bg_states.GetEventInterpreter(index - 1);
+		first_line = Debug::FormatEventName(*Game_Map::GetEvent(evt_id));
 		valid = true;
 	} else if ((index - bg_states.CountEventInterpreters()) <= bg_states.CountCommonEventInterpreters()) {
-		auto tuple = bg_states.GetCommonEventInterpreter(index - bg_states.CountEventInterpreters() - 1);
-		int ce_id = std::get<0>(tuple);
-		state = std::get<1>(tuple);
+		const auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(index - bg_states.CountEventInterpreters() - 1);
 		for (auto& ce : Game_Map::GetCommonEvents()) {
-			if (ce.common_event_id == ce_id) {
-				first_line = fmt::format("CE{:04d}: {}", ce_id, ce.GetName());
+			if (ce.GetId() == ce_id) {
+				first_line = Debug::FormatEventName(ce);
 				evt_id = ce_id;
 				valid = true;
 				break;
@@ -1259,30 +1255,32 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 	}
 }
 
-lcf::rpg::SaveEventExecFrame& Scene_Debug::GetSelectedInterpreterFrameFromUiState() const {
+lcf::rpg::SaveEventExecFrame const& Scene_Debug::GetSelectedInterpreterFrameFromUiState() const {
 	static lcf::rpg::SaveEventExecFrame empty;
 
 	if (state_interpreter.selected_state <= 0 || state_interpreter.selected_frame < 0) {
 		return empty;
 	}
 
+	Game_Interpreter_Inspector inspector;
+
 	int index = state_interpreter.selected_state;
 	const auto& bg_states = state_interpreter.background_states;
 
 	if (index == 1) {
-		auto& state = Game_Interpreter::GetForegroundInterpreter()._state;
+		auto const& state = inspector.GetForegroundExecState();
 		return state.stack[state_interpreter.selected_frame];
 	} else if (index <= bg_states.CountEventInterpreters()) {
 		int evt_id = std::get<0>(bg_states.GetEventInterpreter(index - 1));
 		auto ev = Game_Map::GetEvent(evt_id);
 
-		auto& state = ev->interpreter->_state;
+		auto const& state = inspector.GetExecState(*ev);
 		return state.stack[state_interpreter.selected_frame];
 	} else if ((index - bg_states.CountEventInterpreters()) <= bg_states.CountCommonEventInterpreters()) {
 		int ce_id = std::get<0>(bg_states.GetEventInterpreter(index - bg_states.CountEventInterpreters() - 1));
 		for (auto& ce : Game_Map::GetCommonEvents()) {
-			if (ce.common_event_id == ce_id) {
-				auto& state = ce.interpreter->_state;
+			if (ce.GetId() == ce_id) {
+				auto const& state = inspector.GetExecState(ce);
 				return state.stack[state_interpreter.selected_frame];
 			}
 		}

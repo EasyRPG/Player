@@ -5784,3 +5784,63 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 
 	return value;
 }
+
+namespace {
+	lcf::rpg::SaveEventExecState const& empty_state = {};
+}
+
+
+lcf::rpg::SaveEventExecState const& Game_Interpreter_Inspector::GetForegroundExecState() {
+	return Game_Interpreter::GetForegroundInterpreter()._state;
+}
+
+lcf::rpg::SaveEventExecState& Game_Interpreter_Inspector::GetForegroundExecStateUnsafe() {
+	return Game_Interpreter::GetForegroundInterpreter()._state;
+}
+
+lcf::rpg::SaveEventExecState const& Game_Interpreter_Inspector::GetExecState(Game_Event const& ev) {
+	if (!ev.interpreter) {
+		return empty_state;
+	}
+	return ev.interpreter->GetState();
+}
+
+lcf::rpg::SaveEventExecState const& Game_Interpreter_Inspector::GetExecState(Game_CommonEvent const& ce) {
+	if (!ce.interpreter) {
+		return empty_state;
+	}
+	return ce.interpreter->GetState();
+}
+
+lcf::rpg::SaveEventExecState& Game_Interpreter_Inspector::GetExecStateUnsafe(Game_Event& ev) {
+	assert(ev.interpreter);
+	return ev.interpreter->_state;
+}
+
+lcf::rpg::SaveEventExecState& Game_Interpreter_Inspector::GetExecStateUnsafe(Game_CommonEvent& ce) {
+	assert(ce.interpreter);
+	return ce.interpreter->_state;
+}
+
+bool Game_Interpreter_Inspector::IsInActiveExcecution(Game_Event const& ev, bool background_only) {
+	if (!background_only) {
+		//TODO
+	}
+	if (!ev.IsActive() || ev.GetTrigger() != lcf::rpg::EventPage::Trigger_parallel) {
+		return false;
+	}
+	auto pg = ev.GetActivePage();
+	if (pg == nullptr || pg->event_commands.empty())
+		return false;
+	return ev.interpreter && ev.interpreter->IsRunning();
+}
+
+bool Game_Interpreter_Inspector::IsInActiveExcecution(Game_CommonEvent const& ce, bool background_only) {
+	if (!background_only) {
+		//TODO
+	}
+	if (!ce.IsWaitingBackgroundExecution(false)) {
+		return false;
+	}
+	return ce.interpreter && ce.interpreter->IsRunning();
+}

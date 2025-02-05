@@ -25,6 +25,8 @@
 #include <lcf/reader_util.h>
 
 Debug::ParallelInterpreterStates Debug::ParallelInterpreterStates::GetCachedStates() {
+	Game_Interpreter_Inspector inspector;
+
 	std::vector<int> ev_ids;
 	std::vector<int> ce_ids;
 
@@ -33,16 +35,19 @@ Debug::ParallelInterpreterStates Debug::ParallelInterpreterStates::GetCachedStat
 
 	if (Game_Map::GetMapId() > 0) {
 		for (auto& ev : Game_Map::GetEvents()) {
-			if (ev.GetTrigger() != lcf::rpg::EventPage::Trigger_parallel || !ev.interpreter)
+			if (!inspector.IsInActiveExcecution(ev, true)) {
 				continue;
+			}
+
 			ev_ids.emplace_back(ev.GetId());
-			state_ev.emplace_back(ev.interpreter->GetState());
+			state_ev.emplace_back(inspector.GetExecState(ev));
 		}
 		for (auto& ce : Game_Map::GetCommonEvents()) {
-			if (ce.IsWaitingBackgroundExecution(false)) {
-				ce_ids.emplace_back(ce.common_event_id);
-				state_ce.emplace_back(ce.interpreter->GetState());
+			if (!inspector.IsInActiveExcecution(ce, true)) {
+				continue;
 			}
+			ce_ids.emplace_back(ce.GetId());
+			state_ce.emplace_back(inspector.GetExecState(ce));
 		}
 	} else if (Game_Battle::IsBattleRunning() && Player::IsPatchManiac()) {
 		//FIXME: Not implemented: battle common events
@@ -134,4 +139,11 @@ std::string Debug::FormatEventName(Game_Character const& ch) {
 			assert(false);
 	}
 	return "";
+}
+
+std::string Debug::FormatEventName(Game_CommonEvent const& ce) {
+	if (ce.GetName().empty()) {
+		return fmt::format("CE{:04d}", ce.GetIndex());
+	}
+	return fmt::format("CE{:04d}: '{}'", ce.GetIndex(), ce.GetName());
 }

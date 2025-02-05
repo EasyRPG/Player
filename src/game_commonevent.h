@@ -121,8 +121,7 @@ private:
 	/** Interpreter for parallel common events. */
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 
-	friend class Scene_Debug;
-	friend class Debug::ParallelInterpreterStates;
+	friend class Game_Interpreter_Inspector;
 };
 
 #endif
