@@ -40,6 +40,12 @@ namespace Game_Interpreter_Shared {
 		CommonEvent,
 		BattleEvent
 	};
+	static constexpr auto kEventType = lcf::makeEnumTags<EventType>(
+		"None",
+		"MapEvent",
+		"CommonEvent",
+		"BattleEvent"
+	);
 
 	enum class ExecutionType {
 		/*
@@ -64,6 +70,21 @@ namespace Game_Interpreter_Shared {
 		Eval,
 		DebugCall
 	};
+	static constexpr auto kExecutionType = lcf::makeEnumTags<ExecutionType>(
+		"Action",
+		"Touch",
+		"Collision",
+		"AutoStart",
+		"Parallel",
+		"Call",
+		"BattleStart",
+		"BattleParallel",
+		"---",
+		"---",
+		"DeathHandler",
+		"Eval",
+		"DebugCall"
+	);
 
 	/*
 	* Indicates how the target of an interpreter operation (lvalue) should be evaluated.
