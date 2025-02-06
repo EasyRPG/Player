@@ -199,7 +199,11 @@ void Window_Interpreter::DrawDescriptionLines() {
 	rect = GetItemRect(i++);
 	contents->ClearRect(rect);
 
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, "Stack Size: ");
+	auto str_ex_type = std::string(Game_Interpreter_Shared::kExecutionType.tag(static_cast<int>(stack_display_items[0].type_ex)));
+	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, "(");
+	contents->TextDraw(rect.x + 6, rect.y, Font::ColorHeal, str_ex_type);
+	contents->TextDraw(rect.x + 6 * (str_ex_type.length() + 1), rect.y, Font::ColorDefault, ")");
+	contents->TextDraw(rect.x + rect.width / 2, rect.y, Font::ColorDefault, "Stack Size: ");
 	contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorCritical, std::to_string(state.stack.size()), Text::AlignRight);
 }
 
