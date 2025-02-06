@@ -133,7 +133,7 @@ void Game_Interpreter::Push(
 	}
 
 	if (type_src <= EventType::BattleEvent) {
-		frame.maniac_event_info |= static_cast<int>(type_src);
+		frame.maniac_event_info |= (static_cast<int>(type_src) << 4);
 	}
 
 	if (_state.stack.empty() && main_flag && !Game_Battle::IsBattleRunning()) {
@@ -4208,8 +4208,30 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
 			break;
 		case 4: // Get command interpreter state
-			// FIXME: figure out how 'command interpreter state' works
-			Output::Warning("GetGameInfo: Option 'Command Interpreter State' not implemented.");
+		{
+			// Parameter "Nest" in the English version of Maniacs
+			// This value specifies how far you'd want to go back the stack
+			int peek = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
+
+			//First set everything to '0'
+			Main_Data::game_variables->SetRange(var, var + 4, 0);
+
+			int stack_no = _state.stack.size() - peek;
+			if (stack_no > 0) {
+				auto frame = &_state.stack[stack_no - 1];
+
+				// Note: It looks like for Battles, Maniacs doesn't give out any detailed interpreter
+				// information via this command (only the current command line: frame->current_command)
+				// The others are implemented here nonetheless for consistency.
+				// (This is true for both the normal "Troop" events & the new "Battle Start"/"Battle Parallel" execution types)
+
+				Main_Data::game_variables->Set(var, static_cast<int>(ManiacEventType(*frame)));
+				Main_Data::game_variables->Set(var + 1, frame->maniac_event_id);
+				Main_Data::game_variables->Set(var + 2, frame->maniac_event_page_id);
+				Main_Data::game_variables->Set(var + 3, static_cast<int>(ManiacExecutionType(*frame)));
+				Main_Data::game_variables->Set(var + 4, frame->current_command + 1);
+			}
+		}
 			break;
 		case 5: // Get tileset ID
 			Main_Data::game_variables->Set(var, Game_Map::GetChipset());

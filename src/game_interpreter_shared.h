@@ -146,6 +146,9 @@ namespace Game_Interpreter_Shared {
 
 	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const& state_runtime_flags, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
 #endif
+
+	ExecutionType ManiacExecutionType(lcf::rpg::SaveEventExecFrame const& frame);
+	EventType ManiacEventType(lcf::rpg::SaveEventExecFrame const& frame);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
@@ -182,6 +185,27 @@ inline bool Game_Interpreter_Shared::ManiacCheckContinueLoop(int val, int val2, 
 		default:
 			return false;
 	}
+}
+
+using InterpreterExecutionType = Game_Interpreter_Shared::ExecutionType;
+using InterpreterEventType = Game_Interpreter_Shared::EventType;
+
+inline InterpreterExecutionType Game_Interpreter_Shared::ManiacExecutionType(lcf::rpg::SaveEventExecFrame const& frame) {
+	if (int type_ex = (frame.maniac_event_info & 0xF); type_ex <= static_cast<int>(ExecutionType::BattleParallel)) {
+		return static_cast<InterpreterExecutionType>(type_ex);
+	}
+	return InterpreterExecutionType::Action;
+}
+
+inline InterpreterEventType Game_Interpreter_Shared::ManiacEventType(lcf::rpg::SaveEventExecFrame const& frame) {
+	if ((frame.maniac_event_info & 0x10) > 0) {
+		return InterpreterEventType::MapEvent;
+	} else if ((frame.maniac_event_info & 0x20) > 0) {
+		return InterpreterEventType::CommonEvent;
+	} else if ((frame.maniac_event_info & 0x40) > 0) {
+		return InterpreterEventType::BattleEvent;
+	}
+	return InterpreterEventType::None;
 }
 
 class Game_BaseInterpreterContext {
@@ -243,8 +267,5 @@ protected:
 		return (static_cast<ClassType*>(this)->*CMDFN)(com);
 	}
 };
-
-using InterpreterExecutionType = Game_Interpreter_Shared::ExecutionType;
-using InterpreterEventType = Game_Interpreter_Shared::EventType;
 
 #endif
