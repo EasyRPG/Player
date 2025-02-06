@@ -56,65 +56,51 @@ Debug::ParallelInterpreterStates Debug::ParallelInterpreterStates::GetCachedStat
 	return { ev_ids, ce_ids, state_ev, state_ce };
 }
 
-std::vector<Debug::CallStackItem> Debug::CreateCallStack(const int owner_evt_id, const lcf::rpg::SaveEventExecState& state) {
-	std::vector<CallStackItem> items(state.stack.size());
+std::vector<Debug::CallStackItem> Debug::CreateCallStack(const lcf::rpg::SaveEventExecState& state) {
+	std::vector<CallStackItem> items;
+	items.reserve(state.stack.size());
 
 	for (int i = state.stack.size() - 1; i >= 0; i--) {
-		int evt_id = state.stack[i].event_id;
-		int page_id = 0;
-		if (state.stack[i].maniac_event_id > 0) {
-			evt_id = state.stack[i].maniac_event_id;
-			page_id = state.stack[i].maniac_event_page_id;
-		}
-		if (evt_id == 0 && i == 0)
-			evt_id = owner_evt_id;
+		auto& frame = state.stack[i];
 
-		bool is_calling_ev_ce = false;
+		bool map_has_changed = (frame.event_id == 0 && frame.maniac_event_id > 0);
 
-		//FIXME: There are some currently unimplemented SaveEventExecFrame fields introduced via the ManiacPatch which should be used to properly get event state information
-		if (evt_id == 0 && i > 0) {
-			auto& prev_frame = state.stack[i - 1];
-			auto& com = prev_frame.commands[prev_frame.current_command - 1];
-			if (com.code == 12330) { // CallEvent
-				if (com.parameters[0] == 0) {
-					is_calling_ev_ce = true;
-					evt_id = com.parameters[1];
-				} else if (com.parameters[0] == 3 && Player::IsPatchManiac()) {
-					is_calling_ev_ce = true;
-					evt_id = Main_Data::game_variables->Get(com.parameters[1]);
-				} else if (com.parameters[0] == 4 && Player::IsPatchManiac()) {
-					is_calling_ev_ce = true;
-					evt_id = Main_Data::game_variables->GetIndirect(com.parameters[1]);
-				}
-			}
-		}
-
-		auto item = Debug::CallStackItem();
-		item.stack_item_no = i + 1;
-		item.is_ce = is_calling_ev_ce;
-		item.evt_id = evt_id;
-		item.page_id = page_id;
-		item.name = "";
-		item.cmd_current = state.stack[i].current_command;
-		item.cmd_count = state.stack[i].commands.size();
-
-		if (item.is_ce) {
-			auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, item.evt_id);
-			if (ce) {
-				item.name = ToString(ce->name);
-			}
-		} else {
-			auto* ev = Game_Map::GetEvent(evt_id);
-			if (ev) {
-				//FIXME: map could have changed, but map_id isn't available
-				item.name = ToString(ev->GetName());
-			}
-		}
+		Debug::CallStackItem item = {
+			Game_Interpreter_Shared::EasyRpgExecutionType(frame),
+			Game_Interpreter_Shared::EasyRpgEventType(frame),
+			frame.maniac_event_id,
+			frame.maniac_event_page_id,
+			GetEventName(frame),
+			i + 1,					//stack_item_no
+			frame.current_command,	// cmd_current
+			frame.commands.size(),	// cmd_count
+			map_has_changed
+		};
 
 		items.push_back(item);
 	}
 
 	return items;
+}
+
+std::string Debug::GetEventName(const lcf::rpg::SaveEventExecFrame& frame) {
+	switch (Game_Interpreter_Shared::EasyRpgEventType(frame)) {
+		case InterpreterEventType::MapEvent:
+			if (auto* ev = Game_Map::GetEvent(frame.event_id)) {
+				return ToString(ev->GetName());
+			} else if (frame.maniac_event_id > 0) {
+				return fmt::format("[(EV{:04d}) from another map..]", frame.maniac_event_id);
+			}
+			break;
+		case InterpreterEventType::CommonEvent:
+			if (auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, frame.maniac_event_id)) {
+				return ToString(ce->name);
+			}
+			break;
+		default:
+			break;
+	}
+	return "";
 }
 
 std::string Debug::FormatEventName(Game_Character const& ch) {

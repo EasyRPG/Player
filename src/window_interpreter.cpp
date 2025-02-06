@@ -81,8 +81,8 @@ Window_Interpreter::~Window_Interpreter() {
 
 }
 
-void Window_Interpreter::SetStackState(bool is_ce, int owner_evt_id, std::string interpreter_desc, lcf::rpg::SaveEventExecState state) {
-	this->display_item = { is_ce, owner_evt_id, interpreter_desc };
+void Window_Interpreter::SetStackState(std::string interpreter_desc, lcf::rpg::SaveEventExecState state) {
+	this->display_item = { interpreter_desc };
 	this->state = state;
 }
 
@@ -99,10 +99,7 @@ void Window_Interpreter::Refresh() {
 
 	int max_cmd_count = 0, max_evt_id = 10, max_page_id = 0;
 
-	stack_display_items = Debug::CreateCallStack(display_item.owner_evt_id, state);
-	if (stack_display_items.size() > 0 && this->display_item.is_ce) {
-		stack_display_items[0].is_ce = true;
-	}
+	stack_display_items = Debug::CreateCallStack(state);
 
 	for (auto it = stack_display_items.begin(); it < stack_display_items.end(); ++it) {
 		auto& item = *it;
@@ -214,13 +211,33 @@ void Window_Interpreter::DrawStackLine(int index) {
 	Debug::CallStackItem& item = stack_display_items[index];
 
 	contents->TextDraw(rect.x, rect.y, Font::ColorDisabled, fmt::format("[{:0" + std::to_string(digits_stackitemno) + "d}]", state.stack.size() - index));
-	if (item.is_ce) {
-		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("CE{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id));
-	} else if (item.page_id > 0) {
-		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}[{:0" + std::to_string(digits_page_id) + "d}]", item.evt_id, item.page_id));
-	} else {
-		contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, Font::ColorDefault, fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id));
+
+	std::string formatted_id;
+	Font::SystemColor color = Font::ColorDefault;
+
+	switch (item.type_ev) {
+		case InterpreterEventType::MapEvent:
+			if (item.page_id > 0) {
+				formatted_id = fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}[{:0" + std::to_string(digits_page_id) + "d}]", item.evt_id, item.page_id);
+			} else {
+				formatted_id = fmt::format("EV{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id);
+			}
+			if (item.map_has_changed) {
+				color = Font::ColorKnockout;
+			}
+			break;
+		case InterpreterEventType::CommonEvent:
+			formatted_id = fmt::format("CE{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id);
+			break;
+		case InterpreterEventType::BattleEvent:
+			formatted_id = fmt::format("BE{:0" + std::to_string(digits_evt_id) + "d}", item.evt_id);
+			break;
+		default:
+			formatted_id = fmt::format("{:0" + std::to_string(digits_evt_id + 2) + "d}", 0);
+			color = Font::ColorKnockout;
+			break;
 	}
+	contents->TextDraw(rect.x + (digits_stackitemno * 6) + 16, rect.y, color, formatted_id);
 
 	std::string name = item.name;
 	int max_length = 28;

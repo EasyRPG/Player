@@ -1219,7 +1219,7 @@ void Scene_Debug::UpdateArrows() {
 }
 
 void Scene_Debug::UpdateInterpreterWindow(int index) {
-	lcf::rpg::SaveEventExecState state;
+	lcf::rpg::SaveEventExecState state_display;
 	std::string first_line = "";
 	bool valid = false;
 	int evt_id = 0;
@@ -1227,15 +1227,17 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 	auto& bg_states = state_interpreter.background_states;
 
 	if (index == 1) {
-		state = Game_Interpreter::GetForegroundInterpreter().GetState();
+		state_display = Game_Interpreter::GetForegroundInterpreter().GetState();
 		first_line = Game_Battle::IsBattleRunning() ? "Foreground (Battle)" : "Foreground (Map)";
 		valid = true;
 	} else if (index <= bg_states.CountEventInterpreters()) {
 		const auto& [evt_id, state] = bg_states.GetEventInterpreter(index - 1);
 		first_line = Debug::FormatEventName(*Game_Map::GetEvent(evt_id));
+		state_display = state;
 		valid = true;
 	} else if ((index - bg_states.CountEventInterpreters()) <= bg_states.CountCommonEventInterpreters()) {
 		const auto& [ce_id, state] = bg_states.GetCommonEventInterpreter(index - bg_states.CountEventInterpreters() - 1);
+		state_display = state;
 		for (auto& ce : Game_Map::GetCommonEvents()) {
 			if (ce.GetId() == ce_id) {
 				first_line = Debug::FormatEventName(ce);
@@ -1248,10 +1250,10 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 
 	if (valid) {
 		state_interpreter.selected_state = index;
-		interpreter_window->SetStackState(index > bg_states.CountEventInterpreters(), evt_id, first_line, state);
+		interpreter_window->SetStackState(first_line, state_display);
 	} else {
 		state_interpreter.selected_state = -1;
-		interpreter_window->SetStackState(0, 0, "", {});
+		interpreter_window->SetStackState("", {});
 	}
 }
 

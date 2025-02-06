@@ -73,7 +73,7 @@ public:
 
 	void Update() override;
 
-	void SetStackState(bool is_ce, int owner_evt_id, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
+	void SetStackState(std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
 	void Refresh();
 	bool IsValid();
 
@@ -90,8 +90,6 @@ protected:
 #endif
 private:
 	struct InterpDisplayItem {
-		bool is_ce = false;
-		int owner_evt_id = 0;
 		std::string desc;
 	};
 
