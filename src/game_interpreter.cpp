@@ -100,7 +100,7 @@ bool Game_Interpreter::IsRunning() const {
 }
 
 // Setup.
-void Game_Interpreter::Push(
+void Game_Interpreter::PushInternal(
 	InterpreterPush push_info,
 	std::vector<lcf::rpg::EventCommand> _list,
 	int event_id,
@@ -549,31 +549,22 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 }
 
 // Setup Starting Event
-void Game_Interpreter::Push(Game_Event* ev, ExecutionType ex_type) {
-	assert(ex_type <= ExecutionType::Call || ex_type == ExecutionType::DebugCall);
-
-	Push(
+void Game_Interpreter::PushInternal(Game_Event* ev, ExecutionType ex_type) {
+	PushInternal(
 		{ ex_type, EventType::MapEvent },
 		ev->GetList(), ev->GetId(), ev->GetActivePage() ? ev->GetActivePage()->ID : 0
 	);
 }
 
-void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page, ExecutionType ex_type) {
-	assert(ex_type <= ExecutionType::Call || ex_type == ExecutionType::DebugCall);
-
-	Push(
+void Game_Interpreter::PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, ExecutionType ex_type) {
+	PushInternal(
 		{ ex_type, EventType::MapEvent },
 		page->event_commands, ev->GetId(), page->ID
 	);
 }
 
-void Game_Interpreter::Push(Game_CommonEvent* ev, ExecutionType ex_type) {
-	assert(ex_type == ExecutionType::AutoStart || ex_type == ExecutionType::Parallel
-		|| ex_type == ExecutionType::Call || ex_type == ExecutionType::DeathHandler
-		|| ex_type == ExecutionType::DebugCall
-	);
-
-	Push({ ex_type, EventType::CommonEvent }, ev->GetList(), ev->GetId());
+void Game_Interpreter::PushInternal(Game_CommonEvent* ev, ExecutionType ex_type) {
+	PushInternal({ ex_type, EventType::CommonEvent }, ev->GetList(), ev->GetId());
 }
 
 bool Game_Interpreter::CheckGameOver() {
@@ -4012,7 +4003,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 			return true;
 		}
 
-		Push(common_event, ExecutionType::Call);
+		Push<ExecutionType::Call>(common_event);
 
 		return true;
 	}
@@ -4040,7 +4031,7 @@ bool Game_Interpreter::CommandCallEvent(lcf::rpg::EventCommand const& com) { // 
 		return true;
 	}
 
-	Push({ ExecutionType::Call, EventType::MapEvent }, page->event_commands, event->GetId(), page->ID);
+	Push<ExecutionType::Call, EventType::MapEvent>(page->event_commands, event->GetId(), page->ID);
 
 	return true;
 }
@@ -5432,7 +5423,7 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 
 	// Our implementation pushes a new frame containing the command instead of invoking it directly.
 	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push({ ExecutionType::Eval, EventType::None }, { cmd }, GetCurrentEventId(), 0);
+	Push<ExecutionType::Eval, EventType::None>({ cmd }, GetCurrentEventId(), 0);
 
 	return true;
 }

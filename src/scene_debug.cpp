@@ -1128,11 +1128,11 @@ void Scene_Debug::DoCallCommonEvent() {
 	auto& ce = Game_Map::GetCommonEvents()[ceid - 1];
 
 	if (Game_Battle::IsBattleRunning()) {
-		Game_Battle::GetInterpreter().Push(&ce, InterpreterExecutionType::DebugCall);
+		Game_Battle::GetInterpreter().Push<InterpreterExecutionType::DebugCall>(&ce);
 		Scene::PopUntil(Scene::Battle);
 		Output::Debug("Debug Scene Forced execution of common event {} on the battle foreground interpreter.", ce.GetIndex());
 	} else {
-		Game_Map::GetInterpreter().Push(&ce, InterpreterExecutionType::DebugCall);
+		Game_Map::GetInterpreter().Push<InterpreterExecutionType::DebugCall>(&ce);
 		Scene::PopUntil(Scene::Map);
 		Output::Debug("Debug Scene Forced execution of common event {} on the map foreground interpreter.", ce.GetIndex());
 	}
@@ -1157,11 +1157,11 @@ void Scene_Debug::DoCallMapEvent() {
 	}
 
 	if (Game_Battle::IsBattleRunning()) {
-		Game_Battle::GetInterpreter().Push(me, page, InterpreterExecutionType::DebugCall);
+		Game_Battle::GetInterpreter().Push<InterpreterExecutionType::DebugCall>(me, page);
 		Scene::PopUntil(Scene::Battle);
 		Output::Debug("Debug Scene Forced execution of map event {} page {} on the battle foreground interpreter.", me->GetId(), page->ID);
 	} else {
-		Game_Map::GetInterpreter().Push(me, page, InterpreterExecutionType::DebugCall);
+		Game_Map::GetInterpreter().Push<InterpreterExecutionType::DebugCall>(me, page);
 		Scene::PopUntil(Scene::Map);
 		Output::Debug("Debug Scene Forced execution of map event {} page {} on the map foreground interpreter.", me->GetId(), page->ID);
 	}
@@ -1185,7 +1185,7 @@ void Scene_Debug::DoCallBattleEvent() {
 
 	auto& page = troop->pages[page_idx];
 
-	Game_Battle::GetInterpreter().Push({ InterpreterExecutionType::DebugCall, InterpreterEventType::BattleEvent }, page.event_commands, 0, false);
+	Game_Battle::GetInterpreter().Push<InterpreterExecutionType::DebugCall, InterpreterEventType::BattleEvent>(page.event_commands, 0, false);
 	Scene::PopUntil(Scene::Battle);
 	Output::Debug("Debug Scene Forced execution of battle troop {} event page {} on the battle foreground interpreter.", troop->ID, page.ID);
 }

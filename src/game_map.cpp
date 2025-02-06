@@ -1393,7 +1393,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 		if (run_ce) {
-			interp.Push(run_ce, InterpreterExecutionType::AutoStart);
+			interp.Push<InterpreterExecutionType::AutoStart>(run_ce);
 		}
 
 		Game_Event* run_ev = nullptr;
@@ -1409,21 +1409,21 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 		}
 		if (run_ev) {
 			if (run_ev->WasStartedByDecisionKey()) {
-				interp.Push(run_ev, InterpreterExecutionType::Action);
+				interp.Push<InterpreterExecutionType::Action>(run_ev);
 			} else {
 				switch (run_ev->GetTrigger()) {
 					case lcf::rpg::EventPage::Trigger_touched:
-						interp.Push(run_ev, InterpreterExecutionType::Touch);
+						interp.Push<InterpreterExecutionType::Touch>(run_ev);
 						break;
 					case lcf::rpg::EventPage::Trigger_collision:
-						interp.Push(run_ev, InterpreterExecutionType::Collision);
+						interp.Push<InterpreterExecutionType::Collision>(run_ev);
 						break;
 					case lcf::rpg::EventPage::Trigger_auto_start:
-						interp.Push(run_ev, InterpreterExecutionType::AutoStart);
+						interp.Push<InterpreterExecutionType::AutoStart>(run_ev);
 						break;
 					case lcf::rpg::EventPage::Trigger_action:
 					default:
-						interp.Push(run_ev, InterpreterExecutionType::Action);
+						interp.Push<InterpreterExecutionType::Action>(run_ev);
 						break;
 				}
 			}
@@ -1576,7 +1576,7 @@ static void OnEncounterEnd(BattleResult result) {
 	auto* ce = lcf::ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
 	if (ce) {
 		auto& interp = Game_Map::GetInterpreter();
-		interp.Push(ce, InterpreterExecutionType::DeathHandler);
+		interp.Push<InterpreterExecutionType::DeathHandler>(ce);
 	}
 
 	auto tt = Game_Battle::GetDeathHandlerTeleport();
