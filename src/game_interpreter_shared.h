@@ -149,6 +149,9 @@ namespace Game_Interpreter_Shared {
 
 	ExecutionType ManiacExecutionType(lcf::rpg::SaveEventExecFrame const& frame);
 	EventType ManiacEventType(lcf::rpg::SaveEventExecFrame const& frame);
+
+	ExecutionType EasyRpgExecutionType(lcf::rpg::SaveEventExecFrame const& frame);
+	EventType EasyRpgEventType(lcf::rpg::SaveEventExecFrame const& frame);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
@@ -206,6 +209,15 @@ inline InterpreterEventType Game_Interpreter_Shared::ManiacEventType(lcf::rpg::S
 		return InterpreterEventType::BattleEvent;
 	}
 	return InterpreterEventType::None;
+}
+
+inline InterpreterExecutionType Game_Interpreter_Shared::EasyRpgExecutionType(lcf::rpg::SaveEventExecFrame const& frame) {
+	return static_cast<InterpreterExecutionType>(frame.maniac_event_info & 0xF);
+}
+
+inline InterpreterEventType Game_Interpreter_Shared::EasyRpgEventType(lcf::rpg::SaveEventExecFrame const& frame) {
+	// Same as ManiacEventType, because no special new event types exist at the moment
+	return ManiacEventType(frame);
 }
 
 class Game_BaseInterpreterContext {

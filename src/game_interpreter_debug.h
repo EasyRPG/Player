@@ -57,13 +57,18 @@ namespace Debug {
 	};
 
 	struct CallStackItem {
-		bool is_ce;
+		InterpreterExecutionType type_ex;
+		InterpreterEventType type_ev;
 		int evt_id, page_id;
 		std::string name;
-		int stack_item_no, cmd_current, cmd_count;
+		int stack_item_no, cmd_current;
+		size_t cmd_count;
+		bool map_has_changed;
 	};
 
-	std::vector<CallStackItem> CreateCallStack(const int owner_evt_id, const lcf::rpg::SaveEventExecState& state);
+	std::vector<CallStackItem> CreateCallStack(const lcf::rpg::SaveEventExecState& state);
+
+	std::string GetEventName(const lcf::rpg::SaveEventExecFrame& frame);
 
 	std::string FormatEventName(Game_Character const& ev);
 
