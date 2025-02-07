@@ -412,7 +412,7 @@ template<InterpreterExecutionType type_ex>
 inline void Game_Interpreter::Push(Game_CommonEvent* ev) {
 	static_assert(type_ex == InterpreterExecutionType::AutoStart || type_ex == InterpreterExecutionType::Parallel
 		|| type_ex == InterpreterExecutionType::Call || type_ex == InterpreterExecutionType::DeathHandler
-		|| type_ex == InterpreterExecutionType::DebugCall, "Unexpected ExecutionType for CommonEvent"
+		|| type_ex == InterpreterExecutionType::DebugCall || type_ex == InterpreterExecutionType::ManiacHook, "Unexpected ExecutionType for CommonEvent"
 	);
 	PushInternal(ev, type_ex);
 }
