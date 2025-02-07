@@ -68,7 +68,8 @@ namespace Game_Interpreter_Shared {
 		DeathHandler = 10,
 		/* Event code was dynamically evaluated. (ManiacCallCommand) */
 		Eval,
-		DebugCall
+		DebugCall,
+		ManiacHook
 	};
 	static constexpr auto kExecutionType = lcf::makeEnumTags<ExecutionType>(
 		"Action",
