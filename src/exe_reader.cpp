@@ -28,19 +28,21 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 29> logo_crc32 = {
+	std::array<uint32_t, 33> logo_crc32 = {
 		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
 
 		/*
-			Note: The values below have been extracted from a wide range of
-			bootleg versions of RPG_RT.exe that	have historically been in
-			circulation in various communities (either as part of an Editor
-			translation or patch). The specified version strings here refer
-			to the info given in either the recovered Installer packages
-			or is taken from accompanying Readme files & do not necessarily
-			give reliable information about the actual, original RPG_RT
-			version on which these translations & patches were based on!
+		The values below have been extracted from a wide range of
+		bootleg versions of RPG_RT.exe that have historically been in
+		circulation in various communities (either as part of an Editor
+		translation or patch). The specified version strings here refer
+		to the info given in either the recovered Installer packages
+		or is taken from accompanying Readme files & do not necessarily
+		give reliable information about the actual, original RPG_RT
+		version on which these translations & patches were based on!
 		*/
+		// Recompressed, unaltered RPG2000 logos
+		0x6a88587e, 0x4beedd9a, 0x1c7f224b,
 		// Hellsoft's bootleg "RPG Maker PRO 1.05"
 		0x5ae12b1c, 0x3d1cb5f1, 0x04a7f11a,
 		// Hellsoft's bootleg "RPG Maker PRO 1.10"
@@ -66,7 +68,11 @@ namespace {
 		// Italian "RPG Maker 4.0" Patch of Rm2k
 		0x8afe1239,
 		// Brazilian version of Rm2k3-1.0.9.1
-		0x089fb7d8
+		0x089fb7d8,
+		// Spezial-Patch by Rikku2000 (1.51 with swapped logo)
+		0x806b6877,
+		// Gnaf's Picture Patch (1.50 with swapped logo)
+		0xc5e846a7
 	};
 }
 
