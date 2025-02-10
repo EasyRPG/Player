@@ -176,13 +176,17 @@ protected:
 	bool CmdSetup(lcf::rpg::EventCommand const& com) {
 		using ClassType = decltype(MemFnCls(CMDFN));
 
-		if (EP_UNLIKELY(com.parameters.size() < MIN_SIZE)) {
-			// Slow resizing of the parameters
-			// Only happens for malformed commands
-			auto ncom = com;
-			ncom.parameters = lcf::DBArray<int32_t>(MIN_SIZE);
-			std::copy(com.parameters.begin(), com.parameters.end(), ncom.parameters.begin());
-			return (static_cast<ClassType*>(this)->*CMDFN)(ncom);
+		static_assert(std::is_base_of<Game_BaseInterpreterContext, ClassType>::value, "ClassType must inherit from Game_BaseInterpreterContext");
+
+		if constexpr (MIN_SIZE > 0) {
+			if (EP_UNLIKELY(com.parameters.size() < MIN_SIZE)) {
+				// Slow resizing of the parameters
+				// Only happens for malformed commands
+				auto ncom = com;
+				ncom.parameters = lcf::DBArray<int32_t>(MIN_SIZE);
+				std::copy(com.parameters.begin(), com.parameters.end(), ncom.parameters.begin());
+				return (static_cast<ClassType*>(this)->*CMDFN)(ncom);
+			}
 		}
 
 		return (static_cast<ClassType*>(this)->*CMDFN)(com);

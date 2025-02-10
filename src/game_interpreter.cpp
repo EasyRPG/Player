@@ -582,218 +582,218 @@ bool Game_Interpreter::ExecuteCommand() {
 bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::ShowMessage:
-			return CommandShowMessage(com);
+			return CmdSetup<&Game_Interpreter::CommandShowMessage, 0>(com);
 		case Cmd::MessageOptions:
-			return CommandMessageOptions(com);
+			return CmdSetup<&Game_Interpreter::CommandMessageOptions, 4>(com);
 		case Cmd::ChangeFaceGraphic:
-			return CommandChangeFaceGraphic(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeFaceGraphic, 3>(com);
 		case Cmd::ShowChoice:
-			return CommandShowChoices(com);
+			return CmdSetup<&Game_Interpreter::CommandShowChoices, 1>(com);
 		case Cmd::ShowChoiceOption:
-			return CommandShowChoiceOption(com);
+			return CmdSetup<&Game_Interpreter::CommandShowChoiceOption, 1>(com);
 		case Cmd::ShowChoiceEnd:
-			return CommandShowChoiceEnd(com);
+			return CmdSetup<&Game_Interpreter::CommandShowChoiceEnd, 0>(com);
 		case Cmd::InputNumber:
-			return CommandInputNumber(com);
+			return CmdSetup<&Game_Interpreter::CommandInputNumber, 2>(com);
 		case Cmd::ControlSwitches:
-			return CommandControlSwitches(com);
+			return CmdSetup<&Game_Interpreter::CommandControlSwitches, 4>(com);
 		case Cmd::ControlVars:
-			return CommandControlVariables(com);
+			return CmdSetup<&Game_Interpreter::CommandControlVariables, 7>(com);
 		case Cmd::TimerOperation:
-			return CommandTimerOperation(com);
+			return CmdSetup<&Game_Interpreter::CommandTimerOperation, 5>(com);
 		case Cmd::ChangeGold:
-			return CommandChangeGold(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeGold, 3>(com);
 		case Cmd::ChangeItems:
-			return CommandChangeItems(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeItems, 5>(com);
 		case Cmd::ChangePartyMembers:
-			return CommandChangePartyMember(com);
+			return CmdSetup<&Game_Interpreter::CommandChangePartyMember, 3>(com);
 		case Cmd::ChangeExp:
-			return CommandChangeExp(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeExp, 6>(com);
 		case Cmd::ChangeLevel:
-			return CommandChangeLevel(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeLevel, 6>(com);
 		case Cmd::ChangeParameters:
-			return CommandChangeParameters(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeParameters, 6>(com);
 		case Cmd::ChangeSkills:
-			return CommandChangeSkills(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSkills, 5>(com);
 		case Cmd::ChangeEquipment:
-			return CommandChangeEquipment(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeEquipment, 5>(com);
 		case Cmd::ChangeHP:
-			return CommandChangeHP(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeHP, 6>(com);
 		case Cmd::ChangeSP:
-			return CommandChangeSP(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSP, 5>(com);
 		case Cmd::ChangeCondition:
-			return CommandChangeCondition(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeCondition, 4>(com);
 		case Cmd::FullHeal:
-			return CommandFullHeal(com);
+			return CmdSetup<&Game_Interpreter::CommandFullHeal, 2>(com);
 		case Cmd::SimulatedAttack:
-			return CommandSimulatedAttack(com);
+			return CmdSetup<&Game_Interpreter::CommandSimulatedAttack, 8>(com);
 		case Cmd::Wait:
-			return CommandWait(com);
+			return CmdSetup<&Game_Interpreter::CommandWait, 1>(com);
 		case Cmd::PlayBGM:
-			return CommandPlayBGM(com);
+			return CmdSetup<&Game_Interpreter::CommandPlayBGM, 4>(com);
 		case Cmd::FadeOutBGM:
-			return CommandFadeOutBGM(com);
+			return CmdSetup<&Game_Interpreter::CommandFadeOutBGM, 1>(com);
 		case Cmd::PlaySound:
-			return CommandPlaySound(com);
+			return CmdSetup<&Game_Interpreter::CommandPlaySound, 3>(com);
 		case Cmd::EndEventProcessing:
-			return CommandEndEventProcessing(com);
+			return CmdSetup<&Game_Interpreter::CommandEndEventProcessing, 0>(com);
 		case Cmd::Comment:
 		case Cmd::Comment_2:
-			return CommandComment(com);
+			return CmdSetup<&Game_Interpreter::CommandComment, 0>(com);
 		case Cmd::GameOver:
-			return CommandGameOver(com);
+			return CmdSetup<&Game_Interpreter::CommandGameOver, 0>(com);
 		case Cmd::ChangeHeroName:
-			return CommandChangeHeroName(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeHeroName, 1>(com);
 		case Cmd::ChangeHeroTitle:
-			return CommandChangeHeroTitle(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeHeroTitle, 1>(com);
 		case Cmd::ChangeSpriteAssociation:
 			return CmdSetup<&Game_Interpreter::CommandChangeSpriteAssociation, 3>(com);
 		case Cmd::ChangeActorFace:
-			return CmdSetup<&Game_Interpreter::CommandChangeActorFace, 4>(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeActorFace, 2>(com);
 		case Cmd::ChangeVehicleGraphic:
-			return CommandChangeVehicleGraphic(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeVehicleGraphic, 2>(com);
 		case Cmd::ChangeSystemBGM:
-			return CommandChangeSystemBGM(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSystemBGM, 5>(com);
 		case Cmd::ChangeSystemSFX:
-			return CommandChangeSystemSFX(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSystemSFX, 4>(com);
 		case Cmd::ChangeSystemGraphics:
-			return CommandChangeSystemGraphics(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSystemGraphics, 2>(com);
 		case Cmd::ChangeScreenTransitions:
-			return CommandChangeScreenTransitions(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeScreenTransitions, 2>(com);
 		case Cmd::MemorizeLocation:
-			return CommandMemorizeLocation(com);
+			return CmdSetup<&Game_Interpreter::CommandMemorizeLocation, 3>(com);
 		case Cmd::SetVehicleLocation:
-			return CommandSetVehicleLocation(com);
+			return CmdSetup<&Game_Interpreter::CommandSetVehicleLocation, 5>(com);
 		case Cmd::ChangeEventLocation:
-			return CommandChangeEventLocation(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeEventLocation, 4>(com);
 		case Cmd::TradeEventLocations:
-			return CommandTradeEventLocations(com);
+			return CmdSetup<&Game_Interpreter::CommandTradeEventLocations, 2>(com);
 		case Cmd::StoreTerrainID:
-			return CommandStoreTerrainID(com);
+			return CmdSetup<&Game_Interpreter::CommandStoreTerrainID, 4>(com);
 		case Cmd::StoreEventID:
-			return CommandStoreEventID(com);
+			return CmdSetup<&Game_Interpreter::CommandStoreEventID, 4>(com);
 		case Cmd::EraseScreen:
-			return CommandEraseScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandEraseScreen, 1>(com);
 		case Cmd::ShowScreen:
-			return CommandShowScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandShowScreen, 1>(com);
 		case Cmd::TintScreen:
-			return CommandTintScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandTintScreen, 6>(com);
 		case Cmd::FlashScreen:
-			return CommandFlashScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandFlashScreen, 6>(com);
 		case Cmd::ShakeScreen:
-			return CommandShakeScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandShakeScreen, 4>(com);
 		case Cmd::WeatherEffects:
-			return CommandWeatherEffects(com);
+			return CmdSetup<&Game_Interpreter::CommandWeatherEffects, 2>(com);
 		case Cmd::ShowPicture:
-			return CommandShowPicture(com);
+			return CmdSetup<&Game_Interpreter::CommandShowPicture, 14>(com);
 		case Cmd::MovePicture:
-			return CommandMovePicture(com);
+			return CmdSetup<&Game_Interpreter::CommandMovePicture, 16>(com);
 		case Cmd::ErasePicture:
-			return CommandErasePicture(com);
+			return CmdSetup<&Game_Interpreter::CommandErasePicture, 1>(com);
 		case Cmd::PlayerVisibility:
-			return CommandPlayerVisibility(com);
+			return CmdSetup<&Game_Interpreter::CommandPlayerVisibility, 1>(com);
 		case Cmd::MoveEvent:
-			return CommandMoveEvent(com);
+			return CmdSetup<&Game_Interpreter::CommandMoveEvent, 4>(com);
 		case Cmd::MemorizeBGM:
-			return CommandMemorizeBGM(com);
+			return CmdSetup<&Game_Interpreter::CommandMemorizeBGM, 0>(com);
 		case Cmd::PlayMemorizedBGM:
-			return CommandPlayMemorizedBGM(com);
+			return CmdSetup<&Game_Interpreter::CommandPlayMemorizedBGM, 0>(com);
 		case Cmd::KeyInputProc:
-			return CommandKeyInputProc(com);
+			return CmdSetup<&Game_Interpreter::CommandKeyInputProc, 5>(com);
 		case Cmd::ChangeMapTileset:
-			return CommandChangeMapTileset(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeMapTileset, 1>(com);
 		case Cmd::ChangePBG:
-			return CommandChangePBG(com);
+			return CmdSetup<&Game_Interpreter::CommandChangePBG, 6>(com);
 		case Cmd::ChangeEncounterSteps:
-			return CommandChangeEncounterSteps(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeEncounterSteps, 1>(com);
 		case Cmd::TileSubstitution:
-			return CommandTileSubstitution(com);
+			return CmdSetup<&Game_Interpreter::CommandTileSubstitution, 3>(com);
 		case Cmd::TeleportTargets:
-			return CommandTeleportTargets(com);
+			return CmdSetup<&Game_Interpreter::CommandTeleportTargets, 6>(com);
 		case Cmd::ChangeTeleportAccess:
-			return CommandChangeTeleportAccess(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeTeleportAccess, 1>(com);
 		case Cmd::EscapeTarget:
-			return CommandEscapeTarget(com);
+			return CmdSetup<&Game_Interpreter::CommandEscapeTarget, 5>(com);
 		case Cmd::ChangeEscapeAccess:
-			return CommandChangeEscapeAccess(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeEscapeAccess, 1>(com);
 		case Cmd::ChangeSaveAccess:
-			return CommandChangeSaveAccess(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeSaveAccess, 1>(com);
 		case Cmd::ChangeMainMenuAccess:
-			return CommandChangeMainMenuAccess(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeMainMenuAccess, 1>(com);
 		case Cmd::ConditionalBranch:
-			return CommandConditionalBranch(com);
+			return CmdSetup<&Game_Interpreter::CommandConditionalBranch, 6>(com);
 		case Cmd::Label:
 			return true;
 		case Cmd::JumpToLabel:
-			return CommandJumpToLabel(com);
+			return CmdSetup<&Game_Interpreter::CommandJumpToLabel, 1>(com);
 		case Cmd::Loop:
-			return CommandLoop(com);
+			return CmdSetup<&Game_Interpreter::CommandLoop, 0>(com);
 		case Cmd::BreakLoop:
-			return CommandBreakLoop(com);
+			return CmdSetup<&Game_Interpreter::CommandBreakLoop, 0>(com);
 		case Cmd::EndLoop:
-			return CommandEndLoop(com);
+			return CmdSetup<&Game_Interpreter::CommandEndLoop, 0>(com);
 		case Cmd::EraseEvent:
-			return CommandEraseEvent(com);
+			return CmdSetup<&Game_Interpreter::CommandEraseEvent, 0>(com);
 		case Cmd::CallEvent:
-			return CommandCallEvent(com);
+			return CmdSetup<&Game_Interpreter::CommandCallEvent, 3>(com);
 		case Cmd::ReturntoTitleScreen:
-			return CommandReturnToTitleScreen(com);
+			return CmdSetup<&Game_Interpreter::CommandReturnToTitleScreen, 0>(com);
 		case Cmd::ChangeClass:
-			return CommandChangeClass(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeClass, 7>(com);
 		case Cmd::ChangeBattleCommands:
-			return CommandChangeBattleCommands(com);
+			return CmdSetup<&Game_Interpreter::CommandChangeBattleCommands, 4>(com);
 		case Cmd::ElseBranch:
-			return CommandElseBranch(com);
+			return CmdSetup<&Game_Interpreter::CommandElseBranch, 0>(com);
 		case Cmd::EndBranch:
-			return CommandEndBranch(com);
+			return CmdSetup<&Game_Interpreter::CommandEndBranch, 0>(com);
 		case Cmd::ExitGame:
-			return CommandExitGame(com);
+			return CmdSetup<&Game_Interpreter::CommandExitGame, 0>(com);
 		case Cmd::ToggleFullscreen:
-			return CommandToggleFullscreen(com);
+			return CmdSetup<&Game_Interpreter::CommandToggleFullscreen, 0>(com);
 		case Cmd::OpenVideoOptions:
-			return CommandOpenVideoOptions(com);
+			return CmdSetup<&Game_Interpreter::CommandOpenVideoOptions, 0>(com);
 		case Cmd::Maniac_GetSaveInfo:
-			return CommandManiacGetSaveInfo(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacGetSaveInfo, 12>(com);
 		case Cmd::Maniac_Load:
-			return CommandManiacLoad(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacLoad, 3>(com);
 		case Cmd::Maniac_Save:
-			return CommandManiacSave(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacSave, 3>(com);
 		case Cmd::Maniac_EndLoadProcess:
-			return CommandManiacEndLoadProcess(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacEndLoadProcess, 0>(com);
 		case Cmd::Maniac_GetMousePosition:
-			return CommandManiacGetMousePosition(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacGetMousePosition, 2>(com);
 		case Cmd::Maniac_SetMousePosition:
-			return CommandManiacSetMousePosition(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacSetMousePosition, 3>(com);
 		case Cmd::Maniac_ShowStringPicture:
-			return CommandManiacShowStringPicture(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacShowStringPicture, 23>(com);
 		case Cmd::Maniac_GetPictureInfo:
-			return CommandManiacGetPictureInfo(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacGetPictureInfo, 8>(com);
 		case Cmd::Maniac_ControlVarArray:
-			return CommandManiacControlVarArray(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacControlVarArray, 5>(com);
 		case Cmd::Maniac_KeyInputProcEx:
-			return CommandManiacKeyInputProcEx(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacKeyInputProcEx, 4>(com);
 		case Cmd::Maniac_RewriteMap:
-			return CommandManiacRewriteMap(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacRewriteMap, 9>(com);
 		case Cmd::Maniac_ControlGlobalSave:
-			return CommandManiacControlGlobalSave(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacControlGlobalSave, 6>(com);
 		case Cmd::Maniac_ChangePictureId:
-			return CommandManiacChangePictureId(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacChangePictureId, 6>(com);
 		case Cmd::Maniac_SetGameOption:
-			return CommandManiacSetGameOption(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
 		case Cmd::Maniac_ControlStrings:
-			return CommandManiacControlStrings(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
 		case Cmd::Maniac_CallCommand:
-			return CommandManiacCallCommand(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
-			return CommandManiacGetGameInfo(com);
+			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
-			return CommandEasyRpgSetInterpreterFlag(com);
+			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
 		case Cmd::EasyRpg_ProcessJson:
-			return CommandEasyRpgProcessJson(com);
+			return CmdSetup<&Game_Interpreter::CommandEasyRpgProcessJson, 8>(com);
 		case Cmd::EasyRpg_CloneMapEvent:
-			return CommandEasyRpgCloneMapEvent(com);
+			return CmdSetup<&Game_Interpreter::CommandEasyRpgCloneMapEvent, 10>(com);
 		case Cmd::EasyRpg_DestroyMapEvent:
-			return CommandEasyRpgDestroyMapEvent(com);
+			return CmdSetup<&Game_Interpreter::CommandEasyRpgDestroyMapEvent, 2>(com);
 		default:
 			return true;
 	}
@@ -1000,7 +1000,6 @@ bool Game_Interpreter::CommandShowChoiceOption(lcf::rpg::EventCommand const& com
 bool Game_Interpreter::CommandShowChoiceEnd(lcf::rpg::EventCommand const& /* com */) { //code 20141
 	return true;
 }
-
 
 bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { // code 10150
 	if (!Game_Message::CanShowMessage(main_flag)) {
@@ -2739,6 +2738,11 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	}
 
 	if (param_size > 16 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
+		if (param_size < 30) {
+			// Ensure correct size
+			return CmdSetup<&Game_Interpreter::CommandShowPicture, 30>(com);
+		}
+
 		// Handling of RPG2k3 1.12 chunks
 		if (Player::IsPatchManiac()) {
 			pic_id = ValueOrVariableBitfield(com.parameters[17], 0, pic_id);
@@ -2874,6 +2878,11 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 	if (Player::IsRPG2k() || Player::IsRPG2k3E() || Player::IsPatchManiac()) {
 		if (param_size > 17 && (Player::IsRPG2k3ECommands() || Player::IsPatchManiac())) {
+			if (param_size < 22) {
+				// Ensure correct size
+				return CmdSetup<&Game_Interpreter::CommandMovePicture, 22>(com);
+			}
+
 			// Handling of RPG2k3 1.12 chunks
 			// Maniac Patch uses the upper bits for "wait is variable", mask it away
 			pic_id = ValueOrVariable(ManiacBitmask(com.parameters[17], 0xFF), pic_id);
@@ -2890,13 +2899,15 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 
 			params.magnify_width = ValueOrVariableBitfield(com.parameters[20], 0, params.magnify_width);
-			if (Player::IsPatchManiac() && com.parameters.size() > 18 && com.parameters[20] >= 16) {
+
+			if (Player::IsPatchManiac() && com.parameters.size() > 20 && com.parameters[20] >= 16) {
 				// The >= 16 check is needed because this bit is set when independent width/height scaling is used
 				// Since version 240423, Maniacs supports width/height scaling for special effects pictures.
 				params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[18]);
 			} else {
 				params.magnify_height = params.magnify_width;
 			}
+
 			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 		}
 
@@ -2976,7 +2987,7 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 		// Handling of RPG2k3 1.12 chunks
 		int id_type = com.parameters[1];
 
-		int pic_id_max;
+		int pic_id_max = 0;
 		switch (id_type) {
 			case 0:
 				// Erase single picture specified by constant
@@ -2987,7 +2998,9 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 				break;
 			case 2:
 				// Erase [Arg0, Arg2]
-				pic_id_max = com.parameters[2];
+				if (com.parameters.size() > 2) {
+					pic_id_max = com.parameters[2];
+				}
 				break;
 			case 3:
 				// Erase [V[Arg0], V[Arg2]]
@@ -2995,7 +3008,9 @@ bool Game_Interpreter::CommandErasePicture(lcf::rpg::EventCommand const& com) { 
 					return true;
 				}
 				pic_id = Main_Data::game_variables->Get(pic_id);
-				pic_id_max = Main_Data::game_variables->Get(com.parameters[2]);
+				if (com.parameters.size() > 2) {
+					pic_id_max = Main_Data::game_variables->Get(com.parameters[2]);
+				}
 				break;
 			case 4:
 				// Erase single picture referenced by variable indirect
@@ -3238,11 +3253,11 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		} else {
 			// Since RPG2k3 1.05
 			// Support for RPG2k >=1.50 games imported into RPG2k3
-			_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
-			_keyinput.keys[Keys::eDown] = com.parameters[6] != 0;
-			_keyinput.keys[Keys::eLeft] = com.parameters[7] != 0;
-			_keyinput.keys[Keys::eRight] = com.parameters[8] != 0;
-			_keyinput.keys[Keys::eUp] = com.parameters[9] != 0;
+			_keyinput.keys[Keys::eShift] = check_key(5u);
+			_keyinput.keys[Keys::eDown] = check_key(6u);
+			_keyinput.keys[Keys::eLeft] = check_key(7u);
+			_keyinput.keys[Keys::eRight] = check_key(8u);
+			_keyinput.keys[Keys::eUp] = check_key(9u);
 		}
 	}
 
@@ -3674,7 +3689,7 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
 		if (static_cast<Cmd>(list[idx].code) != Cmd::Label)
 			continue;
-		if (list[idx].parameters[0] != label_id)
+		if (list[idx].parameters.empty() || list[idx].parameters[0] != label_id)
 			continue;
 		index = idx;
 		break;
@@ -4236,7 +4251,6 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 
 	return true;
 }
-
 
 bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
@@ -5434,11 +5448,7 @@ bool Game_Interpreter::CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const&
 	int src_event = ValueOrVariable(com.parameters[2], com.parameters[3]);
 	int target_x = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int target_y = ValueOrVariable(com.parameters[6], com.parameters[7]);
-
-	int target_event = 0;
-	if (com.parameters.size() >= 10) {
-		target_event = ValueOrVariable(com.parameters[8], com.parameters[9]);
-	}
+	int target_event = ValueOrVariable(com.parameters[8], com.parameters[9]);
 
 	std::string target_name = ToString(CommandStringOrVariable(com, 10, 11));
 
@@ -5462,10 +5472,6 @@ bool Game_Interpreter::CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const&
 
 bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com) {
 	if (!Player::HasEasyRpgExtensions()) {
-		return true;
-	}
-
-	if (com.parameters.size() < 2) {
 		return true;
 	}
 

@@ -184,63 +184,67 @@ bool Game_Interpreter_Map::RequestMainMenuScene(int subscreen_id, int actor_inde
 bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::RecallToLocation:
-			return CommandRecallToLocation(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandRecallToLocation, 3>(com);
 		case Cmd::EnemyEncounter:
-			return CommandEnemyEncounter(com);
+			if (Player::IsRPG2k()) {
+				return CmdSetup<&Game_Interpreter_Map::CommandEnemyEncounter, 6>(com);
+			} else {
+				return CmdSetup<&Game_Interpreter_Map::CommandEnemyEncounter, 10>(com);
+			}
 		case Cmd::VictoryHandler:
-			return CommandVictoryHandler(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandVictoryHandler, 0>(com);
 		case Cmd::EscapeHandler:
-			return CommandEscapeHandler(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEscapeHandler, 0>(com);
 		case Cmd::DefeatHandler:
-			return CommandDefeatHandler(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandDefeatHandler, 0>(com);
 		case Cmd::EndBattle:
-			return CommandEndBattle(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEndBattle, 0>(com);
 		case Cmd::OpenShop:
-			return CommandOpenShop(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandOpenShop, 4>(com);
 		case Cmd::Transaction:
-			return CommandTransaction(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandTransaction, 0>(com);
 		case Cmd::NoTransaction:
-			return CommandNoTransaction(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandNoTransaction, 0>(com);
 		case Cmd::EndShop:
-			return CommandEndShop(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEndShop, 0>(com);
 		case Cmd::ShowInn:
-			return CommandShowInn(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandShowInn, 3>(com);
 		case Cmd::Stay:
-			return CommandStay(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandStay, 0>(com);
 		case Cmd::NoStay:
-			return CommandNoStay(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandNoStay, 0>(com);
 		case Cmd::EndInn:
-			return CommandEndInn(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEndInn, 0>(com);
 		case Cmd::EnterHeroName:
-			return CommandEnterHeroName(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEnterHeroName, 3>(com);
 		case Cmd::Teleport:
-			return CommandTeleport(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandTeleport, 3>(com);
 		case Cmd::EnterExitVehicle:
-			return CommandEnterExitVehicle(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEnterExitVehicle, 0>(com);
 		case Cmd::PanScreen:
-			return CommandPanScreen(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandPanScreen, 5>(com);
 		case Cmd::ShowBattleAnimation:
-			return CommandShowBattleAnimation(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandShowBattleAnimation, 4>(com);
 		case Cmd::FlashSprite:
-			return CommandFlashSprite(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandFlashSprite, 7>(com);
 		case Cmd::ProceedWithMovement:
-			return CommandProceedWithMovement(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandProceedWithMovement, 0>(com);
 		case Cmd::HaltAllMovement:
-			return CommandHaltAllMovement(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandHaltAllMovement, 0>(com);
 		case Cmd::PlayMovie:
-			return CommandPlayMovie(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandPlayMovie, 5>(com);
 		case Cmd::OpenSaveMenu:
-			return CommandOpenSaveMenu(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandOpenSaveMenu, 0>(com);
 		case Cmd::OpenMainMenu:
-			return CommandOpenMainMenu(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandOpenMainMenu, 0>(com);
 		case Cmd::OpenLoadMenu:
-			return CommandOpenLoadMenu(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandOpenLoadMenu, 0>(com);
 		case Cmd::ToggleAtbMode:
-			return CommandToggleAtbMode(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandToggleAtbMode, 0>(com);
 		case Cmd::EasyRpg_TriggerEventAt:
-			return CommandEasyRpgTriggerEventAt(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgTriggerEventAt, 4>(com);
 		case Cmd::EasyRpg_WaitForSingleMovement:
-			return CommandEasyRpgWaitForSingleMovement(com);
+			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement, 6>(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -771,7 +775,10 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& com
 
 	Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 
-	const int current_system_function = com.parameters[0];
+	int current_system_function = 0;
+	if (com.parameters.size() > 0) {
+		current_system_function = com.parameters[0];
+	}
 
 	// Handle save menu (default behavior)
 	if (!Player::IsPatchManiac() || current_system_function <= 0) {
@@ -783,15 +790,15 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& com
 	// Command "Call System Functions"
 	switch (current_system_function) {
 	case 1: // Load menu
-		return CommandOpenLoadMenu(com);
+		return CmdSetup<&Game_Interpreter_Map::CommandOpenLoadMenu, 100>(com);
 	case 2: // Game menu
-		return CommandOpenMainMenu(com);
+		return CmdSetup<&Game_Interpreter_Map::CommandOpenMainMenu, 100>(com);
 	case 3: // Toggle fullscreen
 		// TODO Implement fullscreen mode once maniacs supports it
 		// const int fullscreen_mode = com.parameters[1]; // Broken in Maniac.
-		return CommandToggleFullscreen(com);
+		return CmdSetup<&Game_Interpreter_Map::CommandToggleFullscreen, 100>(com);
 	case 4: // Settings menu
-		return CommandOpenVideoOptions(com);
+		return CmdSetup<&Game_Interpreter_Map::CommandOpenVideoOptions, 100>(com);
 	case 5: // Debug menu
 		// const int pause_while_debugging = com.parameters[1]; // unused in our ingame debug screen.
 		Scene::instance->SetRequestedScene(std::make_shared<Scene_Debug>());
@@ -801,7 +808,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& com
 		// TODO Implement license information menu
 		return true;
 	case 7: // Reset game
-		return CommandReturnToTitleScreen(com);
+		return CmdSetup<&Game_Interpreter_Map::CommandReturnToTitleScreen, 100>(com);
 	default:
 		if (Player::HasEasyRpgExtensions() && current_system_function >= 200 && current_system_function < 210) {
 			const int actor_index = ValueOrVariable(com.parameters[1], com.parameters[2]);
@@ -897,14 +904,8 @@ bool Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCo
 
 	if (!_state.easyrpg_active) {
 		event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
-
-		if (com.parameters.size() >= 4) {
-			failure_limit = ValueOrVariable(com.parameters[2], com.parameters[3]);
-		}
-
-		if (com.parameters.size() >= 6) {
-			output_var = ValueOrVariable(com.parameters[4], com.parameters[5]);
-		}
+		failure_limit = ValueOrVariable(com.parameters[2], com.parameters[3]);
+		output_var = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	}
 
 	_state.easyrpg_active = false;

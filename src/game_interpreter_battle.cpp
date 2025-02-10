@@ -222,39 +222,39 @@ int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flag
 bool Game_Interpreter_Battle::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::CallCommonEvent:
-			return CommandCallCommonEvent(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandCallCommonEvent, 1>(com);
 		case Cmd::ForceFlee:
-			return CommandForceFlee(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandForceFlee, 3>(com);
 		case Cmd::EnableCombo:
-			return CommandEnableCombo(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandEnableCombo, 3>(com);
 		case Cmd::ChangeMonsterHP:
-			return CommandChangeMonsterHP(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandChangeMonsterHP, 5>(com);
 		case Cmd::ChangeMonsterMP:
-			return CommandChangeMonsterMP(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandChangeMonsterMP, 4>(com);
 		case Cmd::ChangeMonsterCondition:
-			return CommandChangeMonsterCondition(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandChangeMonsterCondition, 3>(com);
 		case Cmd::ShowHiddenMonster:
-			return CommandShowHiddenMonster(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandShowHiddenMonster, 1>(com);
 		case Cmd::ChangeBattleBG:
-			return CommandChangeBattleBG(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandChangeBattleBG, 0>(com);
 		case Cmd::ShowBattleAnimation_B:
-			return CommandShowBattleAnimation(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandShowBattleAnimation, 3>(com);
 		case Cmd::TerminateBattle:
-			return CommandTerminateBattle(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandTerminateBattle, 0>(com);
 		case Cmd::ConditionalBranch_B:
-			return CommandConditionalBranchBattle(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandConditionalBranchBattle, 5>(com);
 		case Cmd::ElseBranch_B:
-			return CommandElseBranchBattle(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandElseBranchBattle, 0>(com);
 		case Cmd::EndBranch_B:
-			return CommandEndBranchBattle(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandEndBranchBattle, 0>(com);
 		case Cmd::Maniac_ControlBattle:
-			return CommandManiacControlBattle(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandManiacControlBattle, 4>(com);
 		case Cmd::Maniac_ControlAtbGauge:
-			return CommandManiacControlAtbGauge(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandManiacControlAtbGauge, 7>(com);
 		case Cmd::Maniac_ChangeBattleCommandEx:
-			return CommandManiacChangeBattleCommandEx(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx, 2>(com);
 		case Cmd::Maniac_GetBattleInfo:
-			return CommandManiacGetBattleInfo(com);
+			return CmdSetup<&Game_Interpreter_Battle::CommandManiacGetBattleInfo, 5>(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -470,7 +470,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(lcf::rpg::EventCommand 
 	bool waiting_battle_anim = com.parameters[2] != 0;
 	bool allies = false;
 
-	if (Player::IsRPG2k3()) {
+	if (Player::IsRPG2k3() && com.parameters.size() > 3) {
 		allies = com.parameters[3] != 0;
 	}
 
