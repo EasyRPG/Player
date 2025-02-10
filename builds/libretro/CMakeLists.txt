@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.16...3.31 FATAL_ERROR)
 
 project(retro_common VERSION 1.0 LANGUAGES C)
 

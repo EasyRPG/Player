@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.28 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16...3.31 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
@@ -854,7 +854,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 endif()
 
 # Endianess check
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.20)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
 	if (CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
 	endif()
@@ -972,7 +972,7 @@ endif()
 if(PLAYER_HAS_AUDIO)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
-	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+	if(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
@@ -1027,7 +1027,7 @@ if(PLAYER_HAS_AUDIO)
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
-	if(${PLAYER_AUDIO_RESAMPLER} STREQUAL "Auto")
+	if(PLAYER_AUDIO_RESAMPLER STREQUAL "Auto")
 		set(PLAYER_AUDIO_RESAMPLER_IS_AUTO ON)
 	endif()
 
@@ -1046,12 +1046,12 @@ if(PLAYER_HAS_AUDIO)
 				DEFINITION HAVE_LIBSAMPLERATE
 				TARGET Samplerate::Samplerate)
 		endif()
-	elseif(${PLAYER_AUDIO_RESAMPLER} STREQUAL "speexdsp")
+	elseif(PLAYER_AUDIO_RESAMPLER STREQUAL "speexdsp")
 		player_find_package(NAME speexdsp
 			DEFINITION HAVE_LIBSPEEXDSP
 			TARGET speexdsp::speexdsp
 			REQUIRED)
-	elseif(${PLAYER_AUDIO_RESAMPLER} STREQUAL "samplerate")
+	elseif(PLAYER_AUDIO_RESAMPLER STREQUAL "samplerate")
 		player_find_package(NAME Samplerate
 			DEFINITION HAVE_LIBSAMPLERATE
 			TARGET Samplerate::Samplerate
@@ -1139,7 +1139,7 @@ if(PLAYER_HAS_AUDIO)
 endif()
 
 # Executable
-if(${PLAYER_BUILD_EXECUTABLE} AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND NOT PLAYER_CONSOLE_PORT)
+if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND NOT PLAYER_CONSOLE_PORT)
 	if(APPLE)
 		set(EXE_NAME "EasyRPG-Player.app")
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
@@ -1364,7 +1364,7 @@ elseif(PLAYER_CONSOLE_PORT)
 	set(CPACK_COMPONENT_INCLUDE_TOPLEVEL_DIRECTORY OFF) # we do this manually
 	include(CPack)
 else() # library
-	if(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+	if(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 		add_library(easyrpg_libretro
 			src/platform/libretro/audio.cpp
 			src/platform/libretro/audio.h
