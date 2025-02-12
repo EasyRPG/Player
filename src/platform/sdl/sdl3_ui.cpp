@@ -172,6 +172,11 @@ Sdl3Ui::~Sdl3Ui() {
 	if (sdl_window) {
 		SDL_DestroyWindow(sdl_window);
 	}
+
+#ifdef SUPPORT_AUDIO
+	audio_.reset();
+#endif	
+
 	SDL_Quit();
 }
 

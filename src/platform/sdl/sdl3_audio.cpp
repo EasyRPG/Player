@@ -108,8 +108,7 @@ Sdl3Audio::Sdl3Audio(const Game_ConfigAudio& cfg) :
 }
 
 Sdl3Audio::~Sdl3Audio() {
-	// FIXME: Call crashes with "invalid pointer"
-	//SDL_DestroyAudioStream(audio_stream);
+	SDL_DestroyAudioStream(audio_stream);
 }
 
 void Sdl3Audio::LockMutex() const {
