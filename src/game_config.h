@@ -89,6 +89,7 @@ struct Game_ConfigPlayer {
 	RangeConfigParam<int> font1_size { "Font 1 Size", "", "Player", "Font1Size", 12, 6, 16};
 	PathConfigParam font2 { "Font 2", "The game chooses whether it wants font 1 or 2", "Player", "Font2", "" };
 	RangeConfigParam<int> font2_size { "Font 2 Size", "", "Player", "Font2Size", 12, 6, 16};
+	BoolConfigParam log_enabled{ "Logging", "Write diagnostic messages into a logfile", "Player", "Logging", true };
 
 	void Hide();
 };
@@ -187,7 +188,6 @@ struct Game_Config {
 	 */
 	static FilesystemView GetFontFilesystem();
 
-
 	/**
 	 * Returns a handle to the global config file for reading.
 	 * The file is created if it does not exist.
@@ -203,6 +203,10 @@ struct Game_Config {
 	 * @return handle to the global file
 	 */
 	static Filesystem_Stream::OutputStream GetGlobalConfigFileOutput();
+
+	static Filesystem_Stream::OutputStream& GetLogFileOutput();
+
+	static void CloseLogFile();
 
 	/**
 	 * Load configuration values from a stream;

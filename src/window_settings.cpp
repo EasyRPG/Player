@@ -427,6 +427,7 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.log_enabled, [&cfg]() { cfg.log_enabled.Toggle(); });
 }
 
 void Window_Settings::RefreshEngineFont(bool mincho) {

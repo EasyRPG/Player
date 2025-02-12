@@ -18,10 +18,12 @@
 #include "game_config.h"
 #include "cmdline_parser.h"
 #include "filefinder.h"
+#include "filesystem_stream.h"
 #include "input_buttons.h"
 #include "keys.h"
 #include "output.h"
 #include "input.h"
+#include "player.h"
 #include <lcf/inireader.h>
 #include <cstring>
 
@@ -37,6 +39,13 @@ namespace {
 	std::string config_path;
 	std::string soundfont_path;
 	std::string font_path;
+
+	struct {
+		bool started = false;
+		std::string path;
+		Filesystem_Stream::OutputStream handle;
+	} logging;
+
 #if USE_SDL == 1
 	// For SDL1 hardcode a different config file because it uses a completely different mapping for gamepads
 	StringView config_name = "config_sdl1.ini";
@@ -260,6 +269,126 @@ Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
 	return Filesystem_Stream::OutputStream();
 }
 
+Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
+	if (!Player::player_config.log_enabled.Get()) {
+		static Filesystem_Stream::OutputStream noop_stream;
+		return noop_stream;
+	}
+
+	if (!logging.started) {
+		logging.started = true;
+
+		std::string path;
+
+		if (logging.path.empty()) {
+	#if defined(_WIN32)
+			PWSTR knownPath;
+			const auto hresult = SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &knownPath);
+			if (SUCCEEDED(hresult)) {
+				path = Utils::FromWideString(knownPath);
+				CoTaskMemFree(knownPath);
+			} else {
+				Output::Debug("LogFile: SHGetKnownFolderPath failed");
+			}
+	#elif defined(SYSTEM_DESKTOP_LINUX_BSD_MACOS)
+			char* home = getenv("XDG_STATE_HOME");
+			if (home) {
+				path = home;
+			} else {
+				home = getenv("HOME");
+				if (home) {
+					path = FileFinder::MakePath(home, ".local/state");
+				}
+			}
+
+			if (!path.empty()) {
+				path = FileFinder::MakePath(path, fmt::format("{}-{}.log", ORGANIZATION_NAME, APPLICATION_NAME));
+			}
+
+			// Use the config directory
+			path = GetGlobalConfigFilesystem().GetFullPath();
+	#else
+			// Use the config directory
+			path = GetGlobalConfigFilesystem().GetFullPath();
+	#endif
+
+			if (!path.empty()) {
+				path = FileFinder::MakePath(path, fmt::format("{}-{}.log", ORGANIZATION_NAME, APPLICATION_NAME));
+			}
+		} else {
+			path = logging.path;
+		}
+
+		auto print_err = [&path]() {
+			if (path.empty()) {
+				Output::Warning("Could not determine logfile path");
+			} else {
+				Output::Warning("Could not access logfile path {}", path);
+			}
+		};
+
+		if (path.empty()) {
+			print_err();
+			static Filesystem_Stream::OutputStream noop_stream;
+			return noop_stream;
+		}
+
+		if (!FileFinder::Root().MakeDirectory(FileFinder::GetPathAndFilename(path).first, true)) {
+			print_err();
+			static Filesystem_Stream::OutputStream noop_stream;
+			return noop_stream;
+		}
+
+		logging.handle = FileFinder::Root().OpenOutputStream(path, std::ios_base::out | std::ios_base::app);
+
+		if (!logging.handle) {
+			Output::Warning("Could not open logfile {}", path);
+			return logging.handle;
+		}
+
+		logging.path = path;
+	}
+
+	return logging.handle;
+}
+
+void Game_Config::CloseLogFile() {
+	if (!Game_Config::GetLogFileOutput()) {
+		return;
+	}
+
+	Game_Config::GetLogFileOutput().Close();
+
+	// Truncate the logfile when it is too large
+	const std::streamoff log_size = 1024 * 1024; // 1 MB
+	std::vector<char> buf(log_size);
+
+	auto in = FileFinder::Root().OpenInputStream(logging.path);
+	if (in) {
+		in.seekg(0, std::ios_base::end);
+		if (in.tellg() > log_size) {
+			in.seekg(-log_size, std::ios_base::end);
+			// skip current incomplete line
+			std::string line;
+			Utils::ReadLine(in, line);
+
+			// Read the remaining logfile into the buffer
+			in.read(buf.data(), buf.size());
+			size_t read = in.gcount();
+			in.Close();
+
+			// Truncate the logfile and write the data into the logfile
+			auto out = FileFinder::Root().OpenOutputStream(logging.path);
+			if (out) {
+				out.write(buf.data(), read);
+			}
+		}
+	}
+
+	logging.started = false;
+	logging.handle = Filesystem_Stream::OutputStream();
+}
+
 std::string Game_Config::GetConfigPath(CmdlineParser& cp) {
 	std::string path;
 
@@ -427,6 +556,12 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--log-file")) {
+			if (arg.NumValues() > 0) {
+				logging.path = FileFinder::MakeCanonical(arg.Value(0), 0);
+			}
+			continue;
+		}
 
 		cp.SkipNext();
 	}
@@ -525,6 +660,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.font1_size.FromIni(ini);
 	player.font2.FromIni(ini);
 	player.font2_size.FromIni(ini);
+	player.log_enabled.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -610,6 +746,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.font1_size.ToIni(os);
 	player.font2.ToIni(os);
 	player.font2_size.ToIni(os);
+	player.log_enabled.ToIni(os);
 
 	os << "\n";
 }
