@@ -427,6 +427,8 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.settings_autosave, [&cfg](){ cfg.settings_autosave.Toggle(); });
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
+	AddOption(cfg.lang_select_on_start, [this, &cfg]() { cfg.lang_select_on_start.Set(static_cast<ConfigEnum::StartupLangSelect>(GetCurrentOption().current_value)); });
+	AddOption(cfg.lang_select_in_title, [&cfg](){ cfg.lang_select_in_title.Toggle(); });
 	AddOption(cfg.log_enabled, [&cfg]() { cfg.log_enabled.Toggle(); });
 	AddOption(cfg.screenshot_scale, [this, &cfg](){ cfg.screenshot_scale.Set(GetCurrentOption().current_value); });
 
