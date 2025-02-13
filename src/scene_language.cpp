@@ -170,14 +170,8 @@ void Scene_Language::ChangeLanguage(const std::string& lang_str) {
 
 	// First change the language
 	Player::translation.SelectLanguage(lang_str);
-}
-
-void Scene_Language::OnTranslationChanged() {
-	Start();
 
 	PopOrTitle();
-
-	Scene::OnTranslationChanged();
 }
 
 void Scene_Language::PopOrTitle() {

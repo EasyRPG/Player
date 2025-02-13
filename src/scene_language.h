@@ -45,8 +45,6 @@ public:
 	void Start() override;
 	void vUpdate() override;
 
-	void OnTranslationChanged() override;
-
 private:
 
 	/**
