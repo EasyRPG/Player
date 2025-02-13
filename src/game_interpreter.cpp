@@ -46,6 +46,7 @@
 #include "game_screen.h"
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
+#include "graphics.h"
 #include "json_helper.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
@@ -794,6 +795,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandEasyRpgCloneMapEvent(com);
 		case Cmd::EasyRpg_DestroyMapEvent:
 			return CommandEasyRpgDestroyMapEvent(com);
+		case static_cast<Cmd>(2059):
+			return CommandEasyRpgZoom(com);
 		default:
 			return true;
 	}
@@ -5487,6 +5490,26 @@ bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand cons
 	int target_event = ValueOrVariable(com.parameters[0], com.parameters[1]);
 
 	_async_op = AsyncOp::MakeDestroyMapEvent(target_event);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgZoom(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		//return true;
+	}
+
+	int Scale = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	bool OriginAsPercentage = static_cast<bool>(ValueOrVariable(com.parameters[2], com.parameters[3]));
+	int OriginX = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	int OriginY = ValueOrVariable(com.parameters[6], com.parameters[7]);
+
+	Graphics::GetZoomData().SetScale(Scale);
+	Graphics::GetZoomData().SetOriginAsPercentage(OriginAsPercentage);
+	Graphics::GetZoomData().SetOriginX(OriginX);
+	Graphics::GetZoomData().SetOriginY(OriginY);
+
+	//Output::Warning("Zoom: {} Scale: {}, OriginAsPercentage: {}, OriginX: {}, OriginY: {}", Graphics::GetZoomData().GetScale(), Graphics::GetZoomData().IsOriginPercentage(), Graphics::GetZoomData().GetOriginX(), Graphics::GetZoomData().GetOriginY());
 
 	return true;
 }

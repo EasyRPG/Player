@@ -20,6 +20,7 @@
 #include "game_config.h"
 #include "system.h"
 #include "sdl2_ui.h"
+#include "scene.h"
 
 #ifdef _WIN32
 #  include <windows.h>
@@ -590,6 +591,25 @@ void Sdl2Ui::ToggleVsync() {
 }
 
 void Sdl2Ui::UpdateDisplay() {
+
+	struct zoom_params {
+		int zoom;
+		bool is_anchor_percent;
+		int x;
+		int y;
+	};
+
+	zoom_params params{100,true,50,50};
+
+	auto st = Scene::instance->type;
+	if (st == Scene::Battle || st == Scene::Map) {
+		params.zoom = Graphics::GetZoomData().GetScale();
+		params.is_anchor_percent = Graphics::GetZoomData().IsOriginPercentage();
+		params.x = Graphics::GetZoomData().GetOriginX();
+		params.y = Graphics::GetZoomData().GetOriginY();
+
+	}
+
 #ifdef __WIIU__
 	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
 		// Workaround WiiU bug: Bilinear uses a render target and for these the format is not converted
@@ -676,7 +696,7 @@ void Sdl2Ui::UpdateDisplay() {
 			}
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 			sdl_texture_scaled = SDL_CreateTexture(sdl_renderer, texture_format, SDL_TEXTUREACCESS_TARGET,
-			   static_cast<int>(ceilf(window.scale)) * main_surface->width(), static_cast<int>(ceilf(window.scale)) * main_surface->height());
+				static_cast<int>(ceilf(window.scale)) * main_surface->width(), static_cast<int>(ceilf(window.scale)) * main_surface->height());
 			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 			if (!sdl_texture_scaled) {
 				Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
@@ -686,18 +706,73 @@ void Sdl2Ui::UpdateDisplay() {
 
 	SDL_RenderClear(sdl_renderer);
 	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
+		// Calculate zoom parameters
+		float zoom_scale = params.zoom / 100.0f;
+
+		// Calculate source rectangle (the area we want to show)
+		SDL_Rect src_rect;
+		int zoomed_width = static_cast<int>(main_surface->width() * zoom_scale);
+		int zoomed_height = static_cast<int>(main_surface->height() * zoom_scale);
+
+		// Calculate anchor points
+		int anchor_pixel_x = params.is_anchor_percent ?
+			(params.x * main_surface->width() / 100) :
+			params.x;
+		int anchor_pixel_y = params.is_anchor_percent ?
+			(params.y * main_surface->height() / 100) :
+			params.y;
+
+		// Calculate the top-left corner of the source rectangle
+		src_rect.x = anchor_pixel_x - (main_surface->width() / (2 * zoom_scale));
+		src_rect.y = anchor_pixel_y - (main_surface->height() / (2 * zoom_scale));
+		src_rect.w = main_surface->width() / zoom_scale;
+		src_rect.h = main_surface->height() / zoom_scale;
+
+		// Clamp source rectangle to texture bounds
+		if (src_rect.x < 0) src_rect.x = 0;
+		if (src_rect.y < 0) src_rect.y = 0;
+		if (src_rect.x + src_rect.w > main_surface->width())
+			src_rect.x = main_surface->width() - src_rect.w;
+		if (src_rect.y + src_rect.h > main_surface->height())
+			src_rect.y = main_surface->height() - src_rect.h;
+
 		// Render game texture on the scaled texture
 		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
 		SDL_RenderClear(sdl_renderer);
-		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, &src_rect, nullptr);
 
 		SDL_SetRenderTarget(sdl_renderer, nullptr);
 		SDL_RenderCopy(sdl_renderer, sdl_texture_scaled, nullptr, nullptr);
-	} else {
-		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+	}
+	else {
+		// Handle non-bilinear case with zoom
+		float zoom_scale = params.zoom / 100.0f;
+
+		SDL_Rect src_rect;
+		int anchor_pixel_x = params.is_anchor_percent ?
+			(params.x * main_surface->width() / 100) :
+			params.x;
+		int anchor_pixel_y = params.is_anchor_percent ?
+			(params.y * main_surface->height() / 100) :
+			params.y;
+
+		src_rect.x = anchor_pixel_x - (main_surface->width() / (2 * zoom_scale));
+		src_rect.y = anchor_pixel_y - (main_surface->height() / (2 * zoom_scale));
+		src_rect.w = main_surface->width() / zoom_scale;
+		src_rect.h = main_surface->height() / zoom_scale;
+
+		// Clamp source rectangle
+		if (src_rect.x < 0) src_rect.x = 0;
+		if (src_rect.y < 0) src_rect.y = 0;
+		if (src_rect.x + src_rect.w > main_surface->width())
+			src_rect.x = main_surface->width() - src_rect.w;
+		if (src_rect.y + src_rect.h > main_surface->height())
+			src_rect.y = main_surface->height() - src_rect.h;
+
+		SDL_RenderCopy(sdl_renderer, sdl_texture_game, &src_rect, nullptr);
 	}
 	SDL_RenderPresent(sdl_renderer);
-}
+	}
 
 void Sdl2Ui::SetTitle(const std::string &title) {
 	SDL_SetWindowTitle(sdl_window, title.c_str());

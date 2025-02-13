@@ -34,6 +34,14 @@
 using namespace std::chrono_literals;
 
 namespace Graphics {
+	namespace {
+		static ZoomData  viewport_scale_instance;
+	}
+
+	ZoomData& GetZoomData() {
+		return viewport_scale_instance;
+	}
+
 	void UpdateTitle();
 
 	std::shared_ptr<Scene> current_scene;
