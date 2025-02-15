@@ -758,7 +758,11 @@ void Player::CreateGameObjects() {
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
-	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+	const auto exe_file = game_config.engine_path.Get().empty() ? EXE_NAME : game_config.engine_path.Get();
+	if (!game_config.engine_path.Get().empty()) {
+		Output::Debug("Using specified .EXE '{}' for engine detection", exe_file);
+	}
+	auto exeis = FileFinder::Game().OpenFile(exe_file);
 
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
@@ -1417,6 +1421,8 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --engine-path EXE    Set a custom path for the executable which is to be used
+                      by the automatic engine detection.
  --font1 FILE         Font to use for the first font. The system graphic of the
                       game determines whether font 1 or 2 is used.
  --font1-size PX      Size of font 1 in pixel. The default is 12.
