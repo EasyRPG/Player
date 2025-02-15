@@ -226,12 +226,29 @@ void Scene_Title::CreateTitleGraphic() {
 }
 
 void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical) {
+	int title_x = 160;
 	if (!center_vertical) {
-		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
-		window.SetY(Player::screen_height * 53 / 60 - window.GetHeight());
+		int title_y = 148;
+		if (Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleX, title_x)
+			|| Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleY, title_y)) {
+			// RPG_RT aligns its command window as "CenterTop"
+			window.SetX(title_x - window.GetWidth() / 2 + Player::menu_offset_x);
+			window.SetY(title_y + Player::menu_offset_y);
+		} else {
+			window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+			window.SetY(Player::screen_height * 53 / 60 - window.GetHeight());
+		}
 	} else {
-		window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
-		window.SetY(Player::screen_height / 2 - window.GetHeight() / 2);
+		int title_y = 88;
+		if (Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleHiddenX, title_x)
+			|| Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleHiddenY, title_y)) {
+			// RPG_RT aligns its command window as "CenterTop"
+			window.SetX(title_x - window.GetWidth() / 2 + Player::menu_offset_x);
+			window.SetY(title_y + Player::menu_offset_y);
+		} else {
+			window.SetX(Player::screen_width / 2 - window.GetWidth() / 2);
+			window.SetY(Player::screen_height / 2 - window.GetHeight() / 2);
+		}
 	}
 }
 

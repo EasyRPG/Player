@@ -73,7 +73,18 @@ namespace Player {
 		MaxLevel,
 		MaxGoldValue,
 		MaxItemCount,
-		MaxSaveFiles
+		MaxSaveFiles,
+
+		/** X-coordinate of the title scene command window (HAlign: Center) */
+		TitleX,
+		/** Y-coordinate of the title scene command window (VAlign: Top) */
+		TitleY,
+		/** X-coordinate of the title scene command window when the title graphic is hidden (HAlign: Center) */
+		TitleHiddenX,
+		/** Y-coordinate of the title scene command window when the title graphic is hidden (VAlign: Top) */
+		TitleHiddenY,
+
+		LAST
 	};
 
 	static constexpr auto kGameConstantType = lcf::makeEnumTags<GameConstantType>(
@@ -90,8 +101,14 @@ namespace Player {
 		"MaxLevel",
 		"MaxGoldValue",
 		"MaxItemCount",
-		"MaxSaveFiles"
+		"MaxSaveFiles",
+		"TitleCmdWnd_X",
+		"TitleCmdWnd_Y",
+		"TitleHiddenCmdWnd_X",
+		"TitleHiddenCmdWnd_Y"
 	);
+
+	static_assert(Player::kGameConstantType.size() == static_cast<size_t>(GameConstantType::LAST));
 
 	/**
 	 * Initializes EasyRPG Player.

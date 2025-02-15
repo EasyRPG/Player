@@ -71,12 +71,6 @@ public:
 
 	const FileInfo& GetFileInfo();
 
-	struct CodeAddressInfoU32 {
-		uint32_t default_val;
-		size_t code_offset;
-		std::vector<uint8_t> pre_data, post_data;
-	};
-
 	std::map<Player::GameConstantType, int32_t> GetOverridenGameConstants();
 
 private:

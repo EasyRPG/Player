@@ -19,6 +19,7 @@
 #ifndef EMSCRIPTEN
 
 #include "exe_reader.h"
+#include "exe_constants.h"
 #include "image_bmp.h"
 #include "output.h"
 #include <algorithm>
@@ -492,60 +493,63 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 
 namespace {
 
-	using Type = Player::GameConstantType;
 
-	using code_address_map = std::map<Type, struct EXEReader::CodeAddressInfoU32>;
-
-	const code_address_map const_addresses_106 = {
-		/*{
-			Type::DummyUnknownVar,
-			{ 9999, 0x9BDE0, { 0x8B, 0xD6, 0xB8 },  { 0xE8 } }
-		}*/
-	};
-	const code_address_map const_addresses_108 = {
-		/*{
-			Type::DummyUnknownVar,
-			{ 9999, 0x9C03C, { 0x8B, 0xD6, 0xB8 },  { 0xE8 } }
-		}*/
-	};
 }
 
 std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
+
 	std::map<Player::GameConstantType, int32_t> game_constants;
 
-	auto match_surrounding_data = [&](const EXEReader::CodeAddressInfoU32& info, const uint32_t const_ofs) {
+	auto match_surrounding_data = [&](const ExeConstants::CodeAddressInfoU32& info, const uint32_t const_ofs) {
 		for (int i = 0; i < info.pre_data.size(); i++) {
 			if (info.pre_data[i] != GetU8(const_ofs - info.pre_data.size() + i))
 				return false;
 		}
-		for (int i = 0; i < info.post_data.size(); i++) {
+		/*for (int i = 0; i < info.post_data.size(); i++) {
 			if (info.post_data[i] != GetU8(const_ofs + sizeof(uint32_t) + i))
 				return false;
-		}
+		}*/
 		//Is a hit -> constant value can be extracted
 		return true;
 	};
 
-	auto check_address_map = [&](const code_address_map& map) {
+	auto check_address_map = [&](const ExeConstants::code_address_map& map) {
 		uint32_t const_ofs;
+		bool extract_success = false;
 
 		for (auto it = map.begin(); it != map.end();) {
+			auto const_type = it->first;
 			auto& addr_info = it->second;
 			const_ofs = code_ofs + addr_info.code_offset;
 
-			if (match_surrounding_data(addr_info, const_ofs)) {
+			bool extract_constant = false;
+			if (addr_info.pre_data == ExeConstants::magic_prev && extract_success) {
+				extract_constant = true;
+			} else if (match_surrounding_data(addr_info, const_ofs)) {
+				extract_constant = true;
+			}
+
+			if (extract_constant) {
 				int32_t value = GetU32(const_ofs);
+
 				if (value != addr_info.default_val) {
-					game_constants[it->first] = value;
+					game_constants[const_type] = value;
+					Output::Debug("Read constant '{}': {} (default: {})", Player::kGameConstantType.tag(const_type), value, addr_info.default_val);
+				} else {
+					Output::Debug("Read constant '{}': {}", Player::kGameConstantType.tag(const_type), value);
 				}
+				extract_success = true;
+			} else {
+				Output::Debug("Could not read constant '{}'", Player::kGameConstantType.tag(const_type));
+				extract_success = false;
 			}
 			it++;
 		}
 	};
 
 	//TODO: do a proper version check prior to doing these reads
-	check_address_map(const_addresses_106);
-	check_address_map(const_addresses_108);
+	check_address_map(ExeConstants::const_addresses_106);
+	check_address_map(ExeConstants::const_addresses_108);
 
 	return game_constants;
 }

@@ -844,7 +844,7 @@ void Player::CreateGameObjects() {
 
 	Constants::ResetOverrides();
 	if (game_constant_overrides.size() > 0) {
-		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();) {
+		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();++it) {
 			Constants::OverrideGameConstant(it->first, it->second);
 		}
 		Constants::PrintActiveOverrides();
