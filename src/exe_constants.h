@@ -52,7 +52,90 @@ namespace ExeConstants {
 
 	*/
 
+}
+namespace ExeConstants::RT_2K {
+
+	const code_address_map const_addresses_103b = {
+		{
+			Type::TitleX,
+			{ 160, 0x06CC39, { MOV_EDX } }
+		}, {
+			Type::TitleY,
+			{ 148, 0x06CC40, { SUB_EDX_EBX, MOV_EBX } }
+		}, {
+			Type::TitleHiddenX,
+			{ 160, 0x06CC5B, { MOV_EDX } }
+		}, {
+			Type::TitleHiddenY,
+			{  88, 0x06CC62, { SUB_EDX_EBX, MOV_EBX } }
+		}
+	};
+
+	const code_address_map const_addresses_105b = {
+		{
+			Type::TitleX,
+			{ 160, 0x06E091, { MOV_EDX } }
+		}, {
+			Type::TitleY,
+			{ 148, 0x06E098, { SUB_EDX_EBX, MOV_EBX } }
+		}, {
+			Type::TitleHiddenX,
+			{ 160, 0x06E0B3, { MOV_EDX } }
+		}, {
+			Type::TitleHiddenY,
+			{  88, 0x06E0BA, { SUB_EDX_EBX, MOV_EBX } }
+		}
+	};
+
 	const code_address_map const_addresses_106 = {
+		{
+			Type::TitleX,
+			{ 160, 0x06D1B9, { MOV_EDX } }
+		}, {
+			Type::TitleY,
+			{ 148, 0x06D1C0, { SUB_EDX_EBX, MOV_EBX } }
+		}, {
+			Type::TitleHiddenX,
+			{ 160, 0x06D1DB, { MOV_EDX } }
+		}, {
+			Type::TitleHiddenY,
+			{  88, 0x06D1E2, { SUB_EDX_EBX, MOV_EBX } }
+		}
+	};
+}
+
+namespace ExeConstants::RT_2K3 {
+
+	const code_address_map const_addresses_104 = {
+		{
+			Type::TitleX,
+			{ 160, 0x08A849, { MOV_EDX } }
+		}, {
+			Type::TitleY,
+			{ 148, 0x08A850, { SUB_EDX_EBX, MOV_EBX } }
+		}, {
+			Type::TitleHiddenX,
+			{ 160, 0x08A86B, { MOV_EDX } }
+		}, {
+			Type::TitleHiddenY,
+			{  88, 0x08A872, { SUB_EDX_EBX, MOV_EBX } }
+		}
+	};
+
+	const code_address_map const_addresses_106 = {
+		{
+			Type::TitleX,
+			{ 160, 0x08F76D, { MOV_EDX } }
+		}, {
+			Type::TitleY,
+			{ 148, 0x08F774, { SUB_EDX_EBX, MOV_EBX } }
+		}, {
+			Type::TitleHiddenX,
+			{ 160, 0x08F78F, { MOV_EDX } }
+		}, {
+			Type::TitleHiddenY,
+			{  88, 0x08F796, { SUB_EDX_EBX, MOV_EBX } }
+		}
 	};
 
 	const code_address_map const_addresses_108 = {
@@ -67,7 +150,7 @@ namespace ExeConstants {
 			{ 160, 0x08F843, { MOV_EDX } }
 		}, {
 			Type::TitleHiddenY,
-			{ 88, 0x08F84A, { SUB_EDX_EBX, MOV_EBX } }
+			{  88, 0x08F84A, { SUB_EDX_EBX, MOV_EBX } }
 		}
 	};
 }

@@ -547,9 +547,22 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		}
 	};
 
-	//TODO: do a proper version check prior to doing these reads
-	check_address_map(ExeConstants::const_addresses_106);
-	check_address_map(ExeConstants::const_addresses_108);
+	if (file_info.code_size == 0x96600) {
+		check_address_map(ExeConstants::RT_2K::const_addresses_103b);
+	} else if (file_info.code_size == 0x96E00) {
+		check_address_map(ExeConstants::RT_2K::const_addresses_105b);
+	} else if (file_info.code_size == 0x96A00) {
+		check_address_map(ExeConstants::RT_2K::const_addresses_106);
+	}
+
+
+	if (file_info.code_size == 0xC0800) {
+		check_address_map(ExeConstants::RT_2K3::const_addresses_104);
+	} else if (file_info.code_size == 0xC8A00) {
+		check_address_map(ExeConstants::RT_2K3::const_addresses_106);
+	} else if (file_info.code_size == 0xC8E00) {
+		check_address_map(ExeConstants::RT_2K3::const_addresses_108);
+	}
 
 	return game_constants;
 }
