@@ -93,8 +93,7 @@ void Scene_Language::CreateTranslationWindow() {
 			win.SetText("");
 		}
 	};
-	translate_window->SetX(Player::screen_width / 2 - translate_window->GetWidth() / 2);
-	translate_window->SetY(Player::screen_height / 2 - translate_window->GetHeight() / 2);
+	Scene_Title::RepositionWindow(*translate_window, Player::hide_title_flag);
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		translate_window->SetBackOpacity(160);

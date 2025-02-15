@@ -119,15 +119,15 @@ public:
 	 */
 	void OnGameStart();
 
-private:
-	void OnTitleSpriteReady(FileRequestResult* result);
-
 	/**
 	 * Moves a window (typically the New/Continue/Quit menu) to the middle or bottom-center of the screen.
 	 * @param window The window to resposition.
 	 * @param center_vertical If true, the menu will be centered vertically. Otherwise, it will be at the bottom of the screen.
 	 */
-	void RepositionWindow(Window_Command& window, bool center_vertical);
+	static void RepositionWindow(Window_Command& window, bool center_vertical);
+
+private:
+	void OnTitleSpriteReady(FileRequestResult* result);
 
 	/** Displays the options of the title scene. */
 	std::unique_ptr<Window_Command> command_window;
