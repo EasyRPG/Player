@@ -1625,7 +1625,7 @@ void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 		}
 	}
 	max_var = lcf::Data::system.easyrpg_variable_max_value;
-	TryGetOverriddenConstant(GameConstantType::MaxVarLimit, min_var);
+	TryGetOverriddenConstant(GameConstantType::MaxVarLimit, max_var);
 	if (max_var == 0) {
 		if (Player::IsPatchManiac()) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();

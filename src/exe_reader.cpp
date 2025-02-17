@@ -568,7 +568,7 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 				log_version_rm2k("DonM 1.03b");
 				check_address_map(ExeConstants::RT_2K::const_addresses_103b);
 			} else {
-				// Might also be build 'RTIcon-2000JP-16.png 2000-05-07	'
+				// Might also be build '2000-05-07'
 			}
 			break;
 		case 0x96E00:
