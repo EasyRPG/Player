@@ -75,6 +75,8 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 	uint32_t sectionsOfs = optional_header + GetU16(ofs + 0x14); // skip opt header
 	uint32_t data_directory_ofs = (format_pe32 ? 0x60 : 0x70);
 	resource_rva = GetU32(optional_header + data_directory_ofs + 16);
+	file_info.entrypoint = format_pe32 ? GetU32(optional_header + 0x10) : 0;
+
 	if (!resource_rva) {
 		// Is some kind of encrypted EXE -> Give up
 		return;
@@ -91,7 +93,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 
 		if (secName == 0x45444F43) { // CODE
 			file_info.code_size = sectVs;
-			code_ofs = GetU32(sectionsOfs + 0x14);
+			file_info.code_ofs = GetU32(sectionsOfs + 0x14);
 		} else if (secName == 0x52454843) { // CHER(RY)
 			file_info.cherry_size = sectVs;
 		} else if (secName == 0x50454547) { // GEEP
@@ -501,8 +503,8 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 	std::map<Player::GameConstantType, int32_t> game_constants;
 
 	auto match_surrounding_data = [&](const ExeConstants::CodeAddressInfoU32& info, const uint32_t const_ofs) {
-		for (int i = 0; i < info.pre_data.size(); i++) {
-			if (info.pre_data[i] != GetU8(const_ofs - info.pre_data.size() + i))
+		for (int i = 0; i < info.size_pre_data; i++) {
+			if (info.pre_data[i] != GetU8(const_ofs - info.size_pre_data + i))
 				return false;
 		}
 		/*for (int i = 0; i < info.post_data.size(); i++) {
@@ -517,10 +519,16 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		uint32_t const_ofs;
 		bool extract_success = false;
 
-		for (auto it = map.begin(); it != map.end();) {
+		for (auto it = map.begin(); it != map.end();++it) {
 			auto const_type = it->first;
 			auto& addr_info = it->second;
-			const_ofs = code_ofs + addr_info.code_offset;
+
+			if (addr_info.code_offset == 0) {
+				// constant is not defined in this map
+				continue;
+			}
+
+			const_ofs = file_info.code_ofs + addr_info.code_offset;
 
 			bool extract_constant = false;
 			if (addr_info.pre_data == ExeConstants::magic_prev && extract_success) {
@@ -543,25 +551,50 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 				Output::Debug("Could not read constant '{}'", Player::kGameConstantType.tag(const_type));
 				extract_success = false;
 			}
-			it++;
 		}
 	};
 
-	if (file_info.code_size == 0x96600) {
-		check_address_map(ExeConstants::RT_2K::const_addresses_103b);
-	} else if (file_info.code_size == 0x96E00) {
-		check_address_map(ExeConstants::RT_2K::const_addresses_105b);
-	} else if (file_info.code_size == 0x96A00) {
-		check_address_map(ExeConstants::RT_2K::const_addresses_106);
-	}
+	auto log_version_rm2k = [](const StringView& str) {
+		Output::Debug("Assuming RPG2000 build '{}' for constant extraction", str);
+	};
 
+	auto log_version_rm2k3 = [](const StringView& str) {
+		Output::Debug("Assuming RPG2003 build '{}' for constant extraction", str);
+	};
 
-	if (file_info.code_size == 0xC0800) {
-		check_address_map(ExeConstants::RT_2K3::const_addresses_104);
-	} else if (file_info.code_size == 0xC8A00) {
-		check_address_map(ExeConstants::RT_2K3::const_addresses_106);
-	} else if (file_info.code_size == 0xC8E00) {
-		check_address_map(ExeConstants::RT_2K3::const_addresses_108);
+	switch (file_info.code_size) {
+		case 0x96600:
+			if (file_info.entrypoint == 0x0972C4) {
+				log_version_rm2k("DonM 1.03b");
+				check_address_map(ExeConstants::RT_2K::const_addresses_103b);
+			} else {
+				// Might also be build 'RTIcon-2000JP-16.png 2000-05-07	'
+			}
+			break;
+		case 0x96E00:
+			log_version_rm2k("2000-07-11");
+			check_address_map(ExeConstants::RT_2K::const_addresses_105b);
+		break;
+		case 0x96A00:
+			if (file_info.entrypoint == 0x097744) {
+				log_version_rm2k("2000-12-27");
+				check_address_map(ExeConstants::RT_2K::const_addresses_106);
+			} else {
+				// Might also be build '2001-05-05'
+			}
+			break;
+		case 0xC0800:
+			log_version_rm2k3("1.0.3.0_1.0.4.0");
+			check_address_map(ExeConstants::RT_2K3::const_addresses_104);
+			break;
+		case 0xC8A00:
+			log_version_rm2k3("1.0.6.0_1.0.6.0");
+			check_address_map(ExeConstants::RT_2K3::const_addresses_106);
+			break;
+		case 0xC8E00:
+			log_version_rm2k3("1.0.8.0_1.0.8.0");
+			check_address_map(ExeConstants::RT_2K3::const_addresses_108);
+			break;
 	}
 
 	return game_constants;

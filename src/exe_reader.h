@@ -64,6 +64,8 @@ public:
 		uint32_t geep_size = 0;
 		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
+		uint32_t code_ofs = 0;
+		uint32_t entrypoint = 0;
 
 		int GetEngineType(bool& is_maniac_patch) const;
 		void Print() const;
@@ -88,8 +90,6 @@ private:
 	// 0 if resource section was unfindable.
 	uint32_t resource_ofs = 0;
 	uint32_t resource_rva = 0;
-
-	uint32_t code_ofs = 0;
 
 	FileInfo file_info;
 	Filesystem_Stream::InputStream corefile;
