@@ -1679,23 +1679,86 @@ int32_t Player::Constants::MaxEnemySpValue() {
 	return val;
 }
 
-int32_t Player::Constants::MaxStatBaseValue() {
+int32_t Player::Constants::MaxAtkBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	TryGetOverriddenConstant(GameConstantType::MaxStatBaseValue, val);
+	TryGetOverriddenConstant(GameConstantType::MaxAtkBaseValue, val);
 	if (val == -1) {
 		if (Player::IsPatchItalian()) {
 			return 9'999;
 		}
-		return 999;
+		return max_stat_base_value;
 	}
 	return val;
 }
 
-int32_t Player::Constants::MaxStatBattleValue() {
-	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	TryGetOverriddenConstant(GameConstantType::MaxStatBattleValue, val);
+int32_t Player::Constants::MaxDefBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(GameConstantType::MaxDefBaseValue, val);
 	if (val == -1) {
-		return 9'999;
+		if (Player::IsPatchItalian()) {
+			return 9'999;
+		}
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxSpiBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(GameConstantType::MaxSpiBaseValue, val);
+	if (val == -1) {
+		if (Player::IsPatchItalian()) {
+			return 9'999;
+		}
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAgiBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(GameConstantType::MaxAgiBaseValue, val);
+	if (val == -1) {
+		if (Player::IsPatchItalian()) {
+			return 9'999;
+		}
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAtkBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(GameConstantType::MaxAtkBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDefBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(GameConstantType::MaxDefBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxSpiBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(GameConstantType::MaxSpiBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAgiBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(GameConstantType::MaxAgiBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
 	}
 	return val;
 }

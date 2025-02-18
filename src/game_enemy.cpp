@@ -55,14 +55,6 @@ int Game_Enemy::MaxSpValue() const {
 	return Player::Constants::MaxEnemySpValue();
 }
 
-int Game_Enemy::MaxStatBattleValue() const {
-	return Player::Constants::MaxStatBattleValue();
-}
-
-int Game_Enemy::MaxStatBaseValue() const {
-	return Player::Constants::MaxStatBaseValue();
-}
-
 int Game_Enemy::GetStateProbability(int state_id) const {
 	int rate = 1; // Enemies have only B as the default state rank
 

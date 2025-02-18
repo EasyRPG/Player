@@ -22,6 +22,7 @@
 #include "game_actor.h"
 #include "window_shopparty.h"
 #include "output.h"
+#include "player.h"
 #include <lcf/reader_util.h>
 #include "sprite_character.h"
 
@@ -101,12 +102,10 @@ static int CmpEquip(const Game_Actor* actor, const lcf::rpg::Item* new_item) {
 	}
 	add_item(new_item, 1);
 
-	int limit = actor->MaxStatBaseValue();
-
-	atk = Utils::Clamp(atk, 1, limit);
-	def = Utils::Clamp(def, 1, limit);
-	spi = Utils::Clamp(spi, 1, limit);
-	agi = Utils::Clamp(agi, 1, limit);
+	atk = Utils::Clamp(atk, 1, Player::Constants::MaxAtkBaseValue());
+	def = Utils::Clamp(def, 1, Player::Constants::MaxDefBaseValue());
+	spi = Utils::Clamp(spi, 1, Player::Constants::MaxSpiBaseValue());
+	agi = Utils::Clamp(agi, 1, Player::Constants::MaxAgiBaseValue());
 
 	int new_score = atk + def + spi + agi;
 

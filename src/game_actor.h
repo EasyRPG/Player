@@ -55,10 +55,6 @@ public:
 
 	int MaxSpValue() const override;
 
-	int MaxStatBattleValue() const override;
-
-	int MaxStatBaseValue() const override;
-
 	int MaxExpValue() const;
 
 	virtual PermanentStates GetPermanentStates() const override;

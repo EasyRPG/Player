@@ -56,8 +56,6 @@ static void testLimits(int hp, int base, int battle) {
 	auto& enemy = MakeEnemy(1, 100, 10, 11, 12, 13, 14);
 
 	REQUIRE_EQ(enemy.MaxHpValue(), hp);
-	REQUIRE_EQ(enemy.MaxStatBaseValue(), base);
-	REQUIRE_EQ(enemy.MaxStatBattleValue(), battle);
 
 	SUBCASE("up") {
 		enemy.SetAtkModifier(999999);

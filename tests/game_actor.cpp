@@ -113,8 +113,6 @@ static void testLimits(int hp, int base, int battle) {
 		auto actor = MakeActor(1, 1, 99, 1, 1, 1, 1, 1, 1);
 
 		REQUIRE_EQ(actor.MaxHpValue(), hp);
-		REQUIRE_EQ(actor.MaxStatBaseValue(), base);
-		REQUIRE_EQ(actor.MaxStatBattleValue(), battle);
 	}
 
 	SUBCASE("base limits") {

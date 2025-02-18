@@ -102,8 +102,17 @@ namespace ExeConstants::RT_2K {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),
@@ -125,8 +134,17 @@ namespace ExeConstants::RT_2K {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),
@@ -148,8 +166,17 @@ namespace ExeConstants::RT_2K {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),
@@ -176,8 +203,17 @@ namespace ExeConstants::RT_2K3 {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),
@@ -199,8 +235,17 @@ namespace ExeConstants::RT_2K3 {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),
@@ -222,8 +267,17 @@ namespace ExeConstants::RT_2K3 {
 		not_def<T::MaxActorSP>(),
 		not_def<T::MaxEnemyHP>(),
 		not_def<T::MaxEnemySP>(),
-		not_def<T::MaxStatBattleValue>(),
-		not_def<T::MaxStatBaseValue>(),
+
+		not_def<T::MaxAtkBaseValue>(),
+		not_def<T::MaxDefBaseValue>(),
+		not_def<T::MaxSpiBaseValue>(),
+		not_def<T::MaxAgiBaseValue>(),
+
+		not_def<T::MaxAtkBattleValue>(),
+		not_def<T::MaxDefBattleValue>(),
+		not_def<T::MaxSpiBattleValue>(),
+		not_def<T::MaxAgiBattleValue>(),
+
 		not_def<T::MaxDamageValue>(),
 		not_def<T::MaxExpValue>(),
 		not_def<T::MaxLevel>(),

@@ -43,14 +43,6 @@ int Game_Actor::MaxSpValue() const {
 	return Player::Constants::MaxActorSpValue();
 }
 
-int Game_Actor::MaxStatBattleValue() const {
-	return Player::Constants::MaxStatBattleValue();
-}
-
-int Game_Actor::MaxStatBaseValue() const {
-	return Player::Constants::MaxStatBaseValue();
-}
-
 int Game_Actor::MaxExpValue() const {
 	return Player::Constants::MaxExpValue();
 }
@@ -488,7 +480,7 @@ int Game_Actor::GetBaseAtk(Weapon weapon, bool mod, bool equip) const {
 		ForEachEquipment<true,true>(GetWholeEquipment(), [&](auto& item) { n += item.atk_points1; }, weapon);
 	}
 
-	return Utils::Clamp(n, 1, MaxStatBaseValue());
+	return Utils::Clamp(n, 1, Player::Constants::MaxAtkBaseValue());
 }
 
 int Game_Actor::GetBaseAtk(Weapon weapon) const {
@@ -511,7 +503,7 @@ int Game_Actor::GetBaseDef(Weapon weapon, bool mod, bool equip) const {
 		ForEachEquipment<true,true>(GetWholeEquipment(), [&](auto& item) { n += item.def_points1; }, weapon);
 	}
 
-	return Utils::Clamp(n, 1, MaxStatBaseValue());
+	return Utils::Clamp(n, 1, Player::Constants::MaxDefBaseValue());
 }
 
 int Game_Actor::GetBaseDef(Weapon weapon) const {
@@ -534,7 +526,7 @@ int Game_Actor::GetBaseSpi(Weapon weapon, bool mod, bool equip) const {
 		ForEachEquipment<true,true>(GetWholeEquipment(), [&](auto& item) { n += item.spi_points1; }, weapon);
 	}
 
-	return Utils::Clamp(n, 1, MaxStatBaseValue());
+	return Utils::Clamp(n, 1, Player::Constants::MaxSpiBaseValue());
 }
 
 int Game_Actor::GetBaseSpi(Weapon weapon) const {
@@ -557,7 +549,7 @@ int Game_Actor::GetBaseAgi(Weapon weapon, bool mod, bool equip) const {
 		ForEachEquipment<true,true>(GetWholeEquipment(), [&](auto& item) { n += item.agi_points1; }, weapon);
 	}
 
-	return Utils::Clamp(n, 1, MaxStatBaseValue());
+	return Utils::Clamp(n, 1, Player::Constants::MaxAgiBaseValue());
 }
 
 int Game_Actor::GetBaseAgi(Weapon weapon) const {
@@ -1134,11 +1126,6 @@ static int ClampMaxSpMod(int sp, const Game_Actor* actor) {
 	return Utils::Clamp(sp, -limit, limit);
 }
 
-static int ClampStatMod(int value, const Game_Actor* actor) {
-	auto limit = actor->MaxStatBaseValue();
-	return Utils::Clamp(value, -limit, limit);
-}
-
 void Game_Actor::SetBaseMaxHp(int maxhp) {
 	int new_hp_mod = data.hp_mod + (maxhp - GetBaseMaxHp());
 	data.hp_mod = ClampMaxHpMod(new_hp_mod, this);
@@ -1165,22 +1152,22 @@ int Game_Actor::SetSp(int sp) {
 
 void Game_Actor::SetBaseAtk(int atk) {
 	int new_attack_mod = data.attack_mod + (atk - GetBaseAtk());
-	data.attack_mod = ClampStatMod(new_attack_mod, this);
+	data.attack_mod = Utils::Clamp(new_attack_mod, -Player::Constants::MaxAtkBaseValue(), Player::Constants::MaxAtkBaseValue());
 }
 
 void Game_Actor::SetBaseDef(int def) {
 	int new_defense_mod = data.defense_mod + (def - GetBaseDef());
-	data.defense_mod = ClampStatMod(new_defense_mod, this);
+	data.defense_mod = Utils::Clamp(new_defense_mod, -Player::Constants::MaxDefBaseValue(), Player::Constants::MaxDefBaseValue());
 }
 
 void Game_Actor::SetBaseSpi(int spi) {
 	int new_spirit_mod = data.spirit_mod + (spi - GetBaseSpi());
-	data.spirit_mod = ClampStatMod(new_spirit_mod, this);
+	data.spirit_mod = Utils::Clamp(new_spirit_mod, -Player::Constants::MaxSpiBaseValue(), Player::Constants::MaxSpiBaseValue());
 }
 
 void Game_Actor::SetBaseAgi(int agi) {
 	int new_agility_mod = data.agility_mod + (agi - GetBaseAgi());
-	data.agility_mod = ClampStatMod(new_agility_mod, this);
+	data.agility_mod = Utils::Clamp(new_agility_mod, -Player::Constants::MaxAgiBaseValue(), Player::Constants::MaxAgiBaseValue());
 }
 
 Game_Actor::RowType Game_Actor::GetBattleRow() const {

@@ -66,8 +66,17 @@ namespace Player {
 		MaxActorSP,
 		MaxEnemyHP,
 		MaxEnemySP,
-		MaxStatBaseValue,
-		MaxStatBattleValue,
+
+		MaxAtkBaseValue,
+		MaxDefBaseValue,
+		MaxSpiBaseValue,
+		MaxAgiBaseValue,
+
+		MaxAtkBattleValue,
+		MaxDefBattleValue,
+		MaxSpiBattleValue,
+		MaxAgiBattleValue,
+
 		MaxDamageValue,
 		MaxExpValue,
 		MaxLevel,
@@ -94,8 +103,17 @@ namespace Player {
 		"MaxActorSP",
 		"MaxEnemyHP",
 		"MaxEnemySP",
-		"MaxStatBaseValue",
-		"MaxStatBattleValue",
+
+		"MaxAtkBaseValue",
+		"MaxDefBaseValue",
+		"MaxSpiBaseValue",
+		"MaxAgiBaseValue",
+
+		"MaxAtkBattleValue",
+		"MaxDefBattleValue",
+		"MaxSpiBattleValue",
+		"MaxAgiBattleValue",
+
 		"MaxDamageValue",
 		"MaxExpValue",
 		"MaxLevel",
@@ -488,6 +506,11 @@ namespace Player {
 		static constexpr int32_t max_level_2k = 50;
 		static constexpr int32_t max_level_2k3 = 99;
 
+		static constexpr int32_t max_hp_2k = 999;
+		static constexpr int32_t max_hp_2k3 = 9'999;
+		static constexpr int32_t max_stat_base_value = 999;
+		static constexpr int32_t max_stat_battle_value = 9'999;
+
 		void GetVariableLimits(Var_t& min_var, Var_t& max_var);
 
 		int32_t MaxActorHpValue();
@@ -496,8 +519,16 @@ namespace Player {
 		int32_t MaxEnemyHpValue();
 		int32_t MaxEnemySpValue();
 
-		int32_t MaxStatBaseValue();
-		int32_t MaxStatBattleValue();
+		int32_t MaxAtkBaseValue();
+		int32_t MaxDefBaseValue();
+		int32_t MaxSpiBaseValue();
+		int32_t MaxAgiBaseValue();
+
+		int32_t MaxAtkBattleValue();
+		int32_t MaxDefBattleValue();
+		int32_t MaxSpiBattleValue();
+		int32_t MaxAgiBattleValue();
+
 		int32_t MaxDamageValue();
 
 		int32_t MaxExpValue();
