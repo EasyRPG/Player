@@ -540,11 +540,15 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 			if (extract_constant) {
 				int32_t value = GetU32(const_ofs);
 
-				if (value != addr_info.default_val) {
+				auto it = game_constants.find(const_type);
+				if (it != game_constants.end() && it->second == value) {
+					// Constant override has already been applied through some other means
+					continue;
+				}
+
+				if (value != addr_info.default_val || it != game_constants.end()) {
 					game_constants[const_type] = value;
 					Output::Debug("Read constant '{}': {} (default: {})", Player::kGameConstantType.tag(const_type), value, addr_info.default_val);
-				} else {
-					Output::Debug("Read constant '{}': {}", Player::kGameConstantType.tag(const_type), value);
 				}
 				extract_success = true;
 			} else {
@@ -560,6 +564,24 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 
 	auto log_version_rm2k3 = [](const StringView& str) {
 		Output::Debug("Assuming RPG2003 build '{}' for constant extraction", str);
+	};
+
+	auto apply_known_config = [&](ExeConstants::KnownPatchConfigurations conf) {
+		Output::Debug("Assuming known patch config '{}'", ExeConstants::kKnownPatchConfigurations.tag(static_cast<int>(conf)));
+		auto it_conf = ExeConstants::known_patch_configurations.find(conf);
+		assert(it_conf != ExeConstants::known_patch_configurations.end());
+
+		for (auto it = it_conf->second.begin(); it != it_conf->second.end(); ++it) {
+			game_constants[it->first] = it->second;
+		}
+	};
+
+	auto check_for_string = [&](uint32_t offset, const char* p) {
+		while (*p) {
+			if (GetU8(offset++) != *p++)
+				return false;
+		}
+		return true;
 	};
 
 	switch (file_info.code_size) {
@@ -593,6 +615,11 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 			break;
 		case 0xC8E00:
 			log_version_rm2k3("1.0.8.0_1.0.8.0");
+
+			if (check_for_string(file_info.code_ofs + 0x08EBE0, "NoTitolo")) {
+				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_108);
+			}
+
 			check_address_map(ExeConstants::RT_2K3::const_addresses_108);
 			break;
 	}

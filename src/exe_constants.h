@@ -24,6 +24,22 @@
 
 namespace ExeConstants {
 
+	enum class KnownPatchConfigurations {
+		//Rm2k_Italian_40,		// Italian "RPG Maker 4.0" patch
+		Rm2k3_Italian_108,		// Italian "WhiteDragon" patch
+		//QP_StatDelimiter,
+		LAST
+	};
+	static constexpr auto kKnownPatchConfigurations = lcf::makeEnumTags<KnownPatchConfigurations>(
+		//"Rm2k Italian 4.0",
+		"Rm2k3 Italian 1.08"
+		//"QuickPatch StatDelimiter"
+	);
+
+	static_assert(kKnownPatchConfigurations.size() == static_cast<size_t>(KnownPatchConfigurations::LAST));
+
+	using patch_config = std::map<Player::GameConstantType, int32_t>;
+
 	constexpr size_t MAX_SIZE_CHK_PRE = 4;
 
 	struct CodeAddressInfoU32 {
@@ -287,5 +303,27 @@ namespace ExeConstants::RT_2K3 {
 		not_def<T::MaxItemCount>(),
 		not_def<T::MaxSaveFiles>()
 	}};
+}
+
+namespace ExeConstants {
+	using T = Player::GameConstantType;
+
+	std::map<KnownPatchConfigurations, patch_config> known_patch_configurations = {
+		{
+			KnownPatchConfigurations::Rm2k3_Italian_108, {
+				{ T::MinVarLimit,	-999999999 },
+				{ T::MaxVarLimit,	 999999999 },
+				{ T::MaxEnemyHP,	 999999999 },
+				{ T::MaxEnemySP,     999999999 },
+				{ T::MaxActorHP,	     99999 },
+				{ T::MaxActorSP,          9999 },
+				{ T::MaxAtkBaseValue,     9999 },
+				{ T::MaxDefBaseValue,     9999 },
+				{ T::MaxSpiBaseValue,     9999 },
+				{ T::MaxAgiBaseValue,     9999 },
+				{ T::MaxDamageValue,     99999 },
+				{ T::MaxGoldValue,     9999999 }
+		}}
+	};
 }
 #endif

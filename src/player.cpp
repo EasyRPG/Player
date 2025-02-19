@@ -1610,16 +1610,11 @@ namespace Player::Constants {
 
 void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 
-	static constexpr Var_t min_2k3_patch_italiano = -999'999'999;
-	static constexpr Var_t max_2k3_patch_italiano = 999'999'999;
-
 	min_var = lcf::Data::system.easyrpg_variable_min_value;
 	TryGetOverriddenConstant(GameConstantType::MinVarLimit, min_var);
 	if (min_var == 0) {
 		if (Player::IsPatchManiac()) {
 			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		} else if (Player::IsPatchItalian()) {
-			min_var = min_2k3_patch_italiano;
 		} else {
 			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
 		}
@@ -1629,8 +1624,6 @@ void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 	if (max_var == 0) {
 		if (Player::IsPatchManiac()) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		} else if (Player::IsPatchItalian()) {
-			max_var = max_2k3_patch_italiano;
 		} else {
 			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
 		}
@@ -1659,9 +1652,6 @@ int32_t Player::Constants::MaxEnemyHpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_enemy_hp;
 	TryGetOverriddenConstant(GameConstantType::MaxEnemyHP, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 999'999'999;
-		}
 		return Player::IsRPG2k() ? 9'999 : 99'999;
 	}
 	return val;
@@ -1671,9 +1661,6 @@ int32_t Player::Constants::MaxEnemySpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_enemy_sp;
 	TryGetOverriddenConstant(GameConstantType::MaxEnemySP, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 999'999'999;
-		}
 		return 9'999;
 	}
 	return val;
@@ -1683,9 +1670,6 @@ int32_t Player::Constants::MaxAtkBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
 	TryGetOverriddenConstant(GameConstantType::MaxAtkBaseValue, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 9'999;
-		}
 		return max_stat_base_value;
 	}
 	return val;
@@ -1695,9 +1679,6 @@ int32_t Player::Constants::MaxDefBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
 	TryGetOverriddenConstant(GameConstantType::MaxDefBaseValue, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 9'999;
-		}
 		return max_stat_base_value;
 	}
 	return val;
@@ -1707,9 +1688,6 @@ int32_t Player::Constants::MaxSpiBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
 	TryGetOverriddenConstant(GameConstantType::MaxSpiBaseValue, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 9'999;
-		}
 		return max_stat_base_value;
 	}
 	return val;
@@ -1719,9 +1697,6 @@ int32_t Player::Constants::MaxAgiBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
 	TryGetOverriddenConstant(GameConstantType::MaxAgiBaseValue, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 9'999;
-		}
 		return max_stat_base_value;
 	}
 	return val;
@@ -1767,9 +1742,6 @@ int32_t Player::Constants::MaxDamageValue() {
 	auto& val = lcf::Data::system.easyrpg_max_damage;
 	TryGetOverriddenConstant(GameConstantType::MaxDamageValue, val);
 	if (val == -1) {
-		if (Player::IsPatchItalian()) {
-			return 99'999;
-		}
 		return (Player::IsRPG2k() ? 999 : 9'999);
 	}
 	return val;
@@ -1799,9 +1771,6 @@ int32_t Player::Constants::MaxGoldValue() {
 	int32_t max_gold = 999'999;
 	if (TryGetOverriddenConstant(GameConstantType::MaxGoldValue, max_gold)) {
 		return max_gold;
-	}
-	if (Player::IsPatchItalian()) {
-		return 9'999'999;
 	}
 	return max_gold;
 }
