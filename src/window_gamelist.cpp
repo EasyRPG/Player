@@ -37,10 +37,21 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 
 	this->show_dotdot = show_dotdot;
 
-	auto files = base_fs.ListDirectory();
+#ifndef USE_CUSTOM_FILEBUF
+	// Calling "Create" while iterating over the directory list appears to corrupt
+	// the file entries probably because of a reallocation due to caching new entries.
+	// Create a copy of the entries instead to workaround this issue.
+	DirectoryTree::DirectoryListType files = *base_fs.ListDirectory();
+#else
+	DirectoryTree::DirectoryListType* files = base_fs.ListDirectory();
+#endif
 
 	// Find valid game diectories
+#ifndef USE_CUSTOM_FILEBUF
+	for (auto& dir : files) {
+#else
 	for (auto& dir : *files) {
+#endif
 		assert(!dir.second.name.empty() && "VFS BUG: Empty filename in the folder");
 
 #ifdef EMSCRIPTEN
