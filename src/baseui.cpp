@@ -20,7 +20,9 @@
 #include "bitmap.h"
 #include "player.h"
 
-#if USE_SDL==2
+#if USE_SDL==3
+#  include "platform/sdl/sdl3_ui.h"
+#elif USE_SDL==2
 #  include "platform/sdl/sdl2_ui.h"
 #elif USE_SDL==1
 #  include "platform/sdl/sdl_ui.h"
@@ -37,7 +39,9 @@
 std::shared_ptr<BaseUi> DisplayUi;
 
 std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, const Game_Config& cfg) {
-#if USE_SDL==2
+#if USE_SDL==3
+	return std::make_shared<Sdl3Ui>(width, height, cfg);
+#elif USE_SDL==2
 	return std::make_shared<Sdl2Ui>(width, height, cfg);
 #elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, cfg);

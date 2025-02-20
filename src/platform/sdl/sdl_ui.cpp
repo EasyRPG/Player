@@ -182,6 +182,10 @@ SdlUi::~SdlUi() {
 		SDL_FreeSurface(main_surface_sdl);
 	}
 
+#ifdef SUPPORT_AUDIO
+	audio_.reset();
+#endif
+
 	SDL_Quit();
 }
 

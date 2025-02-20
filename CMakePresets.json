@@ -23,7 +23,7 @@
 		},
 		{
 			"name": "debug",
-			"displayName": "Use system environment (Debug)",
+			"displayName": "System environment (Debug)",
 			"inherits": [
 				"parent",
 				"type-debug"
@@ -31,7 +31,7 @@
 		},
 		{
 			"name": "relwithdebinfo",
-			"displayName": "Use system environment (RelWithDebInfo)",
+			"displayName": "System environment (RelWithDebInfo)",
 			"inherits": [
 				"parent",
 				"type-relwithdebinfo"
@@ -39,15 +39,96 @@
 		},
 		{
 			"name": "release",
-			"displayName": "Use system environment (Release)",
+			"displayName": "System environment (Release)",
 			"inherits": [
 				"parent",
 				"type-release"
 			]
 		},
 		{
+			"name": "sdl3-debug",
+			"displayName": "System environment (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "sdl3-relwithdebinfo",
+			"displayName": "System environment (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "sdl3-release",
+			"displayName": "System environment (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "sdl2-debug",
+			"displayName": "System environment (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "sdl2-relwithdebinfo",
+			"displayName": "System environment (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "sdl2-release",
+			"displayName": "System environment (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "sdl1-debug",
+			"displayName": "System environment (SDL1, Debug)",
+			"inherits": [
+				"build-sdl1",
+				"parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "sdl1-relwithdebinfo",
+			"displayName": "System environment (SDL1, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl1",
+				"parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "sdl1-release",
+			"displayName": "System environment (SDL1, Release)",
+			"inherits": [
+				"build-sdl1",
+				"parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "libretro-debug",
-			"displayName": "Use system environment (libretro core) (Debug)",
+			"displayName": "System environment (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"parent",
@@ -56,7 +137,7 @@
 		},
 		{
 			"name": "libretro-relwithdebinfo",
-			"displayName": "Use system environment (libretro core) (RelWithDebInfo)",
+			"displayName": "System environment (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"parent",
@@ -65,7 +146,7 @@
 		},
 		{
 			"name": "libretro-release",
-			"displayName": "Use system environment (libretro core) (Release)",
+			"displayName": "System environment (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"parent",
@@ -106,8 +187,89 @@
 			]
 		},
 		{
+			"name": "linux-sdl3-debug",
+			"displayName": "Linux (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"linux-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "linux-sdl3-relwithdebinfo",
+			"displayName": "Linux (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "linux-sdl3-release",
+			"displayName": "Linux (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"linux-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "linux-sdl2-debug",
+			"displayName": "Linux (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"linux-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "linux-sdl2-relwithdebinfo",
+			"displayName": "Linux (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "linux-sdl2-release",
+			"displayName": "Linux (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"linux-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "linux-sdl1-debug",
+			"displayName": "Linux (SDL1, Debug)",
+			"inherits": [
+				"build-sdl1",
+				"linux-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "linux-sdl1-relwithdebinfo",
+			"displayName": "Linux (SDL1, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl1",
+				"linux-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "linux-sdl1-release",
+			"displayName": "Linux (SDL1, Release)",
+			"inherits": [
+				"build-sdl1",
+				"linux-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "linux-libretro-debug",
-			"displayName": "Linux (libretro core) (Debug)",
+			"displayName": "Linux (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"linux-parent",
@@ -116,7 +278,7 @@
 		},
 		{
 			"name": "linux-libretro-relwithdebinfo",
-			"displayName": "Linux (libretro core) (RelWithDebInfo)",
+			"displayName": "Linux (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"linux-parent",
@@ -125,7 +287,7 @@
 		},
 		{
 			"name": "linux-libretro-release",
-			"displayName": "Linux (libretro core) (Release)",
+			"displayName": "Linux (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"linux-parent",
@@ -165,8 +327,62 @@
 			]
 		},
 		{
+			"name": "windows-sdl3-debug",
+			"displayName": "Windows (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"windows-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-sdl3-relwithdebinfo",
+			"displayName": "Windows (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"windows-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-sdl3-release",
+			"displayName": "Windows (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"windows-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "windows-sdl2-debug",
+			"displayName": "Windows (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"windows-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-sdl2-relwithdebinfo",
+			"displayName": "Windows (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"windows-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-sdl2-release",
+			"displayName": "Windows (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"windows-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "windows-libretro-debug",
-			"displayName": "Windows (libretro core) (Debug)",
+			"displayName": "Windows (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"windows-parent",
@@ -175,7 +391,7 @@
 		},
 		{
 			"name": "windows-libretro-relwithdebinfo",
-			"displayName": "Windows (libretro core) (RelWithDebInfo)",
+			"displayName": "Windows (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"windows-parent",
@@ -184,7 +400,7 @@
 		},
 		{
 			"name": "windows-libretro-release",
-			"displayName": "Windows (libretro core) (Release)",
+			"displayName": "Windows (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"windows-parent",
@@ -226,8 +442,62 @@
 			]
 		},
 		{
+			"name": "windows-x86-vs2022-sdl3-debug",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x86-vs2022-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-x86-vs2022-sdl3-relwithdebinfo",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x86-vs2022-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-x86-vs2022-sdl3-release",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x86-vs2022-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-debug",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x86-vs2022-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-relwithdebinfo",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x86-vs2022-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-release",
+			"displayName": "Windows (x86) using Visual Studio 2022 (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x86-vs2022-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "windows-x86-vs2022-libretro-debug",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Debug)",
+			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"windows-x86-vs2022-parent",
@@ -236,7 +506,7 @@
 		},
 		{
 			"name": "windows-x86-vs2022-libretro-relwithdebinfo",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
+			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"windows-x86-vs2022-parent",
@@ -245,7 +515,7 @@
 		},
 		{
 			"name": "windows-x86-vs2022-libretro-release",
-			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core) (Release)",
+			"displayName": "Windows (x86) using Visual Studio 2022 (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"windows-x86-vs2022-parent",
@@ -287,8 +557,62 @@
 			]
 		},
 		{
+			"name": "windows-x64-vs2022-sdl3-debug",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x64-vs2022-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-x64-vs2022-sdl3-relwithdebinfo",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x64-vs2022-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-x64-vs2022-sdl3-release",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"windows-x64-vs2022-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-debug",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x64-vs2022-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-relwithdebinfo",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x64-vs2022-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-release",
+			"displayName": "Windows (x64) using Visual Studio 2022 (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"windows-x64-vs2022-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "windows-x64-vs2022-libretro-debug",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Debug)",
+			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"windows-x64-vs2022-parent",
@@ -297,7 +621,7 @@
 		},
 		{
 			"name": "windows-x64-vs2022-libretro-relwithdebinfo",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (RelWithDebInfo)",
+			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"windows-x64-vs2022-parent",
@@ -306,7 +630,7 @@
 		},
 		{
 			"name": "windows-x64-vs2022-libretro-release",
-			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core) (Release)",
+			"displayName": "Windows (x64) using Visual Studio 2022 (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"windows-x64-vs2022-parent",
@@ -352,8 +676,62 @@
 			]
 		},
 		{
+			"name": "macos-sdl3-debug",
+			"displayName": "macOS (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"macos-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "macos-sdl3-relwithdebinfo",
+			"displayName": "macOS (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"macos-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "macos-sdl3-release",
+			"displayName": "macOS (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"macos-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "macos-sdl2-debug",
+			"displayName": "macOS (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"macos-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "macos-sdl2-relwithdebinfo",
+			"displayName": "macOS (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"macos-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "macos-sdl2-release",
+			"displayName": "macOS (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"macos-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "macos-libretro-debug",
-			"displayName": "macOS (libretro core) (Debug)",
+			"displayName": "macOS (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"macos-parent",
@@ -362,7 +740,7 @@
 		},
 		{
 			"name": "macos-libretro-relwithdebinfo",
-			"displayName": "macOS (libretro core) (RelWithDebInfo)",
+			"displayName": "macOS (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"macos-parent",
@@ -371,7 +749,7 @@
 		},
 		{
 			"name": "macos-libretro-release",
-			"displayName": "macOS (libretro core) (Release)",
+			"displayName": "macOS (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"macos-parent",
@@ -391,7 +769,7 @@
 		},
 		{
 			"name": "emscripten-debug",
-			"displayName": "Emscripten (Web) (Debug)",
+			"displayName": "Emscripten Web (Debug)",
 			"inherits": [
 				"emscripten-parent",
 				"type-debug"
@@ -399,7 +777,7 @@
 		},
 		{
 			"name": "emscripten-relwithdebinfo",
-			"displayName": "Emscripten (Web) (RelWithDebInfo)",
+			"displayName": "Emscripten Web (RelWithDebInfo)",
 			"inherits": [
 				"emscripten-parent",
 				"type-relwithdebinfo"
@@ -407,8 +785,62 @@
 		},
 		{
 			"name": "emscripten-release",
-			"displayName": "Emscripten (Web) (Release)",
+			"displayName": "Emscripten Web (Release)",
 			"inherits": [
+				"emscripten-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "emscripten-sdl3-debug",
+			"displayName": "Emscripten Web (SDL3, Debug)",
+			"inherits": [
+				"build-sdl3",
+				"emscripten-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "emscripten-sdl3-relwithdebinfo",
+			"displayName": "Emscripten Web (SDL3, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl3",
+				"emscripten-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "emscripten-sdl3-release",
+			"displayName": "Emscripten Web (SDL3, Release)",
+			"inherits": [
+				"build-sdl3",
+				"emscripten-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "emscripten-sdl2-debug",
+			"displayName": "Emscripten Web (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"emscripten-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "emscripten-sdl2-relwithdebinfo",
+			"displayName": "Emscripten Web (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"emscripten-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "emscripten-sdl2-release",
+			"displayName": "Emscripten Web (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
 				"emscripten-parent",
 				"type-release"
 			]
@@ -442,33 +874,6 @@
 			"name": "3ds-release",
 			"displayName": "Nintendo 3DS (Release)",
 			"inherits": [
-				"3ds-parent",
-				"type-release"
-			]
-		},
-		{
-			"name": "3ds-libretro-debug",
-			"displayName": "Nintendo 3DS (libretro core) (Debug)",
-			"inherits": [
-				"build-libretro",
-				"3ds-parent",
-				"type-debug"
-			]
-		},
-		{
-			"name": "3ds-libretro-relwithdebinfo",
-			"displayName": "Nintendo 3DS (libretro core) (RelWithDebInfo)",
-			"inherits": [
-				"build-libretro",
-				"3ds-parent",
-				"type-relwithdebinfo"
-			]
-		},
-		{
-			"name": "3ds-libretro-release",
-			"displayName": "Nintendo 3DS (libretro core) (Release)",
-			"inherits": [
-				"build-libretro",
 				"3ds-parent",
 				"type-release"
 			]
@@ -508,7 +913,7 @@
 		},
 		{
 			"name": "switch-libretro-debug",
-			"displayName": "Nintendo Switch (libretro core) (Debug)",
+			"displayName": "Nintendo Switch (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"switch-parent",
@@ -517,7 +922,7 @@
 		},
 		{
 			"name": "switch-libretro-relwithdebinfo",
-			"displayName": "Nintendo Switch (libretro core) (RelWithDebInfo)",
+			"displayName": "Nintendo Switch (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"switch-parent",
@@ -526,7 +931,7 @@
 		},
 		{
 			"name": "switch-libretro-release",
-			"displayName": "Nintendo Switch (libretro core) (Release)",
+			"displayName": "Nintendo Switch (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"switch-parent",
@@ -567,8 +972,62 @@
 			]
 		},
 		{
+			"name": "wii-sdl2-debug",
+			"displayName": "Nintendo Wii (SDL2, Debug)",
+			"inherits": [
+				"build-sdl2",
+				"wii-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wii-sdl2-relwithdebinfo",
+			"displayName": "Nintendo Wii (SDL2, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl2",
+				"wii-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wii-sdl2-release",
+			"displayName": "Nintendo Wii (SDL2, Release)",
+			"inherits": [
+				"build-sdl2",
+				"wii-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "wii-sdl1-debug",
+			"displayName": "Nintendo Wii (SDL1, Debug)",
+			"inherits": [
+				"build-sdl1",
+				"wii-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "wii-sdl1-relwithdebinfo",
+			"displayName": "Nintendo Wii (SDL1, RelWithDebInfo)",
+			"inherits": [
+				"build-sdl1",
+				"wii-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "wii-sdl1-release",
+			"displayName": "Nintendo Wii (SDL1, Release)",
+			"inherits": [
+				"build-sdl1",
+				"wii-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "wii-libretro-debug",
-			"displayName": "Nintendo Wii (libretro core) (Debug)",
+			"displayName": "Nintendo Wii (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"wii-parent",
@@ -577,7 +1036,7 @@
 		},
 		{
 			"name": "wii-libretro-relwithdebinfo",
-			"displayName": "Nintendo Wii (libretro core) (RelWithDebInfo)",
+			"displayName": "Nintendo Wii (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"wii-parent",
@@ -586,7 +1045,7 @@
 		},
 		{
 			"name": "wii-libretro-release",
-			"displayName": "Nintendo Wii (libretro core) (Release)",
+			"displayName": "Nintendo Wii (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"wii-parent",
@@ -628,7 +1087,7 @@
 		},
 		{
 			"name": "wiiu-libretro-debug",
-			"displayName": "Nintendo WiiU (libretro core) (Debug)",
+			"displayName": "Nintendo WiiU (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"wiiu-parent",
@@ -637,7 +1096,7 @@
 		},
 		{
 			"name": "wiiu-libretro-relwithdebinfo",
-			"displayName": "Nintendo WiiU (libretro core) (RelWithDebInfo)",
+			"displayName": "Nintendo WiiU (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"wiiu-parent",
@@ -646,7 +1105,7 @@
 		},
 		{
 			"name": "wiiu-libretro-release",
-			"displayName": "Nintendo WiiU (libretro core) (Release)",
+			"displayName": "Nintendo WiiU (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"wiiu-parent",
@@ -688,7 +1147,7 @@
 		},
 		{
 			"name": "psvita-libretro-debug",
-			"displayName": "PlayStation Vita (libretro core) (Debug)",
+			"displayName": "PlayStation Vita (libretro core, Debug)",
 			"inherits": [
 				"build-libretro",
 				"psvita-parent",
@@ -697,7 +1156,7 @@
 		},
 		{
 			"name": "psvita-libretro-relwithdebinfo",
-			"displayName": "PlayStation Vita (libretro core) (RelWithDebInfo)",
+			"displayName": "PlayStation Vita (libretro core, RelWithDebInfo)",
 			"inherits": [
 				"build-libretro",
 				"psvita-parent",
@@ -706,7 +1165,7 @@
 		},
 		{
 			"name": "psvita-libretro-release",
-			"displayName": "PlayStation Vita (libretro core) (Release)",
+			"displayName": "PlayStation Vita (libretro core, Release)",
 			"inherits": [
 				"build-libretro",
 				"psvita-parent",
@@ -726,6 +1185,42 @@
 		{
 			"name": "release",
 			"configurePreset": "release"
+		},
+		{
+			"name": "sdl3-debug",
+			"configurePreset": "sdl3-debug"
+		},
+		{
+			"name": "sdl3-relwithdebinfo",
+			"configurePreset": "sdl3-relwithdebinfo"
+		},
+		{
+			"name": "sdl3-release",
+			"configurePreset": "sdl3-release"
+		},
+		{
+			"name": "sdl2-debug",
+			"configurePreset": "sdl2-debug"
+		},
+		{
+			"name": "sdl2-relwithdebinfo",
+			"configurePreset": "sdl2-relwithdebinfo"
+		},
+		{
+			"name": "sdl2-release",
+			"configurePreset": "sdl2-release"
+		},
+		{
+			"name": "sdl1-debug",
+			"configurePreset": "sdl1-debug"
+		},
+		{
+			"name": "sdl1-relwithdebinfo",
+			"configurePreset": "sdl1-relwithdebinfo"
+		},
+		{
+			"name": "sdl1-release",
+			"configurePreset": "sdl1-release"
 		},
 		{
 			"name": "libretro-debug",
@@ -752,6 +1247,42 @@
 			"configurePreset": "linux-release"
 		},
 		{
+			"name": "linux-sdl3-debug",
+			"configurePreset": "linux-sdl3-debug"
+		},
+		{
+			"name": "linux-sdl3-relwithdebinfo",
+			"configurePreset": "linux-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "linux-sdl3-release",
+			"configurePreset": "linux-sdl3-release"
+		},
+		{
+			"name": "linux-sdl2-debug",
+			"configurePreset": "linux-sdl2-debug"
+		},
+		{
+			"name": "linux-sdl2-relwithdebinfo",
+			"configurePreset": "linux-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "linux-sdl2-release",
+			"configurePreset": "linux-sdl2-release"
+		},
+		{
+			"name": "linux-sdl1-debug",
+			"configurePreset": "linux-sdl1-debug"
+		},
+		{
+			"name": "linux-sdl1-relwithdebinfo",
+			"configurePreset": "linux-sdl1-relwithdebinfo"
+		},
+		{
+			"name": "linux-sdl1-release",
+			"configurePreset": "linux-sdl1-release"
+		},
+		{
 			"name": "linux-libretro-debug",
 			"configurePreset": "linux-libretro-debug"
 		},
@@ -774,6 +1305,30 @@
 		{
 			"name": "windows-release",
 			"configurePreset": "windows-release"
+		},
+		{
+			"name": "windows-sdl3-debug",
+			"configurePreset": "windows-sdl3-debug"
+		},
+		{
+			"name": "windows-sdl3-relwithdebinfo",
+			"configurePreset": "windows-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "windows-sdl3-release",
+			"configurePreset": "windows-sdl3-release"
+		},
+		{
+			"name": "windows-sdl2-debug",
+			"configurePreset": "windows-sdl2-debug"
+		},
+		{
+			"name": "windows-sdl2-relwithdebinfo",
+			"configurePreset": "windows-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "windows-sdl2-release",
+			"configurePreset": "windows-sdl2-release"
 		},
 		{
 			"name": "windows-libretro-debug",
@@ -800,6 +1355,30 @@
 			"configurePreset": "windows-x86-vs2022-release"
 		},
 		{
+			"name": "windows-x86-vs2022-sdl3-debug",
+			"configurePreset": "windows-x86-vs2022-sdl3-debug"
+		},
+		{
+			"name": "windows-x86-vs2022-sdl3-relwithdebinfo",
+			"configurePreset": "windows-x86-vs2022-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "windows-x86-vs2022-sdl3-release",
+			"configurePreset": "windows-x86-vs2022-sdl3-release"
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-debug",
+			"configurePreset": "windows-x86-vs2022-sdl2-debug"
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-relwithdebinfo",
+			"configurePreset": "windows-x86-vs2022-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "windows-x86-vs2022-sdl2-release",
+			"configurePreset": "windows-x86-vs2022-sdl2-release"
+		},
+		{
 			"name": "windows-x86-vs2022-libretro-debug",
 			"configurePreset": "windows-x86-vs2022-libretro-debug"
 		},
@@ -822,6 +1401,30 @@
 		{
 			"name": "windows-x64-vs2022-release",
 			"configurePreset": "windows-x64-vs2022-release"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl3-debug",
+			"configurePreset": "windows-x64-vs2022-sdl3-debug"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl3-relwithdebinfo",
+			"configurePreset": "windows-x64-vs2022-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl3-release",
+			"configurePreset": "windows-x64-vs2022-sdl3-release"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-debug",
+			"configurePreset": "windows-x64-vs2022-sdl2-debug"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-relwithdebinfo",
+			"configurePreset": "windows-x64-vs2022-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "windows-x64-vs2022-sdl2-release",
+			"configurePreset": "windows-x64-vs2022-sdl2-release"
 		},
 		{
 			"name": "windows-x64-vs2022-libretro-debug",
@@ -848,6 +1451,30 @@
 			"configurePreset": "macos-release"
 		},
 		{
+			"name": "macos-sdl3-debug",
+			"configurePreset": "macos-sdl3-debug"
+		},
+		{
+			"name": "macos-sdl3-relwithdebinfo",
+			"configurePreset": "macos-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "macos-sdl3-release",
+			"configurePreset": "macos-sdl3-release"
+		},
+		{
+			"name": "macos-sdl2-debug",
+			"configurePreset": "macos-sdl2-debug"
+		},
+		{
+			"name": "macos-sdl2-relwithdebinfo",
+			"configurePreset": "macos-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "macos-sdl2-release",
+			"configurePreset": "macos-sdl2-release"
+		},
+		{
 			"name": "macos-libretro-debug",
 			"configurePreset": "macos-libretro-debug"
 		},
@@ -872,6 +1499,30 @@
 			"configurePreset": "emscripten-release"
 		},
 		{
+			"name": "emscripten-sdl3-debug",
+			"configurePreset": "emscripten-sdl3-debug"
+		},
+		{
+			"name": "emscripten-sdl3-relwithdebinfo",
+			"configurePreset": "emscripten-sdl3-relwithdebinfo"
+		},
+		{
+			"name": "emscripten-sdl3-release",
+			"configurePreset": "emscripten-sdl3-release"
+		},
+		{
+			"name": "emscripten-sdl2-debug",
+			"configurePreset": "emscripten-sdl2-debug"
+		},
+		{
+			"name": "emscripten-sdl2-relwithdebinfo",
+			"configurePreset": "emscripten-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "emscripten-sdl2-release",
+			"configurePreset": "emscripten-sdl2-release"
+		},
+		{
 			"name": "3ds-debug",
 			"configurePreset": "3ds-debug"
 		},
@@ -882,18 +1533,6 @@
 		{
 			"name": "3ds-release",
 			"configurePreset": "3ds-release"
-		},
-		{
-			"name": "3ds-libretro-debug",
-			"configurePreset": "3ds-libretro-debug"
-		},
-		{
-			"name": "3ds-libretro-relwithdebinfo",
-			"configurePreset": "3ds-libretro-relwithdebinfo"
-		},
-		{
-			"name": "3ds-libretro-release",
-			"configurePreset": "3ds-libretro-release"
 		},
 		{
 			"name": "switch-debug",
@@ -930,6 +1569,30 @@
 		{
 			"name": "wii-release",
 			"configurePreset": "wii-release"
+		},
+		{
+			"name": "wii-sdl2-debug",
+			"configurePreset": "wii-sdl2-debug"
+		},
+		{
+			"name": "wii-sdl2-relwithdebinfo",
+			"configurePreset": "wii-sdl2-relwithdebinfo"
+		},
+		{
+			"name": "wii-sdl2-release",
+			"configurePreset": "wii-sdl2-release"
+		},
+		{
+			"name": "wii-sdl1-debug",
+			"configurePreset": "wii-sdl1-debug"
+		},
+		{
+			"name": "wii-sdl1-relwithdebinfo",
+			"configurePreset": "wii-sdl1-relwithdebinfo"
+		},
+		{
+			"name": "wii-sdl1-release",
+			"configurePreset": "wii-sdl1-release"
 		},
 		{
 			"name": "wii-libretro-debug",

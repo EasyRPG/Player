@@ -83,12 +83,15 @@ PKG_CHECK_MODULES([FMT],[fmt],,[
 		AC_MSG_ERROR([Could not find libfmt! Consider installing version 5.3 or newer.])
 	],[AC_MSG_RESULT([yes])])
 ])
-PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[sdl_version=2],[
-	PKG_CHECK_MODULES([SDL],[sdl],[sdl_version=1],[
-		AC_MSG_ERROR([Could not find SDL! Consider installing version 2.0.5 or newer.])
+PKG_CHECK_MODULES([SDL],[sdl3],[sdl_version=3],[
+	PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[sdl_version=2],[
+		PKG_CHECK_MODULES([SDL],[sdl],[sdl_version=1],[
+			AC_MSG_ERROR([Could not find SDL! Consider installing version 2.0.5 or newer.])
+		])
 	])
 ])
-AC_DEFINE_UNQUOTED([USE_SDL],[$sdl_version],[Enable SDL, version 2 or 1.2])
+AC_DEFINE_UNQUOTED([USE_SDL],[$sdl_version],[Enable SDL, version 3, 2 or 1.2])
+AM_CONDITIONAL([HAVE_SDL3], [test "x$sdl_version" = "x3"])
 AM_CONDITIONAL([HAVE_SDL2], [test "x$sdl_version" = "x2"])
 AM_CONDITIONAL([HAVE_SDL1], [test "x$sdl_version" = "x1"])
 EP_PKG_CHECK([FREETYPE],[freetype2],[Custom Font rendering.])
@@ -219,6 +222,8 @@ if test "yes" != "$silent"; then
 	echo "  prefix: $prefix"
 	echo "  bash completion: $BASHCOMPLETION_DIR"
 
+	test "$sdl_version" = "3" && \
+		echo "Backend: SDL3"
 	test "$sdl_version" = "2" && \
 		echo "Backend: SDL2"
 	test "$sdl_version" = "1" && \
