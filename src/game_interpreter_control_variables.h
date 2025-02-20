@@ -45,6 +45,83 @@ namespace ControlVariables {
 	int Muldiv(int arg1, int arg2, int arg3);
 	int Divmul(int arg1, int arg2, int arg3);
 	int Between(int arg1, int arg2, int arg3);
+
+	//
+	// New EasyRpgEx operations
+	//
+	bool EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& value, const Game_BaseInterpreterContext& interpreter);
+
+	enum class DateTimeOp {
+		Year = 0,
+		Month,
+		Day,
+		Hour,
+		Minute,
+		Second,
+		WeekDay,
+		DayOfYear,
+		IsDayLightSavings,
+		TimeStamp
+	};
+	static constexpr auto kDateTimeOpTags = lcf::makeEnumTags<DateTimeOp>(
+		"getyear",
+		"getmonth",
+		"getday",
+		"gethour",
+		"getminute",
+		"getsecond",
+		"getweekday",
+		"getyearday",
+		"getdaylightsavings",
+		"gettimestamp"
+	);
+	int DateTime(DateTimeOp op);
+
+	enum ActiveMapInfoOp {
+		MapTileWidth = 0,
+		MapTileHeight,
+		LoopHorizontal,
+		LoopVertical
+	};
+	int ActiveMapInfo(ActiveMapInfoOp op);
+
+	enum InspectMapTreeInfoOp {
+		ParentMap = 0,
+		OriginalEncounterSteps,
+		CountTroops,
+		CountArenas,
+		Troop_Id,
+		Arena_Top,
+		Arena_Left,
+		Arena_Bottom,
+		Arena_Right,
+		Arena_Width,
+		Arena_Height
+	};
+	int InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, int arg1);
+
+	enum MessageSystemStateOp {
+		IsMessageTransparent = 0,
+		IsMessagePositionFixed,
+		IsContinueEvents,
+		MessagePosition,
+		IsMessageFaceRightPosition
+	};
+	int MessageSystemState(MessageSystemStateOp op);
+
+	enum MessageWindowStateOp {
+		IsMessageActive = 0,
+		IsFaceActive,
+		CanContinue,
+		WindowTop,
+		WindowLeft,
+		WindowBottom,
+		WindowRight,
+		WindowWidth,
+		WindowHeight,
+		WindowType
+	};
+	int MessageWindowState(MessageWindowStateOp op);
 }
 
 #endif
