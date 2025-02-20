@@ -301,6 +301,7 @@ protected:
 	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgZoom(lcf::rpg::EventCommand const& com);
 	bool CommandManiacGetGameInfo(lcf::rpg::EventCommand const& com);
 
 	void SetSubcommandIndex(int indent, int idx);

@@ -18,7 +18,7 @@
 #ifndef EP_GRAPHICS_H
 #define EP_GRAPHICS_H
 
-// Headers
+#include <memory>
 #include <vector>
 #include "bitmap.h"
 #include "drawable.h"
@@ -33,6 +33,33 @@ class Scene;
  * Handles screen drawing.
  */
 namespace Graphics {
+	/**
+	 * Controls viewport scaling and positioning
+	 */
+	class ZoomData {
+	private:
+		int scale_percentage = 100;
+		bool origin_type = true; // true = percentage, false = absolute pixels
+		int origin_x = 50; // center point for scaling
+		int origin_y = 50; // center point for scaling
+
+	public:
+		int GetScale() const { return scale_percentage; }
+		void SetScale(int percentage) { scale_percentage = percentage; }
+
+		bool IsOriginPercentage() const { return origin_type; }
+		void SetOriginAsPercentage(bool is_relative) { origin_type = is_relative; }
+
+		int GetOriginX() const { return origin_x; }
+		void SetOriginX(int x) { origin_x = x; }
+
+		int GetOriginY() const { return origin_y; }
+		void SetOriginY(int y) { origin_y = y; }
+	};
+
+	// Global instance declaration
+	extern ZoomData& GetZoomData();
+
 	/**
 	 * Initializes Graphics.
 	 */
