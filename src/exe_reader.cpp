@@ -617,7 +617,7 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 			log_version_rm2k3("1.0.8.0_1.0.8.0");
 
 			if (check_for_string(file_info.code_ofs + 0x08EBE0, "NoTitolo")) {
-				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_108);
+				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
 			}
 
 			check_address_map(ExeConstants::RT_2K3::const_addresses_108);
