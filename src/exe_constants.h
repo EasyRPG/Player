@@ -138,13 +138,13 @@ namespace ExeConstants::RT_2K {
 	}};
 
 	constexpr code_address_map const_addresses_105b = {{
-		map<T::MinVarLimit>            ( -999999, 0x0842A4, CMP_DWORD_ESP, 0x10),
+		map<T::MinVarLimit>            ( -999999, 0x0842A8, CMP_DWORD_ESP, 0x10),
 		map<T::MaxVarLimit>            (  999999, 0x0842D2, CMP_DWORD_ESP, 0x10),
 
 		map<T::TitleX>                 (     160, 0x06E091, MOV_EDX),
 		map<T::TitleY>                 (     148, 0x06E098, SUB_EDX_EBX, MOV_ECX),
 		map<T::TitleHiddenX>           (     160, 0x06E0B3, MOV_EDX),
-		map<T::TitleHiddenY>           (      88, 0x06CC62, SUB_EDX_EBX, MOV_ECX),
+		map<T::TitleHiddenY>           (      88, 0x06E0BA, SUB_EDX_EBX, MOV_ECX),
 
 		not_def<T::MaxActorHP>(),
 		not_def<T::MaxActorSP>(),
