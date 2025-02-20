@@ -282,8 +282,12 @@ StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_i
 
 	Set(params, ss.str().substr(str.length() - offset));
 
-	params.string_id = string_out_id;
-	Set(params, result);
+	// the maniacs implementation is to always preserve the mutated base string
+	// so in the case where the out_id matches the base string id, the popped line is discarded.
+	if (string_out_id != params.string_id) {
+		params.string_id = string_out_id;
+		Set(params, result);
+	}
 	return Get(params.string_id);
 }
 
