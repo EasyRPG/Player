@@ -605,22 +605,41 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 				// Might also be build '2001-05-05'
 			}
 			break;
+		case 0x9CC00:
+			log_version_rm2k("1.62");
+
+			if (check_for_string(file_info.code_ofs + 0x07DAA6, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
+			}
+			//check_address_map(ExeConstants::RT_2K::const_addresses_162);
+			break;
 		case 0xC0800:
 			log_version_rm2k3("1.0.3.0_1.0.4.0");
 			check_address_map(ExeConstants::RT_2K3::const_addresses_104);
 			break;
 		case 0xC8A00:
-			log_version_rm2k3("1.0.6.0_1.0.6.0");
+			log_version_rm2k3("1.0.6.0");
 			check_address_map(ExeConstants::RT_2K3::const_addresses_106);
 			break;
 		case 0xC8E00:
-			log_version_rm2k3("1.0.8.0_1.0.8.0");
+			log_version_rm2k3("1.0.8.0");
 
 			if (check_for_string(file_info.code_ofs + 0x08EBE0, "NoTitolo")) {
 				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
 			}
+			if (check_for_string(file_info.code_ofs + 0x09D279, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
+			}
 
 			check_address_map(ExeConstants::RT_2K3::const_addresses_108);
+			break;
+		case 0xC9000:
+			log_version_rm2k3("1.0.9.1");
+
+			if (check_for_string(file_info.code_ofs + 0x09C5AD, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
+			}
+			//check_address_map(ExeConstants::RT_2K3::const_addresses_1091);
 			break;
 	}
 

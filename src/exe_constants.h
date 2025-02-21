@@ -26,12 +26,12 @@ namespace ExeConstants {
 
 	enum class KnownPatchConfigurations {
 		Rm2k3_Italian_WD_108,		// Italian "WhiteDragon" patch
-		//QP_StatDelimiter,
+		QP_StatDelimiter,
 		LAST
 	};
 	static constexpr auto kKnownPatchConfigurations = lcf::makeEnumTags<KnownPatchConfigurations>(
-		"Rm2k3 Italian 1.08"
-		//"QuickPatch StatDelimiter"
+		"Rm2k3 Italian 1.08",
+		"QuickPatch StatDelimiter"
 	);
 
 	static_assert(kKnownPatchConfigurations.size() == static_cast<size_t>(KnownPatchConfigurations::LAST));
@@ -294,8 +294,8 @@ namespace ExeConstants::RT_2K3 {
 		map<T::MaxSpiBattleValue>      (    9999, 0x0BECD1, MOV_ECX),
 		map<T::MaxAgiBattleValue>      (    9999, 0x0BED6D, MOV_ECX),
 
-		map<T::MaxDamageValue>         (    9999, 0x9C03C, MOV_EAX),
-		map<T::MaxExpValue>            ( 9999999, 0x0B5CC3, CMP_ESI),
+		map<T::MaxDamageValue>         (    9999, 0x09C03C, MOV_EAX),
+		map<T::MaxExpValue>            ( 9999999, 0x0B5CC3, CMP_ESI), /* 0xB8082 */
 		not_def<T::MaxLevel>(),
 		map<T::MaxGoldValue>           (  999999, 0x0A5754, ADD_EDX_ESI, MOV_EAX),
 		not_def<T::MaxItemCount>(),
@@ -321,6 +321,18 @@ namespace ExeConstants {
 				{ T::MaxAgiBaseValue,     9999 },
 				{ T::MaxDamageValue,     99999 },
 				{ T::MaxGoldValue,     9999999 }
+		}},{
+			KnownPatchConfigurations::QP_StatDelimiter, {
+				{ T::MaxActorHP,       9999999 },
+				{ T::MaxActorSP,       9999999 },
+				{ T::MaxAtkBaseValue,   999999 },
+				{ T::MaxDefBaseValue,   999999 },
+				{ T::MaxSpiBaseValue,   999999 },
+				{ T::MaxAgiBaseValue,   999999 },
+				{ T::MaxAtkBattleValue, 999999 },
+				{ T::MaxDefBattleValue, 999999 },
+				{ T::MaxSpiBattleValue, 999999 },
+				{ T::MaxAgiBattleValue, 999999 }
 		}}
 	};
 }
