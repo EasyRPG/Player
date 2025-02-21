@@ -26,6 +26,7 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "async_handler.h"
+#include "animation_helper.h"
 #include "audio.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
@@ -786,6 +787,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CommandManiacCallCommand(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CommandManiacGetGameInfo(com);
+		case Cmd::EasyRpg_AnimateVariable:
+			return CommandEasyRpgAnimateVariable(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CommandEasyRpgSetInterpreterFlag(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -5322,6 +5325,105 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	// This is incompatible to Maniacs but has a better compatibility with our code.
 	Push({ cmd }, GetCurrentEventId(), false); //FIXME: add some new flag, so the interpreter debug view (window_interpreter) can differentiate this frame from normal ones
 
+	return true;
+}
+
+bool Game_Interpreter::CommandEasyRpgAnimateVariable(lcf::rpg::EventCommand const& com) {
+	struct AnimationParams {
+		int32_t target;
+		int32_t start;
+		int32_t end;
+		int32_t duration;
+		std::string easing_start;
+		std::string easing_end;
+	};
+
+	// Parse command parameters
+	AnimationParams params{
+		ValueOrVariable(com.parameters[0], com.parameters[1]),
+		ValueOrVariable(com.parameters[2], com.parameters[3]),
+		ValueOrVariable(com.parameters[4], com.parameters[5]),
+		ValueOrVariable(com.parameters[6], com.parameters[7]),
+		ToString(com.string),
+		"null"
+	};
+
+	// Extract dual easing types if present
+	const auto separator_pos = params.easing_start.find('/');
+	if (separator_pos != std::string::npos) {
+		params.easing_end = params.easing_start.substr(separator_pos + 1);
+		params.easing_start = params.easing_start.substr(0, separator_pos);
+	}
+
+	// Prepare animation commands
+	std::vector<lcf::rpg::EventCommand> cmd_list;
+	cmd_list.reserve(params.duration * 2); // Pre-allocate for efficiency
+
+	lcf::rpg::EventCommand wait_com;
+	wait_com.code = static_cast<int>(Cmd::Wait);
+
+	lcf::rpg::EventCommand var_com;
+	var_com.code = static_cast<int>(Cmd::ControlVars);
+	std::vector<int32_t> var_params = {
+		0,
+		params.target,
+		0,
+		0,
+		0,
+		params.end
+	};
+
+	const double step_size = 1.0 / params.duration;
+	const int half_duration = params.duration / 2;
+
+	// Generate animation steps
+	for (int step = 1; step <= params.duration; ++step) {
+		const double current_time = step * step_size;
+		double normalized_time;
+		const std::string& current_easing = (params.easing_end == "null")
+			? params.easing_start
+			: (step <= half_duration ? params.easing_start : params.easing_end);
+
+		// Calculate normalized time based on single or dual easing
+		if (params.easing_end == "null") {
+			normalized_time = current_time;
+		}
+		else {
+			// For dual easing, each half uses its own normalized time from 0 to 1
+			normalized_time = step <= half_duration
+				? (current_time * 2.0)  // First half: 0->1
+				: ((current_time - 0.5) * 2.0);  // Second half: 0->1
+		}
+
+		// Get eased time for current segment
+		const double eased_time = Animation_Helper::GetEasedTime(current_easing, normalized_time, 0, 1, 1);
+
+		// Calculate interpolated value
+		double interpolated;
+		if (params.easing_end == "null") {
+			// Single easing - interpolate directly from start to end
+			interpolated = params.start + eased_time * (params.end - params.start);
+		}
+		else {
+			// Dual easing - interpolate each half separately
+			const double mid_point = (params.start + params.end) * 0.5;
+			if (step <= half_duration) {
+				interpolated = params.start + eased_time * (mid_point - params.start);
+			}
+			else {
+				interpolated = mid_point + eased_time * (params.end - mid_point);
+			}
+		}
+
+		// Update and push commands
+		var_params.back() = static_cast<int32_t>(interpolated);
+		var_com.parameters = lcf::DBArray<int32_t>(var_params.begin(), var_params.end());
+
+		cmd_list.push_back(var_com);
+		cmd_list.push_back(wait_com);
+	}
+
+	Push(cmd_list, 0, false);
 	return true;
 }
 
