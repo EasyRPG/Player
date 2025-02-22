@@ -23,9 +23,8 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <unordered_map>
+#include <charconv>
 #include "string_view.h"
-
-using json = nlohmann::ordered_json;
 
 namespace {
 
@@ -60,33 +59,35 @@ namespace Json_Helper {
 		return json_obj;
 	}
 
-	std::optional<std::string> GetValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
+	bool CheckJsonPointer(std::string_view json_path) {
 		if (json_path.empty()) {
 			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
+			return false;
 		}
 
+		if (json_path.front() != '/') {
+			Output::Warning("JSON: Json pointer must start with /: {}", json_path);
+			return false;
+		}
+
+		return true;
+	}
+
+	std::string GetValue(json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
 		if (!json_obj.contains(ptr)) {
-			return "";
+			return {};
 		}
 
 		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
-		return GetValueAsString(value);
+		auto val = GetValueAsString(value);
+		return val;
 	}
 
 
-	std::string SetValue(nlohmann::ordered_json& json_obj, std::string_view json_path, std::string_view value) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::string SetValue(json& json_obj, std::string_view json_path, std::string_view value) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
@@ -102,36 +103,23 @@ namespace Json_Helper {
 		return json_obj.dump();
 	}
 
-	std::optional<size_t> GetLength(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	size_t GetLength(const json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
 		if (!json_obj.contains(ptr)) {
-			return {};
+			return 0;
 		}
 
 		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
-
 		if (!value.is_array() && !value.is_object()) {
 			return 0;
 		}
+
 		return value.size();
 	}
 
-	std::optional<std::vector<std::string>> GetKeys(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::vector<std::string> GetKeys(const json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 		if (!json_obj.contains(ptr)) {
@@ -139,9 +127,6 @@ namespace Json_Helper {
 		}
 
 		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
 
 		std::vector<std::string> keys;
 
@@ -158,12 +143,7 @@ namespace Json_Helper {
 		return keys;
 	}
 
-	std::optional<bool> IsObject(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::string GetType(const json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 		if (!json_obj.contains(ptr)) {
@@ -171,61 +151,20 @@ namespace Json_Helper {
 		}
 
 		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
-		return value.is_object();
-	}
-
-	std::optional<bool> IsArray(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-		if (!json_obj.contains(ptr)) {
-			return {};
-		}
-
-		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
-		return value.is_array();
-	}
-
-	std::optional<std::string> GetType(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-		if (!json_obj.contains(ptr)) {
-			return {};
-		}
-
-		const json& value = json_obj[ptr];
-		if (value.is_discarded()) {
-			return {};
-		}
 
 		if (value.is_object()) return std::string("object");
 		if (value.is_array()) return std::string("array");
 		if (value.is_string()) return std::string("string");
 		if (value.is_number()) return std::string("number");
 		if (value.is_boolean()) return std::string("boolean");
-		if (value.is_null()) return std::string("null"); // technically discarded is enough
+		if (value.is_null()) return std::string("null");
 		return std::string("unknown");
 	}
 
-	std::optional<std::string> GetPath(const nlohmann::ordered_json& json_obj, const nlohmann::ordered_json& search_value) {
-		std::function<std::optional<std::string>(const json&, const json&, const std::string&)> find_path;
+	std::string GetPath(const json& json_obj, const json& search_value) {
+		std::function<std::string(const json&, const json&, const std::string&)> find_path;
 
-		find_path = [&find_path](const json& obj, const json& target, const std::string& current_path) -> std::optional<std::string> {
+		find_path = [&find_path](const json& obj, const json& target, const std::string& current_path) -> std::string {
 			if (obj == target) {
 				return current_path;
 			}
@@ -233,32 +172,26 @@ namespace Json_Helper {
 			if (obj.is_object()) {
 				for (const auto& item : obj.items()) {
 					auto path = find_path(item.value(), target, current_path + "/" + item.key());
-					if (path) return path;
+					if (!path.empty()) return path;
 				}
 			}
 			else if (obj.is_array()) {
 				for (size_t i = 0; i < obj.size(); ++i) {
 					auto path = find_path(obj[i], target, current_path + "/" + std::to_string(i));
-					if (path) return path;
+					if (!path.empty()) return path;
 				}
 			}
-			return std::nullopt;
+			return {};
 			};
 
-		auto path = find_path(json_obj, search_value, "");
-		return path.value_or("");
+		return find_path(json_obj, search_value, "");
 	}
 
-	std::string PrettyPrint(const nlohmann::ordered_json& json_obj, int indent) {
+	std::string PrettyPrint(const json& json_obj, int indent) {
 		return json_obj.dump(std::max(0, indent));
 	}
 
-	std::string RemoveValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::string RemoveValue(json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
@@ -267,36 +200,23 @@ namespace Json_Helper {
 		}
 
 		// Get parent path and key/index to remove
-		std::string parent_path;
-		std::string key;
-		size_t last_slash = path_str.find_last_of('/');
+		auto parent_ptr = ptr.parent_pointer();
 
-		if (last_slash != std::string::npos) {
-			parent_path = path_str.substr(0, last_slash);
-			key = path_str.substr(last_slash + 1);
-		}
-		else {
-			// Top level removal
-			json_obj.erase(ptr);
-			return json_obj.dump();
-		}
-
-		json::json_pointer parent_ptr(parent_path);
 		json& parent = json_obj[parent_ptr];
+		json_path.remove_prefix(parent_ptr.to_string().size() + 1);
 
 		if (parent.is_object()) {
-			parent.erase(key);
+			parent.erase(json_path);
 		}
 		else if (parent.is_array()) {
 			// Check if key is a valid positive number
-			if (!key.empty() && key.find_first_not_of("0123456789") == std::string::npos) {
-				size_t index = 0;
-				std::istringstream(key) >> index;
+			unsigned index;
+			auto [ptr, ec] = std::from_chars(json_path.data(), json_path.data() + json_path.size(), index);
+			if (ec == std::errc()) {
 				if (index < parent.size()) {
 					parent.erase(index);
 				}
-			}
-			else {
+			} else {
 				Output::Warning("JSON: Invalid array index at: {}", json_path);
 				return {};
 			}
@@ -305,12 +225,7 @@ namespace Json_Helper {
 		return json_obj.dump();
 	}
 
-	std::string PushValue(nlohmann::ordered_json& json_obj, std::string_view json_path, std::string_view value) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::string PushValue(json& json_obj, std::string_view json_path, std::string_view value) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
@@ -336,12 +251,7 @@ namespace Json_Helper {
 		return json_obj.dump();
 	}
 
-	std::string PopValue(nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
+	std::tuple<std::string, std::string> PopValue(json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
 		json::json_pointer ptr(path_str);
 
@@ -355,46 +265,19 @@ namespace Json_Helper {
 			return {};
 		}
 
-		json popped = array[array.size() - 1];
+		json popped = array.back();
 		array.erase(array.size() - 1);
 
-		return GetValueAsString(popped);
+		return {json_obj.dump(), GetValueAsString(popped)};
 	}
 
-	std::optional<bool> Contains(const nlohmann::ordered_json& json_obj, std::string_view json_path) {
-		if (json_path.empty()) {
-			Output::Warning("JSON: Empty json pointer at: {}", json_path);
-			return {};
-		}
-
-		// Validate JSON pointer syntax (must start with / and contain valid tokens)
+	bool Contains(const json& json_obj, std::string_view json_path) {
 		std::string path_str = std::string(json_path);
-		if (path_str[0] != '/') {
-			Output::Warning("JSON: Invalid pointer syntax - must start with /: {}", json_path);
-			return {};
-		}
-
-		// Split path and validate each token
-		std::string::size_type start = 1;
-		std::string::size_type pos;
-		while ((pos = path_str.find('/', start)) != std::string::npos) {
-			if (pos == start) {
-				Output::Warning("JSON: Invalid pointer syntax - empty reference token: {}", json_path);
-				return {};
-			}
-			start = pos + 1;
-		}
-
-		// Last token check
-		if (start < path_str.length() && path_str.back() == '/') {
-			Output::Warning("JSON: Invalid pointer syntax - trailing slash: {}", json_path);
-			return {};
-		}
-
 		json::json_pointer ptr(path_str);
+
 		return json_obj.contains(ptr);
 	}
 
-	} // namespace Json_Helper
+} // namespace Json_Helper
 
 #endif // HAVE_NLOHMANN_JSON

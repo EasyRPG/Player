@@ -1,0 +1,17 @@
+{
+	"name": "Aina",
+	"level": 5,
+	"active": true,
+	"atk": [1, 5, 10, 30, 20],
+	"class": null,
+	"skills": [
+		{
+			"name": "Sword",
+			"atk": 10
+		},
+		{
+			"name": "Fireball",
+			"atk": 20
+		}
+	]
+}

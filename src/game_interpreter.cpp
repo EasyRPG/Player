@@ -5382,7 +5382,7 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 			Main_Data::game_variables->Set(var_id, atoi(value.c_str()));
 			break;
 		case 2: // String
-			Main_Data::game_strings->Asg({ var_id }, value);
+			Main_Data::game_strings->Asg(var_id, value);
 			break;
 		default:
 			Output::Warning("CommandEasyRpgProcessJson: Unsupported var_type {}", var_type);
@@ -5397,6 +5397,10 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
 
 	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
+
+	if (!Json_Helper::CheckJsonPointer(json_path)) {
+		return true;
+	}
 
 	int extract_data_from_string = com.parameters[10];
 	bool pretty_print = com.parameters[11] == 1;
@@ -5432,100 +5436,88 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	}
 	case 1: { // Set operation: Update JSON data with a new value
 		std::string new_value = get_var_value(target_var_type, target_var_id);
-		if (!new_value.empty()) {
-			result = Json_Helper::SetValue(*json_data, json_path, new_value);
-			if (result) {
-				Main_Data::game_strings->Asg({ source_var_id }, *result);
-			}
+		result = Json_Helper::SetValue(*json_data, json_path, new_value);
+		if (result) {
+			Main_Data::game_strings->Asg(source_var_id, *result);
 		}
 		break;
 	}
 	case 2: { // GetLength operation
-		auto length = Json_Helper::GetLength(*json_data, json_path);
-		if (length) {
-			std::string length_str;
-			if (target_var_type == 0) {
-				// For switches, true if length > 0
-				length_str = (*length > 0) ? "1" : "0";
-			}
-			else {
-				length_str = std::to_string(*length);
-			}
-			set_var_value(target_var_type, target_var_id, length_str);
+		size_t length = Json_Helper::GetLength(*json_data, json_path);
+		std::string length_str;
+		if (target_var_type == 0) {
+			// For switches, true if length > 0
+			length_str = (length > 0) ? "1" : "0";
 		}
+		else {
+			length_str = std::to_string(length);
+		}
+		set_var_value(target_var_type, target_var_id, length_str);
 		break;
 	}
 	case 3: { // GetKeys operation
 		auto keys = Json_Helper::GetKeys(*json_data, json_path);
-		if (keys) {
-			std::string keys_str;
-			for (size_t i = 0; i < keys->size(); ++i) {
-				if (i > 0) keys_str += ",";
-				keys_str += "\"" + (*keys)[i] + "\"";
-			}
-			std::string json_str = "{ \"keys\": [" + keys_str + "] }";
-			set_var_value(target_var_type, target_var_id, json_str);
+		std::string keys_str;
+		for (size_t i = 0; i < keys.size(); ++i) {
+			if (i > 0) keys_str += ",";
+			keys_str += "\"" + (keys)[i] + "\"";
 		}
+		std::string json_str = "{ \"keys\": [" + keys_str + "] }";
+		set_var_value(target_var_type, target_var_id, json_str);
 		break;
 	}
 	case 4: { // GetType operation
-		auto type = Json_Helper::GetType(*json_data, json_path);
-		if (type) {
-			std::string value;
-			if (target_var_type == 0) {
-				// For switches, true if it's an object or array
-				value = (*type == "object" || *type == "array") ? "1" : "0";
-			}
-			else if (target_var_type == 1) {
-				// For variables, numeric code for type
-				int type_code = 0;
-				if (*type == "object") type_code = 1;
-				else if (*type == "array") type_code = 2;
-				else if (*type == "string") type_code = 3;
-				else if (*type == "number") type_code = 4;
-				else if (*type == "boolean") type_code = 5;
-				else if (*type == "null") type_code = 6;
-				value = std::to_string(type_code);
-			}
-			else {
-				value = *type;
-			}
-			set_var_value(target_var_type, target_var_id, value);
+		std::string type = Json_Helper::GetType(*json_data, json_path);
+		std::string value;
+		if (target_var_type == 0) {
+			// For switches, true if it exists and not null
+			value = (!type.empty() && type != "null");
 		}
+		else if (target_var_type == 1) {
+			// For variables, numeric code for type
+			int type_code = 0;
+			if (type == "object") type_code = 1;
+			else if (type == "array") type_code = 2;
+			else if (type == "string") type_code = 3;
+			else if (type == "number") type_code = 4;
+			else if (type == "boolean") type_code = 5;
+			else if (type == "null") type_code = 6;
+			value = std::to_string(type_code);
+		}
+		else {
+			value = type;
+		}
+		set_var_value(target_var_type, target_var_id, value);
 		break;
 	}
 	case 5: { // Remove operation: Remove value from JSON data
 		std::string result = Json_Helper::RemoveValue(*json_data, json_path);
 		if (!result.empty()) {
-			Main_Data::game_strings->Asg({ source_var_id }, result);
+			Main_Data::game_strings->Asg(source_var_id, result);
 		}
 		break;
 	}
 	case 6: { // Push operation: Add value to end of array
 		std::string value = get_var_value(target_var_type, target_var_id);
-		if (!value.empty()) {
-			std::string result = Json_Helper::PushValue(*json_data, json_path, value);
-			if (!result.empty()) {
-				Main_Data::game_strings->Asg({ source_var_id }, result);
-			}
+		std::string result = Json_Helper::PushValue(*json_data, json_path, value);
+		if (!result.empty()) {
+			Main_Data::game_strings->Asg(source_var_id, result);
 		}
 		break;
 	}
 	case 7: { // Pop operation: Remove and return last element of array
-		std::string result = Json_Helper::PopValue(*json_data, json_path);
-		if (!result.empty()) {
+		auto [json_obj, element] = Json_Helper::PopValue(*json_data, json_path);
+		if (!json_obj.empty()) {
 			// Set popped value to target variable
-			set_var_value(target_var_type, target_var_id, result);
+			set_var_value(target_var_type, target_var_id, element);
 			// Update source with modified JSON after pop
-			Main_Data::game_strings->Asg({ source_var_id }, json_data->dump());
+			Main_Data::game_strings->Asg(source_var_id, json_obj);
 		}
 		break;
 	}
 	case 8: { // Contains operation: Check if path exists
-		auto exists = Json_Helper::Contains(*json_data, json_path);
-		if (exists) {
-			set_var_value(target_var_type, target_var_id, *exists ? "1" : "0");
-		}
+		bool exists = Json_Helper::Contains(*json_data, json_path);
+		set_var_value(target_var_type, target_var_id, exists ? "1" : "0");
 		break;
 	}
 	default:
