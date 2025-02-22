@@ -5402,13 +5402,12 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 		return true;
 	}
 
-	int extract_data_from_string = com.parameters[10];
-	bool pretty_print = com.parameters[11] == 1;
+	int flags = com.parameters[10];
+	bool pretty_print = (flags & 4) == 4;
 
-	if (extract_data_from_string == 1) { // as string
+	if ((flags & 1) == 1) { // parse command codes
 		json_path = Game_Strings::Extract(json_path, false);
-	}
-	if (extract_data_from_string == 2) { // as hex
+	} else if ((flags & 2) == 2) { // parse command codes, numbers as hex
 		json_path = Game_Strings::Extract(json_path, true);
 	}
 
@@ -5456,13 +5455,17 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 		break;
 	}
 	case 3: { // GetKeys operation
+		bool create_keys_obj = (flags & 8) == 8;
 		auto keys = Json_Helper::GetKeys(*json_data, json_path);
 		std::string keys_str;
 		for (size_t i = 0; i < keys.size(); ++i) {
 			if (i > 0) keys_str += ",";
 			keys_str += "\"" + (keys)[i] + "\"";
 		}
-		std::string json_str = "{ \"keys\": [" + keys_str + "] }";
+		std::string json_str = "[" + keys_str + "]";
+		if (create_keys_obj) {
+			json_str = fmt::format(R"({ \"keys\": {} })", json_str);
+		}
 		set_var_value(target_var_type, target_var_id, json_str);
 		break;
 	}
