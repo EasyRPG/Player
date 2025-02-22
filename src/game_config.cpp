@@ -107,6 +107,11 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	cfg.input.gamepad_swap_ab_and_xy.Set(true);
 #endif
 
+#ifdef USE_CUSTOM_FILEBUF
+	// Disable logging on platforms with slow IO or bad FS drivers
+	cfg.player.log_enabled.Set(false);
+#endif
+
 	cp.Rewind();
 
 	config_path = GetConfigPath(cp);
