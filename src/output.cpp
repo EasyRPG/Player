@@ -56,8 +56,6 @@ namespace {
 	};
 	LogLevel log_level = LogLevel::Debug;
 
-	bool init = false;
-
 	std::ostream& output_time() {
 		std::time_t t = std::time(nullptr);
 		return Game_Config::GetLogFileOutput() << Utils::FormatDate(std::localtime(&t), "[%Y-%m-%d %H:%M:%S] ");
@@ -197,31 +195,6 @@ void Output::Quit() {
 		return;
 		Game_Config::GetLogFileOutput().Close();
 	}
-
-	int log_size = 1024 * 100;
-
-	char* buf = new char[log_size];
-
-	auto in = FileFinder::Save().OpenInputStream(OUTPUT_FILENAME, std::ios_base::in);
-	if (in) {
-		in.seekg(0, std::ios_base::end);
-		if (in.tellg() > log_size) {
-			in.seekg(-log_size, std::ios_base::end);
-			// skip current incomplete line
-			in.getline(buf, 1024 * 100);
-			in.read(buf, 1024 * 100);
-			size_t read = in.gcount();
-			in.Close();
-
-			auto out = FileFinder::Save().OpenOutputStream(OUTPUT_FILENAME, std::ios_base::out);
-			if (out) {
-				out.write(buf, read);
-			}
-		}
-	}
-
-	delete[] buf;
-	init = false;
 }
 
 bool Output::TakeScreenshot() {

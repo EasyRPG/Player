@@ -21,6 +21,7 @@
 #include "filesystem_stream.h"
 #include "input_buttons.h"
 #include "keys.h"
+#include "options.h"
 #include "output.h"
 #include "input.h"
 #include "player.h"
@@ -307,7 +308,7 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 			}
 
 			if (!path.empty()) {
-				path = FileFinder::MakePath(path, fmt::format("{}-{}.log", ORGANIZATION_NAME, APPLICATION_NAME));
+				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
 			}
 
 			// Use the config directory
@@ -318,7 +319,7 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 	#endif
 
 			if (!path.empty()) {
-				path = FileFinder::MakePath(path, fmt::format("{}-{}.log", ORGANIZATION_NAME, APPLICATION_NAME));
+				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
 			}
 		} else {
 			path = logging.path;

@@ -107,7 +107,7 @@
 
 /** Name of the file for output. */
 #ifndef OUTPUT_FILENAME
-#  define OUTPUT_FILENAME "easyrpg_log.txt"
+#  define OUTPUT_FILENAME ORGANIZATION_NAME "-" APPLICATION_NAME ".log"
 #endif
 
 #define USE_KEYBOARD
