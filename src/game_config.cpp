@@ -339,11 +339,14 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 			return noop_stream;
 		}
 
+#ifndef ANDROID
+		// Make Directory not supported on Android, assume the path exists
 		if (!FileFinder::Root().MakeDirectory(FileFinder::GetPathAndFilename(path).first, true)) {
 			print_err();
 			static Filesystem_Stream::OutputStream noop_stream;
 			return noop_stream;
 		}
+#endif
 
 		logging.handle = FileFinder::Root().OpenOutputStream(path, std::ios_base::out | std::ios_base::app);
 

@@ -39,6 +39,7 @@
 #include "font.h"
 #include "cache.h"
 #include "rtp.h"
+#include "output.h"
 
 #include <lcf/ldb/reader.h>
 #include <lcf/reader_util.h>
@@ -182,6 +183,13 @@ std::string jstring_to_string(JNIEnv* env, jstring j_str) {
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass, jstring jpath, jstring jmain_dir_name) {
+	Output::SetLogLevel(LogLevel::Error);
+
+	auto sc = lcf::makeScopeGuard([&]() {
+		// Prevent closing of the stream, is used afterwards
+		Output::SetLogLevel(LogLevel::Debug);
+	});
+
 	EpAndroid::env = env;
 
 	// jpath is the SAF path to the game, is converted to FilesystemView "root"
