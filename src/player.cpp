@@ -1426,6 +1426,8 @@ Engine options:
  --language LANG      Load the game translation in language/LANG folder.
  --load-game-id N     Skip the title scene and load SaveN.lsd (N is padded to
                       two digits).
+ --log-file FILE      Path to the logfile. The Player will write diagnostic
+                      messages to this file.
  --new-game           Skip the title scene and start a new game directly.
  --no-log-color       Disable colors in terminal log.
  --no-rtp             Disable support for the Runtime Package (RTP).
