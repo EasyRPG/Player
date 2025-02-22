@@ -87,6 +87,8 @@ private:
 	uint32_t GetLogoCount();
 	bool ResNameCheck(uint32_t namepoint, const char* name);
 
+	bool CheckForString(uint32_t offset, const char* p);
+
 	// 0 if resource section was unfindable.
 	uint32_t resource_ofs = 0;
 	uint32_t resource_rva = 0;

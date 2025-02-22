@@ -493,16 +493,12 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 	return Player::EngineNone;
 }
 
-namespace {
-
-
-}
-
 std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
 
 	std::map<Player::GameConstantType, int32_t> game_constants;
+	int code_offset = file_info.code_ofs - 0x400;
 
-	auto match_surrounding_data = [&](const ExeConstants::CodeAddressInfoU32& info, const uint32_t const_ofs) {
+	auto match_surrounding_data = [&](const ExeConstants::CodeAddressInfo& info, const uint32_t const_ofs) {
 		for (int i = 0; i < info.size_pre_data; i++) {
 			if (info.pre_data[i] != GetU8(const_ofs - info.size_pre_data + i))
 				return false;
@@ -528,7 +524,7 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 				continue;
 			}
 
-			const_ofs = file_info.code_ofs + addr_info.code_offset;
+			const_ofs = code_offset + addr_info.code_offset;
 
 			bool extract_constant = false;
 			if (addr_info.pre_data == ExeConstants::magic_prev && extract_success) {
@@ -538,7 +534,20 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 			}
 
 			if (extract_constant) {
-				int32_t value = GetU32(const_ofs);
+				int32_t value;
+				switch (addr_info.size_val) {
+					case 4:
+						value = GetU32(const_ofs);
+						break;
+					case 2:
+						value = GetU16(const_ofs);
+						break;
+					case 1:
+						value = GetU8(const_ofs);
+						break;
+					default:
+						continue;
+				}
 
 				auto it = game_constants.find(const_type);
 				if (it != game_constants.end() && it->second == value) {
@@ -576,14 +585,6 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		}
 	};
 
-	auto check_for_string = [&](uint32_t offset, const char* p) {
-		while (*p) {
-			if (GetU8(offset++) != *p++)
-				return false;
-		}
-		return true;
-	};
-
 	switch (file_info.code_size) {
 		case 0x96600:
 			if (file_info.entrypoint == 0x0972C4) {
@@ -608,7 +609,7 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		case 0x9CC00:
 			log_version_rm2k("1.62");
 
-			if (check_for_string(file_info.code_ofs + 0x07DAA6, "XXX" /* 3x "POP EAX" */)) {
+			if (CheckForString(0x07DEA6, "XXX" /* 3x "POP EAX" */)) {
 				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
 			}
 			//check_address_map(ExeConstants::RT_2K::const_addresses_162);
@@ -624,10 +625,10 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		case 0xC8E00:
 			log_version_rm2k3("1.0.8.0");
 
-			if (check_for_string(file_info.code_ofs + 0x08EBE0, "NoTitolo")) {
+			if (CheckForString(0x08EFE0, "NoTitolo")) {
 				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
 			}
-			if (check_for_string(file_info.code_ofs + 0x09D279, "XXX" /* 3x "POP EAX" */)) {
+			if (CheckForString(0x09D679, "XXX" /* 3x "POP EAX" */)) {
 				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
 			}
 
@@ -636,14 +637,25 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		case 0xC9000:
 			log_version_rm2k3("1.0.9.1");
 
-			if (check_for_string(file_info.code_ofs + 0x09C5AD, "XXX" /* 3x "POP EAX" */)) {
+			if (CheckForString(0x09C9AD, "XXX" /* 3x "POP EAX" */)) {
 				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
 			}
 			//check_address_map(ExeConstants::RT_2K3::const_addresses_1091);
+			break;
+		default:
+			Output::Debug("Unknown code size: {}", file_info.code_size);
 			break;
 	}
 
 	return game_constants;
 }
 
+
+bool EXEReader::CheckForString(uint32_t offset, const char* p) {
+	while (*p) {
+		if (GetU8(file_info.code_ofs - 0x400 + offset++) != *p++)
+			return false;
+	}
+	return true;
+}
 #endif

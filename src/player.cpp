@@ -1783,7 +1783,9 @@ int32_t Player::Constants::MaxItemCount() {
 
 int32_t Player::Constants::MaxSaveFiles() {
 	int32_t max_savefiles = Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
-	TryGetOverriddenConstant(GameConstantType::MaxSaveFiles, max_savefiles);
+	if (TryGetOverriddenConstant(GameConstantType::MaxSaveFiles, max_savefiles)) {
+		return max_savefiles - 1;
+	}
 	return max_savefiles;
 }
 
