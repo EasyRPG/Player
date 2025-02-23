@@ -5464,7 +5464,7 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 		}
 		std::string json_str = "[" + keys_str + "]";
 		if (create_keys_obj) {
-			json_str = fmt::format(R"({ \"keys\": {} })", json_str);
+			json_str = fmt::format(R"({ "keys": {} })", json_str);
 		}
 		set_var_value(target_var_type, target_var_id, json_str);
 		break;

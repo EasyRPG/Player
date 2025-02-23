@@ -206,7 +206,7 @@ namespace Json_Helper {
 		json_path.remove_prefix(parent_ptr.to_string().size() + 1);
 
 		if (parent.is_object()) {
-			parent.erase(json_path);
+			parent.erase(std::string(json_path));
 		}
 		else if (parent.is_array()) {
 			// Check if key is a valid positive number
