@@ -229,8 +229,8 @@ void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical)
 	int title_x = 160;
 	if (!center_vertical) {
 		int title_y = 148;
-		if (Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleX, title_x)
-			|| Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleY, title_y)) {
+		if (Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType::TitleX, title_x)
+			|| Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType::TitleY, title_y)) {
 			// RPG_RT aligns its command window as "CenterTop"
 			window.SetX(title_x - window.GetWidth() / 2 + Player::menu_offset_x);
 			window.SetY(title_y + Player::menu_offset_y);
@@ -240,8 +240,8 @@ void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical)
 		}
 	} else {
 		int title_y = 88;
-		if (Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleHiddenX, title_x)
-			|| Player::Constants::TryGetOverriddenConstant(Player::GameConstantType::TitleHiddenY, title_y)) {
+		if (Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType::TitleHiddenX, title_x)
+			|| Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType::TitleHiddenY, title_y)) {
 			// RPG_RT aligns its command window as "CenterTop"
 			window.SetX(title_x - window.GetWidth() / 2 + Player::menu_offset_x);
 			window.SetY(title_y + Player::menu_offset_y);

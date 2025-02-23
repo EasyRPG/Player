@@ -23,6 +23,8 @@
 #include <istream>
 #include <vector>
 #include "bitmap.h"
+#include "exe_buildinfo.h"
+#include "exe_constants.h"
 #include "player.h"
 
 /**
@@ -73,7 +75,7 @@ public:
 
 	const FileInfo& GetFileInfo();
 
-	std::map<Player::GameConstantType, int32_t> GetOverridenGameConstants();
+	std::map<EXE::Shared::GameConstantType, int32_t> GetOverridenGameConstants();
 
 private:
 	// Bounds-checked unaligned reader primitives.
@@ -95,6 +97,10 @@ private:
 
 	FileInfo file_info;
 	Filesystem_Stream::InputStream corefile;
+
+	EXE::BuildInfo::KnownEngineBuildVersions build_version = EXE::BuildInfo::KnownEngineBuildVersions::UnknownBuild;
+	EXE::BuildInfo::EngineBuildInfo build_info;
+
 };
 
 #endif

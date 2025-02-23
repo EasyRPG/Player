@@ -19,6 +19,7 @@
 #define EP_PLAYER_H
 
 // Headers
+#include "exe_shared.h"
 #include "fileext_guesser.h"
 #include "meta.h"
 #include "translation.h"
@@ -58,75 +59,6 @@ namespace Player {
 		/** Patches specified on command line, no autodetect */
 		PatchOverride = 1 << 16
 	};
-
-	enum class GameConstantType {
-		MinVarLimit,
-		MaxVarLimit,
-		MaxActorHP,
-		MaxActorSP,
-		MaxEnemyHP,
-		MaxEnemySP,
-
-		MaxAtkBaseValue,
-		MaxDefBaseValue,
-		MaxSpiBaseValue,
-		MaxAgiBaseValue,
-
-		MaxAtkBattleValue,
-		MaxDefBattleValue,
-		MaxSpiBattleValue,
-		MaxAgiBattleValue,
-
-		MaxDamageValue,
-		MaxExpValue,
-		MaxLevel,
-		MaxGoldValue,
-		MaxItemCount,
-		MaxSaveFiles,
-
-		/** X-coordinate of the title scene command window (HAlign: Center) */
-		TitleX,
-		/** Y-coordinate of the title scene command window (VAlign: Top) */
-		TitleY,
-		/** X-coordinate of the title scene command window when the title graphic is hidden (HAlign: Center) */
-		TitleHiddenX,
-		/** Y-coordinate of the title scene command window when the title graphic is hidden (VAlign: Top) */
-		TitleHiddenY,
-
-		LAST
-	};
-
-	static constexpr auto kGameConstantType = lcf::makeEnumTags<GameConstantType>(
-		"MinVarLimit",
-		"MaxVarLimit",
-		"MaxActorHP",
-		"MaxActorSP",
-		"MaxEnemyHP",
-		"MaxEnemySP",
-
-		"MaxAtkBaseValue",
-		"MaxDefBaseValue",
-		"MaxSpiBaseValue",
-		"MaxAgiBaseValue",
-
-		"MaxAtkBattleValue",
-		"MaxDefBattleValue",
-		"MaxSpiBattleValue",
-		"MaxAgiBattleValue",
-
-		"MaxDamageValue",
-		"MaxExpValue",
-		"MaxLevel",
-		"MaxGoldValue",
-		"MaxItemCount",
-		"MaxSaveFiles",
-		"TitleCmdWnd_X",
-		"TitleCmdWnd_Y",
-		"TitleHiddenCmdWnd_X",
-		"TitleHiddenCmdWnd_Y"
-	);
-
-	static_assert(Player::kGameConstantType.size() == static_cast<size_t>(GameConstantType::LAST));
 
 	/**
 	 * Initializes EasyRPG Player.
@@ -536,10 +468,10 @@ namespace Player {
 		int32_t MaxItemCount();
 		int32_t MaxSaveFiles();
 
-		extern std::map<GameConstantType, int32_t> constant_overrides;
+		extern std::map<EXE::Shared::GameConstantType, int32_t> constant_overrides;
 
-		bool TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value);
-		void OverrideGameConstant(GameConstantType const_type, int32_t value);
+		bool TryGetOverriddenConstant(EXE::Shared::GameConstantType const_type, int32_t& out_value);
+		void OverrideGameConstant(EXE::Shared::GameConstantType const_type, int32_t value);
 		void ResetOverrides();
 		void PrintActiveOverrides();
 	}

@@ -762,7 +762,7 @@ void Player::CreateGameObjects() {
 	}
 
 	int& engine = game_config.engine;
-	std::map<Player::GameConstantType, int32_t> game_constant_overrides;
+	std::map<EXE::Shared::GameConstantType, int32_t> game_constant_overrides;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
@@ -849,8 +849,9 @@ void Player::CreateGameObjects() {
 	game_config.PrintActivePatches();
 
 	Constants::ResetOverrides();
+
 	if (game_constant_overrides.size() > 0) {
-		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();++it) {
+		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end(); ++it) {
 			Constants::OverrideGameConstant(it->first, it->second);
 		}
 		Constants::PrintActiveOverrides();
@@ -1605,13 +1606,13 @@ std::string Player::GetEngineVersion() {
 }
 
 namespace Player::Constants {
-	std::map<GameConstantType, int32_t> constant_overrides;
+	std::map<EXE::Shared::GameConstantType, int32_t> constant_overrides;
 }
 
 void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 
 	min_var = lcf::Data::system.easyrpg_variable_min_value;
-	TryGetOverriddenConstant(GameConstantType::MinVarLimit, min_var);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MinVarLimit, min_var);
 	if (min_var == 0) {
 		if (Player::IsPatchManiac()) {
 			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
@@ -1620,7 +1621,7 @@ void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 		}
 	}
 	max_var = lcf::Data::system.easyrpg_variable_max_value;
-	TryGetOverriddenConstant(GameConstantType::MaxVarLimit, max_var);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxVarLimit, max_var);
 	if (max_var == 0) {
 		if (Player::IsPatchManiac()) {
 			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
@@ -1632,7 +1633,7 @@ void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
 
 int32_t Player::Constants::MaxActorHpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_actor_hp;
-	TryGetOverriddenConstant(GameConstantType::MaxActorHP, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxActorHP, val);
 	if (val == -1) {
 		return Player::IsRPG2k() ? 999 : 9'999;
 	}
@@ -1641,7 +1642,7 @@ int32_t Player::Constants::MaxActorHpValue() {
 
 int32_t Player::Constants::MaxActorSpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_actor_sp;
-	TryGetOverriddenConstant(GameConstantType::MaxActorSP, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxActorSP, val);
 	if (val == -1) {
 		return 999;
 	}
@@ -1650,7 +1651,7 @@ int32_t Player::Constants::MaxActorSpValue() {
 
 int32_t Player::Constants::MaxEnemyHpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_enemy_hp;
-	TryGetOverriddenConstant(GameConstantType::MaxEnemyHP, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxEnemyHP, val);
 	if (val == -1) {
 		return Player::IsRPG2k() ? 9'999 : 99'999;
 	}
@@ -1659,7 +1660,7 @@ int32_t Player::Constants::MaxEnemyHpValue() {
 
 int32_t Player::Constants::MaxEnemySpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_enemy_sp;
-	TryGetOverriddenConstant(GameConstantType::MaxEnemySP, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxEnemySP, val);
 	if (val == -1) {
 		return 9'999;
 	}
@@ -1668,7 +1669,7 @@ int32_t Player::Constants::MaxEnemySpValue() {
 
 int32_t Player::Constants::MaxAtkBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	TryGetOverriddenConstant(GameConstantType::MaxAtkBaseValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAtkBaseValue, val);
 	if (val == -1) {
 		return max_stat_base_value;
 	}
@@ -1677,7 +1678,7 @@ int32_t Player::Constants::MaxAtkBaseValue() {
 
 int32_t Player::Constants::MaxDefBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	TryGetOverriddenConstant(GameConstantType::MaxDefBaseValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDefBaseValue, val);
 	if (val == -1) {
 		return max_stat_base_value;
 	}
@@ -1686,7 +1687,7 @@ int32_t Player::Constants::MaxDefBaseValue() {
 
 int32_t Player::Constants::MaxSpiBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	TryGetOverriddenConstant(GameConstantType::MaxSpiBaseValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSpiBaseValue, val);
 	if (val == -1) {
 		return max_stat_base_value;
 	}
@@ -1695,7 +1696,7 @@ int32_t Player::Constants::MaxSpiBaseValue() {
 
 int32_t Player::Constants::MaxAgiBaseValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	TryGetOverriddenConstant(GameConstantType::MaxAgiBaseValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAgiBaseValue, val);
 	if (val == -1) {
 		return max_stat_base_value;
 	}
@@ -1704,7 +1705,7 @@ int32_t Player::Constants::MaxAgiBaseValue() {
 
 int32_t Player::Constants::MaxAtkBattleValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	TryGetOverriddenConstant(GameConstantType::MaxAtkBattleValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAtkBattleValue, val);
 	if (val == -1) {
 		return max_stat_battle_value;
 	}
@@ -1713,7 +1714,7 @@ int32_t Player::Constants::MaxAtkBattleValue() {
 
 int32_t Player::Constants::MaxDefBattleValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	TryGetOverriddenConstant(GameConstantType::MaxDefBattleValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDefBattleValue, val);
 	if (val == -1) {
 		return max_stat_battle_value;
 	}
@@ -1722,7 +1723,7 @@ int32_t Player::Constants::MaxDefBattleValue() {
 
 int32_t Player::Constants::MaxSpiBattleValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	TryGetOverriddenConstant(GameConstantType::MaxSpiBattleValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSpiBattleValue, val);
 	if (val == -1) {
 		return max_stat_battle_value;
 	}
@@ -1731,7 +1732,7 @@ int32_t Player::Constants::MaxSpiBattleValue() {
 
 int32_t Player::Constants::MaxAgiBattleValue() {
 	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	TryGetOverriddenConstant(GameConstantType::MaxAgiBattleValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAgiBattleValue, val);
 	if (val == -1) {
 		return max_stat_battle_value;
 	}
@@ -1740,7 +1741,7 @@ int32_t Player::Constants::MaxAgiBattleValue() {
 
 int32_t Player::Constants::MaxDamageValue() {
 	auto& val = lcf::Data::system.easyrpg_max_damage;
-	TryGetOverriddenConstant(GameConstantType::MaxDamageValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDamageValue, val);
 	if (val == -1) {
 		return (Player::IsRPG2k() ? 999 : 9'999);
 	}
@@ -1749,7 +1750,7 @@ int32_t Player::Constants::MaxDamageValue() {
 
 int32_t Player::Constants::MaxExpValue() {
 	auto& val = lcf::Data::system.easyrpg_max_exp;
-	TryGetOverriddenConstant(GameConstantType::MaxExpValue, val);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxExpValue, val);
 	if (val == -1) {
 		return Player::IsRPG2k() ? 999'999 : 9'999'999;
 	}
@@ -1758,7 +1759,7 @@ int32_t Player::Constants::MaxExpValue() {
 
 int32_t Player::Constants::MaxLevel() {
 	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
-	if (TryGetOverriddenConstant(GameConstantType::MaxLevel, max_level)) {
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxLevel, max_level)) {
 		return max_level;
 	}
 	if (lcf::Data::system.easyrpg_max_level > -1) {
@@ -1769,7 +1770,7 @@ int32_t Player::Constants::MaxLevel() {
 
 int32_t Player::Constants::MaxGoldValue() {
 	int32_t max_gold = 999'999;
-	if (TryGetOverriddenConstant(GameConstantType::MaxGoldValue, max_gold)) {
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxGoldValue, max_gold)) {
 		return max_gold;
 	}
 	return max_gold;
@@ -1777,19 +1778,19 @@ int32_t Player::Constants::MaxGoldValue() {
 
 int32_t Player::Constants::MaxItemCount() {
 	int32_t max_item_count = (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);;
-	TryGetOverriddenConstant(GameConstantType::MaxItemCount, max_item_count);
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxItemCount, max_item_count);
 	return max_item_count;
 }
 
 int32_t Player::Constants::MaxSaveFiles() {
 	int32_t max_savefiles = Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
-	if (TryGetOverriddenConstant(GameConstantType::MaxSaveFiles, max_savefiles)) {
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSaveFiles, max_savefiles)) {
 		return max_savefiles - 1;
 	}
 	return max_savefiles;
 }
 
-bool Player::Constants::TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value) {
+bool Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType const_type, int32_t& out_value) {
 	auto it = constant_overrides.find(const_type);
 	if (it != constant_overrides.end()) {
 		out_value = (*it).second;
@@ -1797,7 +1798,7 @@ bool Player::Constants::TryGetOverriddenConstant(GameConstantType const_type, in
 	return it != constant_overrides.end();
 }
 
-void Player::Constants::OverrideGameConstant(GameConstantType const_type, int32_t value) {
+void Player::Constants::OverrideGameConstant(EXE::Shared::GameConstantType const_type, int32_t value) {
 	constant_overrides[const_type] = value;
 }
 
@@ -1808,10 +1809,10 @@ void Player::Constants::ResetOverrides() {
 void Player::Constants::PrintActiveOverrides() {
 	std::vector<std::tuple<std::string, int32_t>> overridden_constants;
 
-	auto tags = Player::kGameConstantType.tags();
+	auto tags = EXE::Shared::kGameConstantType.tags();
 	int32_t value;
 	for (int i = 0; i < tags.size(); i++) {
-		auto const_type = static_cast<GameConstantType>(tags[i].value);
+		auto const_type = static_cast<EXE::Shared::GameConstantType>(tags[i].value);
 		if (!TryGetOverriddenConstant(const_type, value)) {
 			continue;
 		}

@@ -19,13 +19,13 @@
 #ifndef EMSCRIPTEN
 
 #include "exe_reader.h"
-#include "exe_constants.h"
 #include "image_bmp.h"
 #include "output.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <zlib.h>
+#include <lcf/reader_util.h>
 
 namespace {
 	// hashes of known RPG_RT startup logos
@@ -410,7 +410,7 @@ bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 }
 
 void EXEReader::FileInfo::Print() const {
-	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} arch={} easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, kMachineTypes[machine_type], is_easyrpg_player);
+	Output::Debug("RPG_RT information: version={} logos={} code={:#x} entrypoint={:#x} cherry={:#x} geep={:#x} arch={} easyrpg={}", version_str, logos, code_size, entrypoint, cherry_size, geep_size, kMachineTypes[machine_type], is_easyrpg_player);
 }
 
 int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
@@ -493,14 +493,15 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 	return Player::EngineNone;
 }
 
-std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
+std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
+	constexpr bool debug_const_extraction = true;
 
-	std::map<Player::GameConstantType, int32_t> game_constants;
+	std::map<EXE::Shared::GameConstantType, int32_t> game_constants;
 	int code_offset = file_info.code_ofs - 0x400;
 
-	auto match_surrounding_data = [&](const ExeConstants::CodeAddressInfo& info, const uint32_t const_ofs) {
-		for (int i = 0; i < info.size_pre_data; i++) {
-			if (info.pre_data[i] != GetU8(const_ofs - info.size_pre_data + i))
+	auto match_surrounding_data = [&](const EXE::BuildInfo::CodeAddressInfo& info, const uint32_t const_ofs) {
+		for (int i = 0; i < info.pre_data.size(); i++) {
+			if (info.pre_data[i] != GetU8(const_ofs - info.pre_data.size() + i))
 				return false;
 		}
 		/*for (int i = 0; i < info.post_data.size(); i++) {
@@ -511,7 +512,7 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 		return true;
 	};
 
-	auto check_address_map = [&](const ExeConstants::code_address_map& map) {
+	auto check_address_map = [&](const EXE::Constants::code_address_map& map) {
 		uint32_t const_ofs;
 		bool extract_success = false;
 
@@ -527,9 +528,10 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 			const_ofs = code_offset + addr_info.code_offset;
 
 			bool extract_constant = false;
-			if (addr_info.pre_data == ExeConstants::magic_prev && extract_success) {
+			/*if (addr_info.pre_data == ExeConstants::magic_prev && extract_success) {
 				extract_constant = true;
-			} else if (match_surrounding_data(addr_info, const_ofs)) {
+			} else*/
+			if (match_surrounding_data(addr_info, const_ofs)) {
 				extract_constant = true;
 			}
 
@@ -557,96 +559,100 @@ std::map<Player::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants
 
 				if (value != addr_info.default_val || it != game_constants.end()) {
 					game_constants[const_type] = value;
-					Output::Debug("Read constant '{}': {} (default: {})", Player::kGameConstantType.tag(const_type), value, addr_info.default_val);
+					Output::Debug("Read constant '{}': {} (default: {})", EXE::Shared::kGameConstantType.tag(const_type), value, addr_info.default_val);
+				} else if (debug_const_extraction) {
+					Output::Debug("Constant '{}' unchanged: {}", EXE::Shared::kGameConstantType.tag(const_type), value);
 				}
 				extract_success = true;
 			} else {
-				Output::Debug("Could not read constant '{}'", Player::kGameConstantType.tag(const_type));
+				Output::Debug("Could not read constant '{}'", EXE::Shared::kGameConstantType.tag(const_type));
 				extract_success = false;
 			}
 		}
 	};
 
-	auto log_version_rm2k = [](const StringView& str) {
-		Output::Debug("Assuming RPG2000 build '{}' for constant extraction", str);
-	};
-
-	auto log_version_rm2k3 = [](const StringView& str) {
-		Output::Debug("Assuming RPG2003 build '{}' for constant extraction", str);
-	};
-
-	auto apply_known_config = [&](ExeConstants::KnownPatchConfigurations conf) {
-		Output::Debug("Assuming known patch config '{}'", ExeConstants::kKnownPatchConfigurations.tag(static_cast<int>(conf)));
-		auto it_conf = ExeConstants::known_patch_configurations.find(conf);
-		assert(it_conf != ExeConstants::known_patch_configurations.end());
+	auto apply_known_config = [&](EXE::Constants::KnownPatchConfigurations conf) {
+		Output::Debug("Assuming known patch config '{}'", EXE::Constants::kKnownPatchConfigurations.tag(static_cast<int>(conf)));
+		auto it_conf = EXE::Constants::known_patch_configurations.find(conf);
+		assert(it_conf != EXE::Constants::known_patch_configurations.end());
 
 		for (auto it = it_conf->second.begin(); it != it_conf->second.end(); ++it) {
 			game_constants[it->first] = it->second;
 		}
 	};
 
-	switch (file_info.code_size) {
-		case 0x96600:
-			if (file_info.entrypoint == 0x0972C4) {
-				log_version_rm2k("DonM 1.03b");
-				check_address_map(ExeConstants::RT_2K::const_addresses_103b);
-			} else {
-				// Might also be build '2000-05-07'
-			}
-			break;
-		case 0x96E00:
-			log_version_rm2k("2000-07-11");
-			check_address_map(ExeConstants::RT_2K::const_addresses_105b);
+	for (auto it = EXE::BuildInfo::known_engine_builds.begin(); it != EXE::BuildInfo::known_engine_builds.end(); ++it) {
+		auto& curr_build_info = std::get<EXE::BuildInfo::EngineBuildInfo>(*it);
+
+		if (file_info.code_size != curr_build_info.code_size || file_info.entrypoint != curr_build_info.entrypoint) {
+			continue;
+		}
+		build_version = std::get<EXE::BuildInfo::KnownEngineBuildVersions>(*it);
+		build_info = curr_build_info;
 		break;
-		case 0x96A00:
-			if (file_info.entrypoint == 0x097744) {
-				log_version_rm2k("2000-12-27");
-				check_address_map(ExeConstants::RT_2K::const_addresses_106);
-			} else {
-				// Might also be build '2001-05-05'
-			}
-			break;
-		case 0x9CC00:
-			log_version_rm2k("1.62");
-
-			if (CheckForString(0x07DEA6, "XXX" /* 3x "POP EAX" */)) {
-				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
-			}
-			//check_address_map(ExeConstants::RT_2K::const_addresses_162);
-			break;
-		case 0xC0800:
-			log_version_rm2k3("1.0.3.0_1.0.4.0");
-			check_address_map(ExeConstants::RT_2K3::const_addresses_104);
-			break;
-		case 0xC8A00:
-			log_version_rm2k3("1.0.6.0");
-			check_address_map(ExeConstants::RT_2K3::const_addresses_106);
-			break;
-		case 0xC8E00:
-			log_version_rm2k3("1.0.8.0");
-
-			if (CheckForString(0x08EFE0, "NoTitolo")) {
-				apply_known_config(ExeConstants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
-			}
-			if (CheckForString(0x09D679, "XXX" /* 3x "POP EAX" */)) {
-				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
-			}
-
-			check_address_map(ExeConstants::RT_2K3::const_addresses_108);
-			break;
-		case 0xC9000:
-			log_version_rm2k3("1.0.9.1");
-
-			if (CheckForString(0x09C9AD, "XXX" /* 3x "POP EAX" */)) {
-				apply_known_config(ExeConstants::KnownPatchConfigurations::QP_StatDelimiter);
-			}
-			//check_address_map(ExeConstants::RT_2K3::const_addresses_1091);
-			break;
-		default:
-			Output::Debug("Unknown code size: {}", file_info.code_size);
-			break;
 	}
 
+	if (build_version != EXE::BuildInfo::KnownEngineBuildVersions::UnknownBuild) {
+		Output::Debug("Assuming {} build '{}' for constant extraction",
+			EXE::BuildInfo::kEngineTypes.tag(build_info.engine_type),
+			EXE::BuildInfo::kKnownEngineBuildDescriptions.tag(build_version));
+
+		EXE::Constants::code_address_map const* constant_addresses = nullptr;
+
+		switch (build_info.engine_type) {
+			case EXE::BuildInfo::EngineType::RPG2000:
+			{
+				auto& builds = EXE::Constants::known_engine_builds_rm2k;
+				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
+					return pair.first == build_version;
+				});
+				if (it != builds.end()) {
+					constant_addresses = &it->second;
+				}
+			}
+			break;
+			case EXE::BuildInfo::EngineType::RPG2003:
+			{
+				auto& builds = EXE::Constants::known_engine_builds_rm2k3;
+				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
+					return pair.first == build_version;
+				});
+				if (it != builds.end()) {
+					constant_addresses = &it->second;
+				}
+			}
+			break;
+		}
+
+		switch (build_version) {
+			case EXE::BuildInfo::RM2KE_162:
+				if (CheckForString(0x07DEA6, "XXX" /* 3x "POP EAX" */)) {
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+				}
+				break;
+			case EXE::BuildInfo::RM2K3_1080_1080:
+				if (CheckForString(0x08EFE0, "NoTitolo")) {
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
+				}
+				if (CheckForString(0x09D679, "XXX" /* 3x "POP EAX" */)) {
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+				}
+				break;
+			case EXE::BuildInfo::RM2K3_1091_1091:
+				if (CheckForString(0x09C9AD, "XXX" /* 3x "POP EAX" */)) {
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+				}
+				break;
+			default:
+				break;
+		}
+
+		if (constant_addresses) {
+			check_address_map(*constant_addresses);
+		}
+	} else {
+		Output::Debug("Unknown build");
+	}
 	return game_constants;
 }
 

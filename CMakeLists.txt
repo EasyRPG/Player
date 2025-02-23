@@ -109,7 +109,9 @@ add_library(${PROJECT_NAME} OBJECT
 	src/dynrpg_textplugin.h
 	src/enemyai.cpp
 	src/enemyai.h
+	src/exe_buildinfo.h
 	src/exe_constants.h
+	src/exe_shared.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h
