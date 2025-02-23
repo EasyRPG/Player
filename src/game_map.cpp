@@ -446,10 +446,13 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 		}), new_event);
 
 	auto game_event = Game_Event(GetMapId(), &*insert_it);
+	game_event.data()->easyrpg_clone_event_id = source_event->ID;
+	game_event.data()->easyrpg_clone_map_id = src_map_id;
+
 	events.insert(
 		std::upper_bound(events.begin(), events.end(), game_event, [](const auto& e, const auto& e2) {
 			return e.GetId() < e2.GetId();
-		}), Game_Event(GetMapId(), &*insert_it));
+		}), std::move(game_event));
 
 	UpdateUnderlyingEventReferences();
 
