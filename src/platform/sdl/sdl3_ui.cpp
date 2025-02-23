@@ -175,7 +175,7 @@ Sdl3Ui::~Sdl3Ui() {
 
 #ifdef SUPPORT_AUDIO
 	audio_.reset();
-#endif	
+#endif
 
 	SDL_Quit();
 }
@@ -732,6 +732,11 @@ void Sdl3Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		SDL_Event wait_event;
 
 		while (SDL_WaitEvent(&wait_event)) {
+			if (wait_event.type >= SDL_EVENT_WINDOW_FIRST && wait_event.type <= SDL_EVENT_WINDOW_LAST && wait_event.type != SDL_EVENT_WINDOW_FOCUS_LOST) {
+				// Process size change etc. events
+				ProcessWindowEvent(wait_event);
+			}
+
 			if (FilterUntilFocus(&wait_event)) {
 				break;
 			}
