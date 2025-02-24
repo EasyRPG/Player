@@ -148,6 +148,8 @@ void Scene_Language::vUpdate() {
 
 void Scene_Language::OnTranslationChanged() {
 	Main_Data::game_system->ReloadSystemGraphic();
+
+	Scene::OnTranslationChanged();
 }
 
 void Scene_Language::OnTitleSpriteReady(FileRequestResult* result) {
