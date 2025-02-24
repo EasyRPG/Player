@@ -260,6 +260,7 @@ void Scene_Settings::vUpdate() {
 		case Window_Settings::eSave:
 		case Window_Settings::eEnd:
 		case Window_Settings::eAbout:
+		case Window_Settings::eLanguage: // fix compiler warning, not implemented
 			break;
 		case Window_Settings::eMain:
 			UpdateMain();

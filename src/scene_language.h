@@ -45,6 +45,8 @@ public:
 	void Start() override;
 	void vUpdate() override;
 
+	void OnTranslationChanged() override;
+
 private:
 
 	/**
@@ -83,6 +85,7 @@ private:
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;
 	int input_reset_counter = 0;
+	bool shutdown = false;
 
 	Window_Settings::UiMode mode = Window_Settings::eNone;
 };

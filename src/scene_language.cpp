@@ -40,10 +40,6 @@
 #include "window_settings.h"
 #include <memory>
 
-#ifdef EMSCRIPTEN
-#  include <emscripten.h>
-#endif
-
 Scene_Language::Scene_Language() {
 	Scene::type = Scene::LanguageMenu;
 }
@@ -125,6 +121,11 @@ void Scene_Language::Start() {
 
 
 void Scene_Language::vUpdate() {
+	if (shutdown) {
+		PopOrTitle();
+		return;
+	}
+
 	translate_window->Update();
 	help_window->Update();
 
@@ -142,6 +143,10 @@ void Scene_Language::vUpdate() {
 		}
 		Scene::Pop();
 	}
+}
+
+void Scene_Language::OnTranslationChanged() {
+	Main_Data::game_system->ReloadSystemGraphic();
 }
 
 void Scene_Language::OnTitleSpriteReady(FileRequestResult* result) {
@@ -169,8 +174,11 @@ void Scene_Language::ChangeLanguage(const std::string& lang_str) {
 
 	// First change the language
 	Player::translation.SelectLanguage(lang_str);
+	Main_Data::game_system->ReloadSystemGraphic();
 
-	PopOrTitle();
+	// Delay scene shutdown by one frame to allow async requests for language change
+	// and system graphic reload to finish before the scene switches
+	shutdown = true;
 }
 
 void Scene_Language::PopOrTitle() {
