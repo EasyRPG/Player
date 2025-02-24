@@ -26,6 +26,7 @@ package org.easyrpg.player.player;
 
 import android.app.AlertDialog;
 import android.content.ClipDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
@@ -62,6 +63,7 @@ import org.easyrpg.player.game_browser.Game;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
+import org.libsdl.app.SDLSurface;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -92,6 +94,11 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             "SDL2",
             "easyrpg_android"
         };
+    }
+
+    @Override
+    protected SDLSurface createSDLSurface(Context context) {
+        return new EasyRpgSurface(context, this);
     }
 
     @Override
@@ -438,7 +445,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public void updateScreenPosition() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
-        int topMargin, leftMargin;
 
         // Determine the multiplier
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
