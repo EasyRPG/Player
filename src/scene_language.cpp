@@ -29,6 +29,7 @@
 #include "player.h"
 #include "baseui.h"
 #include "output.h"
+#include "scene_title.h"
 #include "utils.h"
 #include "scene_end.h"
 #include "window_about.h"
@@ -182,8 +183,7 @@ void Scene_Language::ChangeLanguage(const std::string& lang_str) {
 }
 
 void Scene_Language::PopOrTitle() {
-	auto peek_scene = Scene::Peek();
-	if (!peek_scene || peek_scene->type == SceneType::Null || peek_scene->type == SceneType::Logo) {
+	if (!Find(Title)) {
 		Scene::Push(std::make_shared<Scene_Title>(), true);
 	} else {
 		Scene::Pop();
