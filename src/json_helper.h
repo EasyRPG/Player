@@ -29,11 +29,6 @@
 
 using json = nlohmann::ordered_json;
 
-namespace {
-// Helper function to convert JSON values to strings
-std::string GetValueAsString(const json& json_obj);
-} // namespace
-
 namespace Json_Helper {
 /**
  * Parses a JSON string into a JSON object
