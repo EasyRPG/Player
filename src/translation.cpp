@@ -766,17 +766,24 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			dict.TranslateString("actors.title", commands.CurrentCmdString());
 			commands.Advance();
 		} else if (commands.CurrentIsShowStringPicture()) {
-			auto components = Utils::Tokenize(commands.CurrentCmdString(), [](char32_t ch) {
-				return ch == '\x01';
-			});
-			if (components.size() >= 4) {
+			auto cmdstr = StringView(commands.CurrentCmdString());
+			if (!cmdstr.empty() && cmdstr[0] == '\x01') {
+				size_t escape_idx = 1;
+				for (escape_idx = 1; escape_idx < cmdstr.size(); ++escape_idx) {
+					char c = cmdstr[escape_idx];
+					if (c == '\x01' || c == '\x02' || c == '\x03') {
+						break;
+					}
+				}
+
 				// String Picture use \r\n linebreaks
 				// Rewrite them to \n
-				std::string term = Utils::ReplaceAll(components[1], "\r\n", "\n");
+				std::string term = Utils::ReplaceAll(ToString(cmdstr.substr(1, escape_idx - 1)), "\r\n", "\n");
 				dict.TranslateString("strpic", term);
 				// Reintegrate the term
-				commands.CurrentCmdString() = lcf::DBString(Utils::ReplaceAll(ToString(commands.CurrentCmdString()), "\x01" + components[1] + "\x01", "\x01" + term + "\x01"));
+				commands.CurrentCmdString() = lcf::DBString("\x01" + term + ToString(cmdstr.substr(escape_idx)));
 			}
+
 			commands.Advance();
 		} else {
 			commands.Advance();
