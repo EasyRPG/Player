@@ -294,8 +294,10 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
                     intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
                     intent.putExtra(Intent.EXTRA_STREAM, files);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
+                    try {
                         startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e("EasyRPG", "No Mail App found");
                     }
                 }).setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
 
