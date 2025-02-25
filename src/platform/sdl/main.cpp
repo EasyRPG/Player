@@ -79,8 +79,15 @@ extern "C" int main(int argc, char* argv[]) {
 	EpAndroid::env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 #endif
 
+	bool detect_engine = args.end() != std::find(args.begin(), args.end(), "--detect-engine");
+
 	Player::Init(std::move(args));
-	Player::Run();
+
+	if (detect_engine) {
+		Player::PrintEngineInfo();
+	} else {
+		Player::Run();
+	}
 
 	// Close
 	return Player::exit_code;

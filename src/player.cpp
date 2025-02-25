@@ -759,8 +759,34 @@ void Player::CreateGameObjects() {
 	if (!exfont_stream) {
 		// Backwards compatible with older Player versions
 		exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	} else {
+		Output::Debug("Using custom ExFont: {}", FileFinder::GetPathInsideGamePath(exfont_stream.GetName()));
+		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
+	DetectEngine(false);
+
+	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
+
+	game_config.PrintActivePatches();
+
+	Constants::ResetOverrides();
+	Constants::PrintActiveOverrides();
+
+	ResetGameObjects();
+
+	LoadFonts();
+
+	if (Player::IsPatchKeyPatch()) {
+		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	}
+
+	if (Player::IsPatchDestiny()) {
+		Main_Data::game_destiny->Load();
+	}
+}
+
+void Player::DetectEngine(bool ignore_patch_override) {
 	int& engine = game_config.engine;
 	std::map<EXE::Shared::GameConstantType, int32_t> game_constant_overrides;
 
@@ -784,7 +810,7 @@ void Player::CreateGameObjects() {
 			version_info.Print();
 			bool is_patch_maniac;
 			engine = version_info.GetEngineType(is_patch_maniac);
-			if (!game_config.patch_override) {
+			if (!game_config.patch_override || ignore_patch_override) {
 				game_config.patch_maniac.Set(is_patch_maniac);
 			}
 		}
@@ -798,11 +824,6 @@ void Player::CreateGameObjects() {
 		Output::Debug("Cannot find RPG_RT");
 	}
 #endif
-
-	if (exfont_stream) {
-		Output::Debug("Using custom ExFont: {}", FileFinder::GetPathInsideGamePath(exfont_stream.GetName()));
-		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
-	}
 
 	if (engine == EngineNone) {
 		if (lcf::Data::system.ldb_id == 2003) {
@@ -825,9 +846,7 @@ void Player::CreateGameObjects() {
 
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
-
-	if (!game_config.patch_override) {
+	if (!game_config.patch_override || ignore_patch_override) {
 		if (!FileFinder::Game().FindFile("harmony.dll").empty()) {
 			game_config.patch_key_patch.Set(true);
 		}
@@ -854,20 +873,24 @@ void Player::CreateGameObjects() {
 		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end(); ++it) {
 			Constants::OverrideGameConstant(it->first, it->second);
 		}
-		Constants::PrintActiveOverrides();
 	}
+}
+void Player::PrintEngineInfo() {
+	auto fs = FileFinder::Game();
 
-	ResetGameObjects();
-
-	LoadFonts();
-
-	if (Player::IsPatchKeyPatch()) {
-		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	if (!fs) {
+		fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+		if (!fs) {
+			Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+		}
+		FileFinder::SetGameFilesystem(fs);
 	}
+	// Parse game specific settings
+	CmdlineParser cp(arguments);
+	game_config = Game_ConfigGame::Create(cp);
+	DetectEngine(true);
 
-	if (Player::IsPatchDestiny()) {
-		Main_Data::game_destiny->Load();
-	}
+	// TODO: print out info
 }
 
 bool Player::ChangeResolution(int width, int height) {

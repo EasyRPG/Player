@@ -132,6 +132,10 @@ namespace Player {
 	 */
 	void CreateGameObjects();
 
+	void DetectEngine(bool ignore_patch_override);
+
+	void PrintEngineInfo();
+
 	/**
 	 * Change the resolution of the Player
 	 *
