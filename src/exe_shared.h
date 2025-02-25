@@ -91,6 +91,37 @@ namespace EXE::Shared {
 
 	static_assert(kGameConstantType.size() == static_cast<size_t>(GameConstantType::LAST));
 
+	enum class EmbeddedStringTypes {
+		Battle_DamageToEnemy,
+		Battle_DamageToAlly,
+		Battle_HpSpRecovery,
+		Battle_StatDecrease,
+		Battle_StatIncrease,
+		Battle_AbsorbEnemy,
+		Battle_AbsorbAlly,
+		Battle_UseItem,
+		Msg_LevelUp,
+		Menu_ExpMaxedOut,
+		Menu_2k3ActorStatus_ExpMaxedOut,
+		LAST
+	};
+
+	static constexpr auto kEmbeddedStringTypes = lcf::makeEnumTags<EmbeddedStringTypes>(
+		"Battle_DamageToEnemy",
+		"Battle_DamageToAlly",
+		"Battle_HpSpRecovery",
+		"Battle_StatDecrease",
+		"Battle_StatIncrease",
+		"Battle_AbsorbEnemy",
+		"Battle_AbsorbAlly",
+		"Battle_UseItem",
+		"Msg_LevelUp",
+		"Menu_ExpMaxedOut",
+		"Menu_2k3ActorStatus_ExpMaxedOut"
+	);
+
+	static_assert(kEmbeddedStringTypes.size() == static_cast<size_t>(EmbeddedStringTypes::LAST));
+
 	enum class KnownPatches {
 		UnlockPics,
 		CommonThisEvent,

@@ -26,6 +26,7 @@
 #include "exe_buildinfo.h"
 #include "exe_constants.h"
 #include "exe_patches.h"
+#include "exe_strings.h"
 #include "player.h"
 
 /**
@@ -77,6 +78,8 @@ public:
 	const FileInfo& GetFileInfo();
 
 	std::map<EXE::Shared::GameConstantType, int32_t> GetOverridenGameConstants();
+
+	std::map<EXE::Shared::EmbeddedStringTypes, std::string> GetEmbeddedStrings(std::string encoding);
 
 	std::vector<EXE::Shared::PatchSetupInfo> CheckForPatches();
 

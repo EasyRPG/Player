@@ -656,6 +656,86 @@ std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverridenGameCons
 	return game_constants;
 }
 
+std::map<EXE::Shared::EmbeddedStringTypes, std::string> EXEReader::GetEmbeddedStrings(std::string encoding) {
+	constexpr int max_string_size = 32;
+	constexpr bool debug_string_extraction = true;
+
+	std::map<EXE::Shared::EmbeddedStringTypes, std::string> embedded_strings;
+	int code_offset = file_info.code_ofs - 0x400;
+	std::array<char, max_string_size> str_data;
+
+	auto match_surrounding_data = [&](const EXE::BuildInfo::CodeAddressStringInfo& info, const uint32_t const_ofs) {
+		for (int i = 0; i < info.pre_data.size(); i++) {
+			if (info.pre_data[i] != GetU8(const_ofs - info.pre_data.size() + i))
+				return false;
+		}
+		return true;
+	};
+
+	auto check_string_address_map = [&](const EXE::Strings::string_address_map& map) {
+		uint32_t const_ofs;
+		bool extract_success = false;
+
+		for (auto it = map.begin(); it != map.end(); ++it) {
+			auto const_type = it->first;
+			auto& addr_info = it->second;
+
+			if (addr_info.code_offset == 0) {
+				// string is not defined in this map
+				continue;
+			}
+
+			const_ofs = code_offset + addr_info.code_offset;
+
+			bool extract_string = false;
+			if (match_surrounding_data(addr_info, const_ofs)) {
+				extract_string = true;
+			}
+
+			if (extract_string) {
+				int32_t size_str = GetU32(const_ofs);
+				if (size_str > max_string_size) {
+					Output::Debug("Unexpected length for embedded string: {} ({})", EXE::Shared::kEmbeddedStringTypes.tag(const_type), size_str);
+					continue;
+				}
+				const_ofs += 4;
+				for (int i = 0; i < size_str; ++i) {
+					str_data[i] = GetU8(const_ofs + i);
+				}
+				auto crc = static_cast<uint32_t>(crc32(0, reinterpret_cast<unsigned char*>(str_data.data()), size_str));
+
+				if ((crc != addr_info.crc_jp && crc != addr_info.crc_en) || debug_string_extraction) {
+					auto extracted_string = lcf::ReaderUtil::Recode(ToString(lcf::DBString(str_data.data(), static_cast<size_t>(size_str))), encoding);
+
+					if (debug_string_extraction && crc == addr_info.crc_jp) {
+						Output::Debug("Embedded string for '{}' matches JP -> '{}'", EXE::Shared::kEmbeddedStringTypes.tag(const_type), extracted_string);
+					} else if (debug_string_extraction && crc == addr_info.crc_en) {
+						Output::Debug("Embedded string for '{}' matches EN -> '{}'", EXE::Shared::kEmbeddedStringTypes.tag(const_type), extracted_string);
+					} else {
+						Output::Debug("Read embedded string '{}' -> '{}'", EXE::Shared::kEmbeddedStringTypes.tag(const_type), extracted_string);
+
+						//TODO: add to map
+					}
+				}
+
+				extract_success = true;
+			} else {
+				Output::Debug("Could not read embedded string '{}'", EXE::Shared::kEmbeddedStringTypes.tag(const_type));
+				extract_success = false;
+			}
+		}
+	};
+
+	switch (build_version) {
+		case EXE::BuildInfo::RM2K_20030625:
+			check_string_address_map(EXE::Strings::string_addresses_rm2k_151);
+			break;
+		default:
+			break;
+	}
+
+	return embedded_strings;
+}
 
 std::vector<EXE::Shared::PatchSetupInfo> EXEReader::CheckForPatches() {
 	std::vector<EXE::Shared::PatchSetupInfo> patches;

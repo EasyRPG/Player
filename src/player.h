@@ -482,6 +482,9 @@ namespace Player {
 		void OverrideGameConstant(EXE::Shared::GameConstantType const_type, int32_t value);
 		void ResetOverrides();
 		void PrintActiveOverrides();
+
+		bool HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes type, StringView& template_string);
+		void SetTemplateString(EXE::Shared::EmbeddedStringTypes type, std::string template_string);
 	}
 }
 

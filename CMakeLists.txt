@@ -113,6 +113,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/exe_constants.h
 	src/exe_patches.h
 	src/exe_shared.h
+	src/exe_strings.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h

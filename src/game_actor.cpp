@@ -770,6 +770,15 @@ std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 			Utils::MakeSvArray(GetName(), ss.str(), lcf::Data::terms.level)
 		);
 	} else {
+		StringView template_text;
+		if (Player::Constants::HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes::Msg_LevelUp, template_text)) {
+			return Utils::ReplacePlaceholders(
+				template_text,
+				Utils::MakeArray('S', 'L', 'V', 'T'),
+				Utils::MakeSvArray(GetName(), ToString(lcf::Data::terms.use_item), std::to_string(new_level), ToString(lcf::Data::terms.level_up))
+			);
+		}
+
 		std::string particle, space = "";
 		if (Player::IsCP932()) {
 			particle = "は";

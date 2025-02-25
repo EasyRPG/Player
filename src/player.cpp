@@ -823,6 +823,8 @@ void Player::DetectEngine(bool ignore_patch_override) {
 			patches = exe_reader->CheckForPatches();
 		}
 
+		exe_reader->GetEmbeddedStrings(encoding);
+
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
 		}
@@ -1900,4 +1902,70 @@ void Player::Constants::PrintActiveOverrides() {
 		}
 		Output::DebugStr(out);
 	}
+}
+
+bool Player::Constants::HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes type, StringView& template_string) {
+	//TODO
+
+	using Str = EXE::Shared::EmbeddedStringTypes;
+
+	switch (type) {
+		case Str::Battle_DamageToEnemy:
+		case Str::Battle_DamageToAlly:
+			template_string = "%s took %d%s";
+			return true;
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void Player::Constants::SetTemplateString(EXE::Shared::EmbeddedStringTypes type, std::string template_string) {
+	auto apply_new_placeholders = [](std::string& str, std::initializer_list<char> replacements) {
+		size_t index = str.find("%");
+		auto repl = replacements.begin();
+		while (index != std::string::npos) {
+			index++;
+			if (index < str.length()) {
+				char type = str[index];
+				if (type == 's' && replacements.end() != repl) {
+					str[index] = *repl;
+					++repl;
+				} else if (type == 'd') {
+					str[index] = 'V';
+				}
+			}
+
+			index = str.find("%", index);
+		}
+	};
+
+	using Str = EXE::Shared::EmbeddedStringTypes;
+
+	switch (type) {
+		case Str::Battle_DamageToEnemy:
+		case Str::Battle_DamageToAlly:
+			apply_new_placeholders(template_string, { 'S', 'T' });
+			break;
+		case Str::Battle_AbsorbEnemy:
+		case Str::Battle_AbsorbAlly:
+			apply_new_placeholders(template_string, { 'O', 'U', 'T'});
+			break;
+		case Str::Battle_UseItem:
+			apply_new_placeholders(template_string, { 'S', 'O', 'T' });
+			break;
+		case Str::Battle_StatIncrease:
+		case Str::Battle_StatDecrease:
+		case Str::Battle_HpSpRecovery:
+			apply_new_placeholders(template_string, { 'S', 'U', 'T'});
+			break;
+		case Str::Msg_LevelUp:
+			apply_new_placeholders(template_string, { 'S', 'L', 'T' });
+			break;
+		default:
+			break;
+	}
+
+	//TODO
 }

@@ -93,6 +93,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/exe_constants.h \
 	src/exe_patches.h \
 	src/exe_shared.h \
+	src/exe_strings.h \
 	src/exe_reader.cpp \
 	src/exe_reader.h \
 	src/exfont.h \

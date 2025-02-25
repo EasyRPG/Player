@@ -208,6 +208,18 @@ namespace EXE::BuildInfo {
 		}
 	};
 
+	class CodeAddressStringInfo {
+	public:
+		size_t code_offset;
+		uint32_t crc_jp, crc_en;
+		validate_const_data pre_data;
+
+		template<typename... Args>
+		constexpr CodeAddressStringInfo(size_t code_offset, uint32_t crc_jp, uint32_t crc_en, Args... args) :
+			code_offset(code_offset), crc_jp(crc_jp), crc_en(crc_en), pre_data(validate_const_data{ static_cast<const uint8_t>(args)... }) {
+		}
+	};
+
 	constexpr size_t MAX_SIZE_CHK_PATCH_SEGMENT = 8;
 
 	using patch_segment_data = fixed_size_byte_array<MAX_SIZE_CHK_PATCH_SEGMENT>;
