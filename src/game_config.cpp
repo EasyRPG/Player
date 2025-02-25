@@ -276,8 +276,10 @@ Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput() {
 }
 
 Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
+	// Invalid stream that consumes the output when logging is disabled or an error occurs
+	static Filesystem_Stream::OutputStream noop_stream;
+
 	if (!Player::player_config.log_enabled.Get()) {
-		static Filesystem_Stream::OutputStream noop_stream;
 		return noop_stream;
 	}
 
@@ -310,13 +312,13 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 			if (!path.empty()) {
 				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
 			}
-
-			// Use the config directory
-			path = GetGlobalConfigFilesystem().GetFullPath();
-	#else
-			// Use the config directory
-			path = GetGlobalConfigFilesystem().GetFullPath();
 	#endif
+
+			if (path.empty()) {
+				// Fallback: Use the config directory
+				// Can still fail in the rare case that the config path is invalid
+				path = GetGlobalConfigFilesystem().GetFullPath();
+			}
 
 			if (!path.empty()) {
 				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
@@ -335,7 +337,6 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 
 		if (path.empty()) {
 			print_err();
-			static Filesystem_Stream::OutputStream noop_stream;
 			return noop_stream;
 		}
 
@@ -343,7 +344,6 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 		// Make Directory not supported on Android, assume the path exists
 		if (!FileFinder::Root().MakeDirectory(FileFinder::GetPathAndFilename(path).first, true)) {
 			print_err();
-			static Filesystem_Stream::OutputStream noop_stream;
 			return noop_stream;
 		}
 #endif

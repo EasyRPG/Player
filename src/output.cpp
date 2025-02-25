@@ -190,11 +190,6 @@ static void HandleErrorOutput(const std::string& err) {
 
 void Output::Quit() {
 	Game_Config::CloseLogFile();
-
-	if (!Game_Config::GetLogFileOutput()) {
-		return;
-		Game_Config::GetLogFileOutput().Close();
-	}
 }
 
 bool Output::TakeScreenshot() {
