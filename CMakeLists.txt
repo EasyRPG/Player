@@ -1265,7 +1265,6 @@ elseif(PLAYER_CONSOLE_PORT)
 			SMDH easyrpg-player.smdh
 			${BUNDLE_ARG} ${PLAYER_BUNDLE_PATH})
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyrpg-player.3dsx
-				resources/3ds/easyrpg-player.xml # consider removing, *hax² is mostly obsolete
 			DESTINATION easyrpg-player COMPONENT 3ds)
 	elseif(NINTENDO_SWITCH)
 		add_executable(easyrpg-player src/platform/switch/main.cpp)
