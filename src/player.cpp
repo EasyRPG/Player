@@ -135,6 +135,7 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+	bool break_loop_fix;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -789,6 +790,7 @@ void Player::CreateGameObjects() {
 void Player::DetectEngine(bool ignore_patch_override) {
 	int& engine = game_config.engine;
 	std::map<EXE::Shared::GameConstantType, int32_t> game_constant_overrides;
+	std::vector<EXE::Shared::PatchSetupInfo> patches;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
@@ -816,6 +818,10 @@ void Player::DetectEngine(bool ignore_patch_override) {
 		}
 
 		game_constant_overrides = exe_reader->GetOverridenGameConstants();
+
+		if (!game_config.patch_override || ignore_patch_override) {
+			patches = exe_reader->CheckForPatches();
+		}
 
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
@@ -863,11 +869,48 @@ void Player::DetectEngine(bool ignore_patch_override) {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+		using Patch = EXE::Patches::KnownPatches;
+
+		if (patches.size() > 0) {
+			for (auto it = patches.begin(); it != patches.end(); ++it) {
+				auto& patch = *it;
+
+				switch (static_cast<Patch>(patch.patch_type)) {
+					case Patch::UnlockPics:
+						if (!game_config.patch_unlock_pics.Get()) {
+							game_config.patch_unlock_pics.Set(true);
+						}
+						break;
+					case Patch::CommonThisEvent:
+						if (!game_config.patch_common_this_event.Get()) {
+							game_config.patch_common_this_event.Set(true);
+						}
+						break;
+					case Patch::BreakLoopFix:
+						break_loop_fix = true;
+						break;
+					case Patch::AutoEnterPatch:
+						game_config.new_game.Set(true);
+						break;
+					case Patch::BetterAEP:
+						game_config.new_game.Set(true);
+						// FIXME: implement BetterAEP�s extended patch functionality
+						// -> patch_var (default: 3350)
+						break;
+					case Patch::PicPointer:
+					case Patch::PicPointer_R:
+						//TODO
+						break;
+					case Patch::DirectMenu:
+						if (!game_config.patch_direct_menu.Get()) {
+							game_config.patch_direct_menu.Set(patch.custom_var_1);
+						}
+						break;
+				}
+			}
+		}
 	}
-
-	game_config.PrintActivePatches();
-
-	Constants::ResetOverrides();
 
 	if (game_constant_overrides.size() > 0) {
 		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end(); ++it) {
@@ -875,6 +918,7 @@ void Player::DetectEngine(bool ignore_patch_override) {
 		}
 	}
 }
+
 void Player::PrintEngineInfo() {
 	auto fs = FileFinder::Game();
 
@@ -888,9 +932,10 @@ void Player::PrintEngineInfo() {
 	// Parse game specific settings
 	CmdlineParser cp(arguments);
 	game_config = Game_ConfigGame::Create(cp);
+
 	DetectEngine(true);
 
-	// TODO: print out info
+	// TODO
 }
 
 bool Player::ChangeResolution(int width, int height) {

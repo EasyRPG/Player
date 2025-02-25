@@ -90,6 +90,37 @@ namespace EXE::Shared {
 	);
 
 	static_assert(kGameConstantType.size() == static_cast<size_t>(GameConstantType::LAST));
+
+	enum class KnownPatches {
+		UnlockPics,
+		CommonThisEvent,
+		BreakLoopFix,
+		AutoEnterPatch,
+		BetterAEP,
+		PicPointer,
+		PicPointer_R,
+		DirectMenu,
+
+		LAST
+	};
+
+	static constexpr auto kKnownPatches = lcf::makeEnumTags<KnownPatches>(
+		"UnlockPics",
+		"CommonThisEvent",
+		"BreakLoopFix",
+		"AutoEnterPatch",
+		"BetterAEP",
+		"PicPointer 2.5b",
+		"PicPointer Restruct",
+		"DirectMenu"
+	);
+
+	static_assert(kKnownPatches.size() == static_cast<size_t>(KnownPatches::LAST));
+
+	struct PatchSetupInfo {
+		KnownPatches patch_type;
+		int32_t custom_var_1;
+	};
 }
 
 #endif

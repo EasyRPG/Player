@@ -207,6 +207,24 @@ namespace EXE::BuildInfo {
 			default_val(default_val), size_val(size_val), code_offset(code_offset), pre_data(validate_const_data{ static_cast<const uint8_t>(args)... }) {
 		}
 	};
+
+	constexpr size_t MAX_SIZE_CHK_PATCH_SEGMENT = 8;
+
+	using patch_segment_data = fixed_size_byte_array<MAX_SIZE_CHK_PATCH_SEGMENT>;
+
+	class PatchDetectionInfo {
+	public:
+		size_t chk_segment_offset;
+		patch_segment_data chk_segment_data;
+		size_t extract_var_offset;
+
+		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data) :
+			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), extract_var_offset(0) {
+		}
+		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data, size_t extract_var_offset) :
+			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), extract_var_offset(extract_var_offset) {
+		}
+	};
 }
 
 #endif

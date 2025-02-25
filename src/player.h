@@ -303,6 +303,8 @@ namespace Player {
 	 */
 	bool IsPatchDestiny();
 
+	bool HasBreakLoopFix();
+
 	/**
 	 * @return True when EasyRpg extensions are on
 	 */
@@ -412,6 +414,8 @@ namespace Player {
 
 	/** Translation manager, including list of languages and current translation. */
 	extern Translation translation;
+
+	extern bool break_loop_fix;
 
 	/**
 	 * The default speed modifier applied when the speed up button is pressed
@@ -547,6 +551,10 @@ inline bool Player::IsPatchKeyPatch() {
 
 inline bool Player::IsPatchDestiny() {
 	return game_config.patch_destiny.Get();
+}
+
+inline bool Player::HasBreakLoopFix() {
+	return IsPatchManiac() || break_loop_fix;
 }
 
 inline bool Player::HasEasyRpgExtensions() {

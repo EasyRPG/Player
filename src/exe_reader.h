@@ -25,6 +25,7 @@
 #include "bitmap.h"
 #include "exe_buildinfo.h"
 #include "exe_constants.h"
+#include "exe_patches.h"
 #include "player.h"
 
 /**
@@ -76,6 +77,8 @@ public:
 	const FileInfo& GetFileInfo();
 
 	std::map<EXE::Shared::GameConstantType, int32_t> GetOverridenGameConstants();
+
+	std::vector<EXE::Shared::PatchSetupInfo> CheckForPatches();
 
 private:
 	// Bounds-checked unaligned reader primitives.

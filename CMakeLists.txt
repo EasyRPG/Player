@@ -111,6 +111,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/enemyai.h
 	src/exe_buildinfo.h
 	src/exe_constants.h
+	src/exe_patches.h
 	src/exe_shared.h
 	src/exe_reader.cpp
 	src/exe_reader.h

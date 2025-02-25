@@ -657,6 +657,76 @@ std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverridenGameCons
 }
 
 
+std::vector<EXE::Shared::PatchSetupInfo> EXEReader::CheckForPatches() {
+	std::vector<EXE::Shared::PatchSetupInfo> patches;
+
+	int code_offset = file_info.code_ofs - 0x400;
+
+	auto check_for_patch_segment = [&](const EXE::BuildInfo::PatchDetectionInfo& patch_info) {
+		for (int i = 0; i < patch_info.chk_segment_data.size(); i++) {
+			if (patch_info.chk_segment_data[i] != GetU8(code_offset + patch_info.chk_segment_offset + i))
+				return false;
+		}
+	};
+
+	auto apply_patches = [&](const auto& patch_detection_map) {
+		for (auto it = patch_detection_map.begin(); it < patch_detection_map.end(); ++it) {
+			auto patch_type = it->first;
+			auto& patch_info = it->second;
+
+			if (!check_for_patch_segment(patch_info)) {
+				continue;
+			}
+
+			if (patch_info.extract_var_offset == 0) {
+				Output::Debug("Detected Patch: '{}'", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)));
+				patches.emplace_back(EXE::Shared::PatchSetupInfo { patch_type, 0 });
+			} else {
+				int patch_var = GetU32(code_offset + patch_info.extract_var_offset);
+				if (patch_var > 0) {
+					Output::Debug("Detected Patch: '{}' (VarId: {})", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)), patch_var);
+				}
+				patches.emplace_back(EXE::Shared::PatchSetupInfo{ patch_type, patch_var });
+			}
+		}
+	};
+
+	switch (build_version) {
+		case EXE::BuildInfo::RM2K_20001227:
+			apply_patches(EXE::Patches::patches_RM2K_107);
+			break;
+		case EXE::BuildInfo::RM2K_20010505:
+			apply_patches(EXE::Patches::patches_RM2K_110);
+			break;
+		case EXE::BuildInfo::RM2K_20030327:
+			apply_patches(EXE::Patches::patches_RM2K_150);
+			break;
+		case EXE::BuildInfo::RM2K_20030625:
+			apply_patches(EXE::Patches::patches_RM2K_151);
+			break;
+		case EXE::BuildInfo::RM2KE_160:
+			apply_patches(EXE::Patches::patches_RM2K_160);
+			break;
+		case EXE::BuildInfo::RM2KE_161:
+			apply_patches(EXE::Patches::patches_RM2K_161);
+			break;
+		case EXE::BuildInfo::RM2KE_162:
+			apply_patches(EXE::Patches::patches_RM2K_162);
+			break;
+
+		case EXE::BuildInfo::RM2K3_1080_1080:
+			apply_patches(EXE::Patches::patches_RM2K3_1080);
+			break;
+		case EXE::BuildInfo::RM2K3_1091_1091:
+			apply_patches(EXE::Patches::patches_RM2K3_1091);
+			break;
+		default:
+			break;
+	}
+
+	return patches;
+}
+
 bool EXEReader::CheckForString(uint32_t offset, const char* p) {
 	while (*p) {
 		if (GetU8(file_info.code_ofs - 0x400 + offset++) != *p++)
