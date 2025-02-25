@@ -178,7 +178,13 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 
 	std::vector<uint32_t> data(width * height);
 
-	auto dst = PixmanImagePtr{pixman_image_create_bits(PIXMAN_b8g8r8, width, height, &data.front(), stride)};
+#ifdef WORDS_BIGENDIAN
+	auto format = PIXMAN_r8g8b8;
+#else
+	auto format = PIXMAN_b8g8r8;
+#endif
+
+	auto dst = PixmanImagePtr{pixman_image_create_bits(format, width, height, &data.front(), stride)};
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap.get(), NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
 
