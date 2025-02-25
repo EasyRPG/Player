@@ -48,7 +48,7 @@
 			"environment": {
 				"#DEVKITPRO": "/path/to/devkitpro"
 			},
-			"inherits": ["dkp"],
+			"inherits": ["dkp", "base-user"],
 			"vendor": {
 				"README": {
 					"line1": "Instead of setting an environment variable for devkitPro you can alternative provide",
