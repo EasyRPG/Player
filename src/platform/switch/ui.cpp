@@ -214,8 +214,7 @@ static void appletHookCallback(AppletHookType hook, void* param) {
 
 	switch (hook) {
 		case AppletHookType_OnExitRequest:
-			Output::Warning("Got close request from home menu.");
-			Player::Exit();
+			Output::Debug("Got close request from home menu.");
 			break;
 
 		case AppletHookType_OnFocusState:
@@ -392,11 +391,13 @@ NxUi::~NxUi() {
 
 bool NxUi::ProcessEvents() {
 	// handle system events
-	appletMainLoop();
+	if (!appletMainLoop()) {
+		return false;
+	}
 
-	// idle, when out of focus
-	while(appletGetFocusState() != AppletFocusState_InFocus) {
-		Game_Clock::SleepFor(10ms);
+	// skip, when out of focus
+	if(appletGetFocusState() != AppletFocusState_InFocus) {
+		return true;
 	}
 
 	padUpdate(&pad);
@@ -458,6 +459,11 @@ bool NxUi::ProcessEvents() {
 }
 
 void NxUi::UpdateDisplay() {
+	// skip, when out of focus
+	if(appletGetFocusState() != AppletFocusState_InFocus) {
+		return;
+	}
+
 	float aspectX = 1.0f;
 	float aspectY = 1.0f;
 
