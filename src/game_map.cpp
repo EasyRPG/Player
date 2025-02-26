@@ -1637,11 +1637,8 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 
 	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
 
-	if (Player::game_config.patch_encounter_random_alert.Get()) {
-		int var_id = Player::game_config.patch_encounter_random_alert.Get();
-		Main_Data::game_variables->Set(var_id, args.troop_id);
-		Game_Map::SetNeedRefresh(true);
-		Game_Map::Refresh();
+	if (RuntimePatches::EncounterRandomnessAlert::HandleEncounter(args.troop_id)) {
+		//Cancel the battle setup
 		return false;
 	}
 

@@ -19,11 +19,36 @@
 #include "game_runtime_patches.h"
 
 #include "game_config.h"
+#include "game_map.h"
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "main_data.h"
 #include "player.h"
+
+bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)troop_id;
+	return false;
+#endif
+	if (auto var_id = Player::game_config.patch_encounter_random_alert_var.Get(); var_id > 0) {
+		Main_Data::game_player->SetTotalEncounterRate(0);
+		Main_Data::game_player->SetEncounterCalling(false);
+
+		Main_Data::game_variables->Set(var_id, troop_id);
+		Game_Map::SetNeedRefreshForVarChange(var_id);
+
+		if (auto switch_id = Player::game_config.patch_encounter_random_alert_sw.Get(); switch_id > 0) {
+			Main_Data::game_switches->Set(switch_id, true);
+			Game_Map::SetNeedRefreshForSwitchChange(switch_id);
+		}
+		// Always refresh the map (Original patch does this only for the MEPR variant)
+		Game_Map::Refresh();
+		return true;
+	}
+	return false;
+}
 
 namespace RuntimePatches::MonSca {
 #ifndef NO_RUNTIME_PATCHES
