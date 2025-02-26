@@ -68,6 +68,10 @@ public class SafFile {
         return new SafFile(context, uri);
     }
 
+    public Uri getUri() {
+        return rootUri;
+    }
+
     public boolean isFile() {
         populateMetadata();
         return metaExists && metaIsFile;

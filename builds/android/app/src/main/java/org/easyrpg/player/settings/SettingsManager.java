@@ -317,6 +317,15 @@ public class SettingsManager {
         }
     }
 
+    public static Uri getSavesFolderURI(Context context) {
+        DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
+        if (easyRPGFolder != null) {
+            return Helper.findFileUri(context, easyRPGFolder.getUri(), SAVES_FOLDER_NAME);
+        } else {
+            return null;
+        }
+    }
+
     public static Uri getRTPFolderURI(Context context) {
         DocumentFile easyRPGFolder = Helper.getFileFromURI(context, getEasyRPGFolderURI(context));
         if (easyRPGFolder != null) {

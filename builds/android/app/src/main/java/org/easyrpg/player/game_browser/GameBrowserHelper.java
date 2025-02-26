@@ -81,8 +81,20 @@ public class GameBrowserHelper {
             args.add(enc.getRegionCode());
         }
 
+        String configPath = context.getExternalFilesDir(null).getAbsolutePath();
         args.add("--config-path");
-        args.add(context.getExternalFilesDir(null).getAbsolutePath());
+        args.add(configPath);
+
+        String logFile;
+        if (game.isStandalone()) {
+            logFile = configPath + "/easyrpg-player.log";
+        } else {
+            // Placing the logfile directly in the EasyRPG directory gives a SecurityException
+            // Instead put it in the root of the savegame directory
+            logFile = SettingsManager.getSavesFolderURI(context) + "/easyrpg-player.log";
+        }
+        args.add("--log-file");
+        args.add(logFile);
 
         /* FIXME: Currently disabled because the built-in scene cannot handle URI-encoded paths
         // Sound Font Folder path (used by the settings scene)
@@ -105,6 +117,7 @@ public class GameBrowserHelper {
         }
 
         intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, savePath);
+        intent.putExtra(EasyRpgPlayerActivity.TAG_LOG_FILE, logFile);
         intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[0]));
         intent.putExtra(EasyRpgPlayerActivity.TAG_STANDALONE, game.isStandalone());
 

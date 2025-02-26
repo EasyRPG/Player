@@ -25,6 +25,7 @@
 package org.easyrpg.player.player;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
@@ -75,6 +76,7 @@ import java.util.Locale;
  */
 public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG_PROJECT_PATH = "project_path";
+    public static final String TAG_LOG_FILE = "log_file";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
     public static final String TAG_STANDALONE = "standalone_mode";
@@ -246,13 +248,13 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         // set dialog message
         alertDialogBuilder.setMessage(bug_msg).setCancelable(false)
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
-                    // Attach to the email : the easyrpg log file and savefiles
+                    // Attach to the email: the easyrpg log file and savefiles
                     ArrayList<Uri> files = new ArrayList<>();
 
                     String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
 
                     if (getIntent().getBooleanExtra(TAG_STANDALONE, false)) {
-                        File logFile = new File(savepath, "easyrpg_log.txt");
+                        File logFile = new File(getIntent().getStringExtra(TAG_LOG_FILE));
                         if (logFile.exists()) {
                             Uri logUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", logFile);
                             if (logUri != null) {
@@ -270,11 +272,14 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                             }
                         }
                     } else {
-                        Uri saveFolder = Uri.parse(savepath);
-                        Uri log = Helper.findFileUri(getContext(), saveFolder, "easyrpg_log.txt");
-                        if (log != null) {
-                            files.add(log);
+                        // Must be properly URI encoded
+                        SafFile logFile = SafFile.fromPath(getContext(), getIntent().getStringExtra(TAG_LOG_FILE));
+                        if (logFile != null) {
+                            files.add(logFile.getUri());
                         }
+
+                        Uri saveFolder = Uri.parse(savepath);
+
                         // The save files
                         files.addAll(Helper.findFileUriWithRegex(getContext(), saveFolder, ".*lsd"));
                     }
@@ -296,8 +301,10 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
                     intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
                     intent.putExtra(Intent.EXTRA_STREAM, files);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
+                    try {
                         startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e("EasyRPG", "No Mail App found");
                     }
                 }).setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
 
