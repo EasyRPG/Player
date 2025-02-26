@@ -20,6 +20,24 @@
 
 namespace RuntimePatches {
 	/**
+	 * Support for RPG_RT patch 'Encounter Randomness Alert'.
+	 * This patch skips the normal battle startup logic whenever a random
+	 * encounter would be triggered and.
+	 * Instead a switch (default: S[1018]) is set to ON and the troop ID
+	 * is stored into a variable (default: V[3355).
+	 *
+	 * This implementation always triggers a page-refresh for all
+	 * events on the current map.
+	 */
+	namespace EncounterRandomnessAlert {
+		/**
+		 * Sets the configured switch & variable according to ERA´s rules.
+		 * @return if normal battle processing should be skipped.
+		 */
+		bool HandleEncounter(int troop_id);
+	}
+
+	/**
 	 * Support for RPG_RT patch 'MonSca'.
 	 * This patch scales the default battle parameters of an enemy
 	 * based on the contents of some in-game variables.
