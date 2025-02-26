@@ -48,7 +48,9 @@ struct Game_ConfigGame {
 	BoolConfigParam patch_rpg2k3_commands{ "RPG2k3 Event Commands", "Enable support for RPG2k3 event commands", "Patch", "RPG2k3Commands", false };
 	ConfigParam<int> patch_anti_lag_switch{ "Anti-Lag Switch", "Disable event page refreshes when switch is set", "Patch", "AntiLagSwitch", 0 };
 	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
-	ConfigParam<int> patch_encounter_random_alert{ "Encounter Randomness Alert", "Set troop id to a variable and skip random battle", "Patch", "EncounterAlert", 0 };
+
+	ConfigParam<int> patch_encounter_random_alert_sw{ "Encounter Randomness Alert", "Set troop id to a variable, activate a switch and skip random battle", "Patch", "EncounterAlert:Switch", 0 };
+	ConfigParam<int> patch_encounter_random_alert_var{ "Encounter Randomness Alert", "Set troop id to a variable, activate a switch and skip random battle", "Patch", "EncounterAlert:Var", 0 };
 
 	ConfigParam<int> patch_monsca_maxhp{ "MonSca", "Scales enemy battle stats by variable value. (MaxHP)", "Patch", "MonSca:MaxHP", 0 };
 	ConfigParam<int> patch_monsca_maxsp{ "MonSca", "Scales enemy battle stats by variable value. (MaxSP)", "Patch", "MonSca:MaxSP", 0 };
