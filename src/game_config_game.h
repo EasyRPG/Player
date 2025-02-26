@@ -50,6 +50,18 @@ struct Game_ConfigGame {
 	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
 	ConfigParam<int> patch_encounter_random_alert{ "Encounter Randomness Alert", "Set troop id to a variable and skip random battle", "Patch", "EncounterAlert", 0 };
 
+	ConfigParam<int> patch_monsca_maxhp{ "MonSca", "Scales enemy battle stats by variable value. (MaxHP)", "Patch", "MonSca:MaxHP", 0 };
+	ConfigParam<int> patch_monsca_maxsp{ "MonSca", "Scales enemy battle stats by variable value. (MaxSP)", "Patch", "MonSca:MaxSP", 0 };
+	ConfigParam<int> patch_monsca_atk{ "MonSca", "Scales enemy battle stats by variable value. (Attack)", "Patch", "MonSca:Attack", 0 };
+	ConfigParam<int> patch_monsca_def{ "MonSca", "Scales enemy battle stats by variable value. (Defense)", "Patch", "MonSca:Defense", 0 };
+	ConfigParam<int> patch_monsca_spi{ "MonSca", "Scales enemy battle stats by variable value. (Spirit)", "Patch", "MonSca:Spirit", 0 };
+	ConfigParam<int> patch_monsca_agi{ "MonSca", "Scales enemy battle stats by variable value. (Agility)", "Patch", "MonSca:Agility", 0 };
+	ConfigParam<int> patch_monsca_exp{ "MonSca", "Scales enemy battle stats by variable value. (Gained EXP)", "Patch", "MonSca:Experience", 0 };
+	ConfigParam<int> patch_monsca_gold{ "MonSca", "Scales enemy battle stats by variable value. (Gained Money)", "Patch", "MonSca:Money", 0 };
+	ConfigParam<int> patch_monsca_item{ "MonSca", "Scales enemy battle stats by variable value. (Gained Item)", "Patch", "MonSca:ItemId", 0 };
+	ConfigParam<int> patch_monsca_droprate{ "MonSca", "Scales enemy battle stats by variable value. (Item Drop Rate)", "Patch", "MonSca:ItemDropRate", 0 };
+	ConfigParam<int> patch_monsca_levelscaling{ "MonSca", "Scales enemy battle stats by variable value. (Alternate formula)", "Patch", "MonSca:LevelScaling", 0 };
+
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 

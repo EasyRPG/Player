@@ -204,6 +204,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_pictures.h
 	src/game_player.cpp
 	src/game_player.h
+	src/game_runtime_patches.cpp
+	src/game_runtime_patches.h
 	src/game_quit.cpp
 	src/game_quit.h
 	src/game_screen.cpp
