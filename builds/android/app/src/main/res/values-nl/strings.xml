@@ -61,12 +61,7 @@
     <string name="Loading">Laden…</string>
     <string name="change_default_mapping">Wijzig de standaard knoptoewijzing</string>
     <string name="greek">Grieks</string>
-    <string name="report_bug_mail">Bedankt voor uw ondersteuning van EasyRPG Player.
-\n Een logbestand en uw bewaarde spellen zijn aan deze e-mail toegevoegd.
-\n Verwijder het logbestand niet! We hebben een bewaard spel nodig dat zich dicht bij de foutlocatie bevindt.
-\n Vertel ons alstublieft in detail wat er mis is gegaan.
-\n
-\n</string>
+    <string name="report_bug_mail">Bedankt voor uw ondersteuning van EasyRPG Player. \n Een logbestand en uw bewaarde spellen zijn aan deze e-mail toegevoegd. \n Verwijder het logbestand niet! We hebben een bewaard spel nodig dat zich dicht bij de foutlocatie bevindt. \n Vertel ons alstublieft in detail wat er mis is gegaan.</string>
     <string name="fast_forward_factor">Snelheidsvermenigvuldiger:</string>
     <string name="yes">Ja</string>
     <string name="vertical_input_layout">Verticale (staande) invoerlay-out</string>

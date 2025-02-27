@@ -40,12 +40,7 @@
     <string name="report_bug_msg">這將會開啟您的 E-mail 程式 (如Gmail) 來將錯誤報告給我們。
 \n
 \n如果不想發送E-mail或是沒有可用的 E-mail 程式的話，可以到 https://github.com/EasyRPG/Player/issues 來開啟一個新的 Issue。</string>
-    <string name="report_bug_mail">謝謝您支持 EasyRPG Player。
-\n 一個紀錄 (logfile) 以及您的存檔已經附加到此 E-mail 上。
-\n 請不要移除它們！我們需要存檔以便知道是在遊戲中何處出錯。
-\n 請詳細地告訴我們發生了什麼事。
-\n
-\n</string>
+    <string name="report_bug_mail">謝謝您支持 EasyRPG Player。 \n 一個紀錄 (logfile) 以及您的存檔已經附加到此 E-mail 上。 \n 請不要移除它們！我們需要存檔以便知道是在遊戲中何處出錯。 \n 請詳細地告訴我們發生了什麼事。</string>
     <!--Settings Activities-->
     <string name="video">影像</string>
     <string name="audio">音效</string>

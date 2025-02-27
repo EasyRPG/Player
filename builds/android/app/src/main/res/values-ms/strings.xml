@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="baltic">Baltik</string>
+    <string name="choose_layout">Pilih tampilan</string>
+    <string name="korean">Korea</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Letakkan permainan RPG Maker 2000/2003 di dalam Sub-Direktori folder \"permainan(games)\".
+\nPermainan haruslah nyahmampat atau di dalam fail ZIP.
+\nFail RAR,LZH dan EXE TIDAK disokong.
+\n
+\nCiri pilihan(tolong lihat di pengaturan):
+\n-RTP (Aset kongsi yang digunakan oleh beberapa permainan) boleh disediakan
+\n-Soundfont suaian yang mengubah bunyi Muzik MIDI boleh disediakan</string>
+    <string name="no_external_storage">Tiada penyimpanan luaran (contoh:Kad SD) dijumpai</string>
+    <string name="visit_website">Kunjungi laman sesawang kami</string>
+    <string name="add_a_button">Tambahkan butang</string>
+    <string name="chinese_simple">Cina (Ringkas)</string>
+    <string name="turkish">Turki</string>
+    <string name="select_game_region">Pilih wilayah permainan</string>
+    <string name="chinese_traditional">Cina (Tradisional)</string>
+    <string name="hebrew">Ibrani</string>
+    <string name="no">Tidak</string>
+    <string name="creating_dir_failed">Gagal membuat direktori $PATH</string>
+    <string name="japan">Jepun</string>
+    <string name="arabic">Arab</string>
+    <string name="region_modification_failed">Gagal mengubah wilayah</string>
+    <string name="screen_size">Ukuran Layar:</string>
+    <string name="change_default_mapping">Tukar pemetaan butang lalai</string>
+    <string name="greek">Yunani</string>
+    <string name="yes">Ya</string>
+    <string name="launch_debug_mode">Jalankan dengan Mod Debug</string>
+    <string name="watch_explanation_video">Panduan pemakaian dan menambah permainan (Panduan Video)</string>
+    <string name="input">Masukan</string>
+    <string name="not_valid_game">$PATH adalah BUKAN permainan sah</string>
+    <string name="how_to_use_easy_rpg">Cara menggunakan EasyRPG Player</string>
+    <string name="error_saf_download_selected">Folder Download tidak boleh digunakan sebagai folder EasyRPG.</string>
+    <string name="ok">OK</string>
+    <string name="cyrillic">Cyrillic</string>
+    <string name="error_saf_select_easyrpg">Tolong ciptakan folder EasyRPG yang kosong dan pilihnya.</string>
+    <string name="error_saf_title">Folder buruk dipilih</string>
+    <string name="autodetect">Auto mengesan Wilayah (Disyorkan)</string>
+    <string name="cancel">Batal</string>
+    <string name="refresh">Segarkan semula</string>
+    <string name="west_europe">Eropah Barat</string>
+    <string name="east_europe">Eropah Tengah/Timur</string>
+    <string name="no_games_found_and_explanation_android_30">Permainan RPG Maker 2000/2003 tidak dijumpai.
+\n
+\nFail EasyRPG yang kamu pilih hendaklah mempunyai folder \"Permainan(games)\".Gunakan aplikasi pengurusan fail untuk meletakkan permainannya di dalam folder ini.
+\nPermainan boleh diletakkan di Sub-Folder atau di dalam fail format ZIP.
+\n
+\nFolder EasyRPG boleh diubah di dalam pengaturan.</string>
+    <string name="video">Video</string>
+    <string name="easyrpg_folders">Folder EasyRPG</string>
+    <string name="settings">Pengaturan</string>
+    <string name="error_games_no_rw">Folder \"Permainan(games) tidak boleh dibaca atau ditulis.Tolong pilih lokasi berlainan untuk folder EasyRPG.Folder EasyRPG boleh ditukar di pengaturan.</string>
+    <string name="unknown_region">Wilayah tidak diketahui</string>
+    <string name="path_not_readable">$PATH tidak boleh dibaca</string>
+    <string name="vietnamese">Vietnam</string>
+    <string name="thai">Thailand</string>
+    <string name="error_no_games_folder">Folder \"Permainan(games) tidak wujud atau ianya bukan folder.Tolong buatnya secara manual atau pilih lokasi berlainan untuk folder EasyRPG.Folder EasyRPG boleh ditukar di dalam pengaturan.</string>
+    <string name="open_games_folder">Buka folder \"Permainan(games)\"</string>
+    <string name="do_want_quit">Apakah kamu mahu keluar?</string>
+    <string name="audio">Audio</string>
+    <string name="change_the_layout">Tukar tampilan</string>
+</resources>

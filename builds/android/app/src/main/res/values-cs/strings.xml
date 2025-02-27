@@ -39,13 +39,13 @@
     <string name="no_games_found_and_explanation_android_30">Nenalezeny žádné hry z RPG Makeru 2000/2003.
 \n
 \nVybraná složka EasyRPG obsahuje složku „games“. Pomocí aplikace Správce souborů vložte vaše hry do této složky.
-\nHry mohou být uloženy v podsložkách nebo ZIP archívech.
+\nHry mohou být uloženy v podsložkách nebo ZIP/LZH archívech.
 \n
 \nUmístění složky EasyRPG může být změněno v nastavení.</string>
     <string name="no_external_storage">Nebylo nalezeno žádné externí uloziště (např. SD karta)</string>
     <string name="not_valid_game">$PATH není platná hra</string>
     <string name="select_game_region">Vyberte herní region</string>
-    <string name="launch_debug_mode">Spustit v debug režimu</string>
+    <string name="launch_debug_mode">Spustit v režimu ladění</string>
     <string name="unknown_region">Neznámý region</string>
     <string name="region_modification_failed">Změna regionu selhala</string>
     <string name="change_default_mapping">Změnit výchozí rozmístění tlačítek</string>
@@ -84,8 +84,8 @@
     <string name="settings_resolution_original">Původní (320 × 240, 4:3, doporučeno)</string>
     <string name="settings_resolution_widescreen">Širokoúhlý (416 × 240, 16:9, experimentální)</string>
     <string name="settings_resolution_ultrawide">Ultraširoký (560 × 240, 21:9, experimentální)</string>
-    <string name="key_debug_menu">Otevřít debug menu (vyžaduje debug režim)</string>
-    <string name="key_debug_walk_through_walls">Chodit skrz zdi (vyžaduje debug režim)</string>
+    <string name="key_debug_menu">Otevřít ladící menu (vyžaduje režim ladění)</string>
+    <string name="key_debug_walk_through_walls">Chodit skrz zdi (vyžaduje režim ladění)</string>
     <string name="enable_rtp_support">Povolit podporu RTP</string>
     <string name="toggle_ui">Zobrazit/skrýt virtuální tlačítka</string>
     <string name="input">Vstup</string>
@@ -99,9 +99,9 @@
 \n
 \n</string>
     <string name="settings_default_soundfont">Výchozí zvuková banka</string>
-    <string name="settings_soundfont_found">Nalezené zvukové banky:</string>
+    <string name="settings_soundfont_found">Zvukové banky:</string>
     <string name="settings_custom_soundfont">Vlastní zvuková banka:</string>
-    <string name="open_the_sound_fonts_folder">Otevřít složku se zvukovými bankami</string>
+    <string name="open_the_sound_fonts_folder">Otevřít složku „soundfonts“</string>
     <string name="fast_forward_mode_hold">držet</string>
     <string name="fast_forward">Tlačítko režimu zrychlení:</string>
     <string name="key_fast_forward">Zrychlení</string>
@@ -109,8 +109,8 @@
     <string name="fast_forward_factor">Rychlost:</string>
     <string name="error_saf_download_selected">Adresář pro stahování nemůže být použit jako složka EasyRPG.</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Vložte vaše hry z RPG Makeru 2000/2003 do podsložky „games“.
-\nHry musí být nekomprimované nebo uložené v ZIP archívu.
-\nFormáty RAR, LZH a EXE nejsou podporovány.
+\nHry musí být nekomprimované nebo uložené v ZIP/LZH archívu.
+\nFormáty RAR, 7z a EXE nejsou podporovány.
 \n
 \nDodatečné funkce (viz nastavení):
 \n- RTP (sdílené materiály používané některými hrami) mohou být poskytnuty
@@ -127,14 +127,20 @@
     <string name="report_bug_msg">Tato funkce otevře váš e-mailový program (např. Gmail) aby nám poslala nahlášení o chybě.
 \n
 \nPokud nám nechcete poslat e-mail nebo nemáte nastavený e-mailový program, můžete místo toho nahlásit chybu na https://github.com/EasyRPG/Player/issues.</string>
-    <string name="report_bug_mail">Děkujeme, že pomáháte EasyRPG Playeru.
-\n K tomuto e-mailu byl připojen protokol (log) a vaše uložené hry.
-\n Neodstraňujte prosím soubor protokolu! Potřebujeme uloženou hru, která je blízko místa chyby.
-\n Sdělte nám prosím podrobně, co se pokazilo.
-\n
-\n</string>
+    <string name="report_bug_mail">Děkujeme, že pomáháte EasyRPG Playeru. \n K tomuto e-mailu byl připojen protokol (log) a vaše uložené hry. \n Neodstraňujte prosím soubor protokolu! Potřebujeme uloženou hru, která je blízko místa chyby. \n Sdělte nám prosím podrobně, co se pokazilo.</string>
     <string name="screen_size">Měřítko obrazovky:</string>
     <string name="scale_nearest">Škálovat na velikost obrazovky metodou nejbližšího souseda (rychlé, špatná kvalita)</string>
     <string name="scale_integer">Škálovat na násobek rozlišení hry (rychlé, menší obraz, dobrá kvalita)</string>
     <string name="scale_bilinear">Škálovat na velikost obrazovky a použít bilineární filtrování (pomalé, dobrá kvalita)</string>
+    <string name="toggle_fps">Zobrazit/skrýt ukazetel FPS</string>
+    <string name="game_rename">Přejmenovat hru</string>
+    <string name="open_fonts_folder">Otevřít složku „fonts“</string>
+    <string name="revert">Vrátit</string>
+    <string name="do_want_reset">Opravdu chcete resetovat hru?</string>
+    <string name="reset_game">Resetovat hru</string>
+    <string name="rtp_not_found">RTP $YEAR nenalezeno. Hrám, které vyžadují toto RTP, budou chybět sdílené materiály.</string>
+    <string name="rtp_found">RTP $YEAR nalezeno: $NAME (nalezeno $FOUND ze $MAX sdílených prostředků)</string>
+    <string name="settings_input_show_ab_as_zx">Zobrazit tlačítka A a B jako Z a X</string>
+    <string name="view">Zobrazit</string>
+    <string name="unsupported_engine_card">$ENGINE není podporovaný</string>
 </resources>

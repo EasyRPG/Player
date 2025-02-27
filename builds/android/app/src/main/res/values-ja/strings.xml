@@ -40,12 +40,7 @@
     <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。
 \n
 \nメールを送信したくないか、メールプログラムを持っていない場合は、代わりに https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
-    <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。
-\n ログファイルとセーブしたゲームが、このメールに添付されました。
-\n ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。
-\n 何の問題があったのかを詳細に教えてください。
-\n
-\n</string>
+    <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。 \n ログファイルとセーブしたゲームが、このメールに添付されました。 \n ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。 \n 何の問題があったのかを詳細に教えてください。</string>
     <!--Settings Activities-->
     <string name="video">ビデオ</string>
     <string name="audio">オーディオ</string>

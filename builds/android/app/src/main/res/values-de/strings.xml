@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.
 \n
 \nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
-    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.
-\n Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.
-\n Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.
-\n Teile uns zusätzlich im Detail mit, was schiefgegangen ist.
-\n
-\n</string>
+    <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player. \n Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen. \n Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerquelle sein. \n Teile uns zusätzlich im Detail mit, was schiefgegangen ist.</string>
     <!--Settings Activities-->
     <string name="video">Anzeige</string>
     <string name="audio">Audio</string>
@@ -66,7 +61,7 @@
     <string name="fast_forward_factor">Geschwindigkeit:</string>
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
-    <string name="edit_name">Umbenennen</string>
+    <string name="edit_name">Name bearbeiten</string>
     <string name="edit_layout">Layout bearbeiten</string>
     <string name="delete">Löschen</string>
     <string name="default_layout">Standard</string>
@@ -83,19 +78,14 @@
     <string name="navigation_drawer_open">Navigation einblenden</string>
     <string name="navigation_drawer_close">Navigation ausblenden</string>
     <string name="menu">Android-Menü öffnen</string>
-    <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden.
-\n
-\nDer von dir ausgewählte EasyRPG-Ordner enthält einen Spiele-Ordner (games). Verwende die Datei-App deines Systems um Spiele in diesem Ordner abzulegen.
-\nSpiele können in Ordnern oder ZIP/LZH-Archiven sein.
-\n
-\nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
+    <string name="no_games_found_and_explanation_android_30">Es wurden keine RPG Maker 2000/2003-Spiele gefunden. \n \nDer von dir ausgewählte EasyRPG-Ordner enthält einen Spiele-Ordner (games). Verwende einen Dateimanager um Spiele in diesem Ordner abzulegen. \nSpiele können in Ordnern oder ZIP/LZH-Archiven sein. \n \nDu kannst den Pfad zum EasyRPG-Ordner in den Einstellungen ändern.</string>
     <string name="open_games_folder">Den Spiele-Ordner (games) öffnen</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003-Spiele müssen im Unterverzeichnis \"games\" platziert werden.
 \nDie Spiele müssen entpackt sein oder in einem ZIP/LZH-Archiv vorliegen.
 \nRAR-, 7z- und EXE-Dateien werden NICHT unterstützt.
 \n
 \nOptionale Funktionen (wirf einen Blick in die Einstellungen):
-\n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Assets) kann bereitgestellt werden
+\n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Ressourcen) kann bereitgestellt werden
 \n- Ein benutzerdefinierter Soundfont zum Ändern des Klangs von MIDI-Musik kann bereitgestellt werden</string>
     <string name="easyrpg_folders">EasyRPG-Ordner</string>
     <string name="screen_size">Bildschirmgröße:</string>
@@ -112,7 +102,7 @@
 \nWenn diese App bereits vorher verwendet wurde, wähle den vorhandenen EasyRPG-Ordner aus.</string>
     <string name="Loading">Laden…</string>
     <string name="enable_rtp_support">RTP-Unterstützung aktivieren</string>
-    <string name="rtp_explanation">Das RTP stellt gemeinsame Assets bereit, die von einigen Spielen verwendet werden.
+    <string name="rtp_explanation">Das RTP stellt gemeinsame Ressourcen (Grafiken und Sounds) bereit, die von einigen Spielen verwendet werden.
 \nDas RPG Maker 2000 RTP musst du in \"rtp/2000\" und das RPG Maker 2003 RTP in \"rtp/2003\" platzieren.
 \nBeachte bitte, dass aktivierte RTP-Unterstützung den Start von Spielen spürbar verlangsamt.</string>
     <string name="open_rtp_folder">Ordner \"rtp\" öffnen</string>
@@ -124,8 +114,8 @@
     <string name="scale_integer">Skalierung auf ein Vielfaches der Spielauflösung (Schnell, kleineres Bild, gute Qualität)</string>
     <string name="scale_bilinear">Skalierung auf die Bildschirmgröße mit einem bilinearen Filter (Langsam, gute Qualität)</string>
     <string name="stretch">Seitenverhältnis ignorieren (Auf Bildschirmbreite strecken)</string>
-    <string name="music_volume">Lautstärke von Musik</string>
-    <string name="sound_volume">Lautstärke von Soundeffekten</string>
+    <string name="music_volume">Musik-Lautstärke</string>
+    <string name="sound_volume">Soundeffekt-Lautstärke</string>
     <string name="launch_debug_mode">Im Debugmodus starten</string>
     <string name="visit_website">Unsere Website besuchen</string>
     <string name="error_no_games_folder">Der \"games\"-Ordner existiert nicht oder ist kein Ordner. Bitte erstelle ihn manuell oder wähle einen anderen Ort für den EasyRPG-Ordner. Der EasyRPG-Ordner kann in den Einstellungen geändert werden.</string>
@@ -142,9 +132,33 @@
     <string name="error_saf_select_easyrpg">Bitte erstelle einen leeren EasyRPG-Ordner und wähle ihn aus.</string>
     <string name="error_saf_download_selected">Der Download-Ordner kann nicht als EasyRPG-Ordner verwendet werden.</string>
     <string name="error_saf_folder_not_empty">Der ausgewählte Ordner enthält andere Dateien und kann daher nicht als EasyRPG-Ordner verwendet werden. Wenn du ihn als EasyRPG-Ordner verwenden möchtest, musst du zuerst alle Dateien in diesem Ordner löschen.</string>
-    <string name="error_saf_bad_content_provider">Der ausgewählte Ordner kann nicht als EasyRPG-Ordner verwendet werden. Dies kann verschiedene Ursache haben. Beispielsweise funktioniert es nicht, wenn du das Stammverzeichnis deines Systems oder einen Ort in der Cloud ausgewählt hast.
-\n
-\n</string>
+    <string name="error_saf_bad_content_provider">Der ausgewählte Ordner kann nicht als EasyRPG-Ordner verwendet werden. Dies kann verschiedene Ursache haben. Beispielsweise funktioniert es nicht, wenn du das Wurzelverzeichnis deines Systems oder einen Ort in der Cloud ausgewählt hast.\n\n</string>
     <string name="fast_forward_mode_hold">halten</string>
     <string name="fast_forward_mode_tap">antippen</string>
+    <string name="settings_fonts_explanation">Lege Schriftarten im \"fonts\"-Ordner ab. Das beste Ergebnis erzielst du mit TTF-Schriften oder Bitmap-Schriften (FON).</string>
+    <string name="toggle_fps">FPS-Anzeige umschalten</string>
+    <string name="game_rename">Spiel umbenennen</string>
+    <string name="revert">Zurücksetzen</string>
+    <string name="do_want_reset">Möchtest du wirklich das Spiel zurücksetzen?</string>
+    <string name="settings_font_1">Erste Schriftart:</string>
+    <string name="settings_font_size">Schriftgröße</string>
+    <string name="settings_font_2">Zweite Schriftart:</string>
+    <string name="settings_font_default">Integrierte Schriftart</string>
+    <string name="reset_game">Spiel zurücksetzen</string>
+    <string name="open_fonts_folder">Den Schriftarten-Ordner (fonts) öffnen</string>
+    <string name="settings_fonts_size_explanation2">Die Schriftgröße muss so eingestellt werden, dass die Raute (#) zumindest teilweise sichtbar ist. Anderenfalls wird der Text im Spiel abgeschnitten sein.</string>
+    <string name="settings_fonts_explanation2">Das Spiel legt selbst fest, ob es die erste oder die zweite Schriftart verwendet.</string>
+    <string name="settings_fonts_size_explanation">Das Ändern der Schriftgröße hat keine Auswirkung auf die integrierte Schriftart und auf einige Bitmap-Schriftarten.</string>
+    <string name="rtp_not_found">Das RTP $YEAR wurde nicht gefunden. Wenn ein Spiel dieses RTP verwendet, werden Ressourcen fehlen.</string>
+    <string name="font">Schriftart</string>
+    <string name="rtp_found">RTP $YEAR gefunden: $NAME ($FOUND von $MAX Ressourcen gefunden)</string>
+    <string name="view_show_game_folder">Mit ihrem Ordnernamen</string>
+    <string name="view_show_title_desc">Die Spiele sollen folgendermaßen beschriftet werden</string>
+    <string name="view_show_game_title">Mit ihrem Titel</string>
+    <string name="settings_input_show_ab_as_zx">Die A- und B-Taste als Z bzw. X darstellen</string>
+    <string name="view">Ansicht</string>
+    <string name="unsupported_engine_card">$ENGINE wird nicht unterstützt</string>
+    <string name="unsupported_engine_title">Nicht unterstützte Engine</string>
+    <string name="open_save_folder">Ordner mit Spielständen öffnen</string>
+    <string name="unsupported_engine_explanation">Dieses Spiel wurde mit $ENGINE erstellt und kann daher nicht von EasyRPG Player ausgeführt werden.\n\nEasyRPG Player unterstützt nur Spiele, die mit RPG Maker 2000 oder 2003 erstellt wurden. Eine Unterstützung für weitere Engines ist nicht geplant.\n\nBitte suche im Play Store nach einer alternativen Software, um dieses Spiel auszuführen.</string>
 </resources>

@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Aquesta funció obrirà el teu programa de correu electrònic (per exemple, GMail) per a enviar-nos l\'informe d\'error.
 \n
 \nSi no vols enviar un missatge de correu electrònic o no tens un programari de correu electrònic configurat, pots obrir un informe de error a https://github.com/EasyRPG/Player/issues com una alternativa.</string>
-    <string name="report_bug_mail">Gràcies per recolzar EasyRPG Player
-\n S\'han inclòs un fitxer de registre i les partides desades a aquest correu electrònic.
-\n No eliminis el fitxer de registre. Necessitem una partida desada que estigui a prop del lloc on es troba l\'error.
-\n Si us plau, explica\'ns en detall què ha anat malament.
-\n
-\n</string>
+    <string name="report_bug_mail">Gràcies per recolzar EasyRPG Player \n S\'han inclòs un fitxer de registre i les partides desades a aquest correu electrònic. \n No eliminis el fitxer de registre. Necessitem una partida desada que estigui a prop del lloc on es troba l\'error. \n Si us plau, explica\'ns en detall què ha anat malament.</string>
     <!--Settings Activities-->
     <string name="video">Vídeo</string>
     <string name="audio">Àudio</string>
@@ -102,7 +97,7 @@
     <string name="settings_custom_soundfont">Soundfont personalitzat:</string>
     <string name="open_the_sound_fonts_folder">Obre la carpeta \"soundfonts\"</string>
     <string name="settings_soundfont_explanation">Poseu els soundfont en format SF2 a la carpeta \"soundfonts\". Els soundfont modifiquen com sona la música MIDI.</string>
-    <string name="settings_soundfont_found">Soundfonts:</string>
+    <string name="settings_soundfont_found">SoundFonts:</string>
     <string name="settings_default_soundfont">Soundfont predeterminat</string>
     <string name="select_the_games_folder">Selecciona la carpeta de l\'EasyRPG</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player requereix una carpeta exclusiva. Després de tocar el botó, se\'t demanarà que seleccionis una carpeta.
@@ -147,4 +142,30 @@
 \n</string>
     <string name="fast_forward_mode_hold">mantenir</string>
     <string name="fast_forward_mode_tap">tocar</string>
+    <string name="game_rename">Canvia el nom del joc</string>
+    <string name="revert">Revertir</string>
+    <string name="do_want_reset">Realment vols reiniciar?</string>
+    <string name="view_show_game_folder">Utilitza el nom de la carpeta</string>
+    <string name="view_show_title_desc">Trieu com s\'anomenen els jocs</string>
+    <string name="view_show_game_title">Utilitza el títol</string>
+    <string name="settings_fonts_explanation">Posa els tipus de lletra a la carpeta \"fonts\". Per obtenir el millor resultat, utilitzeu tipus de lletra TTF o tipus de lletra de mapa de bits (FON).</string>
+    <string name="toggle_fps">Commuta la visualització de fotogrames per segon</string>
+    <string name="settings_input_show_ab_as_zx">Mostra els botons A i B com a Z i X</string>
+    <string name="settings_font_1">Primer tipus de lletra:</string>
+    <string name="settings_font_size">Mida de la lletra</string>
+    <string name="settings_font_2">Segon tipus de lletra:</string>
+    <string name="settings_font_default">Tipus de lletra integrat</string>
+    <string name="reset_game">Reiniciar joc</string>
+    <string name="open_fonts_folder">Obre la carpeta \"fonts\"</string>
+    <string name="settings_fonts_size_explanation2">La mida s\'ha d\'establir de manera que el # sigui almenys parcialment visible. Si no el podeu veure, el text es tallarà al joc.</string>
+    <string name="view">Veure</string>
+    <string name="unsupported_engine_card">$ENGINE no és compatible</string>
+    <string name="settings_fonts_explanation2">El joc decideix si utilitza el primer tipus de lletra o el segon.</string>
+    <string name="unsupported_engine_explanation">Aquest joc no es pot jugar a EasyRPG Player perquè s\'ha creat amb $ENGINE.\n\nEasyRPG Player està dissenyat per admetre només jocs de RPG Maker 2000 i 2003, sense plans per expandir-se a altres motors.\n\nPer obtenir programari capaç d\'iniciar aquest joc, consulteu Play Store.</string>
+    <string name="unsupported_engine_title">Motor no compatible</string>
+    <string name="settings_fonts_size_explanation">La configuració de la mida del tipus de lletra no té cap efecte quan s\'utilitza el tipus de lletra integrat o determinats tipus de lletra de mapa de bits.</string>
+    <string name="rtp_not_found">No s\'ha trobat RTP $YEAR. Els jocs que requereixin aquest RTP tindran recursos que falten.</string>
+    <string name="font">Tipus de lletra</string>
+    <string name="open_save_folder">Obre carpeta de desar el joc</string>
+    <string name="rtp_found">RTP $YEAR trobat: $NAME ($FOUND de $MAX recursos trobats)</string>
 </resources>

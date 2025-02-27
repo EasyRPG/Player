@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.
 \n
 \nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
-    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.
-\n Un file di log ed i tuoi salvataggi saranno allegati a questa mail.
-\n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.
-\n Per favore spiegaci in dettaglio in cosa consiste il bug.
-\n
-\n</string>
+    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player. \n Un file di log ed i tuoi salvataggi saranno allegati a questa mail. \n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug. \n Per favore spiegaci in dettaglio in cosa consiste il bug.</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -85,7 +80,7 @@
     <string name="menu">Apri Menù Android</string>
     <string name="no_games_found_and_explanation_android_30">Non sono stati trovati giochi creati con RPG Maker 2000/2003. Mettili nella sottosezione della cartella giochi.
 \nI giochi posso essere in cartelle o in archivi ZIP/LZH. La cartella di EasyRPG può essere modificata direttamente dalle Impostazioni.</string>
-    <string name="open_games_folder">Apri la cartella dei giochi</string>
+    <string name="open_games_folder">Apri la cartella dei giochi (\"games\")</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Inserisci i giochi creati con RPG Maker 2000/2003 nella sottosezione della cartella dei giochi.
 \nI giochi possono essere in cartelle o in un archivio ZIP/LZH.
 \nI file RAR, 7z ed EXE NON sono supportati
@@ -133,4 +128,38 @@
     <string name="settings_resolution_original">Originale (320x240, 4:3, Consigliata)</string>
     <string name="settings_resolution_widescreen">Widescreen (416x240, 16:9, Sperimentale)</string>
     <string name="settings_resolution_ultrawide">Ultrawide (560x240, 21:9, Sperimentale)</string>
+    <string name="error_saf_folder_not_empty">La cartella selezionata contiene altri file e non può essere utilizzata come cartella EasyRPG. Rimuovendo tutti i file al suo interno, potrai utilizzarla come cartella EasyRPG.</string>
+    <string name="view_show_game_folder">Usa il nome della cartella</string>
+    <string name="view_show_title_desc">Scegli come visualizzare i giochi</string>
+    <string name="error_saf_bad_content_provider">La cartella selezionata non può essere utilizzata come cartella EasyRPG. Questo problema può verificarsi per diversi motivi, ad esempio se hai selezionato la directory radice o una posizione di archiviazione nel cloud.\n\n</string>
+    <string name="view_show_game_title">Usa il titolo</string>
+    <string name="settings_fonts_explanation">Inserisci i caratteri nella cartella \"fonts\". Per i migliori risultati, utilizza caratteri TTF o bitmap (FON).</string>
+    <string name="toggle_fps">Mostra/Nascondi FPS</string>
+    <string name="game_rename">Rinomina gioco</string>
+    <string name="revert">Ripristina</string>
+    <string name="settings_input_show_ab_as_zx">Visualizza i pulsanti A e B come Z e X</string>
+    <string name="do_want_reset">Sei sicuro di voler tornare alla schermata iniziale?</string>
+    <string name="settings_font_1">Primo Font:</string>
+    <string name="settings_font_size">Dimensione font</string>
+    <string name="settings_font_2">Secondo Font:</string>
+    <string name="watch_explanation_video">Come iniziare e aggiungere giochi (Video tutorial)</string>
+    <string name="settings_font_default">Font integrato</string>
+    <string name="error_saf_download_selected">La cartella Download non può essere utilizzata come cartella EasyRPG.</string>
+    <string name="reset_game">Reimposta gioco</string>
+    <string name="error_saf_select_easyrpg">Crea una cartella vuota per EasyRPG e selezionala.</string>
+    <string name="error_saf_title">Cartella selezionata non valida</string>
+    <string name="open_fonts_folder">Apri la cartella \"fonts\"</string>
+    <string name="settings_fonts_size_explanation2">La dimensione deve essere impostata in modo che il simbolo # sia almeno parzialmente visibile. Se non lo vedi, il testo verrà tagliato durante il gioco.</string>
+    <string name="unsupported_engine_card">$ENGINE non è supportato</string>
+    <string name="settings_fonts_explanation2">Il gioco decide se utilizzare il primo font o il secondo.</string>
+    <string name="unsupported_engine_explanation">Questo gioco non può essere eseguito su EasyRPG Player perché è stato creato con $ENGINE.\n\nEasyRPG Player è progettato per supportare solo giochi creati con RPG Maker 2000 e 2003, senza alcuna intenzione di supportare altri engine.\n\nPer software in grado di avviare questo gioco, consulta il Play Store.</string>
+    <string name="unsupported_engine_title">Engine non supportato</string>
+    <string name="settings_fonts_size_explanation">L\'impostazione della dimensione del carattere non ha effetto quando si utilizza il carattere integrato o alcuni caratteri bitmap.</string>
+    <string name="rtp_not_found">RTP $YEAR non trovato. I giochi che richiedono questo RTP avranno assets mancanti.</string>
+    <string name="fast_forward_mode_tap">Tocca</string>
+    <string name="fast_forward_mode_hold">Tieni premuto</string>
+    <string name="font">Stile testo</string>
+    <string name="open_save_folder">Apri cartella salvataggi</string>
+    <string name="rtp_found">RTP $YEAR trovato: $NAME ($FOUND di $MAX assets trovati)</string>
+    <string name="view">View</string>
 </resources>

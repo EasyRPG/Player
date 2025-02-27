@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Esta função irá abrir seu programa de e-mail (ex. Gmail) para nos enviar um relatório de bug.
 \n
 \nSe você não quiser enviar um e-mail ou não tem um programa de e-mail configurado você pode abrir um novo relatório em https://github.com/EasyRPG/Player/issues .</string>
-    <string name="report_bug_mail">Obrigado por ajudar o EasyRPG Player.
-\n Um arquivo de log e seus salvamentos do jogo foram anexados neste e-mail.
-\n Por favor não remova o arquivo de log! Nós precisamos de um salvamento do jogo que esteja próximo do bug.
-\n Por favor nos diga em detalhes o que deu errado.
-\n
-\n</string>
+    <string name="report_bug_mail">Obrigado por ajudar o EasyRPG Player. \n Um arquivo de log e seus salvamentos do jogo foram anexados neste e-mail. \n Por favor não remova o arquivo de log! Nós precisamos de um salvamento do jogo que esteja próximo do bug. \n Por favor nos diga em detalhes o que deu errado.</string>
     <!--Settings Activities-->
     <string name="video">Vídeo</string>
     <string name="audio">Audio</string>
@@ -134,16 +129,16 @@
     <string name="select_the_games_folder">Selecionar a pasta EasyRPG</string>
     <string name="vertical_input_layout">Leiaute de entrada vertical (Retrato)</string>
     <string name="error_saf_title">Pasta ruim selecionada</string>
-    <string name="key_debug_menu">Abrir menu de debug (requer modo de debug)</string>
-    <string name="scale_integer">"Redimensionar para um  múltiplo da resolução do jogo (Rápido, imagem menor, boa qualidade)"</string>
-    <string name="settings_soundfont_explanation">"Colocar soundfonts no formato SF2 na pasta \"soundfonts\". Soundfonts altera como as músicas em  formato MIDI reproduzem o som."</string>
+    <string name="key_debug_menu">Abra o menu de Debug (modo Debug precisa estar ativo)</string>
+    <string name="scale_integer">Redimensionar para um múltiplo da resolução do jogo (Rápido, imagem menor, boa qualidade)</string>
+    <string name="settings_soundfont_explanation">Colocar soundfonts no formato SF2 na pasta \"soundfonts\". Soundfonts altera como as músicas em formato MIDI reproduzem o som.</string>
     <string name="key_debug_walk_through_walls">Atravessar paredes (Requer modo de debug)</string>
     <string name="horizontal_input_layout">Leiaute de entrada horizontal (Paisagem)</string>
-    <string name="stretch">"Ignorar proporção  (esticar até a largura da tela)"</string>
+    <string name="stretch">Ignorar proporção (esticar até a largura da tela)</string>
     <string name="settings_edit_layout_explanation">Ao editar o leiaute de entrada, botões poder ser adicionados(ex. botão Shift).
 \nPara adicionar um botão, pressione o botão voltar e selecione adicionar botão.</string>
-    <string name="settings_resolution_widescreen">Panorâmico (416x240, 16:9, Experimental)</string>
-    <string name="settings_resolution_ultrawide">Ultrapanorâmico (560x240, 21:9, Experimental)</string>
+    <string name="settings_resolution_widescreen">Tela cheia (416x240, 16:9, Experimental)</string>
+    <string name="settings_resolution_ultrawide">Tela Ultra Cheia (560x240, 21:9, Experimental)</string>
     <string name="fast_forward_mode_tap">tocar</string>
     <string name="fast_forward_mode_hold">manter</string>
 </resources>

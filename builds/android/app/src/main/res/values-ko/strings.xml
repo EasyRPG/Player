@@ -8,7 +8,7 @@
     <string name="japan">일본어</string>
     <string name="korean">한국어</string>
     <string name="chinese_simple">중국어 (간체)</string>
-    <string name="chinese_traditional">중국어 (정체)</string>
+    <string name="chinese_traditional">중국어 (번체)</string>
     <string name="greek">그리스어</string>
     <string name="turkish">터키어</string>
     <string name="hebrew">히브리어</string>
@@ -19,43 +19,38 @@
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="do_want_quit">정말로 나가시겠습니까\?</string>
-    <string name="yes">네</string>
+    <string name="yes">예</string>
     <string name="no">아니요</string>
-    <string name="creating_dir_failed">$PATH 디렉토리를 만들 수 없습니다.</string>
-    <string name="path_not_readable">$PATH 디렉토리를 읽을 수 없습니다.</string>
-    <string name="no_external_storage">외부 저장소(예: SD 카드)가 없습니다.</string>
-    <string name="not_valid_game">$PATH 디렉토리의 게임은 지원하지 않습니다.</string>
-    <string name="select_game_region">게임 언어 고르기</string>
-    <string name="change_the_layout">레이아웃 바꾸기</string>
-    <string name="choose_layout">레이아웃 고르기</string>
+    <string name="creating_dir_failed">$PATH 디렉토리 생성 실패</string>
+    <string name="path_not_readable">$PATH 디렉토리를 읽을 수 없음</string>
+    <string name="no_external_storage">외부 저장소(예: SD 카드) 없음</string>
+    <string name="not_valid_game">$PATH 디렉토리의 게임이 유효하지 않음</string>
+    <string name="select_game_region">게임 언어 선택</string>
+    <string name="change_the_layout">레이아웃 변경</string>
+    <string name="choose_layout">레이아웃 선택</string>
     <string name="unknown_region">알 수 없는 언어</string>
-    <string name="region_modification_failed">언어를 바꾸지 못하였습니다.</string>
+    <string name="region_modification_failed">언어 변경 실패</string>
     <string name="refresh">새로고침</string>
     <string name="change_default_mapping">버튼 지정 바꾸기</string>
-    <string name="how_to_use_easy_rpg">EasyRPG 플레이어 사용법</string>
+    <string name="how_to_use_easy_rpg">EasyRPG Player 사용 방법</string>
     <!--Ingame menu-->
     <string name="toggle_ui">가상버튼 표시</string>
-    <string name="end_game">게임 끝내기</string>
+    <string name="end_game">게임 종료</string>
     <string name="report_bug">오류 보고하기</string>
     <string name="report_bug_msg">이 기능은 이메일 프로그램(예: Gmail)을 연 다음 개발자에게 오류 보고서를 보내도록 되어 있습니다.
 \n
 \n메일로 쓰고 싶지 않거나 메일 프로그램이 설정되어 있지 않다면 https://github.com/EasyRPG/Player/issues 에 이슈를 올려주셔도 됩니다.</string>
-    <string name="report_bug_mail">EasyRPG 플레이어를 응원해주셔서 감사합니다.
-\n 이 메일에는 로그파일과 세이브가 첨부되어 있습니다.
-\n 로그파일은 지우지 말아주세요! 오류와 가까운 지점의 세이브도 필요합니다.
-\n 문제가 있는 부분에 대해 자세히 적어주시길 부탁드립니다.
-\n
-\n</string>
+    <string name="report_bug_mail">EasyRPG 플레이어를 지원해주셔서 감사합니다. \n 이 메일에는 로그파일과 세이브가 첨부되어 있습니다. \n 로그파일은 지우지 말아주세요! 오류와 가까운 지점의 세이브도 필요합니다. \n 문제가 있는 부분에 대해 자세히 적어주시길 부탁드립니다.</string>
     <!--Settings Activities-->
-    <string name="video">영상</string>
-    <string name="audio">음성</string>
+    <string name="video">비디오</string>
+    <string name="audio">오디오</string>
     <string name="input">입력</string>
     <string name="settings">설정</string>
-    <string name="enable_vibration">진동 사용하기</string>
-    <string name="vibrate_when_sliding_direction">다른 방향으로 미끄러지면 진동하기</string>
+    <string name="enable_vibration">진동 사용</string>
+    <string name="vibrate_when_sliding_direction">다른 방향으로 슬라이드할 때 진동</string>
     <string name="input_layout_transparency">입력 레이아웃 투명도:</string>
     <string name="ignore_size_settings">버튼 크기 설정은 무시하고 이 비율로 고정:</string>
-    <string name="no_read_access_on_dir">%1$s의 읽기 권한이 없습니다.</string>
+    <string name="no_read_access_on_dir">%1$s 읽기 권한 없음</string>
     <string name="quick_access">바로가기</string>
     <string name="force_landscape_mode">가로 화면 고정하기</string>
     <!--InputLayout Managing-->
@@ -65,7 +60,7 @@
     <string name="delete">지우기</string>
     <string name="default_layout">기본</string>
     <!--ButtonMapping Activity-->
-    <string name="add_a_button">버튼 추가하기</string>
+    <string name="add_a_button">버튼 추가</string>
     <string name="reset_button_mapping">버튼 지정 초기화</string>
     <string name="exit_without_saving">저장하지 않고 나가기</string>
     <string name="save_and_quit">저장하고 나가기</string>
@@ -77,4 +72,92 @@
     <string name="navigation_drawer_open">메뉴 열기</string>
     <string name="navigation_drawer_close">메뉴 닫기</string>
     <string name="menu">안드로이드 메뉴 열기</string>
+    <string name="settings_resolution_widescreen">와이드스크린 (416x240, 16:9, 실험)</string>
+    <string name="error_saf_folder_not_empty">선택한 폴더에 다른 파일이 포함되어 있어 EasyRPG 폴더로 사용할 수 없습니다. 폴더 내의 모든 파일을 제거하면 EasyRPG 폴더로 사용할 수 있습니다.</string>
+    <string name="open_the_sound_fonts_folder">\"soundfonts\" 폴더 열기</string>
+    <string name="error_saf_bad_content_provider">선택한 폴더를 EasyRPG 폴더로 사용할 수 없습니다. 이 문제는 루트 디렉토리 또는 클라우드 저장소 위치를 선택한 경우 등 다양한 이유로 발생할 수 있습니다.
+\n
+\n</string>
+    <string name="settings_fonts_explanation">글꼴을 \"fonts\" 폴더에 넣습니다. 최상의 결과를 얻으려면 TTF 글꼴 또는 비트맵(FON) 글꼴을 사용하세요.</string>
+    <string name="sound_volume">효과음 음량</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">RPG Maker 2000/2003 게임을 \"games\" 폴더의 하위 디렉터리에 넣습니다.
+\n게임은 압축되지 않은 파일 또는 ZIP/LZH 아카이브여야 합니다.
+\nRAR, 7z 및 EXE 파일은 지원되지 않습니다.
+\n
+\n옵션 기능(설정 참조):
+\n- 일부 게임에서 사용하는 공유 에셋인 RTP 제공 가능
+\n- 미디 음악 사운드 방식을 변경할 수 있는 사용자 지정 사운드폰트 제공 가능</string>
+    <string name="settings_soundfont_found">사운드폰트:</string>
+    <string name="toggle_fps">FPS 표시</string>
+    <string name="game_rename">게임 이름 변경</string>
+    <string name="visit_website">웹사이트 방문</string>
+    <string name="id_select_games_folder_explanation">EasyRPG Player에는 전용 폴더가 필요합니다. 버튼을 터치하면 폴더를 선택하라는 메시지가 표시됩니다.
+\n
+\n이 앱을 처음 사용하는 경우 EasyRPG 폴더가 없습니다. 새 EasyRPG 폴더를 생성한 다음 선택하세요.
+\n
+\n이전에 이 앱을 사용한 적이 있다면 기존 EasyRPG 폴더를 선택하세요.</string>
+    <string name="open_rtp_folder">\"rtp\" 폴더 열기</string>
+    <string name="settings_custom_soundfont">사용자 지정 사운드폰트:</string>
+    <string name="rtp_explanation">RTP는 일부 게임에서 사용하는 공유 에셋을 제공합니다.
+\nRPG Maker 2000 RTP는 \"rtp/2000\"에, RPG Maker 2003 RTP는 \"rtp/2003\"에 넣습니다.
+\nRTP 지원을 활성화하면 게임의 초기 로딩 시간이 크게 증가한다는 점에 유의하세요.</string>
+    <string name="revert">되돌리기</string>
+    <string name="scale_bilinear">화면 크기에 맞게 조정 및 이중 선형 필터 적용 (느림, 좋은 품질)</string>
+    <string name="settings_resolution_desc">해상도를 변경하면 그래픽 결함이 발생하거나 게임이 중단될 수 있습니다. 주의하세요!</string>
+    <string name="select_the_games_folder">EasyRPG 폴더 선택</string>
+    <string name="scale_nearest">가장 가까운 픽셀을 사용하여 화면 크기에 맞게 조정 (빠름, 나쁜 품질)</string>
+    <string name="fast_forward">빨리 감기 버튼 모드:</string>
+    <string name="settings_resolution">게임 해상도:</string>
+    <string name="settings_edit_layout_explanation">입력 레이아웃을 편집할 때 버튼(예: Shift 버튼)을 추가할 수 있습니다.
+\n 버튼을 추가하려면 뒤로 버튼을 누르고 버튼 추가를 선택합니다.</string>
+    <string name="screen_size">화면 크기:</string>
+    <string name="Loading">불러오는 중…</string>
+    <string name="fast_forward_factor">속도 배율:</string>
+    <string name="do_want_reset">정말로 재실행하시겠습니까?</string>
+    <string name="vertical_input_layout">세로 입력 레이아웃</string>
+    <string name="settings_font_1">첫 번째 글꼴:</string>
+    <string name="settings_font_size">글꼴 크기</string>
+    <string name="launch_debug_mode">디버그 모드에서 실행</string>
+    <string name="settings_font_2">두 번째 글꼴:</string>
+    <string name="watch_explanation_video">시작하기 및 게임 추가 (동영상 가이드)</string>
+    <string name="settings_font_default">내장 글꼴</string>
+    <string name="error_saf_download_selected">다운로드 폴더는 EasyRPG 폴더로 사용할 수 없습니다.</string>
+    <string name="reset_game">게임 재실행</string>
+    <string name="error_saf_select_easyrpg">빈 EasyRPG 폴더를 생성하고 선택하세요.</string>
+    <string name="error_saf_title">잘못된 폴더 선택</string>
+    <string name="open_fonts_folder">\"fonts\" 폴더 열기</string>
+    <string name="music_volume">음악 음량</string>
+    <string name="settings_resolution_original">원본 (320x240, 4:3, 권장)</string>
+    <string name="settings_fonts_size_explanation2">#가 부분적으로라도 보이도록 크기를 설정해야 합니다. 보이지 않으면 게임 내에서 텍스트가 잘립니다.</string>
+    <string name="key_debug_menu">디버그 메뉴 열기 (디버그 모드 필요)</string>
+    <string name="enable_rtp_support">RTP 지원 사용</string>
+    <string name="settings_fonts_explanation2">게임은 첫 번째 글꼴을 사용할지 두 번째 글꼴을 사용할지 결정합니다.</string>
+    <string name="settings_resolution_ultrawide">울트라와이드 (560x240, 21:9, 실험)</string>
+    <string name="scale_integer">게임 해상도의 배수로 확대 (빠름, 작은 이미지, 좋은 품질)</string>
+    <string name="no_games_found_and_explanation_android_30">RPG Maker 2000/2003 게임을 찾을 수 없습니다.
+\n
+\n선택한 EasyRPG 폴더에는 \"games\" 폴더가 있습니다. 파일 관리자 앱을 사용하여 이 폴더에 게임을 넣으세요.
+\n게임은 하위 폴더 또는 ZIP/LZH 아카이브로 넣을 수 있습니다.
+\n
+\nEasyRPG 폴더는 설정에서 변경할 수 있습니다.</string>
+    <string name="settings_soundfont_explanation">SF2 형식의 사운드폰트를 \'soundfonts\' 폴더에 넣습니다. 사운드폰트는 미디 음악의 사운드를 변경합니다.</string>
+    <string name="easyrpg_folders">EasyRPG 폴더</string>
+    <string name="settings_fonts_size_explanation">내장 글꼴 또는 특정 비트맵 글꼴을 사용할 때는 글꼴 크기 설정이 적용되지 않습니다.</string>
+    <string name="rtp_not_found">$YEAR RTP를 찾을 수 없습니다. 이 RTP가 필요한 게임에는 에셋이 누락됩니다.</string>
+    <string name="fast_forward_mode_tap">탭</string>
+    <string name="settings_default_soundfont">기본 사운드폰트</string>
+    <string name="fast_forward_mode_hold">누르고 있기</string>
+    <string name="font">글꼴</string>
+    <string name="key_debug_walk_through_walls">벽 통과 (디버그 모드 필요)</string>
+    <string name="error_games_no_rw">\"games\" 폴더를 읽거나 쓸 수 없습니다. 다른 위치의 EasyRPG 폴더를 선택하세요. EasyRPG 폴더는 설정에서 변경할 수 있습니다.</string>
+    <string name="horizontal_input_layout">가로 입력 레이아웃</string>
+    <string name="stretch">화면비 무시 (화면 너비에 맞게 늘이기)</string>
+    <string name="error_no_games_folder">\"games\" 폴더가 존재하지 않거나 폴더가 아닙니다. 직접 생성하거나 다른 위치의 EasyRPG 폴더를 선택하세요. EasyRPG 폴더는 설정에서 변경할 수 있습니다.</string>
+    <string name="open_games_folder">\"games\" 폴더 열기</string>
+    <string name="rtp_found">$YEAR RTP 발견: $NAME (애셋 $MAX 중 $FOUND 발견)</string>
+    <string name="view_show_game_folder">폴더 이름 사용</string>
+    <string name="view_show_title_desc">게임 이름 표시 방법 선택</string>
+    <string name="view_show_game_title">타이틀 사용</string>
+    <string name="view">보기</string>
+    <string name="settings_input_show_ab_as_zx">A/B 버튼을 Z/X 버튼으로 표시</string>
 </resources>

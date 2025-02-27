@@ -40,12 +40,7 @@
     <string name="report_bug_msg">ความสามารถนี้จะโปรแกรมอีเมลของคุณ (เช่น Gmail) เพื่อส่งรายงานปัญหา
 \n
 \nถ้าคุณไม่ต้องการส่งอีเมลหรือไม่มีโปรแกรมที่ใช้อีเมลคุณยังสามารถรายงานปัญหาได้ที่ https://github.com/EasyRPG/Player/issues</string>
-    <string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player.
-\n ไฟล์ประวัติการทำงานและบันทึกเกมของคุณจะถูกแนบไปกับอีเมลนี้
-\n ได้โปรดอย่านำไฟล์ประวัติออก พวกเราต้องการข้อมูลเหล่านี้ในการหาข้อผอดพลาด
-\n กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย
-\n
-\n</string>
+    <string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player. \n ไฟล์ประวัติการทำงานและบันทึกเกมของคุณจะถูกแนบไปกับอีเมลนี้ \n ได้โปรดอย่านำไฟล์ประวัติออก พวกเราต้องการข้อมูลเหล่านี้ในการหาข้อผอดพลาด \n กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย</string>
     <!--Settings Activities-->
     <string name="settings">การตั้งค่า</string>
     <string name="enable_vibration">เปิดการสั่น</string>
@@ -65,8 +60,6 @@
     <string name="reset_button_mapping">รีเซ็ตการตั้งค่าปุ่ม</string>
     <string name="exit_without_saving">ออกโดยไม่บันทึก</string>
     <string name="save_and_quit">บันทึกและออก</string>
-    <string name="key_enter">Enter (Z)</string>
-    <string name="key_cancel">Cancel (ESC and X)</string>
     <string name="key_shift">Shift</string>
     <!--GameBrowserAPI15-->
 </resources>
