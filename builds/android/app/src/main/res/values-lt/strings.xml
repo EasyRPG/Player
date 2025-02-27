@@ -64,12 +64,7 @@
     <string name="report_bug_msg">Ši funkcija atidarys jūsų el. pašto programą (pvz., Gmail), kad išsiųstumėte mums pranešimą apie iškilusia problema.
 \n
 \nJei nenorite siųsti laiškų arba neturite sukonfigūruotos pašto programos, galite atidaryti naują problemą adresu https://github.com/EasyRPG/Player/issues.</string>
-    <string name="report_bug_mail">Dėkojame, kad palaikote EasyRPG Player.
-\n Prie šio el. laiško buvo pridėtas žurnalo failas ir jūsų išsaugoti žaidimai.
-\n Nepašalinkite žurnalo failo! Mums reikia išsaugoto žaidimo, kuris būtų arti klaidų vietos.
-\n Papasakokite mums išsamiai, kas nutiko.
-\n
-\n</string>
+    <string name="report_bug_mail">Dėkojame, kad palaikote EasyRPG Player. \n Prie šio el. laiško buvo pridėtas žurnalo failas ir jūsų išsaugoti žaidimai. \n Nepašalinkite žurnalo failo! Mums reikia išsaugoto žaidimo, kuris būtų arti klaidų vietos. \n Papasakokite mums išsamiai, kas nutiko.</string>
     <string name="video">Vaizdo įrašas</string>
     <string name="audio">Garso įrašas</string>
     <string name="input">Įvestis</string>

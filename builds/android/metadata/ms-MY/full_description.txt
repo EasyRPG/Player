@@ -2,6 +2,6 @@ Dengan EasyRPG Player, anda boleh memainkan permainan yang dibuat oleh RPG Maker
 
 EasyRPG Player adalah bukan sebuah editor.Anda tidak boleh membuat permainanmu dengan aplikasi ini.
 
-Halaman Utama: Https://easyrpg.org/
+Halaman Utama: https://easyrpg.org/
 
-Aplikasi ini tidak tidak bergabung dengan Kadokawa Corporation.
+Aplikasi ini tidak bergabung dengan Kadokawa Corporation.

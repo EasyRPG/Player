@@ -37,8 +37,7 @@
     <string name="cyrillic">Cyrillic</string>
     <string name="error_saf_select_easyrpg">Tolong ciptakan folder EasyRPG yang kosong dan pilihnya.</string>
     <string name="error_saf_title">Folder buruk dipilih</string>
-    <string name="autodetect">Auto mengesan Wilayah
-\n(Disyorkan)</string>
+    <string name="autodetect">Auto mengesan Wilayah (Disyorkan)</string>
     <string name="cancel">Batal</string>
     <string name="refresh">Segarkan semula</string>
     <string name="west_europe">Eropah Barat</string>

@@ -21,15 +21,15 @@
     <string name="do_want_quit">Biztosan ki szeretnél lépni\?</string>
     <string name="yes">Igen</string>
     <string name="no">Nem</string>
-    <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt!</string>
-    <string name="path_not_readable">$PATH nem olvasható!</string>
-    <string name="no_external_storage">Nem található külső adattárolót (pl: SD kártya)!</string>
-    <string name="not_valid_game">$PATH nem egy érvényes játékot tárol!</string>
+    <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt</string>
+    <string name="path_not_readable">$PATH nem olvasható</string>
+    <string name="no_external_storage">Nem található külső adattárolót (pl: SD kártya)</string>
+    <string name="not_valid_game">$PATH nem egy érvényes játékot tárol</string>
     <string name="select_game_region">A játék területének kiválasztása</string>
     <string name="change_the_layout">Felület módosítása</string>
     <string name="choose_layout">Felület kiválasztása</string>
     <string name="unknown_region">Ismeretlen terület</string>
-    <string name="region_modification_failed">A terület megváltoztatása nem sikerült!</string>
+    <string name="region_modification_failed">A terület megváltoztatása nem sikerült</string>
     <string name="refresh">Frissítés</string>
     <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
     <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Meg fog nyílni a levelezője (pl. Gmail), hogy egy hibajelentést küldjön nekünk.
 \n
 \nHa nem szeretne e-mailt küldeni, vagy nincsen beállítva levelezője, bejelentheti a hibát a https://github.com/EasyRPG/Player/issues oldalon is.</string>
-    <string name="report_bug_mail">Köszönjük, hogy támogatja az EasyRPG Player-t.
-\n Egy naplófájl és a játékmentései mellékelve lettek a levélhez.
-\n Kérjük ne távolítsa el a naplófájlt! Szükségünk van egy mentésre, ami közel van a hiba helyéhez.
-\n Kérjük írja le a hiba részleteit!
-\n
-\n</string>
+    <string name="report_bug_mail">Köszönjük, hogy támogatja az EasyRPG Player-t. \n Egy naplófájl és a játékmentései mellékelve lettek a levélhez. \n Kérjük ne távolítsa el a naplófájlt! Szükségünk van egy mentésre, ami közel van a hiba helyéhez. \n Kérjük írja le a hiba részleteit.</string>
     <!--Settings Activities-->
     <string name="video">Videó</string>
     <string name="audio">Hang</string>

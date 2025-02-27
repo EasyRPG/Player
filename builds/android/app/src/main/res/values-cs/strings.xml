@@ -127,12 +127,7 @@
     <string name="report_bug_msg">Tato funkce otevře váš e-mailový program (např. Gmail) aby nám poslala nahlášení o chybě.
 \n
 \nPokud nám nechcete poslat e-mail nebo nemáte nastavený e-mailový program, můžete místo toho nahlásit chybu na https://github.com/EasyRPG/Player/issues.</string>
-    <string name="report_bug_mail">Děkujeme, že pomáháte EasyRPG Playeru.
-\n K tomuto e-mailu byl připojen protokol (log) a vaše uložené hry.
-\n Neodstraňujte prosím soubor protokolu! Potřebujeme uloženou hru, která je blízko místa chyby.
-\n Sdělte nám prosím podrobně, co se pokazilo.
-\n
-\n</string>
+    <string name="report_bug_mail">Děkujeme, že pomáháte EasyRPG Playeru. \n K tomuto e-mailu byl připojen protokol (log) a vaše uložené hry. \n Neodstraňujte prosím soubor protokolu! Potřebujeme uloženou hru, která je blízko místa chyby. \n Sdělte nám prosím podrobně, co se pokazilo.</string>
     <string name="screen_size">Měřítko obrazovky:</string>
     <string name="scale_nearest">Škálovat na velikost obrazovky metodou nejbližšího souseda (rychlé, špatná kvalita)</string>
     <string name="scale_integer">Škálovat na násobek rozlišení hry (rychlé, menší obraz, dobrá kvalita)</string>

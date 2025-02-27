@@ -29,12 +29,7 @@
     <string name="screen_size">Dimensionamento da tela:</string>
     <string name="change_default_mapping">Alterar o mapeamento de botão padrão</string>
     <string name="greek">Grego</string>
-    <string name="report_bug_mail">Obrigado por apoiar o EasyRPG Player.
-\nUm arquivo de log e seus savegames foram anexados a este e-mail.
-\nPor favor, não remova o arquivo de log! Precisamos de um savegame que esteja fechado para o local do bug.
-\nPor favor, conte-nos em detalhes o que deu errado.
-\n
-\n</string>
+    <string name="report_bug_mail">Obrigado por apoiar o EasyRPG Player. \nUm arquivo de log e seus savegames foram anexados a este e-mail. \nPor favor, não remova o arquivo de log! Precisamos de um savegame que esteja fechado para o local do bug. \nPor favor, conte-nos em detalhes o que deu errado.</string>
     <string name="yes">Sim</string>
     <string name="launch_debug_mode">Iniciar em modo de depuração</string>
     <string name="watch_explanation_video">Introdução e adição de jogos (Guia de vídeo)</string>
@@ -77,4 +72,5 @@
     <string name="do_want_quit">Você realmente quer sair?</string>
     <string name="audio">Áudio</string>
     <string name="change_the_layout">Alterar o layout</string>
+    <string name="settings_resolution_desc">Trocar a resolução poderá causar erros de gráfico ou travar o jogo. Você foi avisado!</string>
 </resources>

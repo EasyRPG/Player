@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Fungsi ini akan membuka aplikasi surel Anda (misal. Gmail) untuk mengirimkan kepada kami laporan kutu.
 \n
 \nJika Anda tidak ingin mengirimkan surel atau tidak punya aplikasi surel yang di konfigurasikan, Anda dapat membuka isu baru di https://github.com/EasyRPG/Player/issues sebagai gantinya.</string>
-    <string name="report_bug_mail">Terima kasih telah mendukung EasyRPG Player.
-\n File log dan savegame Anda dilampirkan di surel ini.
-\n Tolong jangan menghapus file log! Kami membutuhkan savegame yang dekat dengan lokasi kutunya.
-\n Tolong beri tahu kami secara detail apa yang salah.
-\n
-\n</string>
+    <string name="report_bug_mail">Terima kasih telah mendukung EasyRPG Player. \n File log dan savegame Anda dilampirkan di surel ini. \n Tolong jangan menghapus file log! Kami membutuhkan savegame yang dekat dengan lokasi kutunya. \n Tolong beri tahu kami secara detail apa yang salah.</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -83,10 +78,7 @@
     <string name="navigation_drawer_open">Buka panel navigasi</string>
     <string name="navigation_drawer_close">Tutup panel navigasi</string>
     <string name="menu">Buka menu Android</string>
-    <string name="no_games_found_and_explanation_android_30">Game RPG Maker 2000/2003 tidak ditemukan.
-\nFolder EasyRPG yang Anda pilih berisi folder \"games\". Gunakan aplikasi file manager untuk meletakkan game mu di folder ini.
-\nGame dapat dimasukkan ke dalam subfolder atau di arsip ZIP/LZH.
-\nFolder EasyRPG bisa diubah di pengaturan.</string>
+    <string name="no_games_found_and_explanation_android_30">Game RPG Maker 2000/2003 tidak ditemukan. \n\nFolder EasyRPG yang Anda pilih berisi folder \"games\". Gunakan aplikasi file manager untuk meletakkan game mu di folder ini. \nGame dapat dimasukkan ke dalam subfolder atau di arsip ZIP/LZH. \n\nFolder EasyRPG bisa diubah di pengaturan.</string>
     <string name="open_games_folder">Buka folder \"games\"</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Letakkan permainan RPG Maker 2000/2003 di subdirektori folder \"games\".
 \nPermainan harus sudah tidak terkompres atau dalam arsip ZIP/LZH.

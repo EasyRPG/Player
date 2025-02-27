@@ -147,8 +147,26 @@
 \n</string>
     <string name="fast_forward_mode_hold">mantener</string>
     <string name="fast_forward_mode_tap">tocar</string>
-    <string name="do_want_reset">En realidad hay que traducir?</string>
+    <string name="do_want_reset">Realmente quiere volver?</string>
     <string name="game_rename">Renombrar juego</string>
     <string name="revert">Revertir</string>
     <string name="open_save_folder">Abrir carpeta de partidas guardadas</string>
+    <string name="view_show_game_folder">Usar el nombre de la carpeta</string>
+    <string name="view_show_title_desc">Elegir como se nombran los juegos</string>
+    <string name="view_show_game_title">Usar el título</string>
+    <string name="settings_fonts_explanation">Poner fuentes en la carpeta \"fonts\" (fuentes). Use fuentes TTF o bitmap (FON) para mejores resultados.</string>
+    <string name="toggle_fps">Mostrar/ocultar FPS</string>
+    <string name="settings_font_1">Primera Fuente:</string>
+    <string name="settings_font_size">Tamaño de fuente</string>
+    <string name="settings_font_2">Segunda Fuente:</string>
+    <string name="settings_font_default">Fuente predeterminada</string>
+    <string name="reset_game">Reiniciar juego</string>
+    <string name="open_fonts_folder">Abrir la carpeta \"fonts\" (fuentes)</string>
+    <string name="settings_fonts_size_explanation2">El tamaño de la fuente debe ser tal que el # sea al menos parcialmente visible. Si no puede verlo el texto sera cortado en el juego.</string>
+    <string name="view">Ver</string>
+    <string name="settings_fonts_explanation2">El juego decide si usa la primera o la segunda fuente.</string>
+    <string name="settings_fonts_size_explanation">Cambiar el tamaño de la fuente no tiene efecto cuando se usa la fuente predeterminada o ciertas fuentes bitmap.</string>
+    <string name="rtp_not_found">No se encontro el RTP $YEAR. A los juegos que requieran este RTP les faltaran recursos.</string>
+    <string name="font">Fuente</string>
+    <string name="rtp_found">Se encontro el RTP $YEAR: $NAME ($FOUND de $MAX recursos encontrados)</string>
 </resources>

@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.
 \n
 \nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
-    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.
-\n Un file di log ed i tuoi salvataggi saranno allegati a questa mail.
-\n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.
-\n Per favore spiegaci in dettaglio in cosa consiste il bug.
-\n
-\n</string>
+    <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player. \n Un file di log ed i tuoi salvataggi saranno allegati a questa mail. \n Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug. \n Per favore spiegaci in dettaglio in cosa consiste il bug.</string>
     <!--Settings Activities-->
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -85,7 +80,7 @@
     <string name="menu">Apri Menù Android</string>
     <string name="no_games_found_and_explanation_android_30">Non sono stati trovati giochi creati con RPG Maker 2000/2003. Mettili nella sottosezione della cartella giochi.
 \nI giochi posso essere in cartelle o in archivi ZIP/LZH. La cartella di EasyRPG può essere modificata direttamente dalle Impostazioni.</string>
-    <string name="open_games_folder">Apri la cartella dei giochi</string>
+    <string name="open_games_folder">Apri la cartella dei giochi (\"games\")</string>
     <string name="how_to_use_easy_rpg_explanation_android_30">Inserisci i giochi creati con RPG Maker 2000/2003 nella sottosezione della cartella dei giochi.
 \nI giochi possono essere in cartelle o in un archivio ZIP/LZH.
 \nI file RAR, 7z ed EXE NON sono supportati
