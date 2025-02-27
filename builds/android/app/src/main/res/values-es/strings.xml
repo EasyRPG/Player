@@ -9,7 +9,7 @@
     <string name="korean">Coreano</string>
     <string name="chinese_simple">Chino (simplificado)</string>
     <string name="chinese_traditional">Chino (tradicional)</string>
-    <string name="greek">Griego</string>
+    <string name="greek">Latinoamericano</string>
     <string name="turkish">Turco</string>
     <string name="hebrew">Hebreo</string>
     <string name="arabic">Árabe</string>
@@ -147,4 +147,5 @@
 \n</string>
     <string name="fast_forward_mode_hold">mantener</string>
     <string name="fast_forward_mode_tap">tocar</string>
+    <string name="do_want_reset">En realidad hay que traducir?</string>
 </resources>
