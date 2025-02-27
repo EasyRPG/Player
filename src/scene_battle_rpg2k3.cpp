@@ -1031,7 +1031,7 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt, G
 		return false;
 	}
 
-	lcf::rpg::TroopPageCondition::Flags flags;
+	lcf::rpg::TroopPageCondition::TroopPageCondition_Flags flags;
 	switch (tt) {
 		case EventTriggerType::eBeforeBattleAction:
 			flags.turn = flags.turn_actor = flags.turn_enemy = flags.command_actor = true;

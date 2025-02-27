@@ -50,7 +50,7 @@ public:
 	static bool AreConditionsMet(const lcf::rpg::TroopPageCondition& condition, Game_Battler* source);
 
 	int ScheduleNextPage(Game_Battler* source);
-	int ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions, Game_Battler* source);
+	int ScheduleNextPage(lcf::rpg::TroopPageCondition::TroopPageCondition_Flags required_conditions, Game_Battler* source);
 	void ResetPagesExecuted();
 
 	void SetCurrentEnemyTargetIndex(int idx);
