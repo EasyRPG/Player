@@ -18,6 +18,7 @@
 #ifndef EP_GAME_RUNTIMEPATCHES_H
 #define EP_GAME_RUNTIMEPATCHES_H
 
+class Game_Actor;
 namespace RuntimePatches {
 	/**
 	 * Support for RPG_RT patch 'Encounter Randomness Alert'.
@@ -74,6 +75,36 @@ namespace RuntimePatches {
 		void ModifyItemGained(int& item_id);
 		/** Scales the item drop rate of an enemy, based on the value of variable V[1010] */
 		void ModifyItemDropRate(int& val);
+	}
+
+	/**
+	 * Support for RPG_RT patch 'EXPlus' & 'EXPLus[+]'.
+	 * This patch allows to individually boost the 4 party members'
+	 * gained experience inside battles by applying an extra percentage
+	 * based on the values of in-game variables.
+	 *  (default: V[3333] for party member #1; the amounts for other
+	 *   party members are read from the subsequent 3 variables)
+	 *
+	 * If the '[+]' option is enabled, a side effect is added to one
+	 * of the Actor clauses of 'CommandConditionalBranch':
+	 *  Whenever this command is used to check for the existence of
+	 *  an actor in the current party, the current party slot (1-4)
+	 *  of this actor is set to an in-game variable. (default: V[3332])
+	 */
+	namespace EXPlus {
+		/**
+		 * Boosts the gained experience points which would be added to
+		 * the given actor's stats by an extra amount which is calculated
+		 * from the value of the in-game variable V[X + party_index - 1].
+		 */
+		void ModifyExpGain(Game_Actor& actor, int& exp_gain);
+
+		/**
+		 * Store's the current party position of the given actor inside
+		 * the configured in-game variable for the '[+]' variant of
+		 * te EXPlus patch.
+		 */
+		void StoreActorPosition(int actor_id);
 	}
 }
 #endif

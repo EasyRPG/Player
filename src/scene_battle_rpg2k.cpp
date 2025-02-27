@@ -882,9 +882,11 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVict
 
 		pm.PushPageEnd();
 
-		for (auto& ally: ally_battlers) {
-			Game_Actor* actor = static_cast<Game_Actor*>(ally);
-			actor->ChangeExp(actor->GetExp() + exp, &pm);
+		for (int i = 0; i < ally_battlers.size(); ++i) {
+			Game_Actor* actor = static_cast<Game_Actor*>(ally_battlers[i]);
+			int exp_gain = exp;
+			RuntimePatches::EXPlus::ModifyExpGain(*actor, exp_gain);
+			actor->ChangeExp(actor->GetExp() + exp_gain, &pm);
 		}
 		Main_Data::game_party->GainGold(money);
 		for (auto& item: drops) {

@@ -64,6 +64,9 @@ struct Game_ConfigGame {
 	ConfigParam<int> patch_monsca_droprate{ "MonSca", "Scales enemy battle stats by variable value. (Item Drop Rate)", "Patch", "MonSca:ItemDropRate", 0 };
 	ConfigParam<int> patch_monsca_levelscaling{ "MonSca", "Scales enemy battle stats by variable value. (Alternate formula)", "Patch", "MonSca:LevelScaling", 0 };
 
+	ConfigParam<int> patch_explus_var{ "EXPlus", "Boosts party EXP by set percentages", "Patch", "EXPlus:VarExpBoost", 0 };
+	ConfigParam<int> patch_explusplus_var{ "EXPlus", "Allows for setting party index of given actors to a variable", "Patch", "EXPlus:VarActorInParty", 0 };
+
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 

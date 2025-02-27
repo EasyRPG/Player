@@ -23,6 +23,7 @@
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_actor.h"
 #include "main_data.h"
 #include "player.h"
 
@@ -177,5 +178,29 @@ void RuntimePatches::MonSca::ModifyItemDropRate(int& val) {
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_droprate.Get(); var_id > 0) {
 		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+	}
+}
+
+void RuntimePatches::EXPlus::ModifyExpGain(Game_Actor& actor, int& exp_gain) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)actor;
+	(void)exp_gain;
+	return false;
+#endif
+	if (auto base_var_id = Player::game_config.patch_explus_var.Get(); base_var_id > 0) {
+		exp_gain *= (100 + Main_Data::game_variables->Get(base_var_id + actor.GetPartyIndex()));
+		exp_gain /= 100;
+	}
+}
+
+void RuntimePatches::EXPlus::StoreActorPosition(int actor_id) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)actor_id;
+	return;
+#endif
+	if (auto var_id = Player::game_config.patch_explusplus_var.Get(); var_id > 0) {
+		Main_Data::game_variables->Set(var_id, Main_Data::game_party->GetActorPositionInParty(actor_id) + 1);
 	}
 }
