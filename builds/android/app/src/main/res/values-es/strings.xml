@@ -148,4 +148,7 @@
     <string name="fast_forward_mode_hold">mantener</string>
     <string name="fast_forward_mode_tap">tocar</string>
     <string name="do_want_reset">En realidad hay que traducir?</string>
+    <string name="game_rename">Renombrar juego</string>
+    <string name="revert">Revertir</string>
+    <string name="open_save_folder">Abrir carpeta de partidas guardadas</string>
 </resources>
