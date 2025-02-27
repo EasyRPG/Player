@@ -40,12 +40,7 @@
     <string name="report_bug_msg">Cette fonctionnalité va ouvrir votre application d\'e-mail (ex. Gmail) pour nous envoyer un rapport de bug.
 \n
 \nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail configurée, vous pouvez ouvrir une nouvelle issue à https://github.com/EasyRPG/Player/issues à la place.</string>
-    <string name="report_bug_mail">Merci d\'aider EasyRPG Player.
-\nUn fichier de log et vos sauvegardes ont été placés en pièce jointe de cet e-mail.
-\nVeuillez ne pas supprimer le fichier de log ! Nous avons besoin d\'une sauvegarde qui est proche du lieu de votre bug pour pouvoir le reproduire facilement.
-\nVeuillez décrire précisément ce qui n\'allait pas.
-\n
-\n</string>
+    <string name="report_bug_mail">Merci d\'aider EasyRPG Player.\nUn fichier de log et vos sauvegardes ont été placés en pièce jointe de cet e-mail.\nVeuillez ne pas supprimer le fichier de log ! Nous avons besoin d\'une sauvegarde qui est proche du lieu de votre bug pour pouvoir le reproduire facilement.\nVeuillez décrire précisément ce qui n\'allait pas.</string>
     <!--Settings Activities-->
     <string name="video">Vidéo</string>
     <string name="audio">Audio</string>
@@ -165,4 +160,8 @@
     <string name="view_show_game_title">Utiliser le titre</string>
     <string name="settings_input_show_ab_as_zx">Afficher les boutons A et B comme Z et X</string>
     <string name="view">Voir</string>
+    <string name="unsupported_engine_card">$ENGINE n\'est pas pris en charge</string>
+    <string name="unsupported_engine_title">Moteur de jeu non pris en charge</string>
+    <string name="unsupported_engine_explanation">Ce jeu ne peut pas être lancé avec EasyRPG Player car il a été créé avec $ENGINE.\n\nEasy RPG Plater est conçu pour prendre en charge uniquement des jeux créés sur RPG Maker 2000 et 2003, il n\'est aucunement prévu d\'étendre à d\'autres moteurs.\n\nPour trouver un logiciel capable de lancer ce jeu, veuillez chercher sur le Play Store.</string>
+    <string name="open_save_folder">Ouvrir le dossier de sauvegarde de jeu</string>
 </resources>
