@@ -670,6 +670,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.font2.FromIni(ini);
 	player.font2_size.FromIni(ini);
 	player.log_enabled.FromIni(ini);
+	player.screenshot_scale.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -756,6 +757,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.font2.ToIni(os);
 	player.font2_size.ToIni(os);
 	player.log_enabled.ToIni(os);
+	player.screenshot_scale.ToIni(os);
 
 	os << "\n";
 }

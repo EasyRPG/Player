@@ -428,6 +428,10 @@ void Window_Settings::RefreshEngine() {
 	AddOption(cfg.settings_in_title, [&cfg](){ cfg.settings_in_title.Toggle(); });
 	AddOption(cfg.settings_in_menu, [&cfg](){ cfg.settings_in_menu.Toggle(); });
 	AddOption(cfg.log_enabled, [&cfg]() { cfg.log_enabled.Toggle(); });
+	AddOption(cfg.screenshot_scale, [this, &cfg](){ cfg.screenshot_scale.Set(GetCurrentOption().current_value); });
+
+	GetFrame().options.back().help2 = fmt::format("Screenshot size: {}x{}",
+		Player::screen_width * cfg.screenshot_scale.Get(), Player::screen_height * cfg.screenshot_scale.Get());
 }
 
 void Window_Settings::RefreshEngineFont(bool mincho) {

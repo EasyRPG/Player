@@ -90,6 +90,7 @@ struct Game_ConfigPlayer {
 	PathConfigParam font2 { "Font 2", "The game chooses whether it wants font 1 or 2", "Player", "Font2", "" };
 	RangeConfigParam<int> font2_size { "Font 2 Size", "", "Player", "Font2Size", 12, 6, 16};
 	BoolConfigParam log_enabled{ "Logging", "Write diagnostic messages into a logfile", "Player", "Logging", true };
+	RangeConfigParam<int> screenshot_scale { "Screenshot scaling factor", "Scale screenshots by the given factor", "Player", "ScreenshotScale", 1, 1, 24};
 
 	void Hide();
 };
