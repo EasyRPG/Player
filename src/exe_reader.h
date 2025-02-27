@@ -77,7 +77,7 @@ public:
 
 	const FileInfo& GetFileInfo();
 
-	std::map<EXE::Shared::GameConstantType, int32_t> GetOverridenGameConstants();
+	std::map<EXE::Shared::GameConstantType, int32_t> GetOverriddenGameConstants();
 
 	std::map<EXE::Shared::EmbeddedStringTypes, std::string> GetEmbeddedStrings(std::string encoding);
 

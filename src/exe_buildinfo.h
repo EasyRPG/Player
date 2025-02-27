@@ -230,6 +230,9 @@ namespace EXE::BuildInfo {
 		patch_segment_data chk_segment_data;
 		size_t extract_var_offset;
 
+		constexpr PatchDetectionInfo() :
+			chk_segment_offset(0), chk_segment_data({}), extract_var_offset(0) {
+		}
 		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data) :
 			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), extract_var_offset(0) {
 		}

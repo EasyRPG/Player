@@ -18,6 +18,8 @@
 #ifndef EP_EXE_SHARED_H
 #define EP_EXE_SHARED_H
 
+#include <map>
+#include <string>
 #include <lcf/enum_tags.h>
 
 namespace EXE::Shared {
@@ -151,6 +153,12 @@ namespace EXE::Shared {
 	struct PatchSetupInfo {
 		KnownPatches patch_type;
 		int32_t custom_var_1;
+	};
+
+	struct EngineCustomization {
+		std::map<GameConstantType, int32_t> constant_overrides;
+		std::map<EmbeddedStringTypes, std::string> strings;
+		std::map<KnownPatches, PatchSetupInfo> runtime_patches;
 	};
 }
 

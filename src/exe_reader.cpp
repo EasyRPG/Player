@@ -493,7 +493,7 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 	return Player::EngineNone;
 }
 
-std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverridenGameConstants() {
+std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverriddenGameConstants() {
 	constexpr bool debug_const_extraction = true;
 
 	std::map<EXE::Shared::GameConstantType, int32_t> game_constants;
@@ -597,32 +597,7 @@ std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverridenGameCons
 			EXE::BuildInfo::kEngineTypes.tag(build_info.engine_type),
 			EXE::BuildInfo::kKnownEngineBuildDescriptions.tag(build_version));
 
-		EXE::Constants::code_address_map const* constant_addresses = nullptr;
-
-		switch (build_info.engine_type) {
-			case EXE::BuildInfo::EngineType::RPG2000:
-			{
-				auto& builds = EXE::Constants::known_engine_builds_rm2k;
-				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
-					return pair.first == build_version;
-				});
-				if (it != builds.end()) {
-					constant_addresses = &it->second;
-				}
-			}
-			break;
-			case EXE::BuildInfo::EngineType::RPG2003:
-			{
-				auto& builds = EXE::Constants::known_engine_builds_rm2k3;
-				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
-					return pair.first == build_version;
-				});
-				if (it != builds.end()) {
-					constant_addresses = &it->second;
-				}
-			}
-			break;
-		}
+		auto constant_addresses = EXE::Constants::GetConstantAddressesForBuildInfo(build_info.engine_type, build_version);
 
 		switch (build_version) {
 			case EXE::BuildInfo::RM2KE_162:

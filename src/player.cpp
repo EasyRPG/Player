@@ -37,6 +37,7 @@
 #include "rand.h"
 #include "cmdline_parser.h"
 #include "game_dynrpg.h"
+#include "game_dynrpg_loader.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
@@ -765,13 +766,12 @@ void Player::CreateGameObjects() {
 		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
+	Constants::ResetOverrides();
 	DetectEngine(false);
 
 	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
 
 	game_config.PrintActivePatches();
-
-	Constants::ResetOverrides();
 	Constants::PrintActiveOverrides();
 
 	ResetGameObjects();
@@ -789,8 +789,8 @@ void Player::CreateGameObjects() {
 
 void Player::DetectEngine(bool ignore_patch_override) {
 	int& engine = game_config.engine;
-	std::map<EXE::Shared::GameConstantType, int32_t> game_constant_overrides;
-	std::vector<EXE::Shared::PatchSetupInfo> patches;
+
+	EXE::Shared::EngineCustomization engine_customization;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
@@ -817,13 +817,19 @@ void Player::DetectEngine(bool ignore_patch_override) {
 			}
 		}
 
-		game_constant_overrides = exe_reader->GetOverridenGameConstants();
-
-		if (!game_config.patch_override || ignore_patch_override) {
-			patches = exe_reader->CheckForPatches();
+		for (auto p : exe_reader->GetOverriddenGameConstants()) {
+			engine_customization.constant_overrides[p.first] = p.second;
 		}
 
-		exe_reader->GetEmbeddedStrings(encoding);
+		if (!game_config.patch_override || ignore_patch_override) {
+			for (auto p : exe_reader->CheckForPatches()) {
+				engine_customization.runtime_patches[p.patch_type] = p;
+			}
+		}
+
+		for (auto p : exe_reader->GetEmbeddedStrings(encoding)) {
+			engine_customization.strings[p.first] = p.second;
+		}
 
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
@@ -872,11 +878,20 @@ void Player::DetectEngine(bool ignore_patch_override) {
 			game_config.patch_destiny.Set(true);
 		}
 
+#ifndef EMSCRIPTEN
+		if (game_config.patch_dynrpg.Get()) {
+			for (auto p : DynRpg_Loader::DetectRuntimePatches()) {
+				engine_customization.runtime_patches[p.patch_type] = p;
+			}
+			DynRpg_Loader::ApplyQuickPatches(engine_customization);
+		}
+#endif
+
 		using Patch = EXE::Patches::KnownPatches;
 
-		if (patches.size() > 0) {
-			for (auto it = patches.begin(); it != patches.end(); ++it) {
-				auto& patch = *it;
+		if (engine_customization.runtime_patches.size() > 0) {
+			for (auto it = engine_customization.runtime_patches.begin(); it != engine_customization.runtime_patches.end(); ++it) {
+				auto& patch = it->second;
 
 				switch (static_cast<Patch>(patch.patch_type)) {
 					case Patch::UnlockPics:
@@ -897,7 +912,7 @@ void Player::DetectEngine(bool ignore_patch_override) {
 						break;
 					case Patch::BetterAEP:
 						game_config.new_game.Set(true);
-						// FIXME: implement BetterAEP�s extended patch functionality
+						// FIXME: implement BetterAEP's extended patch functionality
 						// -> patch_var (default: 3350)
 						break;
 					case Patch::PicPointer:
@@ -914,8 +929,8 @@ void Player::DetectEngine(bool ignore_patch_override) {
 		}
 	}
 
-	if (game_constant_overrides.size() > 0) {
-		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end(); ++it) {
+	if (engine_customization.constant_overrides.size() > 0) {
+		for (auto it = engine_customization.constant_overrides.begin(); it != engine_customization.constant_overrides.end(); ++it) {
 			Constants::OverrideGameConstant(it->first, it->second);
 		}
 	}

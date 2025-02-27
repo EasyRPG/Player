@@ -431,6 +431,36 @@ namespace EXE::Constants {
 			}}
 		}
 	}};
+
+	inline EXE::Constants::code_address_map const* GetConstantAddressesForBuildInfo(EXE::BuildInfo::EngineType engine_type, EXE::BuildInfo::KnownEngineBuildVersions build_version) {
+		switch (engine_type) {
+			case EXE::BuildInfo::EngineType::RPG2000:
+			{
+				auto& builds = known_engine_builds_rm2k;
+				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
+					return pair.first == build_version;
+				});
+				if (it != builds.end()) {
+					return &it->second;
+				}
+			}
+			break;
+			case EXE::BuildInfo::EngineType::RPG2003:
+			{
+				auto& builds = known_engine_builds_rm2k3;
+				auto it = std::find_if(builds.begin(), builds.end(), [&](const auto& pair) {
+					return pair.first == build_version;
+				});
+				if (it != builds.end()) {
+					return &it->second;
+				}
+			}
+			break;
+			default:
+				break;
+		}
+		return nullptr;
+	}
 }
 
 #endif

@@ -151,6 +151,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_destiny.h \
 	src/game_dynrpg.cpp \
 	src/game_dynrpg.h \
+	src/game_dynrpg_loader.cpp \
+	src/game_dynrpg_loader.h \
 	src/game_enemy.cpp \
 	src/game_enemy.h \
 	src/game_enemyparty.cpp \
