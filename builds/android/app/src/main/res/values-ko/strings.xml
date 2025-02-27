@@ -163,7 +163,6 @@
     <string name="view_show_game_folder">폴더 이름 사용</string>
     <string name="view_show_title_desc">게임 이름 표시 방법 선택</string>
     <string name="view_show_game_title">타이틀 사용</string>
-    <string name="settings_input_show_zx_as_ab">Z/X 버튼을 A/B로 표시</string>
     <string name="view">보기</string>
     <string name="settings_input_show_ab_as_zx">A/B 버튼을 Z/X 버튼으로 표시</string>
 </resources>
