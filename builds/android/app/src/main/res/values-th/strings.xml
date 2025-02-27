@@ -60,7 +60,7 @@
     <string name="reset_button_mapping">รีเซ็ตการตั้งค่าปุ่ม</string>
     <string name="exit_without_saving">ออกโดยไม่บันทึก</string>
     <string name="save_and_quit">บันทึกและออก</string>
-    <string name="key_enter">Enter (Z)</string>
+    <string name="key_enter"></string>
     <string name="key_shift">Shift</string>
     <!--GameBrowserAPI15-->
 </resources>
