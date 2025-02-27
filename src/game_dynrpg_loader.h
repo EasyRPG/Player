@@ -20,7 +20,6 @@
 
 #include <vector>
 #include <map>
-#include "lcf/inireader.h"
 #include "exe_shared.h"
 #include "filefinder.h"
 

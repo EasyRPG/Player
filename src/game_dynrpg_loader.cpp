@@ -21,11 +21,20 @@
 #include "player.h"
 #include "exe_constants.h"
 #include "exe_patches.h"
+#include <ini.h>
 
 #include <fstream>
 
 namespace {
+	std::map<std::string, std::string> ini_quickpatches;
 	std::map<EXE::Patches::KnownPatches, EXE::BuildInfo::PatchDetectionInfo> known_patches;
+
+	int ini_handler_qp(void* user, const char* section, const char* name, const char* value) {
+		if (std::strcmp(section, DYNRPG_INI_SECTION_QUICKPATCHES) == 0) {
+			ini_quickpatches[name] = value;
+		}
+		return 1;
+	}
 
 	template<typename T>
 	bool try_read_hex_str(std::string& str, T& out_val) {
@@ -61,7 +70,7 @@ namespace {
 		return true;
 	}
 
-	bool read_int32(Filesystem_Stream::InputStream& is, int pos) {
+	int read_int32(Filesystem_Stream::InputStream& is, int pos) {
 		int v;
 		is.seekg(pos++, std::ios_base::beg);
 		v = is.get();
@@ -134,6 +143,19 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 		if (patch_it != known_patches.end()) {
 			patch_type = patch_it->first;
 			patch_info = &patch_it->second;
+
+			int ofs = patch_info->chk_segment_offset - address;
+
+			for (int j = 0; j < patch_info->chk_segment_data.size(); ++j) {
+				is.seekg(i+j+ofs, std::ios_base::beg);
+				if (is.get() != patch_info->chk_segment_data[j]) {
+					patch_info = nullptr;
+					break;
+				}
+			}
+			if (patch_info != nullptr) {
+				break;
+			}
 		}
 		i += size;
 	} while (is.get() != -1);
@@ -182,16 +204,15 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 }
 
 void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization) {
-	std::unique_ptr<lcf::INIReader> ini;
+	ini_quickpatches.clear();
 
-	ini = std::make_unique<lcf::INIReader>(ToString(DYNRPG_INI_NAME));
-	if (ini == nullptr || ini->ParseError() == -1) {
+	int error = ini_parse(DYNRPG_INI_NAME, ini_handler_qp, nullptr);
+
+	if (error == -1) {
 		return;
 	}
 
-	auto section_data = ini->GetSection(DYNRPG_INI_SECTION_QUICKPATCHES);
-
-	if (section_data.size() > 0) {
+	if (ini_quickpatches.size() > 0) {
 		Output::Debug("Found section for QuickPatches inside DynRPG.ini.");
 	}
 
@@ -213,8 +234,8 @@ void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_c
 		loaded_ips_patches.push_back({ info.first, it->second });
 	}
 
-	bool read_error = false;;
-	for (auto pair : section_data) {
+	bool read_error = false;
+	for (auto pair : ini_quickpatches) {
 		auto& key_name = pair.first;
 		auto& addresses_str = pair.second;
 
