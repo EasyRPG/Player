@@ -3566,6 +3566,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		case 0:
 			// Is actor in party
 			result = Main_Data::game_party->IsActorInParty(actor_id);
+			RuntimePatches::EXPlus::StoreActorPosition(actor_id);
 			break;
 		case 1:
 			// Name
