@@ -143,4 +143,26 @@
 \n</string>
     <string name="fast_forward_mode_hold">maintenir</string>
     <string name="fast_forward_mode_tap">appuyer</string>
+    <string name="settings_fonts_explanation">Mettez les polices d\'écriture dans le dossier \"fonts\". Pour de meilleurs résultats, utilisez des polices TTF ou des polices bitmap (FON).</string>
+    <string name="toggle_fps">Activer l\'affichage des FPS</string>
+    <string name="game_rename">Renommer le jeu</string>
+    <string name="revert">Réinitialiser</string>
+    <string name="do_want_reset">Voulez-vous vraiment réinitialiser ?</string>
+    <string name="settings_font_1">Première police :</string>
+    <string name="settings_font_size">Taille de la police</string>
+    <string name="settings_font_2">Seconde police :</string>
+    <string name="settings_font_default">Police par défaut</string>
+    <string name="reset_game">Réinitialiser le jeu</string>
+    <string name="open_fonts_folder">Ouvrir le dossier \"fonts\"</string>
+    <string name="settings_fonts_size_explanation2">La taille doit être ajustée de sorte à ce que le # soit au moins partiellement visible. Si vous ne pouvez pas le voir, le texte sera coupé en jeu.</string>
+    <string name="settings_fonts_explanation2">Le jeu décide si il utilise la première ou la seconde police.</string>
+    <string name="settings_fonts_size_explanation">Le paramètre de la taille de la police n\'a aucun effet si la police par défaut est utilisée ou si certaines polices bitmap sont utilisées.</string>
+    <string name="rtp_not_found">RTP $YEAR non trouvé. Les jeux nécessitant ce RTP auront des ressources manquantes.</string>
+    <string name="font">Police d\'écriture</string>
+    <string name="rtp_found">RTP $YEAR trouvé : $NAME ($FOUND sur $MAX ressources trouvées)</string>
+    <string name="view_show_game_folder">Utiliser le nom du dossier</string>
+    <string name="view_show_title_desc">Choisir comment les jeux sont nommés</string>
+    <string name="view_show_game_title">Utiliser le titre</string>
+    <string name="settings_input_show_ab_as_zx">Afficher les boutons A et B comme Z et X</string>
+    <string name="view">Voir</string>
 </resources>
