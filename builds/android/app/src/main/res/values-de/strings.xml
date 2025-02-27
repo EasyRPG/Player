@@ -95,7 +95,7 @@
 \nRAR-, 7z- und EXE-Dateien werden NICHT unterstützt.
 \n
 \nOptionale Funktionen (wirf einen Blick in die Einstellungen):
-\n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Assets) kann bereitgestellt werden
+\n- Das RTP (dies sind von einigen Spielen verwendete, gemeinsame Ressourcen) kann bereitgestellt werden
 \n- Ein benutzerdefinierter Soundfont zum Ändern des Klangs von MIDI-Musik kann bereitgestellt werden</string>
     <string name="easyrpg_folders">EasyRPG-Ordner</string>
     <string name="screen_size">Bildschirmgröße:</string>
@@ -112,7 +112,7 @@
 \nWenn diese App bereits vorher verwendet wurde, wähle den vorhandenen EasyRPG-Ordner aus.</string>
     <string name="Loading">Laden…</string>
     <string name="enable_rtp_support">RTP-Unterstützung aktivieren</string>
-    <string name="rtp_explanation">Das RTP stellt gemeinsame Assets bereit, die von einigen Spielen verwendet werden.
+    <string name="rtp_explanation">Das RTP stellt gemeinsame Ressourcen (Grafiken und Sounds) bereit, die von einigen Spielen verwendet werden.
 \nDas RPG Maker 2000 RTP musst du in \"rtp/2000\" und das RPG Maker 2003 RTP in \"rtp/2003\" platzieren.
 \nBeachte bitte, dass aktivierte RTP-Unterstützung den Start von Spielen spürbar verlangsamt.</string>
     <string name="open_rtp_folder">Ordner \"rtp\" öffnen</string>
@@ -147,4 +147,29 @@
 \n</string>
     <string name="fast_forward_mode_hold">halten</string>
     <string name="fast_forward_mode_tap">antippen</string>
+    <string name="settings_fonts_explanation">Lege Schriftarten im \"fonts\"-Ordner ab. Das beste Ergebnis erzielst du mit TTF-Schriften oder Bitmap-Schriften (FON).</string>
+    <string name="toggle_fps">FPS-Anzeige umschalten</string>
+    <string name="game_rename">Spiel umbenennen</string>
+    <string name="revert">Rückgängig</string>
+    <string name="do_want_reset">Möchtest du wirklich das Spiel zurücksetzen?</string>
+    <string name="settings_font_1">Erste Schriftart:</string>
+    <string name="settings_font_size">Schriftgröße</string>
+    <string name="settings_font_2">Zweite Schriftart:</string>
+    <string name="settings_font_default">Integrierte Schriftart</string>
+    <string name="reset_game">Spiel zurücksetzen</string>
+    <string name="open_fonts_folder">Den Schriftarten-Ordner (fonts) öffnen</string>
+    <string name="settings_fonts_size_explanation2">Die Schriftgröße muss so eingestellt werden, dass die Raute (#) zumindest teilweise sichtbar ist. Anderenfalls wird der Text im Spiel abgeschnitten sein.</string>
+    <string name="settings_fonts_explanation2">Das Spiel legt selbst fest, ob es die erste oder die zweite Schriftart verwendet.</string>
+    <string name="settings_fonts_size_explanation">Das Ändern der Schriftgröße hat keine Auswirkung auf die integrierte Schriftart und auf einige Bitmap-Schriftarten.</string>
+    <string name="rtp_not_found">Das RTP $YEAR wurde nicht gefunden. Wenn ein Spiel dieses RTP verwendet, werden Ressourcen fehlen.</string>
+    <string name="font">Schriftart</string>
+    <string name="rtp_found">RTP $YEAR gefunden: $NAME ($FOUND von $MAX Ressourcen gefunden)</string>
+    <string name="view_show_game_folder">Mit ihrem Ordnernamen</string>
+    <string name="view_show_title_desc">Die Spiele sollen folgendermaßen beschriftet werden</string>
+    <string name="view_show_game_title">Mit ihrem Titel</string>
+    <string name="settings_input_show_ab_as_zx">Die A- und B-Taste als Z bzw. X darstellen</string>
+    <string name="view">Ansicht</string>
+    <string name="unsupported_engine_card">$ENGINE wird nicht unterstützt</string>
+    <string name="unsupported_engine_title">Nicht unterstützte Engine</string>
+    <string name="open_save_folder">Ordner mit Spielständen öffnen</string>
 </resources>
