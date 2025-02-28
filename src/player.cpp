@@ -677,7 +677,8 @@ Game_Config Player::ParseCommandLine() {
 void Player::CreateGameObjects() {
 	// Parse game specific settings
 	CmdlineParser cp(arguments);
-	game_config = Game_ConfigGame::Create(cp);
+	game_config = Game_ConfigGame();
+	game_config.Initialize(cp);
 
 	// Reinit MIDI
 	MidiDecoder::Reset();
