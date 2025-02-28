@@ -204,7 +204,6 @@ bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
 }
 
 namespace RuntimePatches::MonSca {
-#ifndef NO_RUNTIME_PATCHES
 	bool UseLevelBasedFormula() {
 		auto switch_id = Player::game_config.patch_monsca_levelscaling.Get();
 		return switch_id > 0 && Main_Data::game_switches->Get(switch_id);
@@ -220,7 +219,6 @@ namespace RuntimePatches::MonSca {
 		val *= mod;
 		val /= 1000;
 	}
-#endif
 }
 
 void RuntimePatches::MonSca::ModifyMaxHp(int& val) {
@@ -338,7 +336,7 @@ void RuntimePatches::EXPlus::ModifyExpGain(Game_Actor& actor, int& exp_gain) {
 	// no-op
 	(void)actor;
 	(void)exp_gain;
-	return false;
+	return;
 #endif
 	if (auto base_var_id = Player::game_config.patch_explus_var.Get(); base_var_id > 0) {
 		exp_gain *= (100 + Main_Data::game_variables->Get(base_var_id + actor.GetPartyIndex()));
