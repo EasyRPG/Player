@@ -25,8 +25,8 @@
 #include "player.h"
 #include <cstring>
 
-Game_ConfigGame Game_ConfigGame::Create(CmdlineParser& cp) {
-	Game_ConfigGame cfg;
+void Game_ConfigGame::Initialize(CmdlineParser& cp) {
+	Game_ConfigGame& cfg = *this;
 
 	auto cli_config = FileFinder::Game().OpenFile(EASYRPG_INI_NAME);
 	if (cli_config) {
@@ -57,8 +57,6 @@ Game_ConfigGame Game_ConfigGame::Create(CmdlineParser& cp) {
 			cfg.engine = Player::EngineRpg2k3 | Player::EngineMajorUpdated | Player::EngineEnglish;
 		}
 	}
-
-	return cfg;
 }
 
 void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
