@@ -128,6 +128,7 @@ void RuntimePatches::LockPatchesAsDiabled() {
 	LockPatchArguments<2>(EncounterRandomnessAlert::patch_args);
 	LockPatchArguments<11>(MonSca::patch_args);
 	LockPatchArguments<2>(EXPlus::patch_args);
+	LockPatchArguments<2>(GuardRevamp::patch_args);
 #endif
 }
 
@@ -143,12 +144,14 @@ bool RuntimePatches::ParseFromCommandLine(CmdlineParser& cp) {
 	if (cp.ParseNext(arg, 1, { "--patch-explus", "--no-patch-explus" })) {
 		return ParsePatchArguments<2>(cp, arg, EXPlus::patch_args);
 	}
+	if (cp.ParseNext(arg, 1, { "--patch-guardrevamp", "--no-patch-guardrevamp" })) {
+		return ParsePatchArguments<2>(cp, arg, GuardRevamp::patch_args);
+	}
 #else
 	(void)cp;
 #endif
 	return false;
 }
-
 
 bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 #ifndef NO_RUNTIME_PATCHES
@@ -156,6 +159,7 @@ bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 	patch_override |= ParsePatchFromIni<2>(ini, EncounterRandomnessAlert::patch_args);
 	patch_override |= ParsePatchFromIni<11>(ini, MonSca::patch_args);
 	patch_override |= ParsePatchFromIni<2>(ini, EXPlus::patch_args);
+	patch_override |= ParsePatchFromIni<2>(ini, GuardRevamp::patch_args);
 	return patch_override;
 #else
 	(void)ini;
@@ -163,12 +167,12 @@ bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 #endif
 }
 
-
 void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 #ifndef NO_RUNTIME_PATCHES
 	PrintPatch<2>(patches, EncounterRandomnessAlert::patch_args);
 	PrintPatch<11>(patches, MonSca::patch_args);
 	PrintPatch<2>(patches, EXPlus::patch_args);
+	PrintPatch<2>(patches, GuardRevamp::patch_args);
 #else
 	(void)patches;
 #endif
@@ -352,3 +356,30 @@ void RuntimePatches::EXPlus::StoreActorPosition(int actor_id) {
 	}
 }
 
+bool RuntimePatches::GuardRevamp::OverrideDamageAdjustment(int& dmg, const Game_Battler& target) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)dmg;
+	(void)target;
+	return false;
+#endif
+	auto rate_normal = Player::game_config.patch_guardrevamp_normal.Get();
+	auto rate_strong = Player::game_config.patch_guardrevamp_strong.Get();
+
+	if ((rate_normal > 0 || rate_strong > 0) && target.IsDefending()) {
+		if (!target.HasStrongDefense()) {
+			if (rate_normal == 0) {
+				return false;
+			}
+			dmg *= rate_normal;
+		} else {
+			if (rate_strong == 0) {
+				return false;
+			}
+			dmg *= rate_strong;
+		}
+		dmg /= 100;
+		return true;
+	}
+	return false;
+}
