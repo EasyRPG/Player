@@ -67,6 +67,9 @@ struct Game_ConfigGame {
 	ConfigParam<int> patch_explus_var{ "EXPlus", "Boosts party EXP by set percentages", "Patch", "EXPlus:VarExpBoost", 0 };
 	ConfigParam<int> patch_explusplus_var{ "EXPlus", "Allows for setting party index of given actors to a variable", "Patch", "EXPlus:VarActorInParty", 0 };
 
+	ConfigParam<int> patch_guardrevamp_normal{ "GuardRevamp", "Changes damage calculation for defense situations (Normal)", "Patch", "GuardRevamp:NormalDefense", 0 };
+	ConfigParam<int> patch_guardrevamp_strong{ "GuardRevamp", "Changes damage calculation for defense situations (Strong)", "Patch", "GuardRevamp:StrongDefense", 0 };
+
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 
