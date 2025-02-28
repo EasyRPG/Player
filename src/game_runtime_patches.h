@@ -158,5 +158,32 @@ namespace RuntimePatches {
 		 */
 		void StoreActorPosition(int actor_id);
 	}
+
+	/**
+	 * Support for RPG_RT patch 'GuardRevamp'.
+	 * This patch changes the way the damage adjustment is calculated
+	 * whenever the target of an attack is defending.
+	 *
+	 * Normally this calculation is done by simply dividing the damage
+	 * in half for normal defense situations, and by quartering it
+	 * when the target has the 'strong defense' attribute.
+	 * With 'GuardRevamp' enabled, this is changed to a percentage
+	 * calculation, allowing for more granular control over the output.
+	 * The given default values of '50%', and '25%' would provide
+	 * the same results in most situations.
+	 */
+	namespace GuardRevamp {
+		constexpr std::array<PatchArg, 2> patch_args = { {
+			{ Player::game_config.patch_guardrevamp_normal, "-normal", 50},
+			{ Player::game_config.patch_guardrevamp_strong, "-strong", 25 }
+		} };
+
+		/**
+		 * Adjusts the damage value taken by the given battler according
+		 * the GuardRevamp patches' rules.
+		 * @return if normal damage calculation should skipped.
+		 */
+		bool OverrideDamageAdjustment(int& dmg, const Game_Battler& target);
+	}
 }
 #endif
