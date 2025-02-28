@@ -18,14 +18,161 @@
 // Headers
 #include "game_runtime_patches.h"
 
-#include "game_config.h"
 #include "game_map.h"
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_actor.h"
+#include "game_battler.h"
 #include "main_data.h"
 #include "player.h"
+#include "output.h"
+
+namespace {
+	template<int C>
+	void LockPatchArguments(std::array<RuntimePatches::PatchArg, C> const& patch_args) {
+		for (auto patch_arg : patch_args) {
+			patch_arg.config_param->Lock(0);
+		}
+	}
+
+	template<int C>
+	bool ParsePatchArguments(CmdlineParser& cp, CmdlineArg arg, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
+		if (arg.ArgIsOff()) {
+			for (auto patch_arg : patch_args) {
+				patch_arg.config_param->Set(0);
+			}
+			return true;
+		}
+		if (arg.ArgIsOn()) {
+			for (auto patch_arg : patch_args) {
+				patch_arg.config_param->Set(patch_arg.default_value);
+			}
+
+			std::string value;
+			if (arg.ParseValue(0, value)) {
+				std::string::iterator it;
+				int i = 0, pos = 0, new_pos;
+				while ((new_pos = value.rfind(',', pos)) >= 0) {
+					int v = std::atoi(value.substr(pos, new_pos - pos).c_str());
+					patch_args[i++].config_param->Set(v);
+					if (i == patch_args.size()) {
+						break;
+					}
+					pos = new_pos + 1;
+				}
+				return true;
+			}
+
+			bool parsed;
+			long li_value = 0;
+			do {
+				parsed = false;
+				for (int i = 0; i < patch_args.size(); ++i) {
+					if (cp.ParseNext(arg, 1, patch_args[i].cmd_arg)) {
+						parsed = true;
+						if (arg.ParseValue(0, li_value)) {
+							patch_args[i].config_param->Set(li_value);
+						}
+					}
+				}
+			} while (parsed);
+
+			return true;
+		}
+	}
+
+	template<int C>
+	bool ParsePatchFromIni(lcf::INIReader& ini, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
+		bool patch_override = false;
+		for (auto patch_arg : patch_args) {
+			patch_override |= patch_arg.config_param->FromIni(ini);
+		}
+		return patch_override;
+	}
+
+	template<int C>
+	void PrintPatch(std::vector<std::string>& patches, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
+		assert(patch_args.size() > 0);
+
+		bool is_set = false;
+		for (auto patch_arg : patch_args) {
+			if (patch_arg.config_param->Get() > 0) {
+				is_set = true;
+				break;
+			}
+		}
+		if (!is_set) {
+			return;
+		}
+
+		if (patch_args.size() == 1) {
+			patches.push_back(fmt::format("{} ({})", patch_args[0].config_param->GetName(), patch_args[0].config_param->Get()));
+			return;
+		}
+
+		std::string out = fmt::format("{} (", patch_args[0].config_param->GetName());
+		for (int i = 0; i < patch_args.size(); ++i) {
+			if (i > 0) {
+				out += ", ";
+			}
+			out += fmt::format("{}", patch_args[i].config_param->Get());
+		}
+		out += ")";
+		patches.push_back(out);
+	}
+}
+
+void RuntimePatches::LockPatchesAsDiabled() {
+#ifndef NO_RUNTIME_PATCHES
+	LockPatchArguments<2>(EncounterRandomnessAlert::patch_args);
+	LockPatchArguments<11>(MonSca::patch_args);
+	LockPatchArguments<2>(EXPlus::patch_args);
+#endif
+}
+
+bool RuntimePatches::ParseFromCommandLine(CmdlineParser& cp) {
+#ifndef NO_RUNTIME_PATCHES
+	CmdlineArg arg;
+	if (cp.ParseNext(arg, 1, { "--patch-encounter-alert", "--no-patch-encounter-alert" })) {
+		return ParsePatchArguments<2>(cp, arg, EncounterRandomnessAlert::patch_args);
+	}
+	if (cp.ParseNext(arg, 1, { "--patch-monsca", "--no-patch-monsca" })) {
+		return ParsePatchArguments<11>(cp, arg, MonSca::patch_args);
+	}
+	if (cp.ParseNext(arg, 1, { "--patch-explus", "--no-patch-explus" })) {
+		return ParsePatchArguments<2>(cp, arg, EXPlus::patch_args);
+	}
+#else
+	(void)cp;
+#endif
+	return false;
+}
+
+
+bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
+#ifndef NO_RUNTIME_PATCHES
+	bool patch_override = false;
+	patch_override |= ParsePatchFromIni<2>(ini, EncounterRandomnessAlert::patch_args);
+	patch_override |= ParsePatchFromIni<11>(ini, MonSca::patch_args);
+	patch_override |= ParsePatchFromIni<2>(ini, EXPlus::patch_args);
+	return patch_override;
+#else
+	(void)ini;
+	return false;
+#endif
+}
+
+
+void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
+#ifndef NO_RUNTIME_PATCHES
+	PrintPatch<2>(patches, EncounterRandomnessAlert::patch_args);
+	PrintPatch<11>(patches, MonSca::patch_args);
+	PrintPatch<2>(patches, EXPlus::patch_args);
+#else
+	(void)patches;
+#endif
+}
 
 bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
 #ifdef NO_RUNTIME_PATCHES
@@ -204,3 +351,4 @@ void RuntimePatches::EXPlus::StoreActorPosition(int actor_id) {
 		Main_Data::game_variables->Set(var_id, Main_Data::game_party->GetActorPositionInParty(actor_id) + 1);
 	}
 }
+
