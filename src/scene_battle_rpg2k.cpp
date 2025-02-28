@@ -882,7 +882,7 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionVict
 
 		pm.PushPageEnd();
 
-		for (int i = 0; i < ally_battlers.size(); ++i) {
+		for (int i = 0; i < static_cast<int>(ally_battlers.size()); ++i) {
 			Game_Actor* actor = static_cast<Game_Actor*>(ally_battlers[i]);
 			int exp_gain = exp;
 			RuntimePatches::EXPlus::ModifyExpGain(*actor, exp_gain);

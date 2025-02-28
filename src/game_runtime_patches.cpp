@@ -31,7 +31,7 @@
 namespace {
 	template<int C>
 	void LockPatchArguments(std::array<RuntimePatches::PatchArg, C> const& patch_args) {
-		for (auto patch_arg : patch_args) {
+		for (auto& patch_arg : patch_args) {
 			patch_arg.config_param->Lock(0);
 		}
 	}
@@ -39,13 +39,13 @@ namespace {
 	template<int C>
 	bool ParsePatchArguments(CmdlineParser& cp, CmdlineArg arg, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		if (arg.ArgIsOff()) {
-			for (auto patch_arg : patch_args) {
+			for (auto& patch_arg : patch_args) {
 				patch_arg.config_param->Set(0);
 			}
 			return true;
 		}
 		if (arg.ArgIsOn()) {
-			for (auto patch_arg : patch_args) {
+			for (auto& patch_arg : patch_args) {
 				patch_arg.config_param->Set(patch_arg.default_value);
 			}
 
@@ -56,7 +56,7 @@ namespace {
 				while ((new_pos = value.rfind(',', pos)) >= 0) {
 					int v = std::atoi(value.substr(pos, new_pos - pos).c_str());
 					patch_args[i++].config_param->Set(v);
-					if (i == patch_args.size()) {
+					if (i == static_cast<int>(patch_args.size())) {
 						break;
 					}
 					pos = new_pos + 1;
@@ -68,7 +68,7 @@ namespace {
 			long li_value = 0;
 			do {
 				parsed = false;
-				for (int i = 0; i < patch_args.size(); ++i) {
+				for (int i = 0; i < static_cast<int>(patch_args.size()); ++i) {
 					if (cp.ParseNext(arg, 1, patch_args[i].cmd_arg)) {
 						parsed = true;
 						if (arg.ParseValue(0, li_value)) {
@@ -80,12 +80,13 @@ namespace {
 
 			return true;
 		}
+		return false;
 	}
 
 	template<int C>
 	bool ParsePatchFromIni(lcf::INIReader& ini, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		bool patch_override = false;
-		for (auto patch_arg : patch_args) {
+		for (auto& patch_arg : patch_args) {
 			patch_override |= patch_arg.config_param->FromIni(ini);
 		}
 		return patch_override;
@@ -96,7 +97,7 @@ namespace {
 		assert(patch_args.size() > 0);
 
 		bool is_set = false;
-		for (auto patch_arg : patch_args) {
+		for (auto& patch_arg : patch_args) {
 			if (patch_arg.config_param->Get() > 0) {
 				is_set = true;
 				break;
@@ -112,7 +113,7 @@ namespace {
 		}
 
 		std::string out = fmt::format("{} (", patch_args[0].config_param->GetName());
-		for (int i = 0; i < patch_args.size(); ++i) {
+		for (int i = 0; i < static_cast<int>(patch_args.size()); ++i) {
 			if (i > 0) {
 				out += ", ";
 			}
