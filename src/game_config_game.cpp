@@ -16,6 +16,7 @@
  */
 
 #include "game_config_game.h"
+#include "game_runtime_patches.h"
 #include "cmdline_parser.h"
 #include "directory_tree.h"
 #include "filefinder.h"
@@ -88,8 +89,8 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_rpg2k3_commands.Lock(false);
 			patch_anti_lag_switch.Lock(0);
 			patch_direct_menu.Lock(0);
-			patch_encounter_random_alert_sw.Lock(0);
-			patch_encounter_random_alert_var.Lock(0);
+
+			RuntimePatches::LockPatchesAsDiabled();
 			patch_override = true;
 			continue;
 		}
@@ -157,16 +158,8 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
-		if (cp.ParseNext(arg, 1, { "--patch-encounter-alert", "--no-patch-encounter-alert" })) {
-			if (arg.ArgIsOn() && arg.ParseValue(0, li_value)) {
-				patch_encounter_random_alert_var.Set(li_value);
-				patch_override = true;
-			}
-
-			if (arg.ArgIsOff()) {
-				patch_encounter_random_alert_var.Set(0);
-				patch_override = true;
-			}
+		if (RuntimePatches::ParseFromCommandLine(cp)) {
+			patch_override = true;
 			continue;
 		}
 		if (cp.ParseNext(arg, 6, "--patch")) {
@@ -244,7 +237,7 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 		patch_override = true;
 	}
 
-	if (patch_encounter_random_alert_var.FromIni(ini)) {
+	if (RuntimePatches::ParseFromIni(ini)) {
 		patch_override = true;
 	}
 }
@@ -275,7 +268,8 @@ void Game_ConfigGame::PrintActivePatches() {
 	add_int(patch_maniac);
 	add_int(patch_anti_lag_switch);
 	add_int(patch_direct_menu);
-	add_int(patch_encounter_random_alert_var);
+
+	RuntimePatches::DetermineActivePatches(patches);
 
 	if (patches.empty()) {
 		Output::Debug("Patch configuration: None");

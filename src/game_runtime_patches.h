@@ -18,12 +18,40 @@
 #ifndef EP_GAME_RUNTIMEPATCHES_H
 #define EP_GAME_RUNTIMEPATCHES_H
 
+#include "game_config_game.h"
+#include "cmdline_parser.h"
+#include "player.h"
+
 class Game_Actor;
+class Game_Battler;
+
+// When this compile flag is set, all of the evaluation logic for these patches
+// will be disabled, by simply voiding any calls to their function hooks.
+//#define NO_RUNTIME_PATCHES
+
 namespace RuntimePatches {
+	struct PatchArg {
+		ConfigParam<int>* config_param = nullptr;
+		char const* cmd_arg;
+		int const default_value = 0;
+
+		constexpr PatchArg(ConfigParam<int>& config_param, char const* cmd_arg, int const default_value)
+			: config_param(&config_param), cmd_arg(cmd_arg), default_value(default_value) {
+		}
+	};
+
+	void LockPatchesAsDiabled();
+
+	bool ParseFromCommandLine(CmdlineParser& cp);
+
+	bool ParseFromIni(lcf::INIReader& ini);
+
+	void DetermineActivePatches(std::vector<std::string>& patches);
+
 	/**
 	 * Support for RPG_RT patch 'Encounter Randomness Alert'.
 	 * This patch skips the normal battle startup logic whenever a random
-	 * encounter would be triggered and.
+	 * encounter would be triggered.
 	 * Instead a switch (default: S[1018]) is set to ON and the troop ID
 	 * is stored into a variable (default: V[3355).
 	 *
@@ -31,8 +59,13 @@ namespace RuntimePatches {
 	 * events on the current map.
 	 */
 	namespace EncounterRandomnessAlert {
+		constexpr std::array<PatchArg, 2> patch_args = { {
+			{ Player::game_config.patch_encounter_random_alert_sw, "-sw", 1018},
+			{ Player::game_config.patch_encounter_random_alert_var, "-var", 3355 }
+		} };
+
 		/**
-		 * Sets the configured switch & variable according to ERA큦 rules.
+		 * Sets the configured switch & variable according to ERA's rules.
 		 * @return if normal battle processing should be skipped.
 		 */
 		bool HandleEncounter(int troop_id);
@@ -45,23 +78,37 @@ namespace RuntimePatches {
 	 * (Default: V[1001] - V[1010])
 	 * 
 	 * When a switch is set (default: S[1001) to ON, an alternative
-	 * scaling formular, based on the average party level is used.
+	 * scaling formula, based on the average party level, is used.
 	 *
 	 * Default formula:     val = val * V[...] / 1000
 	 * Alternative formula: val = val * avg_level * V[...] / 1000
 	 */
 	namespace MonSca {
-		/** Scales an enemies큦 maximum HP stat, based on the value of variable V[1001] */
+		constexpr std::array<PatchArg, 11> patch_args = { {
+			{ Player::game_config.patch_monsca_maxhp, "-maxhp", 1001 },
+			{ Player::game_config.patch_monsca_maxsp, "-maxsp", 1002 },
+			{ Player::game_config.patch_monsca_atk, "-atk", 1003 },
+			{ Player::game_config.patch_monsca_def, "-def", 1004 },
+			{ Player::game_config.patch_monsca_spi, "-spi", 1005 },
+			{ Player::game_config.patch_monsca_agi, "-agi", 1006 },
+			{ Player::game_config.patch_monsca_exp, "-exp", 1007 },
+			{ Player::game_config.patch_monsca_gold, "-gold", 1008 },
+			{ Player::game_config.patch_monsca_item, "-item", 1009 },
+			{ Player::game_config.patch_monsca_droprate, "-droprate", 1010 },
+			{ Player::game_config.patch_monsca_levelscaling, "-lvlscale", 1001 }
+		} };
+
+		/** Scales an enemies's maximum HP stat, based on the value of variable V[1001] */
 		void ModifyMaxHp(int& val);
-		/** Scales an enemies큦 maximum SP stat, based on the value of variable V[1002] */
+		/** Scales an enemies's maximum SP stat, based on the value of variable V[1002] */
 		void ModifyMaxSp(int& val);
-		/** Scales an enemies큦 attack stat, based on the value of variable V[1003] */
+		/** Scales an enemies's attack stat, based on the value of variable V[1003] */
 		void ModifyAtk(int& val);
-		/** Scales an enemies큦 defense stat, based on the value of variable V[1004] */
+		/** Scales an enemies's defense stat, based on the value of variable V[1004] */
 		void ModifyDef(int& val);
-		/** Scales an enemies큦 spirit stat, based on the value of variable V[1005] */
+		/** Scales an enemies's spirit stat, based on the value of variable V[1005] */
 		void ModifySpi(int& val);
-		/** Scales an enemies큦 agility stat, based on the value of variable V[1006] */
+		/** Scales an enemies's agility stat, based on the value of variable V[1006] */
 		void ModifyAgi(int& val);
 		/** Scales the experience points gained by defating an enemy, based on the value of variable V[1007] */
 		void ModifyExpGained(int& val);
@@ -92,6 +139,11 @@ namespace RuntimePatches {
 	 *  of this actor is set to an in-game variable. (default: V[3332])
 	 */
 	namespace EXPlus {
+		constexpr std::array<PatchArg, 2> patch_args = { {
+			{ Player::game_config.patch_explus_var, "-var", 3333},
+			{ Player::game_config.patch_explusplus_var, "-var", 3332 }
+		} };
+
 		/**
 		 * Boosts the gained experience points which would be added to
 		 * the given actor's stats by an extra amount which is calculated
