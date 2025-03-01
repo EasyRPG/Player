@@ -50,7 +50,9 @@ namespace {
 		return true;
 	}
 
-	bool read_ips_offset(Filesystem_Stream::InputStream& is, int& pos, uint32_t& out_addr, uint32_t& out_size) {
+	bool read_ips_offset(Filesystem_Stream::InputStream& is, int& pos, uint32_t& out_addr, uint32_t& out_size, bool& is_rle) {
+		is_rle = false;
+
 		is.seekg(pos++, std::ios_base::beg);
 		out_addr = is.get() << 16;
 		is.seekg(pos++, std::ios_base::beg);
@@ -67,6 +69,14 @@ namespace {
 		is.seekg(pos++, std::ios_base::beg);
 		out_size |= is.get();
 
+		if (out_size == 0) {
+			// RLE encoded
+			is.seekg(pos++, std::ios_base::beg);
+			out_size = is.get() << 8;
+			is.seekg(pos++, std::ios_base::beg);
+			out_size |= is.get();
+			is_rle = true;
+		}
 		return true;
 	}
 
@@ -133,7 +143,8 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 	EXE::BuildInfo::PatchDetectionInfo const* patch_info = nullptr;
 	do {
 		uint32_t address = 0, size = 0;
-		if (!read_ips_offset(is, i, address, size)) {
+		bool is_rle = false;
+		if (!read_ips_offset(is, i, address, size, is_rle)) {
 			break;
 		}
 		auto patch_it = std::find_if(known_patches.begin(), known_patches.end(), [&](auto& p) {
@@ -147,7 +158,9 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 			int ofs = patch_info->chk_segment_offset - address;
 
 			for (int j = 0; j < patch_info->chk_segment_data.size(); ++j) {
-				is.seekg(i+j+ofs, std::ios_base::beg);
+				if (!is_rle) {
+					is.seekg(i + j + ofs, std::ios_base::beg);
+				}
 				if (is.get() != patch_info->chk_segment_data[j]) {
 					patch_info = nullptr;
 					break;
@@ -174,7 +187,8 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 	int var_id = 0;
 	do {
 		uint32_t address = 0, size = 0;
-		if (!read_ips_offset(is, i, address, size)) {
+		bool is_rle = false;
+		if (!read_ips_offset(is, i, address, size, is_rle)) {
 			break;
 		}
 
