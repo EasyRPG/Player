@@ -20,6 +20,7 @@
 
 #include "exe_buildinfo.h"
 #include "exe_shared.h"
+#include "span.h"
 
 namespace EXE::Patches {
 	using namespace BuildInfo;
@@ -99,6 +100,32 @@ namespace EXE::Patches {
 		{ KnownPatches::PicPointer_R,      { 0x0B74B6, patch_segment(0xE8, 0xCD, 0xD5, 0xF7, 0xFF) } },
 		{ KnownPatches::DirectMenu,        { 0x09F756, patch_segment(0xE9, 0xAE, 0x6B, 0xFA, 0xFF), 0x00462DE } }
 	}};
+
+	inline Span<patch_detection const> GetPatchesForBuildVersion(EXE::BuildInfo::KnownEngineBuildVersions build_version) {
+		switch (build_version) {
+			case EXE::BuildInfo::RM2K_20001227:
+				return EXE::Patches::patches_RM2K_107;
+			case EXE::BuildInfo::RM2K_20010505:
+				return EXE::Patches::patches_RM2K_110;
+			case EXE::BuildInfo::RM2K_20030327:
+				return EXE::Patches::patches_RM2K_150;
+			case EXE::BuildInfo::RM2K_20030625:
+				return EXE::Patches::patches_RM2K_151;
+			case EXE::BuildInfo::RM2KE_160:
+				return EXE::Patches::patches_RM2K_160;
+			case EXE::BuildInfo::RM2KE_161:
+				return EXE::Patches::patches_RM2K_161;
+			case EXE::BuildInfo::RM2KE_162:
+				return EXE::Patches::patches_RM2K_162;
+			case EXE::BuildInfo::RM2K3_1080_1080:
+				return EXE::Patches::patches_RM2K3_1080;
+			case EXE::BuildInfo::RM2K3_1091_1091:
+				return EXE::Patches::patches_RM2K3_1091;
+			default:
+				break;
+		}
+		return Span<patch_detection const>();
+	}
 }
 
 #endif

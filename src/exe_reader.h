@@ -77,6 +77,8 @@ public:
 
 	const FileInfo& GetFileInfo();
 
+	EXE::BuildInfo::KnownEngineBuildVersions GetEngineBuildVersion();
+
 	std::map<EXE::Shared::GameConstantType, int32_t> GetOverriddenGameConstants();
 
 	std::map<EXE::Shared::EmbeddedStringTypes, std::string> GetEmbeddedStrings(std::string encoding);

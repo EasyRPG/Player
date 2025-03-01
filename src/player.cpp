@@ -790,6 +790,7 @@ void Player::CreateGameObjects() {
 void Player::DetectEngine(bool ignore_patch_override) {
 	int& engine = game_config.engine;
 
+	auto engine_build = EXE::BuildInfo::KnownEngineBuildVersions::UnknownBuild;
 	EXE::Shared::EngineCustomization engine_customization;
 
 #ifndef EMSCRIPTEN
@@ -816,7 +817,7 @@ void Player::DetectEngine(bool ignore_patch_override) {
 				game_config.patch_maniac.Set(is_patch_maniac);
 			}
 		}
-
+		engine_build = exe_reader->GetEngineBuildVersion();
 		for (auto p : exe_reader->GetOverriddenGameConstants()) {
 			engine_customization.constant_overrides[p.first] = p.second;
 		}
@@ -880,10 +881,10 @@ void Player::DetectEngine(bool ignore_patch_override) {
 
 #ifndef EMSCRIPTEN
 		if (game_config.patch_dynrpg.Get()) {
-			for (auto p : DynRpg_Loader::DetectRuntimePatches()) {
+			for (auto p : DynRpg_Loader::DetectRuntimePatches(engine_build)) {
 				engine_customization.runtime_patches[p.patch_type] = p;
 			}
-			DynRpg_Loader::ApplyQuickPatches(engine_customization);
+			DynRpg_Loader::ApplyQuickPatches(engine_customization, engine_build);
 		}
 #endif
 

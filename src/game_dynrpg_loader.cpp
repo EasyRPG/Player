@@ -94,16 +94,20 @@ namespace {
 	}
 }
 
-std::vector<EXE::Shared::PatchSetupInfo> DynRpg_Loader::DetectRuntimePatches() {
+std::vector<EXE::Shared::PatchSetupInfo> DynRpg_Loader::DetectRuntimePatches(EXE::BuildInfo::KnownEngineBuildVersions build_version) {
 	auto dir_contents = FileFinder::Game().ListDirectory(DYNRPG_FOLDER_PATCHES);
 
 	if (!dir_contents) {
 		return {};
 	}
 
+	if (build_version == EXE::BuildInfo::UnknownBuild) {
+		// If not otherwise specified, DynRPG should always be Rm2k3 v1.08
+		build_version = EXE::BuildInfo::RM2K3_1080_1080;
+	}
+
 	known_patches.clear();
-	// DynRPG should always be Rm2k3 v1.08
-	for (auto p : EXE::Patches::patches_RM2K3_1080) {
+	for (auto& p : EXE::Patches::GetPatchesForBuildVersion(build_version)) {
 		known_patches[p.first] = p.second;
 	}
 
@@ -217,7 +221,7 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 	return EXE::Shared::PatchSetupInfo { patch_type, var_id };
 }
 
-void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization) {
+void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization, EXE::BuildInfo::KnownEngineBuildVersions build_version) {
 	ini_quickpatches.clear();
 
 	int error = ini_parse(DYNRPG_INI_NAME, ini_handler_qp, nullptr);
@@ -230,11 +234,13 @@ void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_c
 		Output::Debug("Found section for QuickPatches inside DynRPG.ini.");
 	}
 
-	// DynRPG should always be Rm2k3 v1.08
-	auto build_version = EXE::BuildInfo::RM2K3_1080_1080;
+	if (build_version == EXE::BuildInfo::UnknownBuild) {
+		// If not otherwise specified, DynRPG should always be Rm2k3 v1.08
+		build_version = EXE::BuildInfo::RM2K3_1080_1080;
+	}
 
 	auto const& build_info = EXE::BuildInfo::known_engine_builds[build_version].second;
-	auto constant_addresses = EXE::Constants::GetConstantAddressesForBuildInfo(build_info.engine_type, build_version);
+	auto& constant_addresses = EXE::Constants::GetConstantAddressesForBuildInfo(build_info.engine_type, build_version);
 
 	std::vector<EXE::Patches::patch_detection> loaded_ips_patches;
 
@@ -262,10 +268,10 @@ void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_c
 
 		std::map<EXE::Shared::GameConstantType, int32_t> quickpatched_constants;
 		for (auto section : qp) {
-			auto const_it = std::find_if(constant_addresses->begin(), constant_addresses->end(), [&section](auto& p) {
+			auto const_it = std::find_if(constant_addresses.begin(), constant_addresses.end(), [&section](auto& p) {
 				return p.second.code_offset == section.address;
 			});
-			if (const_it == constant_addresses->end()) {
+			if (const_it == constant_addresses.end()) {
 				read_error = true;
 				break;
 			}

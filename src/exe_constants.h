@@ -432,7 +432,7 @@ namespace EXE::Constants {
 		}
 	}};
 
-	inline EXE::Constants::code_address_map const* GetConstantAddressesForBuildInfo(EXE::BuildInfo::EngineType engine_type, EXE::BuildInfo::KnownEngineBuildVersions build_version) {
+	inline code_address_map const& GetConstantAddressesForBuildInfo(EXE::BuildInfo::EngineType engine_type, EXE::BuildInfo::KnownEngineBuildVersions build_version) {
 		switch (engine_type) {
 			case EXE::BuildInfo::EngineType::RPG2000:
 			{
@@ -441,7 +441,7 @@ namespace EXE::Constants {
 					return pair.first == build_version;
 				});
 				if (it != builds.end()) {
-					return &it->second;
+					return it->second;
 				}
 			}
 			break;
@@ -452,14 +452,14 @@ namespace EXE::Constants {
 					return pair.first == build_version;
 				});
 				if (it != builds.end()) {
-					return &it->second;
+					return it->second;
 				}
 			}
 			break;
 			default:
 				break;
 		}
-		return nullptr;
+		return empty_code_map;
 	}
 }
 

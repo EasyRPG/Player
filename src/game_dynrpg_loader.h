@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <map>
+#include "exe_buildinfo.h"
 #include "exe_shared.h"
 #include "filefinder.h"
 
@@ -33,11 +34,11 @@ namespace DynRpg_Loader {
 	constexpr std::array<uint8_t, 5> magic_ips = { 0x50, 0x41, 0x54, 0x43, 0x48 }; // "PATCH"
 	constexpr EXE::Shared::PatchSetupInfo invalid_patch = { static_cast<EXE::Shared::KnownPatches>(-1), 0 };
 
-	std::vector<EXE::Shared::PatchSetupInfo> DetectRuntimePatches();
+	std::vector<EXE::Shared::PatchSetupInfo> DetectRuntimePatches(EXE::BuildInfo::KnownEngineBuildVersions build_version = EXE::BuildInfo::KnownEngineBuildVersions::RM2K3_1080_1080);
 
 	EXE::Shared::PatchSetupInfo ReadIPS(std::string const& item_name, Filesystem_Stream::InputStream& is);
 
-	void ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization);
+	void ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization, EXE::BuildInfo::KnownEngineBuildVersions build_version = EXE::BuildInfo::KnownEngineBuildVersions::RM2K3_1080_1080);
 
 	struct QuickPatchAddress {
 		uint32_t address = 0;
