@@ -104,7 +104,7 @@ int Game_EnemyParty::GetExp() const {
 	for (auto& enemy: enemies) {
 		if (enemy.IsDead()) {
 			auto exp = enemy.GetExp();
-			RuntimePatches::MonSca::ModifyExpGained(exp);
+			RuntimePatches::MonSca::ModifyExpGained(enemy, exp);
 
 			sum += exp;
 		}
@@ -117,7 +117,7 @@ int Game_EnemyParty::GetMoney() const {
 	for (auto& enemy: enemies) {
 		if (enemy.IsDead()) {
 			auto money = enemy.GetMoney();
-			RuntimePatches::MonSca::ModifyMoneyGained(money);
+			RuntimePatches::MonSca::ModifyMoneyGained(enemy, money);
 
 			sum += money;
 		}
@@ -129,12 +129,12 @@ void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 	for (auto& enemy: enemies) {
 		if (enemy.IsDead()) {
 			auto drop_id = enemy.GetDropId();
-			RuntimePatches::MonSca::ModifyItemGained(drop_id);
+			RuntimePatches::MonSca::ModifyItemGained(enemy, drop_id);
 
 			// Only roll if the enemy has something to drop
 			if (drop_id > 0) {
 				auto drop_rate = enemy.GetDropProbability();
-				RuntimePatches::MonSca::ModifyItemDropRate(drop_rate);
+				RuntimePatches::MonSca::ModifyItemDropRate(enemy, drop_rate);
 
 				if (Rand::ChanceOf(drop_rate, 100)) {
 					out.push_back(drop_id);
