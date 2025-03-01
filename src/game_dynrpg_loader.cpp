@@ -114,6 +114,17 @@ std::vector<EXE::Shared::PatchSetupInfo> DynRpg_Loader::DetectRuntimePatches(EXE
 	std::vector<EXE::Shared::PatchSetupInfo> result;
 
 	for (auto item : *dir_contents) {
+		auto filename_cp = item.first;
+		std::transform(filename_cp.begin(), filename_cp.end(), filename_cp.begin(), ::tolower);
+		if (filename_cp.find("antilag") != std::string::npos) {
+			// Skip all variants of the "AntiLag" patch
+			continue;
+		}
+		if (filename_cp.find("statdelimiter") != std::string::npos) {
+			// StatDelimiter's changes should already be handled by the constant extraction mechanism
+			continue;
+		}
+
 		auto fis = FileFinder::Game().OpenFile(DYNRPG_FOLDER_PATCHES, item.first);
 		if (!fis) {
 			continue;
