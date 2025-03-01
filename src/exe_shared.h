@@ -20,6 +20,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include <lcf/enum_tags.h>
 
 namespace EXE::Shared {
@@ -152,7 +153,19 @@ namespace EXE::Shared {
 
 	struct PatchSetupInfo {
 		KnownPatches patch_type;
-		int32_t custom_var_1;
+		std::vector<int32_t> customizations;
+
+		PatchSetupInfo()
+			: patch_type(static_cast<KnownPatches>(-1)), customizations({}) {
+		}
+
+		PatchSetupInfo(KnownPatches patch_type)
+			: patch_type(patch_type), customizations({}) {
+		}
+
+		PatchSetupInfo(KnownPatches patch_type, std::vector<int32_t> customizations)
+		: patch_type(patch_type), customizations(customizations) {
+		}
 	};
 
 	struct EngineCustomization {

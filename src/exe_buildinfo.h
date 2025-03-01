@@ -224,20 +224,33 @@ namespace EXE::BuildInfo {
 
 	using patch_segment_data = fixed_size_byte_array<MAX_SIZE_CHK_PATCH_SEGMENT>;
 
+	struct PatchArg {
+		size_t offset;
+		int32_t default_value;
+
+		constexpr PatchArg(size_t offset, int32_t default_value)
+			: offset(offset), default_value(default_value) {
+		}
+	};
+
+	constexpr PatchArg patch_arg_empty = { 0xFFFFFF, 0 };
+
 	class PatchDetectionInfo {
 	public:
 		size_t chk_segment_offset;
 		patch_segment_data chk_segment_data;
-		size_t extract_var_offset;
+		const PatchArg* patch_args;
+		size_t patch_args_size;
 
 		constexpr PatchDetectionInfo() :
-			chk_segment_offset(0), chk_segment_data({}), extract_var_offset(0) {
+			chk_segment_offset(0), chk_segment_data({}), patch_args(&patch_arg_empty), patch_args_size(0) {
 		}
 		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data) :
-			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), extract_var_offset(0) {
+			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), patch_args(&patch_arg_empty), patch_args_size(0) {
 		}
-		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data, size_t extract_var_offset) :
-			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), extract_var_offset(extract_var_offset) {
+		template<size_t S>
+		constexpr PatchDetectionInfo(size_t chk_segment_offset, patch_segment_data chk_segment_data, std::array<PatchArg, S> const& patch_args) :
+			chk_segment_offset(chk_segment_offset), chk_segment_data(chk_segment_data), patch_args(patch_args.data()), patch_args_size(S) {
 		}
 	};
 }

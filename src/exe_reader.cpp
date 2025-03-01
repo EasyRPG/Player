@@ -551,7 +551,7 @@ std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverriddenGameCon
 		switch (build_version) {
 			case EXE::BuildInfo::RM2KE_162:
 				if (CheckForString(0x07DEA6, "XXX" /* 3x "POP EAX" */)) {
-					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::StatDelimiter);
 				}
 				break;
 			case EXE::BuildInfo::RM2K3_1080_1080:
@@ -559,12 +559,12 @@ std::map<EXE::Shared::GameConstantType, int32_t> EXEReader::GetOverriddenGameCon
 					apply_known_config(EXE::Constants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
 				}
 				if (CheckForString(0x09D679, "XXX" /* 3x "POP EAX" */)) {
-					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::StatDelimiter);
 				}
 				break;
 			case EXE::BuildInfo::RM2K3_1091_1091:
 				if (CheckForString(0x09C9AD, "XXX" /* 3x "POP EAX" */)) {
-					apply_known_config(EXE::Constants::KnownPatchConfigurations::QP_StatDelimiter);
+					apply_known_config(EXE::Constants::KnownPatchConfigurations::StatDelimiter);
 				}
 				break;
 			default:
@@ -744,15 +744,30 @@ std::vector<EXE::Shared::PatchSetupInfo> EXEReader::CheckForPatches() {
 			continue;
 		}
 
-		if (patch_info.extract_var_offset == 0) {
+		if (patch_info.patch_args_size == 0) {
 			Output::Debug("Detected Patch: '{}'", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)));
-			patches.emplace_back(EXE::Shared::PatchSetupInfo{ patch_type, 0 });
+			patches.emplace_back(EXE::Shared::PatchSetupInfo(patch_type));
 		} else {
-			int patch_var = GetU32(code_offset + patch_info.extract_var_offset);
-			if (patch_var > 0) {
-				Output::Debug("Detected Patch: '{}' (VarId: {})", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)), patch_var);
+			std::vector<int32_t> patch_vars;
+			patch_vars.resize(patch_info.patch_args_size);
+
+			for (int i = 0; i < patch_info.patch_args_size; ++i) {
+				patch_vars[i] = GetU32(code_offset + patch_info.patch_args[i].offset);
 			}
-			patches.emplace_back(EXE::Shared::PatchSetupInfo{ patch_type, patch_var });
+			if (patch_info.patch_args_size == 1) {
+				Output::Debug("Detected Patch: '{}' (VarId: {})", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)), patch_vars[0]);
+			} else {
+				std::string out = "(";
+				for (int i = 0; i < patch_vars.size(); ++i) {
+					if (i > 0) {
+						out += ", ";
+					}
+					out += fmt::format("{}", patch_vars[i]);
+				}
+				out += ")";
+				Output::Debug("Detected Patch: '{}' (Config: {})", EXE::Shared::kKnownPatches.tag(static_cast<int>(patch_type)), out);
+			}
+			patches.emplace_back(EXE::Shared::PatchSetupInfo(patch_type, patch_vars));
 		}
 	}
 

@@ -922,7 +922,7 @@ void Player::DetectEngine(bool ignore_patch_override) {
 						break;
 					case Patch::DirectMenu:
 						if (!game_config.patch_direct_menu.Get()) {
-							game_config.patch_direct_menu.Set(patch.custom_var_1);
+							game_config.patch_direct_menu.Set(patch.customizations[0]);
 						}
 						break;
 				}

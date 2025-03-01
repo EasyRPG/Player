@@ -27,13 +27,13 @@ namespace EXE::Constants {
 
 	enum class KnownPatchConfigurations {
 		Rm2k3_Italian_WD_108,		// Italian "WhiteDragon" patch
-		QP_StatDelimiter,
+		StatDelimiter,
 		LAST
 	};
 
 	static constexpr auto kKnownPatchConfigurations = lcf::makeEnumTags<KnownPatchConfigurations>(
 		"Rm2k3 Italian 1.08",
-		"QuickPatch StatDelimiter"
+		"StatDelimiter Patch"
 	);
 
 	static_assert(kKnownPatchConfigurations.size() == static_cast<size_t>(KnownPatchConfigurations::LAST));
@@ -57,7 +57,7 @@ namespace EXE::Constants {
 				{ T::MaxDamageValue,     99999 },
 				{ T::MaxGoldValue,     9999999 }
 		}},{
-			KnownPatchConfigurations::QP_StatDelimiter, {
+			KnownPatchConfigurations::StatDelimiter, {
 				{ T::MaxActorHP,       9999999 },
 				{ T::MaxActorSP,       9999999 },
 				{ T::MaxAtkBaseValue,   999999 },

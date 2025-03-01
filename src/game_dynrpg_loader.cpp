@@ -182,13 +182,14 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 		return invalid_patch;
 	}
 
-	if (patch_info->extract_var_offset == 0) {
+	if (patch_info->patch_args_size == 0) {
 		Output::Debug("DynRPG Loader: Applying patch '{}'", EXE::Shared::kKnownPatches.tag(patch_type));
-		return EXE::Shared::PatchSetupInfo { patch_type, 0 };
+		return EXE::Shared::PatchSetupInfo(patch_type);
 	}
 
 	i = magic_ips.size();
-	int var_id = 0;
+	std::vector<int32_t> var_ids;
+	var_ids.resize(patch_info->patch_args_size);
 	do {
 		uint32_t address = 0, size = 0;
 		bool is_rle = false;
@@ -196,13 +197,16 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 			break;
 		}
 
-		if (patch_info->extract_var_offset >= address && patch_info->extract_var_offset <= (address + size)) {
-			int section_ofs = patch_info->extract_var_offset - address;
-			var_id = read_int32(is, i + section_ofs);
+		for (int j = 0; j < patch_info->patch_args_size; ++j) {
+			auto extract_var_offset = patch_info->patch_args[j].offset;
+			if (extract_var_offset >= address && extract_var_offset <= (address + size)) {
+				int section_ofs = extract_var_offset - address;
+				var_ids[j] = read_int32(is, i + section_ofs);
+			}
 		}
 
 		auto patch_it = std::find_if(known_patches.begin(), known_patches.end(), [&](auto& p) {
-			auto& ofs = p.second.extract_var_offset;
+			auto& ofs = p.second.chk_segment_offset;
 			return ofs >= address && ofs < (address + size);
 		});
 		if (patch_it != known_patches.end()) {
@@ -211,14 +215,26 @@ EXE::Shared::PatchSetupInfo DynRpg_Loader::ReadIPS(std::string const& item_name,
 		i += size;
 	} while (is.get() != -1);
 
-	if (var_id == 0) {
+	/*if (var_id == 0) {
 		Output::Debug("DynRPG Loader: Could not extract variable values for known IPS patch '{}'", item_name);
 		return invalid_patch;
+	}*/
+
+	if (patch_info->patch_args_size == 1) {
+		Output::Debug("DynRPG Loader: Applying patch '{}' with var value '{}'", EXE::Shared::kKnownPatches.tag(patch_type), var_ids[0]);
+	} else {
+		std::string out = "(";
+		for (int i = 0; i < var_ids.size(); ++i) {
+			if (i > 0) {
+				out += ", ";
+			}
+			out += fmt::format("{}", var_ids[i]);
+		}
+		out += ")";
+		Output::Debug("DynRPG Loader: Applying patch '{}' (Config: {})", EXE::Shared::kKnownPatches.tag(patch_type), out);
 	}
 
-	Output::Debug("DynRPG Loader: Applying patch '{}' with var value '{}'", EXE::Shared::kKnownPatches.tag(patch_type), var_id);
-
-	return EXE::Shared::PatchSetupInfo { patch_type, var_id };
+	return EXE::Shared::PatchSetupInfo(patch_type, var_ids);
 }
 
 void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_customization, EXE::BuildInfo::KnownEngineBuildVersions build_version) {
@@ -286,31 +302,45 @@ void DynRpg_Loader::ApplyQuickPatches(EXE::Shared::EngineCustomization& engine_c
 			}
 			continue;
 		}
-		read_error = false;
 
-		EXE::Shared::KnownPatches quickpatched_ips_type;
-		int quickpatched_ips_var_id = 0;
+		auto found_matching_patch = EXE::Shared::KnownPatches::LAST;
+		std::vector<int> quickpatched_ips_no;
+		std::vector<int32_t> quickpatched_ips_vars;
+
 		for (auto section : qp) {
-			auto const_it = std::find_if(loaded_ips_patches.begin(), loaded_ips_patches.end(), [&section](auto& p) {
-				auto& ofs = p.second.extract_var_offset;
-				return ofs == section.address;
-			});
-			if (const_it == loaded_ips_patches.end()) {
-				read_error = true;
-				break;
+			for (auto& p : loaded_ips_patches) {
+				if (found_matching_patch != EXE::Shared::KnownPatches::LAST && p.first != found_matching_patch) {
+					// Assuming that multiple addresses in a QuickPatch line target only a single IPS patch..
+					break;
+				}
+
+				auto& loaded_patch = p.second;
+				for (int i = 0; i < loaded_patch.patch_args_size; ++i) {
+					auto& ofs = loaded_patch.patch_args[i].offset;
+					if (ofs == section.address) {
+						found_matching_patch = p.first;
+						quickpatched_ips_no.push_back(i);
+						quickpatched_ips_vars.push_back(section.patch_val);
+					}
+				}
 			}
-			quickpatched_ips_type = const_it->first;
-			quickpatched_ips_var_id = section.patch_val;
 		}
 
-		if (!read_error) {
-			Output::Debug("DynRPG Loader: Found valid QuickPatch '{}' targeting known patch constants for '{}'", key_name, EXE::Shared::kKnownPatches.tag(quickpatched_ips_type));
+		if (found_matching_patch != EXE::Shared::KnownPatches::LAST) {
+			Output::Debug("DynRPG Loader: Found valid QuickPatch '{}' targeting known patch constants for '{}'", key_name, EXE::Shared::kKnownPatches.tag(found_matching_patch));
+			if (quickpatched_ips_vars.size() == 1) {
+				//TODO: detailed debug output
+			} else {
+				//TODO: debug output
+			}
 			for (auto& p : engine_customization.runtime_patches) {
 				auto& patch = p.second;
-				if (patch.patch_type != quickpatched_ips_type) {
+				if (patch.patch_type != found_matching_patch) {
 					continue;
 				}
-				patch.custom_var_1 = quickpatched_ips_var_id;
+				for (int i = 0; i < quickpatched_ips_no.size(); ++i) {
+					patch.customizations[quickpatched_ips_no[i]] = quickpatched_ips_vars[i];
+				}
 			}
 			continue;
 		}

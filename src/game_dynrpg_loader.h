@@ -32,7 +32,7 @@
 
 namespace DynRpg_Loader {
 	constexpr std::array<uint8_t, 5> magic_ips = { 0x50, 0x41, 0x54, 0x43, 0x48 }; // "PATCH"
-	constexpr EXE::Shared::PatchSetupInfo invalid_patch = { static_cast<EXE::Shared::KnownPatches>(-1), 0 };
+	const auto invalid_patch = EXE::Shared::PatchSetupInfo(static_cast<EXE::Shared::KnownPatches>(-1));
 
 	std::vector<EXE::Shared::PatchSetupInfo> DetectRuntimePatches(EXE::BuildInfo::KnownEngineBuildVersions build_version = EXE::BuildInfo::KnownEngineBuildVersions::RM2K3_1080_1080);
 
