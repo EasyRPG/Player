@@ -24,6 +24,7 @@
 #include "game_variables.h"
 #include "game_actor.h"
 #include "game_battler.h"
+#include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
@@ -127,7 +128,7 @@ namespace {
 void RuntimePatches::LockPatchesAsDiabled() {
 #ifndef NO_RUNTIME_PATCHES
 	LockPatchArguments<2>(EncounterRandomnessAlert::patch_args);
-	LockPatchArguments<11>(MonSca::patch_args);
+	LockPatchArguments<12>(MonSca::patch_args);
 	LockPatchArguments<2>(EXPlus::patch_args);
 	LockPatchArguments<2>(GuardRevamp::patch_args);
 #endif
@@ -140,7 +141,7 @@ bool RuntimePatches::ParseFromCommandLine(CmdlineParser& cp) {
 		return ParsePatchArguments<2>(cp, arg, EncounterRandomnessAlert::patch_args);
 	}
 	if (cp.ParseNext(arg, 1, { "--patch-monsca", "--no-patch-monsca" })) {
-		return ParsePatchArguments<11>(cp, arg, MonSca::patch_args);
+		return ParsePatchArguments<12>(cp, arg, MonSca::patch_args);
 	}
 	if (cp.ParseNext(arg, 1, { "--patch-explus", "--no-patch-explus" })) {
 		return ParsePatchArguments<2>(cp, arg, EXPlus::patch_args);
@@ -158,7 +159,7 @@ bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 #ifndef NO_RUNTIME_PATCHES
 	bool patch_override = false;
 	patch_override |= ParsePatchFromIni<2>(ini, EncounterRandomnessAlert::patch_args);
-	patch_override |= ParsePatchFromIni<11>(ini, MonSca::patch_args);
+	patch_override |= ParsePatchFromIni<12>(ini, MonSca::patch_args);
 	patch_override |= ParsePatchFromIni<2>(ini, EXPlus::patch_args);
 	patch_override |= ParsePatchFromIni<2>(ini, GuardRevamp::patch_args);
 	return patch_override;
@@ -171,7 +172,7 @@ bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 #ifndef NO_RUNTIME_PATCHES
 	PrintPatch<2>(patches, EncounterRandomnessAlert::patch_args);
-	PrintPatch<11>(patches, MonSca::patch_args);
+	PrintPatch<12>(patches, MonSca::patch_args);
 	PrintPatch<2>(patches, EXPlus::patch_args);
 	PrintPatch<2>(patches, GuardRevamp::patch_args);
 #else
@@ -209,7 +210,15 @@ namespace RuntimePatches::MonSca {
 		return switch_id > 0 && Main_Data::game_switches->Get(switch_id);
 	}
 
-	void ApplyScaling(int& val, int mod) {
+	int GetVariableId(Game_Enemy const& enemy, int var_id) {
+		if (Player::game_config.patch_monsca_plus.Get() > 0) {
+			return var_id + enemy.GetTroopMemberId();
+		}
+		return var_id;
+	}
+
+	void ApplyScaling(Game_Enemy const& enemy, int& val, int var_id) {
+		int mod = Main_Data::game_variables->Get(GetVariableId(enemy, var_id));
 		if (mod == 0) {
 			return;
 		}
@@ -221,113 +230,113 @@ namespace RuntimePatches::MonSca {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyMaxHp(int& val) {
+void RuntimePatches::MonSca::ModifyMaxHp(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_maxhp.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyMaxSp(int& val) {
+void RuntimePatches::MonSca::ModifyMaxSp(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_maxsp.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyAtk(int& val) {
+void RuntimePatches::MonSca::ModifyAtk(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_atk.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyDef(int& val) {
+void RuntimePatches::MonSca::ModifyDef(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_def.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifySpi(int& val) {
+void RuntimePatches::MonSca::ModifySpi(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_spi.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyAgi(int& val) {
+void RuntimePatches::MonSca::ModifyAgi(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_agi.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyExpGained(int& val) {
+void RuntimePatches::MonSca::ModifyExpGained(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_exp.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyMoneyGained(int& val) {
+void RuntimePatches::MonSca::ModifyMoneyGained(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_gold.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 
-void RuntimePatches::MonSca::ModifyItemGained(int& item_id) {
+void RuntimePatches::MonSca::ModifyItemGained(Game_Enemy const& enemy, int& item_id) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)item_id;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_item.Get(); var_id > 0) {
-		item_id += Main_Data::game_variables->Get(var_id);
+		 item_id += Main_Data::game_variables->Get(GetVariableId(enemy, var_id));
 	}
 }
 
-void RuntimePatches::MonSca::ModifyItemDropRate(int& val) {
+void RuntimePatches::MonSca::ModifyItemDropRate(Game_Enemy const& enemy, int& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
 	return;
 #endif
 	if (auto var_id = Player::game_config.patch_monsca_droprate.Get(); var_id > 0) {
-		ApplyScaling(val, Main_Data::game_variables->Get(var_id));
+		ApplyScaling(enemy, val, var_id);
 	}
 }
 

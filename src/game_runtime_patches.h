@@ -24,6 +24,7 @@
 
 class Game_Actor;
 class Game_Battler;
+class Game_Enemy;
 
 // When this compile flag is set, all of the evaluation logic for these patches
 // will be disabled, by simply voiding any calls to their function hooks.
@@ -72,7 +73,7 @@ namespace RuntimePatches {
 	}
 
 	/**
-	 * Support for RPG_RT patch 'MonSca'.
+	 * Support for RPG_RT patch 'MonSca' & 'MonScaPlus'.
 	 * This patch scales the default battle parameters of an enemy
 	 * based on the contents of some in-game variables.
 	 * (Default: V[1001] - V[1010])
@@ -82,9 +83,14 @@ namespace RuntimePatches {
 	 *
 	 * Default formula:     val = val * V[...] / 1000
 	 * Alternative formula: val = val * avg_level * V[...] / 1000
+	 *
+	 * Variant 'MonScaPlus':
+	 * If set, the variable IDs used for scaling will be offset
+	 * by the enemy's troop index.
+	 *  -> V[base_var_id + troop_index]
 	 */
 	namespace MonSca {
-		constexpr std::array<PatchArg, 11> patch_args = { {
+		constexpr std::array<PatchArg, 12> patch_args = { {
 			{ Player::game_config.patch_monsca_maxhp, "-maxhp", 1001 },
 			{ Player::game_config.patch_monsca_maxsp, "-maxsp", 1002 },
 			{ Player::game_config.patch_monsca_atk, "-atk", 1003 },
@@ -95,33 +101,34 @@ namespace RuntimePatches {
 			{ Player::game_config.patch_monsca_gold, "-gold", 1008 },
 			{ Player::game_config.patch_monsca_item, "-item", 1009 },
 			{ Player::game_config.patch_monsca_droprate, "-droprate", 1010 },
-			{ Player::game_config.patch_monsca_levelscaling, "-lvlscale", 1001 }
+			{ Player::game_config.patch_monsca_levelscaling, "-lvlscale", 1001 },
+			{ Player::game_config.patch_monsca_plus, "-plus", 0 }
 		} };
 
 		/** Scales an enemies's maximum HP stat, based on the value of variable V[1001] */
-		void ModifyMaxHp(int& val);
+		void ModifyMaxHp(Game_Enemy const& enemy, int& val);
 		/** Scales an enemies's maximum SP stat, based on the value of variable V[1002] */
-		void ModifyMaxSp(int& val);
+		void ModifyMaxSp(Game_Enemy const& enemy, int& val);
 		/** Scales an enemies's attack stat, based on the value of variable V[1003] */
-		void ModifyAtk(int& val);
+		void ModifyAtk(Game_Enemy const& enemy, int& val);
 		/** Scales an enemies's defense stat, based on the value of variable V[1004] */
-		void ModifyDef(int& val);
+		void ModifyDef(Game_Enemy const& enemy, int& val);
 		/** Scales an enemies's spirit stat, based on the value of variable V[1005] */
-		void ModifySpi(int& val);
+		void ModifySpi(Game_Enemy const& enemy, int& val);
 		/** Scales an enemies's agility stat, based on the value of variable V[1006] */
-		void ModifyAgi(int& val);
+		void ModifyAgi(Game_Enemy const& enemy, int& val);
 		/** Scales the experience points gained by defating an enemy, based on the value of variable V[1007] */
-		void ModifyExpGained(int& val);
+		void ModifyExpGained(Game_Enemy const& enemy, int& val);
 		/** Scales the money gained by defating an enemy, based on the value of variable V[1008] */
-		void ModifyMoneyGained(int& val);
+		void ModifyMoneyGained(Game_Enemy const& enemy, int& val);
 		/**
 		 * Modifies the item dropped by defating an enemy, based on the value of variable V[1009]
 		 * In contrast to other modifers of this patch, this skips the normal formula and just
 		 * adds the variable value to the result.
 		 */
-		void ModifyItemGained(int& item_id);
+		void ModifyItemGained(Game_Enemy const& enemy, int& item_id);
 		/** Scales the item drop rate of an enemy, based on the value of variable V[1010] */
-		void ModifyItemDropRate(int& val);
+		void ModifyItemDropRate(Game_Enemy const& enemy, int& val);
 	}
 
 	/**

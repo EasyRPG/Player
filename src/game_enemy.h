@@ -329,37 +329,37 @@ inline int Game_Enemy::GetTroopMemberId() const {
 
 inline int Game_Enemy::GetBaseMaxHp() const {
 	auto max_hp = enemy->max_hp;
-	RuntimePatches::MonSca::ModifyMaxHp(max_hp);
+	RuntimePatches::MonSca::ModifyMaxHp(*this, max_hp);
 	return max_hp;
 }
 
 inline int Game_Enemy::GetBaseMaxSp() const {
 	auto max_sp = enemy->max_sp;
-	RuntimePatches::MonSca::ModifyMaxSp(max_sp);
+	RuntimePatches::MonSca::ModifyMaxSp(*this, max_sp);
 	return max_sp;
 }
 
 inline int Game_Enemy::GetBaseAtk(Weapon) const {
 	auto attack = enemy->attack;
-	RuntimePatches::MonSca::ModifyAtk(attack);
+	RuntimePatches::MonSca::ModifyAtk(*this, attack);
 	return attack;
 }
 
 inline int Game_Enemy::GetBaseDef(Weapon) const {
 	auto defense = enemy->defense;
-	RuntimePatches::MonSca::ModifyDef(defense);
+	RuntimePatches::MonSca::ModifyDef(*this, defense);
 	return defense;
 }
 
 inline int Game_Enemy::GetBaseSpi(Weapon) const {
 	auto spirit = enemy->spirit;
-	RuntimePatches::MonSca::ModifySpi(spirit);
+	RuntimePatches::MonSca::ModifySpi(*this, spirit);
 	return spirit;
 }
 
 inline int Game_Enemy::GetBaseAgi(Weapon) const {
 	auto agility = enemy->agility;
-	RuntimePatches::MonSca::ModifyAgi(agility);
+	RuntimePatches::MonSca::ModifyAgi(*this, agility);
 	return agility;
 }
 
