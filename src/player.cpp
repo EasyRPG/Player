@@ -153,7 +153,7 @@ namespace {
 }
 
 void Player::Init(std::vector<std::string> args) {
-	lcf::LogHandler::SetHandler([](lcf::LogHandler::Level level, StringView message, lcf::LogHandler::UserData) {
+	lcf::LogHandler::SetHandler([](lcf::LogHandler::Level level, std::string_view message, lcf::LogHandler::UserData) {
 		Output::Debug("lcf ({}): {}", lcf::LogHandler::kLevelTags.tag(level), message);
 	});
 

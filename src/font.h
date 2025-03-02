@@ -101,7 +101,7 @@ class Font {
 	/**
 	 * @return Name of the font
 	 */
-	 StringView GetName() const;
+	 std::string_view GetName() const;
 
 	/**
 	 * Determines the size of a bitmap required to render a single character.
@@ -185,7 +185,7 @@ class Font {
 	 * @param text Text to shape
 	 * @return Shaping information. See Font::ShapeRet
 	 */
-	std::vector<ShapeRet> Shape(U32StringView text) const;
+	std::vector<ShapeRet> Shape(std::u32string_view text) const;
 
 	/**
 	 * Defines a fallback font that shall be used when a glyph is not found in the current font.
@@ -251,11 +251,11 @@ class Font {
 	virtual GlyphRet vRender(char32_t glyph) const = 0;
 	virtual GlyphRet vRenderShaped(char32_t glyph) const { return vRender(glyph); };
 	virtual bool vCanShape() const { return false; }
-	virtual std::vector<ShapeRet> vShape(U32StringView) const { return {}; }
+	virtual std::vector<ShapeRet> vShape(std::u32string_view) const { return {}; }
 	virtual void vApplyStyle(const Style& style) { (void)style; };
 
  protected:
-	Font(StringView name, int size, bool bold, bool italic);
+	Font(std::string_view name, int size, bool bold, bool italic);
 
 	std::string name;
 	bool style_applied = false;

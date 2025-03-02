@@ -41,11 +41,11 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 {
 }
 
-void Game_Character::SanitizeData(StringView name) {
+void Game_Character::SanitizeData(std::string_view name) {
 	SanitizeMoveRoute(name, data()->move_route, data()->move_route_index, "move_route_index");
 }
 
-void Game_Character::SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name) {
+void Game_Character::SanitizeMoveRoute(std::string_view name, const lcf::rpg::MoveRoute& mr, int32_t& idx, std::string_view chunk_name) {
 	const auto n = static_cast<int32_t>(mr.move_commands.size());
 	if (idx < 0 || idx > n) {
 		idx = n;

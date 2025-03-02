@@ -158,7 +158,7 @@ const std::vector<Language>& Translation::GetLanguages() const
 }
 
 
-void Translation::SelectLanguage(StringView lang_id)
+void Translation::SelectLanguage(std::string_view lang_id)
 {
 	// Try to read in our language files.
 	Output::Debug("Changing language to: '{}'", (!lang_id.empty() ? lang_id : "<Default>"));
@@ -192,7 +192,7 @@ void Translation::SelectLanguage(StringView lang_id)
 	}
 }
 
-void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
+void Translation::SelectLanguageAsync(FileRequestResult*, std::string_view lang_id) {
 	--request_counter;
 	if (request_counter == 0) {
 		requests.clear();
@@ -264,7 +264,7 @@ void Translation::RequestAndAddMap(int map_id) {
 	request->Start();
 }
 
-bool Translation::ParseLanguageFiles(StringView lang_id)
+bool Translation::ParseLanguageFiles(std::string_view lang_id)
 {
 	FilesystemView language_tree;
 
@@ -316,7 +316,7 @@ bool Translation::ParseLanguageFiles(StringView lang_id)
 			if (is) {
 				ParsePoFile(std::move(is), *mapnames);
 			}
-		} else if (StringView(tr_name.first).ends_with(".po")) {
+		} else if (EndsWith(tr_name.first, ".po")) {
 			// This will fail in the web player but is intentional
 			// The fetching happens on map load instead
 			// Still parsing all files locally to get syntax errors early
@@ -560,7 +560,7 @@ namespace {
 		}
 
 		/** Change the string value of the EventCommand at position "idx" to "newStr" */
-		void ReWriteString(size_t idx, StringView newStr) {
+		void ReWriteString(size_t idx, std::string_view newStr) {
 			if (idx < commands.size()) {
 				commands[idx].string = lcf::DBString(newStr);
 			}
@@ -571,7 +571,7 @@ namespace {
 		 * Sets the string value to "line". Note that ShowMessage_2 is chosen if baseMsgBox is false.
 		 * This also updates the index if relevant, but it does not update external index caches.
 		 */
-		void PutShowMessageBeforeIndex(StringView line, size_t idx, bool baseMsgBox) {
+		void PutShowMessageBeforeIndex(std::string_view line, size_t idx, bool baseMsgBox) {
 			// We need a reference index for the indent.
 			size_t refIndent = 0;
 			if (idx < commands.size()) {
@@ -766,7 +766,7 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			dict.TranslateString("actors.title", commands.CurrentCmdString());
 			commands.Advance();
 		} else if (commands.CurrentIsShowStringPicture()) {
-			auto cmdstr = StringView(commands.CurrentCmdString());
+			std::string_view cmdstr = commands.CurrentCmdString();
 			if (!cmdstr.empty() && cmdstr[0] == '\x01') {
 				size_t escape_idx = 1;
 				for (escape_idx = 1; escape_idx < cmdstr.size(); ++escape_idx) {
@@ -791,7 +791,7 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 	}
 }
 
-void Translation::RewriteMapMessages(StringView map_name, lcf::rpg::Map& map) {
+void Translation::RewriteMapMessages(std::string_view map_name, lcf::rpg::Map& map) {
 	// Retrieve lookup for this map.
 	auto mapIt = maps.find(ToString(map_name));
 	if (mapIt==maps.end()) { return; }
@@ -837,7 +837,7 @@ void Dictionary::addEntry(const Entry& entry)
 // Returns success
 void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 	std::string line;
-	lcf::StringView line_view;
+	std::string_view line_view;
 	bool found_header = false;
 	bool parse_item = false;
 	int line_number = 0;
@@ -906,7 +906,7 @@ void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 		while (Utils::ReadLine(in, line)) {
 			line_view = Utils::TrimWhitespace(line);
 			++line_number;
-			if (line_view.empty() || line_view.starts_with("#")) {
+			if (line_view.empty() || StartsWith(line_view, "#")) {
 				break;
 			}
 			e.translation += extract_string(0);
@@ -924,7 +924,7 @@ void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 		while (Utils::ReadLine(in, line)) {
 			line_view = Utils::TrimWhitespace(line);
 			++line_number;
-			if (line_view.empty() || line_view.starts_with("msgstr")) {
+			if (line_view.empty() || StartsWith(line_view, "msgstr")) {
 				read_msgstr();
 				return;
 			}
@@ -936,25 +936,25 @@ void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 		line_view = Utils::TrimWhitespace(line);
 		++line_number;
 		if (!found_header) {
-			if (line_view.starts_with("msgstr")) {
+			if (StartsWith(line_view, "msgstr")) {
 				found_header = true;
 			}
 			continue;
 		}
 
 		if (!parse_item) {
-			if (line_view.starts_with("msgctxt")) {
+			if (StartsWith(line_view, "msgctxt")) {
 				e.context = extract_string(7);
 
 				parse_item = true;
-			} else if (line_view.starts_with("msgid")) {
+			} else if (StartsWith(line_view, "msgid")) {
 				parse_item = true;
 				read_msgid();
 			}
 		} else {
-			if (line_view.starts_with("msgid")) {
+			if (StartsWith(line_view, "msgid")) {
 				read_msgid();
-			} else if (line_view.starts_with("msgstr")) {
+			} else if (StartsWith(line_view, "msgstr")) {
 				read_msgstr();
 			}
 		}

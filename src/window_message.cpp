@@ -168,7 +168,7 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 			Game_Message::WordWrap(
 					line,
 					width - 24,
-					[&](StringView wrapped_line) {
+					[&](std::string_view wrapped_line) {
 						append(std::string(wrapped_line));
 					}
 			);

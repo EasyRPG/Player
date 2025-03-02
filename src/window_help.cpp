@@ -58,7 +58,7 @@ void Window_Help::AddText(std::string text, int color, Text::Alignment align, bo
 	std::string::size_type nextpos = 0;
 	while (nextpos != std::string::npos) {
 		nextpos = text.find(' ', pos);
-		auto segment = ToStringView(text).substr(pos, nextpos - pos);
+		auto segment = std::string_view(text).substr(pos, nextpos - pos);
 		auto offset = contents->TextDraw(text_x_offset, 2, color, segment, align);
 		text_x_offset += offset.x;
 

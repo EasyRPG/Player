@@ -95,7 +95,7 @@ public:
 	lcf::rpg::SaveEventExecState GetSaveState();
 
 	/** @return Game_Character of the passed event_id */
-	Game_Character* GetCharacter(int event_id, StringView origin) const override;
+	Game_Character* GetCharacter(int event_id, std::string_view origin) const override;
 
 	/** @return the event_id of the current frame */
 	int GetCurrentEventId() const;

@@ -37,7 +37,7 @@ namespace Filesystem_Stream {
 		InputStream(InputStream&& is) noexcept;
 		InputStream& operator=(InputStream&& is) noexcept;
 
-		StringView GetName() const;
+		std::string_view GetName() const;
 		std::streampos GetSize() const;
 		void Close();
 
@@ -63,7 +63,7 @@ namespace Filesystem_Stream {
 		OutputStream(OutputStream&& os) noexcept;
 		OutputStream& operator=(OutputStream&& os) noexcept;
 
-		StringView GetName() const;
+		std::string_view GetName() const;
 		void Close();
 
 	private:

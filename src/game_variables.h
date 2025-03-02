@@ -128,7 +128,7 @@ public:
 	void BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b);
 	void SwapArray(int first_id_a, int last_id_a, int first_id_b);
 
-	StringView GetName(int _id) const;
+	std::string_view GetName(int _id) const;
 
 	int GetSize() const;
 	int GetSizeWithLimit() const;

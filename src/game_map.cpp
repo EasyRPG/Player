@@ -399,7 +399,7 @@ void Game_Map::Caching::MapCache::Clear() {
 	}
 }
 
-bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name) {
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, std::string_view target_name) {
 	std::unique_ptr<lcf::rpg::Map> source_map_storage;
 	const lcf::rpg::Map* source_map;
 
@@ -1638,10 +1638,10 @@ int Game_Map::GetChipset() {
 	return chipset != nullptr ? chipset->ID : 0;
 }
 
-StringView Game_Map::GetChipsetName() {
+std::string_view Game_Map::GetChipsetName() {
 	return chipset != nullptr
-		? StringView(chipset->chipset_name)
-		: StringView("");
+		? std::string_view(chipset->chipset_name)
+		: std::string_view("");
 }
 
 int Game_Map::GetPositionX() {
@@ -1769,7 +1769,7 @@ std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 
-StringView Game_Map::GetMapName(int id) {
+std::string_view Game_Map::GetMapName(int id) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		if (lcf::Data::treemap.maps[i].ID == id) {
 			return lcf::Data::treemap.maps[i].name;

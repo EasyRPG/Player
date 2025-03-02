@@ -47,7 +47,7 @@ TEST_CASE("StrICmp") {
 	}
 
 	SUBCASE("sv") {
-		testStrICmp<StringView>();
+		testStrICmp<std::string_view>();
 	}
 }
 

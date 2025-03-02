@@ -73,7 +73,7 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 	return false;
 }
 
-bool Game_Ineluki::Execute(StringView ini_file) {
+bool Game_Ineluki::Execute(std::string_view ini_file) {
 	auto ini_file_s = ToString(ini_file);
 
 	if (functions.find(ini_file_s) == functions.end()) {
@@ -89,10 +89,10 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			Output::InfoStr(cmd.arg);
 		} else if (cmd.name == "execprogram") {
 			// Fake execute some known programs
-			if (StringView(cmd.arg).starts_with("exitgame") ||
-					StringView(cmd.arg).starts_with("taskkill")) {
+			if (StartsWith(cmd.arg, "exitgame") ||
+					StartsWith(cmd.arg, "taskkill")) {
 				Player::exit_flag = true;
-			} else if (StringView(cmd.arg).starts_with("SaveCount.dat")) {
+			} else if (StartsWith(cmd.arg, "SaveCount.dat")) {
 				// no-op, detected through saves.script access
 			} else {
 				Output::Warning("Ineluki ExecProgram {}: Not supported", cmd.arg);
@@ -213,7 +213,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 	return true;
 }
 
-bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
+bool Game_Ineluki::ExecuteScriptList(std::string_view list_file) {
 	auto is = FileFinder::Game().OpenInputStream(ToString(list_file));
 	assert(async_scripts.empty());
 
@@ -242,7 +242,7 @@ bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
 	return true;
 }
 
-bool Game_Ineluki::Parse(StringView ini_file) {
+bool Game_Ineluki::Parse(std::string_view ini_file) {
 	auto ini_file_s = ToString(ini_file);
 
 	auto is = FileFinder::Game().OpenInputStream(ini_file_s);

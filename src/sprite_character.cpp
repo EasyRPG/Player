@@ -128,7 +128,7 @@ void Sprite_Character::ChipsetUpdated() {
 	refresh_bitmap = true;
 }
 
-Rect Sprite_Character::GetCharacterRect(StringView name, int index, const Rect bitmap_rect) {
+Rect Sprite_Character::GetCharacterRect(std::string_view name, int index, const Rect bitmap_rect) {
 	Rect rect;
 	rect.width = 24 * (TILE_SIZE / 16) * 3;
 	rect.height = 32 * (TILE_SIZE / 16) * 4;

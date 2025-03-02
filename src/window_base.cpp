@@ -102,7 +102,7 @@ void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx,
 
 // All these functions assume that the input is valid
 
-void Window_Base::DrawFace(StringView face_name, int face_index, int cx, int cy, bool flip) {
+void Window_Base::DrawFace(std::string_view face_name, int face_index, int cx, int cy, bool flip) {
 	if (face_name.empty()) { return; }
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
@@ -213,7 +213,7 @@ void Window_Base::DrawActorSp(const Game_Battler& actor, int cx, int cy, int dig
 }
 
 void Window_Base::DrawActorParameter(const Game_Battler& actor, int cx, int cy, int type) const {
-	StringView name;
+	std::string_view name;
 	int value;
 
 	switch (type) {
@@ -245,7 +245,7 @@ void Window_Base::DrawActorParameter(const Game_Battler& actor, int cx, int cy, 
 }
 
 void Window_Base::DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int type) const {
-	StringView name;
+	std::string_view name;
 
 	switch (type) {
 	case 0:

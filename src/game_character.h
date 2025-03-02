@@ -43,7 +43,7 @@ public:
 		Vehicle
 	};
 
-	static StringView TypeToStr(Type t);
+	static std::string_view TypeToStr(Type t);
 
 	virtual ~Game_Character() = default;
 	Game_Character(Game_Character&&) = default;
@@ -927,9 +927,9 @@ public:
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	/** Check for and fix incorrect data after loading save game */
-	void SanitizeData(StringView name);
+	void SanitizeData(std::string_view name);
 	/** Check for and fix incorrect move route data after loading save game */
-	void SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name);
+	void SanitizeMoveRoute(std::string_view name, const lcf::rpg::MoveRoute& mr, int32_t& idx, std::string_view chunk_name);
 	void Update();
 	virtual void UpdateAnimation();
 	virtual void UpdateNextMovementAction() = 0;
@@ -1418,7 +1418,7 @@ inline bool Game_Character::IsDirectionDiagonal(int d) {
 	return d >= UpRight;
 }
 
-inline StringView Game_Character::TypeToStr(Game_Character::Type type) {
+inline std::string_view Game_Character::TypeToStr(Game_Character::Type type) {
 	switch (type) {
 		case Player: return "Player";
 		case Vehicle: return "Vehicle";

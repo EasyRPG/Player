@@ -604,7 +604,7 @@ void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
 	}
 }
 
-StringView Game_Variables::GetName(int _id) const {
+std::string_view Game_Variables::GetName(int _id) const {
 	const auto* var = lcf::ReaderUtil::GetElement(lcf::Data::variables, _id);
 
 	if (!var) {

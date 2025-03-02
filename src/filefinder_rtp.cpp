@@ -164,7 +164,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 	xdg_rtp = getenv("XDG_DATA_DIRS") ? std::string(getenv("XDG_DATA_DIRS")) :
 			  std::string("/usr/local/share/:/usr/share/");
 	std::vector<std::string> tmp = Utils::Tokenize(xdg_rtp, f);
-	for (StringView p : tmp) {
+	for (std::string_view p : tmp) {
 		xdg_rtp = ToString(p) + (p.back() == '/' ? "" : "/") + "rtp/" + version_str;
 		if (FileFinder::Root().Exists(xdg_rtp)) {
 			env_paths.push_back(xdg_rtp);
@@ -173,12 +173,12 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 #endif
 
 	// Add all found paths from the environment
-	for (StringView p : env_paths) {
+	for (std::string_view p : env_paths) {
 		AddPath(p);
 	}
 }
 
-void FileFinder_RTP::AddPath(StringView p) {
+void FileFinder_RTP::AddPath(std::string_view p) {
 	using namespace FileFinder;
 	auto fs = FileFinder::Root().Create(FileFinder::MakeCanonical(p));
 	if (fs) {
@@ -213,7 +213,7 @@ void FileFinder_RTP::AddPath(StringView p) {
 	}
 }
 
-void FileFinder_RTP::ReadRegistry(StringView company, StringView product, StringView key) {
+void FileFinder_RTP::ReadRegistry(std::string_view company, std::string_view product, std::string_view key) {
 #if defined(USE_WINE_REGISTRY) || defined(_WIN32)
 	std::string rtp_path = Registry::ReadStrValue(
 			HKEY_CURRENT_USER, "Software\\" + ToString(company) + "\\" + ToString(product), key, KEY32);
@@ -233,7 +233,7 @@ void FileFinder_RTP::ReadRegistry(StringView company, StringView product, String
 #endif
 }
 
-Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, StringView name, const Span<const StringView> exts, bool& is_rtp_asset) const {
+Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(std::string_view dir, std::string_view name, const Span<const std::string_view> exts, bool& is_rtp_asset) const {
 	int version = Player::EngineVersion();
 
 	auto normal_search = [&]() {
@@ -306,7 +306,7 @@ Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal(StringView dir, St
 	return normal_search();
 }
 
-Filesystem_Stream::InputStream FileFinder_RTP::Lookup(StringView dir, StringView name, const Span<const StringView> exts) const {
+Filesystem_Stream::InputStream FileFinder_RTP::Lookup(std::string_view dir, std::string_view name, const Span<const std::string_view> exts) const {
 	if (!disable_rtp) {
 		bool is_rtp_asset;
 		auto is = LookupInternal(lcf::ReaderUtil::Normalize(dir), lcf::ReaderUtil::Normalize(name), exts, is_rtp_asset);

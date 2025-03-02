@@ -1334,7 +1334,7 @@ Rect Sdl2Ui::GetWindowMetrics() const {
 	}
 }
 
-bool Sdl2Ui::OpenURL(StringView url) {
+bool Sdl2Ui::OpenURL(std::string_view url) {
 #if SDL_VERSION_ATLEAST(2, 0, 14)
 	if (IsFullscreen()) {
 		ToggleFullscreen();

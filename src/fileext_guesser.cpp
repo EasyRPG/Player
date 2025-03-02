@@ -42,7 +42,7 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 				continue;
 			}
 
-			if (item.first.length() == RtPrefix.length() + 3 && ToStringView(item.first).starts_with(RtPrefix)) {
+			if (item.first.length() == RtPrefix.length() + 3 && StartsWith(item.first, RtPrefix)) {
 				std::string ext = item.first.substr(RtPrefix.length());
 				if (ext != "exe" && ext != "ini") {
 					candidates.emplace_back(item.second.name, ext, fs.GetFilesize(fs.FindFile(item.second.name)));
@@ -88,7 +88,7 @@ void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta cons
 				}
 
 				if (item.first.length() == MapPrefixLength + 3 &&
-					StringView(item.first).starts_with(MapPrefix)) {
+					StartsWith(item.first, MapPrefix)) {
 					std::string ext = item.first.substr(MapPrefixLength);
 					extCounts[ext] += 1;
 					if (extCounts[ext] >= 5) {
@@ -148,7 +148,7 @@ bool FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty() const {
 	return rpgRTs.first.ext.empty() || rpgRTs.second.ext.empty();
 }
 
-std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(StringView prefix, StringView suffix)
+std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename(std::string_view prefix, std::string_view suffix)
 {
 	std::stringstream res;
 	res <<prefix <<".";

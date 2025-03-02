@@ -172,7 +172,7 @@ class AsyncOp {
 		 * @return the new name of the event
 		 * @pre If GetType() is not eCloneMapEvent, the return value is undefined.
 		 */
-		StringView GetEventName() const;
+		std::string_view GetEventName() const;
 
 	private:
 		Type _type = eNone;
@@ -254,7 +254,7 @@ inline int AsyncOp::GetY() const {
 	return _args[4];
 }
 
-inline StringView AsyncOp::GetEventName() const {
+inline std::string_view AsyncOp::GetEventName() const {
 	assert(GetType() == eCloneMapEvent);
 	return _str_arg;
 }

@@ -40,7 +40,7 @@ enum DynRpg_ParseMode {
 };
 
 // Var arg referenced by $n
-std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int index, bool& parse_okay) {
+std::string DynRpg::ParseVarArg(std::string_view func_name, dyn_arg_list args, int index, bool& parse_okay) {
 	parse_okay = true;
 	if (index >= static_cast<int>(args.size())) {
 		parse_okay = false;
@@ -93,7 +93,7 @@ std::string DynRpg::ParseVarArg(StringView func_name, dyn_arg_list args, int ind
 }
 
 
-static std::string ParseToken(std::string token, StringView function_name) {
+static std::string ParseToken(std::string token, std::string_view function_name) {
 	std::string::iterator text_index, end;
 	text_index = token.begin();
 	end = token.end();
@@ -367,7 +367,7 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 	return function_name;
 }
 
-bool Game_DynRpg::Invoke(StringView command, Game_Interpreter* interpreter) {
+bool Game_DynRpg::Invoke(std::string_view command, Game_Interpreter* interpreter) {
 	InitPlugins();
 
 	std::vector<std::string> args;
@@ -380,7 +380,7 @@ bool Game_DynRpg::Invoke(StringView command, Game_Interpreter* interpreter) {
 	return Invoke(function_name, args, interpreter);
 }
 
-bool Game_DynRpg::Invoke(StringView func, dyn_arg_list args, Game_Interpreter* interpreter) {
+bool Game_DynRpg::Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter) {
 	InitPlugins();
 
 	bool yield = false;

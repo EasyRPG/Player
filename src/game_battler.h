@@ -234,14 +234,14 @@ public:
 	 *
 	 * @return Character name
 	 */
-	virtual StringView GetName() const = 0;
+	virtual std::string_view GetName() const = 0;
 
 	/**
 	 * Gets the filename of the character sprite
 	 *
 	 * @return Filename of character sprite
 	 */
-	virtual StringView GetSpriteName() const = 0;
+	virtual std::string_view GetSpriteName() const = 0;
 
 	/**
 	 * Gets battler HP.
@@ -771,7 +771,7 @@ public:
 
 	/**
 	 * Convenience function to access the battlers party member index.
-	 * 
+	 *
 	 * @return Index of this member in their party.
 	 */
 	int GetPartyIndex();

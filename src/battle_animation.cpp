@@ -44,7 +44,7 @@ BattleAnimation::BattleAnimation(const lcf::rpg::Animation& anim, bool only_soun
 
 	SetZ(Priority_BattleAnimation);
 
-	StringView name = animation.animation_name;
+	std::string_view name = animation.animation_name;
 	BitmapRef graphic;
 
 	if (name.empty()) return;

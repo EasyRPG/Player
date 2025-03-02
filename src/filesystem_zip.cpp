@@ -37,7 +37,7 @@ constexpr uint32_t central_directory_entry = 0x02014b50;
 constexpr uint32_t local_header = 0x04034b50;
 constexpr uint32_t local_header_size = 30;
 
-static std::string normalize_path(StringView path) {
+static std::string normalize_path(std::string_view path) {
 	if (path == "." || path == "/" || path.empty()) {
 		return "";
 	};
@@ -52,7 +52,7 @@ static std::string normalize_path(StringView path) {
 	return inner_path;
 }
 
-ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, StringView enc) :
+ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, std::string_view enc) :
 	Filesystem(base_path, parent_fs) {
 	zip_is = parent_fs.OpenInputStream(GetPath());
 	if (!zip_is) {
@@ -329,7 +329,7 @@ bool ZipFilesystem::ReadLocalHeader(std::istream& zipfile, StorageMethod& method
 	return true;
 }
 
-bool ZipFilesystem::IsFile(StringView path) const {
+bool ZipFilesystem::IsFile(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -338,7 +338,7 @@ bool ZipFilesystem::IsFile(StringView path) const {
 	return false;
 }
 
-bool ZipFilesystem::IsDirectory(StringView path, bool) const {
+bool ZipFilesystem::IsDirectory(std::string_view path, bool) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -347,13 +347,13 @@ bool ZipFilesystem::IsDirectory(StringView path, bool) const {
 	return false;
 }
 
-bool ZipFilesystem::Exists(StringView path) const {
+bool ZipFilesystem::Exists(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	return entry != nullptr;
 }
 
-int64_t ZipFilesystem::GetFilesize(StringView path) const {
+int64_t ZipFilesystem::GetFilesize(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -362,7 +362,7 @@ int64_t ZipFilesystem::GetFilesize(StringView path) const {
 	return 0;
 }
 
-std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode) const {
+std::streambuf* ZipFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode) const {
 	std::string path_normalized = normalize_path(path);
 	auto central_entry = Find(path);
 	if (central_entry && !central_entry->is_directory) {
@@ -433,7 +433,7 @@ std::streambuf* ZipFilesystem::CreateInputStreambuffer(StringView path, std::ios
 	return nullptr;
 }
 
-bool ZipFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool ZipFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const {
 	if (!IsDirectory(path, false)) {
 		return false;
 	}
@@ -444,7 +444,7 @@ bool ZipFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	}
 
 	auto check = [&](auto& it) {
-		if (StringView(it.first).starts_with(path_normalized) &&
+		if (StartsWith(it.first, path_normalized) &&
 			it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size()).find_last_of('/') == std::string::npos) {
 			// Everything that starts with the path but isn't the path and does contain no slash
 			auto filename = it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size());
@@ -469,7 +469,7 @@ bool ZipFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	return true;
 }
 
-const ZipFilesystem::ZipEntry* ZipFilesystem::Find(StringView what) const {
+const ZipFilesystem::ZipEntry* ZipFilesystem::Find(std::string_view what) const {
 	auto it = std::lower_bound(zip_entries.begin(), zip_entries.end(), what, [](const auto& e, const auto& w) {
 		return e.first < w;
 	});

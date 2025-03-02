@@ -54,7 +54,7 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, std::string_view text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws the text onto dest bitmap with given parameters. Does not draw a shadow.
@@ -68,7 +68,7 @@ namespace Text {
 	 *
 	 * @return Where to draw the next glyph when continuing drawing. See Font::GlyphRet.advance
 	 */
-	Point Draw(Bitmap& dest, int x, int y, const Font& font, Color color, StringView text);
+	Point Draw(Bitmap& dest, int x, int y, const Font& font, Color color, std::string_view text);
 
 	/**
 	 * Draws the character onto dest bitmap with given parameters.
@@ -112,7 +112,7 @@ namespace Text {
 	 *
 	 * @return Rect describing the rendered string boundary
 	 */
-	Rect GetSize(const Font& font, StringView text);
+	Rect GetSize(const Font& font, std::string_view text);
 
 	/**
 	 * Determines the size of a bitmap required to render a single character.

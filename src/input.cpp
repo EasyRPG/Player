@@ -378,7 +378,7 @@ Point Input::GetMousePosition() {
 	return source->GetMousePosition();
 }
 
-void Input::AddRecordingData(Input::RecordingData type, StringView data) {
+void Input::AddRecordingData(Input::RecordingData type, std::string_view data) {
 	assert(source);
 	source->AddRecordingData(type, data);
 }

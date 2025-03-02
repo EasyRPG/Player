@@ -26,9 +26,4 @@ auto fmt::formatter<lcf::DBString>::format(const lcf::DBString& s, format_contex
 	return formatter<string_view>::format(sv, ctx);
 }
 
-auto fmt::formatter<lcf::StringView>::format(const lcf::StringView& s, format_context& ctx) const -> decltype(ctx.out()) {
-	string_view sv(s.data(), s.size());
-	return formatter<string_view>::format(sv, ctx);
-}
-
 #endif

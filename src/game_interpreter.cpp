@@ -1504,7 +1504,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int event_id, StringView origin) const {
+Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin) const {
 	if (event_id == Game_Character::CharThisEvent) {
 		event_id = GetThisEventId();
 		// Is a common event
@@ -2015,7 +2015,7 @@ bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
 
 		if (!Player::IsPatchDynRpg() && Player::HasEasyRpgExtensions()) {
 			// Only accept commands starting with @easyrpg_
-			if (!StringView(com.string).starts_with("@easyrpg_")) {
+			if (!StartsWith(com.string, "@easyrpg_")) {
 				return true;
 			}
 		}
@@ -3647,8 +3647,8 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			int ignoreCase = com.parameters[4] >> 8 & 1;
 
 			std::string str_param = ToString(com.string);
-			StringView str_l = Main_Data::game_strings->GetWithMode(str_param, modes[0]+1, com.parameters[2], *Main_Data::game_variables);
-			StringView str_r = Main_Data::game_strings->GetWithMode(str_param, modes[1], com.parameters[3], *Main_Data::game_variables);
+			std::string_view str_l = Main_Data::game_strings->GetWithMode(str_param, modes[0]+1, com.parameters[2], *Main_Data::game_variables);
+			std::string_view str_r = Main_Data::game_strings->GetWithMode(str_param, modes[1], com.parameters[3], *Main_Data::game_variables);
 			result = ManiacPatch::CheckString(str_l, str_r, op, ignoreCase);
 		}
 		break;
@@ -4174,7 +4174,7 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 							Main_Data::game_variables->Set(com.parameters[3], 0);
 							break;
 					}
-					Main_Data::game_strings->Asg(var, StringView(character->GetSpriteName()));
+					Main_Data::game_strings->Asg(var, std::string_view(character->GetSpriteName()));
 					Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
 					break;
 				} else {
@@ -4182,19 +4182,19 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 					switch (event_id) {
 						case Game_Character::CharPlayer:
 							// Return dynamic player sprite
-							Main_Data::game_strings->Asg(var, StringView(character->GetSpriteName()));
+							Main_Data::game_strings->Asg(var, std::string_view(character->GetSpriteName()));
 							Main_Data::game_variables->Set(com.parameters[3], character->GetSpriteIndex());
 							break;
 						case Game_Character::CharBoat:
-							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.boat_name));
+							Main_Data::game_strings->Asg(var, std::string_view(lcf::Data::system.boat_name));
 							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.boat_index);
 							break;
 						case Game_Character::CharShip:
-							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.ship_name));
+							Main_Data::game_strings->Asg(var, std::string_view(lcf::Data::system.ship_name));
 							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.ship_index);
 							break;
 						case Game_Character::CharAirship:
-							Main_Data::game_strings->Asg(var, StringView(lcf::Data::system.airship_name));
+							Main_Data::game_strings->Asg(var, std::string_view(lcf::Data::system.airship_name));
 							Main_Data::game_variables->Set(com.parameters[3], lcf::Data::system.airship_index);
 							break;
 						default: {
@@ -4205,7 +4205,7 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 								Main_Data::game_strings->Asg(var, "");
 								Main_Data::game_variables->Set(com.parameters[3], 0);
 							} else {
-								Main_Data::game_strings->Asg(var, StringView(page->character_name));
+								Main_Data::game_strings->Asg(var, std::string_view(page->character_name));
 								Main_Data::game_variables->Set(com.parameters[3], page->character_index);
 							}
 						}
@@ -5128,7 +5128,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		case 12: //File (file) <fn(string filename, int encode)>
 		{
 			// maniacs does not like a file extension
-			StringView filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
+			std::string_view filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 			// args[1] is the encoding... 0 for ansi, 1 for utf8
 			bool do_yield;
 			result = Game_Strings::FromFile(filename, args[1], do_yield);
@@ -5188,7 +5188,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		break;
 	case 4: //inStr <fn(string text, int var_id, int begin)> FIXME: takes hex?
 	{
-		StringView search = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
+		std::string_view search = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]); // not sure this is necessary but better safe
 		args[2] = ValueOrVariable(modes[2], args[2]);
 
@@ -5198,7 +5198,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	case 5: //split <fn(string text, int str_id, int var_id)> takes hex
 	{
-		StringView delimiter = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
+		std::string_view delimiter = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]);
 		args[2] = ValueOrVariable(modes[2], args[2]);
 
@@ -5208,7 +5208,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	}
 	case 7: //toFile <fn(string filename, int encode)>  takes hex
 	{
-		StringView filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
+		std::string_view filename = Main_Data::game_strings->GetWithMode(str_param, modes[0], args[0], *Main_Data::game_variables);
 		args[1] = ValueOrVariable(modes[1], args[1]);
 
 		Main_Data::game_strings->ToFile(str_params, ToString(filename), args[1]);

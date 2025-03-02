@@ -42,7 +42,7 @@ AlsaMidiOutDevice::AlsaMidiOutDevice(std::string& status_message) {
 	snd_seq_client_info_set_client(client_info, -1);
 	while (snd_seq_query_next_client(midi_out, client_info) == 0) {
 		const char* client_name = snd_seq_client_info_get_name(client_info);
-		if (StringView(client_name) == "Midi Through") {
+		if (std::string_view(client_name) == "Midi Through") {
 			continue;
 		}
 
@@ -65,7 +65,7 @@ AlsaMidiOutDevice::AlsaMidiOutDevice(std::string& status_message) {
 				candidate_found = true;
 
 				// FIXME: Hardcoded, no config scene yet
-				if (StringView(client_name).starts_with("FLUID") || StringView(client_name).starts_with("TiMidity")) {
+				if (StartsWith(client_name, "FLUID") || StartsWith(client_name, "TiMidity")) {
 					// Perfect candidate found, stop searching
 					goto done;
 				}
