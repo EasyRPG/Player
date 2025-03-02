@@ -81,7 +81,7 @@ void Scene_Language::CreateTranslationWindow() {
 		lang_helps.front() = def.lang_desc;
 	}
 
-	translate_window = std::make_unique<Window_Command>(lang_names, -1, lang_names.size() > 9 ? 9 : lang_names.size());
+	translate_window = std::make_unique<Window_Command>(lang_names, -1, lang_names.size() > 9 ? 9 : static_cast<int>(lang_names.size()));
 	translate_window->UpdateHelpFn = [this](Window_Help& win, int index) {
 		if (index >= 0 && index < static_cast<int>(lang_helps.size())) {
 			win.SetText(lang_helps[index]);

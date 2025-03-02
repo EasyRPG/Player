@@ -792,5 +792,5 @@ Game_Actor* Game_Party::GetHighestLeveledActorWhoCanUse(const lcf::rpg::Item* it
 std::pair<int,bool> Game_Party::GetItemIndex(int item_id) const {
 	auto& ids = data.item_ids;
 	auto iter = std::lower_bound(ids.begin(), ids.end(), item_id);
-	return std::make_pair(iter - ids.begin(), (iter != ids.end() && *iter == item_id));
+	return std::make_pair<int,bool>(iter - ids.begin(), (iter != ids.end() && *iter == item_id));
 }

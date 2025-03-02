@@ -149,7 +149,7 @@ Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
 		pictures.reserve(id);
 		while (static_cast<int>(pictures.size()) < id) {
-			pictures.emplace_back(pictures.size() + 1);
+			pictures.emplace_back(static_cast<int>(pictures.size()) + 1);
 		}
 	}
 	return pictures[id - 1];
