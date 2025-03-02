@@ -134,6 +134,10 @@ namespace EXE::Shared {
 		PicPointer,
 		PicPointer_R,
 		DirectMenu,
+		MonSca,
+		MonScaPlus,
+		EXPlus,
+		EXPlusPlus,
 
 		LAST
 	};
@@ -146,7 +150,11 @@ namespace EXE::Shared {
 		"BetterAEP",
 		"PicPointer 2.5b",
 		"PicPointer Restruct",
-		"DirectMenu"
+		"DirectMenu",
+		"MonSca",
+		"MonScaPlus",
+		"EXPlus",
+		"EXPlusPlus"
 	);
 
 	static_assert(kKnownPatches.size() == static_cast<size_t>(KnownPatches::LAST));
