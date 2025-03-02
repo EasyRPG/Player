@@ -49,7 +49,7 @@ public:
 	bool Flip(int switch_id);
 	void FlipRange(int first_id, int last_id);
 
-	StringView GetName(int switch_id) const;
+	std::string_view GetName(int switch_id) const;
 
 	bool IsValid(int switch_id) const;
 

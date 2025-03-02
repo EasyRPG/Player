@@ -56,12 +56,12 @@ nlohmann::ordered_json* Game_Strings::ParseJson(int id) {
 }
 #endif
 
-StringView Game_Strings::Asg(Str_Params params, StringView string) {
+std::string_view Game_Strings::Asg(Str_Params params, std::string_view string) {
 	Set(params, string);
 	return Get(params.string_id);
 }
 
-StringView Game_Strings::Cat(Str_Params params, StringView string) {
+std::string_view Game_Strings::Cat(Str_Params params, std::string_view string) {
 	if (params.string_id <= 0) {
 		return {};
 	}
@@ -189,7 +189,7 @@ int Game_Strings::Split(Str_Params params, const std::string& delimiter, int str
 	return components;
 }
 
-std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_yield) {
+std::string Game_Strings::FromFile(std::string_view filename, int encoding, bool& do_yield) {
 	do_yield = false;
 
 	Filesystem_Stream::InputStream is = FileFinder::OpenText(filename);
@@ -219,7 +219,7 @@ std::string Game_Strings::FromFile(StringView filename, int encoding, bool& do_y
 	return file_content;
 }
 
-StringView Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
+std::string_view Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
 	std::string str = ToString(Get(params.string_id));
 
 	if (params.extract) {
@@ -265,14 +265,14 @@ StringView Game_Strings::ToFile(Str_Params params, std::string filename, int enc
 	return str;
 }
 
-StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
+std::string_view Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
 	// FIXME: consideration needed around encoding -- what mode are files read in?
 	if (params.string_id <= 0) {
 		return {};
 	}
 
 	std::string result;
-	StringView str = Get(params.string_id);
+	std::string_view str = Get(params.string_id);
 
 	std::stringstream ss(ToString(str));
 
@@ -291,7 +291,7 @@ StringView Game_Strings::PopLine(Str_Params params, int offset, int string_out_i
 	return Get(params.string_id);
 }
 
-StringView Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables) {
+std::string_view Game_Strings::ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables) {
 	// std::regex only works with char and wchar, not char32
 	// For full Unicode support requires the w-API, even on non-Windows systems
 	int var_result;
@@ -358,7 +358,7 @@ const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int stri
 	return GetData();
 }
 
-std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
+std::string Game_Strings::PrependMin(std::string_view string, int min_size, char c) {
 	int len = Utils::UTF8Length(string);
 
 	if (min_size < 0) {
@@ -376,7 +376,7 @@ std::string Game_Strings::PrependMin(StringView string, int min_size, char c) {
 	return ToString(string);
 }
 
-std::string Game_Strings::Extract(StringView string, bool as_hex) {
+std::string Game_Strings::Extract(std::string_view string, bool as_hex) {
 	PendingMessage::CommandInserter cmd_fn;
 
 	if (as_hex) {
@@ -388,7 +388,7 @@ std::string Game_Strings::Extract(StringView string, bool as_hex) {
 	return PendingMessage::ApplyTextInsertingCommands(ToString(string), Player::escape_char, cmd_fn);
 }
 
-std::string Game_Strings::Substring(StringView source, int begin, int length) {
+std::string Game_Strings::Substring(std::string_view source, int begin, int length) {
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
@@ -411,7 +411,7 @@ std::string Game_Strings::Substring(StringView source, int begin, int length) {
 	}
 }
 
-std::string Game_Strings::Insert(StringView source, StringView what, int where) {
+std::string Game_Strings::Insert(std::string_view source, std::string_view what, int where) {
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
@@ -423,7 +423,7 @@ std::string Game_Strings::Insert(StringView source, StringView what, int where) 
 	return std::string(source.data(), ret.next) + ToString(what) + std::string(ret.next, end);
 }
 
-std::string Game_Strings::Erase(StringView source, int begin, int length) {
+std::string Game_Strings::Erase(std::string_view source, int begin, int length) {
 	const char* iter = source.data();
 	const auto end = source.data() + source.size();
 
@@ -451,7 +451,7 @@ std::string Game_Strings::Erase(StringView source, int begin, int length) {
 	return ret;
 }
 
-std::string Game_Strings::RegExReplace(StringView str, StringView search, StringView replace, std::regex_constants::match_flag_type flags) {
+std::string Game_Strings::RegExReplace(std::string_view str, std::string_view search, std::string_view replace, std::regex_constants::match_flag_type flags) {
 	// std::regex only works with char and wchar, not char32
 	// For full Unicode support requires the w-API, even on non-Windows systems
 	auto wstr = Utils::ToWideString(str);
@@ -465,7 +465,7 @@ std::string Game_Strings::RegExReplace(StringView str, StringView search, String
 	return Utils::FromWideString(result);
 }
 
-int Game_Strings::AdjustIndex(StringView str, int index) {
+int Game_Strings::AdjustIndex(std::string_view str, int index) {
 	if (index >= 0) {
 		return index;
 	}

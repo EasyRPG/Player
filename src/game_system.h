@@ -136,7 +136,7 @@ public:
 	void SePlay(const lcf::rpg::Animation& animation);
 
 	/** @return system graphic filename.  */
-	StringView GetSystemName();
+	std::string_view GetSystemName();
 
 	/** @return message stretch style */
 	lcf::rpg::System::Stretch GetMessageStretch();
@@ -159,7 +159,7 @@ public:
 	void ResetSystemGraphic();
 
 	/** @return the system2 graphic name */
-	StringView GetSystem2Name();
+	std::string_view GetSystem2Name();
 
 	/** @return true if the game has a configured system graphic */
 	bool HasSystemGraphic();
@@ -248,12 +248,12 @@ public:
 	 * @return true when the file is supposed to Stop playback.
 	 *         false otherwise and a handle to the file is returned in found_stream
 	 */
-	static bool IsStopFilename(StringView name, Filesystem_Stream::InputStream (*find_func) (StringView), Filesystem_Stream::InputStream& found_stream);
+	static bool IsStopFilename(std::string_view name, Filesystem_Stream::InputStream (*find_func) (std::string_view), Filesystem_Stream::InputStream& found_stream);
 
-	static bool IsStopMusicFilename(StringView name, Filesystem_Stream::InputStream& found_stream);
-	static bool IsStopMusicFilename(StringView name);
-	static bool IsStopSoundFilename(StringView name, Filesystem_Stream::InputStream& found_stream);
-	static bool IsStopSoundFilename(StringView name);
+	static bool IsStopMusicFilename(std::string_view name, Filesystem_Stream::InputStream& found_stream);
+	static bool IsStopMusicFilename(std::string_view name);
+	static bool IsStopSoundFilename(std::string_view name, Filesystem_Stream::InputStream& found_stream);
+	static bool IsStopSoundFilename(std::string_view name);
 
 	/** @return current atb mode */
 	AtbMode GetAtbMode();
@@ -313,7 +313,7 @@ public:
 	void ClearMessageFace();
 
 	/** @return name of file that contains the face. */
-	StringView GetMessageFaceName();
+	std::string_view GetMessageFaceName();
 
 	/**
 	 * Set FaceSet graphic file containing the face.
@@ -463,12 +463,12 @@ inline bool Game_System::HasSystem2Graphic() {
 	return !GetSystem2Name().empty();
 }
 
-inline bool Game_System::IsStopMusicFilename(StringView name) {
+inline bool Game_System::IsStopMusicFilename(std::string_view name) {
 	Filesystem_Stream::InputStream s;
 	return IsStopMusicFilename(name, s);
 }
 
-inline bool Game_System::IsStopSoundFilename(StringView name) {
+inline bool Game_System::IsStopSoundFilename(std::string_view name) {
 	Filesystem_Stream::InputStream s;
 	return IsStopSoundFilename(name, s);
 }
@@ -478,7 +478,7 @@ inline void Game_System::ClearMessageFace() {
 	SetMessageFaceIndex(0);
 }
 
-inline StringView Game_System::GetMessageFaceName() {
+inline std::string_view Game_System::GetMessageFaceName() {
 	return data.face_name;
 }
 
@@ -614,7 +614,7 @@ inline void Game_System::IncSaveCount() {
 	++data.save_count;
 }
 
-inline StringView Game_System::GetSystem2Name() {
+inline std::string_view Game_System::GetSystem2Name() {
 	return dbsys->system2_name;
 }
 

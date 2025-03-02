@@ -88,7 +88,7 @@ static bool EasyAdd(dyn_arg_list args) {
 	return true;
 }
 
-bool DynRpg::EasyRpgPlugin::Invoke(StringView func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
+bool DynRpg::EasyRpgPlugin::Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
 	if (func == "call") {
 		return EasyCall(args, do_yield, interpreter);
 	} else if (func == "easyrpg_output") {

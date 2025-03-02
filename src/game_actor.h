@@ -241,28 +241,28 @@ public:
 	 *
 	 * @return name.
 	 */
-	StringView GetName() const override;
+	std::string_view GetName() const override;
 
 	/**
 	 * Gets actor name from the database.
 	 *
 	 * @return name.
 	 */
-	StringView GetOriginalName() const;
+	std::string_view GetOriginalName() const;
 
 	/**
 	 * Gets actor character sprite filename.
 	 *
 	 * @return character sprite filename.
 	 */
-	StringView GetSpriteName() const override;
+	std::string_view GetSpriteName() const override;
 
 	/**
 	 * Gets actor character sprite filename from the database.
 	 *
 	 * @return character sprite filename.
 	 */
-	StringView GetOriginalSpriteName() const;
+	std::string_view GetOriginalSpriteName() const;
 
 	/**
 	 * Gets actor character sprite index.
@@ -293,14 +293,14 @@ public:
 	 *
 	 * @return face graphic filename.
 	 */
-	StringView GetFaceName() const;
+	std::string_view GetFaceName() const;
 
 	/**
 	 * Gets actor face graphic filename from the database.
 	 *
 	 * @return face graphic filename.
 	 */
-	StringView GetOriginalFaceName() const;
+	std::string_view GetOriginalFaceName() const;
 
 	/**
 	 * Gets actor face graphic index.
@@ -321,14 +321,14 @@ public:
 	 *
 	 * @return title.
 	 */
-	StringView GetTitle() const;
+	std::string_view GetTitle() const;
 
 	/**
 	 * Gets actor title from the database.
 	 *
 	 * @return title.
 	 */
-	StringView GetOriginalTitle() const;
+	std::string_view GetOriginalTitle() const;
 
 	/**
 	 * Gets actor equipped weapon ID.
@@ -758,7 +758,7 @@ public:
 	 *
 	 * @return name of skill menu item
 	 */
-	StringView GetSkillName() const;
+	std::string_view GetSkillName() const;
 
 	/**
 	 * Sets new actor name.
@@ -841,7 +841,7 @@ public:
 	 *
 	 * @return Rpg2k3 hero class name
 	 */
-	StringView GetClassName() const;
+	std::string_view GetClassName() const;
 
 	/**
 	 * Gets battle commands.
@@ -1001,13 +1001,13 @@ inline void Game_Actor::SetName(const std::string &new_name) {
 		: lcf::rpg::SaveActor::kEmptyName;
 }
 
-inline StringView Game_Actor::GetName() const {
+inline std::string_view Game_Actor::GetName() const {
 	return data.name != lcf::rpg::SaveActor::kEmptyName
-		? StringView(data.name)
-		: StringView(dbActor->name);
+		? std::string_view(data.name)
+		: std::string_view(dbActor->name);
 }
 
-inline StringView Game_Actor::GetOriginalName() const {
+inline std::string_view Game_Actor::GetOriginalName() const {
 	return dbActor->name;
 }
 
@@ -1017,23 +1017,23 @@ inline void Game_Actor::SetTitle(const std::string &new_title) {
 		: lcf::rpg::SaveActor::kEmptyName;
 }
 
-inline StringView Game_Actor::GetTitle() const {
+inline std::string_view Game_Actor::GetTitle() const {
 	return data.title != lcf::rpg::SaveActor::kEmptyName
-		? StringView(data.title)
-		: StringView(dbActor->title);
+		? std::string_view(data.title)
+		: std::string_view(dbActor->title);
 }
 
-inline StringView Game_Actor::GetOriginalTitle() const {
+inline std::string_view Game_Actor::GetOriginalTitle() const {
 	return dbActor->title;
 }
 
-inline StringView Game_Actor::GetSpriteName() const {
+inline std::string_view Game_Actor::GetSpriteName() const {
 	return (!data.sprite_name.empty())
-		? StringView(data.sprite_name)
-		: StringView(dbActor->character_name);
+		? std::string_view(data.sprite_name)
+		: std::string_view(dbActor->character_name);
 }
 
-inline StringView Game_Actor::GetOriginalSpriteName() const {
+inline std::string_view Game_Actor::GetOriginalSpriteName() const {
 	return dbActor->character_name;
 }
 
@@ -1057,13 +1057,13 @@ inline int Game_Actor::GetOriginalSpriteTransparency() const {
 	return dbActor->transparent ? 3 : 0;
 }
 
-inline StringView Game_Actor::GetFaceName() const {
+inline std::string_view Game_Actor::GetFaceName() const {
 	return (!data.face_name.empty())
-		? StringView(data.face_name)
-		: StringView(dbActor->face_name);
+		? std::string_view(data.face_name)
+		: std::string_view(dbActor->face_name);
 }
 
-inline StringView Game_Actor::GetOriginalFaceName() const {
+inline std::string_view Game_Actor::GetOriginalFaceName() const {
 	return dbActor->face_name;
 }
 

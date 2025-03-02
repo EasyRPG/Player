@@ -31,7 +31,7 @@
 #include <lcf/flag_set.h>
 
 namespace {
-	inline std::string ParamValueToString(StringView s) {
+	inline std::string ParamValueToString(std::string_view s) {
 		return ToString(s);
 	}
 
@@ -61,7 +61,7 @@ public:
 	 * @param description Description shown in the help window of the settings scene
 	 * @param value Initial value
 	 */
-	ConfigParamBase(StringView name, StringView description, StringView config_section, StringView config_key, T value) :
+	ConfigParamBase(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value) :
 		_name(name), _description(description), _config_section(config_section), _config_key(config_key), _value(value) {}
 
 	/** @return current assigned value */
@@ -160,26 +160,26 @@ public:
 	}
 
 	/** @return name displayed in the settings scene */
-	StringView GetName() const {
+	std::string_view GetName() const {
 		return _name;
 	}
 
 	/**
 	 * @param name new name of the setting
 	 */
-	void SetName(StringView name) {
+	void SetName(std::string_view name) {
 		_name = name;
 	}
 
 	/** @return help text displayed in the settings scene */
-	StringView GetDescription() const {
+	std::string_view GetDescription() const {
 		return _description;
 	}
 
 	/**
 	 * @param description new description of the setting
 	 */
-	void SetDescription(StringView description) {
+	void SetDescription(std::string_view description) {
 		_description = description;
 	}
 
@@ -187,7 +187,7 @@ public:
 	virtual std::string ValueToString() const = 0;
 
 	virtual bool FromIni(const lcf::INIReader& ini) {
-		// FIXME: Migrate IniReader to StringView (or std::string_view with C++17)
+		// FIXME: Migrate IniReader to std::string_view (or std::string_view with C++17)
 		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
 			if constexpr (std::is_same_v<T, std::string>) {
 				Set(ini.GetString(ToString(_config_section), ToString(_config_key), T()));
@@ -213,10 +213,10 @@ public:
 protected:
 	virtual bool vIsValid(const T& value) const = 0;
 
-	StringView _name;
-	StringView _description;
-	StringView _config_section;
-	StringView _config_key;
+	std::string_view _name;
+	std::string_view _description;
+	std::string_view _config_section;
+	std::string_view _config_key;
 	T _value = {};
 
 private:
@@ -228,7 +228,7 @@ private:
 template <typename T>
 class ConfigParam : public ConfigParamBase<T> {
 public:
-	explicit ConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value = {}) :
+	explicit ConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value = {}) :
 		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) {}
 
 	bool vIsValid(const T&) const override {
@@ -244,7 +244,7 @@ public:
 template <typename T>
 class LockedConfigParam final : public ConfigParam<T> {
 public:
-	explicit LockedConfigParam(StringView name, StringView description, T value = {}) :
+	explicit LockedConfigParam(std::string_view name, std::string_view description, T value = {}) :
 		ConfigParam<T>(name, description, "", "", value) {
 		this->Lock(value);
 	}
@@ -257,11 +257,11 @@ template <typename T>
 class RangeConfigParam : public ConfigParamBase<T> {
 public:
 	/** Construct with name and initial value */
-	explicit RangeConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value = {}) :
+	explicit RangeConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value = {}) :
 		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) {}
 
 	/** Construct with name and initial value, min, and max */
-	RangeConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, T value, T minval, T maxval) :
+	RangeConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value, T minval, T maxval) :
 		ConfigParamBase<T>(name, description, config_section, config_key, std::move(value)) { SetRange(minval, maxval); }
 
 	/**
@@ -324,7 +324,7 @@ private:
 /** A boolean configuration parameter */
 class BoolConfigParam : public ConfigParamBase<bool> {
 public:
-	explicit BoolConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, bool value)  :
+	explicit BoolConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, bool value)  :
 		ConfigParamBase<bool>(name, description, config_section, config_key, value) {}
 
 	bool vIsValid(const bool&) const override {
@@ -348,7 +348,7 @@ public:
 template <typename E, size_t S>
 class EnumConfigParam : public ConfigParamBase<E> {
 public:
-	EnumConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, E value, std::array<StringView, S> values, std::array<StringView, S> tags, std::array<StringView, S> value_descriptions) :
+	EnumConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, E value, std::array<std::string_view, S> values, std::array<std::string_view, S> tags, std::array<std::string_view, S> value_descriptions) :
 		ConfigParamBase<E>(name, description, config_section, config_key, value), _values{ values }, _tags{ tags}, _value_descriptions{ value_descriptions } {
 		for (size_t i = 0; i < S; ++i) {
 			_valid[static_cast<E>(i)] = true;
@@ -381,15 +381,15 @@ public:
 		return ToString(_values[static_cast<int>(this->_value)]);
 	}
 
-	std::array<StringView, S> GetValues() const {
+	std::array<std::string_view, S> GetValues() const {
 		return _values;
 	}
 
-	std::array<StringView, S> GetDescriptions() const {
+	std::array<std::string_view, S> GetDescriptions() const {
 		return _value_descriptions;
 	}
 
-	bool SetFromString(StringView value) {
+	bool SetFromString(std::string_view value) {
 		for (size_t i = 0; i < _tags.size(); ++i) {
 			if (value == _tags[i]) {
 				this->Set(static_cast<E>(i));
@@ -420,9 +420,9 @@ public:
 
 private:
 	lcf::FlagSet<E> _valid;
-	std::array<StringView, S> _values;
-	std::array<StringView, S> _tags;
-	std::array<StringView, S> _value_descriptions;
+	std::array<std::string_view, S> _values;
+	std::array<std::string_view, S> _tags;
+	std::array<std::string_view, S> _value_descriptions;
 	bool _enabled = true;
 
 	E GetFirstValid() const {
@@ -438,7 +438,7 @@ private:
 
 class PathConfigParam : public StringConfigParam {
 public:
-	PathConfigParam(StringView name, StringView description, StringView config_section, StringView config_key, std::string value) :
+	PathConfigParam(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, std::string value) :
 			StringConfigParam(name, description, config_section, config_key, value) {}
 
 	std::string ValueToString() const override {

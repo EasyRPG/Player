@@ -223,7 +223,7 @@ public:
 	 *
 	 * @return Bitmap identifier
 	 */
-	StringView GetId() const;
+	std::string_view GetId() const;
 
 	/**
 	 * Sets the identifier of the bitmap.
@@ -259,7 +259,7 @@ public:
 	 * @param align text alignment.
 	 * @return Where to draw the next glyph
 	 */
-	Point TextDraw(int x, int y, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(int x, int y, int color, std::string_view text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap using the configured Font or the Font::Default() font.
@@ -270,7 +270,7 @@ public:
 	 * @param align text alignment inside bounding rectangle.
 	 * @return Where to draw the next glyph
 	 */
-	Point TextDraw(Rect const& rect, int color, StringView text, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(Rect const& rect, int color, std::string_view text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap using the configured Font or the Font::Default() font.
@@ -281,7 +281,7 @@ public:
 	 * @param text text to draw.
 	 * @return Where to draw the next glyph
 	 */
-	Point TextDraw(int x, int y, Color color, StringView text);
+	Point TextDraw(int x, int y, Color color, std::string_view text);
 
 	/**
 	 * Draws text to bitmap using the configured Font or the Font::Default() font.
@@ -291,7 +291,7 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	Point TextDraw(Rect const& rect, Color color, StringView, Text::Alignment align = Text::AlignLeft);
+	Point TextDraw(Rect const& rect, Color color, std::string_view, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -698,7 +698,7 @@ inline bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
 }
 
-inline StringView Bitmap::GetId() const {
+inline std::string_view Bitmap::GetId() const {
 	return id;
 }
 

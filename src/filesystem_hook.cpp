@@ -86,23 +86,23 @@ FilesystemView HookFilesystem::Detect(FilesystemView fs) {
 	return fs;
 }
 
-bool HookFilesystem::IsFile(StringView path) const {
+bool HookFilesystem::IsFile(std::string_view path) const {
 	return GetParent().IsFile(path);
 }
 
-bool HookFilesystem::IsDirectory(StringView path, bool follow_symlinks) const {
+bool HookFilesystem::IsDirectory(std::string_view path, bool follow_symlinks) const {
 	return GetParent().IsDirectory(path, follow_symlinks);
 }
 
-bool HookFilesystem::Exists(StringView path) const {
+bool HookFilesystem::Exists(std::string_view path) const {
 	return GetParent().Exists(path);
 }
 
-int64_t HookFilesystem::GetFilesize(StringView path) const {
+int64_t HookFilesystem::GetFilesize(std::string_view path) const {
 	return GetParent().GetFilesize(path);
 }
 
-bool HookFilesystem::MakeDirectory(StringView dir, bool follow_symlinks) const {
+bool HookFilesystem::MakeDirectory(std::string_view dir, bool follow_symlinks) const {
 	return GetParent().MakeDirectory(dir, follow_symlinks);
 }
 
@@ -110,7 +110,7 @@ bool HookFilesystem::IsFeatureSupported(Feature f) const {
 	return GetParent().IsFeatureSupported(f);
 }
 
-std::streambuf* HookFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* HookFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 	auto parent_sb = GetParent().CreateInputStreambuffer(path, mode);
 
 	if (active_hook == Hook::SacredTears) {
@@ -122,11 +122,11 @@ std::streambuf* HookFilesystem::CreateInputStreambuffer(StringView path, std::io
 	return parent_sb;
 }
 
-std::streambuf* HookFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* HookFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 	return GetParent().CreateOutputStreambuffer(path, mode);
 }
 
-bool HookFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& tree) const {
+bool HookFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& tree) const {
 	auto dir_tree = GetParent().ListDirectory(path);
 
 	if (!dir_tree) {

@@ -39,7 +39,7 @@
 	#endif
 #endif
 
-std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view) {
+std::string Registry::ReadStrValue(HKEY hkey, std::string_view key, std::string_view val, REGVIEW view) {
 	char value[1024];
 	DWORD size = 1024;
 	DWORD type = REG_SZ;
@@ -80,7 +80,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 	return string_value;
 }
 
-int Registry::ReadBinValue(HKEY hkey, StringView key, StringView val, unsigned char* bin, REGVIEW view) {
+int Registry::ReadBinValue(HKEY hkey, std::string_view key, std::string_view val, unsigned char* bin, REGVIEW view) {
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;
 	HKEY key_handle;

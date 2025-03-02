@@ -36,20 +36,20 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	SetZ(Priority_Window + 50);
 }
 
-void Window_BattleMessage::Push(StringView message) {
+void Window_BattleMessage::Push(std::string_view message) {
 #ifdef EP_DEBUG_BATTLE2K_MESSAGE
 	Output::Debug("Battle2k Message Push \"{}\"", message);
 #endif
-	Utils::ForEachLine(message, [this](StringView line)
+	Utils::ForEachLine(message, [this](std::string_view line)
 			{ PushLine(line); });
 }
 
-void Window_BattleMessage::PushLine(StringView line) {
+void Window_BattleMessage::PushLine(std::string_view line) {
 	if (Feature::HasPlaceholders()) {
 		Game_Message::WordWrap(
 				line,
 				GetWidth() - 20,
-				[this](StringView wrap_line) {
+				[this](std::string_view wrap_line) {
 					lines.push_back(std::string(wrap_line));
 				}
 				);
@@ -61,7 +61,7 @@ void Window_BattleMessage::PushLine(StringView line) {
 	needs_refresh = true;
 }
 
-void Window_BattleMessage::PushWithSubject(StringView message, StringView subject) {
+void Window_BattleMessage::PushWithSubject(std::string_view message, std::string_view subject) {
 	if (Feature::HasPlaceholders()) {
 		Push(Utils::ReplacePlaceholders(
 			message,
