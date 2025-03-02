@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return Rect describing image sub region containing character frames.
 	 */
-	static Rect GetCharacterRect(StringView name, int index, Rect bitmap_rect);
+	static Rect GetCharacterRect(std::string_view name, int index, Rect bitmap_rect);
 
 	/**
 	 * Called when the map chipset is changed by an event

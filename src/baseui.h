@@ -243,7 +243,7 @@ public:
 	 * @param url URL to open
 	 * @return true when successful
 	 */
-	virtual bool OpenURL(StringView path) { (void)path; return false; }
+	virtual bool OpenURL(std::string_view path) { (void)path; return false; }
 
 	/** Toggles "stretch to screen width" on or off */
 	virtual void ToggleStretch() {};

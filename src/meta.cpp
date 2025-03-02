@@ -68,7 +68,7 @@ std::string crc32file(std::string file_name) {
 }
 
 
-Meta::Meta(StringView meta_file) {
+Meta::Meta(std::string_view meta_file) {
 	ini = std::make_unique<lcf::INIReader>(ToString(meta_file));
 
 	// Cache per-game lookups
@@ -84,7 +84,7 @@ Meta::Meta(StringView meta_file) {
 
 }
 
-void Meta::ReInitForNonStandardExtensions(StringView file1, StringView file2) {
+void Meta::ReInitForNonStandardExtensions(std::string_view file1, std::string_view file2) {
 	if (!Empty()) {
 		if (canon_ini_lookup.empty()) {
 			IdentifyCanonName(file1, file2);
@@ -130,7 +130,7 @@ std::vector<std::string> Meta::GetImportChildPaths(const FilesystemView& parent_
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent_fs, StringView child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent_fs, std::string_view child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
@@ -141,7 +141,7 @@ std::vector<Meta::FileItem> Meta::SearchImportPaths(const FilesystemView& parent
 }
 
 
-std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const {
+std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView& parent_fs, std::string_view child_path, std::string_view parent_game_name, int pivot_map_id) const {
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
@@ -248,7 +248,7 @@ std::string Meta::GetExVocabTranslateTitleText() const {
 	return GetExVocab(MTINI_EXVOCAB_TRANSLATE_TITLE_KEY, MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE);
 }
 
-std::string Meta::GetExVocab(StringView term, StringView def_value) const {
+std::string Meta::GetExVocab(std::string_view term, std::string_view def_value) const {
 	if (!Empty()) {
 		return ini->GetString(canon_ini_lookup, ToString(term), ToString(def_value));
 	}
@@ -256,7 +256,7 @@ std::string Meta::GetExVocab(StringView term, StringView def_value) const {
 	return ToString(def_value);
 }
 
-void Meta::IdentifyCanonName(StringView lmtFile, StringView ldbFile) {
+void Meta::IdentifyCanonName(std::string_view lmtFile, std::string_view ldbFile) {
 	// Calculate the lookup based on the LMT/LDB hashes, preferring to use LMT only if possible.
 	// This requires a mandatory field, for which we will use "Name".
 	if (!Empty()) {
