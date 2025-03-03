@@ -28,7 +28,7 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 33> logo_crc32 = {
+	std::array<uint32_t, 36> logo_crc32 = {
 		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
 
 		/*
@@ -67,8 +67,10 @@ namespace {
 		0x1a1ed6dd, 0xad73ccf5, 0x4ad55e84,
 		// Italian "RPG Maker 4.0" Patch of Rm2k
 		0x8afe1239,
-		// Brazilian version of Rm2k3-1.0.9.1
+		// Spanish version of Rm2k3-1.0.9.1
 		0x089fb7d8,
+		// Spanish version of Rm2k (SoLaCe)
+		0x544ffca8, 0x4fbc0849, 0x7420f415,
 		// Spezial-Patch by Rikku2000 (1.51 with swapped logo)
 		0x806b6877,
 		// Gnaf's Picture Patch (1.50 with swapped logo)
