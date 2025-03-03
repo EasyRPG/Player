@@ -23,6 +23,10 @@
 #include <istream>
 #include <vector>
 #include "bitmap.h"
+#include "exe_buildinfo.h"
+#include "exe_constants.h"
+#include "exe_patches.h"
+#include "exe_strings.h"
 #include "player.h"
 
 /**
@@ -64,12 +68,22 @@ public:
 		uint32_t geep_size = 0;
 		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
+		uint32_t code_ofs = 0;
+		uint32_t entrypoint = 0;
 
 		int GetEngineType(bool& is_maniac_patch) const;
 		void Print() const;
 	};
 
 	const FileInfo& GetFileInfo();
+
+	EXE::BuildInfo::KnownEngineBuildVersions GetEngineBuildVersion();
+
+	std::map<EXE::Shared::GameConstantType, int32_t> GetOverriddenGameConstants();
+
+	std::map<EXE::Shared::EmbeddedStringTypes, std::string> GetEmbeddedStrings(std::string encoding);
+
+	std::vector<EXE::Shared::PatchSetupInfo> CheckForPatches();
 
 private:
 	// Bounds-checked unaligned reader primitives.
@@ -83,12 +97,18 @@ private:
 	uint32_t GetLogoCount();
 	bool ResNameCheck(uint32_t namepoint, const char* name);
 
+	bool CheckForString(uint32_t offset, const char* p);
+
 	// 0 if resource section was unfindable.
 	uint32_t resource_ofs = 0;
 	uint32_t resource_rva = 0;
 
 	FileInfo file_info;
 	Filesystem_Stream::InputStream corefile;
+
+	EXE::BuildInfo::KnownEngineBuildVersions build_version = EXE::BuildInfo::KnownEngineBuildVersions::UnknownBuild;
+	EXE::BuildInfo::EngineBuildInfo build_info;
+
 };
 
 #endif

@@ -41,10 +41,6 @@ public:
 
 	int MaxSpValue() const override;
 
-	int MaxStatBattleValue() const override;
-
-	int MaxStatBaseValue() const override;
-
 	Point GetOriginalPosition() const override;
 
 	void ResetBattle() override;

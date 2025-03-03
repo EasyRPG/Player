@@ -34,10 +34,10 @@ public:
 	using Variables_t = std::vector<Var_t>;
 
 	static constexpr int max_warnings = 10;
-	static constexpr Var_t min_2k = -999999;
-	static constexpr Var_t max_2k = 999999;
-	static constexpr Var_t min_2k3 = -9999999;
-	static constexpr Var_t max_2k3 = 9999999;
+	static constexpr Var_t min_2k = -999'999;
+	static constexpr Var_t max_2k = 999'999;
+	static constexpr Var_t min_2k3 = -9'999'999;
+	static constexpr Var_t max_2k3 = 9'999'999;
 
 	Game_Variables(Var_t minval, Var_t maxval);
 

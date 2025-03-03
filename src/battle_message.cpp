@@ -150,6 +150,15 @@ static std::string GetHpSpRecoveredMessage(const Game_Battler& target, int value
 			Utils::MakeSvArray(target.GetName(), std::to_string(value), points)
 		);
 	}
+
+	StringView template_text;
+	if (Player::Constants::HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes::Battle_HpSpRecovery, template_text)) {
+		return Utils::ReplacePlaceholders(
+			template_text,
+			Utils::MakeArray('S', 'U', 'V', 'T'),
+			Utils::MakeSvArray(target.GetName(), points, std::to_string(value), lcf::Data::terms.hp_recovery)
+		);
+	}
 	std::stringstream ss;
 	std::string particle, particle2, space = "";
 
@@ -188,6 +197,20 @@ std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_B
 			Utils::MakeSvArray(source.GetName(), target.GetName(), std::to_string(value), points)
 		);
 	}
+
+	auto embedded_str_type = target_is_ally
+		? EXE::Shared::EmbeddedStringTypes::Battle_AbsorbAlly
+		: EXE::Shared::EmbeddedStringTypes::Battle_AbsorbEnemy;
+
+	StringView template_text;
+	if (Player::Constants::HasEmbeddedTemplateString(embedded_str_type, template_text)) {
+		return Utils::ReplacePlaceholders(
+			template_text,
+			Utils::MakeArray('O', 'U', 'V', 'T'),
+			Utils::MakeSvArray(target.GetName(), points, std::to_string(value), message)
+		);
+	}
+
 	std::stringstream ss;
 	std::string particle, particle2, space = "";
 
@@ -243,6 +266,20 @@ std::string GetDamagedMessage(const Game_Battler& target, int value) {
 			Utils::MakeSvArray(target.GetName(), std::to_string(value), lcf::Data::terms.health_points)
 		);
 	}
+
+	auto embedded_str_type = target_is_ally
+		? EXE::Shared::EmbeddedStringTypes::Battle_DamageToAlly
+		: EXE::Shared::EmbeddedStringTypes::Battle_DamageToEnemy;
+
+	StringView template_text;
+	if (Player::Constants::HasEmbeddedTemplateString(embedded_str_type, template_text)) {
+		return Utils::ReplacePlaceholders(
+			template_text,
+			Utils::MakeArray('S', 'V', 'T'),
+			Utils::MakeSvArray(target.GetName(), std::to_string(value), message)
+		);
+	}
+
 	std::stringstream ss;
 	std::string particle, space = "";
 	ss << target.GetName();
@@ -276,6 +313,20 @@ std::string GetParameterChangeMessage(const Game_Battler& target, int value, Str
 			Utils::MakeSvArray(target.GetName(), std::to_string(value), points)
 		);
 	}
+
+	auto embedded_str_type = is_positive
+		? EXE::Shared::EmbeddedStringTypes::Battle_StatIncrease
+		: EXE::Shared::EmbeddedStringTypes::Battle_StatDecrease;
+
+	StringView template_text;
+	if (Player::Constants::HasEmbeddedTemplateString(embedded_str_type, template_text)) {
+		return Utils::ReplacePlaceholders(
+			template_text,
+			Utils::MakeArray('S', 'U', 'V', 'T'),
+			Utils::MakeSvArray(target.GetName(), points, std::to_string(value), message)
+		);
+	}
+
 	std::stringstream ss;
 	std::string particle, particle2, space = "";
 	ss << target.GetName();
@@ -437,6 +488,16 @@ std::string GetItemStartMessage2k(const Game_Battler& source, const lcf::rpg::It
 			Utils::MakeSvArray(source.GetName(), item.name)
 		);
 	}
+
+	//StringView template_text;
+	//if (Player::Constants::HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes::Battle_UseItem, template_text)) {
+	//	return Utils::ReplacePlaceholders(
+	//		template_text,
+	//		Utils::MakeArray('S', 'O', 'T'),
+	//		Utils::MakeSvArray(source.GetName(), item.name, ToString(lcf::Data::terms.use_item))
+	//	);
+	//}
+
 	std::string particle;
 	if (Player::IsCP932())
 		particle = "は";
