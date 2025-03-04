@@ -174,6 +174,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 		} else if (cmd.name == "registercheatevent") {
 			cheatlist.emplace_back(Utils::LowerCase(cmd.arg), atoi(cmd.arg2.c_str()));
 		} else if (cmd.name == "setmouseasreturn") {
+			// This command is only found in a few uncommon versions of the patch
 			if (!mouse_support) {
 				return true;
 			}
@@ -191,6 +192,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 				mouse_decision_binding = MouseReturnMode::None;
 			}
 		} else if (cmd.name == "setmousewheelaskeys") {
+			// This command is only found in a few uncommon versions of the patch
 			if (!mouse_support) {
 				return true;
 			}
