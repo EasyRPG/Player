@@ -1599,3 +1599,7 @@ std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
 }
+
+int32_t Player::Constants::MaxSaveFiles() {
+	return Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
+}

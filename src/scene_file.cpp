@@ -89,11 +89,7 @@ void Scene_File::UpdateLatestTimestamp(int id, lcf::rpg::Save& savegame) {
 }
 
 void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
-	// Try to access file
-	std::stringstream ss;
-	ss << "Save" << (id <= 8 ? "0" : "") << (id + 1) << ".lsd";
-
-	std::string file = fs.FindFile(ss.str());
+	std::string file = FileFinder::GetSaveFilename(fs, id + 1);
 
 	if (!file.empty()) {
 		// File found
@@ -123,7 +119,7 @@ void Scene_File::Start() {
 	// Refresh File Finder Save Folder
 	fs = FileFinder::Save();
 
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
