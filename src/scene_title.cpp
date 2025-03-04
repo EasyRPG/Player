@@ -23,6 +23,7 @@
 #include "options.h"
 #include "scene_settings.h"
 #include "scene_title.h"
+#include "scene_language.h"
 #include "audio.h"
 #include "audio_secache.h"
 #include "cache.h"
@@ -77,20 +78,8 @@ void Scene_Title::Start() {
 	}
 
 	CreateCommandWindow();
-	CreateTranslationWindow();
-	CreateHelpWindow();
 }
 
-void Scene_Title::CreateHelpWindow() {
-	help_window.reset(new Window_Help(0, 0, Player::screen_width, 32));
-
-	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
-		help_window->SetBackOpacity(160);
-	}
-
-	help_window->SetVisible(false);
-	translate_window->SetHelpWindow(help_window.get());
-}
 
 void Scene_Title::Continue(SceneType prev_scene) {
 	Main_Data::game_system->ResetSystemGraphic();
@@ -130,7 +119,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 }
 
 void Scene_Title::Suspend(Scene::SceneType scene_type) {
-	if (scene_type == Scene::Settings) {
+	if (scene_type == Scene::Settings || scene_type == Scene::LanguageMenu) {
 		restart_title_cache = true;
 	}
 
@@ -152,43 +141,28 @@ void Scene_Title::vUpdate() {
 		return;
 	}
 
-	if (active_window == 0) {
-		command_window->Update();
-	} else {
-		translate_window->Update();
-	}
+	command_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		if (active_window == 0) {
-			int index = command_window->GetIndex();
-			if (index == indices.new_game) {  // New Game
-				CommandNewGame();
-			} else if (index == indices.continue_game) {  // Load Game
-				CommandContinue();
-			} else if (index == indices.import) {  // Import (multi-part games)
-				CommandImport();
-			} else if (index == indices.settings) {
-				CommandSettings();
-			} else if (index == indices.translate) { // Choose a Translation (Language)
-				CommandTranslation();
-			} else if (index == indices.exit) {  // Exit Game
-				CommandShutdown();
-			}
-		} else if (active_window == 1) {
-			int index = translate_window->GetIndex();
-			ChangeLanguage(lang_dirs.at(index));
+		int index = command_window->GetIndex();
+		if (index == indices.new_game) {  // New Game
+			CommandNewGame();
+		} else if (index == indices.continue_game) {  // Load Game
+			CommandContinue();
+		} else if (index == indices.import) {  // Import (multi-part games)
+			CommandImport();
+		} else if (index == indices.settings) {
+			CommandSettings();
+		} else if (index == indices.translate) { // Choose a Translation (Language)
+			CommandTranslation();
+		} else if (index == indices.exit) {  // Exit Game
+			CommandShutdown();
 		}
 	} else if (Input::IsTriggered(Input::SHIFT)) {
 		// For emscripten: Allow accessing the load scene for file upload with Shift
 		int index = command_window->GetIndex();
 		if (index == indices.continue_game) {
 			CommandContinue();
-		}
-	} else if (Input::IsTriggered(Input::CANCEL)) {
-		if (active_window == 1) {
-			// Switch back
-			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
-			HideTranslationWindow();
 		}
 	}
 }
@@ -206,7 +180,6 @@ void Scene_Title::OnTranslationChanged() {
 	Start();
 
 	command_window->SetIndex(indices.translate);
-	HideTranslationWindow();
 
 	Scene::OnTranslationChanged();
 }
@@ -260,7 +233,7 @@ void Scene_Title::CreateCommandWindow() {
 	}
 
 	// Set "Translate" based on metadata
-	if (Player::translation.HasTranslations()) {
+	if (Player::translation.HasTranslations() && Player::player_config.lang_select_in_title.Get()) {
 		options.push_back(Player::meta->GetExVocabTranslateTitleText());
 		indices.translate = indices.exit;
 		indices.exit++;
@@ -283,46 +256,6 @@ void Scene_Title::CreateCommandWindow() {
 	}
 
 	command_window->SetVisible(true);
-}
-
-void Scene_Title::CreateTranslationWindow() {
-	// Build a list of 'Default' and all known languages.
-	std::vector<std::string> lang_names;
-	lang_names.push_back("Default Language");
-	lang_dirs.push_back("");
-	lang_helps.push_back("Play the game in its original language.");
-
-	// Push menu entries with the display name, but also save the directory location and help text.
-	for (const Language& lg : Player::translation.GetLanguages()) {
-		lang_names.push_back(lg.lang_name);
-		lang_dirs.push_back(lg.lang_dir);
-		lang_helps.push_back(lg.lang_desc);
-	}
-
-	// Allow overwriting text of the default language
-	const Language& def = Player::translation.GetDefaultLanguage();
-	if (!def.lang_name.empty()) {
-		lang_names.front() = def.lang_name;
-	}
-	if (!def.lang_desc.empty()) {
-		lang_helps.front() = def.lang_desc;
-	}
-
-	translate_window = std::make_unique<Window_Command>(lang_names, -1, lang_names.size() > 9 ? 9 : lang_names.size());
-	translate_window->UpdateHelpFn = [this](Window_Help& win, int index) {
-		if (index >= 0 && index < static_cast<int>(lang_helps.size())) {
-			win.SetText(lang_helps[index]);
-		} else {
-			win.SetText("");
-		}
-	};
-	RepositionWindow(*translate_window, Player::hide_title_flag);
-
-	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
-		translate_window->SetBackOpacity(160);
-	}
-
-	translate_window->SetVisible(false);
 }
 
 void Scene_Title::PlayTitleMusic() {
@@ -383,31 +316,7 @@ void Scene_Title::CommandSettings() {
 void Scene_Title::CommandTranslation() {
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 
-	// Switch windows
-	active_window = 1;
-	command_window->SetVisible(false);
-	translate_window->SetVisible(true);
-	help_window->SetVisible(true);
-}
-
-void Scene_Title::ChangeLanguage(const std::string& lang_str) {
-	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
-
-	// No-op?
-	if (lang_str == Player::translation.GetCurrentLanguage().lang_dir) {
-		HideTranslationWindow();
-		return;
-	}
-
-	// First change the language
-	Player::translation.SelectLanguage(lang_str);
-}
-
-void Scene_Title::HideTranslationWindow() {
-	active_window = 0;
-	command_window->SetVisible(true);
-	translate_window->SetVisible(false);
-	help_window->SetVisible(false);
+	Scene::Push(std::make_unique<Scene_Language>());
 }
 
 void Scene_Title::CommandShutdown() {

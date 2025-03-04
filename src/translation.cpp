@@ -26,6 +26,7 @@
 #include <lcf/rpg/map.h>
 #include "lcf/rpg/mapinfo.h"
 
+#include "baseui.h"
 #include "cache.h"
 #include "font.h"
 #include "main_data.h"
@@ -116,6 +117,7 @@ void Translation::InitTranslations()
 				item.lang_desc = ini.GetString("Language", "Description", "");
 				item.lang_code = ini.GetString("Language", "Code", "");
 				item.lang_term = ini.GetString("Language", "Term", "Language");
+				item.game_title = ini.GetString("Language", "GameTitle", "");
 				item.use_builtin_font = Utils::LowerCase(ini.GetString("Language", "Font", "")) == "builtin";
 
 				if (item.lang_dir == "default") {
@@ -166,7 +168,7 @@ void Translation::SelectLanguage(StringView lang_id)
 	if (!lang_id.empty()) {
 		auto root = GetRootTree();
 		if (!root) {
-			Output::Error("Cannot load translation. 'Language' folder does not exist");
+			Output::Warning("Cannot load translation. 'Language' folder does not exist");
 			return;
 		}
 
@@ -220,6 +222,12 @@ void Translation::SelectLanguageAsync(FileRequestResult*, StringView lang_id) {
 		RewriteTreemapNames();
 		RewriteBattleEventMessages();
 		RewriteCommonEventMessages();
+	}
+
+	if (!current_language.game_title.empty()) {
+		Player::UpdateTitle(current_language.game_title);
+	} else if (!Player::game_title_original.empty()) {
+		Player::UpdateTitle(Player::game_title_original);
 	}
 
 	// Reset the cache, so that all images load fresh.
@@ -758,17 +766,24 @@ void Translation::RewriteEventCommandMessage(const Dictionary& dict, std::vector
 			dict.TranslateString("actors.title", commands.CurrentCmdString());
 			commands.Advance();
 		} else if (commands.CurrentIsShowStringPicture()) {
-			auto components = Utils::Tokenize(commands.CurrentCmdString(), [](char32_t ch) {
-				return ch == '\x01';
-			});
-			if (components.size() >= 4) {
+			auto cmdstr = StringView(commands.CurrentCmdString());
+			if (!cmdstr.empty() && cmdstr[0] == '\x01') {
+				size_t escape_idx = 1;
+				for (escape_idx = 1; escape_idx < cmdstr.size(); ++escape_idx) {
+					char c = cmdstr[escape_idx];
+					if (c == '\x01' || c == '\x02' || c == '\x03') {
+						break;
+					}
+				}
+
 				// String Picture use \r\n linebreaks
 				// Rewrite them to \n
-				std::string term = Utils::ReplaceAll(components[1], "\r\n", "\n");
+				std::string term = Utils::ReplaceAll(ToString(cmdstr.substr(1, escape_idx - 1)), "\r\n", "\n");
 				dict.TranslateString("strpic", term);
 				// Reintegrate the term
-				commands.CurrentCmdString() = lcf::DBString(Utils::ReplaceAll(ToString(commands.CurrentCmdString()), "\x01" + components[1] + "\x01", "\x01" + term + "\x01"));
+				commands.CurrentCmdString() = lcf::DBString("\x01" + term + ToString(cmdstr.substr(escape_idx)));
 			}
+
 			commands.Advance();
 		} else {
 			commands.Advance();

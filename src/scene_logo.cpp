@@ -25,7 +25,6 @@
 #include "input.h"
 #include "options.h"
 #include "player.h"
-#include "scene_title.h"
 #include "scene_gamebrowser.h"
 #include "scene_settings.h"
 #include "output.h"
@@ -102,10 +101,8 @@ void Scene_Logo::vUpdate() {
 				}
 			}
 
-			if (!Player::startup_language.empty()) {
-				Player::translation.SelectLanguage(Player::startup_language);
-			}
-			Scene::Push(std::make_shared<Scene_Title>(), true);
+			Scene::PushTitleScene(true);
+
 			if (Player::load_game_id > 0) {
 				auto save = FileFinder::Save();
 

@@ -183,7 +183,8 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 
 	if (next_scene != Scene::Battle
 			&& next_scene != Scene::Debug
-			&& next_scene != Scene::Settings) {
+			&& next_scene != Scene::Settings
+			&& next_scene != Scene::LanguageMenu) {
 		screen_erased_by_event = false;
 	}
 

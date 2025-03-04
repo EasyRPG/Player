@@ -59,6 +59,7 @@ public:
 		GameBrowser,
 		Teleport,
 		Settings,
+		LanguageMenu,
 		SceneMax
 	};
 
@@ -161,6 +162,14 @@ public:
 	static void Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top = false);
 
 	/**
+	 * Finds the the scene previous to the current, top-most one and
+	 * returns it without popping it from the stack.
+	 *
+	 * @return the scene found, or NULL if the current scene is already the top.
+	 */
+	static std::shared_ptr<Scene> Peek();
+
+	/**
 	 * Removes the scene that is on the top of the stack.
 	 */
 	static void Pop();
@@ -246,6 +255,12 @@ public:
 
 	/** Decrement delay frames by 1 if we're waiting */
 	void UpdateDelayFrames();
+
+	/**
+	 * Pushes the title screen onto the stack to boot up the game.
+	 * If there already is a title scene ín the stack, this function exits without doing anything.
+	 */
+	static void PushTitleScene(bool pop_stack_top = false);
 
 	/**
 	 * Pops the stack until the title screen and sets proper delay.
