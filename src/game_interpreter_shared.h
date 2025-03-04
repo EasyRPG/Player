@@ -22,8 +22,11 @@
 #include <lcf/rpg/eventcommand.h>
 #include <lcf/rpg/movecommand.h>
 #include <lcf/rpg/saveeventexecframe.h>
+#include <lcf/rpg/save.h>
 #include <string_view.h>
+#include "async_op.h"
 #include "compiler.h"
+#include "filesystem.h"
 
 class Game_Character;
 class Game_BaseInterpreterContext;
@@ -103,6 +106,10 @@ namespace Game_Interpreter_Shared {
 	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
 
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
+
+	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot);
+	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot, bool& save_corrupted);
+	AsyncOp MakeLoadOp(const char* caller, int save_slot);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {

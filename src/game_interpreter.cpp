@@ -4271,25 +4271,16 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	Main_Data::game_variables->Set(com.parameters[4], 0);
 	Main_Data::game_variables->Set(com.parameters[5], 0);
 
-	if (save_number <= 0) {
-		Output::Debug("ManiacGetSaveInfo: Invalid save number {}", save_number);
-		return true;
-	}
+	bool save_corrupted = false;
+	auto save = ValidateAndLoadSave("ManiacGetSaveInfo", FileFinder::Save(), save_number, save_corrupted);
 
-	auto savefs = FileFinder::Save();
-	std::string save_name = FileFinder::GetSaveFilename(savefs, save_number, false);
-	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
-
-	if (!save_stream) {
-		Output::Debug("ManiacGetSaveInfo: Save not found {}", save_number);
-		return true;
-	}
-
-	auto save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
-	if (!save) {
-		Output::Debug("ManiacGetSaveInfo: Save corrupted {}", save_number);
+	if (save_corrupted) {
 		// Maniac Patch writes this for whatever reason
 		Main_Data::game_variables->Set(com.parameters[2], 8991230);
+		return true;
+	}
+
+	if (!save) {
 		return true;
 	}
 
@@ -4364,27 +4355,19 @@ bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const& com) {
 	}
 
 	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
-	if (slot <= 0) {
-		Output::Debug("ManiacLoad: Invalid save slot {}", slot);
-		return true;
-	}
 
 	// Not implemented (kinda useless feature):
 	// When com.parameters[2] is 1 the check whether the file exists is skipped
 	// When skipped and missing RPG_RT will crash
-	auto savefs = FileFinder::Save();
-	std::string save_name = FileFinder::GetSaveFilename(savefs, slot, false);
-	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
-	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+	auto op = MakeLoadOp("ManiacLoad", slot);
 
-	if (!save) {
-		Output::Debug("ManiacLoad: Save not found {}", slot);
+	if (!op.IsActive()) {
 		return true;
 	}
 
 	// FIXME: In Maniac the load causes a blackscreen followed by a fade-in that can be cancelled by a transition event
 	// This is not implemented yet, the loading is instant without fading
-	_async_op = AsyncOp::MakeLoad(slot);
+	_async_op = op;
 
 	return true;
 }

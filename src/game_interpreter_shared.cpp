@@ -37,6 +37,7 @@
 #include <cstdint>
 #include <lcf/rpg/savepartylocation.h>
 #include <lcf/reader_util.h>
+#include <lcf/lsd/reader.h>
 
 using Main_Data::game_switches, Main_Data::game_variables, Main_Data::game_strings;
 
@@ -236,6 +237,55 @@ lcf::rpg::MoveCommand Game_Interpreter_Shared::DecodeMove(lcf::DBArray<int32_t>:
 	}
 
 	return cmd;
+}
+
+std::unique_ptr<lcf::rpg::Save> Game_Interpreter_Shared::ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot) {
+	bool save_corrupted = false;
+	return ValidateAndLoadSave(caller, fs, save_slot, save_corrupted);
+}
+
+std::unique_ptr<lcf::rpg::Save> Game_Interpreter_Shared::ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot, bool& save_corrupted) {
+	save_corrupted = false;
+
+	if (save_slot <= 0) {
+		Output::Debug("{}: Invalid save number {}", caller, save_slot);
+		return {};
+	}
+
+	std::string save_name = FileFinder::GetSaveFilename(fs, save_slot, false);
+	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
+
+	if (!save_stream) {
+		Output::Debug("{}: Save not found {}", caller, save_slot);
+		return {};
+	}
+
+	auto save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+	if (!save) {
+		Output::Debug("{}: Save corrupted {}", caller, save_slot);
+		save_corrupted = true;;
+		return {};
+	}
+	return save;
+}
+
+AsyncOp Game_Interpreter_Shared::MakeLoadOp(const char* caller, int save_slot) {
+	if (save_slot <= 0) {
+		Output::Debug("{}: Invalid save slot {}", caller, save_slot);
+		return {};
+	}
+
+	auto savefs = FileFinder::Save();
+	std::string save_name = FileFinder::GetSaveFilename(savefs, save_slot, false);
+	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
+	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+
+	if (!save) {
+		Output::Debug("{}: Save not found {}", caller, save_slot);
+		return {};
+	}
+
+	return AsyncOp::MakeLoad(save_slot);
 }
 
 //explicit declarations for target evaluation logic shared between ControlSwitches/ControlVariables/ControlStrings
