@@ -1972,7 +1972,26 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
-	music.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
+	auto music_name = CommandStringOrVariableBitfield(com, 4, 0, 5);
+
+	if (Player::IsPatchKeyPatch() && EndsWith(music_name, ".script")) {
+		// Is a Ineluki Script File
+		FileRequestAsync* request = AsyncHandler::RequestFile("Music", music_name);
+		request->SetImportantFile(true);
+		request->Start();
+
+		if (!request->IsReady()) {
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+		auto op = Main_Data::game_ineluki->Execute(FileFinder::FindMusic(music_name));
+		if (op.IsActive()) {
+			_async_op = op;
+		}
+		return true;
+	}
+
+	music.name = ToString(music_name);
 
 	music.fadein = ValueOrVariableBitfield(com, 4, 1, 0);
 	music.volume = ValueOrVariableBitfield(com, 4, 2, 1);
