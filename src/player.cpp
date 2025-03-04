@@ -831,6 +831,19 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile("powerp.oex").empty()) {
 			Output::Warning("This game uses Power Patch and might not run properly.");
 		}
+
+		if (game_config.patch_key_patch.Get()) {
+			auto exe_util_types = Utils::MakeSvArray(".exe", ".dll", ".dat");
+			auto exe_util_names = Utils::MakeSvArray("ppcomp", "sfx", "savecount", "LS");
+
+			for (auto util_name : exe_util_names) {
+				if (!FileFinder::Game().FindFile(util_name, exe_util_types).empty()) {
+					Output::Debug("KeyPatch: Found external program '{}'. Patch scripts will behave synchronously.", util_name);
+					game_config.patch_key_patch_no_async.Set(true);
+					break;
+				}
+			}
+		}
 	}
 
 	game_config.PrintActivePatches();

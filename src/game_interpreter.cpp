@@ -1970,24 +1970,37 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 	return false;
 }
 
+namespace InelukiKeyPatch {
+	bool HandleScriptFile(std::string_view file_name, bool is_music, AsyncOp& async_op) {
+		if (Player::IsPatchKeyPatch() && EndsWith(file_name, ".script")) {
+			if (!Player::game_config.patch_key_patch_no_async.Get()) {
+				// Script will be handled in place of the usual sound processing -> Game_System
+				return false;
+			}
+			// Is a Ineluki Script File
+			FileRequestAsync* request = AsyncHandler::RequestFile(is_music ? "Music" : "Sound", file_name);
+			request->SetImportantFile(true);
+			request->Start();
+
+			if (!request->IsReady()) {
+				async_op = AsyncOp::MakeYieldRepeat();
+				return true;
+			}
+			auto op = Main_Data::game_ineluki->Execute(is_music ? FileFinder::FindMusic(file_name) : FileFinder::FindSound(file_name));
+			if (op.IsActive()) {
+				async_op = op;
+			}
+			return true;
+		}
+		return false;
+	}
+}
+
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
 	auto music_name = CommandStringOrVariableBitfield(com, 4, 0, 5);
 
-	if (Player::IsPatchKeyPatch() && EndsWith(music_name, ".script")) {
-		// Is a Ineluki Script File
-		FileRequestAsync* request = AsyncHandler::RequestFile("Music", music_name);
-		request->SetImportantFile(true);
-		request->Start();
-
-		if (!request->IsReady()) {
-			_async_op = AsyncOp::MakeYieldRepeat();
-			return true;
-		}
-		auto op = Main_Data::game_ineluki->Execute(FileFinder::FindMusic(music_name));
-		if (op.IsActive()) {
-			_async_op = op;
-		}
+	if (InelukiKeyPatch::HandleScriptFile(music_name, true, _async_op)) {
 		return true;
 	}
 
@@ -2012,20 +2025,7 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 	lcf::rpg::Sound sound;
 	auto sound_name = CommandStringOrVariableBitfield(com, 3, 0, 4);
 
-	if (Player::IsPatchKeyPatch() && EndsWith(sound_name, ".script")) {
-		// Is a Ineluki Script File
-		FileRequestAsync* request = AsyncHandler::RequestFile("Sound", sound_name);
-		request->SetImportantFile(true);
-		request->Start();
-
-		if (!request->IsReady()) {
-			_async_op = AsyncOp::MakeYieldRepeat();
-			return true;
-		}
-		auto op = Main_Data::game_ineluki->Execute(FileFinder::FindSound(sound_name));
-		if (op.IsActive()) {
-			_async_op = op;
-		}
+	if (InelukiKeyPatch::HandleScriptFile(sound_name, false, _async_op)) {
 		return true;
 	}
 
