@@ -74,11 +74,21 @@ public:
 	int GetMidiTicks();
 
 	/**
-	 * Updates the key up/down list. Must be called once per update frame.
+	 * Updates the configured input patches. Must be called once per update frame.
 	 */
 	void Update();
 
 private:
+	/**
+	 * Updates the key up/down list.
+	 */
+	void UpdateKeys();
+
+	/**
+	 * Handles virtual key bindings for mouse buttons.
+	 */
+	void UpdateMouse();
+
 	/**
 	 * Parses and caches the script.
 	 *
@@ -122,6 +132,22 @@ private:
 	bool key_support = false;
 	bool mouse_support = false;
 	int mouse_id_prefix = 0;
+
+	enum class MouseReturnMode {
+		None,
+		Left,
+		Right,
+		Both
+	};
+
+	enum class MouseWheelMode {
+		None,
+		UpDown,
+		LeftRight
+	};
+
+	MouseReturnMode mouse_decision_binding = MouseReturnMode::None;
+	MouseWheelMode mouse_wheel_binding = MouseWheelMode::None;
 
 	struct Mapping {
 		Input::Keys::InputKey key;

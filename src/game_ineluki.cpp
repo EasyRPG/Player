@@ -173,6 +173,38 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			// no-op
 		} else if (cmd.name == "registercheatevent") {
 			cheatlist.emplace_back(Utils::LowerCase(cmd.arg), atoi(cmd.arg2.c_str()));
+		} else if (cmd.name == "setmouseasreturn") {
+			if (!mouse_support) {
+				return true;
+			}
+			std::string arg_lower = Utils::LowerCase(cmd.arg);
+			if (arg_lower == "left") {
+				mouse_decision_binding = MouseReturnMode::Left;
+			} else if (arg_lower == "right") {
+				mouse_decision_binding = MouseReturnMode::Right;
+			} else if (arg_lower == "both") {
+				mouse_decision_binding = MouseReturnMode::Both;
+			} else if (arg_lower == "none") {
+				mouse_decision_binding = MouseReturnMode::None;
+			} else {
+				Output::Warning("Ineluki: Invalid value for setMouseAsReturn");
+				mouse_decision_binding = MouseReturnMode::None;
+			}
+		} else if (cmd.name == "setmousewheelaskeys") {
+			if (!mouse_support) {
+				return true;
+			}
+			std::string arg_lower = Utils::LowerCase(cmd.arg);
+			if (arg_lower == "updown") {
+				mouse_wheel_binding = MouseWheelMode::UpDown;
+			} else if (arg_lower == "leftright") {
+				mouse_wheel_binding = MouseWheelMode::LeftRight;
+			} else if (arg_lower == "none") {
+				mouse_wheel_binding = MouseWheelMode::None;
+			} else {
+				Output::Warning("Ineluki: Invalid value for setMouseWheelAsKeys");
+				mouse_wheel_binding = MouseWheelMode::None;
+			}
 		}
 	}
 
@@ -263,6 +295,10 @@ bool Game_Ineluki::Parse(StringView ini_file) {
 		} else if (cmd.name == "registercheatevent") {
 			cmd.arg = ini.Get(section, "cheat", std::string());
 			cmd.arg2 = ini.Get(section, "value", std::string());
+		} else if (cmd.name == "setmouseasreturn") {
+			cmd.arg = ini.Get(section, "value", std::string());
+		} else if (cmd.name == "setmousewheelaskeys") {
+			cmd.arg = ini.Get(section, "value", std::string());
 		} else {
 			Output::Debug("Ineluki: Unknown command {}", cmd.name);
 			valid = false;
@@ -294,10 +330,15 @@ int Game_Ineluki::GetMidiTicks() {
 }
 
 void Game_Ineluki::Update() {
-	if (!key_support) {
-		return;
+	if (key_support) {
+		UpdateKeys();
 	}
+	if (mouse_support) {
+		UpdateMouse();
+	}
+}
 
+void Game_Ineluki::UpdateKeys() {
 	for (const auto& key : keylist_down) {
 		if (Input::IsRawKeyTriggered(key.key)) {
 			output_list.push_back(key.value);
@@ -328,6 +369,32 @@ void Game_Ineluki::Update() {
 			if (pressed.any()) {
 				cheat.index = 0;
 			}
+		}
+	}
+}
+
+void Game_Ineluki::UpdateMouse() {
+	if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT)) {
+		if ((mouse_decision_binding == MouseReturnMode::Left || mouse_decision_binding == MouseReturnMode::Both)) {
+			Input::SimulateButtonPress(Input::DECISION);
+		}
+	} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
+		if ((mouse_decision_binding == MouseReturnMode::Right || mouse_decision_binding == MouseReturnMode::Both)) {
+			Input::SimulateButtonPress(Input::DECISION);
+		}
+	}
+
+	if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLUP)) {
+		if (mouse_wheel_binding == MouseWheelMode::UpDown) {
+			Input::SimulateButtonPress(Input::UP);
+		} else if (mouse_wheel_binding == MouseWheelMode::LeftRight) {
+			Input::SimulateButtonPress(Input::LEFT);
+		}
+	} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLDOWN)) {
+		if (mouse_wheel_binding == MouseWheelMode::UpDown) {
+			Input::SimulateButtonPress(Input::DOWN);
+		} else if (mouse_wheel_binding == MouseWheelMode::LeftRight) {
+			Input::SimulateButtonPress(Input::RIGHT);
 		}
 	}
 }
