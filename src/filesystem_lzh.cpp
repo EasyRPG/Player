@@ -34,7 +34,7 @@
 
 #include "lhasa.h"
 
-static std::string normalize_path(StringView path) {
+static std::string normalize_path(std::string_view path) {
 	if (path == "." || path == "/" || path.empty()) {
 		return "";
 	};
@@ -74,7 +74,7 @@ static LHAInputStreamType vio = {
 	nullptr // close not supported by istream interface
 };
 
-LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, StringView enc) :
+LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, std::string_view enc) :
 	Filesystem(base_path, parent_fs) {
 	is = parent_fs.OpenInputStream(GetPath());
 	if (!is) {
@@ -242,7 +242,7 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, St
 	lzh_entries.erase(lzh_entries.begin(), entries_del_it.base());
 }
 
-bool LzhFilesystem::IsFile(StringView path) const {
+bool LzhFilesystem::IsFile(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -251,7 +251,7 @@ bool LzhFilesystem::IsFile(StringView path) const {
 	return false;
 }
 
-bool LzhFilesystem::IsDirectory(StringView path, bool) const {
+bool LzhFilesystem::IsDirectory(std::string_view path, bool) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -260,13 +260,13 @@ bool LzhFilesystem::IsDirectory(StringView path, bool) const {
 	return false;
 }
 
-bool LzhFilesystem::Exists(StringView path) const {
+bool LzhFilesystem::Exists(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	return entry != nullptr;
 }
 
-int64_t LzhFilesystem::GetFilesize(StringView path) const {
+int64_t LzhFilesystem::GetFilesize(std::string_view path) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry) {
@@ -275,7 +275,7 @@ int64_t LzhFilesystem::GetFilesize(StringView path) const {
 	return 0;
 }
 
-std::streambuf* LzhFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode) const {
+std::streambuf* LzhFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode) const {
 	std::string path_normalized = normalize_path(path);
 	auto entry = Find(path);
 	if (entry && !entry->is_directory) {
@@ -310,7 +310,7 @@ std::streambuf* LzhFilesystem::CreateInputStreambuffer(StringView path, std::ios
 	return nullptr;
 }
 
-bool LzhFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool LzhFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const {
 	if (!IsDirectory(path, false)) {
 		return false;
 	}
@@ -321,7 +321,7 @@ bool LzhFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	}
 
 	auto check = [&](auto& it) {
-		if (StringView(it.first).starts_with(path_normalized) &&
+		if (StartsWith(it.first, path_normalized) &&
 			it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size()).find_last_of('/') == std::string::npos) {
 			// Everything that starts with the path but isn't the path and does contain no slash
 			auto filename = it.first.substr(path_normalized.size(), it.first.size() - path_normalized.size());
@@ -342,7 +342,7 @@ bool LzhFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTr
 	return true;
 }
 
-const LzhFilesystem::LzhEntry* LzhFilesystem::Find(StringView what) const {
+const LzhFilesystem::LzhEntry* LzhFilesystem::Find(std::string_view what) const {
 	auto it = std::lower_bound(lzh_entries.begin(), lzh_entries.end(), what, [](const auto& e, const auto& w) {
 		return e.first < w;
 	});

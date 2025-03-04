@@ -45,7 +45,7 @@ Filesystem_Stream::InputStream& Filesystem_Stream::InputStream::operator=(InputS
 	return *this;
 }
 
-StringView Filesystem_Stream::InputStream::GetName() const {
+std::string_view Filesystem_Stream::InputStream::GetName() const {
 	return name;
 }
 
@@ -89,7 +89,7 @@ Filesystem_Stream::OutputStream& Filesystem_Stream::OutputStream::operator=(Outp
 	return *this;
 }
 
-StringView Filesystem_Stream::OutputStream::GetName() const {
+std::string_view Filesystem_Stream::OutputStream::GetName() const {
 	return name;
 }
 

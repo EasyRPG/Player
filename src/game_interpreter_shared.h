@@ -93,8 +93,8 @@ namespace Game_Interpreter_Shared {
 	template<bool validate_patches = true, bool support_indirect_and_switch = true, bool support_scopes = false, bool support_named = false>
 	int ValueOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx, Game_BaseInterpreterContext const& interpreter);
 
-	StringView CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
-	StringView CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
+	std::string_view CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx);
+	std::string_view CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx);
 
 	bool CheckOperator(int val, int val2, int op);
 
@@ -146,7 +146,7 @@ public:
 	virtual ~Game_BaseInterpreterContext() {}
 
 	virtual int GetThisEventId() const = 0;
-	virtual Game_Character* GetCharacter(int event_id, StringView origin) const = 0;
+	virtual Game_Character* GetCharacter(int event_id, std::string_view origin) const = 0;
 	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
 
 protected:
