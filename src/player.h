@@ -435,6 +435,10 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
+
+	namespace Constants {
+		int32_t MaxSaveFiles();
+	}
 }
 
 inline bool Player::IsRPG2k() {

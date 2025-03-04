@@ -399,16 +399,30 @@ bool FileFinder::HasSavegame() {
 int FileFinder::GetSavegames() {
 	auto fs = Save();
 
-	for (int i = 1; i <= 15; i++) {
-		std::stringstream ss;
-		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
-		std::string filename = fs.FindFile(ss.str());
+	for (int i = 1; i <= Player::Constants::MaxSaveFiles(); i++) {
+		std::string filename = fs.FindFile(GetSaveFilename(i));
 
 		if (!filename.empty()) {
 			return true;
 		}
 	}
 	return false;
+}
+
+std::string FileFinder::GetSaveFilename(int slot) {
+	std::stringstream ss;
+	ss << "Save" << (slot <= 9 ? "0" : "") << (slot) << ".lsd";
+	return ss.str();
+}
+
+std::string FileFinder::GetSaveFilename(const FilesystemView& fs, int slot, bool validate_exists) {
+	auto filename = GetSaveFilename(slot);
+	auto filename_fs = fs.FindFile(filename);
+
+	if (filename_fs.empty() && !validate_exists) {
+		return filename;
+	}
+	return filename_fs;
 }
 
 std::string find_generic(const DirectoryTree::Args& args) {

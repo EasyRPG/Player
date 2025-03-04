@@ -4277,7 +4277,7 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	}
 
 	auto savefs = FileFinder::Save();
-	std::string save_name = Scene_Save::GetSaveFilename(savefs, save_number);
+	std::string save_name = FileFinder::GetSaveFilename(savefs, save_number, false);
 	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
 
 	if (!save_stream) {
@@ -4373,7 +4373,7 @@ bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const& com) {
 	// When com.parameters[2] is 1 the check whether the file exists is skipped
 	// When skipped and missing RPG_RT will crash
 	auto savefs = FileFinder::Save();
-	std::string save_name = Scene_Save::GetSaveFilename(savefs, slot);
+	std::string save_name = FileFinder::GetSaveFilename(savefs, slot, false);
 	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
 	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
 

@@ -410,7 +410,7 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 
 	if (aop.GetType() == AsyncOp::eLoad) {
 		auto savefs = FileFinder::Save();
-		std::string save_name = Scene_Save::GetSaveFilename(savefs, aop.GetSaveSlot());
+		std::string save_name = FileFinder::GetSaveFilename(savefs, aop.GetSaveSlot(), false);
 		Player::LoadSavegame(save_name, aop.GetSaveSlot());
 	}
 

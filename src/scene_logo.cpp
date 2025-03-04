@@ -104,14 +104,9 @@ void Scene_Logo::vUpdate() {
 			Scene::PushTitleScene(true);
 
 			if (Player::load_game_id > 0) {
-				auto save = FileFinder::Save();
+				Output::Debug("Loading Save {}", FileFinder::GetSaveFilename(Player::load_game_id));
 
-				std::stringstream ss;
-				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
-
-				Output::Debug("Loading Save {}", ss.str());
-
-				std::string save_name = save.FindFile(ss.str());
+				std::string save_name = FileFinder::GetSaveFilename(FileFinder::Save(), Player::load_game_id);
 				Player::LoadSavegame(save_name, Player::load_game_id);
 			}
 		}
