@@ -139,6 +139,12 @@ namespace Input {
 		const KeyStatus& GetMask() const { return keymask; }
 		KeyStatus& GetMask() { return keymask; }
 
+		/**
+		* Emulate a key being pressed.
+		* @param key
+		*/
+		void SimulateKeyPress(Input::Keys::InputKey key);
+
 	protected:
 		void Record();
 		void UpdateGamepad();
@@ -152,6 +158,7 @@ namespace Input {
 
 		KeyStatus keystates;
 		KeyStatus keymask;
+		KeyStatus keystates_virtual;
 		Point mouse_pos;
 		AnalogInput analog_input;
 
