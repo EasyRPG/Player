@@ -376,6 +376,7 @@ void Game_Ineluki::UpdateKeys() {
 }
 
 void Game_Ineluki::UpdateMouse() {
+#if defined(USE_MOUSE_OR_TOUCH) && defined(SUPPORT_MOUSE_OR_TOUCH)
 	if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT)) {
 		if ((mouse_decision_binding == MouseReturnMode::Left || mouse_decision_binding == MouseReturnMode::Both)) {
 			Input::SimulateButtonPress(Input::DECISION);
@@ -399,6 +400,7 @@ void Game_Ineluki::UpdateMouse() {
 			Input::SimulateButtonPress(Input::RIGHT);
 		}
 	}
+#endif
 }
 
 void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
