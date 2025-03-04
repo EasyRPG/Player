@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_ineluki.h"
+#include "game_powerpatch.h"
 #include "async_handler.h"
 #include "filefinder.h"
 #include "utils.h"
@@ -339,6 +340,11 @@ AsyncOp Game_Ineluki::ExecProgram(StringView command) {
 		Player::exit_flag = true;
 	} else if (command.starts_with("savecount.dat")) {
 		// no-op, detected through saves.script access
+	} else if (command.starts_with("ppcomp")) {
+		auto args = Utils::Tokenize(command, [&](char32_t c) { return std::isspace(c); });
+		if (args.size() > 1) {
+			return Game_PowerPatch::ExecutePPC(Utils::UpperCase(args[1]), Span<std::string>(args).subspan(2));
+		}
 	} else {
 		Output::Warning("Ineluki ExecProgram {}: Not supported", command);
 	}

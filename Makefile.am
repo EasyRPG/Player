@@ -176,6 +176,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_pictures.h \
 	src/game_player.cpp \
 	src/game_player.h \
+	src/game_powerpatch.cpp \
+	src/game_powerpatch.h \
 	src/game_screen.cpp \
 	src/game_screen.h \
 	src/game_strings.cpp \
