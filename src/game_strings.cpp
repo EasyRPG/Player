@@ -38,7 +38,7 @@ void Game_Strings::WarnGet(int id) const {
 }
 
 #ifdef HAVE_NLOHMANN_JSON
-nlohmann::json* Game_Strings::ParseJson(int id) {
+nlohmann::ordered_json* Game_Strings::ParseJson(int id) {
 	auto it = _json_cache.find(id);
 	if (it != _json_cache.end()) {
 		return &(it->second);

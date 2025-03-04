@@ -5368,16 +5368,82 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	return true;
 #else
 
+	// Helper lambda for getting values from variables
+	auto get_var_value = [](int var_type, int var_id) -> std::string {
+		switch (var_type) {
+		case 0: // Switch
+			return std::to_string(Main_Data::game_switches->Get(var_id));
+		case 1: // Variable
+			return std::to_string(Main_Data::game_variables->Get(var_id));
+		case 2: // String
+			return ToString(Main_Data::game_strings->Get(var_id));
+		default:
+			Output::Warning("CommandEasyRpgProcessJson: Unsupported var_type {}", var_type);
+			return {};
+		}
+		};
+
+	// Helper lambda for setting values to variables
+	auto set_var_value = [](int var_type, int var_id, const std::string& value) -> bool {
+		switch (var_type) {
+		case 0: // Switch
+			Main_Data::game_switches->Set(var_id, atoi(value.c_str()) != 0);
+			break;
+		case 1: // Variable
+			Main_Data::game_variables->Set(var_id, atoi(value.c_str()));
+			break;
+		case 2: // String
+			Main_Data::game_strings->Asg(var_id, value);
+			break;
+		default:
+			Output::Warning("CommandEasyRpgProcessJson: Unsupported var_type {}", var_type);
+			return false;
+		}
+		return true;
+		};
+
 	int operation = ValueOrVariable(com.parameters[0], com.parameters[1]);
-	int source_var_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
+
+	json* json_data = nullptr;
+	std::optional<json> json_data_imm;
+
+	int source_var_id = -1;
+
+	int pos = 0;
+	std::string json_path = Main_Data::game_strings->GetWithModeAndPos(com.string, com.parameters[8], com.parameters[9], pos, *Main_Data::game_variables);
+
+	if (com.parameters[2] == 0) {
+		std::string json_str = Main_Data::game_strings->GetWithModeAndPos(com.string, com.parameters[2], com.parameters[3], pos, *Main_Data::game_variables);
+		json_data_imm = Json_Helper::Parse(json_str);
+		if (json_data_imm) {
+			json_data = &*json_data_imm;
+		} else {
+			Output::Warning("JSON Parse error for {}", json_str);
+			return true;
+		}
+	} else {
+		source_var_id = ValueOrVariable(com.parameters[2] - 1, com.parameters[3]);
+		json_data = Main_Data::game_strings->ParseJson(source_var_id);
+
+		if (!json_data) {
+			Output::Warning("JSON Parse error for {}", Main_Data::game_strings->Get(source_var_id));
+			return true;
+		}
+	}
+
 	int target_var_type = ValueOrVariable(com.parameters[4], com.parameters[5]);
 	int target_var_id = ValueOrVariable(com.parameters[6], com.parameters[7]);
 
-	std::string json_path = ToString(CommandStringOrVariable(com, 8, 9));
-	auto* json_data = Main_Data::game_strings->ParseJson(source_var_id);
+	int flags = com.parameters[10];
+	bool pretty_print = (flags & 4) == 4;
 
-	if (!json_data) {
-		Output::Warning("JSON Parse error for {}", Main_Data::game_strings->Get(source_var_id));
+	if ((flags & 1) == 1) { // parse command codes
+		json_path = Game_Strings::Extract(json_path, false);
+	} else if ((flags & 2) == 2) { // parse command codes, numbers as hex
+		json_path = Game_Strings::Extract(json_path, true);
+	}
+
+	if (!Json_Helper::CheckJsonPointer(json_path)) {
 		return true;
 	}
 
@@ -5388,52 +5454,131 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 
 	std::optional<std::string> result;
 
-	if (operation == 0) { // Get operation: Extract a value from JSON data
+	switch (operation) {
+	case 0: { // Get operation: Extract a value from JSON data
 		result = Json_Helper::GetValue(*json_data, json_path);
-
 		if (result) {
-			switch (target_var_type) {
-			case 0: // Switch
-				Main_Data::game_switches->Set(target_var_id, atoi(result->c_str()) != 0);
-				break;
-			case 1: // Variable
-				Main_Data::game_variables->Set(target_var_id, atoi(result->c_str()));
-				break;
-			case 2: // String
-				Main_Data::game_strings->Asg({ target_var_id }, *result);
-				break;
-			default:
-				Output::Warning("CommandEasyRpgProcessJson: Unsupported target_var_type {}", operation);
-				return true;
-			}
+			set_var_value(target_var_type, target_var_id, *result);
 		}
+		break;
 	}
-	else if (operation == 1) { // Set operation: Update JSON data with a new value
-		std::string new_value;
-
-		switch (target_var_type) {
-		case 0: // Switch
-			new_value = std::to_string(Main_Data::game_switches->Get(target_var_id));
-			break;
-		case 1: // Variable
-			new_value = std::to_string(Main_Data::game_variables->Get(target_var_id));
-			break;
-		case 2: // String
-			new_value = ToString(Main_Data::game_strings->Get(target_var_id));
-			break;
-		default:
-			Output::Warning("CommandEasyRpgProcessJson: Unsupported target_var_type {}", operation);
+	case 1: { // Set operation: Update JSON data with a new value
+		if (json_data_imm) {
+			Output::Warning("CommandEasyRpgProcessJson: Cannot modify constant JSON string");
 			return true;
 		}
 
+		std::string new_value = get_var_value(target_var_type, target_var_id);
 		result = Json_Helper::SetValue(*json_data, json_path, new_value);
-
 		if (result) {
-			Main_Data::game_strings->Asg({ source_var_id }, *result);
+			Main_Data::game_strings->Asg(source_var_id, *result);
 		}
+		break;
 	}
-	else {
+	case 2: { // GetLength operation
+		size_t length = Json_Helper::GetLength(*json_data, json_path);
+		std::string length_str;
+		if (target_var_type == 0) {
+			// For switches, true if length > 0
+			length_str = (length > 0) ? "1" : "0";
+		}
+		else {
+			length_str = std::to_string(length);
+		}
+		set_var_value(target_var_type, target_var_id, length_str);
+		break;
+	}
+	case 3: { // GetKeys operation
+		bool create_keys_obj = (flags & 8) == 8;
+		auto keys = Json_Helper::GetKeys(*json_data, json_path);
+		std::string keys_str;
+		for (size_t i = 0; i < keys.size(); ++i) {
+			if (i > 0) keys_str += ",";
+			keys_str += "\"" + (keys)[i] + "\"";
+		}
+		std::string json_str = "[" + keys_str + "]";
+		if (create_keys_obj) {
+			json_str = fmt::format(R"({{ "keys": {} }})", json_str);
+		}
+		set_var_value(target_var_type, target_var_id, json_str);
+		break;
+	}
+	case 4: { // GetType operation
+		std::string type = Json_Helper::GetType(*json_data, json_path);
+		std::string value;
+		if (target_var_type == 0) {
+			// For switches, true if it exists and not null
+			value = (!type.empty() && type != "null");
+		}
+		else if (target_var_type == 1) {
+			// For variables, numeric code for type
+			int type_code = 0;
+			if (type == "object") type_code = 1;
+			else if (type == "array") type_code = 2;
+			else if (type == "string") type_code = 3;
+			else if (type == "number") type_code = 4;
+			else if (type == "boolean") type_code = 5;
+			else if (type == "null") type_code = 6;
+			value = std::to_string(type_code);
+		}
+		else {
+			value = type;
+		}
+		set_var_value(target_var_type, target_var_id, value);
+		break;
+	}
+	case 5: { // Remove operation: Remove value from JSON data
+		if (json_data_imm) {
+			Output::Warning("CommandEasyRpgProcessJson: Cannot modify constant JSON string");
+			return true;
+		}
+
+		std::string result = Json_Helper::RemoveValue(*json_data, json_path);
+		if (!result.empty()) {
+			Main_Data::game_strings->Asg(source_var_id, result);
+		}
+		break;
+	}
+	case 6: { // Push operation: Add value to end of array
+		if (json_data_imm) {
+			Output::Warning("CommandEasyRpgProcessJson: Cannot modify constant JSON string");
+			return true;
+		}
+
+		std::string value = get_var_value(target_var_type, target_var_id);
+		std::string result = Json_Helper::PushValue(*json_data, json_path, value);
+		if (!result.empty()) {
+			Main_Data::game_strings->Asg(source_var_id, result);
+		}
+		break;
+	}
+	case 7: { // Pop operation: Remove and return last element of array
+		auto [json_obj, element] = Json_Helper::PopValue(*json_data, json_path);
+		if (!json_obj.empty()) {
+			// Set popped value to target variable
+			set_var_value(target_var_type, target_var_id, element);
+			// Update source with modified JSON after pop
+			if (!json_data_imm) {
+				Main_Data::game_strings->Asg(source_var_id, json_obj);
+			}
+		}
+		break;
+	}
+	case 8: { // Contains operation: Check if path exists
+		bool exists = Json_Helper::Contains(*json_data, json_path);
+		set_var_value(target_var_type, target_var_id, exists ? "1" : "0");
+		break;
+	}
+	default:
 		Output::Warning("CommandEasyRpgProcessJson: Invalid Operation {}", operation);
+	}
+
+	if (target_var_type == 2 && pretty_print == 1) { // Only works with strings
+		std::string target_str = ToString(Main_Data::game_strings->Get(target_var_id));
+		if (auto parsed_json = Json_Helper::Parse(target_str)) {
+			std::string formatted = Json_Helper::PrettyPrint(*parsed_json, 2);
+			Main_Data::game_strings->Asg({ target_var_id }, formatted);
+		}
 	}
 
 	return true;

@@ -78,7 +78,7 @@ public:
 	std::string GetWithModeAndPos(StringView str_data, int mode, int arg, int& pos, const Game_Variables& variables);
 
 #ifdef HAVE_NLOHMANN_JSON
-	nlohmann::json* ParseJson(int id);
+	nlohmann::ordered_json* ParseJson(int id);
 #endif
 
 	StringView Asg(Str_Params params, StringView string);
@@ -114,7 +114,7 @@ private:
 	mutable int _warnings = max_warnings;
 
 #ifdef HAVE_NLOHMANN_JSON
-	std::unordered_map<int, nlohmann::json> _json_cache;
+	std::unordered_map<int, nlohmann::ordered_json> _json_cache;
 #endif
 };
 

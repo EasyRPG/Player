@@ -99,7 +99,7 @@ AS_IF([test "$with_freetype" = "yes"],[
 	EP_PKG_CHECK([HARFBUZZ],[harfbuzz],[Custom Font text shaping.])
 ])
 EP_PKG_CHECK([LHASA],[liblhasa],[Support running games in lzh archives.])
-EP_PKG_CHECK([NLOHMANN_JSON],[nlohmann_json],[Support processing of JSON files.])
+EP_PKG_CHECK([NLOHMANN_JSON],[nlohmann_json >= 3.9.1],[Support processing of JSON files.])
 
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
 AS_IF([test "x$with_audio" != "xno"],[

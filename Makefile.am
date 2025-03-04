@@ -760,6 +760,7 @@ test_runner_SOURCES = \
 	tests/game_player_input.cpp \
 	tests/game_player_pan.cpp \
 	tests/game_player_savecount.cpp \
+	tests/json.cpp \
 	tests/mock_game.cpp \
 	tests/mock_game.h \
 	tests/move_route.cpp \
