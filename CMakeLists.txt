@@ -200,6 +200,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_pictures.h
 	src/game_player.cpp
 	src/game_player.h
+	src/game_powerpatch.cpp
+	src/game_powerpatch.h
 	src/game_quit.cpp
 	src/game_quit.h
 	src/game_screen.cpp

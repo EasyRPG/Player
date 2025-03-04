@@ -827,6 +827,10 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+		if (!FileFinder::Game().FindFile("powerp.oex").empty()) {
+			Output::Warning("This game uses Power Patch and might not run properly.");
+		}
 	}
 
 	game_config.PrintActivePatches();

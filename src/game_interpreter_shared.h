@@ -109,6 +109,7 @@ namespace Game_Interpreter_Shared {
 
 	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot);
 	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot, bool& save_corrupted);
+	int GetLatestSaveSlot(const FilesystemView& fs);
 	AsyncOp MakeLoadOp(const char* caller, int save_slot);
 }
 

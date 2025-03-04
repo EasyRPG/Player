@@ -269,6 +269,33 @@ std::unique_ptr<lcf::rpg::Save> Game_Interpreter_Shared::ValidateAndLoadSave(con
 	return save;
 }
 
+int Game_Interpreter_Shared::GetLatestSaveSlot(const FilesystemView& fs) {
+	int latest_slot = 0;
+	double latest_time = 0;
+
+	//FIXME: Maybe consider just checking the file's modify dates instead of parsing them for the timestamp?
+	for (int i = 1; i <= Player::Constants::MaxSaveFiles(); i++) {
+		std::string file = FileFinder::GetSaveFilename(fs, i);
+
+		if (!file.empty()) {
+			// File found
+			auto save_stream = FileFinder::Save().OpenInputStream(file);
+			if (!save_stream) {
+				//corrupted
+				continue;
+			}
+
+			std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+
+			if (savegame && savegame->title.timestamp > latest_time) {
+				latest_time = savegame->title.timestamp;
+				latest_slot = i;
+			}
+		}
+	}
+	return latest_slot;
+}
+
 AsyncOp Game_Interpreter_Shared::MakeLoadOp(const char* caller, int save_slot) {
 	if (save_slot <= 0) {
 		Output::Debug("{}: Invalid save slot {}", caller, save_slot);
