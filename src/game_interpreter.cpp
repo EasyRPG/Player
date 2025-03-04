@@ -1991,7 +1991,26 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
-	sound.name = ToString(CommandStringOrVariableBitfield(com, 3, 0, 4));
+	auto sound_name = CommandStringOrVariableBitfield(com, 3, 0, 4);
+
+	if (Player::IsPatchKeyPatch() && EndsWith(sound_name, ".script")) {
+		// Is a Ineluki Script File
+		FileRequestAsync* request = AsyncHandler::RequestFile("Sound", sound_name);
+		request->SetImportantFile(true);
+		request->Start();
+
+		if (!request->IsReady()) {
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+		auto op = Main_Data::game_ineluki->Execute(FileFinder::FindSound(sound_name));
+		if (op.IsActive()) {
+			_async_op = op;
+		}
+		return true;
+	}
+
+	sound.name = ToString(sound_name);
 
 	sound.volume = ValueOrVariableBitfield(com, 3, 1, 0);
 	sound.tempo = ValueOrVariableBitfield(com, 3, 2, 1);
