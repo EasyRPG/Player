@@ -264,6 +264,10 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 		return;
 	}
 
+	if (HandleLoadParallel()) {
+		return;
+	}
+
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
 	// may require us to wait for them to download before we can start the transitions.
 	AsyncNext([this]() { UpdateStage2(); });
@@ -393,9 +397,30 @@ void Scene_Map::PerformAsyncTeleport(TeleportTarget original_tt) {
 	AsyncNext(std::move(map_async_continuation));
 }
 
+bool Scene_Map::HandleLoadParallel() {
+	// Note: Depending on the individual implementation, all sorts of
+	// unexpected behaviors might arise.
+	// This code is only meant for emulating the behavior of RPG_RT
+	// patches which were coded to use the internal loading mechanics
+	// while also failing to add any safeguards & allowing the interpreter
+	// to resume execution during the loading process.
+
+	if (!load_parallel_save_name.empty()) {
+		Player::LoadSavegame(load_parallel_save_name, 0);
+		load_parallel_save_name = {};
+
+		// Finish any active messages so that the interpreter isn't blocked
+		if (Game_Message::IsMessageActive()) {
+			Game_Message::GetWindow()->FinishMessageProcessing();
+		}
+		return true;
+	}
+	return false;
+}
+
 template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
-	if (CheckSceneExit(aop)) {
+	if (CheckSceneExit(aop) || HandleLoadParallel()) {
 		return;
 	}
 
@@ -412,6 +437,15 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		auto savefs = FileFinder::Save();
 		std::string save_name = FileFinder::GetSaveFilename(savefs, aop.GetSaveSlot(), false);
 		Player::LoadSavegame(save_name, aop.GetSaveSlot());
+	}
+
+	if (aop.GetType() == AsyncOp::eLoadParallel) {
+		// Set up emulation for a "Parallel Load".
+		// This is a delayed load that will either execute on the next async supend,
+		// or when the current interpreter frame has been completed.
+		// ( See notes on the declaration of Game_Interpreter_Shared::MakeLoadParallel()
+		//   & on the implementation of Scene_Map::HandleLoadParallel() for more information)
+		load_parallel_save_name = FileFinder::GetSaveFilename(FileFinder::Save(), aop.GetSaveSlot(), false);
 	}
 
 	if (aop.GetType() == AsyncOp::eCloneMapEvent) {

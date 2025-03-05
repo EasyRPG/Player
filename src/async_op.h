@@ -43,6 +43,7 @@ class AsyncOp {
 			eTerminateBattle,
 			eSave,
 			eLoad,
+			eLoadParallel,
 			eYield,
 			eYieldRepeat,
 			eCloneMapEvent,
@@ -77,6 +78,9 @@ class AsyncOp {
 
 		/** @return a Load async operation */
 		static AsyncOp MakeLoad(int save_slot);
+
+		/** @return a LoadParallel async operation (to be used for patch compatibility) */
+		static AsyncOp MakeLoadParallel(int save_slot);
 
 		/** @return a Yield for one frame to e.g. fetch an important asset */
 		static AsyncOp MakeYield();
@@ -128,7 +132,7 @@ class AsyncOp {
 
 		/**
 		 * @return the desired slot to save or load
-		 * @pre If GetType() is not eSave or eLoad, the return value is undefined.
+		 * @pre If GetType() is not eSave, eLoad, eLoadParallel, the return value is undefined.
 		 **/
 		 int GetSaveSlot() const;
 
@@ -220,7 +224,7 @@ inline int AsyncOp::GetBattleResult() const {
 }
 
 inline int AsyncOp::GetSaveSlot() const {
-	assert(GetType() == eSave || GetType() == eLoad);
+	assert(GetType() == eSave || GetType() == eLoad || GetType() == eLoadParallel);
 	return _args[0];
 }
 
@@ -303,6 +307,10 @@ inline AsyncOp AsyncOp::MakeSave(int save_slot, int save_result_var) {
 
 inline AsyncOp AsyncOp::MakeLoad(int save_slot) {
 	return AsyncOp(eLoad, save_slot);
+}
+
+inline AsyncOp AsyncOp::MakeLoadParallel(int save_slot) {
+	return AsyncOp(eLoadParallel, save_slot);
 }
 
 inline AsyncOp AsyncOp::MakeYield() {

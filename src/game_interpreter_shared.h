@@ -110,7 +110,18 @@ namespace Game_Interpreter_Shared {
 	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot);
 	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot, bool& save_corrupted);
 	int GetLatestSaveSlot(const FilesystemView& fs);
+
+
 	AsyncOp MakeLoadOp(const char* caller, int save_slot);
+
+	/**
+	* Sets up a "Parallel Load" which is a loading operation that is meant to run
+	* in the background while not actually stopping the game's execution.
+	* Note: This is coded to only emulate the behavior of certain RPG_RT patches
+	*  & will likely lead to many unexpected results, depending on the usage.
+	* DO NOT USE this mechanic for implementing load-mechanics in a new game!
+	*/
+	AsyncOp MakeLoadParallel(const char* caller, int save_slot);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {

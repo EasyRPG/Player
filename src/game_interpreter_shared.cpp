@@ -315,6 +315,25 @@ AsyncOp Game_Interpreter_Shared::MakeLoadOp(const char* caller, int save_slot) {
 	return AsyncOp::MakeLoad(save_slot);
 }
 
+AsyncOp Game_Interpreter_Shared::MakeLoadParallel(const char* caller, int save_slot) {
+	if (save_slot <= 0) {
+		Output::Debug("{}: Invalid save slot {}", caller, save_slot);
+		return {};
+	}
+
+	auto savefs = FileFinder::Save();
+	std::string save_name = FileFinder::GetSaveFilename(savefs, save_slot, false);
+	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
+	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+
+	if (!save) {
+		Output::Debug("{}: Save not found {}", caller, save_slot);
+		return {};
+	}
+
+	return AsyncOp::MakeLoadParallel(save_slot);
+}
+
 //explicit declarations for target evaluation logic shared between ControlSwitches/ControlVariables/ControlStrings
 template bool Game_Interpreter_Shared::DecodeTargetEvaluationMode<true, false, false, false, false>(lcf::rpg::EventCommand const&, int&, int&, Game_BaseInterpreterContext const&);
 template bool Game_Interpreter_Shared::DecodeTargetEvaluationMode<true, true, true, false, false>(lcf::rpg::EventCommand const&, int&, int&, Game_BaseInterpreterContext const&);

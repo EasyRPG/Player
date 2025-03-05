@@ -172,7 +172,7 @@ namespace Player {
 	 * @param save_file Savegame file to load
 	 * @param save_id ID of the savegame to load
 	 */
-	void LoadSavegame(const std::string& save_file, int save_id = 0);
+	void LoadSavegame(const std::string& save_file, int save_id = 0, bool load_parallel = false);
 
 	/**
 	 * Starts a new game

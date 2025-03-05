@@ -88,6 +88,8 @@ private:
 
 	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);
 
+	bool HandleLoadParallel();
+
 	void UpdateGraphics() override;
 
 	std::unique_ptr<Window_Message> message_window;
@@ -100,6 +102,7 @@ private:
 	bool activate_inn = false;
 	bool inn_started = false;
 	Game_Clock::time_point inn_timer = {};
+	std::string load_parallel_save_name = {};
 };
 
 #endif
