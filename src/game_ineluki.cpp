@@ -28,6 +28,7 @@
 #include "system.h"
 
 #include <lcf/inireader.h>
+#include <scene_load.h>
 
 namespace {
 #if defined(SUPPORT_KEYBOARD)
@@ -340,6 +341,10 @@ AsyncOp Game_Ineluki::ExecProgram(StringView command) {
 		Player::exit_flag = true;
 	} else if (command.starts_with("savecount.dat")) {
 		// no-op, detected through saves.script access
+	} else if (command.starts_with("ls.dat")) {
+		// (arg1 commonly given for "LS.dat" refers to the version-dependent
+		// virtual address of the RPG_RT loading mechanism)
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
 	} else if (command.starts_with("ppcomp")) {
 		auto args = Utils::Tokenize(command, [&](char32_t c) { return std::isspace(c); });
 		if (args.size() > 1) {
