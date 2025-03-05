@@ -863,6 +863,10 @@ void Player::CreateGameObjects() {
 				}
 			}
 		}
+
+		if (Player::game_config.patch_better_aep.Get()) {
+			Player::game_config.new_game.Set(true);
+		}
 	}
 
 	game_config.PrintActivePatches();
@@ -1467,6 +1471,9 @@ Engine options:
  --patch-direct-menu VAR
                       Directly access subscreens of the default menu by setting
                       VAR.
+ --patch-better-aep VAR
+                      Emulates the behavior of the "BetterAEP" patch, which
+                      is commonly used for implementing customized title screens.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
