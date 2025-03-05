@@ -58,7 +58,7 @@ namespace {
 }
 
 AsyncOp Game_PowerPatch::ExecutePPC(std::string_view ppc_cmd, Span<std::string const> args) {
-	auto& cmd = std::find_if(PPC_commands.begin(), PPC_commands.end(), [&ppc_cmd](auto& cmd) {
+	auto cmd = std::find_if(PPC_commands.begin(), PPC_commands.end(), [&ppc_cmd](auto& cmd) {
 		return ppc_cmd == cmd.name;
 	});
 	if (cmd == PPC_commands.end()) {
@@ -101,7 +101,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			int map_x = args.size() >= 3 ? atoi(args[2].c_str()) : -1;
 			int map_y = args.size() >= 4 ? atoi(args[3].c_str()) : -1;
 
-			auto& fs = FileFinder::Save();
+			auto fs = FileFinder::Save();
 			if (slot == 0) {
 				slot = Game_Interpreter_Shared::GetLatestSaveSlot(fs);
 			}
@@ -116,7 +116,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 		case Type::Load: {
 			int slot = args.size() >= 1 ? atoi(args[0].c_str()) : 0;
 
-			auto& fs = FileFinder::Save();
+			auto fs = FileFinder::Save();
 			if (slot == 0) {
 				slot = Game_Interpreter_Shared::GetLatestSaveSlot(fs);
 			}
@@ -140,7 +140,8 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			int slot = atoi(args[0].c_str());
 			int dest_sw = atoi(args[1].c_str());
 
-			auto exists = !FileFinder::GetSaveFilename(FileFinder::Save(), slot, true).empty();
+			auto fs = FileFinder::Save();
+			auto exists = !FileFinder::GetSaveFilename(fs, slot, true).empty();
 			Main_Data::game_switches->Set(dest_sw, exists);
 			break;
 		}
@@ -148,7 +149,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			int slot = atoi(args[0].c_str());
 			int dest_slot = atoi(args[1].c_str());
 
-			auto& fs = FileFinder::Save();
+			auto fs = FileFinder::Save();
 			auto save = Game_Interpreter_Shared::ValidateAndLoadSave("PowerPatch CopySave", fs, slot);
 			if (!save) {
 				return true;
@@ -174,7 +175,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			int slot = atoi(args[0].c_str());
 			int dest_v = atoi(args[1].c_str());
 
-			auto& fs = FileFinder::Save();
+			auto fs = FileFinder::Save();
 			auto save = Game_Interpreter_Shared::ValidateAndLoadSave("PowerPatch GetSaveDateTime", fs, slot);
 			if (!save) {
 				return true;
