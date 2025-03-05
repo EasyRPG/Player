@@ -1974,10 +1974,10 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 namespace InelukiKeyPatch {
 	bool HandleScriptFile(std::string_view file_name, bool is_music, AsyncOp& async_op) {
 		if (Player::IsPatchKeyPatch() && EndsWith(file_name, ".script")) {
-			if (!Player::game_config.patch_key_patch_no_async.Get()) {
-				// Script will be handled in place of the usual sound processing -> Game_System
-				return false;
-			}
+			//if (!Player::game_config.patch_key_patch_no_async.Get()) {
+			//	// Script will be handled in place of the usual sound processing -> Game_System
+			//	return false;
+			//}
 			// Is a Ineluki Script File
 			FileRequestAsync* request = AsyncHandler::RequestFile(is_music ? "Music" : "Sound", file_name);
 			request->SetImportantFile(true);
