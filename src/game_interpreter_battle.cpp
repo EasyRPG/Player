@@ -183,13 +183,13 @@ bool Game_Interpreter_Battle::AreConditionsMet(const lcf::rpg::TroopPageConditio
 }
 
 int Game_Interpreter_Battle::ScheduleNextPage(Game_Battler* source) {
-	lcf::rpg::TroopPageCondition::Flags f;
+	lcf::rpg::TroopPageCondition::TroopPageCondition_Flags f;
 	for (auto& ff: f.flags) ff = true;
 
 	return ScheduleNextPage(f, source);
 }
 
-static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::rpg::TroopPageCondition::Flags required) {
+static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::TroopPageCondition_Flags page, lcf::rpg::TroopPageCondition::TroopPageCondition_Flags required) {
 	for (size_t i = 0; i < page.flags.size(); ++i) {
 		if (required.flags[i] && page.flags[i]) {
 			return true;
@@ -198,7 +198,7 @@ static bool HasRequiredCondition(lcf::rpg::TroopPageCondition::Flags page, lcf::
 	return false;
 }
 
-int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::Flags required_conditions, Game_Battler* source) {
+int Game_Interpreter_Battle::ScheduleNextPage(lcf::rpg::TroopPageCondition::TroopPageCondition_Flags required_conditions, Game_Battler* source) {
 	if (IsRunning()) {
 		return 0;
 	}
