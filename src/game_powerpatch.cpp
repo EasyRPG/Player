@@ -124,7 +124,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			if (!save) {
 				return true;
 			}
-			// FIXME: In RPG_RT the loading operation happens asynchronously while the
+			// In RPG_RT the loading operation happens asynchronously while the
 			// current interpreter is still running. Any other Ineluki scripts might
 			// be executed before the loading process is complete.
 			// This breaks some games, such as "Take it cheesy"
@@ -133,7 +133,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			//      the mouse patch. As a result, mouse functionality will work normally
 			//      in RPG_RT, but not in EasyRPG Player, which never ran the
 			//      neccessary setup scripts.
-			async_op = Game_Interpreter_Shared::MakeLoadOp("PowerPatch Load", slot);
+			async_op = Game_Interpreter_Shared::MakeLoadParallel("PowerPatch Load", slot);
 			break;
 		}
 		case Type::CheckSave: {
@@ -207,11 +207,13 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			break;
 		case Type::CallGameMenu: {
 			int cursor = args.size() >= 1 ? atoi(args[0].c_str()) : 0;
+			//TODO: implement cursor
 			Game_Map::GetInterpreter().RequestMainMenuScene();
 			break;
 		}
 		case Type::CallTitleScreen: {
 			int cursor = args.size() >= 1 ? atoi(args[0].c_str()) : 0;
+			//TODO: implement cursor
 			async_op = AsyncOp::MakeToTitle();
 			break;
 		}
