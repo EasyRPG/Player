@@ -61,7 +61,8 @@ namespace Debug {
 		InterpreterEventType type_ev;
 		int evt_id, page_id;
 		std::string name;
-		int stack_item_no, cmd_current, cmd_count;
+		int stack_item_no, cmd_current;
+		size_t cmd_count;
 		bool map_has_changed;
 	};
 
