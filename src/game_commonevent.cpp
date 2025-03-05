@@ -32,7 +32,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	if (ce->trigger == lcf::rpg::EventPage::Trigger_parallel
 			&& !ce->event_commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		interpreter->Push(this);
+		interpreter->Push<InterpreterExecutionType::Parallel>(this);
 	}
 
 
