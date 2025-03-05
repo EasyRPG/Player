@@ -19,6 +19,7 @@
 #define EP_WINDOW_INTERPRETER_H
 
 // Headers
+#include "game_interpreter_debug.h"
 #include "window_command.h"
 #include "lcf/rpg/saveeventexecstate.h"
 #include "lcf/rpg/saveeventexecframe.h"
@@ -45,12 +46,6 @@ private:
 		std::string desc;
 	};
 
-	struct StackItem {
-		bool is_ce;
-		int evt_id, page_id;
-		std::string name;
-		int cmd_current, cmd_count;
-	};
 
 	const int lines_without_stack_fixed = 3;
 	
@@ -60,7 +55,7 @@ private:
 	int digits_stackitemno = 0, digits_evt_id = 0, digits_page_id = 0, digits_evt_combined_id = 0, digits_cmdcount = 0;
 
 	InterpDisplayItem display_item;
-	std::vector<StackItem> stack_display_items;
+	std::vector<Debug::CallStackItem> stack_display_items;
 };
 
 #endif
