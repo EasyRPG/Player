@@ -840,7 +840,7 @@ void Player::CreateGameObjects() {
 			Output::Warning("This game uses Power Patch and might not run properly.");
 		}
 
-		if (game_config.patch_key_patch.Get()) {
+		/*if (game_config.patch_key_patch.Get()) {
 			auto exe_util_types = Utils::MakeSvArray(".exe", ".dll", ".dat");
 			auto exe_util_names = Utils::MakeSvArray("ppcomp", "sfx");
 
@@ -862,7 +862,7 @@ void Player::CreateGameObjects() {
 					}
 				}
 			}
-		}
+		}*/
 
 		if (Player::game_config.patch_better_aep.Get()) {
 			Player::game_config.new_game.Set(true);
