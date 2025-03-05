@@ -303,6 +303,15 @@ namespace Input {
 	 */
 	 Source* GetInputSource();
 
+	/**
+	* Used to simulate a button press. This is used for
+	* emulating the behavior of some runtime patches.
+	* Buttons for directional movement will be delegated
+	* to the underlying low level input source.
+	* @param button The input button which should be registered as being 'pressed'
+	*/
+	void SimulateButtonPress(Input::InputButton button);
+
 	/** Buttons press time (in frames). */
 	extern std::array<int, BUTTON_COUNT> press_time;
 

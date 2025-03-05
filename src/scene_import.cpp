@@ -54,9 +54,8 @@ void Scene_Import::Start() {
 	CreateHelpWindow();
 	border_top = Scene_File::MakeBorderSprite(32);
 
-	// For consistency, we only show 15 windows
-	// We don't populate them until later (once we've loaded all potential importable files).
-	for (int i = 0; i < 15; i++) {
+	// We don't populate the windows until later (once we've loaded all potential importable files).
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(0, 40 + i * 64, Player::screen_width, 64));
 		w->SetIndex(i);
@@ -128,7 +127,7 @@ void Scene_Import::UpdateScanAndProgress() {
 }
 
 void Scene_Import::FinishScan() {
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		auto w = file_windows[i];
 		PopulateSaveWindow(*w, i);
 		w->Refresh();
