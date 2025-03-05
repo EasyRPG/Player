@@ -832,6 +832,12 @@ void Player::CreateGameObjects() {
 			Output::Warning("This game uses Power Patch and might not run properly.");
 		}
 
+		// PowerMode2003 can be detected via the existence of the files "hvm.dll", "fmodex.dll" &
+		// "warp.dll", but some games seem to only ship with the latter of the three.
+		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
+			Output::Warning("This game uses Power Mode 2003 and might not run properly.");
+		}
+
 		/*if (game_config.patch_key_patch.Get()) {
 			auto exe_util_types = Utils::MakeSvArray(".exe", ".dll", ".dat");
 			auto exe_util_names = Utils::MakeSvArray("ppcomp", "sfx");
