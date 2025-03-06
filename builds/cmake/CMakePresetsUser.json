@@ -42,6 +42,14 @@
 			}
 		},
 		{
+			"name": "android-user",
+			"displayName": "user overrides for Android",
+			"hidden": true,
+			"environment": {
+			},
+			"inherits": ["android-base", "base-user"]
+		},
+		{
 			"name": "dkp-user",
 			"displayName": "user overrides for devkitPro",
 			"hidden": true,

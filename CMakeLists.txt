@@ -579,7 +579,7 @@ if(ANDROID AND PLAYER_GRADLE_BUILD)
 	# Ugly: Gradle has no way to branch based on the ABI
 	# Inject correct search path based on PLAYER_ANDROID_TOOLCHAIN_PATH
 	foreach(f ${PLAYER_ANDROID_TOOLCHAIN_PATH})
-		list(APPEND CMAKE_FIND_ROOT_PATH "${f}/${ANDROID_ABI}-toolchain")
+		list(APPEND CMAKE_FIND_ROOT_PATH "${f}/${CMAKE_ANDROID_ARCH_ABI}-toolchain")
 	endforeach(f)
 endif()
 

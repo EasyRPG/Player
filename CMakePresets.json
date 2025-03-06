@@ -847,6 +847,246 @@
 			]
 		},
 		{
+			"name": "android-armeabi-v7a-parent",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "armeabi-v7a",
+				"CMAKE_ANDROID_API": "16"
+			},
+			"inherits": "android-user",
+			"hidden": true
+		},
+		{
+			"name": "android-armeabi-v7a-debug",
+			"displayName": "Android armeabi-v7a (Debug)",
+			"inherits": [
+				"android-armeabi-v7a-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-armeabi-v7a-relwithdebinfo",
+			"displayName": "Android armeabi-v7a (RelWithDebInfo)",
+			"inherits": [
+				"android-armeabi-v7a-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-armeabi-v7a-release",
+			"displayName": "Android armeabi-v7a (Release)",
+			"inherits": [
+				"android-armeabi-v7a-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-debug",
+			"displayName": "Android armeabi-v7a (libretro core, Debug)",
+			"inherits": [
+				"build-libretro",
+				"android-armeabi-v7a-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-relwithdebinfo",
+			"displayName": "Android armeabi-v7a (libretro core, RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"android-armeabi-v7a-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-release",
+			"displayName": "Android armeabi-v7a (libretro core, Release)",
+			"inherits": [
+				"build-libretro",
+				"android-armeabi-v7a-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-parent",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "arm64-v8a",
+				"CMAKE_ANDROID_API": "21"
+			},
+			"inherits": "android-user",
+			"hidden": true
+		},
+		{
+			"name": "android-arm64-v8a-debug",
+			"displayName": "Android arm64-v8a (Debug)",
+			"inherits": [
+				"android-arm64-v8a-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-relwithdebinfo",
+			"displayName": "Android arm64-v8a (RelWithDebInfo)",
+			"inherits": [
+				"android-arm64-v8a-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-release",
+			"displayName": "Android arm64-v8a (Release)",
+			"inherits": [
+				"android-arm64-v8a-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-libretro-debug",
+			"displayName": "Android arm64-v8a (libretro core, Debug)",
+			"inherits": [
+				"build-libretro",
+				"android-arm64-v8a-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-libretro-relwithdebinfo",
+			"displayName": "Android arm64-v8a (libretro core, RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"android-arm64-v8a-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-arm64-v8a-libretro-release",
+			"displayName": "Android arm64-v8a (libretro core, Release)",
+			"inherits": [
+				"build-libretro",
+				"android-arm64-v8a-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-x86-parent",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "x86",
+				"CMAKE_ANDROID_API": "16"
+			},
+			"inherits": "android-user",
+			"hidden": true
+		},
+		{
+			"name": "android-x86-debug",
+			"displayName": "Android x86 (Debug)",
+			"inherits": [
+				"android-x86-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-x86-relwithdebinfo",
+			"displayName": "Android x86 (RelWithDebInfo)",
+			"inherits": [
+				"android-x86-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-x86-release",
+			"displayName": "Android x86 (Release)",
+			"inherits": [
+				"android-x86-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-x86-libretro-debug",
+			"displayName": "Android x86 (libretro core, Debug)",
+			"inherits": [
+				"build-libretro",
+				"android-x86-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-x86-libretro-relwithdebinfo",
+			"displayName": "Android x86 (libretro core, RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"android-x86-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-x86-libretro-release",
+			"displayName": "Android x86 (libretro core, Release)",
+			"inherits": [
+				"build-libretro",
+				"android-x86-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-x86_64-parent",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "x86_64",
+				"CMAKE_ANDROID_API": "21"
+			},
+			"inherits": "android-user",
+			"hidden": true
+		},
+		{
+			"name": "android-x86_64-debug",
+			"displayName": "Android x86_64 (Debug)",
+			"inherits": [
+				"android-x86_64-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-x86_64-relwithdebinfo",
+			"displayName": "Android x86_64 (RelWithDebInfo)",
+			"inherits": [
+				"android-x86_64-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-x86_64-release",
+			"displayName": "Android x86_64 (Release)",
+			"inherits": [
+				"android-x86_64-parent",
+				"type-release"
+			]
+		},
+		{
+			"name": "android-x86_64-libretro-debug",
+			"displayName": "Android x86_64 (libretro core, Debug)",
+			"inherits": [
+				"build-libretro",
+				"android-x86_64-parent",
+				"type-debug"
+			]
+		},
+		{
+			"name": "android-x86_64-libretro-relwithdebinfo",
+			"displayName": "Android x86_64 (libretro core, RelWithDebInfo)",
+			"inherits": [
+				"build-libretro",
+				"android-x86_64-parent",
+				"type-relwithdebinfo"
+			]
+		},
+		{
+			"name": "android-x86_64-libretro-release",
+			"displayName": "Android x86_64 (libretro core, Release)",
+			"inherits": [
+				"build-libretro",
+				"android-x86_64-parent",
+				"type-release"
+			]
+		},
+		{
 			"name": "3ds-parent",
 			"toolchainFile": "$env{DEVKITPRO}/cmake/3DS.cmake",
 			"cacheVariables": {
@@ -1522,6 +1762,102 @@
 		{
 			"name": "emscripten-sdl2-release",
 			"configurePreset": "emscripten-sdl2-release"
+		},
+		{
+			"name": "android-armeabi-v7a-debug",
+			"configurePreset": "android-armeabi-v7a-debug"
+		},
+		{
+			"name": "android-armeabi-v7a-relwithdebinfo",
+			"configurePreset": "android-armeabi-v7a-relwithdebinfo"
+		},
+		{
+			"name": "android-armeabi-v7a-release",
+			"configurePreset": "android-armeabi-v7a-release"
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-debug",
+			"configurePreset": "android-armeabi-v7a-libretro-debug"
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-relwithdebinfo",
+			"configurePreset": "android-armeabi-v7a-libretro-relwithdebinfo"
+		},
+		{
+			"name": "android-armeabi-v7a-libretro-release",
+			"configurePreset": "android-armeabi-v7a-libretro-release"
+		},
+		{
+			"name": "android-arm64-v8a-debug",
+			"configurePreset": "android-arm64-v8a-debug"
+		},
+		{
+			"name": "android-arm64-v8a-relwithdebinfo",
+			"configurePreset": "android-arm64-v8a-relwithdebinfo"
+		},
+		{
+			"name": "android-arm64-v8a-release",
+			"configurePreset": "android-arm64-v8a-release"
+		},
+		{
+			"name": "android-arm64-v8a-libretro-debug",
+			"configurePreset": "android-arm64-v8a-libretro-debug"
+		},
+		{
+			"name": "android-arm64-v8a-libretro-relwithdebinfo",
+			"configurePreset": "android-arm64-v8a-libretro-relwithdebinfo"
+		},
+		{
+			"name": "android-arm64-v8a-libretro-release",
+			"configurePreset": "android-arm64-v8a-libretro-release"
+		},
+		{
+			"name": "android-x86-debug",
+			"configurePreset": "android-x86-debug"
+		},
+		{
+			"name": "android-x86-relwithdebinfo",
+			"configurePreset": "android-x86-relwithdebinfo"
+		},
+		{
+			"name": "android-x86-release",
+			"configurePreset": "android-x86-release"
+		},
+		{
+			"name": "android-x86-libretro-debug",
+			"configurePreset": "android-x86-libretro-debug"
+		},
+		{
+			"name": "android-x86-libretro-relwithdebinfo",
+			"configurePreset": "android-x86-libretro-relwithdebinfo"
+		},
+		{
+			"name": "android-x86-libretro-release",
+			"configurePreset": "android-x86-libretro-release"
+		},
+		{
+			"name": "android-x86_64-debug",
+			"configurePreset": "android-x86_64-debug"
+		},
+		{
+			"name": "android-x86_64-relwithdebinfo",
+			"configurePreset": "android-x86_64-relwithdebinfo"
+		},
+		{
+			"name": "android-x86_64-release",
+			"configurePreset": "android-x86_64-release"
+		},
+		{
+			"name": "android-x86_64-libretro-debug",
+			"configurePreset": "android-x86_64-libretro-debug"
+		},
+		{
+			"name": "android-x86_64-libretro-relwithdebinfo",
+			"configurePreset": "android-x86_64-libretro-relwithdebinfo"
+		},
+		{
+			"name": "android-x86_64-libretro-release",
+			"configurePreset": "android-x86_64-libretro-release"
 		},
 		{
 			"name": "3ds-debug",
