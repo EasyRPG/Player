@@ -398,8 +398,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_actortarget.h
 	src/window_base.cpp
 	src/window_base.h
-	src/window_battlecommand.cpp
-	src/window_battlecommand.h
 	src/window_battlemessage.cpp
 	src/window_battlemessage.h
 	src/window_battlestatus.cpp
