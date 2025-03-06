@@ -583,6 +583,10 @@ if(ANDROID AND PLAYER_GRADLE_BUILD)
 	endforeach(f)
 endif()
 
+if(APPLE AND NOT IOS AND NOT CMAKE_SYSTEM_NAME STREQUAL "tvOS")
+	set(MACOS TRUE)
+endif()
+
 if(PLAYER_TARGET_PLATFORM STREQUAL "SDL3")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl3_ui.cpp
@@ -849,13 +853,17 @@ if(APPLE)
 	enable_language(OBJCXX)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/macos_utils.mm
-		src/platform/macos/macos_utils.h
-		src/platform/macos/midiout_device_coreaudio.cpp
-		src/platform/macos/midiout_device_coreaudio.h)
+		src/platform/macos/macos_utils.h)
 
-	find_library(MACOSFOUNDATION Foundation)
-	find_Library(MACOSAUDIOUNIT AudioUnit)
-	find_library(MACOSAUDIOTOOLBOX AudioToolbox)
+	if(MACOS)
+		find_Library(MACOSAUDIOUNIT AudioUnit REQUIRED)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/macos/midiout_device_coreaudio.cpp
+			src/platform/macos/midiout_device_coreaudio.h)
+	endif()
+
+	find_library(MACOSFOUNDATION Foundation REQUIRED)
+	find_library(MACOSAUDIOTOOLBOX AudioToolbox REQUIRED)
 	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION} ${MACOSAUDIOUNIT} ${MACOSAUDIOTOOLBOX})
 endif()
 
@@ -991,9 +999,7 @@ if(PLAYER_HAS_AUDIO)
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
-	endif()
-
-	if(WIN32 OR APPLE)
+	elseif(WIN32 OR MACOS)
 		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(UNIX)
 		find_package(ALSA)
