@@ -762,7 +762,7 @@
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
-				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_FIND_ROOT_PATH_APPEND": "ON",
 				"PLAYER_JS_BUILD_SHELL": "ON"
 			},
 			"hidden": true,

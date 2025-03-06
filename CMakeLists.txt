@@ -15,7 +15,11 @@ include(PlayerMisc)
 include(GetGitRevisionDescription)
 
 # Dependencies provided by CMake Presets
+option(PLAYER_FIND_ROOT_PATH_APPEND "When enabled the items from CMAKE_PREFIX_PATH are added to CMAKE_FIND_ROOT_PATH. Works around problematic CMake Toolchain files" OFF)
 list(APPEND CMAKE_PREFIX_PATH "${PLAYER_PREFIX_PATH_APPEND}")
+if(PLAYER_FIND_ROOT_PATH_APPEND)
+	list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_PREFIX_PATH}")
+endif()
 
 # C++17 is required
 set(CMAKE_CXX_STANDARD 17)
