@@ -48,6 +48,17 @@
 			}
 		},
 		{
+			"name": "android-base",
+			"displayName": "Android base preset",
+			"hidden": true,
+			"inherits": "base",
+			"cacheVariables": {
+				"CMAKE_SYSTEM_NAME": "Android",
+				"PLAYER_ANDROID_TOOLCHAIN_PATH": "$env{EASYRPG_BUILDSCRIPTS}/android",
+				"PLAYER_GRADLE_BUILD": "ON"
+			}
+		},
+		{
 			"name": "dkp",
 			"displayName": "devkitPro base preset",
 			"hidden": true,

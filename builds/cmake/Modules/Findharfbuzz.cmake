@@ -67,7 +67,7 @@ if(HARFBUZZ_FOUND)
 
 		if(APPLE)
 			# Framework list taken from Harfbuzz CMakeLists
-			if(IOS)
+			if(IOS OR CMAKE_SYSTEM_NAME STREQUAL "tvOS")
 				find_library(COREFOUNDATION CoreFoundation REQUIRED)
 				find_library(CORETEXT CoreText REQUIRED)
 				find_library(COREGRAPHICS CoreGraphics REQUIRED)

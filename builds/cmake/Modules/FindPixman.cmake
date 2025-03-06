@@ -57,7 +57,7 @@ if(ANDROID)
 	enable_language(C)
 	# armeabi-v7a requires this
 	add_library(cpufeatures STATIC
-		${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
+		${CMAKE_ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
 endif()
 
 if(PIXMAN_FOUND)

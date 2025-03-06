@@ -142,28 +142,28 @@ namespace Destiny
 
 	struct Version
 	{
-		uint16_t major;
-		uint16_t minor;
+		uint16_t ver_major;
+		uint16_t ver_minor;
 
 		Version()
-			: major(0), minor(0) {}
+			: ver_major(0), ver_minor(0) {}
 		Version(uint32_t version)
 		{
-			major = version >> 0x10;
-			minor = version & 0xFFFF;
+			ver_major = version >> 0x10;
+			ver_minor = version & 0xFFFF;
 		}
 
 		std::string toString() const
 		{
 			std::stringstream ss;
 
-			ss << major << '.' << minor;
+			ss << ver_major << '.' << ver_minor;
 			return ss.str();
 		}
 
 		inline bool operator==(Version& other) const
 		{
-			return major == other.major && minor == other.minor;
+			return ver_major == other.ver_major && ver_minor == other.ver_minor;
 		}
 
 		inline bool operator!=(Version& other) const
@@ -173,16 +173,16 @@ namespace Destiny
 
 		inline bool operator>(Version& other) const
 		{
-			return minor == other.minor
-				? major > other.major
-				: minor > other.minor;
+			return ver_minor == other.ver_minor
+				? ver_major > other.ver_major
+				: ver_minor > other.ver_minor;
 		}
 
 		inline bool operator<(Version& other) const
 		{
-			return minor == other.minor
-				? major < other.major
-				: minor < other.minor;
+			return ver_minor == other.ver_minor
+				? ver_major < other.ver_major
+				: ver_minor < other.ver_minor;
 		}
 
 		inline bool operator>=(Version& other) const

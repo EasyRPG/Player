@@ -15,7 +15,11 @@ include(PlayerMisc)
 include(GetGitRevisionDescription)
 
 # Dependencies provided by CMake Presets
+option(PLAYER_FIND_ROOT_PATH_APPEND "When enabled the items from CMAKE_PREFIX_PATH are added to CMAKE_FIND_ROOT_PATH. Works around problematic CMake Toolchain files" OFF)
 list(APPEND CMAKE_PREFIX_PATH "${PLAYER_PREFIX_PATH_APPEND}")
+if(PLAYER_FIND_ROOT_PATH_APPEND)
+	list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_PREFIX_PATH}")
+endif()
 
 # C++17 is required
 set(CMAKE_CXX_STANDARD 17)
@@ -575,8 +579,12 @@ if(ANDROID AND PLAYER_GRADLE_BUILD)
 	# Ugly: Gradle has no way to branch based on the ABI
 	# Inject correct search path based on PLAYER_ANDROID_TOOLCHAIN_PATH
 	foreach(f ${PLAYER_ANDROID_TOOLCHAIN_PATH})
-		list(APPEND CMAKE_FIND_ROOT_PATH "${f}/${ANDROID_ABI}-toolchain")
+		list(APPEND CMAKE_FIND_ROOT_PATH "${f}/${CMAKE_ANDROID_ARCH_ABI}-toolchain")
 	endforeach(f)
+endif()
+
+if(APPLE AND NOT IOS AND NOT CMAKE_SYSTEM_NAME STREQUAL "tvOS")
+	set(MACOS TRUE)
 endif()
 
 if(PLAYER_TARGET_PLATFORM STREQUAL "SDL3")
@@ -845,13 +853,17 @@ if(APPLE)
 	enable_language(OBJCXX)
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/macos/macos_utils.mm
-		src/platform/macos/macos_utils.h
-		src/platform/macos/midiout_device_coreaudio.cpp
-		src/platform/macos/midiout_device_coreaudio.h)
+		src/platform/macos/macos_utils.h)
 
-	find_library(MACOSFOUNDATION Foundation)
-	find_Library(MACOSAUDIOUNIT AudioUnit)
-	find_library(MACOSAUDIOTOOLBOX AudioToolbox)
+	if(MACOS)
+		find_Library(MACOSAUDIOUNIT AudioUnit REQUIRED)
+		target_sources(${PROJECT_NAME} PRIVATE
+			src/platform/macos/midiout_device_coreaudio.cpp
+			src/platform/macos/midiout_device_coreaudio.h)
+	endif()
+
+	find_library(MACOSFOUNDATION Foundation REQUIRED)
+	find_library(MACOSAUDIOTOOLBOX AudioToolbox REQUIRED)
 	target_link_libraries(${PROJECT_NAME} ${MACOSFOUNDATION} ${MACOSAUDIOUNIT} ${MACOSAUDIOTOOLBOX})
 endif()
 
@@ -987,9 +999,7 @@ if(PLAYER_HAS_AUDIO)
 		if (WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
-	endif()
-
-	if(WIN32 OR APPLE)
+	elseif(WIN32 OR MACOS)
 		set(SUPPORT_NATIVE_MIDI ON)
 	elseif(UNIX)
 		find_package(ALSA)
