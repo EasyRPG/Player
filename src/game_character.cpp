@@ -1027,9 +1027,8 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 		std::vector<SearchNode> list_move;
 
 		SearchNode node = closest_node;
-		while (list_move.size() < steps_max) {
+		while (static_cast<int>(list_move.size()) < steps_max) {
 			list_move.push_back(node);
-			bool found_parent = false;
 			if (graph_by_coord.find({node.parent_x,
 					node.parent_y}) == graph_by_coord.end())
 				break;

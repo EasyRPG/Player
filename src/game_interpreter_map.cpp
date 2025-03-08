@@ -64,9 +64,6 @@
 #include "util_macro.h"
 #include "game_interpreter_map.h"
 #include <lcf/reader_lcf.h>
-#ifdef _MSC_VER
-#define strcasecmp _stricmp
-#endif
 
 enum EnemyEncounterSubcommand {
 	eOptionEnemyEncounterVictory = 0,
@@ -917,6 +914,9 @@ bool Game_Interpreter_Map::CommandEasyRpgPathfinder(lcf::rpg::EventCommand const
 	Parameter 13 - 13+N: Number of Event IDs specified by 12
 	Parameter 13+N+1, 13+N+2: Move frequency (default 3)
  	*/
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
 
 	Game_Character::CalculateMoveRouteArgs args;
 
@@ -950,7 +950,7 @@ bool Game_Interpreter_Map::CommandEasyRpgPathfinder(lcf::rpg::EventCommand const
 	}
 	args.event_id_ignore_list = event_id_ignore_list;
 
-	if (com.parameters.size() > ni + 1) {
+	if (static_cast<int>(com.parameters.size()) > ni + 1) {
 		args.frequency = ValueOrVariable(com.parameters[ni], com.parameters[ni + 1]);
 	}
 
