@@ -49,6 +49,7 @@ public:
 	Var_t Get(int variable_id) const;
 	Var_t GetIndirect(int variable_id) const;
 	Var_t GetWithMode(int id, int mode) const;
+	std::vector<Var_t> GetRange(int variable_id, int length);
 
 	Var_t Set(int variable_id, Var_t value);
 	Var_t Add(int variable_id, Var_t value);
