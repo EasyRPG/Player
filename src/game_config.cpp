@@ -308,10 +308,6 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 					path = FileFinder::MakePath(home, ".local/state");
 				}
 			}
-
-			if (!path.empty()) {
-				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
-			}
 	#endif
 
 			if (path.empty()) {
