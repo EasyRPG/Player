@@ -854,7 +854,7 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 	bool loops_vertical = Game_Map::LoopVertical();
 	std::vector<SearchNode> neighbour;
 	neighbour.reserve(8);
-	while (!queue.empty() && steps_taken < steps_max) {
+	while (!queue.empty() && steps_taken < args.search_max) {
 		SearchNode n = queue[0];
 		queue.erase(queue.begin());
 		steps_taken++;
@@ -1026,7 +1026,6 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 		}
 		std::vector<SearchNode> list_move;
 
-		//Output::Debug("Chemin :");
 		SearchNode node = closest_node;
 		while (list_move.size() < steps_max) {
 			list_move.push_back(node);
