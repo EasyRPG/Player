@@ -99,7 +99,7 @@ void Sprite_Weapon::StartAttack(bool secondary_weapon) {
 			return;
 		}
 
-		StringView sprite_file = battler_animation_weapon->weapon_name;
+		std::string_view sprite_file = battler_animation_weapon->weapon_name;
 
 		if (!sprite_file.empty()) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("BattleWeapon", sprite_file);

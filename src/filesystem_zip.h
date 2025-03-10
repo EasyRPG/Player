@@ -37,19 +37,19 @@ public:
 	 * @param parent_fs Filesystem used to create handles on the zip file
 	 * @param encoding Encoding to use, use empty string for autodetection
 	 */
-	ZipFilesystem(std::string base_path, FilesystemView parent_fs, StringView encoding = "");
+	ZipFilesystem(std::string base_path, FilesystemView parent_fs, std::string_view encoding = "");
 
 protected:
 	/**
  	 * Implementation of abstract methods
  	 */
 	/** @{ */
-	bool IsFile(StringView path) const override;
-	bool IsDirectory(StringView path, bool follow_symlinks) const override;
-	bool Exists(StringView path) const override;
-	int64_t GetFilesize(StringView path) const override;
-	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
-	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
+	bool IsFile(std::string_view path) const override;
+	bool IsDirectory(std::string_view path, bool follow_symlinks) const override;
+	bool Exists(std::string_view path) const override;
+	int64_t GetFilesize(std::string_view path) const override;
+	std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
+	bool GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const override;
 	std::string Describe() const override;
 	/** @} */
 
@@ -65,7 +65,7 @@ private:
 	bool FindCentralDirectory(std::istream& stream, uint32_t& offset, uint32_t& size, uint16_t& num_entries) const;
 	bool ReadCentralDirectoryEntry(std::istream& zipfile, std::string& filepath, ZipEntry& entry, bool& is_utf8) const;
 	bool ReadLocalHeader(std::istream& zipfile, StorageMethod& method, ZipEntry& entry) const;
-	const ZipEntry* Find(StringView what) const;
+	const ZipEntry* Find(std::string_view what) const;
 
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries;
 	std::vector<std::pair<std::string, ZipEntry>> zip_entries_cp437;

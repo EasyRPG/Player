@@ -59,7 +59,7 @@ public:
 
 	/**
 	 * Gets the base attribute rate when actor is damaged.
-	 * 
+	 *
 	 * @param attribute_id Attribute to query
 	 * @return Attribute rate
 	 */
@@ -84,7 +84,7 @@ public:
 	 *
 	 * @return Character name
 	 */
-	StringView GetName() const override;
+	std::string_view GetName() const override;
 
 	/** @return The troop member id in the battle lineup */
 	int GetTroopMemberId() const;
@@ -94,7 +94,7 @@ public:
 	 *
 	 * @return Filename of enemy sprite
 	 */
-	StringView GetSpriteName() const override;
+	std::string_view GetSpriteName() const override;
 
 	/**
 	 * Gets the maximum HP for the current level.
@@ -366,11 +366,11 @@ inline std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
 }
 
-inline StringView Game_Enemy::GetName() const {
+inline std::string_view Game_Enemy::GetName() const {
 	return enemy->name;
 }
 
-inline StringView Game_Enemy::GetSpriteName() const {
+inline std::string_view Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
 }
 

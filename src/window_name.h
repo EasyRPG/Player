@@ -39,7 +39,7 @@ public:
 	void Refresh();
 
 	void Set(std::string text);
-	void Append(StringView text);
+	void Append(std::string_view text);
 	void Erase();
 	const std::string& Get() const;
 

@@ -81,7 +81,7 @@ public:
 	 * @param index command index.
 	 * @param text new item text.
 	 */
-	void SetItemText(unsigned index, StringView text);
+	void SetItemText(unsigned index, std::string_view text);
 
 	/**
 	 * Replace all commands with a new command set.

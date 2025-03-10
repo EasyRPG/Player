@@ -60,7 +60,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		}
 #endif
 
-		if (StringView(dir.second.name).ends_with(".save")) {
+		if (EndsWith(dir.second.name, ".save")) {
 			continue;
 		}
 		if (dir.second.type == DirectoryTree::FileType::Regular) {

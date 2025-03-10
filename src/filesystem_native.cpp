@@ -38,23 +38,23 @@
 NativeFilesystem::NativeFilesystem(std::string base_path, FilesystemView parent_fs) : Filesystem(std::move(base_path), parent_fs) {
 }
 
-bool NativeFilesystem::IsFile(StringView path) const {
+bool NativeFilesystem::IsFile(std::string_view path) const {
 	return Platform::File(ToString(path)).IsFile(false);
 }
 
-bool NativeFilesystem::IsDirectory(StringView dir, bool follow_symlinks) const {
+bool NativeFilesystem::IsDirectory(std::string_view dir, bool follow_symlinks) const {
 	return Platform::File(ToString(dir)).IsDirectory(follow_symlinks);
 }
 
-bool NativeFilesystem::Exists(StringView filename) const {
+bool NativeFilesystem::Exists(std::string_view filename) const {
 	return Platform::File(ToString(filename)).Exists();
 }
 
-int64_t NativeFilesystem::GetFilesize(StringView path) const {
+int64_t NativeFilesystem::GetFilesize(std::string_view path) const {
 	return Platform::File(ToString(path)).GetSize();
 }
 
-std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* NativeFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 #ifdef USE_CUSTOM_FILEBUF
 	(void)mode;
 	int fd = open(ToString(path).c_str(), O_RDONLY);
@@ -83,7 +83,7 @@ std::streambuf* NativeFilesystem::CreateInputStreambuffer(StringView path, std::
 #endif
 }
 
-std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* NativeFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 #ifdef USE_CUSTOM_FILEBUF
 	int flags = O_TRUNC;
 
@@ -116,7 +116,7 @@ std::streambuf* NativeFilesystem::CreateOutputStreambuffer(StringView path, std:
 #endif
 }
 
-bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool NativeFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const {
 	std::string p = ToString(path);
 
 	Platform::Directory dir(p);
@@ -148,7 +148,7 @@ bool NativeFilesystem::GetDirectoryContent(StringView path, std::vector<Director
 	return true;
 }
 
-bool NativeFilesystem::MakeDirectory(StringView path, bool follow_symlinks) const {
+bool NativeFilesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
 	return Platform::File(ToString(path)).MakeDirectory(follow_symlinks);
 }
 

@@ -33,7 +33,7 @@ Window_StringView::~Window_StringView() {
 
 }
 
-void Window_StringView::SetDisplayData(StringView data) {
+void Window_StringView::SetDisplayData(std::string_view data) {
 	display_data_raw = ToString(data);
 }
 
@@ -77,7 +77,7 @@ void Window_StringView::Refresh() {
 		line_numbers.push_back(++c);
 		if (auto_linebreak) {
 			bool skipFirstNo = true;
-			Game_Message::WordWrap(new_line, limit, [&](StringView line) {
+			Game_Message::WordWrap(new_line, limit, [&](std::string_view line) {
 				if (!skipFirstNo)
 					line_numbers.push_back(0);
 				skipFirstNo = false;
