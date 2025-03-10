@@ -776,6 +776,13 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(lcf::rpg::EventCommand const& com
 	auto& frame = GetFrame();
 	auto& index = frame.current_command;
 
+	if (auto var_id = Player::game_config.patch_custom_save_load.Get()) {
+		if (auto save_slot = Main_Data::game_variables->Get(var_id) > 0) {
+			_async_op = AsyncOp::MakeSave(save_slot, -1);
+			return true;
+		}
+	}
+
 	Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 
 	int current_system_function = 0;

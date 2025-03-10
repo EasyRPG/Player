@@ -2044,11 +2044,19 @@ bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /
 	if (auto var_id = Player::game_config.patch_better_aep.Get()) {
 		switch (Main_Data::game_variables->Get(var_id)) {
 			case 1:
+				if (var_id = Player::game_config.patch_custom_save_load.Get()) {
+					if (auto save_slot = Main_Data::game_variables->Get(var_id) > 0) {
+						_async_op = MakeLoadOp("CustomSaveLoad", save_slot);
+						return true;
+					}
+				}
 				Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
 				return true;
 			case 2:
 				Player::exit_flag = true;
 				return true;
+			default:
+				break;
 		}
 	}
 
