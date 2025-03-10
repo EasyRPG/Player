@@ -415,6 +415,9 @@ namespace Player {
 	/** Translation manager, including list of languages and current translation. */
 	extern Translation translation;
 
+	/** If true, the game will be forced to stay at the title scene, even if the "new_game" option is set. */
+	extern bool force_make_to_title_flag;
+
 	/**
 	 * The default speed modifier applied when the speed up button is pressed
 	 *  Only used for configuring the speedup, don't read this var directly use

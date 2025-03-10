@@ -136,6 +136,7 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+	bool force_make_to_title_flag = false;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif

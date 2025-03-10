@@ -25,6 +25,8 @@
 #include "scene_load.h"
 #include "scene_save.h"
 #include "scene_debug.h"
+#include "scene_title.h"
+#include "scene_menu.h"
 #include "main_data.h"
 #include "game_interpreter_map.h"
 #include "game_map.h"
@@ -207,14 +209,25 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			Scene::instance->SetRequestedScene(std::make_shared<Scene_Save>());
 			break;
 		case Type::CallGameMenu: {
-			int cursor = args.size() >= 1 ? atoi(args[0].c_str()) : 0;
-			//TODO: implement cursor
-			Game_Map::GetInterpreter().RequestMainMenuScene();
+			if (args.size() >= 1) {
+				if (atoi(args[0].c_str())) {
+					Scene_Menu::force_cursor_index = Scene_Menu::CommandOptionType::Save;
+				} else {
+					Scene_Menu::force_cursor_index = Scene_Menu::CommandOptionType::Item;
+				}
+			}
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Menu>());
 			break;
 		}
 		case Type::CallTitleScreen: {
-			int cursor = args.size() >= 1 ? atoi(args[0].c_str()) : 0;
-			//TODO: implement cursor
+			if (args.size() >= 1) {
+				if (atoi(args[0].c_str())) {
+					Scene_Title::force_cursor_index = Scene_Title::CommandOptionType::ContinueGame;
+				} else {
+					Scene_Title::force_cursor_index = Scene_Title::CommandOptionType::NewGame;
+				}
+			}
+			Player::force_make_to_title_flag = true;
 			async_op = AsyncOp::MakeToTitle();
 			break;
 		}

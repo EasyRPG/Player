@@ -321,7 +321,7 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 bool Scene_Title::CheckStartNewGame() {
-	return !Check2k3ShowTitle() || Player::game_config.new_game.Get();
+	return (!Check2k3ShowTitle() || Player::game_config.new_game.Get()) && !Player::force_make_to_title_flag;
 }
 
 void Scene_Title::CommandNewGame() {
@@ -385,4 +385,5 @@ void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 
 void Scene_Title::OnGameStart() {
 	restart_title_cache = true;
+	Player::force_make_to_title_flag = false;
 }
