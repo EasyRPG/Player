@@ -34,7 +34,10 @@
 #elif _WIN32
 #include "platform/windows/midiout_device_win32.h"
 #elif __APPLE__
-#include "platform/macos/midiout_device_coreaudio.h"
+#  include <TargetConditionals.h>
+#  if TARGET_OS_OSX
+#    include "platform/macos/midiout_device_coreaudio.h"
+#  endif
 #endif
 
 using namespace std::chrono_literals;
@@ -87,7 +90,7 @@ GenericAudioMidiOut::GenericAudioMidiOut() {
 			Output::Debug(works.status);
 		}
 	}
-#elif __APPLE__
+#elif TARGET_OS_OSX
 	if (works.coreaudio) {
 		auto dec = std::make_unique<CoreAudioMidiOutDevice>(works.status);
 		if (dec->IsInitialized()) {
