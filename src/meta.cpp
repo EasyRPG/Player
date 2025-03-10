@@ -69,19 +69,23 @@ std::string crc32file(std::string file_name) {
 
 
 Meta::Meta(std::string_view meta_file) {
-	ini = std::make_unique<lcf::INIReader>(ToString(meta_file));
+	auto is = FileFinder::Game().OpenInputStream(meta_file);
+	if (!is) {
+		return;
+	}
+
+	ini = std::make_unique<lcf::INIReader>(is);
 
 	// Cache per-game lookups
 	if (!Empty()) {
-		std::string version = ini->GetString(MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, "");
+		auto version = ini->GetString(MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, "");
 		if (version == "1") {
 			IdentifyCanonName(TREEMAP_NAME, DATABASE_NAME);
 		} else {
 			Output::Warning("Metadata error in {}, format property {}:{} is missing or invalid: '{}'", meta_file, MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, version);
-			ini = nullptr;
+			ini.reset();
 		}
 	}
-
 }
 
 void Meta::ReInitForNonStandardExtensions(std::string_view file1, std::string_view file2) {
@@ -106,7 +110,7 @@ int Meta::GetPivotMap() const {
 
 std::string Meta::GetParentGame() const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, MTINI_IMPORT_SAVE_PARENT, "");
+		return std::string(ini->GetString(canon_ini_lookup, MTINI_IMPORT_SAVE_PARENT, ""));
 	}
 
 	return "";
@@ -199,21 +203,21 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView&
 
 std::string Meta::GetLdbAlias() const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LDB_ALIAS, "");
+		return std::string(ini->GetString(canon_ini_lookup, MTINI_FILEXT_LDB_ALIAS, ""));
 	}
 	return "";
 }
 
 std::string Meta::GetLmtAlias() const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMT_ALIAS, "");
+		return std::string(ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMT_ALIAS, ""));
 	}
 	return "";
 }
 
 std::string Meta::GetLmuAlias() const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMU_ALIAS, "");
+		return std::string(ini->GetString(canon_ini_lookup, MTINI_FILEXT_LMU_ALIAS, ""));
 	}
 	return "";
 }
@@ -250,7 +254,7 @@ std::string Meta::GetExVocabTranslateTitleText() const {
 
 std::string Meta::GetExVocab(std::string_view term, std::string_view def_value) const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, ToString(term), ToString(def_value));
+		return std::string(ini->GetString(canon_ini_lookup, term, def_value));
 	}
 
 	return ToString(def_value);

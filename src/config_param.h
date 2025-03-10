@@ -187,16 +187,15 @@ public:
 	virtual std::string ValueToString() const = 0;
 
 	virtual bool FromIni(const lcf::INIReader& ini) {
-		// FIXME: Migrate IniReader to std::string_view (or std::string_view with C++17)
-		if (ini.HasValue(ToString(_config_section), ToString(_config_key))) {
+		if (ini.HasValue(_config_section, _config_key)) {
 			if constexpr (std::is_same_v<T, std::string>) {
-				Set(ini.GetString(ToString(_config_section), ToString(_config_key), T()));
+				Set(std::string(ini.GetString(_config_section, _config_key, "")));
 				return true;
 			} else if constexpr (std::is_same_v<T, int>) {
-				Set(ini.GetInteger(ToString(_config_section), ToString(_config_key), T()));
+				Set(ini.GetInteger(_config_section, _config_key, T()));
 				return true;
 			} else if constexpr (std::is_same_v<T, bool>) {
-				Set(ini.GetBoolean(ToString(_config_section), ToString(_config_key), T()));
+				Set(ini.GetBoolean(_config_section, _config_key, T()));
 				return true;
 			}
 		}
@@ -400,8 +399,8 @@ public:
 	}
 
 	bool FromIni(const lcf::INIReader& ini) override {
-		if (ini.HasValue(ToString(this->_config_section), ToString(this->_config_key))) {
-			std::string s = ini.GetString(ToString(this->_config_section), ToString(this->_config_key), std::string());
+		if (ini.HasValue(this->_config_section, this->_config_key)) {
+			auto s = ini.GetString(this->_config_section, this->_config_key, "");
 			for (size_t i = 0; i < _tags.size(); ++i) {
 				if (s == _tags[i]) {
 					this->Set(static_cast<E>(i));

@@ -22,8 +22,8 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <lcf/inireader.h>
 #include "filefinder.h"
-#include "lcf/inireader.h"
 
 
 /**
