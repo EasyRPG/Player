@@ -211,7 +211,7 @@ namespace Json_Helper {
 		else if (parent.is_array()) {
 			// Check if key is a valid positive number
 			unsigned index;
-			auto [ptr, ec] = std::from_chars(json_path.data(), json_path.data() + json_path.size(), index);
+			auto ec = std::from_chars(json_path.data(), json_path.data() + json_path.size(), index).ec;
 			if (ec == std::errc()) {
 				if (index < parent.size()) {
 					parent.erase(index);
