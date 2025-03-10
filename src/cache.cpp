@@ -466,8 +466,9 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 	std::string id = ToString(src_bitmap->GetId());
 
 	if (id.empty()) {
-		// assert caused too many regressions, use the pointer as the unique key and log instead
-		Output::Debug("Bitmap has no ID. Please report a bug!");
+		// Log causes false positives when empty bitmaps or placeholder (checkerboard)
+		// bitmaps are used.
+		//Output::Debug("Bitmap has no ID. Please report a bug!");
 		id = fmt::format("{}", (void*)(src_bitmap.get()));
 	}
 
