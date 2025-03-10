@@ -126,8 +126,13 @@ void Output::IgnorePause(bool const val) {
 }
 
 void Output::SetLogCallback(LogCallbackFn fn, LogCallbackUserData userdata) {
-	log_cb = fn;
-	log_cb_udata = userdata;
+	if (!fn) {
+		log_cb = LogCallback;
+		log_cb_udata = nullptr;
+	} else {
+		log_cb = fn;
+		log_cb_udata = userdata;
+	}
 }
 
 static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
