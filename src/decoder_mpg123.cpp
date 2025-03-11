@@ -230,6 +230,9 @@ bool Mpg123Decoder::IsMp3(Filesystem_Stream::InputStream& stream) {
 	// Read beginning of assumed MP3 file and count errors as an heuristic to detect MP3
 	for (int i = 0; i < 10; ++i) {
 		err = mpg123_read(decoder.handle.get(), buffer, 1024, &done);
+		if (err == MPG123_DONE) {
+			return true;
+		}
 		if (err != MPG123_OK) {
 			err_count += 1;
 		}
