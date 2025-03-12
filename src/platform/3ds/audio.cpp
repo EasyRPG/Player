@@ -100,7 +100,7 @@ void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, i
 	if (!dsp_inited)
 		return;
 
-	StringView name = filestream.GetName();
+	std::string_view name = filestream.GetName();
 	if (!filestream) {
 		Output::Warning("Couldn't play BGM {}: File not readable", name);
 		return;

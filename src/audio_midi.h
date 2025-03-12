@@ -217,7 +217,7 @@ public:
 	 */
 	static bool CheckFluidsynth(std::string& status_message);
 
-	static void ChangeFluidsynthSoundfont(StringView sf_path);
+	static void ChangeFluidsynthSoundfont(std::string_view sf_path);
 
 	/**
 	 * Checks if WildMidi works.

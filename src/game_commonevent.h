@@ -73,7 +73,7 @@ public:
 	 *
 	 * @return event name.
 	 */
-	StringView GetName() const;
+	std::string_view GetName() const;
 
 	/**
 	 * Gets trigger condition.

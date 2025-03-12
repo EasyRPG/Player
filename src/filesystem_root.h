@@ -53,21 +53,21 @@ public:
 	 * @param p Virtual path to use
 	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
 	 */
-	FilesystemView Create(StringView path) const override;
+	FilesystemView Create(std::string_view path) const override;
 
 protected:
 	/**
  	 * Implementation of abstract methods
  	 */
 	/** @{ */
-	bool IsFile(StringView path) const override;
-	bool IsDirectory(StringView path, bool follow_symlinks) const override;
-	bool Exists(StringView path) const override;
-	int64_t GetFilesize(StringView path) const override;
-	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
-	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const override;
-	bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const override;
-	bool MakeDirectory(StringView path, bool follow_symlinks) const override;
+	bool IsFile(std::string_view path) const override;
+	bool IsDirectory(std::string_view path, bool follow_symlinks) const override;
+	bool Exists(std::string_view path) const override;
+	int64_t GetFilesize(std::string_view path) const override;
+	std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
+	std::streambuf* CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
+	bool GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const override;
+	bool MakeDirectory(std::string_view path, bool follow_symlinks) const override;
 	std::string Describe() const override;
 	/** @} */
 
@@ -77,7 +77,7 @@ private:
 	 * @param path Path to resolve.
 	 * @return Filesystem that supports this path
 	 */
-	const Filesystem& FilesystemForPath(StringView path) const;
+	const Filesystem& FilesystemForPath(std::string_view path) const;
 
 	// ns -> fs, NativeFilesystem is always last
 	using FsList = std::vector<std::pair<std::string, std::shared_ptr<Filesystem>>>;

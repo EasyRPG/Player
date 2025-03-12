@@ -784,7 +784,7 @@ bool ManiacPatch::GetKeyState(uint32_t key_id) {
 
 }
 
-bool ManiacPatch::CheckString(StringView str_l, StringView str_r, int op, bool ignore_case) {
+bool ManiacPatch::CheckString(std::string_view str_l, std::string_view str_r, int op, bool ignore_case) {
 	auto check = [op](const auto& l, const auto& r) {
 		switch (op) {
 			case 0: // eq
@@ -809,8 +809,8 @@ bool ManiacPatch::CheckString(StringView str_l, StringView str_r, int op, bool i
 	return check(str_l, str_r);
 }
 
-StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
-	auto get_name = [&id](StringView type, const auto& vec) -> StringView {
+std::string_view ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
+	auto get_name = [&id](std::string_view type, const auto& vec) -> std::string_view {
 		auto* data = lcf::ReaderUtil::GetElement(vec, id);
 		if (!data) {
 			Output::Warning("Unable to read {} name: {}", type, id);
@@ -883,8 +883,8 @@ StringView ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {
 	return {};
 }
 
-StringView ManiacPatch::GetLcfDescription(int data_type, int id, bool is_dynamic) {
-	auto get_desc = [id](StringView type, const auto& vec) -> StringView {
+std::string_view ManiacPatch::GetLcfDescription(int data_type, int id, bool is_dynamic) {
+	auto get_desc = [id](std::string_view type, const auto& vec) -> std::string_view {
 		auto* data = lcf::ReaderUtil::GetElement(vec, id);
 		if (!data) {
 			Output::Warning("Unable to read {} description: {}", type, id);

@@ -136,7 +136,7 @@ namespace FileFinder {
 	 * @param name image file name to check.
 	 * @return path to file.
 	 */
-	std::string FindImage(StringView dir, StringView name);
+	std::string FindImage(std::string_view dir, std::string_view name);
 
 	/**
 	 * Finds a music file in the current RPG Maker game.
@@ -144,7 +144,7 @@ namespace FileFinder {
 	 * @param name the music path and name.
 	 * @return path to file.
 	 */
-	std::string FindMusic(StringView name);
+	std::string FindMusic(std::string_view name);
 
 	/**
 	 * Finds a sound file in the current RPG Maker game.
@@ -152,7 +152,7 @@ namespace FileFinder {
 	 * @param name the sound path and name.
 	 * @return path to file.
 	 */
-	std::string FindSound(StringView name);
+	std::string FindSound(std::string_view name);
 
 	/**
 	 * Finds a font file.
@@ -161,7 +161,7 @@ namespace FileFinder {
 	 * @param name the font name.
 	 * @return path to file.
 	 */
-	std::string FindFont(StringView name);
+	std::string FindFont(std::string_view name);
 
 	/**
 	 * Finds a text file in the current RPG Maker game.
@@ -169,7 +169,7 @@ namespace FileFinder {
 	 * @param name the text path and name.
 	 * @return path to file.
 	 */
-	std::string FindText(StringView name);
+	std::string FindText(std::string_view name);
 
 	/**
 	 * Finds an image file and opens a file handle to it.
@@ -179,7 +179,7 @@ namespace FileFinder {
 	 * @param name image file name to check.
 	 * @return read handle on success or invalid handle if not found
 	 */
-	Filesystem_Stream::InputStream OpenImage(StringView dir, StringView name);
+	Filesystem_Stream::InputStream OpenImage(std::string_view dir, std::string_view name);
 
 	/**
 	 * Finds a music file and opens a file handle to it.
@@ -189,7 +189,7 @@ namespace FileFinder {
 	 * @param name the music path and name.
 	 * @return read handle on success or invalid handle if not found
 	 */
-	Filesystem_Stream::InputStream OpenMusic(StringView name);
+	Filesystem_Stream::InputStream OpenMusic(std::string_view name);
 
 	/**
 	 * Finds a sound file and opens a file handle to it.
@@ -199,7 +199,7 @@ namespace FileFinder {
 	 * @param name the sound path and name.
 	 * @return read handle on success or invalid handle if not found
 	 */
-	Filesystem_Stream::InputStream OpenSound(StringView name);
+	Filesystem_Stream::InputStream OpenSound(std::string_view name);
 
 	/**
 	 * Finds a font file and opens a file handle to it.
@@ -208,7 +208,7 @@ namespace FileFinder {
 	 * @param name the font path and name.
 	 * @return read handle on success or invalid handle if not found
 	 */
-	Filesystem_Stream::InputStream OpenFont(StringView name);
+	Filesystem_Stream::InputStream OpenFont(std::string_view name);
 
 	/**
 	 * Finds a text file and opens a file handle to it.
@@ -219,7 +219,7 @@ namespace FileFinder {
 	 * @param name the text path and name.
 	 * @return read handle on success or invalid handle if not found
 	 */
-	Filesystem_Stream::InputStream OpenText(StringView name);
+	Filesystem_Stream::InputStream OpenText(std::string_view name);
 
 	/**
 	* Writes data to a txt file.
@@ -228,7 +228,7 @@ namespace FileFinder {
 	* @param name the text file path and name
 	* @param data the content of the text file to be written
 	*/
-	void WriteText(StringView name, StringView data);
+	void WriteText(std::string_view name, std::string_view data);
 
 	/**
 	 * Appends name to directory.
@@ -237,7 +237,7 @@ namespace FileFinder {
 	 * @param name file name to be appended to dir.
 	 * @return combined path
 	 */
-	std::string MakePath(StringView dir, StringView name);
+	std::string MakePath(std::string_view dir, std::string_view name);
 
 	/**
 	 * Creates a path out of multiple components
@@ -255,7 +255,7 @@ namespace FileFinder {
 	 * @param initial_deepness How deep the passed path is relative to the game root
 	 * @return canonical path
 	 */
-	std::string MakeCanonical(StringView path, int initial_deepness = -1);
+	std::string MakeCanonical(std::string_view path, int initial_deepness = -1);
 
 	/**
 	 * Splits a path in it's components.
@@ -263,7 +263,7 @@ namespace FileFinder {
 	 * @param path Path to split
 	 * @return Vector containing path components
 	 */
-	std::vector<std::string> SplitPath(StringView path);
+	std::vector<std::string> SplitPath(std::string_view path);
 
 	/**
 	 * Splits a path into path and filename.
@@ -271,7 +271,7 @@ namespace FileFinder {
 	 * @param path Path to split
 	 * @return Pair containing dir and name
 	 */
-	std::pair<std::string, std::string> GetPathAndFilename(StringView path);
+	std::pair<std::string, std::string> GetPathAndFilename(std::string_view path);
 
 	/**
 	 * Converts all path delimiters to the platform delimiters.
@@ -290,7 +290,7 @@ namespace FileFinder {
 	 *
 	 * @return The part of path_in that is inside path_to. path_in when the path is not in path_to
 	 */
-	std::string GetPathInsidePath(StringView path_to, StringView path_in);
+	std::string GetPathInsidePath(std::string_view path_to, std::string_view path_in);
 
 	/**
 	 * Return the part of "path_in" that is inside the current games directory.
@@ -299,7 +299,7 @@ namespace FileFinder {
 	 * @param path_in An absolute path inside the game directory
 	 * @return The part of path_in that is inside the game directory, path_in when it's not in the directory
 	 */
-	std::string GetPathInsideGamePath(StringView path_in);
+	std::string GetPathInsideGamePath(std::string_view path_in);
 
 	/**
 	 * Checks whether a passed path ends with a supported extension for an archive, e.g. ".zip"

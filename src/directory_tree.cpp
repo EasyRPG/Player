@@ -35,7 +35,7 @@ static void DebugLog(const char*, Args&&...) {}
 #endif
 
 namespace {
-	std::string make_key(StringView n) {
+	std::string make_key(std::string_view n) {
 		return lcf::ReaderUtil::Normalize(n);
 	};
 }
@@ -51,24 +51,24 @@ std::unique_ptr<DirectoryTree> DirectoryTree::Create(Filesystem& fs) {
 	return tree;
 }
 
-bool DirectoryTree::WildcardMatch(const StringView& pattern, const StringView& text) {
+bool DirectoryTree::WildcardMatch(const std::string_view& pattern, const std::string_view& text) {
 	// Limitations: * and ? cannot be mixed, * only at beginning and end of string
 	// Pattern and text are already normalized
 	if (pattern.empty() && text.empty()) {
 		return true;
 	}
 
-	bool begin_wildcard = pattern.starts_with('*');
-	bool end_wildcard = pattern.ends_with('*');
+	bool begin_wildcard = StartsWith(pattern, '*');
+	bool end_wildcard = EndsWith(pattern, '*');
 
 	if ((begin_wildcard || end_wildcard) && text.size() > 0) {
 		// * handling
 		bool found = false;
 		if (begin_wildcard) {
-			found |= text.ends_with(pattern.substr(1));
+			found |= EndsWith(text, pattern.substr(1));
 		}
 		if (end_wildcard) {
-			found |= text.starts_with(pattern.substr(0, pattern.size() - 1));
+			found |= StartsWith(text, pattern.substr(0, pattern.size() - 1));
 		}
 		return found;
 	} else {
@@ -85,7 +85,7 @@ bool DirectoryTree::WildcardMatch(const StringView& pattern, const StringView& t
 	}
 }
 
-DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) const {
+DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(std::string_view path) const {
 	std::vector<Entry> entries;
 	std::string fs_path = ToString(path);
 
@@ -190,7 +190,7 @@ DirectoryTree::DirectoryListType* DirectoryTree::ListDirectory(StringView path) 
 	return &Find(fs_cache, dir_key)->second;
 }
 
-void DirectoryTree::ClearCache(StringView path) const {
+void DirectoryTree::ClearCache(std::string_view path) const {
 	DebugLog("ClearCache: {}", path);
 
 	if (path.empty()) {
@@ -210,15 +210,15 @@ void DirectoryTree::ClearCache(StringView path) const {
 		dir_cache.erase(dir_it);
 	}
 	dir_missing_cache.erase(std::remove_if(dir_missing_cache.begin(), dir_missing_cache.end(), [&path] (const auto& dir) {
-		return StringView(dir).starts_with(path);
+		return StartsWith(dir, path);
 	}), dir_missing_cache.end());
 }
 
-std::string DirectoryTree::FindFile(StringView filename, const Span<const StringView> exts) const {
+std::string DirectoryTree::FindFile(std::string_view filename, const Span<const std::string_view> exts) const {
 	return FindFile({ ToString(filename), exts });
 }
 
-std::string DirectoryTree::FindFile(StringView directory, StringView filename, const Span<const StringView> exts) const {
+std::string DirectoryTree::FindFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts) const {
 	return FindFile({ FileFinder::MakePath(directory, filename), exts });
 }
 

@@ -56,7 +56,7 @@ Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, Color color, char
 	}
 }
 
-Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Bitmap& system, const int color, StringView text, const Text::Alignment align) {
+Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Bitmap& system, const int color, std::string_view text, const Text::Alignment align) {
 	if (text.length() == 0) return { 0, 0 };
 
 	Rect dst_rect = Text::GetSize(font, text);
@@ -141,7 +141,7 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 	return { next_glyph_pos, ih };
 }
 
-Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Color color, StringView text) {
+Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const Color color, std::string_view text) {
 	if (text.length() == 0) return { 0, 0 };
 
 	int dx = x;
@@ -182,7 +182,7 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 	return { mx - x , dy - y };
 }
 
-Rect Text::GetSize(const Font& font, StringView text) {
+Rect Text::GetSize(const Font& font, std::string_view text) {
 	Rect rect;
 	Rect rect_tmp;
 
