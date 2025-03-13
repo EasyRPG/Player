@@ -757,10 +757,10 @@ bool Game_Interpreter_Map::CommandPlayMovie(lcf::rpg::EventCommand const& com) {
 	int res_x = com.parameters[3];
 	int res_y = com.parameters[4];
 
-	Output::Warning("Couldn't play movie: {}. Movie playback is not implemented (yet).", filename);
+	//Output::Warning("Couldn't play movie: {}. Movie playback is not implemented (yet).", filename);
 
 	Main_Data::game_screen->PlayMovie(filename, pos_x, pos_y, res_x, res_y);
-
+	_state.wait_time = 5;
 	return true;
 }
 
