@@ -130,8 +130,8 @@ namespace Input {
 		"FAST_FORWARD_A",
 		"FAST_FORWARD_B",
 		"TOGGLE_FULLSCREEN",
-		"TOGGLE_ZOOM",
-		"BUTTON_COUNT");
+		"TOGGLE_ZOOM");
+	static_assert(kInputButtonNames.size() == static_cast<size_t>(BUTTON_COUNT));
 
 	constexpr auto kInputButtonHelp = lcf::makeEnumTags<InputButton>(
 		"Up Direction",
@@ -175,8 +175,8 @@ namespace Input {
 		"Run the game at x{} speed",
 		"Run the game at x{} speed",
 		"Toggle Fullscreen mode",
-		"Toggle Window Zoom level",
-		"Total Button Count");
+		"Toggle Window Zoom level");
+	static_assert(kInputButtonHelp.size() == static_cast<size_t>(BUTTON_COUNT));
 
 	/**
 	 * Return true if the given button is a system button.
@@ -241,8 +241,8 @@ namespace Input {
 			"RIGHT",
 			"UPLEFT",
 			"UP",
-			"UPRIGHT",
-			"NUM_DIRECTIONS");
+			"UPRIGHT");
+		static_assert(kInputDirectionNames.size() == static_cast<size_t>(NUM_DIRECTIONS));
 	};
 
 	using ButtonMappingArray = FlatUniqueMultiMap<InputButton,Keys::InputKey>;
