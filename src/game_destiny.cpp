@@ -192,7 +192,7 @@ void Game_Destiny::CheckVersionInfo()
 {
 	uint32_t gameVersionMajor;
 
-	gameVersionMajor = _gameVersion.major;
+	gameVersionMajor = _gameVersion.ver_major;
 
 	if (! (gameVersionMajor == 0x2000 || gameVersionMajor == 0x2003))
 	{

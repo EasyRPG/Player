@@ -260,6 +260,20 @@ static void fallback_log(enum retro_log_level level, const char *fmt, ...) {
 
 static retro_log_printf_t log_cb = fallback_log;
 
+static void easyrpg_log(LogLevel lvl, std::string const& msg, LogCallbackUserData) {
+	retro_log_level level = RETRO_LOG_DEBUG;
+
+	if (lvl == LogLevel::Error) {
+		level = RETRO_LOG_ERROR;
+	} else if (lvl == LogLevel::Warning) {
+		level = RETRO_LOG_WARN;
+	} else if (lvl == LogLevel::Info) {
+		level = RETRO_LOG_INFO;
+	}
+
+	log_cb(level, "%s\n", msg.c_str());
+}
+
 /* Sets callbacks. retro_set_environment() is guaranteed to be called
  * before retro_init().
  *
@@ -286,10 +300,16 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 	cb(RETRO_ENVIRONMENT_SET_AUDIO_CALLBACK, &audio_callback_definition);
 	cb(RETRO_ENVIRONMENT_SET_FRAME_TIME_CALLBACK, &frame_time_definition);
 
-	if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
+	if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging)) {
 		log_cb = logging.log;
-	else
+		Output::SetLogCallback(easyrpg_log);
+	} /* else {
+		// Bug in RetroArch:
+		// retro_set_environment is called multiple times and only the first time
+		// callbacks will work and return true.
 		log_cb = fallback_log;
+		Output::SetLogCallback(nullptr);
+	} */
 
 	struct retro_variable variables[] = {
 		{ Options::debug_mode, "Debug menu and walk through walls; Disabled|Enabled" },
@@ -460,6 +480,8 @@ RETRO_API void retro_unload_game() {
 		// Shutdown requested by the frontend and not via Title scene
 		Player::Exit();
 	}
+
+	Output::SetLogCallback(nullptr);
 }
 
 // unused stuff required by libretro api

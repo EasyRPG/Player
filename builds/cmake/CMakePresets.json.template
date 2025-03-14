@@ -58,8 +58,9 @@
 			"name": "macos",
 			"displayName": "macOS",
 			"cacheVariables": {
-				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/osx",
-				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9"
+				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/macos/universal",
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "10.9",
+				"CMAKE_OSX_ARCHITECTURES": "x86_64;arm64"
 			},
 			"condition": {
 				"type": "equals",
@@ -74,10 +75,50 @@
 			"toolchainFile": "$env{EASYRPG_BUILDSCRIPTS}/emscripten/emsdk-portable/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 			"cacheVariables": {
 				"PLAYER_PREFIX_PATH_APPEND": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
-				"CMAKE_FIND_ROOT_PATH": "$env{EASYRPG_BUILDSCRIPTS}/emscripten",
+				"PLAYER_FIND_ROOT_PATH_APPEND": "ON",
 				"PLAYER_JS_BUILD_SHELL": "ON"
 			},
 			"easyrpg_platforms": ["sdl3", "sdl2"]
+		},
+		{
+			"name": "android-armeabi-v7a",
+			"displayName": "Android armeabi-v7a",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "armeabi-v7a",
+				"CMAKE_ANDROID_API": "16"
+			},
+			"inherits": "android-user",
+			"easyrpg_platforms": ["libretro"]
+		},
+		{
+			"name": "android-arm64-v8a",
+			"displayName": "Android arm64-v8a",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "arm64-v8a",
+				"CMAKE_ANDROID_API": "21"
+			},
+			"inherits": "android-user",
+			"easyrpg_platforms": ["libretro"]
+		},
+		{
+			"name": "android-x86",
+			"displayName": "Android x86",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "x86",
+				"CMAKE_ANDROID_API": "16"
+			},
+			"inherits": "android-user",
+			"easyrpg_platforms": ["libretro"]
+		},
+		{
+			"name": "android-x86_64",
+			"displayName": "Android x86_64",
+			"cacheVariables": {
+				"CMAKE_ANDROID_ARCH_ABI": "x86_64",
+				"CMAKE_ANDROID_API": "21"
+			},
+			"inherits": "android-user",
+			"easyrpg_platforms": ["libretro"]
 		},
 		{
 			"name": "3ds",
