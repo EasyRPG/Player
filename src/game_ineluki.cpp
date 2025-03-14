@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_ineluki.h"
+#include "game_powerpatch.h"
 #include "async_handler.h"
 #include "filefinder.h"
 #include "utils.h"
@@ -27,6 +28,7 @@
 #include "system.h"
 
 #include <lcf/inireader.h>
+#include <scene_load.h>
 
 namespace {
 #if defined(SUPPORT_KEYBOARD)
@@ -66,19 +68,28 @@ bool Game_Ineluki::Execute(const lcf::rpg::Sound& se) {
 
 	std::string ini_file = FileFinder::FindSound(se.name);
 	if (!ini_file.empty()) {
-		return Execute(ini_file);
+		Execute(ini_file);
+		return true;
 	} else {
 		Output::Debug("Ineluki: Script {} not found", se.name);
 	}
 	return false;
 }
 
-bool Game_Ineluki::Execute(StringView ini_file) {
+AsyncOp Game_Ineluki::Execute(StringView ini_file) {
+	auto p = FileFinder::GetPathAndFilename(ini_file);
+	if (StringView(Utils::LowerCase(p.second)).starts_with("saves.script")) {
+		// Support for the script written by SaveCount.dat
+		// It counts the amount of savegames and outputs the result
+		output_mode = OutputMode::Output;
+		output_list.push_back(FileFinder::GetSavegames());
+		return {};
+	}
 	auto ini_file_s = ToString(ini_file);
 
 	if (functions.find(ini_file_s) == functions.end()) {
 		if (!Parse(ini_file)) {
-			return false;
+			return {};
 		}
 	}
 
@@ -88,15 +99,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 		if (cmd.name == "writetolog") {
 			Output::InfoStr(cmd.arg);
 		} else if (cmd.name == "execprogram") {
-			// Fake execute some known programs
-			if (StringView(cmd.arg).starts_with("exitgame") ||
-					StringView(cmd.arg).starts_with("taskkill")) {
-				Player::exit_flag = true;
-			} else if (StringView(cmd.arg).starts_with("SaveCount.dat")) {
-				// no-op, detected through saves.script access
-			} else {
-				Output::Warning("Ineluki ExecProgram {}: Not supported", cmd.arg);
-			}
+			return ExecProgram(Utils::LowerCase(cmd.arg));
 		} else if (cmd.name == "mcicommand") {
 			Output::Warning("Ineluki MciProgram {}: Not supported", cmd.arg);
 		} else if (cmd.name == "miditickfunction") {
@@ -156,7 +159,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 			}
 		} else if (cmd.name == "getmouseposition") {
 			if (!mouse_support) {
-				return true;
+				return {};
 			}
 
 			Point mouse_pos = Input::GetMousePosition();
@@ -176,7 +179,7 @@ bool Game_Ineluki::Execute(StringView ini_file) {
 		}
 	}
 
-	return true;
+	return {};
 }
 
 bool Game_Ineluki::ExecuteScriptList(StringView list_file) {
@@ -330,6 +333,28 @@ void Game_Ineluki::Update() {
 			}
 		}
 	}
+}
+
+AsyncOp Game_Ineluki::ExecProgram(StringView command) {
+	// Fake execute some known programs
+	if (command.starts_with("exitgame") ||	command.starts_with("taskkill")) {
+		Player::exit_flag = true;
+	} else if (command.starts_with("savecount.dat")) {
+		// no-op, detected through saves.script access
+	} else if (command.starts_with("ls.dat")) {
+		// (arg1 commonly given for "LS.dat" refers to the version-dependent
+		// virtual address of the RPG_RT loading mechanism)
+		Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+	} else if (command.starts_with("ppcomp")) {
+		auto args = Utils::Tokenize(command, [&](char32_t c) { return std::isspace(c); });
+		if (args.size() > 1) {
+			return Game_PowerPatch::ExecutePPC(Utils::UpperCase(args[1]), Span<std::string>(args).subspan(2));
+		}
+	} else {
+		Output::Warning("Ineluki ExecProgram {}: Not supported", command);
+	}
+
+	return {};
 }
 
 void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {
