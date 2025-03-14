@@ -64,9 +64,10 @@ void Input::UiSource::DoUpdate(bool system_only) {
 		}
 
 		if (!system_only || Input::IsSystemButton(bm.first)) {
-			pressed_buttons[bm.first] = pressed_buttons[bm.first] || keystates[bm.second];
+			pressed_buttons[bm.first] = pressed_buttons[bm.first] || keystates[bm.second] || keystates_virtual[bm.second];
 		}
 	}
+	keystates_virtual = {};
 
 	Record();
 
@@ -328,6 +329,10 @@ void Input::Source::AddRecordingData(Input::RecordingData type, StringView data)
 	if (record_log) {
 		*record_log << static_cast<char>(type) << " " << data << "\n";
 	}
+}
+
+void Input::Source::SimulateKeyPress(Input::Keys::InputKey key) {
+	keystates_virtual[key] = true;
 }
 
 void Input::LogSource::UpdateSystem() {
