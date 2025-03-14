@@ -1161,7 +1161,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 	} else {
 		verstr << "EasyRPG Player ";
 		char verbuf[64];
-		sprintf(verbuf, "%d.%d.%d", ver / 1000 % 10, ver / 100 % 10, ver / 10 % 10);
+		snprintf(verbuf, std::size(verbuf), "%d.%d.%d", ver / 1000 % 10, ver / 100 % 10, ver / 10 % 10);
 		verstr << verbuf;
 		if (ver % 10 > 0) {
 			verstr << "." << ver % 10;
