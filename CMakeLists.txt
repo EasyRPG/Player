@@ -402,8 +402,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_actortarget.h
 	src/window_base.cpp
 	src/window_base.h
-	src/window_battlecommand.cpp
-	src/window_battlecommand.h
 	src/window_battlemessage.cpp
 	src/window_battlemessage.h
 	src/window_battlestatus.cpp
@@ -1262,7 +1260,7 @@ if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND N
 		endif()
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYER_JS_OUTPUT_NAME}.wasm DESTINATION ${CMAKE_INSTALL_BINDIR})
 	endif()
-elseif(PLAYER_CONSOLE_PORT)
+elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	set(CPACK_PLATFORM "${PLAYER_TARGET_PLATFORM}")
 	if(NINTENDO_3DS)
 		add_executable(easyrpg-player src/platform/3ds/main.cpp)

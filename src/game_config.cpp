@@ -310,16 +310,14 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 					path = FileFinder::MakePath(home, ".local/state");
 				}
 			}
-
-			if (!path.empty()) {
-				path = FileFinder::MakePath(path, OUTPUT_FILENAME);
-			}
 	#endif
 
 			if (path.empty()) {
 				// Fallback: Use the config directory
 				// Can still fail in the rare case that the config path is invalid
-				path = GetGlobalConfigFilesystem().GetFullPath();
+				if (auto fs = GetGlobalConfigFilesystem(); fs) {
+					path = fs.GetFullPath();
+				}
 			}
 
 			if (!path.empty()) {

@@ -64,7 +64,7 @@ namespace {
 	}
 
 	// This is the last-resort function for finding a glyph, all the other fonts should fallback on it.
-	// It tries to display a WenQuanYi glyph, and if it’s not found, returns a replacement glyph.
+	// It tries to display a WenQuanYi glyph, and if it's not found, returns a replacement glyph.
 	BitmapFontGlyph const* find_fallback_glyph(char32_t code) {
 		auto* wqy = find_glyph(BITMAPFONT_WQY, code);
 		if (wqy != NULL) {
@@ -173,7 +173,7 @@ namespace {
 	FontRef const mincho = std::make_shared<BitmapFont>("Shinonome Mincho", &find_mincho_glyph);
 
 	/* Bitmap fonts used for non-Japanese games.
-	   Compatible with RMG2000 and RM2000 shipped with Don Miguel’s unofficial translation.
+	   Compatible with RMG2000 and RM2000 shipped with Don Miguel's unofficial translation.
 	   Feature a half-width Cyrillic and half-width ellipsis at the bottom of the line.
 	*/
 	FontRef const rmg2000 = std::make_shared<BitmapFont>("RMG2000-compatible", &find_rmg2000_glyph);

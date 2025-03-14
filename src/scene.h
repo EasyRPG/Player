@@ -258,7 +258,7 @@ public:
 
 	/**
 	 * Pushes the title screen onto the stack to boot up the game.
-	 * If there already is a title scene ín the stack, this function exits without doing anything.
+	 * If there already is a title scene in the stack, this function exits without doing anything.
 	 */
 	static void PushTitleScene(bool pop_stack_top = false);
 

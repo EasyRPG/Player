@@ -28,6 +28,7 @@
 Sprite_AirshipShadow::Sprite_AirshipShadow(int x_offset, int y_offset) :
 	x_offset(x_offset), y_offset(y_offset) {
 	SetBitmap(Bitmap::Create(16,16));
+	GetBitmap()->SetId("AirshipShadow");
 
 	SetOx(TILE_SIZE/2);
 	SetOy(TILE_SIZE);
