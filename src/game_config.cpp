@@ -313,7 +313,9 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 			if (path.empty()) {
 				// Fallback: Use the config directory
 				// Can still fail in the rare case that the config path is invalid
-				path = GetGlobalConfigFilesystem().GetFullPath();
+				if (auto fs = GetGlobalConfigFilesystem(); fs) {
+					path = fs.GetFullPath();
+				}
 			}
 
 			if (!path.empty()) {
