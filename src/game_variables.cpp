@@ -209,6 +209,14 @@ void Game_Variables::WriteArray(const int first_id_a, const int last_id_a, const
 	}
 }
 
+std::vector<Var_t> Game_Variables::GetRange(int variable_id, int length) {
+	std::vector<Var_t> vars;
+	for (int i = 0; i < length; ++i) {
+		vars.push_back(Get(variable_id + i));
+	}
+	return vars;
+}
+
 Game_Variables::Var_t Game_Variables::Set(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarSet, "Invalid write var[{}] = {}!");
 }
