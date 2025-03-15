@@ -203,7 +203,7 @@ void Game_Vehicle::Update() {
 	Game_Character::Update();
 }
 
-StringView Game_Vehicle::GetOrigSpriteName() const {
+std::string_view Game_Vehicle::GetOrigSpriteName() const {
 	if (!data()->orig_sprite_name.empty()) {
 		return data()->orig_sprite_name;
 	}

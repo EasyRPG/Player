@@ -200,7 +200,7 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 
 		// Look for Meta.ini files and fetch them. They are required for detecting the translations.
 		for (const auto& item: file_mapping) {
-			if (StringView(item.first).ends_with("meta.ini")) {
+			if (EndsWith(item.first, "meta.ini")) {
 				auto* request = AsyncHandler::RequestFile(item.second);
 				request->SetImportantFile(true);
 				request->Start();
@@ -225,7 +225,7 @@ void AsyncHandler::ClearRequests() {
 	async_requests.clear();
 }
 
-FileRequestAsync* AsyncHandler::RequestFile(StringView folder_name, StringView file_name) {
+FileRequestAsync* AsyncHandler::RequestFile(std::string_view folder_name, std::string_view file_name) {
 	auto path = FileFinder::MakePath(folder_name, file_name);
 
 	auto* request = GetRequest(path);
@@ -239,7 +239,7 @@ FileRequestAsync* AsyncHandler::RequestFile(StringView folder_name, StringView f
 	return RegisterRequest(std::move(path), std::string(folder_name), std::string(file_name));
 }
 
-FileRequestAsync* AsyncHandler::RequestFile(StringView file_name) {
+FileRequestAsync* AsyncHandler::RequestFile(std::string_view file_name) {
 	return RequestFile(".", file_name);
 }
 

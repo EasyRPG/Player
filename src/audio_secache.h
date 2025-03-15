@@ -83,7 +83,7 @@ public:
 	 * @param name Name for the cache entry
 	 * @return An AudioSeCache instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioSeCache> Create(Filesystem_Stream::InputStream stream, StringView name);
+	static std::unique_ptr<AudioSeCache> Create(Filesystem_Stream::InputStream stream, std::string_view name);
 
 	/**
 	 * Retrieves the format of the internal audio decoder.
@@ -101,7 +101,7 @@ public:
 	 * @param name Cache entry name
 	 * @return SE is already in cache, nullptr otherwise
 	 */
-	static std::unique_ptr<AudioSeCache> GetCachedSe(StringView name);
+	static std::unique_ptr<AudioSeCache> GetCachedSe(std::string_view name);
 
 	/**
 	 * Retrieves the format of the cached file.
@@ -135,7 +135,7 @@ public:
 	/**
 	 * @return name of the cached SE
 	 */
-	StringView GetName() const;
+	std::string_view GetName() const;
 
 	static void Clear();
 private:

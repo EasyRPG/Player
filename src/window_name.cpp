@@ -43,7 +43,7 @@ void Window_Name::Set(std::string text) {
 	Refresh();
 }
 
-void Window_Name::Append(StringView text) {
+void Window_Name::Append(std::string_view text) {
 	// Avoid string copies by reusing the buffer in name
 	name.append(text.begin(), text.end());
 	if (Text::GetSize(*Font::Default(), name).width <= (12 * 6)) {

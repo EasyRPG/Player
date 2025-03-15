@@ -42,12 +42,12 @@ namespace Registry {
 	/**
 	 * Reads string value.
 	 */
-	std::string ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view = NATIVE);
+	std::string ReadStrValue(HKEY hkey, std::string_view key, std::string_view val, REGVIEW view = NATIVE);
 
 	/**
 	 * Reads binary value.
 	 */
-	int ReadBinValue(HKEY hkey, StringView, StringView val, unsigned char* bin, REGVIEW view = NATIVE);
+	int ReadBinValue(HKEY hkey, std::string_view, std::string_view val, unsigned char* bin, REGVIEW view = NATIVE);
 }
 
 #endif

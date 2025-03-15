@@ -55,7 +55,7 @@ namespace AsyncHandler {
 	 * @param file_name Name of the requested file requested.
 	 * @return The async request.
 	 */
-	FileRequestAsync* RequestFile(StringView folder_name, StringView file_name);
+	FileRequestAsync* RequestFile(std::string_view folder_name, std::string_view file_name);
 
 	/**
 	 * Creates a request to a file.
@@ -67,7 +67,7 @@ namespace AsyncHandler {
 	 * @param file_name Name of the requested file requested.
 	 * @return The async request.
 	 */
-	FileRequestAsync* RequestFile(StringView file_name);
+	FileRequestAsync* RequestFile(std::string_view file_name);
 
 	/**
 	 * Checks if any file with important-flag hasn't finished downloading yet.

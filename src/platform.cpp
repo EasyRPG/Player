@@ -136,7 +136,7 @@ bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 
 	auto components = FileFinder::SplitPath(path);
 	std::string cur_path;
-	if (StringView(path).starts_with("/")) {
+	if (StartsWith(path, "/")) {
 		cur_path += "/";
 	}
 

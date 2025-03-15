@@ -81,7 +81,7 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	Game_Message::WordWrap(
 			message,
 			Player::screen_width - 6, // hardcoded to screen width because the bitmap is not initialized early enough
-			[&](StringView line) {
+			[&](std::string_view line) {
 				messages.emplace_back(std::string(line), color);
 			}, *Font::DefaultBitmapFont()
 	);

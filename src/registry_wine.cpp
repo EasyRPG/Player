@@ -35,7 +35,7 @@ Wine registry file example:
 "RuntimePackagePath"="C:\\Program Files (x86)\\ASCII\\RPG2000\\RTP"
  */
 
-std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, REGVIEW view) {
+std::string Registry::ReadStrValue(HKEY hkey, std::string_view key, std::string_view val, REGVIEW view) {
 	std::string prefix =
 			getenv("WINEPREFIX")? getenv("WINEPREFIX"):
 			getenv("HOME")? std::string(getenv("HOME")).append("/.wine"):
@@ -100,7 +100,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 		if (!in_section) {
 			if (line.empty() || line[0] != '[') {
 				continue;
-			} else if (ToStringView(Utils::LowerCaseInPlace(line)).starts_with(formatted_key_search)) {
+			} else if (StartsWith(Utils::LowerCaseInPlace(line), formatted_key_search)) {
 				// Found the section
 				in_section = true;
 			}
@@ -110,7 +110,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 				break;
 			}
 
-			if (ToStringView(Utils::LowerCase(line)).starts_with(formatted_val)) {
+			if (StartsWith(Utils::LowerCase(line), formatted_val)) {
 				// value found
 				string_value = line.substr(formatted_val.length());
 				break;
@@ -153,7 +153,7 @@ std::string Registry::ReadStrValue(HKEY hkey, StringView key, StringView val, RE
 	return path;
 }
 
-int Registry::ReadBinValue(HKEY, StringView, StringView, unsigned char*, REGVIEW) {
+int Registry::ReadBinValue(HKEY, std::string_view, std::string_view, unsigned char*, REGVIEW) {
 	return 0; // not really used yet
 }
 
