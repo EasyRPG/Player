@@ -40,7 +40,7 @@
 #include "rand.h"
 #include "autobattle.h"
 #include "enemyai.h"
-#include "battle_message.h"
+#include "game_message_terms.h"
 #include "feature.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k(const BattleArgs& args) :
@@ -1948,38 +1948,16 @@ bool Scene_Battle_Rpg2k::CheckWait() {
 }
 
 void Scene_Battle_Rpg2k::PushExperienceGainedMessage(PendingMessage& pm, int exp) {
-	if (Feature::HasPlaceholders()) {
-		pm.PushLine(
-			Utils::ReplacePlaceholders(
-				lcf::Data::terms.exp_received,
-				Utils::MakeArray('V', 'U'),
-				Utils::MakeSvArray(std::to_string(exp), lcf::Data::terms.exp_short)
-			) + Player::escape_symbol + "."
-		);
-	}
-	else {
-		std::stringstream ss;
-		ss << exp << lcf::Data::terms.exp_received << Player::escape_symbol << ".";
-		pm.PushLine(ss.str());
-	}
+	pm.PushLine(
+		PartyMessage::GetExperienceGainedMessage(exp)
+		+ Player::escape_symbol + ".");
 }
 
 void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) {
+	pm.PushLine(
+		PartyMessage::GetGoldReceivedMessage(money)
+		+ Player::escape_symbol + ".");
 
-	if (Feature::HasPlaceholders()) {
-		pm.PushLine(
-			Utils::ReplacePlaceholders(
-				lcf::Data::terms.gold_recieved_a,
-				Utils::MakeArray('V', 'U'),
-				Utils::MakeSvArray(std::to_string(money), lcf::Data::terms.gold)
-			) + Player::escape_symbol + "."
-		);
-	}
-	else {
-		std::stringstream ss;
-		ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b << Player::escape_symbol << ".";
-		pm.PushLine(ss.str());
-	}
 }
 
 void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vector<int> drops) {

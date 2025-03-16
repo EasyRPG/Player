@@ -15,14 +15,23 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_BATTLE_MESSAGE_H
-#define EP_BATTLE_MESSAGE_H
+#ifndef EP_GAME_MESSAGE_TERMS_H
+#define EP_GAME_MESSAGE_TERMS_H
 
 #include <string>
 #include "string_view.h"
 #include <lcf/rpg/fwd.h>
 
+class Game_Actor;
 class Game_Battler;
+
+namespace ActorMessage {
+
+std::string GetLevelUpMessage(const Game_Actor& actor, int new_level);
+
+std::string GetLearningMessage(const Game_Actor& actor, const lcf::rpg::Skill& skill);
+
+} // namespace ActorMessage
 
 namespace BattleMessage {
 
@@ -115,5 +124,13 @@ std::string GetSelfDestructStartMessage2k3(const Game_Battler& source);
 std::string GetEscapeStartMessage2k3(const Game_Battler& source);
 
 } // namespace BattleMessage
+
+namespace PartyMessage {
+
+std::string GetExperienceGainedMessage(int exp);
+
+std::string GetGoldReceivedMessage(int money);
+
+} // namespace PartyMessage
 
 #endif
