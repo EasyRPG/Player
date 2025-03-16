@@ -49,6 +49,7 @@
 #include <algorithm>
 #include <memory>
 #include "feature.h"
+#include "game_message_terms.h"
 
 //#define EP_DEBUG_BATTLE2K3_STATE_MACHINE
 
@@ -1857,14 +1858,11 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 
 		std::stringstream ss;
 		if (exp > 0) {
-			ss << exp << space << lcf::Data::terms.exp_received;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetExperienceGainedMessage(exp));
 			pm.PushPageEnd();
 		}
 		if (money > 0) {
-			ss.str("");
-			ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetGoldReceivedMessage(money));
 			pm.PushPageEnd();
 		}
 		for (auto& item_id: drops) {

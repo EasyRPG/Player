@@ -32,7 +32,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "main_data.h"
-#include "battle_message.h"
+#include "game_message_terms.h"
 #include "output.h"
 #include "player.h"
 #include <lcf/reader_util.h>
