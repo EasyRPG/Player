@@ -1856,7 +1856,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
-		std::stringstream ss;
 		if (exp > 0) {
 			pm.PushLine(PartyMessage::GetExperienceGainedMessage(exp));
 			pm.PushPageEnd();
@@ -1867,12 +1866,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		}
 		for (auto& item_id: drops) {
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
-			// No Output::Warning needed here, reported later when the item is added
-			std::string_view item_name = item ? std::string_view(item->name) : std::string_view("??? BAD ITEM ???");
-
-			ss.str("");
-			ss << item_name << space << lcf::Data::terms.item_recieved;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetItemReceivedMessage(item));
 			pm.PushPageEnd();
 		}
 
