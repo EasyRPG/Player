@@ -30,9 +30,20 @@ namespace ActorMessage {
 std::string GetLevelUpMessage(const Game_Actor& actor, int new_level) {
 	std::stringstream ss;
 	if (Player::IsRPG2k3E()) {
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_a.empty()) {
+			ss << lcf::Data::terms.maniac_level_up_a << " ";
+		}
 		ss << actor.GetName();
 		ss << " " << lcf::Data::terms.level_up << " ";
-		ss << " " << lcf::Data::terms.level << " " << new_level;
+		ss << " " << lcf::Data::terms.level;
+
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_b.empty()) {
+			ss << " " << lcf::Data::terms.maniac_level_up_b;
+		}
+		ss << " " << new_level;
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_c.empty()) {
+			ss << lcf::Data::terms.maniac_level_up_c;
+		}
 		return ss.str();
 	} else if (Player::IsRPG2kE()) {
 		ss << new_level;
@@ -64,8 +75,13 @@ std::string GetLearningMessage(const Game_Actor& actor, const lcf::rpg::Skill& s
 			Utils::MakeSvArray(actor.GetName(), skill.name)
 		);
 	}
-
-	return ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "") + ToString(lcf::Data::terms.skill_learned);
+	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_skill_learned_a.empty()) {
+		ss << lcf::Data::terms.maniac_skill_learned_a << " ";
+	}
+	ss << ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "");
+	ss << ToString(lcf::Data::terms.skill_learned);
+	return ss.str();
 }
 
 } // namespace ActorMessage
@@ -611,6 +627,9 @@ std::string GetExperienceGainedMessage(int exp) {
 	}
 	std::string space = Player::IsRPG2k3E() ? " " : "";
 	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_exp_received_a.empty()) {
+		ss << lcf::Data::terms.maniac_exp_received_a << " ";
+	}
 	ss << exp << space << lcf::Data::terms.exp_received;
 	return ss.str();
 }
@@ -641,6 +660,9 @@ std::string GetItemReceivedMessage(const lcf::rpg::Item* item) {
 	}
 	std::string space = Player::IsRPG2k3E() ? " " : "";
 	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_item_received_a.empty()) {
+		ss << lcf::Data::terms.maniac_item_received_a << " ";
+	}
 	ss << item_name << space << lcf::Data::terms.item_recieved;
 	return ss.str();
 }
