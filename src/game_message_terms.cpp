@@ -14,15 +14,61 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "battle_message.h"
+#include "game_message_terms.h"
 #include "player.h"
 #include "utils.h"
 #include "algo.h"
+#include "game_actor.h"
 #include "game_battler.h"
 #include <lcf/rpg/state.h>
 #include <lcf/data.h>
 #include <lcf/reader_util.h>
 #include "feature.h"
+
+namespace ActorMessage {
+
+std::string GetLevelUpMessage(const Game_Actor& actor, int new_level) {
+	std::stringstream ss;
+	if (Player::IsRPG2k3E()) {
+		ss << actor.GetName();
+		ss << " " << lcf::Data::terms.level_up << " ";
+		ss << " " << lcf::Data::terms.level << " " << new_level;
+		return ss.str();
+	} else if (Player::IsRPG2kE()) {
+		ss << new_level;
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.level_up,
+			Utils::MakeArray('S', 'V', 'U'),
+			Utils::MakeSvArray(actor.GetName(), ss.str(), lcf::Data::terms.level)
+		);
+	} else {
+		std::string particle, space = "";
+		if (Player::IsCP932()) {
+			particle = "は";
+			space += " ";
+		} else {
+			particle = " ";
+		}
+		ss << actor.GetName();
+		ss << particle << lcf::Data::terms.level << " ";
+		ss << new_level << space << lcf::Data::terms.level_up;
+		return ss.str();
+	}
+}
+
+std::string GetLearningMessage(const Game_Actor& actor, const lcf::rpg::Skill& skill) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.skill_learned,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(actor.GetName(), skill.name)
+		);
+	}
+
+	return ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "") + ToString(lcf::Data::terms.skill_learned);
+}
+
+} // namespace ActorMessage
 
 namespace BattleMessage {
 
@@ -552,3 +598,34 @@ std::string GetEscapeStartMessage2k3(const Game_Battler& source) {
 }
 
 } // namespace BattleMessage
+
+namespace PartyMessage {
+
+std::string GetExperienceGainedMessage(int exp) {
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.exp_received,
+			Utils::MakeArray('V', 'U'),
+			Utils::MakeSvArray(std::to_string(exp), lcf::Data::terms.exp_short)
+		);
+	}
+	std::string space = Player::IsRPG2k3E() ? " " : "";
+	std::stringstream ss;
+	ss << exp << space << lcf::Data::terms.exp_received;
+	return ss.str();
+}
+
+std::string GetGoldReceivedMessage(int money) {
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.gold_recieved_a,
+			Utils::MakeArray('V', 'U'),
+			Utils::MakeSvArray(std::to_string(money), lcf::Data::terms.gold)
+		);
+	}
+	std::stringstream ss;
+	ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b;
+	return ss.str();
+}
+
+} // namespace PartyMessage
