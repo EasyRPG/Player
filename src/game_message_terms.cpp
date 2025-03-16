@@ -628,4 +628,21 @@ std::string GetGoldReceivedMessage(int money) {
 	return ss.str();
 }
 
+std::string GetItemReceivedMessage(const lcf::rpg::Item* item) {
+	// No Output::Warning needed here, reported later when the item is added
+	std::string_view item_name = item ? std::string_view(item->name) : std::string_view("??? BAD ITEM ???");
+
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.item_recieved,
+			Utils::MakeArray('S'),
+			Utils::MakeSvArray(item_name)
+		);
+	}
+	std::string space = Player::IsRPG2k3E() ? " " : "";
+	std::stringstream ss;
+	ss << item_name << space << lcf::Data::terms.item_recieved;
+	return ss.str();
+}
+
 } // namespace PartyMessage
