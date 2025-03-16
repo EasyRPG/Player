@@ -131,6 +131,8 @@ std::string GetExperienceGainedMessage(int exp);
 
 std::string GetGoldReceivedMessage(int money);
 
+std::string GetItemReceivedMessage(const lcf::rpg::Item* item);
+
 } // namespace PartyMessage
 
 #endif
