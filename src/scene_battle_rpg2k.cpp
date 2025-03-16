@@ -1961,27 +1961,11 @@ void Scene_Battle_Rpg2k::PushGoldReceivedMessage(PendingMessage& pm, int money) 
 }
 
 void Scene_Battle_Rpg2k::PushItemRecievedMessages(PendingMessage& pm, std::vector<int> drops) {
-	std::stringstream ss;
-
 	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 		const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, *it);
-		// No Output::Warning needed here, reported later when the item is added
-		std::string_view item_name = item ? std::string_view(item->name) : std::string_view("??? BAD ITEM ???");
-
-		if (Feature::HasPlaceholders()) {
-			pm.PushLine(
-				Utils::ReplacePlaceholders(
-					lcf::Data::terms.item_recieved,
-					Utils::MakeArray('S'),
-					Utils::MakeSvArray(item_name)
-				) + Player::escape_symbol + "."
-			);
-		}
-		else {
-			ss.str("");
-			ss << item_name << lcf::Data::terms.item_recieved << Player::escape_symbol << ".";
-			pm.PushLine(ss.str());
-		}
+		pm.PushLine(
+			PartyMessage::GetItemReceivedMessage(item)
+			+ Player::escape_symbol + ".");
 	}
 }
 
