@@ -246,7 +246,7 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgTriggerEventAt, 4>(com);
 		case Cmd::EasyRpg_WaitForSingleMovement:
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement, 6>(com);
-		case static_cast<Cmd>(2003):
+		case Cmd::EasyRpg_Pathfinder:
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgPathfinder, 13>(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
