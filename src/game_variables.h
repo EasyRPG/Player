@@ -49,6 +49,7 @@ public:
 	Var_t Get(int variable_id) const;
 	Var_t GetIndirect(int variable_id) const;
 	Var_t GetWithMode(int id, int mode) const;
+	std::vector<Var_t> GetRange(int variable_id, int length);
 
 	Var_t Set(int variable_id, Var_t value);
 	Var_t Add(int variable_id, Var_t value);
@@ -127,7 +128,7 @@ public:
 	void BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b);
 	void SwapArray(int first_id_a, int last_id_a, int first_id_b);
 
-	StringView GetName(int _id) const;
+	std::string_view GetName(int _id) const;
 
 	int GetSize() const;
 	int GetSizeWithLimit() const;

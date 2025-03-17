@@ -43,7 +43,7 @@ public:
 		Vehicle
 	};
 
-	static StringView TypeToStr(Type t);
+	static std::string_view TypeToStr(Type t);
 
 	virtual ~Game_Character() = default;
 	Game_Character(Game_Character&&) = default;
@@ -613,7 +613,7 @@ public:
 	 * @return true See CheckWay.
 	 */
 	virtual bool CheckWay(int from_x, int from_y, int to_x, int to_y,
-		bool ignore_all_events, std::unordered_set<int> *ignore_some_events_by_id);
+		bool ignore_all_events, Span<int> ignore_some_events_by_id);
 
 	/** Short version of CheckWay. **/
 	virtual bool CheckWay(int from_x, int from_y, int to_x, int to_y);
@@ -704,6 +704,21 @@ public:
 	 * Cancels a previous forced move route.
 	 */
 	void CancelMoveRoute();
+
+	/** Argument struct for more complex find operations */
+	struct CalculateMoveRouteArgs {
+		int32_t dest_x = 0;
+		int32_t dest_y = 0;
+		int32_t steps_max = std::numeric_limits<int32_t>::max();
+		int32_t search_max = std::numeric_limits<int32_t>::max();
+		bool allow_diagonal = false;
+		bool debug_print = false;
+		bool skip_when_failed = false;
+		Span<int> event_id_ignore_list;
+		int frequency = 3;
+	};
+
+	bool CalculateMoveRoute(const CalculateMoveRouteArgs& args);
 
 	/** @return height of active jump in pixels */
 	int GetJumpHeight() const;
@@ -912,9 +927,9 @@ public:
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	/** Check for and fix incorrect data after loading save game */
-	void SanitizeData(StringView name);
+	void SanitizeData(std::string_view name);
 	/** Check for and fix incorrect move route data after loading save game */
-	void SanitizeMoveRoute(StringView name, const lcf::rpg::MoveRoute& mr, int32_t& idx, StringView chunk_name);
+	void SanitizeMoveRoute(std::string_view name, const lcf::rpg::MoveRoute& mr, int32_t& idx, std::string_view chunk_name);
 	void Update();
 	virtual void UpdateAnimation();
 	virtual void UpdateNextMovementAction() = 0;
@@ -1403,7 +1418,7 @@ inline bool Game_Character::IsDirectionDiagonal(int d) {
 	return d >= UpRight;
 }
 
-inline StringView Game_Character::TypeToStr(Game_Character::Type type) {
+inline std::string_view Game_Character::TypeToStr(Game_Character::Type type) {
 	switch (type) {
 		case Player: return "Player";
 		case Vehicle: return "Vehicle";

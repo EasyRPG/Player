@@ -138,13 +138,13 @@ FilesystemView FileFinder::Root() {
 	return root_fs->Subtree("");
 }
 
-std::string FileFinder::MakePath(StringView dir, StringView name) {
+std::string FileFinder::MakePath(std::string_view dir, std::string_view name) {
 	std::string str;
 	if (dir.empty()) {
 		str = ToString(name);
 	} else if (name.empty()) {
 		str = ToString(dir);
-	} else if (dir.ends_with("/")) {
+	} else if (EndsWith(dir, '/')) {
 		str = ToString(dir) + ToString(name);
 	} else {
 		str = ToString(dir) + "/" + ToString(name);
@@ -155,8 +155,8 @@ std::string FileFinder::MakePath(StringView dir, StringView name) {
 	return str;
 }
 
-std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
-	StringView ns;
+std::string FileFinder::MakeCanonical(std::string_view path, int initial_deepness) {
+	std::string_view ns;
 	// Check if the path contains a namespace and prevent that the :// is replaced with :/
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {
@@ -187,7 +187,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 	}
 
 	std::string ret;
-	for (StringView s : path_can) {
+	for (std::string_view s : path_can) {
 		ret = MakePath(ret, s);
 	}
 
@@ -201,7 +201,7 @@ std::string FileFinder::MakeCanonical(StringView path, int initial_deepness) {
 	return ToString(ns) + root_slash + ret + drive_slash;
 }
 
-std::vector<std::string> FileFinder::SplitPath(StringView path) {
+std::vector<std::string> FileFinder::SplitPath(std::string_view path) {
 	// Tokens are path delimiters ("/" and encoding aware "\")
 	std::function<bool(char32_t)> f = [](char32_t t) {
 		char32_t escape_char_back = '\0';
@@ -216,7 +216,7 @@ std::vector<std::string> FileFinder::SplitPath(StringView path) {
 	return Utils::Tokenize(path, f);
 }
 
-std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView path) {
+std::pair<std::string, std::string> FileFinder::GetPathAndFilename(std::string_view path) {
 	if (path.empty()) {
 		return {"", ""};
 	}
@@ -226,7 +226,7 @@ std::pair<std::string, std::string> FileFinder::GetPathAndFilename(StringView pa
 
 	const size_t last_slash_idx = path_copy.find_last_of('/');
 	if (last_slash_idx == std::string::npos) {
-		return {ToString(""), path_copy};
+		return {"", path_copy};
 	}
 
 	// Determine if the file is located at the filesystem root (e.g. / or drive:/)
@@ -260,12 +260,12 @@ void FileFinder::ConvertPathDelimiters(std::string& path) {
 	}
 }
 
-std::string FileFinder::GetPathInsidePath(StringView path_to, StringView path_in) {
-	if (!path_in.starts_with(path_to)) {
+std::string FileFinder::GetPathInsidePath(std::string_view path_to, std::string_view path_in) {
+	if (!StartsWith(path_in, path_to)) {
 		return ToString(path_in);
 	}
 
-	StringView path_out = path_in.substr(path_to.size());
+	std::string_view path_out = path_in.substr(path_to.size());
 	if (!path_out.empty() && (path_out[0] == '/' || path_out[0] == '\\')) {
 		path_out = path_out.substr(1);
 	}
@@ -273,21 +273,21 @@ std::string FileFinder::GetPathInsidePath(StringView path_to, StringView path_in
 	return ToString(path_out);
 }
 
-std::string FileFinder::GetPathInsideGamePath(StringView path_in) {
+std::string FileFinder::GetPathInsideGamePath(std::string_view path_in) {
 	return FileFinder::GetPathInsidePath(Game().GetFullPath(), path_in);
 }
 
 bool FileFinder::IsSupportedArchiveExtension(std::string path) {
 	Utils::LowerCaseInPlace(path);
-	StringView pv = path;
+	std::string_view pv = path;
 
 #ifdef HAVE_LHASA
-	if (pv.ends_with(".lzh")) {
+	if (EndsWith(pv, ".lzh")) {
 		return true;
 	}
 #endif
 
-	return pv.ends_with(".zip") || pv.ends_with(".easyrpg");
+	return EndsWith(pv, ".zip") || EndsWith(pv, ".easyrpg");
 }
 
 void FileFinder::Quit() {
@@ -368,7 +368,7 @@ bool FileFinder::OpenViewToEasyRpgFile(FilesystemView& fs) {
 	std::string filename;
 
 	for (auto& file : *files) {
-		if (StringView(file.second.name).ends_with(".easyrpg")) {
+		if (EndsWith(file.second.name, ".easyrpg")) {
 			++items;
 			if (items == 2) {
 				// Contains more than one game
@@ -432,33 +432,33 @@ std::string find_generic_with_fallback(DirectoryTree::Args& args) {
 	return found;
 }
 
-std::string FileFinder::FindImage(StringView dir, StringView name) {
+std::string FileFinder::FindImage(std::string_view dir, std::string_view name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return find_generic(args);
 }
 
-std::string FileFinder::FindMusic(StringView name) {
+std::string FileFinder::FindMusic(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
 	return find_generic(args);
 
 }
 
-std::string FileFinder::FindSound(StringView name) {
+std::string FileFinder::FindSound(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
 	return find_generic(args);
 }
 
-std::string FileFinder::FindFont(StringView name) {
+std::string FileFinder::FindFont(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Font", name), FONTS_TYPES, 1, true };
 	return find_generic(args);
 }
 
-std::string FileFinder::FindText(StringView name) {
+std::string FileFinder::FindText(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, true };
 	return find_generic_with_fallback(args);
 }
 
-Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, DirectoryTree::Args& args) {
+Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
 		auto is = tr_fs.OpenFile(args);
@@ -477,7 +477,7 @@ Filesystem_Stream::InputStream open_generic(StringView dir, StringView name, Dir
 	return is;
 }
 
-Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, StringView name, DirectoryTree::Args& args) {
+Filesystem_Stream::InputStream open_generic_with_fallback(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
 	auto is = FileFinder::Save().OpenFile(args);
 	if (!is) { is = open_generic(dir, name, args); }
 	if (!is) {
@@ -487,27 +487,27 @@ Filesystem_Stream::InputStream open_generic_with_fallback(StringView dir, String
 	return is;
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenImage(StringView dir, StringView name) {
+Filesystem_Stream::InputStream FileFinder::OpenImage(std::string_view dir, std::string_view name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return open_generic(dir, name, args);
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenMusic(StringView name) {
+Filesystem_Stream::InputStream FileFinder::OpenMusic(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Music", name), MUSIC_TYPES, 1, false };
 	return open_generic("Music", name, args);
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenSound(StringView name) {
+Filesystem_Stream::InputStream FileFinder::OpenSound(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Sound", name), SOUND_TYPES, 1, false };
 	return open_generic("Sound", name, args);
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenFont(StringView name) {
+Filesystem_Stream::InputStream FileFinder::OpenFont(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Font", name), FONTS_TYPES, 1, false };
 	return open_generic("Font", name, args);
 }
 
-Filesystem_Stream::InputStream FileFinder::OpenText(StringView name) {
+Filesystem_Stream::InputStream FileFinder::OpenText(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, false };
 	return open_generic_with_fallback("Text", name, args);
 }
@@ -534,7 +534,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 		auto entries = fs.ListDirectory("music");
 		if (entries) {
 			for (const auto& entry : *entries) {
-				if (entry.second.type == DirectoryTree::FileType::Regular && StringView(entry.first).ends_with(".mp3")) {
+				if (entry.second.type == DirectoryTree::FileType::Regular && EndsWith(entry.first, ".mp3")) {
 					Output::Debug("MP3 file ({}) found", entry.second.name);
 					return true;
 				}

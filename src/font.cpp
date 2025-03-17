@@ -119,7 +119,7 @@ namespace {
 
 		using function_type = BitmapFontGlyph const*(*)(char32_t);
 
-		BitmapFont(StringView name, function_type func);
+		BitmapFont(std::string_view name, function_type func);
 
 		Rect vGetSize(char32_t glyph) const override;
 		GlyphRet vRender(char32_t glyph) const override;
@@ -142,7 +142,7 @@ namespace {
 		GlyphRet vRenderShaped(char32_t glyph) const override;
 		bool vCanShape() const override;
 #ifdef HAVE_HARFBUZZ
-		std::vector<ShapeRet> vShape(U32StringView txt) const override;
+		std::vector<ShapeRet> vShape(std::u32string_view txt) const override;
 #endif
 		void vApplyStyle(const Style& style) override;
 
@@ -237,7 +237,7 @@ namespace {
 	}
 } // anonymous namespace
 
-BitmapFont::BitmapFont(StringView name, function_type func)
+BitmapFont::BitmapFont(std::string_view name, function_type func)
 	: Font(name, HEIGHT, false, false), func(func)
 {}
 
@@ -491,7 +491,7 @@ bool FTFont::vCanShape() const {
 }
 
 #ifdef HAVE_HARFBUZZ
-std::vector<Font::ShapeRet> FTFont::vShape(U32StringView txt) const {
+std::vector<Font::ShapeRet> FTFont::vShape(std::u32string_view txt) const {
 	hb_buffer_clear_contents(hb_buffer);
 
 	hb_buffer_add_utf32(hb_buffer, reinterpret_cast<const uint32_t*>(txt.data()), txt.size(), 0, txt.size());
@@ -691,7 +691,7 @@ void Font::Dispose() {
 }
 
 // Constructor.
-Font::Font(StringView name, int size, bool bold, bool italic)
+Font::Font(std::string_view name, int size, bool bold, bool italic)
 	: name(ToString(name))
 {
 	original_style.size = size;
@@ -700,7 +700,7 @@ Font::Font(StringView name, int size, bool bold, bool italic)
 	current_style = original_style;
 }
 
-StringView Font::GetName() const {
+std::string_view Font::GetName() const {
 	return name;
 }
 
@@ -884,7 +884,7 @@ bool Font::CanShape() const {
 	return vCanShape();
 }
 
-std::vector<Font::ShapeRet> Font::Shape(U32StringView text) const {
+std::vector<Font::ShapeRet> Font::Shape(std::u32string_view text) const {
 	assert(vCanShape());
 
 	return vShape(text);

@@ -14,19 +14,81 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "battle_message.h"
+#include "game_message_terms.h"
 #include "player.h"
 #include "utils.h"
 #include "algo.h"
+#include "game_actor.h"
 #include "game_battler.h"
 #include <lcf/rpg/state.h>
 #include <lcf/data.h>
 #include <lcf/reader_util.h>
 #include "feature.h"
 
+namespace ActorMessage {
+
+std::string GetLevelUpMessage(const Game_Actor& actor, int new_level) {
+	std::stringstream ss;
+	if (Player::IsRPG2k3E()) {
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_a.empty()) {
+			ss << lcf::Data::terms.maniac_level_up_a << " ";
+		}
+		ss << actor.GetName();
+		ss << " " << lcf::Data::terms.level_up << " ";
+		ss << " " << lcf::Data::terms.level;
+
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_b.empty()) {
+			ss << " " << lcf::Data::terms.maniac_level_up_b;
+		}
+		ss << " " << new_level;
+		if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_level_up_c.empty()) {
+			ss << lcf::Data::terms.maniac_level_up_c;
+		}
+		return ss.str();
+	} else if (Player::IsRPG2kE()) {
+		ss << new_level;
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.level_up,
+			Utils::MakeArray('S', 'V', 'U'),
+			Utils::MakeSvArray(actor.GetName(), ss.str(), lcf::Data::terms.level)
+		);
+	} else {
+		std::string particle, space = "";
+		if (Player::IsCP932()) {
+			particle = "は";
+			space += " ";
+		} else {
+			particle = " ";
+		}
+		ss << actor.GetName();
+		ss << particle << lcf::Data::terms.level << " ";
+		ss << new_level << space << lcf::Data::terms.level_up;
+		return ss.str();
+	}
+}
+
+std::string GetLearningMessage(const Game_Actor& actor, const lcf::rpg::Skill& skill) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.skill_learned,
+			Utils::MakeArray('S', 'O'),
+			Utils::MakeSvArray(actor.GetName(), skill.name)
+		);
+	}
+	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_skill_learned_a.empty()) {
+		ss << lcf::Data::terms.maniac_skill_learned_a << " ";
+	}
+	ss << ToString(skill.name) + (Player::IsRPG2k3E() ? " " : "");
+	ss << ToString(lcf::Data::terms.skill_learned);
+	return ss.str();
+}
+
+} // namespace ActorMessage
+
 namespace BattleMessage {
 
-static std::string GetStateMessage(StringView target_name, StringView message) {
+static std::string GetStateMessage(std::string_view target_name, std::string_view message) {
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
 			message,
@@ -69,7 +131,7 @@ std::string GetDeathMessage(const Game_Battler& target) {
 	return "";
 }
 
-static std::string GetActionFailureMessage(StringView source, StringView target, StringView message) {
+static std::string GetActionFailureMessage(std::string_view source, std::string_view target, std::string_view message) {
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
 			message,
@@ -87,7 +149,7 @@ std::string GetPhysicalFailureMessage(const Game_Battler& source, const Game_Bat
 }
 
 std::string GetSkillFailureMessage(const Game_Battler& source, const Game_Battler& target, const lcf::rpg::Skill& skill) {
-	StringView msg;
+	std::string_view msg;
 	switch (skill.failure_message) {
 		case 0:
 			msg = lcf::Data::terms.skill_failure_a;
@@ -108,10 +170,10 @@ std::string GetSkillFailureMessage(const Game_Battler& source, const Game_Battle
 }
 
 std::string GetUndamagedMessage(const Game_Battler& target) {
-	StringView name = target.GetName();
-	StringView message = (target.GetType() == Game_Battler::Type_Ally)
-		? StringView(lcf::Data::terms.actor_undamaged)
-		: StringView(lcf::Data::terms.enemy_undamaged);
+	std::string_view name = target.GetName();
+	std::string_view message = (target.GetType() == Game_Battler::Type_Ally)
+		? std::string_view(lcf::Data::terms.actor_undamaged)
+		: std::string_view(lcf::Data::terms.enemy_undamaged);
 
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
@@ -126,9 +188,9 @@ std::string GetUndamagedMessage(const Game_Battler& target) {
 }
 
 std::string GetCriticalHitMessage(const Game_Battler& source, const Game_Battler& target) {
-	StringView message = (target.GetType() == Game_Battler::Type_Ally)
-		? StringView(lcf::Data::terms.actor_critical)
-		: StringView(lcf::Data::terms.enemy_critical);
+	std::string_view message = (target.GetType() == Game_Battler::Type_Ally)
+		? std::string_view(lcf::Data::terms.actor_critical)
+		: std::string_view(lcf::Data::terms.enemy_critical);
 
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
@@ -142,7 +204,7 @@ std::string GetCriticalHitMessage(const Game_Battler& source, const Game_Battler
 	}
 }
 
-static std::string GetHpSpRecoveredMessage(const Game_Battler& target, int value, StringView points) {
+static std::string GetHpSpRecoveredMessage(const Game_Battler& target, int value, std::string_view points) {
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
 			lcf::Data::terms.hp_recovery,
@@ -175,11 +237,11 @@ std::string GetSpRecoveredMessage(const Game_Battler& target, int value) {
 	return GetHpSpRecoveredMessage(target, value, lcf::Data::terms.spirit_points);
 }
 
-std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points) {
+std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, std::string_view points) {
 	const auto target_is_ally = (target.GetType() == Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_hp_absorbed)
-		: StringView(lcf::Data::terms.enemy_hp_absorbed);
+	std::string_view message = target_is_ally
+		? std::string_view(lcf::Data::terms.actor_hp_absorbed)
+		: std::string_view(lcf::Data::terms.enemy_hp_absorbed);
 
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
@@ -232,9 +294,9 @@ std::string GetAgiAbsorbedMessage(const Game_Battler& source, const Game_Battler
 
 std::string GetDamagedMessage(const Game_Battler& target, int value) {
 	bool target_is_ally = (target.GetType() == Game_Battler::Type_Ally);
-	StringView message = target_is_ally
-		? StringView(lcf::Data::terms.actor_damaged)
-		: StringView(lcf::Data::terms.enemy_damaged);
+	std::string_view message = target_is_ally
+		? std::string_view(lcf::Data::terms.actor_damaged)
+		: std::string_view(lcf::Data::terms.enemy_damaged);
 
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
@@ -257,16 +319,16 @@ std::string GetDamagedMessage(const Game_Battler& target, int value) {
 	return ss.str();
 }
 
-std::string GetParameterChangeMessage(const Game_Battler& target, int value, StringView points) {
+std::string GetParameterChangeMessage(const Game_Battler& target, int value, std::string_view points) {
 	const bool is_positive = (value >= 0);
 	value = std::abs(value);
 	if (value == 0) {
 		return "";
 	}
 
-	StringView message = is_positive
-		? StringView(lcf::Data::terms.parameter_increase)
-	   	: StringView(lcf::Data::terms.parameter_decrease);
+	std::string_view message = is_positive
+		? std::string_view(lcf::Data::terms.parameter_increase)
+	   	: std::string_view(lcf::Data::terms.parameter_decrease);
 
 
 	if (Feature::HasPlaceholders()) {
@@ -320,9 +382,9 @@ std::string GetAttributeShiftMessage(const Game_Battler& target, int value, cons
 	if (value == 0) {
 		return "";
 	}
-	StringView message = is_positive
-		? StringView(lcf::Data::terms.resistance_increase)
-		: StringView(lcf::Data::terms.resistance_decrease);
+	std::string_view message = is_positive
+		? std::string_view(lcf::Data::terms.resistance_increase)
+		: std::string_view(lcf::Data::terms.resistance_decrease);
 	std::stringstream ss;
 
 	if (Feature::HasPlaceholders()) {
@@ -348,7 +410,7 @@ std::string GetAttributeShiftMessage(const Game_Battler& target, int value, cons
 	return ss.str();
 }
 
-static std::string GetBasicStartMessage2k(const Game_Battler& source, StringView term) {
+static std::string GetBasicStartMessage2k(const Game_Battler& source, std::string_view term) {
 	if (Feature::HasPlaceholders()) {
 		return Utils::ReplacePlaceholders(
 			term,
@@ -394,8 +456,8 @@ std::string GetTransformStartMessage(const Game_Battler& source, const lcf::rpg:
 	return ToString(source.GetName()) + ToString(lcf::Data::terms.enemy_transform);
 }
 
-static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill, StringView usage, bool second_message = false) {
-	StringView target_name = "???";
+static std::string GetSkillStartMessageGeneric(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill, std::string_view usage, bool second_message = false) {
+	std::string_view target_name = "???";
 	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
 		target_name = target->GetName();
 	}
@@ -457,7 +519,7 @@ std::string GetDoubleAttackStartMessage2k3(const Game_Battler& source) {
 }
 
 std::string GetSkillStartMessage2k3(const Game_Battler& source, const Game_Battler* target, const lcf::rpg::Skill& skill) {
-	StringView target_name = "???";
+	std::string_view target_name = "???";
 	if (target && Algo::IsNormalOrSubskill(skill) && Algo::SkillTargetsOne(skill)) {
 		target_name = target->GetName();
 	}
@@ -552,3 +614,57 @@ std::string GetEscapeStartMessage2k3(const Game_Battler& source) {
 }
 
 } // namespace BattleMessage
+
+namespace PartyMessage {
+
+std::string GetExperienceGainedMessage(int exp) {
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.exp_received,
+			Utils::MakeArray('V', 'U'),
+			Utils::MakeSvArray(std::to_string(exp), lcf::Data::terms.exp_short)
+		);
+	}
+	std::string space = Player::IsRPG2k3E() ? " " : "";
+	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_exp_received_a.empty()) {
+		ss << lcf::Data::terms.maniac_exp_received_a << " ";
+	}
+	ss << exp << space << lcf::Data::terms.exp_received;
+	return ss.str();
+}
+
+std::string GetGoldReceivedMessage(int money) {
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.gold_recieved_a,
+			Utils::MakeArray('V', 'U'),
+			Utils::MakeSvArray(std::to_string(money), lcf::Data::terms.gold)
+		);
+	}
+	std::stringstream ss;
+	ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b;
+	return ss.str();
+}
+
+std::string GetItemReceivedMessage(const lcf::rpg::Item* item) {
+	// No Output::Warning needed here, reported later when the item is added
+	std::string_view item_name = item ? std::string_view(item->name) : std::string_view("??? BAD ITEM ???");
+
+	if (Feature::HasPlaceholders()) {
+		return Utils::ReplacePlaceholders(
+			lcf::Data::terms.item_recieved,
+			Utils::MakeArray('S'),
+			Utils::MakeSvArray(item_name)
+		);
+	}
+	std::string space = Player::IsRPG2k3E() ? " " : "";
+	std::stringstream ss;
+	if (Player::IsPatchManiac() && !lcf::Data::terms.maniac_item_received_a.empty()) {
+		ss << lcf::Data::terms.maniac_item_received_a << " ";
+	}
+	ss << item_name << space << lcf::Data::terms.item_recieved;
+	return ss.str();
+}
+
+} // namespace PartyMessage

@@ -72,7 +72,7 @@ bool Window_Command::IsItemEnabled(int index) {
 	return commands_enabled[index];
 }
 
-void Window_Command::SetItemText(unsigned index, StringView text) {
+void Window_Command::SetItemText(unsigned index, std::string_view text) {
 	if (index < commands.size()) {
 		commands[index] = ToString(text);
 		DrawItem(index, IsItemEnabled(index) ? Font::ColorDefault : Font::ColorDisabled);

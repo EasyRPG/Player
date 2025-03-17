@@ -50,7 +50,7 @@ const lcf::rpg::SaveSystem& Game_System::GetSaveData() const {
 	return data;
 }
 
-bool Game_System::IsStopFilename(StringView name, Filesystem_Stream::InputStream (*find_func) (StringView), Filesystem_Stream::InputStream& found_stream) {
+bool Game_System::IsStopFilename(std::string_view name, Filesystem_Stream::InputStream (*find_func) (std::string_view), Filesystem_Stream::InputStream& found_stream) {
 	if (name.empty() || name == "(OFF)") {
 		found_stream = Filesystem_Stream::InputStream();
 		return true;
@@ -58,14 +58,14 @@ bool Game_System::IsStopFilename(StringView name, Filesystem_Stream::InputStream
 
 	found_stream = find_func(name);
 
-	return !found_stream && (name.starts_with('(') && name.ends_with(')'));
+	return !found_stream && (StartsWith(name, '(') && EndsWith(name, ')'));
 }
 
-bool Game_System::IsStopMusicFilename(StringView name, Filesystem_Stream::InputStream& found_stream) {
+bool Game_System::IsStopMusicFilename(std::string_view name, Filesystem_Stream::InputStream& found_stream) {
 	return IsStopFilename(name, FileFinder::OpenMusic, found_stream);
 }
 
-bool Game_System::IsStopSoundFilename(StringView name, Filesystem_Stream::InputStream& found_stream) {
+bool Game_System::IsStopSoundFilename(std::string_view name, Filesystem_Stream::InputStream& found_stream) {
 	return IsStopFilename(name, FileFinder::OpenSound, found_stream);
 }
 
@@ -182,7 +182,7 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	se_adj.volume = volume;
 	se_adj.tempo = tempo;
 	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, se_adj, stop_sounds);
-	if (StringView(se.name).ends_with(".script")) {
+	if (EndsWith(se.name, ".script")) {
 		// Is a Ineluki Script File
 		request->SetImportantFile(true);
 	}
@@ -199,9 +199,9 @@ void Game_System::SePlay(const lcf::rpg::Animation &animation) {
 	}
 }
 
-StringView Game_System::GetSystemName() {
+std::string_view Game_System::GetSystemName() {
 	return !data.graphics_name.empty() ?
-		StringView(data.graphics_name) : StringView(lcf::Data::system.system_name);
+		std::string_view(data.graphics_name) : std::string_view(lcf::Data::system.system_name);
 }
 
 void Game_System::OnChangeSystemGraphicReady(FileRequestResult* result) {
@@ -536,7 +536,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".link") && stream.GetSize() < 500) {
+	if (Player::IsPatchKeyPatch() && EndsWith(result->file, ".link") && stream.GetSize() < 500) {
 		// Handle Ineluki's MP3 patch
 		std::string line = InelukiReadLink(stream);
 
@@ -562,7 +562,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		se_request_ids.erase(item);
 	}
 
-	if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".script")) {
+	if (Player::IsPatchKeyPatch() && EndsWith(result->file, ".script")) {
 		// Is a Ineluki Script File
 		Main_Data::game_ineluki->Execute(se);
 		return;
@@ -581,7 +581,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 			return;
 		}
 
-		if (Player::IsPatchKeyPatch() && StringView(result->file).ends_with(".link") && stream.GetSize() < 500) {
+		if (Player::IsPatchKeyPatch() && EndsWith(result->file, ".link") && stream.GetSize() < 500) {
 			// Handle Ineluki's MP3 patch
 			std::string line = InelukiReadLink(stream);
 

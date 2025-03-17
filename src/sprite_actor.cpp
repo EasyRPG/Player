@@ -165,7 +165,7 @@ void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id
 			return;
 		}
 
-		StringView sprite_file = ext->battler_name;
+		std::string_view sprite_file = ext->battler_name;
 
 		if (ext->animation_type == lcf::rpg::BattlerAnimationPose::AnimType_battle) {
 			do_not_draw = false;

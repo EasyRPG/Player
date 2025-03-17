@@ -15,14 +15,23 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_BATTLE_MESSAGE_H
-#define EP_BATTLE_MESSAGE_H
+#ifndef EP_GAME_MESSAGE_TERMS_H
+#define EP_GAME_MESSAGE_TERMS_H
 
 #include <string>
 #include "string_view.h"
 #include <lcf/rpg/fwd.h>
 
+class Game_Actor;
 class Game_Battler;
+
+namespace ActorMessage {
+
+std::string GetLevelUpMessage(const Game_Actor& actor, int new_level);
+
+std::string GetLearningMessage(const Game_Actor& actor, const lcf::rpg::Skill& skill);
+
+} // namespace ActorMessage
 
 namespace BattleMessage {
 
@@ -48,7 +57,7 @@ std::string GetHpRecoveredMessage(const Game_Battler& target, int value);
 
 std::string GetSpRecoveredMessage(const Game_Battler& target, int value);
 
-std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, StringView points);
+std::string GetParameterAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value, std::string_view points);
 
 std::string GetHpAbsorbedMessage(const Game_Battler& source, const Game_Battler& target, int value);
 
@@ -64,7 +73,7 @@ std::string GetAgiAbsorbedMessage(const Game_Battler& source, const Game_Battler
 
 std::string GetDamagedMessage(const Game_Battler& target, int value);
 
-std::string GetParameterChangeMessage(const Game_Battler& target, int value, StringView points);
+std::string GetParameterChangeMessage(const Game_Battler& target, int value, std::string_view points);
 
 std::string GetSpReduceMessage(const Game_Battler& target, int value);
 
@@ -115,5 +124,15 @@ std::string GetSelfDestructStartMessage2k3(const Game_Battler& source);
 std::string GetEscapeStartMessage2k3(const Game_Battler& source);
 
 } // namespace BattleMessage
+
+namespace PartyMessage {
+
+std::string GetExperienceGainedMessage(int exp);
+
+std::string GetGoldReceivedMessage(int money);
+
+std::string GetItemReceivedMessage(const lcf::rpg::Item* item);
+
+} // namespace PartyMessage
 
 #endif

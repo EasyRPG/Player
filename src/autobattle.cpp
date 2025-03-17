@@ -40,7 +40,7 @@ template <typename... Args>
 static void DebugLog(const char*, Args&&...) {}
 #endif
 
-std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name) {
+std::unique_ptr<AlgorithmBase> CreateAlgorithm(std::string_view name) {
 	if (Utils::StrICmp(name, RpgRtImproved::name) == 0) {
 		return std::make_unique<RpgRtImproved>();
 	}

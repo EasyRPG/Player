@@ -49,6 +49,7 @@
 #include <algorithm>
 #include <memory>
 #include "feature.h"
+#include "game_message_terms.h"
 
 //#define EP_DEBUG_BATTLE2K3_STATE_MACHINE
 
@@ -499,8 +500,8 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, StringView text, Game_Battler* battler, FloatTextType type) {
-	std::stringstream ss(text.to_string());
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, std::string_view text, Game_Battler* battler, FloatTextType type) {
+	std::stringstream ss(ToString(text));
 	int value = 0;
 	ss >> value;
 	bool should_override = Game_Battle::ManiacBattleHook(
@@ -1065,7 +1066,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	static int last_substate = -1;
 	if (state != last_state || scene_action_substate != last_substate) {
 		int actor_id = active_actor ? active_actor->GetId() : 0;
-		StringView actor_name = active_actor ? StringView(active_actor->GetName()) : "Null";
+		std::string_view actor_name = active_actor ? std::string_view(active_actor->GetName()) : "Null";
 		Output::Debug("Battle2k3 ProcessSceneAction({}, {}) actor={}({}) frames={} auto_battle={}", state, scene_action_substate, actor_name, actor_id, Main_Data::game_system->GetFrameCounter(), auto_battle);
 		last_state = state;
 		last_substate = scene_action_substate;
@@ -1855,26 +1856,17 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
-		std::stringstream ss;
 		if (exp > 0) {
-			ss << exp << space << lcf::Data::terms.exp_received;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetExperienceGainedMessage(exp));
 			pm.PushPageEnd();
 		}
 		if (money > 0) {
-			ss.str("");
-			ss << lcf::Data::terms.gold_recieved_a << " " << money << lcf::Data::terms.gold << lcf::Data::terms.gold_recieved_b;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetGoldReceivedMessage(money));
 			pm.PushPageEnd();
 		}
 		for (auto& item_id: drops) {
 			const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
-			// No Output::Warning needed here, reported later when the item is added
-			StringView item_name = item ? StringView(item->name) : StringView("??? BAD ITEM ???");
-
-			ss.str("");
-			ss << item_name << space << lcf::Data::terms.item_recieved;
-			pm.PushLine(ss.str());
+			pm.PushLine(PartyMessage::GetItemReceivedMessage(item));
 			pm.PushPageEnd();
 		}
 

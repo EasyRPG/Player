@@ -128,7 +128,7 @@ protected:
 		Heal = 1,
 		Miss = 2,
 	};
-	void DrawFloatText(int x, int y, int color, StringView text, Game_Battler* battler, FloatTextType type);
+	void DrawFloatText(int x, int y, int color, std::string_view text, Game_Battler* battler, FloatTextType type);
 
 	bool IsTransparent() const;
 

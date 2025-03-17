@@ -97,7 +97,7 @@ namespace Input {
 		 * @param type type of data sent
 		 * @param data Sent data
 		 */
-		void AddRecordingData(RecordingData type, StringView data);
+		void AddRecordingData(RecordingData type, std::string_view data);
 
 		/** @return If the input is recorded */
 		bool IsRecording() const {

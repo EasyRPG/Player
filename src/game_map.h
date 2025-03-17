@@ -107,7 +107,7 @@ namespace Game_Map {
 	 * @param target_name New name of the event. When empty the original name is used.
 	 * @return Whether the cloning was successful. It will fail when source map or the src/target event do not exist.
 	 */
-	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name);
+	bool CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, std::string_view target_name);
 
 	/**
 	 * Deletes a map event.
@@ -251,7 +251,7 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y,
 			bool check_events_and_vehicles,
-			std::unordered_set<int> *ignore_some_events_by_id);
+			Span<int> ignore_some_events_by_id);
 
 	/** Shorter version of CheckWay. */
 	bool CheckWay(const Game_Character& self,
@@ -281,7 +281,7 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y,
 			bool check_events_and_vehicles,
-			std::unordered_set<int> *ignore_some_events_by_id,
+			Span<int> ignore_some_events_by_id,
 			bool make_way);
 
 	/**
@@ -485,7 +485,7 @@ namespace Game_Map {
 	int GetChipset();
 
 	/** @return chipset filename.  */
-	StringView GetChipsetName();
+	std::string_view GetChipsetName();
 
 	/**
 	 * Gets the offset of the screen from the left edge
@@ -625,7 +625,7 @@ namespace Game_Map {
 	 * @param id map ID.
 	 * @return map name from MapInfo vector.
 	 */
-	StringView GetMapName(int id);
+	std::string_view GetMapName(int id);
 
 	/**
 	 * Sets the chipset.

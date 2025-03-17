@@ -399,7 +399,7 @@ void Game_Map::Caching::MapCache::Clear() {
 	}
 }
 
-bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, StringView target_name) {
+bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, std::string_view target_name) {
 	std::unique_ptr<lcf::rpg::Map> source_map_storage;
 	const lcf::rpg::Map* source_map;
 
@@ -446,10 +446,13 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 		}), new_event);
 
 	auto game_event = Game_Event(GetMapId(), &*insert_it);
+	game_event.data()->easyrpg_clone_event_id = source_event->ID;
+	game_event.data()->easyrpg_clone_map_id = src_map_id;
+
 	events.insert(
 		std::upper_bound(events.begin(), events.end(), game_event, [](const auto& e, const auto& e2) {
 			return e.GetId() < e2.GetId();
-		}), Game_Event(GetMapId(), &*insert_it));
+		}), std::move(game_event));
 
 	UpdateUnderlyingEventReferences();
 
@@ -756,7 +759,7 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		)
 {
 	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, nullptr, false
+		self, from_x, from_y, to_x, to_y, true, {}, false
 	);
 }
 
@@ -764,7 +767,7 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
-		std::unordered_set<int> *ignore_some_events_by_id) {
+		Span<int> ignore_some_events_by_id) {
 	return CheckOrMakeWayEx(
 		self, from_x, from_y, to_x, to_y,
 		check_events_and_vehicles,
@@ -776,7 +779,7 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
-		std::unordered_set<int> *ignore_some_events_by_id,
+		Span<int> ignore_some_events_by_id,
 		bool make_way
 		)
 {
@@ -841,15 +844,22 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 	}
 	if (vehicle_type != Game_Vehicle::Airship && check_events_and_vehicles) {
 		// Check for collision with events on the target tile.
-		for (auto& other: GetEvents()) {
-			if (ignore_some_events_by_id != NULL &&
-					ignore_some_events_by_id->find(other.GetId()) !=
-					ignore_some_events_by_id->end())
-				continue;
-			if (CheckOrMakeCollideEvent(other)) {
-				return false;
+		if (ignore_some_events_by_id.empty()) {
+			for (auto& other: GetEvents()) {
+				if (CheckOrMakeCollideEvent(other)) {
+					return false;
+				}
+			}
+		} else {
+			for (auto& other: GetEvents()) {
+				if (std::find(ignore_some_events_by_id.begin(), ignore_some_events_by_id.end(), other.GetId()) != ignore_some_events_by_id.end())
+					continue;
+				if (CheckOrMakeCollideEvent(other)) {
+					return false;
+				}
 			}
 		}
+
 		auto& player = Main_Data::game_player;
 		if (player->GetVehicleType() == Game_Vehicle::None) {
 			if (CheckOrMakeCollideEvent(*Main_Data::game_player)) {
@@ -887,7 +897,7 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		)
 {
 	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, NULL, true
+		self, from_x, from_y, to_x, to_y, true, {}, true
 		);
 }
 
@@ -1631,10 +1641,10 @@ int Game_Map::GetChipset() {
 	return chipset != nullptr ? chipset->ID : 0;
 }
 
-StringView Game_Map::GetChipsetName() {
+std::string_view Game_Map::GetChipsetName() {
 	return chipset != nullptr
-		? StringView(chipset->chipset_name)
-		: StringView("");
+		? std::string_view(chipset->chipset_name)
+		: std::string_view("");
 }
 
 int Game_Map::GetPositionX() {
@@ -1762,7 +1772,7 @@ std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 
-StringView Game_Map::GetMapName(int id) {
+std::string_view Game_Map::GetMapName(int id) {
 	for (unsigned int i = 0; i < lcf::Data::treemap.maps.size(); ++i) {
 		if (lcf::Data::treemap.maps[i].ID == id) {
 			return lcf::Data::treemap.maps[i].name;
