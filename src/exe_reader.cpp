@@ -28,8 +28,8 @@
 
 namespace {
 	// hashes of known RPG_RT startup logos
-	std::array<uint32_t, 36> logo_crc32 = {
-		0xdf3d86a7, 0x2ece66f9, 0x2fe0de56, 0x25c4618f, 0x91b2635a,
+	constexpr std::array logo_crc32 {
+		0xdf3d86a7u, 0x2ece66f9u, 0x2fe0de56u, 0x25c4618fu, 0x91b2635au,
 
 		/*
 		The values below have been extracted from a wide range of
@@ -42,39 +42,39 @@ namespace {
 		version on which these translations & patches were based on!
 		*/
 		// Recompressed, unaltered RPG2000 logos
-		0x6a88587e, 0x4beedd9a, 0x1c7f224b,
+		0x6a88587eu, 0x4beedd9au, 0x1c7f224bu,
 		// Hellsoft's bootleg "RPG Maker PRO 1.05"
-		0x5ae12b1c, 0x3d1cb5f1, 0x04a7f11a,
+		0x5ae12b1cu, 0x3d1cb5f1u, 0x04a7f11au,
 		// Hellsoft's bootleg "RPG Maker PRO 1.10"
-		0x9307807f, 0x652529ec, 0x5e73987b,
+		0x9307807fu, 0x652529ecu, 0x5e73987bu,
 		// Hellsoft's bootleg "RPG Maker PRO 1.15"
-		0x2e8271cb,
+		0x2e8271cbu,
 		// Hellsoft's translation of Rm2k3: "1.0.2"
-		0x4e3f7560,
+		0x4e3f7560u,
 		// Hellsoft's translation of Rm2k3: "1.0.4" & "1.0.7"
-		0x59ab3986,
+		0x59ab3986u,
 		// Hellsoft's translation of Rm2k3: "1.0.8" & "1.0.9"
-		0xd333b2dd,
+		0xd333b2ddu,
 		// French "Rabbi-Bodom" translation of Rm2k3-1.0.9.1
-		0x476138cb,
+		0x476138cbu,
 		// "Thaiware" translation of Rm2k
-		0x29efaf6a, 0xfeb8f6b2, 0x265855ad,
+		0x29efaf6au, 0xfeb8f6b2u, 0x265855adu,
 		// Thai "House of the Dev" translation of Rm2k
-		0xa8be4ed3, 0xc75ccc6d, 0xcea40e5f,
+		0xa8be4ed3u, 0xc75ccc6du, 0xcea40e5fu,
 		// Thai "Somprasongk Team" translation of Rm2k3-1.0.6
-		0xc9b2e174,
+		0xc9b2e174u,
 		// Italian Translation of Rm2k (Matteo S.& Christian C.)
-		0x1a1ed6dd, 0xad73ccf5, 0x4ad55e84,
+		0x1a1ed6ddu, 0xad73ccf5u, 0x4ad55e84u,
 		// Italian "RPG Maker 4.0" Patch of Rm2k
-		0x8afe1239,
+		0x8afe1239u,
 		// Spanish version of Rm2k3-1.0.9.1
-		0x089fb7d8,
+		0x089fb7d8u,
 		// Spanish version of Rm2k (SoLaCe)
-		0x544ffca8, 0x4fbc0849, 0x7420f415,
+		0x544ffca8u, 0x4fbc0849u, 0x7420f415u,
 		// Spezial-Patch by Rikku2000 (1.51 with swapped logo)
-		0x806b6877,
+		0x806b6877u,
 		// Gnaf's Picture Patch (1.50 with swapped logo)
-		0xc5e846a7
+		0xc5e846a7u
 	};
 }
 
