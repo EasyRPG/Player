@@ -92,7 +92,7 @@ Game_Windows::Window_User& Game_Windows::GetWindow(int id) {
 	if (EP_UNLIKELY(id > static_cast<int>(windows.size()))) {
 		windows.reserve(id);
 		while (static_cast<int>(windows.size()) < id) {
-			windows.emplace_back(windows.size() + 1);
+			windows.emplace_back(static_cast<int>(windows.size()) + 1);
 		}
 	}
 	return windows[id - 1];
