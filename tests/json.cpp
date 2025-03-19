@@ -1,9 +1,10 @@
 #include "doctest.h"
 #include "json_helper.h"
 #include <fstream>
-#include <nlohmann/json_fwd.hpp>
 
 #ifdef HAVE_NLOHMANN_JSON
+
+#include <nlohmann/json_fwd.hpp>
 
 TEST_SUITE_BEGIN("JSON");
 
