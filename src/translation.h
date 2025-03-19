@@ -225,14 +225,13 @@ public:
 	 */
 	const Language& GetDefaultLanguage() const;
 
-
-private:
-	void SelectLanguageAsync(FileRequestResult* result, std::string_view lang_id);
-
 	/**
 	 * Reset all saved language data and revert to "no translation".
 	 */
 	void Reset();
+
+private:
+	void SelectLanguageAsync(FileRequestResult* result, std::string_view lang_id);
 
 	/**
 	 * Reset all lookups loaded from .po files for the active language.
