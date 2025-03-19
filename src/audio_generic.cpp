@@ -458,7 +458,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 	if (channel_active) {
 		if (total_volume > 1.0) {
-			float threshold = 0.8;
+			float threshold = 0.8f;
 			for (unsigned i = 0; i < (unsigned)(samples_per_frame * 2); i++) {
 				float sample = mixer_buffer[i];
 				float sign = (sample < 0) ? -1.0 : 1.0;

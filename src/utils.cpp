@@ -17,15 +17,14 @@
 
 // Headers
 #include "utils.h"
-#include "output.h"
 #include "compiler.h"
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
 #include <cstdio>
 #include <algorithm>
-#include <random>
 #include <cctype>
+#include <istream>
 #include <zlib.h>
 
 namespace {
