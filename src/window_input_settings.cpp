@@ -20,7 +20,7 @@
 #include "bitmap.h"
 #include "input_buttons.h"
 #include "window_selectable.h"
-
+#include <sstream>
 
 Window_InputSettings::Window_InputSettings(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {

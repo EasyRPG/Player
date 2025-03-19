@@ -22,7 +22,7 @@
 #include "meta.h"
 #include "output.h"
 #include "string_view.h"
-
+#include <sstream>
 
 namespace {
 	const std::string RtPrefix = "rpg_rt.";
