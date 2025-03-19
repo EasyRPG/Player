@@ -756,7 +756,7 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		)
 {
 	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, nullptr, false
+		self, from_x, from_y, to_x, to_y, true, {}, false
 	);
 }
 
@@ -764,7 +764,7 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
-		std::unordered_set<int> *ignore_some_events_by_id) {
+		Span<int> ignore_some_events_by_id) {
 	return CheckOrMakeWayEx(
 		self, from_x, from_y, to_x, to_y,
 		check_events_and_vehicles,
@@ -776,7 +776,7 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
-		std::unordered_set<int> *ignore_some_events_by_id,
+		Span<int> ignore_some_events_by_id,
 		bool make_way
 		)
 {
@@ -841,15 +841,22 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 	}
 	if (vehicle_type != Game_Vehicle::Airship && check_events_and_vehicles) {
 		// Check for collision with events on the target tile.
-		for (auto& other: GetEvents()) {
-			if (ignore_some_events_by_id != NULL &&
-					ignore_some_events_by_id->find(other.GetId()) !=
-					ignore_some_events_by_id->end())
-				continue;
-			if (CheckOrMakeCollideEvent(other)) {
-				return false;
+		if (ignore_some_events_by_id.empty()) {
+			for (auto& other: GetEvents()) {
+				if (CheckOrMakeCollideEvent(other)) {
+					return false;
+				}
+			}
+		} else {
+			for (auto& other: GetEvents()) {
+				if (std::find(ignore_some_events_by_id.begin(), ignore_some_events_by_id.end(), other.GetId()) != ignore_some_events_by_id.end())
+					continue;
+				if (CheckOrMakeCollideEvent(other)) {
+					return false;
+				}
 			}
 		}
+
 		auto& player = Main_Data::game_player;
 		if (player->GetVehicleType() == Game_Vehicle::None) {
 			if (CheckOrMakeCollideEvent(*Main_Data::game_player)) {
@@ -887,7 +894,7 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		)
 {
 	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, NULL, true
+		self, from_x, from_y, to_x, to_y, true, {}, true
 		);
 }
 

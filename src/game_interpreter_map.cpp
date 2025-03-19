@@ -22,8 +22,10 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <unordered_set>
 #include "audio.h"
 #include "feature.h"
+#include "game_character.h"
 #include "game_map.h"
 #include "game_battle.h"
 #include "game_event.h"
@@ -244,6 +246,8 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgTriggerEventAt, 4>(com);
 		case Cmd::EasyRpg_WaitForSingleMovement:
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgWaitForSingleMovement, 6>(com);
+		case Cmd::EasyRpg_Pathfinder:
+			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgPathfinder, 13>(com);
 		default:
 			return Game_Interpreter::ExecuteCommand(com);
 	}
@@ -886,6 +890,84 @@ bool Game_Interpreter_Map::CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand c
 	}
 
 	Main_Data::game_player->TriggerEventAt(x, y, GetFrame().triggered_by_decision_key, face_player);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandEasyRpgPathfinder(lcf::rpg::EventCommand const& com) {
+	/*
+	This commands calculates a path between an event and the target.
+	Then it applies a move route to the event.
+	This command sets a longer route of all the steps necessary to a possibly farther off target.
+ 	The route is computed to smartly go around any obstacles.
+
+	Event command parameters are as follows:
+
+	Parameter 0, 1: Source Event ID
+	Parameter 2, 3: Target X coordinate
+	Parameter 4, 5: Target Y coordinate
+	Parameter 6, 7: Iteration limit when searching
+	Parameter 8, 9: Length of the route in tiles
+	Parameter 10: Flags (1 = Wait when moving, 2 = Allow diagonal,
+		4 = Debug log, 8 = Skip command when moving, 16 = "skippable" flag of the route)
+	Parameter 11, 12: Ignore Event IDs
+	Parameter 13 - 13+N: Number of Event IDs specified by 12
+	Parameter 13+N+1, 13+N+2: Move frequency (default 3)
+ 	*/
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	Game_Character::CalculateMoveRouteArgs args;
+
+	int event_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	args.dest_x = ValueOrVariable(com.parameters[2], com.parameters[3]);
+	args.dest_y = ValueOrVariable(com.parameters[4], com.parameters[5]);
+	args.search_max = ValueOrVariable(com.parameters[6], com.parameters[7]);
+	args.steps_max = ValueOrVariable(com.parameters[8], com.parameters[9]);
+
+	int flags = com.parameters[10];
+	bool wait_when_moving = (flags & 1) > 0;
+	args.allow_diagonal = (flags & 2) > 0;
+	args.debug_print = (flags & 4) > 0;
+	bool skip_when_moving = (flags & 8) > 0;
+	args.skip_when_failed = (flags & 16) > 0;
+
+	std::vector<int> event_id_ignore_list;
+	int ni; // ni = next_index;
+	if (com.parameters[11] == 0) {
+		// Part of the command
+		int num_events_ids = com.parameters[12];
+		event_id_ignore_list = {com.parameters.begin() + 13, com.parameters.begin() + 13 + num_events_ids};
+		ni = 13 + num_events_ids;
+	} else {
+		// Read from variables
+		int var = ValueOrVariable(com.parameters[11], com.parameters[12]);
+		int num_events_ids = Main_Data::game_variables->Get(var);
+		auto lst = Main_Data::game_variables->GetRange(var + 1, num_events_ids);
+		std::copy(lst.begin(), lst.end(), event_id_ignore_list.begin());
+		ni = 13;
+	}
+	args.event_id_ignore_list = event_id_ignore_list;
+
+	if (static_cast<int>(com.parameters.size()) > ni + 1) {
+		args.frequency = ValueOrVariable(com.parameters[ni], com.parameters[ni + 1]);
+	}
+
+	Game_Character* chara = GetCharacter(event_id, "EasyRpgPathFinder");
+	if (chara == nullptr) {
+		return true;
+	}
+
+	if (chara->IsMoving()) {
+		if (wait_when_moving) {
+			return false;
+		} else if (skip_when_moving) {
+			return true;
+		}
+	}
+
+	chara->CalculateMoveRoute(args);
 
 	return true;
 }
