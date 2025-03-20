@@ -211,7 +211,7 @@ bool Output::TakeScreenshot() {
 #endif
 }
 
-bool Output::TakeScreenshot(StringView file) {
+bool Output::TakeScreenshot(std::string_view file) {
 	auto ret = FileFinder::Save().OpenOutputStream(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {

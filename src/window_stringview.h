@@ -28,7 +28,7 @@ public:
 
 	void Update() override;
 
-	void SetDisplayData(StringView data);
+	void SetDisplayData(std::string_view data);
 	std::string GetDisplayData(bool eval_cmds);
 
 	void Refresh();

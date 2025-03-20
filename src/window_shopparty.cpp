@@ -195,7 +195,7 @@ void Window_ShopParty::Update() {
 
 void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int party_index) {
 	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
-	StringView sprite_name = actor->GetSpriteName();
+	std::string_view sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();
 	BitmapRef bm = Cache::Charset(sprite_name);
 	auto rect = Sprite_Character::GetCharacterRect(sprite_name, sprite_id, bm->GetRect());

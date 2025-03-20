@@ -109,7 +109,7 @@ public:
 	 * @return True if the original string was replaced; false otherwise.
 	 */
 	template <class StringType>
-	bool TranslateString(StringView context, StringType& original) const;
+	bool TranslateString(std::string_view context, StringType& original) const;
 
 private:
 	/**
@@ -126,7 +126,7 @@ private:
 
 // Template implementation
 template <class StringType>
-bool Dictionary::TranslateString(StringView context, StringType& original) const
+bool Dictionary::TranslateString(std::string_view context, StringType& original) const
 {
 	std::stringstream key;
 	key << original;
@@ -192,7 +192,7 @@ public:
 	 *
 	 * @param lang_id The language ID (or "" for "Default")
 	 */
-	void SelectLanguage(StringView lang_id);
+	void SelectLanguage(std::string_view lang_id);
 
 	/**
 	 * Does a async fetch of a map po file.
@@ -208,7 +208,7 @@ public:
 	 * @param map_name The name of the map with formatting similar to the .po file; e.g., "map0104.po"
 	 * @param map The map object itself (for modifying).
 	 */
-	void RewriteMapMessages(StringView map_name, lcf::rpg::Map& map);
+	void RewriteMapMessages(std::string_view map_name, lcf::rpg::Map& map);
 
 	/**
 	 * Retrieve the current language.
@@ -227,7 +227,7 @@ public:
 
 
 private:
-	void SelectLanguageAsync(FileRequestResult* result, StringView lang_id);
+	void SelectLanguageAsync(FileRequestResult* result, std::string_view lang_id);
 
 	/**
 	 * Reset all saved language data and revert to "no translation".
@@ -296,7 +296,7 @@ private:
 	 * @param lang_id The ID of the language to parse, or "" for Default (no parsing is done)
 	 * @return True if the language directory was found; false otherwise
 	 */
-	bool ParseLanguageFiles(StringView lang_id);
+	bool ParseLanguageFiles(std::string_view lang_id);
 
 	// Our translations are broken apart into multiple files; we store a lookup for each one.
 	std::unique_ptr<Dictionary> sys;       // RPG_RT.ldb.po

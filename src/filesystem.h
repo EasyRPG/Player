@@ -86,7 +86,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
-	Filesystem_Stream::InputStream OpenInputStream(StringView name,
+	Filesystem_Stream::InputStream OpenInputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
@@ -97,7 +97,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
-	Filesystem_Stream::InputStream OpenOrCreateInputStream(StringView name,
+	Filesystem_Stream::InputStream OpenOrCreateInputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
@@ -107,7 +107,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
 	 */
-	Filesystem_Stream::OutputStream OpenOutputStream(StringView name,
+	Filesystem_Stream::OutputStream OpenOutputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
 
 	/**
@@ -116,7 +116,7 @@ public:
 	 * @param path a path relative to the filesystems root
 	 * @return List of directory entries
 	 */
-	DirectoryTree::DirectoryListType* ListDirectory(StringView path) const;
+	DirectoryTree::DirectoryListType* ListDirectory(std::string_view path) const;
 
 	/**
 	 * Clears the filesystem cache. Changes in the filesystem become visible
@@ -125,7 +125,7 @@ public:
 	 *
 	 * @param path Path to flush
 	 */
-	void ClearCache(StringView path) const;
+	void ClearCache(std::string_view path) const;
 
 	/**
 	 * Creates a new appropriate filesystem from the specified path.
@@ -134,7 +134,7 @@ public:
 	 * @param p Virtual path to use
 	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
 	 */
-	virtual FilesystemView Create(StringView p) const;
+	virtual FilesystemView Create(std::string_view p) const;
 
 	/**
 	 * Creates a subview into the filesystem tree.
@@ -154,7 +154,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -165,7 +165,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -185,7 +185,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView filename, const Span<const StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific directory
@@ -196,7 +196,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file and opens a read handle.
@@ -215,11 +215,11 @@ public:
 	 * Abstract methods to be implemented by filesystems.
 	 */
 	/** @{ */
-	virtual bool IsFile(StringView path) const = 0;
-	virtual bool IsDirectory(StringView path, bool follow_symlinks) const = 0;
-	virtual bool Exists(StringView path) const = 0;
-	virtual int64_t GetFilesize(StringView path) const = 0;
-	virtual bool MakeDirectory(StringView dir, bool follow_symlinks) const;
+	virtual bool IsFile(std::string_view path) const = 0;
+	virtual bool IsDirectory(std::string_view path, bool follow_symlinks) const = 0;
+	virtual bool Exists(std::string_view path) const = 0;
+	virtual int64_t GetFilesize(std::string_view path) const = 0;
+	virtual bool MakeDirectory(std::string_view dir, bool follow_symlinks) const;
 	virtual bool IsFeatureSupported(Feature f) const;
 	virtual std::string Describe() const = 0;
 	/** @} */
@@ -229,9 +229,9 @@ protected:
 	 * Abstract methods to be implemented by filesystems.
 	 */
 	/** @{ */
-	virtual bool GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const = 0;
-	virtual std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const = 0;
-	virtual std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+	virtual bool GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const = 0;
+	virtual std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const = 0;
+	virtual std::streambuf* CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const;
 	/** @} */
 
 	/**
@@ -295,7 +295,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -306,7 +306,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -326,7 +326,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView filename, const Span<const StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific directory
@@ -337,7 +337,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Handle to the file if found, otherwise an invalid handle
 	 */
-	Filesystem_Stream::InputStream OpenFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
+	Filesystem_Stream::InputStream OpenFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file and opens a read handle.
@@ -354,32 +354,32 @@ public:
 	 * @param subpath Path to append to the subtree root
 	 * @return Combined path
 	 */
-	std::string MakePath(StringView subdir) const;
+	std::string MakePath(std::string_view subdir) const;
 
 	/**
 	 * @param path Path to check
 	 * @return True when path is a regular file
 	 */
-	bool IsFile(StringView path) const;
+	bool IsFile(std::string_view path) const;
 
 	/**
 	 * @param path Path to check
 	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
 	 * @return True when path is a directory
 	 */
-	bool IsDirectory(StringView path, bool follow_symlinks) const;
+	bool IsDirectory(std::string_view path, bool follow_symlinks) const;
 
 	/**
 	 * @param path Path to check
 	 * @return True when a file exists at the path
 	 */
-	bool Exists(StringView path) const;
+	bool Exists(std::string_view path) const;
 
 	/**
 	 * @param path Path to check
 	 * @return A filesize or -1 on error.
 	 */
-	int64_t GetFilesize(StringView path) const;
+	int64_t GetFilesize(std::string_view path) const;
 
 	/**
 	 * Enumerates a directory.
@@ -387,7 +387,7 @@ public:
 	 * @param path Path to enumerate, empty for subtree root path
 	 * @return list of directory entries or nullptr on failure
 	 */
-	DirectoryTree::DirectoryListType* ListDirectory(StringView path = "") const;
+	DirectoryTree::DirectoryListType* ListDirectory(std::string_view path = "") const;
 
 	/**
 	 * Creates stream from filename for reading.
@@ -396,7 +396,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
-	Filesystem_Stream::InputStream OpenInputStream(StringView name,
+	Filesystem_Stream::InputStream OpenInputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
@@ -407,7 +407,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
-	Filesystem_Stream::InputStream OpenOrCreateInputStream(StringView name,
+	Filesystem_Stream::InputStream OpenOrCreateInputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::in | std::ios_base::binary) const;
 
 	/**
@@ -417,7 +417,7 @@ public:
 	 * @param m stream mode. Default is binary.
 	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
 	 */
-	Filesystem_Stream::OutputStream OpenOutputStream(StringView name,
+	Filesystem_Stream::OutputStream OpenOutputStream(std::string_view name,
 		std::ios_base::openmode m = std::ios_base::out | std::ios_base::binary) const;
 
 	/**
@@ -429,7 +429,7 @@ public:
 	 * @param mode stream mode.
 	 * @return A Stream. The stream is invalid when the open failed.
 	 */
-	std::streambuf* CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+	std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const;
 
 	/**
 	 * Creates stream from filename for writing.
@@ -440,7 +440,7 @@ public:
 	 * @param mode stream mode.
 	 * @return A Stream. The stream is invalid when the open failed or write is not supported.
 	 */
-	std::streambuf* CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const;
+	std::streambuf* CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const;
 
 	/**
 	 * Creates a new appropriate filesystem from the specified path.
@@ -449,7 +449,7 @@ public:
 	 * @param p Virtual path to use
 	 * @return Valid Filesystem when the parsing was successful, otherwise invalid
 	 */
-	FilesystemView Create(StringView p) const;
+	FilesystemView Create(std::string_view p) const;
 
 	/**
 	 * Recursively creates a new directory.
@@ -459,7 +459,7 @@ public:
 	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
 	 * @return true when the path was created
 	 */
-	bool MakeDirectory(StringView dir, bool follow_symlinks) const;
+	bool MakeDirectory(std::string_view dir, bool follow_symlinks) const;
 
 	/**
 	 * @param f Filesystem feature to check
@@ -473,7 +473,7 @@ public:
 	 * @param sub_path root of the subtree
 	 * @return subtree rooted at sub_path
 	 */
-	FilesystemView Subtree(StringView sub_path) const;
+	FilesystemView Subtree(std::string_view sub_path) const;
 
 	/** @return human readable representation of this filesystem for debug purposes */
 	std::string Describe() const;
@@ -505,12 +505,12 @@ inline bool Filesystem::IsFeatureSupported(Filesystem::Feature) const {
 	return false;
 }
 
-inline std::streambuf* Filesystem::CreateOutputStreambuffer(StringView, std::ios_base::openmode) const {
+inline std::streambuf* Filesystem::CreateOutputStreambuffer(std::string_view, std::ios_base::openmode) const {
 	assert(!IsFeatureSupported(Feature::Write) && "Write supported but CreateOutputStreambuffer not implemented");
 	return nullptr;
 }
 
-inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(StringView path) const {
+inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(std::string_view path) const {
 	return tree->ListDirectory(path);
 }
 

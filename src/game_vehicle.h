@@ -88,7 +88,7 @@ public:
 	void SetOrigSpriteGraphic(std::string sprite_name, int index);
 
 	/** Gets the original sprite graphic name */
-	StringView GetOrigSpriteName() const;
+	std::string_view GetOrigSpriteName() const;
 
 	/** Gets the original sprite graphic index */
 	int GetOrigSpriteIndex() const;

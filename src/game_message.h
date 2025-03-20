@@ -60,7 +60,7 @@ namespace Game_Message {
 	void SetPendingMessage(PendingMessage&& pm);
 
 	/** Callback type for WordWrap function */
-	using WordWrapCallback = const std::function<void(StringView line)>;
+	using WordWrapCallback = const std::function<void(std::string_view line)>;
 
 	/**
 	 * Breaks the line into lines, each of which is equal
@@ -80,8 +80,8 @@ namespace Game_Message {
 	 * @param[in] limit maximum size of each line after word-breaking.
 	 * @param callback a function to be called for each word-wrapped line
 	 */
-	int WordWrap(StringView line, int limit, const WordWrapCallback& callback);
-	int WordWrap(StringView line, int limit, const WordWrapCallback& callback, const Font& font);
+	int WordWrap(std::string_view line, int limit, const WordWrapCallback& callback);
+	int WordWrap(std::string_view line, int limit, const WordWrapCallback& callback, const Font& font);
 
 	/**
 	 * Return if it's legal to show a new message box.

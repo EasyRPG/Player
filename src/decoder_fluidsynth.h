@@ -46,7 +46,7 @@ public:
 
 	static bool Initialize(std::string& status_message);
 	static void ResetState();
-	static bool ChangeGlobalSoundfont(StringView sf_path, std::string& status_message);
+	static bool ChangeGlobalSoundfont(std::string_view sf_path, std::string& status_message);
 
 	int FillBuffer(uint8_t* buffer, int length) override;
 

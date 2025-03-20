@@ -37,10 +37,10 @@ namespace ManiacPatch {
 
 	bool GetKeyState(uint32_t key_id);
 
-	bool CheckString(StringView str_l, StringView str_r, int op, bool ignore_case);
+	bool CheckString(std::string_view str_l, std::string_view str_r, int op, bool ignore_case);
 
-	StringView GetLcfName(int data_type, int id, bool is_dynamic);
-	StringView GetLcfDescription(int data_type, int id, bool is_dynamic);
+	std::string_view GetLcfName(int data_type, int id, bool is_dynamic);
+	std::string_view GetLcfDescription(int data_type, int id, bool is_dynamic);
 }
 
 #endif

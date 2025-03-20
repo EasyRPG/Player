@@ -40,7 +40,7 @@ public:
 	 *
 	 * @param message The text to be displayed.
 	 */
-	void Push(StringView message);
+	void Push(std::string_view message);
 
 	/**
 	 * Pushes a message, either prepending the subject to it,
@@ -50,7 +50,7 @@ public:
 	 * @param message Message to be displayed.
 	 * @param subject Subject that will be displayed in the message.
 	 */
-	void PushWithSubject(StringView message, StringView subject);
+	void PushWithSubject(std::string_view message, std::string_view subject);
 
 	void Pop();
 
@@ -95,7 +95,7 @@ public:
 	static const int linesPerPage = 4;
 
 protected:
-	void PushLine(StringView line);
+	void PushLine(std::string_view line);
 private:
 	std::vector<std::string> lines;
 

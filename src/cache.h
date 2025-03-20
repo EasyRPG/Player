@@ -37,25 +37,25 @@ class Tone;
  * Cache namespace.
  */
 namespace Cache {
-	BitmapRef Backdrop(StringView filename);
-	BitmapRef Battle(StringView filename);
-	BitmapRef Battle2(StringView filename);
-	BitmapRef Battlecharset(StringView filename);
-	BitmapRef Battleweapon(StringView filename);
-	BitmapRef Charset(StringView filename);
+	BitmapRef Backdrop(std::string_view filename);
+	BitmapRef Battle(std::string_view filename);
+	BitmapRef Battle2(std::string_view filename);
+	BitmapRef Battlecharset(std::string_view filename);
+	BitmapRef Battleweapon(std::string_view filename);
+	BitmapRef Charset(std::string_view filename);
 	BitmapRef Exfont();
-	BitmapRef Faceset(StringView filename);
-	BitmapRef Frame(StringView filename, bool transparent = true);
-	BitmapRef Gameover(StringView filename);
-	BitmapRef Monster(StringView filename);
-	BitmapRef Panorama(StringView filename);
-	BitmapRef Picture(StringView filename, bool transparent);
-	BitmapRef Chipset(StringView filename);
-	BitmapRef Title(StringView filename);
-	BitmapRef System(StringView filename);
-	BitmapRef System2(StringView filename);
+	BitmapRef Faceset(std::string_view filename);
+	BitmapRef Frame(std::string_view filename, bool transparent = true);
+	BitmapRef Gameover(std::string_view filename);
+	BitmapRef Monster(std::string_view filename);
+	BitmapRef Panorama(std::string_view filename);
+	BitmapRef Picture(std::string_view filename, bool transparent);
+	BitmapRef Chipset(std::string_view filename);
+	BitmapRef Title(std::string_view filename);
+	BitmapRef System(std::string_view filename);
+	BitmapRef System2(std::string_view filename);
 
-	BitmapRef Tile(StringView filename, int tile_id);
+	BitmapRef Tile(std::string_view filename, int tile_id);
 	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend);
 
 	void Clear();

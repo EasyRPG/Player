@@ -288,7 +288,7 @@ void FluidSynthDecoder::ResetState() {
 	pending_global_synth.reset();
 }
 
-bool FluidSynthDecoder::ChangeGlobalSoundfont(StringView sf_path, std::string& status_message) {
+bool FluidSynthDecoder::ChangeGlobalSoundfont(std::string_view sf_path, std::string& status_message) {
 	if (!global_synth) {
 		return false;
 	}

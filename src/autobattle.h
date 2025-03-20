@@ -35,7 +35,7 @@ class AlgorithmBase;
  * @param name of the algo.
  * @return An auto battle algorithm to be used in battles.
  */
-std::unique_ptr<AlgorithmBase> CreateAlgorithm(StringView name);
+std::unique_ptr<AlgorithmBase> CreateAlgorithm(std::string_view name);
 
 /**
  * Base class for auto battle algorithm implementations.
@@ -48,7 +48,7 @@ public:
 	virtual int GetId() const = 0;
 
 	/** @return the name of this algorithm */
-	virtual StringView GetName() const = 0;
+	virtual std::string_view GetName() const = 0;
 
 	/**
 	 * Calculates the auto battle algorithm and sets the algorithm on source.
@@ -74,7 +74,7 @@ public:
 
 	int GetId() const override { return id; }
 
-	StringView GetName() const override { return name; }
+	std::string_view GetName() const override { return name; }
 private:
 	void vSetAutoBattleAction(Game_Actor& source) override;
 };
@@ -90,7 +90,7 @@ public:
 
 	int GetId() const override { return id; }
 
-	StringView GetName() const override { return name; }
+	std::string_view GetName() const override { return name; }
 private:
 	void vSetAutoBattleAction(Game_Actor& source) override;
 };
@@ -106,7 +106,7 @@ public:
 
 	int GetId() const override { return id; }
 
-	StringView GetName() const override { return name; }
+	std::string_view GetName() const override { return name; }
 private:
 	void vSetAutoBattleAction(Game_Actor& source) override;
 };

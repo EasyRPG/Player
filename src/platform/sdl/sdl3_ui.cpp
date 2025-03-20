@@ -1252,7 +1252,7 @@ Rect Sdl3Ui::GetWindowMetrics() const {
 	}
 }
 
-bool Sdl3Ui::OpenURL(StringView url) {
+bool Sdl3Ui::OpenURL(std::string_view url) {
 	if (IsFullscreen()) {
 		ToggleFullscreen();
 	}

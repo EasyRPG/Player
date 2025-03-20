@@ -116,7 +116,7 @@ bool Emscripten_Interface_Private::UploadSoundfontStep2(std::string filename, in
 	std::string name = std::get<1>(FileFinder::GetPathAndFilename(filename));
 
 	// TODO: No good way to sanitize this, would require launching an entire, second fluidsynth session
-	if (!StringView(name).ends_with(".sf2")) {
+	if (!EndsWith(name, ".sf2")) {
 		Output::Warning("Selected file is not a valid soundfont");
 		return false;
 	}

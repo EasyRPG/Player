@@ -158,7 +158,7 @@ int Game_Interpreter_Shared::ValueOrVariableBitfield(lcf::rpg::EventCommand cons
 	return com.parameters[val_idx];
 }
 
-StringView Game_Interpreter_Shared::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
+std::string_view Game_Interpreter_Shared::CommandStringOrVariable(lcf::rpg::EventCommand const& com, int mode_idx, int val_idx) {
 	if (!Player::IsPatchManiac()) {
 		return com.string;
 	}
@@ -172,7 +172,7 @@ StringView Game_Interpreter_Shared::CommandStringOrVariable(lcf::rpg::EventComma
 	return com.string;
 }
 
-StringView Game_Interpreter_Shared::CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
+std::string_view Game_Interpreter_Shared::CommandStringOrVariableBitfield(lcf::rpg::EventCommand const& com, int mode_idx, int shift, int val_idx) {
 	if (!Player::IsPatchManiac()) {
 		return com.string;
 	}

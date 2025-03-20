@@ -40,11 +40,11 @@
 using namespace std::chrono_literals;
 
 namespace {
-	std::string MakeHashKey(StringView folder_name, StringView filename, bool transparent) {
+	std::string MakeHashKey(std::string_view folder_name, std::string_view filename, bool transparent) {
 		return ToString(folder_name) + ":" + ToString(filename) + ":" + (transparent ? "T" : " ");
 	}
 
-	std::string MakeTileHashKey(StringView chipset_name, int id) {
+	std::string MakeTileHashKey(std::string_view chipset_name, int id) {
 		std::string key;
 		key.reserve(chipset_name.size() + sizeof(int) + 2);
 		key.append(reinterpret_cast<char*>(&id), sizeof(id));
@@ -54,7 +54,7 @@ namespace {
 		return key;
 	}
 
-	int IdFromTileHash(StringView key) {
+	int IdFromTileHash(std::string_view key) {
 		int id = 0;
 		if (key.size() > sizeof(id)) {
 			std::memcpy(&id, key.data(), sizeof(id));
@@ -62,7 +62,7 @@ namespace {
 		return id;
 	}
 
-	const char* NameFromTileHash(StringView key) {
+	const char* NameFromTileHash(std::string_view key) {
 		int offset = sizeof(int) + 1;
 		if (static_cast<int>(key.size()) < offset) {
 			return "";
@@ -229,14 +229,14 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(StringView, StringView, bool) {
+	BitmapRef LoadDummyBitmap(std::string_view, std::string_view, bool) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 		return s.dummy_renderer();
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(StringView filename, bool transparent) {
+	BitmapRef LoadBitmap(std::string_view filename, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 
@@ -328,7 +328,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(StringView f) {
+	BitmapRef LoadBitmap(std::string_view f) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 		return LoadBitmap<T>(f, s.transparent);
@@ -337,67 +337,67 @@ namespace {
 
 std::vector<uint8_t> Cache::exfont_custom;
 
-BitmapRef Cache::Backdrop(StringView file) {
+BitmapRef Cache::Backdrop(std::string_view file) {
 	return LoadBitmap<Material::Backdrop>(file);
 }
 
-BitmapRef Cache::Battle(StringView file) {
+BitmapRef Cache::Battle(std::string_view file) {
 	return LoadBitmap<Material::Battle>(file);
 }
 
-BitmapRef Cache::Battle2(StringView file) {
+BitmapRef Cache::Battle2(std::string_view file) {
 	return LoadBitmap<Material::Battle2>(file);
 }
 
-BitmapRef Cache::Battlecharset(StringView file) {
+BitmapRef Cache::Battlecharset(std::string_view file) {
 	return LoadBitmap<Material::Battlecharset>(file);
 }
 
-BitmapRef Cache::Battleweapon(StringView file) {
+BitmapRef Cache::Battleweapon(std::string_view file) {
 	return LoadBitmap<Material::Battleweapon>(file);
 }
 
-BitmapRef Cache::Charset(StringView file) {
+BitmapRef Cache::Charset(std::string_view file) {
 	return LoadBitmap<Material::Charset>(file);
 }
 
-BitmapRef Cache::Chipset(StringView file) {
+BitmapRef Cache::Chipset(std::string_view file) {
 	return LoadBitmap<Material::Chipset>(file);
 }
 
-BitmapRef Cache::Faceset(StringView file) {
+BitmapRef Cache::Faceset(std::string_view file) {
 	return LoadBitmap<Material::Faceset>(file);
 }
 
-BitmapRef Cache::Frame(StringView file, bool transparent) {
+BitmapRef Cache::Frame(std::string_view file, bool transparent) {
 	return LoadBitmap<Material::Frame>(file, transparent);
 }
 
-BitmapRef Cache::Gameover(StringView file) {
+BitmapRef Cache::Gameover(std::string_view file) {
 	return LoadBitmap<Material::Gameover>(file);
 }
 
-BitmapRef Cache::Monster(StringView file) {
+BitmapRef Cache::Monster(std::string_view file) {
 	return LoadBitmap<Material::Monster>(file);
 }
 
-BitmapRef Cache::Panorama(StringView file) {
+BitmapRef Cache::Panorama(std::string_view file) {
 	return LoadBitmap<Material::Panorama>(file);
 }
 
-BitmapRef Cache::Picture(StringView file, bool transparent) {
+BitmapRef Cache::Picture(std::string_view file, bool transparent) {
 	return LoadBitmap<Material::Picture>(file, transparent);
 }
 
-BitmapRef Cache::System2(StringView file) {
+BitmapRef Cache::System2(std::string_view file) {
 	return LoadBitmap<Material::System2>(file);
 }
 
-BitmapRef Cache::Title(StringView file) {
+BitmapRef Cache::Title(std::string_view file) {
 	return LoadBitmap<Material::Title>(file);
 }
 
-BitmapRef Cache::System(StringView file) {
+BitmapRef Cache::System(std::string_view file) {
 	return LoadBitmap<Material::System>(file);
 }
 
@@ -425,7 +425,7 @@ BitmapRef Cache::Exfont() {
 	}
 }
 
-BitmapRef Cache::Tile(StringView filename, int tile_id) {
+BitmapRef Cache::Tile(std::string_view filename, int tile_id) {
 	const auto key = MakeTileHashKey(filename, tile_id);
 	auto it = cache_tiles.find(key);
 

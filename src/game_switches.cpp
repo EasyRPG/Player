@@ -86,7 +86,7 @@ void Game_Switches::FlipRange(int first_id, int last_id) {
 	}
 }
 
-StringView Game_Switches::GetName(int _id) const {
+std::string_view Game_Switches::GetName(int _id) const {
 	const auto* sw = lcf::ReaderUtil::GetElement(lcf::Data::switches, _id);
 
 	if (!sw) {

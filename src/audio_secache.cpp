@@ -68,7 +68,7 @@ namespace {
 	}
 }
 
-std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStream stream, StringView name) {
+std::unique_ptr<AudioSeCache> AudioSeCache::Create(Filesystem_Stream::InputStream stream, std::string_view name) {
 	auto se = std::make_unique<AudioSeCache>();
 	se->name = ToString(name);
 
@@ -107,7 +107,7 @@ void AudioSeCache::GetFormat(int& frequency, AudioDecoder::Format& format, int& 
 	audio_decoder->GetFormat(frequency, format, channels);
 }
 
-std::unique_ptr<AudioSeCache> AudioSeCache::GetCachedSe(StringView name) {
+std::unique_ptr<AudioSeCache> AudioSeCache::GetCachedSe(std::string_view name) {
 	auto se = std::make_unique<AudioSeCache>();
 	se->name = ToString(name);
 
@@ -192,7 +192,7 @@ void AudioSeCache::Clear() {
 	cache.clear();
 }
 
-StringView AudioSeCache::GetName() const {
+std::string_view AudioSeCache::GetName() const {
 	return name;
 }
 

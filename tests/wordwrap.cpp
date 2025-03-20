@@ -7,9 +7,9 @@ TEST_SUITE_BEGIN("Word Wrap");
 
 constexpr int limit_2k = SCREEN_TARGET_WIDTH - 20;
 
-static std::vector<std::string> WordWrap(StringView line, int limit = limit_2k) {
+static std::vector<std::string> WordWrap(std::string_view line, int limit = limit_2k) {
 	std::vector<std::string> lines;
-	Game_Message::WordWrap(line, limit, [&](StringView l) { lines.push_back(std::string(l)); });
+	Game_Message::WordWrap(line, limit, [&](std::string_view l) { lines.push_back(std::string(l)); });
 	return lines;
 }
 

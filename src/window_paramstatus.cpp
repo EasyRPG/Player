@@ -36,7 +36,7 @@ Window_ParamStatus::Window_ParamStatus(int ix, int iy, int iwidth, int iheight, 
 void Window_ParamStatus::Refresh() {
 	contents->Clear();
 
-	auto draw = [this](int y, StringView name, int value) {
+	auto draw = [this](int y, std::string_view name, int value) {
 		// Draw Term
 		contents->TextDraw(0, y, 1, name);
 

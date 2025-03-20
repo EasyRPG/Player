@@ -906,8 +906,8 @@ Point Game_Actor::GetOriginalPosition() const {
 	return { dbActor->battle_x, dbActor->battle_y };
 }
 
-StringView Game_Actor::GetSkillName() const {
-	return dbActor->rename_skill ? StringView(dbActor->skill_name) : StringView(lcf::Data::terms.command_skill);
+std::string_view Game_Actor::GetSkillName() const {
+	return dbActor->rename_skill ? std::string_view(dbActor->skill_name) : std::string_view(lcf::Data::terms.command_skill);
 }
 
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
@@ -1144,7 +1144,7 @@ void Game_Actor::ChangeClass(int new_class_id,
 	}
 }
 
-StringView Game_Actor::GetClassName() const {
+std::string_view Game_Actor::GetClassName() const {
 	if (!GetClass()) {
 		return {};
 	}

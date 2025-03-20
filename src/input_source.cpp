@@ -93,10 +93,10 @@ Input::LogSource::LogSource(const char* log_path, const Game_ConfigInput& cfg, D
 
 	std::string header;
 	Utils::ReadLine(log_file, header);
-	if (StringView(header).starts_with("H EasyRPG")) {
+	if (StartsWith(header, "H EasyRPG")) {
 		std::string ver;
 		Utils::ReadLine(log_file, ver);
-		if (StringView(ver).starts_with("V 2")) {
+		if (StartsWith(ver, "V 2")) {
 			version = 2;
 		} else {
 			Output::Error("Unsupported logfile version {}", ver);
@@ -116,7 +116,7 @@ void Input::LogSource::Update() {
 			pressed_buttons.reset();
 
 			std::string line;
-			while (Utils::ReadLine(log_file, line) && !StringView(line).starts_with("F ")) {
+			while (Utils::ReadLine(log_file, line) && !StartsWith(line, "F ")) {
 				// no-op
 			}
 			if (!line.empty()) {
@@ -325,7 +325,7 @@ void Input::Source::UpdateTouch() {
 #endif
 }
 
-void Input::Source::AddRecordingData(Input::RecordingData type, StringView data) {
+void Input::Source::AddRecordingData(Input::RecordingData type, std::string_view data) {
 	if (record_log) {
 		*record_log << static_cast<char>(type) << " " << data << "\n";
 	}

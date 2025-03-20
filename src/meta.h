@@ -22,8 +22,8 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <lcf/inireader.h>
 #include "filefinder.h"
-#include "lcf/inireader.h"
 
 
 /**
@@ -40,7 +40,7 @@ public:
 	 * Construct a Meta object by parsing a file
 	 * @param meta_file The path to the ini file to load
 	 */
-	Meta(StringView meta_file);
+	Meta(std::string_view meta_file);
 
 	/**
 	 * When dealing with non-standard extensions, Meta will need
@@ -50,7 +50,7 @@ public:
 	 * @file1 The first of two identical files (either LMT/LDB, but with no way of knowing at the time)
 	 * @file2 The second of two identical files (either LMT/LDB, but with no way of knowing at the time)
 	 */
-	void ReInitForNonStandardExtensions(StringView file1, StringView file2);
+	void ReInitForNonStandardExtensions(std::string_view file1, std::string_view file2);
 
 	/**
 	 * Retrieves the map used for pivoting between multi-game save files
@@ -86,7 +86,7 @@ public:
 	 * @param child_path the path of the child relative to parent_tree
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> SearchImportPaths(const FilesystemView& parent_fs, StringView child_path) const;
+	std::vector<FileItem> SearchImportPaths(const FilesystemView& parent_fs, std::string_view child_path) const;
 
 	/**
 	 * Retrieve the LDB extension's replacement in non-standard projects.
@@ -139,7 +139,7 @@ private:
 	 * @param def_value The default value to return if the ini contains no override.
 	 * @return the INI-defined value, or the defualt value for this vocabulary term
 	 */
-	std::string GetExVocab(StringView term, StringView def_value) const;
+	std::string GetExVocab(std::string_view term, std::string_view def_value) const;
 
 	/**
 	 * Heuristically tries to guess the canonical name of this game,
@@ -148,7 +148,7 @@ private:
 	 * @param lmtFile The path to the file we expect to be RPG_RT.lmt
 	 * @param ldbFile The path to the file we expect to be RPG_RT.ldb
 	 */
-	void IdentifyCanonName(StringView lmtFile, StringView ldbFile);
+	void IdentifyCanonName(std::string_view lmtFile, std::string_view ldbFile);
 
 	/**
 	 * Internal function called by SearchImportPaths
@@ -158,7 +158,7 @@ private:
 	 * @param pivot_map_id the id of the map used to pivot between the prequel and the current game
 	 * @return vector of FileItems; one for each valid save file on this child_path
 	 */
-	std::vector<FileItem> BuildImportCandidateList(const FilesystemView& parent_fs, StringView child_path, StringView parent_game_name, int pivot_map_id) const;
+	std::vector<FileItem> BuildImportCandidateList(const FilesystemView& parent_fs, std::string_view child_path, std::string_view parent_game_name, int pivot_map_id) const;
 
 	/**
 	 * Was the INI file passed to the constructor invalid or empty?

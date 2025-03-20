@@ -62,7 +62,7 @@ public:
 		/** File relative to the current tree to search */
 		std::string path;
 		/** File extensions to append to the filename when searching */
-		const Span<const StringView> exts;
+		const Span<const std::string_view> exts;
 		/**
 		 * How often moving upwards when ".." is encountered in the path is
 		 * allowed (to prevent directory traversal)
@@ -99,7 +99,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for the file in a specific
@@ -110,7 +110,7 @@ public:
 	 * @param exts List of file extensions to probe
 	 * @return Path to file or empty string when not found
 	 */
-	std::string FindFile(StringView directory, StringView filename, const Span<const StringView> exts = {}) const;
+	std::string FindFile(std::string_view directory, std::string_view filename, const Span<const std::string_view> exts = {}) const;
 
 	/**
 	 * Does a case insensitive search for a file.
@@ -128,9 +128,9 @@ public:
 	 * @param path Path to enumerate, empty for root path
 	 * @return list of directory entries or nullptr on failure
 	 */
-	DirectoryListType* ListDirectory(StringView path = "") const;
+	DirectoryListType* ListDirectory(std::string_view path = "") const;
 
-	void ClearCache(StringView path) const;
+	void ClearCache(std::string_view path) const;
 
 private:
 	Filesystem* fs = nullptr;
@@ -149,10 +149,10 @@ private:
 	/** lowered dir (full path from root) of missing directories */
 	mutable std::vector<std::string> dir_missing_cache;
 
-	static bool WildcardMatch(const StringView& pattern, const StringView& text);
+	static bool WildcardMatch(const std::string_view& pattern, const std::string_view& text);
 
 	template<class T>
-	auto Find(T& cache, StringView what, bool process_wildcards = false) const {
+	auto Find(T& cache, std::string_view what, bool process_wildcards = false) const {
 		if (!process_wildcards) {
 			// No wildcard - binary search
 			auto it = std::lower_bound(cache.begin(), cache.end(), what, [](const auto& e, const auto& w) {

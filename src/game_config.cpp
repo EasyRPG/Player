@@ -49,9 +49,9 @@ namespace {
 
 #if USE_SDL == 1
 	// For SDL1 hardcode a different config file because it uses a completely different mapping for gamepads
-	StringView config_name = "config_sdl1.ini";
+	std::string_view config_name = "config_sdl1.ini";
 #else
-	StringView config_name = EASYRPG_CONFIG_NAME;
+	std::string_view config_name = EASYRPG_CONFIG_NAME;
 #endif
 }
 

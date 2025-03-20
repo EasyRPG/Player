@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include <SDL_system.h>
 
-static jobject get_jni_handle(const SafFilesystem* fs, StringView path) {
+static jobject get_jni_handle(const SafFilesystem* fs, std::string_view path) {
 	std::string combined_path = FileFinder::MakePath(fs->GetPath(), path);
 
 	JNIEnv* env = EpAndroid::env;
@@ -39,7 +39,7 @@ SafFilesystem::SafFilesystem(std::string base_path, FilesystemView parent_fs) : 
 	// no-op
 }
 
-bool SafFilesystem::IsFile(StringView path) const {
+bool SafFilesystem::IsFile(std::string_view path) const {
 	auto obj = get_jni_handle(this, path);
 	if (!obj) {
 		return false;
@@ -53,7 +53,7 @@ bool SafFilesystem::IsFile(StringView path) const {
 	return res > 0;
 }
 
-bool SafFilesystem::IsDirectory(StringView dir, bool) const {
+bool SafFilesystem::IsDirectory(std::string_view dir, bool) const {
 	auto obj = get_jni_handle(this, dir);
 	if (!obj) {
 		return false;
@@ -67,7 +67,7 @@ bool SafFilesystem::IsDirectory(StringView dir, bool) const {
 	return res > 0;
 }
 
-bool SafFilesystem::Exists(StringView filename) const {
+bool SafFilesystem::Exists(std::string_view filename) const {
 	auto obj = get_jni_handle(this, filename);
 	if (!obj) {
 		return false;
@@ -81,7 +81,7 @@ bool SafFilesystem::Exists(StringView filename) const {
 	return res > 0;
 }
 
-int64_t SafFilesystem::GetFilesize(StringView path) const {
+int64_t SafFilesystem::GetFilesize(std::string_view path) const {
 	auto obj = get_jni_handle(this, path);
 	if (!obj) {
 		return -1;
@@ -137,7 +137,7 @@ private:
 	char* buffer_end = &buffer.back();
 };
 
-std::streambuf* SafFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode) const {
+std::streambuf* SafFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode) const {
 	auto obj = get_jni_handle(this, path);
 	if (!obj) {
 		return nullptr;
@@ -213,7 +213,7 @@ private:
 	char* buffer_end = &buffer.back();
 };
 
-std::streambuf* SafFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* SafFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 	auto obj = get_jni_handle(this, path);
 	if (!obj) {
 		return nullptr;
@@ -232,7 +232,7 @@ std::streambuf* SafFilesystem::CreateOutputStreambuffer(StringView path, std::io
 	return new FdStreamBufOut(fd);
 }
 
-bool SafFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& entries) const {
+bool SafFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const {
 	auto obj = get_jni_handle(this, path);
 	if (!obj) {
 		return false;

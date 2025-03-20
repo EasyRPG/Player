@@ -23,7 +23,7 @@
 #  include "platform/android/filesystem_saf.h"
 #endif
 
-constexpr const StringView root_ns = "root://";
+constexpr const std::string_view root_ns = "root://";
 
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 	// Add platform specific namespaces here
@@ -38,8 +38,8 @@ RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 	assert(fs_list.back().first == "file" && "File namespace must be last!");
 }
 
-FilesystemView RootFilesystem::Create(StringView path) const {
-	if (path.starts_with(root_ns)) {
+FilesystemView RootFilesystem::Create(std::string_view path) const {
+	if (StartsWith(path, root_ns)) {
 		// Debug feature: root:// is a pseudo namespace
 		// Shows a list of all namespaces in the Game Browser
 		if (path.size() > root_ns.size()) {
@@ -57,32 +57,32 @@ FilesystemView RootFilesystem::Create(StringView path) const {
 	return fs.Create(path);
 }
 
-bool RootFilesystem::IsFile(StringView path) const {
+bool RootFilesystem::IsFile(std::string_view path) const {
 	return FilesystemForPath(path).IsFile(path);
 }
 
-bool RootFilesystem::IsDirectory(StringView path, bool follow_symlinks) const {
+bool RootFilesystem::IsDirectory(std::string_view path, bool follow_symlinks) const {
 	return FilesystemForPath(path).IsDirectory(path, follow_symlinks);
 }
 
-bool RootFilesystem::Exists(StringView path) const {
+bool RootFilesystem::Exists(std::string_view path) const {
 	return FilesystemForPath(path).Exists(path);
 }
 
-int64_t RootFilesystem::GetFilesize(StringView  path) const {
+int64_t RootFilesystem::GetFilesize(std::string_view  path) const {
 	return FilesystemForPath(path).GetFilesize(path);
 }
 
-std::streambuf* RootFilesystem::CreateInputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* RootFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 	return FilesystemForPath(path).CreateInputStreambuffer(path, mode);
 }
 
-std::streambuf* RootFilesystem::CreateOutputStreambuffer(StringView path, std::ios_base::openmode mode) const {
+std::streambuf* RootFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
 	return FilesystemForPath(path).CreateOutputStreambuffer(path, mode);
 
 }
 
-bool RootFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryTree::Entry>& tree) const {
+bool RootFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& tree) const {
 	if (path.empty()) {
 		// Debug feature: Return all available namespaces as a directory list
 		for (const auto& p : fs_list) {
@@ -94,7 +94,7 @@ bool RootFilesystem::GetDirectoryContent(StringView path, std::vector<DirectoryT
 	return FilesystemForPath(path).GetDirectoryContent(path, tree);
 }
 
-bool RootFilesystem::MakeDirectory(StringView path, bool follow_symlinks) const {
+bool RootFilesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
 	return FilesystemForPath(path).MakeDirectory(path, follow_symlinks);
 }
 
@@ -102,10 +102,10 @@ std::string RootFilesystem::Describe() const {
 	return "[Root]";
 }
 
-const Filesystem& RootFilesystem::FilesystemForPath(StringView path) const {
+const Filesystem& RootFilesystem::FilesystemForPath(std::string_view path) const {
 	assert(!fs_list.empty());
 
-	StringView ns;
+	std::string_view ns;
 	// Check if the path contains a namespace
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {

@@ -81,11 +81,11 @@ int Game_Message::GetRealPosition() {
 	}
 }
 
-int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallback& callback) {
+int Game_Message::WordWrap(std::string_view line, const int limit, const WordWrapCallback& callback) {
 	return WordWrap(line, limit, callback, *Font::Default());
 }
 
-int Game_Message::WordWrap(StringView line, const int limit, const WordWrapCallback& callback, const Font& font) {
+int Game_Message::WordWrap(std::string_view line, const int limit, const WordWrapCallback& callback, const Font& font) {
 	int start = 0;
 	int line_count = 0;
 

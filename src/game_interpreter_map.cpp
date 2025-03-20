@@ -471,7 +471,7 @@ bool Game_Interpreter_Map::CommandShowInn(lcf::rpg::EventCommand const& com) { /
 	PendingMessage pm(Game_Message::CommandCodeInserter);
 	pm.SetFromForegroundInterpreter(main_flag);
 
-	StringView greeting_1, greeting_2, greeting_3, accept, cancel;
+	std::string_view greeting_1, greeting_2, greeting_3, accept, cancel;
 
 	switch (inn_type) {
 		case 0:
