@@ -43,7 +43,7 @@ struct fmt::formatter<lcf::DBString> : formatter<string_view> {
 #else
 namespace lcf {
 inline fmt::basic_string_view<char> to_string_view(const lcf::DBString& s) {
-	return to_string_view(std::string_view(s));
+	return fmt::basic_string_view<char>(s.data(), s.size());
 }
 }
 #endif
