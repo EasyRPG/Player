@@ -284,9 +284,9 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 				return;
 			}
 
-			if (stream.GetName().ends_with(".xyz")) {
+			if (EndsWith(stream.GetName(), ".xyz")) {
 				title_image = readXyz(env, stream);
-			} else if (stream.GetName().ends_with(".png") || stream.GetName().ends_with(".bmp")) {
+			} else if (EndsWith(stream.GetName(), ".png") || EndsWith(stream.GetName(), ".bmp")) {
 				auto vec = Utils::ReadStream(stream);
 				title_image = env->NewByteArray(vec.size());
 				env->SetByteArrayRegion(title_image, 0, vec.size(), reinterpret_cast<jbyte *>(vec.data()));
@@ -365,8 +365,8 @@ Java_org_easyrpg_player_game_1browser_GameScanner_findGames(JNIEnv *env, jclass,
 		// Try to grab a title from the INI file
 		if (auto ini_is = fs.OpenFile("RPG_RT.ini"); ini_is) {
 			if (lcf::INIReader ini(ini_is); !ini.ParseError()) {
-				if (std::string ini_title = ini.GetString("RPG_RT", "GameTitle", ""); !ini_title.empty()) {
-					title = ini_title;
+				if (std::string_view ini_title = ini.GetString("RPG_RT", "GameTitle", ""); !ini_title.empty()) {
+					title = std::string(ini_title);
 					title_from_ini = true;
 				}
 			}
