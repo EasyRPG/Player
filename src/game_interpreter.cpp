@@ -2872,7 +2872,35 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 	params.effect_power = com.parameters[13];
 	params.duration = com.parameters[14];
 
-	bool wait = com.parameters[15] != 0;
+	struct {
+		bool wait = false;
+		// Starting from here are Maniac Extensions
+		// TODO: The extensions are not implemented
+		bool relative = false; // new position is relative to current
+		// when true these values preserve the values from a previous Show/MovePicture call
+		bool preserve_tone = false;
+		bool preserve_effect_mode = false;
+		bool preserve_blend_mode = false;
+		bool preserve_flip = false;
+		bool preserve_duration = false;
+		// Coordinates consider the scaled picture (when the origin is not centered)
+		bool position_scaled = false;
+	} options;
+
+	if (Player::IsPatchManiac()) {
+		int opts = com.parameters[15];
+		options.wait = (opts & (1 << 0)) > 0;
+		options.relative = (opts & (1 << 1)) > 0;
+		options.preserve_tone = (opts & (1 << 2)) > 0;
+		options.preserve_effect_mode = (opts & (1 << 3)) > 0;
+		options.preserve_blend_mode = (opts & (1 << 4)) > 0;
+		options.preserve_flip = (opts & (1 << 5)) > 0;
+		options.preserve_duration = (opts & (1 << 6)) > 0;
+		// Bit 7 is unused
+		options.position_scaled = (opts & (1 << 8)) > 0;
+	} else {
+		options.wait = com.parameters[15] != 0;
+	}
 
 	size_t param_size = com.parameters.size();
 
@@ -2969,7 +2997,7 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 		}
 	}
 
-	if (wait)
+	if (options.wait)
 		SetupWait(params.duration);
 
 	return true;
