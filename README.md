@@ -21,7 +21,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image and ZIP archive support.
-- fmtlib >= 6 for text formatting/coloring and interal logging.
+- fmtlib >= 6 for text formatting/coloring and internal logging.
 
 ### extended / recommended
 
@@ -35,7 +35,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - libxmp for tracker music support.
 - SpeexDSP or libsamplerate for proper audio resampling.
 - lhasa for LHA (.lzh) archive support.
-- nlohmann_json for processing JSON files (required when targetting Emscripten)
+- nlohmann_json for processing JSON files (required when targeting Emscripten)
 
 The older SDL version 1.2 is still supported, but deprecated.
 Please do not add new platform code for this library.
