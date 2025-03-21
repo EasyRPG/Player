@@ -28,6 +28,7 @@
 #include "keys.h"
 #include "string_view.h"
 #include "async_handler.h"
+#include "async_op.h"
 
 /**
  * Implements Ineluki's Key Patch
@@ -52,7 +53,7 @@ public:
 	 * @param ini_file INI file to execute
 	 * @return Whether the file is a valid script
 	 */
-	bool Execute(std::string_view ini_file);
+	AsyncOp Execute(std::string_view ini_file);
 
 	/**
 	 * Executes a file containing a list of script files.
@@ -96,6 +97,8 @@ private:
 	 * @return Whether the file is a valid script
 	 */
 	bool Parse(std::string_view ini_file);
+
+	AsyncOp ExecProgram(std::string_view command);
 
 	struct InelukiCommand {
 		std::string name;

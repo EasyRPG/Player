@@ -56,7 +56,7 @@ public:
 	void UpdateActorSelection();
 
 	/** Options available in a Rpg2k3 menu. */
-	enum CommandOptionType {
+	enum class CommandOptionType {
 		Item = 1,
 		Skill,
 		Equipment,
@@ -70,6 +70,11 @@ public:
 		Debug = 100,
 		Settings = 101,
 	};
+
+	int GetCommandIndex(CommandOptionType cmd) const;
+
+	static const CommandOptionType CommandOption_None = static_cast<CommandOptionType>(0);
+	static CommandOptionType force_cursor_index;
 
 private:
 	/** Selected index on startup. */
