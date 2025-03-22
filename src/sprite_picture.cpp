@@ -159,6 +159,8 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	if (data.flags.affected_by_flash) {
 		SetFlashEffect(Main_Data::game_screen->GetFlashColor());
+	} else {
+		SetFlashEffect(Color());
 	}
 
 	SetFlipX((data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) == lcf::rpg::SavePicture::EasyRpgFlip_x);
