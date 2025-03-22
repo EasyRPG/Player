@@ -217,7 +217,8 @@ namespace RuntimePatches::MonSca {
 		return var_id;
 	}
 
-	void ApplyScaling(Game_Enemy const& enemy, int& val, int var_id) {
+	template<typename T>
+	void ApplyScaling(Game_Enemy const& enemy, T& val, int var_id) {
 		int mod = Main_Data::game_variables->Get(GetVariableId(enemy, var_id));
 		if (mod == 0) {
 			return;
@@ -230,7 +231,7 @@ namespace RuntimePatches::MonSca {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyMaxHp(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifyMaxHp(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
@@ -241,7 +242,7 @@ void RuntimePatches::MonSca::ModifyMaxHp(Game_Enemy const& enemy, int& val) {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyMaxSp(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifyMaxSp(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
@@ -252,7 +253,7 @@ void RuntimePatches::MonSca::ModifyMaxSp(Game_Enemy const& enemy, int& val) {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyAtk(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifyAtk(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
@@ -263,7 +264,7 @@ void RuntimePatches::MonSca::ModifyAtk(Game_Enemy const& enemy, int& val) {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyDef(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifyDef(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
@@ -274,7 +275,7 @@ void RuntimePatches::MonSca::ModifyDef(Game_Enemy const& enemy, int& val) {
 	}
 }
 
-void RuntimePatches::MonSca::ModifySpi(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifySpi(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
@@ -285,7 +286,7 @@ void RuntimePatches::MonSca::ModifySpi(Game_Enemy const& enemy, int& val) {
 	}
 }
 
-void RuntimePatches::MonSca::ModifyAgi(Game_Enemy const& enemy, int& val) {
+void RuntimePatches::MonSca::ModifyAgi(Game_Enemy const& enemy, int32_t& val) {
 #ifdef NO_RUNTIME_PATCHES
 	// no-op
 	(void)val;
