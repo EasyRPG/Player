@@ -310,6 +310,9 @@ protected:
 	void ForegroundTextPush(PendingMessage pm);
 	void EndEventProcessing();
 
+	std::optional<bool> HandleDynRpgScript(const lcf::rpg::EventCommand& com);
+	std::optional<bool> HandleDestinyScript(const lcf::rpg::EventCommand& com);
+
 	FileRequestBinding request_id;
 	enum class Keys {
 		eDown,
