@@ -106,17 +106,17 @@ namespace RuntimePatches {
 		} };
 
 		/** Scales an enemies's maximum HP stat, based on the value of variable V[1001] */
-		void ModifyMaxHp(Game_Enemy const& enemy, int& val);
+		void ModifyMaxHp(Game_Enemy const& enemy, int32_t& val);
 		/** Scales an enemies's maximum SP stat, based on the value of variable V[1002] */
-		void ModifyMaxSp(Game_Enemy const& enemy, int& val);
+		void ModifyMaxSp(Game_Enemy const& enemy, int32_t& val);
 		/** Scales an enemies's attack stat, based on the value of variable V[1003] */
-		void ModifyAtk(Game_Enemy const& enemy, int& val);
+		void ModifyAtk(Game_Enemy const& enemy, int32_t& val);
 		/** Scales an enemies's defense stat, based on the value of variable V[1004] */
-		void ModifyDef(Game_Enemy const& enemy, int& val);
+		void ModifyDef(Game_Enemy const& enemy, int32_t& val);
 		/** Scales an enemies's spirit stat, based on the value of variable V[1005] */
-		void ModifySpi(Game_Enemy const& enemy, int& val);
+		void ModifySpi(Game_Enemy const& enemy, int32_t& val);
 		/** Scales an enemies's agility stat, based on the value of variable V[1006] */
-		void ModifyAgi(Game_Enemy const& enemy, int& val);
+		void ModifyAgi(Game_Enemy const& enemy, int32_t& val);
 		/** Scales the experience points gained by defating an enemy, based on the value of variable V[1007] */
 		void ModifyExpGained(Game_Enemy const& enemy, int& val);
 		/** Scales the money gained by defating an enemy, based on the value of variable V[1008] */
