@@ -156,6 +156,15 @@ bool Game_Destiny::Main(SaveEventExecFrame& frame)
 	const char* script;
 	InterpretFlag flag;
 
+
+	//TOBEREMOVED:
+	if (StartsWith(frame.commands[frame.current_command].string, "$output ")) {
+		auto msg = ToString(frame.commands[frame.current_command].string).substr(8);
+		Output::InfoStr(msg);
+		return true;
+	}
+	//
+
 	script = _interpreter.MakeString(frame);
 	flag = InterpretFlag::IF_EXIT;
 

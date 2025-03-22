@@ -81,6 +81,7 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 		if (cp.ParseNext(arg, 0, "--no-patch")) {
 			patch_support.Set(false);
 			patch_dynrpg.Lock(false);
+			patch_destiny.Lock(false);
 			patch_maniac.Lock(false);
 			patch_unlock_pics.Lock(false);
 			patch_common_this_event.Lock(false);
@@ -98,6 +99,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 		}
 		if (cp.ParseNext(arg, 0, {"--patch-dynrpg", "--no-patch-dynrpg"})) {
 			patch_dynrpg.Set(arg.ArgIsOn());
+			patch_override = true;
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, {"--patch-destiny", "--no-patch-destiny"})) {
+			patch_destiny.Set(arg.ArgIsOn());
 			patch_override = true;
 			continue;
 		}
@@ -199,6 +205,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_dynrpg.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_destiny.FromIni(ini)) {
 		patch_override = true;
 	}
 

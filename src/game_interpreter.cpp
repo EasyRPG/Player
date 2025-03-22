@@ -2039,6 +2039,12 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 
 		std::string command = ToString(com.string);
 
+		//TOBEREMOVED:
+		if (StartsWith(command, "@test_output")) {
+			command = std::string("@easyrpg_output") + command.substr(12);
+		}
+		//
+
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
 			const auto& cmd = list[i];
