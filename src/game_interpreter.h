@@ -85,7 +85,7 @@ public:
 	 * Returns the interpreters current state information.
 	 * For saving state into a save file, use GetSaveState instead.
 	 */
-	const lcf::rpg::SaveEventExecState& GetState() const;
+	const lcf::rpg::SaveEventExecState& GetState() const override;
 
 	/**
 	 * Returns a SaveEventExecState needed for the savefile.
@@ -310,6 +310,9 @@ protected:
 	void ForegroundTextPush(PendingMessage pm);
 	void EndEventProcessing();
 
+	std::optional<bool> HandleDynRpgScript(const lcf::rpg::EventCommand& com);
+	std::optional<bool> HandleDestinyScript(const lcf::rpg::EventCommand& com);
+
 	FileRequestBinding request_id;
 	enum class Keys {
 		eDown,
@@ -343,6 +346,10 @@ protected:
 	};
 
 	int ManiacBitmask(int value, int mask) const;
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	void ClearStateRuntimeFlags();
+#endif
 
 	lcf::rpg::SaveEventExecState _state;
 	KeyInputState _keyinput;
@@ -397,5 +404,12 @@ inline bool Game_Interpreter::IsAsyncPending() {
 inline AsyncOp Game_Interpreter::GetAsyncOp() const {
 	return _async_op;
 }
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+inline void Game_Interpreter::ClearStateRuntimeFlags() {
+	_state.easyrpg_runtime_flags.conf_override_active = false;
+	_state.easyrpg_runtime_flags.flags.fill(false);
+}
+#endif
 
 #endif
