@@ -54,7 +54,7 @@ namespace RuntimePatches {
 	 * This patch skips the normal battle startup logic whenever a random
 	 * encounter would be triggered.
 	 * Instead a switch (default: S[1018]) is set to ON and the troop ID
-	 * is stored into a variable (default: V[3355).
+	 * is stored into a variable (default: V[3355]).
 	 *
 	 * This implementation always triggers a page-refresh for all
 	 * events on the current map.
@@ -78,7 +78,7 @@ namespace RuntimePatches {
 	 * based on the contents of some in-game variables.
 	 * (Default: V[1001] - V[1010])
 	 * 
-	 * When a switch is set (default: S[1001) to ON, an alternative
+	 * When a switch is set (default: S[1001]) to ON, an alternative
 	 * scaling formula, based on the average party level, is used.
 	 *
 	 * Default formula:     val = val * V[...] / 1000
