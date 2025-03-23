@@ -22,6 +22,7 @@
 #include <string>
 
 #include "async_op.h"
+#include "game_ineluki.h"
 #include "string_view.h"
 #include "span.h"
 
@@ -84,7 +85,7 @@ namespace Game_PowerPatch {
 		{ PPC_CommandType::CallSaveMenu,        0, "CALLSAVEMENU" },
 		{ PPC_CommandType::CallGameMenu,        0, "CALLGAMEMENU" },
 		{ PPC_CommandType::CallTitleScreen,     0, "CALLTITLESCREEN" },
-		{ PPC_CommandType::SimulateKeyPress,    0, "SIMULATEKEYPRESS" },
+		{ PPC_CommandType::SimulateKeyPress,    2, "SIMULATEKEYPRESS" },
 		{ PPC_CommandType::ChangeFunctionKey,   0, "CHANGEFUNCTIONKEY" },
 		{ PPC_CommandType::SetTitleBGM,         1, "SETTITLEBGM" },
 		{ PPC_CommandType::SetTitleScreen,      1, "SETTITLESCREEN" },
@@ -94,6 +95,12 @@ namespace Game_PowerPatch {
 		{ PPC_CommandType::PauseGame,           0, "PAUSEGAME" },
 		{ PPC_CommandType::SetVar,              0, "SETVAR" }
 	}};
+
+	/**
+	* Map of simulated keypresses handled via ppcomp
+	* 'int' value refers to remaining frames
+	*/
+	extern std::map<Input::Keys::InputKey, int> simulate_keypresses;
 };
 
 #endif

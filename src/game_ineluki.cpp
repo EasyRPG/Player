@@ -341,6 +341,13 @@ void Game_Ineluki::Update() {
 	if (mouse_support) {
 		UpdateMouse();
 	}
+	for (auto& [ key, frames ] : Game_PowerPatch::simulate_keypresses) {
+		if (frames == 0) {
+			continue;
+		}
+		Input::GetInputSource()->SimulateKeyPress(key);
+		frames--;
+	}
 }
 
 void Game_Ineluki::UpdateKeys() {

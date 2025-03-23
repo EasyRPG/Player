@@ -57,7 +57,114 @@ namespace {
 		Main_Data::game_variables->Set(dest_v + 5, tm->tm_min);
 		Main_Data::game_variables->Set(dest_v + 6, tm->tm_sec);
 	}
+
+	//FIXME: Move this call to game_runtime_patches.h (part of another branch)
+	constexpr Input::Keys::InputKey VirtualKeyToInputKey(uint32_t key_id) {
+		// see https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+		switch (key_id) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+			case 0x1: return Input::Keys::MOUSE_LEFT;
+			case 0x2: return Input::Keys::MOUSE_RIGHT;
+			case 0x4: return Input::Keys::MOUSE_MIDDLE;
+			case 0x5: return Input::Keys::MOUSE_XBUTTON1;
+			case 0x6: return Input::Keys::MOUSE_XBUTTON2;
+#endif
+			case 0x8: return Input::Keys::BACKSPACE;
+			case 0x9: return Input::Keys::TAB;
+			case 0xD: return Input::Keys::RETURN;
+			case 0x10: return Input::Keys::SHIFT;
+			case 0x11: return Input::Keys::CTRL;
+			case 0x12: return Input::Keys::ALT;
+			case 0x13: return Input::Keys::PAUSE;
+			case 0x14: return Input::Keys::CAPS_LOCK;
+			case 0x1B: return Input::Keys::ESCAPE;
+			case 0x20: return Input::Keys::SPACE;
+			case 0x21: return Input::Keys::PGUP;
+			case 0x22: return Input::Keys::PGDN;
+			case 0x23: return Input::Keys::ENDS;
+			case 0x24: return Input::Keys::HOME;
+			case 0x25: return Input::Keys::LEFT;
+			case 0x26: return Input::Keys::UP;
+			case 0x27: return Input::Keys::RIGHT;
+			case 0x28: return Input::Keys::DOWN;
+			case 0x2D: return Input::Keys::INSERT;
+			case 0x2E: return Input::Keys::DEL;
+			case 0x30: return Input::Keys::N0;
+			case 0x31: return Input::Keys::N1;
+			case 0x32: return Input::Keys::N2;
+			case 0x33: return Input::Keys::N3;
+			case 0x34: return Input::Keys::N4;
+			case 0x35: return Input::Keys::N5;
+			case 0x36: return Input::Keys::N6;
+			case 0x37: return Input::Keys::N7;
+			case 0x38: return Input::Keys::N8;
+			case 0x39: return Input::Keys::N9;
+			case 0x41: return Input::Keys::A;
+			case 0x42: return Input::Keys::B;
+			case 0x43: return Input::Keys::C;
+			case 0x44: return Input::Keys::D;
+			case 0x45: return Input::Keys::E;
+			case 0x46: return Input::Keys::F;
+			case 0x47: return Input::Keys::G;
+			case 0x48: return Input::Keys::H;
+			case 0x49: return Input::Keys::I;
+			case 0x4A: return Input::Keys::J;
+			case 0x4B: return Input::Keys::K;
+			case 0x4C: return Input::Keys::L;
+			case 0x4D: return Input::Keys::M;
+			case 0x4E: return Input::Keys::N;
+			case 0x4F: return Input::Keys::O;
+			case 0x50: return Input::Keys::P;
+			case 0x51: return Input::Keys::Q;
+			case 0x52: return Input::Keys::R;
+			case 0x53: return Input::Keys::S;
+			case 0x54: return Input::Keys::T;
+			case 0x55: return Input::Keys::U;
+			case 0x56: return Input::Keys::V;
+			case 0x57: return Input::Keys::W;
+			case 0x58: return Input::Keys::X;
+			case 0x59: return Input::Keys::Y;
+			case 0x5A: return Input::Keys::Z;
+			case 0x60: return Input::Keys::KP0;
+			case 0x61: return Input::Keys::KP1;
+			case 0x62: return Input::Keys::KP2;
+			case 0x63: return Input::Keys::KP3;
+			case 0x64: return Input::Keys::KP4;
+			case 0x65: return Input::Keys::KP5;
+			case 0x66: return Input::Keys::KP6;
+			case 0x67: return Input::Keys::KP7;
+			case 0x68: return Input::Keys::KP8;
+			case 0x69: return Input::Keys::KP9;
+			case 0x6A: return Input::Keys::KP_MULTIPLY;
+			case 0x6B: return Input::Keys::KP_ADD;
+			case 0x6D: return Input::Keys::KP_SUBTRACT;
+			case 0x6E: return Input::Keys::KP_PERIOD;
+			case 0x6F: return Input::Keys::KP_DIVIDE;
+			case 0x70: return Input::Keys::F1;
+			case 0x71: return Input::Keys::F2;
+			case 0x72: return Input::Keys::F3;
+			case 0x73: return Input::Keys::F4;
+			case 0x74: return Input::Keys::F5;
+			case 0x75: return Input::Keys::F6;
+			case 0x76: return Input::Keys::F7;
+			case 0x77: return Input::Keys::F8;
+			case 0x78: return Input::Keys::F9;
+			case 0x79: return Input::Keys::F10;
+			case 0x7A: return Input::Keys::F11;
+			case 0x7B: return Input::Keys::F12;
+			case 0x90: return Input::Keys::NUM_LOCK;
+			case 0x91: return Input::Keys::SCROLL_LOCK;
+			case 0xA0: return Input::Keys::LSHIFT;
+			case 0xA1: return Input::Keys::RSHIFT;
+			case 0xA2: return Input::Keys::LCTRL;
+			case 0xA3: return Input::Keys::RCTRL;
+
+			default: return Input::Keys::NONE;
+		}
+	}
 }
+
+std::map<Input::Keys::InputKey, int> Game_PowerPatch::simulate_keypresses;
 
 AsyncOp Game_PowerPatch::ExecutePPC(std::string_view ppc_cmd, Span<std::string const> args) {
 	auto cmd = std::find_if(PPC_commands.begin(), PPC_commands.end(), [&ppc_cmd](auto& cmd) {
@@ -248,9 +355,38 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 			Player::game_config.patch_unlock_pics.Set(value);
 			break;
 		}
+		case Type::SimulateKeyPress: {
+			int vk = atoi(args[0].c_str());
+			auto input_key = VirtualKeyToInputKey(vk);
+
+			if (input_key == Input::Keys::NONE) {
+				Output::Debug("PowerPatch SimulateKeyPress: Unsupported keycode {}", vk);
+				return true;
+			}
+
+			//TODO: Needs some proper testing
+			if (Utils::LowerCase(args[1]) == "down") {
+				simulate_keypresses[input_key] = 1;
+			} else if (Utils::LowerCase(args[1]) == "up") {
+				simulate_keypresses[input_key] = 0;
+			} else {
+				int duration = atoi(args[1].c_str());
+				if (duration <= 0) {
+					Output::Debug("PowerPatch SimulateKeyPress: Unexpected arg {} (<Action/Duration>)", duration);
+					return true;
+				}
+				duration = DEFAULT_FPS * duration / 1000;
+				if (duration == 0) {
+					duration = 1;
+				}
+				simulate_keypresses[input_key] = duration;
+			}
+			break;
+		}
 		default:
 			return false;
 	}
 
 	return true;
 }
+
