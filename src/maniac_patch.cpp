@@ -668,6 +668,16 @@ std::array<bool, 50> ManiacPatch::GetKeyRange() {
 		pressed[i] = Input::IsRawKeyPressed(keys[i]);
 	}
 
+	if (!pressed[41]) {
+		pressed[41] = Input::IsRawKeyPressed(Input::Keys::LSHIFT) || Input::IsRawKeyPressed(Input::Keys::RSHIFT);
+	}
+	if (!pressed[42]) {
+		pressed[42] = Input::IsRawKeyPressed(Input::Keys::LCTRL) || Input::IsRawKeyPressed(Input::Keys::RCTRL);
+	}
+	if (!pressed[43]) {
+		pressed[43] = Input::IsRawKeyPressed(Input::Keys::LALT) || Input::IsRawKeyPressed(Input::Keys::RALT);
+	}
+
 	return pressed;
 }
 
