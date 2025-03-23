@@ -35,8 +35,6 @@ namespace ManiacPatch {
 
 	std::array<bool, 50> GetKeyRange();
 
-	bool GetKeyState(uint32_t key_id);
-
 	bool CheckString(std::string_view str_l, std::string_view str_r, int op, bool ignore_case);
 
 	std::string_view GetLcfName(int data_type, int id, bool is_dynamic);
