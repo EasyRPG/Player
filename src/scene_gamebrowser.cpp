@@ -60,6 +60,8 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	Player::game_title = "";
 	Player::game_title_original = "";
 
+	Player::translation.Reset();
+
 	Font::ResetDefault();
 
 	Main_Data::game_system = std::make_unique<Game_System>();

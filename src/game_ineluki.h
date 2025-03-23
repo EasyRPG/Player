@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <array>
 
 #include <lcf/rpg/sound.h>
 
