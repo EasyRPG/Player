@@ -334,7 +334,7 @@ bool Game_PowerPatch::Execute(PPC_CommandType command, Span<std::string const> a
 					Scene_Title::force_cursor_index = Scene_Title::CommandOptionType::NewGame;
 				}
 			}
-			Player::force_make_to_title_flag = true;
+			//Player::force_make_to_title_flag = true;
 			async_op = AsyncOp::MakeToTitle();
 			break;
 		}
