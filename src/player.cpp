@@ -836,6 +836,13 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+		// PowerMode2003 can be detected via the existence of the files "hvm.dll", "fmodex.dll" &
+		// "warp.dll", but some games seem to only ship with the latter of the three.
+		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
+			game_config.patch_powermode.Set(true);
+		}
+
 	}
 
 	game_config.PrintActivePatches();
