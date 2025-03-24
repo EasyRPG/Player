@@ -44,7 +44,7 @@ namespace {
 struct RuntimeFlagInfo {
 	bool (*config_fn)();
 	Game_Interpreter_Shared::StateRuntimeFlagRef field_on, field_off;
-	char* name;
+	std::string_view name;
 };
 
 using StateFlags = lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags;
