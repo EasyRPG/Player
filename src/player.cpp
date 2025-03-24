@@ -981,6 +981,8 @@ void Player::ResetGameObjects() {
 
 	Main_Data::game_system->ReloadSystemGraphic();
 
+	RuntimePatches::PowerMode2003::Init();
+
 	Input::ResetMask();
 }
 

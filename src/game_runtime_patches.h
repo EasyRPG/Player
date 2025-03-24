@@ -47,6 +47,18 @@ namespace RuntimePatches {
 
 	void DetermineActivePatches(std::vector<std::string>& patches);
 
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableChanged(int variable_id);
+
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableChanged(std::initializer_list<int> variable_ids);
+
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableRangeChanged(int start_id, int end_id);
+
 	/**
 	 * Support for RPG_RT patch 'Encounter Randomness Alert'.
 	 * This patch skips the normal battle startup logic whenever a random
@@ -195,6 +207,20 @@ namespace RuntimePatches {
 		constexpr Input::Keys::InputKey VirtualKeyToInputKey(uint32_t key_id);
 
 		constexpr uint32_t InputKeyToVirtualKey(Input::Keys::InputKey input_key);
+	}
+
+	namespace PowerMode2003 {
+		constexpr int PM_VAR_CR0 = 1;
+		constexpr int PM_VAR_MCOORDX = 2;
+		constexpr int PM_VAR_MCOORDY = 3;
+		constexpr int PM_VAR_KEY = 4;
+		constexpr int PM_VAR_FVALUE1 = 5;
+		constexpr int PM_VAR_FVALUE2 = 6;
+		constexpr int PM_VAR_FCODE = 7;
+		constexpr int PM_VAR_SPECIAL = 8;
+
+		void Init();
+		void HandleVariableHooks(int var_id);
 	}
 }
 
