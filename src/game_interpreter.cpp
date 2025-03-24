@@ -384,6 +384,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
 	Player::active_interpreter_flags = &_state.easyrpg_runtime_flags;
+	auto flags_guard = lcf::makeScopeGuard([]() {
+		Player::active_interpreter_flags = nullptr;
+	});
 #endif
 
 	for (; loop_count < loop_limit; ++loop_count) {
@@ -530,9 +533,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	if (Game_Map::GetNeedRefresh()) {
 		Game_Map::Refresh();
 	}
-#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
-	Player::active_interpreter_flags = nullptr;
-#endif
 }
 
 // Setup Starting Event
@@ -838,7 +838,9 @@ bool Game_Interpreter::OnFinishStackFrame() {
 
 	if (is_base_frame) {
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
-		ClearStateRuntimeFlags();
+		// Individual runtime flags that may still be set will be cleared by
+		// CommandEasyRpgSetInterpreterFlag if neccessary
+		_state.easyrpg_runtime_flags.conf_override_active = false;
 #endif
 	}
 
@@ -5414,6 +5416,11 @@ bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand c
 		if (it != config_names.end()) {
 			flag_id = it->second;
 		}
+	}
+
+	// Clear any inactive flags that might be left over from a previous InterpreterFlag command
+	if (!_state.easyrpg_runtime_flags.conf_override_active) {
+		_state.easyrpg_runtime_flags.flags.fill(false);
 	}
 
 	switch (flag_id) {
