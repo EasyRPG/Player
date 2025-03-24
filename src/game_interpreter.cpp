@@ -598,7 +598,7 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 		case Cmd::ControlSwitches:
 			return CmdSetup<&Game_Interpreter::CommandControlSwitches, 4>(com);
 		case Cmd::ControlVars:
-			return CmdSetup<&Game_Interpreter::CommandControlVariables, 7>(com);
+			return CmdSetup<&Game_Interpreter::CommandControlVariables<false>, 7>(com);
 		case Cmd::TimerOperation:
 			return CmdSetup<&Game_Interpreter::CommandTimerOperation, 5>(com);
 		case Cmd::ChangeGold:

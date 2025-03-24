@@ -512,6 +512,7 @@ bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& 
 			*/
 			value = DateTime(static_cast<DateTimeOp>(com.parameters[5]));
 			break;
+		/*
 		case 211: // eVarOperand_EasyRpg_ActiveMapInfo
 			value = ActiveMapInfo(static_cast<ActiveMapInfoOp>(com.parameters[5]));
 			break;
@@ -530,6 +531,7 @@ bool ControlVariables::EasyRpgExCommand(lcf::rpg::EventCommand const& com, int& 
 			value = InspectMapTreeInfo(static_cast<InspectMapTreeInfoOp>(com.parameters[5]), map_id, arg1);
 			break;
 		}
+		*/
 		case 213: //eVarOperand_EasyRpg_MessageSystemState
 			value = MessageSystemState(static_cast<MessageSystemStateOp>(com.parameters[5]));
 			break;
@@ -576,6 +578,7 @@ int ControlVariables::DateTime(DateTimeOp op) {
 	return 0;
 }
 
+/*
 int ControlVariables::ActiveMapInfo(ActiveMapInfoOp op) {
 	switch (op)
 	{
@@ -672,6 +675,7 @@ int ControlVariables::InspectMapTreeInfo(InspectMapTreeInfoOp op, int map_id, in
 	Output::Warning("ControlVariables::InspectMapTreeInfo: Unknown op {}", static_cast<int>(op));
 	return 0;
 }
+*/
 
 int ControlVariables::MessageSystemState(MessageSystemStateOp op) {
 	switch (op)
