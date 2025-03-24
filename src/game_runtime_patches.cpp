@@ -27,6 +27,11 @@
 #include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
+#include "output.h"
+#include "input.h"
+#include "scene.h"
+#include "scene_load.h"
+#include <baseui.h>
 
 namespace {
 	template<size_t C>
@@ -147,6 +152,27 @@ void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 	PrintPatch(patches, MonSca::patch_args);
 	PrintPatch(patches, EXPlus::patch_args);
 	PrintPatch(patches, GuardRevamp::patch_args);
+}
+
+void RuntimePatches::OnVariableChanged(int variable_id) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		PowerMode2003::HandleVariableHooks(variable_id);
+	}
+}
+void RuntimePatches::OnVariableChanged(std::initializer_list<int> variable_ids) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		for (int var_id : variable_ids) {
+			PowerMode2003::HandleVariableHooks(var_id);
+		}
+	}
+}
+
+void RuntimePatches::OnVariableRangeChanged(int start_id, int end_id) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		for (int var_id = start_id; var_id <= end_id; ++var_id) {
+			PowerMode2003::HandleVariableHooks(var_id);
+		}
+	}
 }
 
 bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
@@ -288,4 +314,122 @@ bool RuntimePatches::GuardRevamp::OverrideDamageAdjustment(int& dmg, const Game_
 		return true;
 	}
 	return false;
+}
+
+namespace RuntimePatches::PowerMode2003 {
+	void HandleKeyboard() {
+#if !defined(SUPPORT_KEYBOARD)
+		Output::Warning("PowerMode2003: Keyboard input is not supported on this platform");
+		return;
+#endif
+		int vk_id = Main_Data::game_variables->Get(PM_VAR_KEY);
+		if (vk_id == 0) {
+			// check the whole keyboard for any key press
+			for (int i = 1; i < Input::Keys::KEYS_COUNT; ++i) {
+				auto input_key = static_cast<Input::Keys::InputKey>(i);
+				if (Input::IsRawKeyPressed(input_key) && (vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(input_key))) {
+					break;
+				}
+			}
+			Main_Data::game_variables->Set(PM_VAR_KEY, vk_id);
+		} else if (vk_id > 0 && vk_id <= 255) {
+			// check a single key
+			auto input_key = RuntimePatches::VirtualKeys::VirtualKeyToInputKey(vk_id);
+			int result = 0;
+			if (input_key == Input::Keys::NONE) {
+				Output::Debug("PowerMode2003: Unsupported keycode {}", vk_id);
+			}
+			if (!Input::IsRawKeyPressed(input_key)) {
+				Main_Data::game_variables->Set(PM_VAR_KEY, 0);
+			}
+		} else {
+			Main_Data::game_variables->Set(PM_VAR_KEY, 0);
+		}
+	}
+
+	void HandleFloatComputation() {
+		const float   PI = 3.14159265358979f;
+		auto input1 = static_cast<float>(Main_Data::game_variables->Get(PM_VAR_FVALUE1));
+
+		// Some versions of the documentation for this patch have the target ids swapped.
+		// (SIN -> FVALUE1, COS -> FVALUE2, TAN -> FVALUE1)
+		//
+		// But the only known RPG_RT versions of this patch actually save them like follows..:
+		switch (Main_Data::game_variables->Get(PM_VAR_FCODE)) {
+			case 1:
+			{
+				auto v_sin = std::sinf(input1 * PI / 180);
+				auto v_cos = std::cosf(input1 * PI / 180);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_sin * 1'000'000));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_cos * 1'000'000));
+				break;
+			}
+			case 2:
+			{
+				auto v_tan = std::tanf(input1 * PI / 180);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_tan * 1'000'000));
+				break;
+			}
+			case 3:
+			{
+				float v_int;
+				float v_fract = std::modf(std::sqrtf(input1), &v_int);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_int));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_fract * 1'000'000));
+				break;
+			}
+			case 4:
+			{
+				auto input2 = static_cast<float>(Main_Data::game_variables->Get(PM_VAR_FVALUE2));
+				float v_int;
+				float v_fract = std::modf(input1 / input2, &v_int);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_int));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_fract * 1'000'000));
+				break;
+			}
+			default:
+				break;
+		}
+	}
+}
+
+void RuntimePatches::PowerMode2003::Init() {
+	if (Player::game_config.patch_powermode.Get()) {
+		Player::game_config.new_game.Set(true);
+		Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+}
+
+void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
+	switch (var_id) {
+		case PM_VAR_CR0:
+		{
+			int op = Main_Data::game_variables->Get(PM_VAR_CR0);
+			if (op == 255 && FileFinder::HasSavegame()) {
+				Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+			} else if (op == 254) {
+				Player::exit_flag = true;
+			}
+			Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+			break;
+		}
+		case PM_VAR_MCOORDY:
+		{
+			Point mouse_pos = Input::GetMousePosition();
+			Main_Data::game_variables->Set(PM_VAR_MCOORDX, mouse_pos.x);
+			Main_Data::game_variables->Set(PM_VAR_MCOORDY, mouse_pos.y);
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_MCOORDX);
+			break;
+		}
+		case PM_VAR_KEY:
+			HandleKeyboard();
+			break;
+		case PM_VAR_FCODE:
+			HandleFloatComputation();
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_FVALUE1);
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_FVALUE2);
+			break;
+		default:
+			return;
+	}
 }

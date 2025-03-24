@@ -320,6 +320,8 @@ void Game_Map::SetupFromSave(
 	// FIXME: RPG_RT compatibility bug: On async platforms, panorama async loading can
 	// cause panorama chunks to be out of sync.
 	Game_Map::Parallax::ChangeBG(GetParallaxParams());
+
+	RuntimePatches::PowerMode2003::Init();
 }
 
 std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
