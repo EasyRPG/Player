@@ -109,7 +109,7 @@ namespace Game_Interpreter_Shared {
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
 
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
-	typedef bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::* StateRuntimeFlagRef;
+	using StateRuntimeFlagRef = bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::*;
 
 	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState const& state, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
 
