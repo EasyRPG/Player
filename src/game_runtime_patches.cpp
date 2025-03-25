@@ -433,3 +433,18 @@ void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
 			return;
 	}
 }
+
+bool RuntimePatches::PowerMode2003::ApplyPictureRotation(lcf::rpg::SavePicture& pict) {
+	if (Player::game_config.patch_powermode.Get()) {
+		auto var_start_pict_rotations = Main_Data::game_variables->Get(PM_VAR_SPECIAL);
+		if (var_start_pict_rotations <= 10) {
+			return false;
+		}
+		if (pict.ID <= 50) {
+			pict.current_rotation = Main_Data::game_variables->Get(var_start_pict_rotations + pict.ID - 1);
+			return true;
+		}
+	}
+
+	return false;
+}
