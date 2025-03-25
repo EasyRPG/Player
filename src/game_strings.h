@@ -88,7 +88,7 @@ public:
 	int InStr(Str_Params params, std::string search, int var_id, int begin, Game_Variables& variables) const;
 	int Split(Str_Params params, const std::string& delimiter, int string_out_id, int var_id, Game_Variables& variables);
 	static std::string FromFile(std::string_view filename, int encoding, bool& do_yield);
-	std::string_view ToFile(Str_Params params, std::string filename, int encoding);
+	bool ToFile(Str_Params params, std::string filename, int encoding);
 	std::string_view PopLine(Str_Params params, int offset, int string_out_id);
 	std::string_view ExMatch(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables& variables);
 
