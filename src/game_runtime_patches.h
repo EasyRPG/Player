@@ -22,6 +22,7 @@
 #include "cmdline_parser.h"
 #include "player.h"
 #include "input.h"
+#include "lcf/rpg/savepicture.h"
 
 class Game_Actor;
 class Game_Battler;
@@ -225,6 +226,7 @@ namespace RuntimePatches {
 
 		void Init();
 		void HandleVariableHooks(int var_id);
+		bool ApplyPictureRotation(lcf::rpg::SavePicture& pict);
 	}
 }
 

@@ -512,6 +512,10 @@ namespace RuntimePatches::PowerMode2003 {
 }
 
 void RuntimePatches::PowerMode2003::Init() {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	return;
+#endif
 	if (Player::game_config.patch_powermode.Get()) {
 		Player::game_config.new_game.Set(true);
 		Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
@@ -519,6 +523,11 @@ void RuntimePatches::PowerMode2003::Init() {
 }
 
 void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)var_id;
+	return;
+#endif
 	switch (var_id) {
 		case PM_VAR_CR0:
 		{
@@ -550,4 +559,24 @@ void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
 		default:
 			return;
 	}
+}
+
+bool RuntimePatches::PowerMode2003::ApplyPictureRotation(lcf::rpg::SavePicture& pict) {
+#ifdef NO_RUNTIME_PATCHES
+	// no-op
+	(void)pict;
+	return false;
+#endif
+	if (Player::game_config.patch_powermode.Get()) {
+		auto var_start_pict_rotations = Main_Data::game_variables->Get(PM_VAR_SPECIAL);
+		if (var_start_pict_rotations <= 10) {
+			return false;
+		}
+		if (pict.ID <= 50) {
+			pict.current_rotation = Main_Data::game_variables->Get(var_start_pict_rotations + pict.ID - 1);
+			return true;
+		}
+	}
+
+	return false;
 }
