@@ -971,7 +971,7 @@ void Player::ResetGameObjects() {
 
 	Main_Data::game_system->ReloadSystemGraphic();
 
-	RuntimePatches::PowerMode2003::Init();
+	RuntimePatches::OnResetGameObjects();
 
 	Input::ResetMask();
 }
@@ -1230,6 +1230,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 			Game_Map::Dispose();
 
 			OnMapSaveFileReady(request, std::move(save));
+			RuntimePatches::OnLoadSavegame();
 
 			if (load_on_map) {
 				// Increment frame counter for consistency with a normal savegame load

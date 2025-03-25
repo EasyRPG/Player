@@ -155,11 +155,25 @@ void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 	PrintPatch(patches, GuardRevamp::patch_args);
 }
 
+void RuntimePatches::OnResetGameObjects() {
+	if (Player::game_config.patch_powermode.Get()) {
+		Player::game_config.new_game.Set(true);
+		Main_Data::game_variables->Set(PowerMode2003::PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+}
+
+void RuntimePatches::OnLoadSavegame() {
+	if (Player::game_config.patch_powermode.Get()) {
+		Main_Data::game_variables->Set(PowerMode2003::PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+}
+
 void RuntimePatches::OnVariableChanged(int variable_id) {
 	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
 		PowerMode2003::HandleVariableHooks(variable_id);
 	}
 }
+
 void RuntimePatches::OnVariableChanged(std::initializer_list<int> variable_ids) {
 	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
 		for (int var_id : variable_ids) {
@@ -318,6 +332,27 @@ bool RuntimePatches::GuardRevamp::OverrideDamageAdjustment(int& dmg, const Game_
 }
 
 namespace RuntimePatches::PowerMode2003 {
+	void HandleCommands() {
+		int op = Main_Data::game_variables->Get(PM_VAR_CR0);
+		if (op == 255 && FileFinder::HasSavegame()) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+		} else if (op == 254) {
+			Player::exit_flag = true;
+		}
+		Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+
+	void HandleMouse() {
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
+		Output::Warning("PowerMode2003: Mouse input is not supported on this platform");
+		return;
+#endif
+		Point mouse_pos = Input::GetMousePosition();
+		Main_Data::game_variables->Set(PM_VAR_MCOORDX, mouse_pos.x);
+		Main_Data::game_variables->Set(PM_VAR_MCOORDY, mouse_pos.y);
+
+	}
+
 	void HandleKeyboard() {
 #if !defined(SUPPORT_KEYBOARD)
 		Output::Warning("PowerMode2003: Keyboard input is not supported on this platform");
@@ -393,34 +428,15 @@ namespace RuntimePatches::PowerMode2003 {
 	}
 }
 
-void RuntimePatches::PowerMode2003::Init() {
-	if (Player::game_config.patch_powermode.Get()) {
-		Player::game_config.new_game.Set(true);
-		Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
-	}
-}
-
 void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
 	switch (var_id) {
 		case PM_VAR_CR0:
-		{
-			int op = Main_Data::game_variables->Get(PM_VAR_CR0);
-			if (op == 255 && FileFinder::HasSavegame()) {
-				Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
-			} else if (op == 254) {
-				Player::exit_flag = true;
-			}
-			Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+			HandleCommands();
 			break;
-		}
 		case PM_VAR_MCOORDY:
-		{
-			Point mouse_pos = Input::GetMousePosition();
-			Main_Data::game_variables->Set(PM_VAR_MCOORDX, mouse_pos.x);
-			Main_Data::game_variables->Set(PM_VAR_MCOORDY, mouse_pos.y);
+			HandleMouse();
 			Game_Map::SetNeedRefreshForVarChange(PM_VAR_MCOORDX);
 			break;
-		}
 		case PM_VAR_KEY:
 			HandleKeyboard();
 			break;
