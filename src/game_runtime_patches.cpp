@@ -438,6 +438,12 @@ bool RuntimePatches::PowerMode2003::ApplyPictureRotation(lcf::rpg::SavePicture& 
 	if (Player::game_config.patch_powermode.Get()) {
 		auto var_start_pict_rotations = Main_Data::game_variables->Get(PM_VAR_SPECIAL);
 		if (var_start_pict_rotations <= 10) {
+			// if the "SPECIAL" mode is off, then the value for "bottom transparency"
+			// is reused to specify a counter-clock-wise rotation
+			if (static_cast<int8_t>(pict.finish_bot_trans) >= 50) {
+				pict.current_rotation -= pict.current_effect_power;
+				return true;
+			}
 			return false;
 		}
 		if (pict.ID <= 50) {
