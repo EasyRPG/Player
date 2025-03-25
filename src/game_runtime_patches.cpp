@@ -18,6 +18,7 @@
 // Headers
 #include "game_runtime_patches.h"
 
+#include <cmath>
 #include "game_map.h"
 #include "game_party.h"
 #include "game_switches.h"
@@ -31,7 +32,7 @@
 #include "input.h"
 #include "scene.h"
 #include "scene_load.h"
-#include <baseui.h>
+#include "baseui.h"
 
 namespace {
 	template<size_t C>
@@ -348,7 +349,6 @@ namespace RuntimePatches::PowerMode2003 {
 	}
 
 	void HandleFloatComputation() {
-		const float   PI = 3.14159265358979f;
 		auto input1 = static_cast<float>(Main_Data::game_variables->Get(PM_VAR_FVALUE1));
 
 		// Some versions of the documentation for this patch have the target ids swapped.
@@ -358,22 +358,22 @@ namespace RuntimePatches::PowerMode2003 {
 		switch (Main_Data::game_variables->Get(PM_VAR_FCODE)) {
 			case 1:
 			{
-				auto v_sin = std::sinf(input1 * PI / 180);
-				auto v_cos = std::cosf(input1 * PI / 180);
+				auto v_sin = std::sin(input1 * M_PI / 180);
+				auto v_cos = std::cos(input1 * M_PI / 180);
 				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_sin * 1'000'000));
 				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_cos * 1'000'000));
 				break;
 			}
 			case 2:
 			{
-				auto v_tan = std::tanf(input1 * PI / 180);
+				auto v_tan = std::tan(input1 * M_PI / 180);
 				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_tan * 1'000'000));
 				break;
 			}
 			case 3:
 			{
 				float v_int;
-				float v_fract = std::modf(std::sqrtf(input1), &v_int);
+				float v_fract = std::modf(std::sqrt(input1), &v_int);
 				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_int));
 				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_fract * 1'000'000));
 				break;
