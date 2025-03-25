@@ -219,7 +219,7 @@ std::string Game_Strings::FromFile(std::string_view filename, int encoding, bool
 	return file_content;
 }
 
-std::string_view Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
+bool Game_Strings::ToFile(Str_Params params, std::string filename, int encoding) {
 	std::string str = ToString(Get(params.string_id));
 
 	if (params.extract) {
@@ -242,13 +242,13 @@ std::string_view Game_Strings::ToFile(Str_Params params, std::string filename, i
 	if (!txt_out) {
 		if (!FileFinder::Save().MakeDirectory(txt_dir, false)) {
 			Output::Warning("Maniac String Op ToFile failed. Cannot create directory {}", txt_dir);
-			return {};
+			return false;
 		}
 
 		txt_out = FileFinder::Save().OpenOutputStream(filename);
 		if (!txt_out) {
 			Output::Warning("Maniac String Op ToFile failed. Cannot write to {}", filename);
-			return {};
+			return false;
 		}
 	}
 
@@ -262,7 +262,7 @@ std::string_view Game_Strings::ToFile(Str_Params params, std::string filename, i
 
 	AsyncHandler::SaveFilesystem();
 
-	return str;
+	return true;
 }
 
 std::string_view Game_Strings::PopLine(Str_Params params, int offset, int string_out_id) {
@@ -320,8 +320,10 @@ std::string_view Game_Strings::ExMatch(Str_Params params, std::string expr, int 
 	if (string_out_id > 0) {
 		params.string_id = string_out_id;
 		Set(params, str_result);
+
+		return Get(params.string_id);
 	}
-	return str_result;
+	return {};
 }
 
 const Game_Strings::Strings_t& Game_Strings::RangeOp(Str_Params params, int string_id_1, std::string string, int op, int args[], Game_Variables& variables) {
