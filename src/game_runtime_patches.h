@@ -49,6 +49,10 @@ namespace RuntimePatches {
 
 	void DetermineActivePatches(std::vector<std::string>& patches);
 
+	void OnResetGameObjects();
+
+	void OnLoadSavegame();
+
 	// Handles patch side effects caused by Variable changes. This function is meant
 	// to be called only for operations that are possible in an unpatched RPG_RT!
 	void OnVariableChanged(int variable_id);
@@ -211,6 +215,23 @@ namespace RuntimePatches {
 		constexpr uint32_t InputKeyToVirtualKey(Input::Keys::InputKey input_key);
 	}
 
+
+	/**
+	 * Support for RPG_RT patch 'Power Mode 2003'.
+	 *  (aka. "Mega Patch 2003" in Italian scene)
+	 * 
+	 * This patch adds some specialiced commands by hooking into
+	 * the first 8 in-game variables, functionally using them
+	 * as 'Control Registers'.
+	 *
+	 * These new commands include:
+	 * - V[1]:   Calling up the Load menu, Exiting the game
+	 *             & Checking for the existence of Savefiles
+	 * - V[2-3]: Retrieving the current coordinates of the mouse cursor.
+	 * - V[4]:   Retrieving key inputs for entire keyboard.
+	 * - V[5-7]: Floating-point operations
+	 * - V[8]:   Specifying custom rotation for Picture IDs 1 - 50
+	 * */
 	namespace PowerMode2003 {
 		constexpr int PM_VAR_CR0 = 1;
 		constexpr int PM_VAR_MCOORDX = 2;
@@ -221,8 +242,8 @@ namespace RuntimePatches {
 		constexpr int PM_VAR_FCODE = 7;
 		constexpr int PM_VAR_SPECIAL = 8;
 
-		void Init();
 		void HandleVariableHooks(int var_id);
+
 		bool ApplyPictureRotation(lcf::rpg::SavePicture& pict);
 	}
 }
