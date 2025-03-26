@@ -113,6 +113,11 @@ add_library(${PROJECT_NAME} OBJECT
 	src/dynrpg_textplugin.h
 	src/enemyai.cpp
 	src/enemyai.h
+	src/exe_buildinfo.h
+	src/exe_constants.h
+	src/exe_patches.h
+	src/exe_shared.h
+	src/exe_strings.h
 	src/exe_reader.cpp
 	src/exe_reader.h
 	src/exfont.h
@@ -170,6 +175,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_destiny.h
 	src/game_dynrpg.cpp
 	src/game_dynrpg.h
+	src/game_dynrpg_loader.cpp
+	src/game_dynrpg_loader.h
 	src/game_enemy.cpp
 	src/game_enemy.h
 	src/game_enemyparty.cpp
