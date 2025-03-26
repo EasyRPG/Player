@@ -28,7 +28,7 @@
 #include "filefinder.h"
 #include "filesystem_stream.h"
 #include "player.h"
-#include "scene_save.h"
+#include "scene.h"
 #include "output.h"
 
 void Emscripten_Interface::Reset() {
@@ -37,7 +37,7 @@ void Emscripten_Interface::Reset() {
 
 bool Emscripten_Interface::DownloadSavegame(int slot) {
 	auto fs = FileFinder::Save();
-	std::string name = Scene_Save::GetSaveFilename(fs, slot);
+	std::string name = FileFinder::GetSaveFilename(fs, slot);
 	auto is = fs.OpenInputStream(name);
 	if (!is) {
 		return false;
@@ -85,7 +85,7 @@ void Emscripten_Interface::TakeScreenshot() {
 
 bool Emscripten_Interface_Private::UploadSavegameStep2(int slot, int buffer_addr, int size) {
 	auto fs = FileFinder::Save();
-	std::string name = Scene_Save::GetSaveFilename(fs, slot);
+	std::string name = FileFinder::GetSaveFilename(fs, slot);
 
 	std::istream is(new Filesystem_Stream::InputMemoryStreamBufView(lcf::Span<uint8_t>(reinterpret_cast<uint8_t*>(buffer_addr), size)));
 

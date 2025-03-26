@@ -172,7 +172,7 @@ namespace Player {
 	 * @param save_file Savegame file to load
 	 * @param save_id ID of the savegame to load
 	 */
-	void LoadSavegame(const std::string& save_file, int save_id = 0);
+	void LoadSavegame(const std::string& save_file, int save_id = 0, bool load_parallel = false);
 
 	/**
 	 * Starts a new game
@@ -415,6 +415,9 @@ namespace Player {
 	/** Translation manager, including list of languages and current translation. */
 	extern Translation translation;
 
+	/** If true, the game will be forced to stay at the title scene, even if the "new_game" option is set. */
+	extern bool force_make_to_title_flag;
+
 	/**
 	 * The default speed modifier applied when the speed up button is pressed
 	 *  Only used for configuring the speedup, don't read this var directly use
@@ -435,6 +438,10 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
+
+	namespace Constants {
+		int32_t MaxSaveFiles();
+	}
 }
 
 inline bool Player::IsRPG2k() {
