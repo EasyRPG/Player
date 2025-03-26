@@ -1017,6 +1017,7 @@ void Scene_Debug::DoVariable() {
 	const auto value = GetFrame(0).value;
 	Main_Data::game_variables->Set(var_id, value);
 	Game_Map::SetNeedRefresh(true);
+	RuntimePatches::OnVariableChanged(var_id);
 
 	Pop();
 }
