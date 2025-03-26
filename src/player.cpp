@@ -837,8 +837,6 @@ void Player::CreateGameObjects() {
 			game_config.patch_destiny.Set(true);
 		}
 
-		// PowerMode2003 can be detected via the existence of the files "hvm.dll", "fmodex.dll" &
-		// "warp.dll", but some games seem to only ship with the latter of the three.
 		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
 			game_config.patch_powermode.Set(true);
 		}
@@ -1487,6 +1485,7 @@ Engine options:
                       version of the engine.
  --patch-rpg2k3-cmds  Support all RPG Maker 2003 event commands in any version
                       of the engine.
+ --patch-powermode    Enable PowerMode 2003 Patch by Firesta.
  --no-patch           Disable all engine patches. To disable a single patch,
                       prefix any of the patch options with --no-
  --project-path PATH  Instead of using the working directory, the game in PATH
