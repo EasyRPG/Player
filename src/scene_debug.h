@@ -111,12 +111,13 @@ private:
 	/** Creates interpreter window. */
 	void CreateInterpreterWindow();
 
-
 	/** Get the last page for the current mode */
-	int GetLastPage();
+	int GetLastPage() const;
 
 	/** Get the first item number for the selected range */
 	int GetSelectedIndexFromRange() const;
+
+	int GetSelectedIndexFromRange(Window_VarList::Mode window_mode, int range_page, int range_index) const;
 
 	void RestoreRangeSelectionFromSelectedValue(int value);
 
@@ -175,6 +176,8 @@ private:
 	void PushUiInterpreterView();
 
 	Window_VarList::Mode GetWindowMode() const;
+	static constexpr Window_VarList::Mode GetWindowMode(Mode mode);
+
 	void UpdateFrameValueFromUi();
 	void UpdateDetailWindow();
 	void RefreshDetailWindow();
@@ -183,9 +186,6 @@ private:
 
 	void UpdateArrows();
 	int arrow_frame = 0;
-
-	bool strings_cached = false;
-	std::vector<lcf::DBString> strings;
 
 	bool interpreter_states_cached = false;
 
@@ -205,5 +205,32 @@ private:
 		int selected_frame = -1;
 	} state_interpreter;
 };
+
+constexpr Window_VarList::Mode Scene_Debug::GetWindowMode(Mode mode) {
+	switch (mode) {
+		case eSwitch:
+			return Window_VarList::eSwitch;
+		case eVariable:
+			return Window_VarList::eVariable;
+		case eItem:
+			return Window_VarList::eItem;
+		case eBattle:
+			return Window_VarList::eTroop;
+		case eMap:
+			return Window_VarList::eMap;
+		case eFullHeal:
+			return Window_VarList::eHeal;
+		case eLevel:
+			return Window_VarList::eLevel;
+		case eCallCommonEvent:
+			return Window_VarList::eCommonEvent;
+		case eCallMapEvent:
+			return Window_VarList::eMapEvent;
+		case eString:
+			return Window_VarList::eString;
+		default:
+			return Window_VarList::eNone;
+	}
+}
 
 #endif

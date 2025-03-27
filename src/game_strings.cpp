@@ -18,6 +18,7 @@
  // Headers
 #include <regex>
 #include <lcf/encoder.h>
+#include <lcf/reader_util.h>
 #include "async_handler.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -510,3 +511,26 @@ std::optional<std::string> Game_Strings::ManiacsCommandInserterHex(char ch, cons
 
 	return ManiacsCommandInserter(ch, iter, end, escape_char);
 };
+
+int Game_Strings::GetSizeWithLimit() {
+	if (_size < 0) {
+		_size = 0;
+		for (auto& [index, value] : _strings) {
+			assert(index > 0);
+			if (index > _size) {
+				_size = index;
+			}
+		}
+	}
+	return std::max(_size, static_cast<int>(lcf::Data::maniac_string_variables.size()));
+}
+
+std::string_view Game_Strings::GetName(int id) const {
+	const auto* strvar = lcf::ReaderUtil::GetElement(lcf::Data::maniac_string_variables, id);
+
+	if (!strvar) {
+		return {};
+	} else {
+		return strvar->name;
+	}
+}

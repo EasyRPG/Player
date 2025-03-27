@@ -61,6 +61,7 @@ namespace Data {
 	extern rpg::System& system;
 	extern std::vector<rpg::Switch>& switches;
 	extern std::vector<rpg::Variable>& variables;
+	extern std::vector<rpg::StringVariable>& maniac_string_variables;
 	/** @} */
 
 	/** TreeMap (lmt) */
