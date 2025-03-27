@@ -85,7 +85,6 @@ void Scene_Debug::Start() {
 	UpdateRangeListWindow();
 	RefreshDetailWindow();
 
-	strings_cached = false;
 	interpreter_states_cached = false;
 }
 
@@ -106,30 +105,7 @@ int Scene_Debug::GetStackSize() const {
 }
 
 Window_VarList::Mode Scene_Debug::GetWindowMode() const {
-	switch (mode) {
-		case eSwitch:
-			return Window_VarList::eSwitch;
-		case eVariable:
-			return Window_VarList::eVariable;
-		case eItem:
-			return Window_VarList::eItem;
-		case eBattle:
-			return Window_VarList::eTroop;
-		case eMap:
-			return Window_VarList::eMap;
-		case eFullHeal:
-			return Window_VarList::eHeal;
-		case eLevel:
-			return Window_VarList::eLevel;
-		case eCallCommonEvent:
-			return Window_VarList::eCommonEvent;
-		case eCallMapEvent:
-			return Window_VarList::eMapEvent;
-		case eString:
-			return Window_VarList::eString;
-		default:
-			return Window_VarList::eNone;
-	}
+	return GetWindowMode(mode);
 }
 
 void Scene_Debug::UpdateFrameValueFromUi() {
@@ -146,8 +122,8 @@ void Scene_Debug::UpdateFrameValueFromUi() {
 			frame.value = GetSelectedIndexFromRange() - 1;
 			break;
 		case eUiVarList:
-			idx.range_page_index = var_window->GetIndex();
-			frame.value = GetSelectedIndexFromRange() + var_window->GetIndex();
+			idx.range_page_index = var_window->GetItemIndex();
+			frame.value = GetSelectedIndexFromRange() + var_window->GetItemIndex();
 			break;
 		case eUiNumberInput:
 			frame.value = numberinput_window->GetNumber();
@@ -182,13 +158,23 @@ void Scene_Debug::Push(UiMode ui) {
 }
 
 int Scene_Debug::GetSelectedIndexFromRange() const {
+	return GetSelectedIndexFromRange(GetWindowMode(), this->range_page, this->range_index);
+}
+
+int Scene_Debug::GetSelectedIndexFromRange(Window_VarList::Mode window_mode, int range_page, int range_index) const {
 	switch (mode) {
 		case eInterpreter:
 			return range_page * 10 + range_index + 1;
 		default:
-			return range_page * 100 + range_index * 10 + 1;
+			break;
 	}
+	if (window_mode == Window_VarList::eNone) {
+		return range_page * 100 + range_index * 10 + 1;
+	}
+	const int item_count = var_window->GetItemCount();
+	return range_page * item_count * 10 + range_index * item_count + 1;;
 }
+
 
 void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
 	switch (mode) {
@@ -197,9 +183,16 @@ void Scene_Debug::RestoreRangeSelectionFromSelectedValue(int value) {
 			range_page = value / 10;
 			break;
 		default:
-			range_index = (value % 100) / 10;
-			range_page = value / 100;
 			break;
+	}
+	auto window_mode = GetWindowMode();
+	if (window_mode == Window_VarList::eNone) {
+		range_index = (value % 100) / 10;
+		range_page = value / 100;
+	} else {
+		const int item_count = var_window->GetItemCount();
+		range_index = (value % (item_count * 10)) / item_count;
+		range_page = value / (item_count * 10);
 	}
 }
 
@@ -213,7 +206,7 @@ void Scene_Debug::SetupUiRangeList() {
 	//if (mode == eInterpreter && (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars)) {
 	//	var_window->SetMode(state_interpreter.show_frame_switches ? Window_VarList::eFrameSwitch : Window_VarList::eFrameVariable);
 	//} else {
-		var_window->SetMode(vmode, mode == eString ? strings.size() : 0);
+		var_window->SetMode(vmode);
 	//}
 	UpdateDetailWindow();
 
@@ -247,7 +240,7 @@ void Scene_Debug::PushUiVarList() {
 	}
 
 	var_window->SetActive(true);
-	var_window->SetIndex(idx.range_page_index);
+	var_window->SetItemIndex(idx.range_page_index);
 
 	UpdateRangeListWindow();
 	var_window->Refresh();
@@ -377,7 +370,7 @@ void Scene_Debug::Pop() {
 			break;
 		case eUiVarList:
 			var_window->SetActive(true);
-			var_window->SetIndex((frame.value - 1) % 10);
+			var_window->SetItemIndex((frame.value - 1) % var_window->GetItemCount());
 			break;
 		case eUiNumberInput:
 			numberinput_window->SetNumber(frame.value);
@@ -457,6 +450,13 @@ void Scene_Debug::vUpdate() {
 
 		const auto sz = GetStackSize();
 		const auto& frame = GetFrame();
+
+		if (frame.uimode == eUiRangeList && !range_window->IsItemEnabled(range_window->GetIndex())) {
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+			UpdateArrows();
+			return;
+		}
+
 		switch (mode) {
 			case eMain:
 			case eLastMainMenuOption:
@@ -611,10 +611,6 @@ void Scene_Debug::vUpdate() {
 				} else if (sz == 2) {
 					PushUiVarList();
 				} else if (sz == 1) {
-					if (!strings_cached) {
-						strings = Main_Data::game_strings->GetLcfData();
-						strings_cached = true;
-					}
 					PushUiRangeList();
 				}
 				break;
@@ -677,6 +673,14 @@ void Scene_Debug::vUpdate() {
 			UpdateRangeListWindow();
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
 		}
+	} else if (range_window->GetActive() && Input::IsTriggered(Input::SHIFT)) {
+		if (mode == eString) {
+			var_window->SetShowDetail(!var_window->GetShowDetail());
+			UpdateDetailWindow();
+			RefreshDetailWindow();
+			UpdateRangeListWindow();
+			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cursor));
+		}
 	}
 
 	UpdateArrows();
@@ -705,10 +709,54 @@ void Scene_Debug::UpdateRangeListWindow() {
 		++idx;
 	};
 
-	auto fillRange = [&](const auto& prefix) {
-		for (int i = 0; i < 10; i++){
-			const auto st = range_page * 100 + i * 10 + 1;
-			addItem(fmt::format("{}[{:04d}-{:04d}]", prefix, st, st + 9));
+	auto fillRange = [&](Window_VarList::Mode mode) {
+		auto prefix = Window_VarList::GetPrefix(mode);
+		int digits = Window_VarList::GetDigitCount(mode);
+		const int item_count = Window_VarList::GetItemCount(mode, var_window->GetShowDetail());
+		assert(digits >= 2 && digits <= 5);
+
+		// Allow some extra space when displaying switches & variables that go above the usual range
+		if (mode == Window_VarList::eSwitch || mode == Window_VarList::eVariable) {
+			const auto st = GetSelectedIndexFromRange(mode, range_page, 0);
+			if (st > 9999) {
+				digits = 5;
+				prefix = prefix.substr(0, 1);
+			} else if (st > 99999) {
+				digits = 6;
+				prefix = prefix.substr(0, 1);
+			}
+		}
+
+		const int num_elements = Window_VarList::GetNumElements(mode);
+
+		for (int i = 0; i < 10; i++) {
+			const auto st = GetSelectedIndexFromRange(mode, range_page, i);
+			if (st > num_elements) {
+				addItem("", false);
+				continue;
+			}
+			int end = st + item_count - 1;
+			if (num_elements > 0 && end > num_elements) {
+				end = num_elements;
+			}
+			switch (digits) {
+				case 2:
+					addItem(fmt::format("{}[{:02d}-{:02d}]", prefix, st, end));
+					break;
+				case 3:
+					addItem(fmt::format("{}[{:03d}-{:03d}]", prefix, st, end));
+					break;
+				case 4:
+					addItem(fmt::format("{}[{:04d}-{:04d}]", prefix, st, end));
+					break;
+				case 5:
+					addItem(fmt::format("{}[{:05d}...{:02d}]", prefix, st, end % 100));
+					break;
+				case 6:
+					addItem(fmt::format("{}[{:06d}..{:02d}]", prefix, st, end % 100));
+					break;
+				default: break;
+			}
 		}
 	};
 
@@ -736,16 +784,11 @@ void Scene_Debug::UpdateRangeListWindow() {
 			}
 			break;
 		case eSwitch:
-			fillRange("Sw");
-			break;
 		case eVariable:
-			fillRange("Vr");
-			break;
 		case eItem:
-			fillRange("It");
-			break;
 		case eBattle:
-			fillRange("Bt");
+		case eString:
+			fillRange(GetWindowMode());
 			break;
 		case eMap:
 			if (GetStackSize() > 3) {
@@ -758,11 +801,11 @@ void Scene_Debug::UpdateRangeListWindow() {
 					addItem("X: ");
 				}
 			} else {
-				fillRange("Mp");
+				fillRange(Window_VarList::eMap);
 			}
 			break;
 		case eCallCommonEvent:
-			fillRange("Ce");
+			fillRange(GetWindowMode());
 			break;
 		case eCallMapEvent:
 			if (GetStackSize() > 3) {
@@ -778,7 +821,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 					addItem(fmt::format("Y: {}", event->GetY()));
 				}
 			} else {
-				fillRange("Me");
+				fillRange(GetWindowMode());
 			}
 			break;
 		case eGold:
@@ -807,9 +850,6 @@ void Scene_Debug::UpdateRangeListWindow() {
 					addItem(fmt::format("NumPages: {}", troop->pages.size()));
 				}
 			}
-			break;
-		case eString:
-			fillRange("St");
 			break;
 		case eInterpreter:
 		{
@@ -889,10 +929,7 @@ void Scene_Debug::RefreshDetailWindow() {
 }
 
 void Scene_Debug::CreateVarListWindow() {
-	std::vector<std::string> vars;
-	for (int i = 0; i < 10; i++)
-		vars.push_back("");
-	var_window.reset(new Window_VarList(vars));
+	var_window.reset(new Window_VarList());
 	var_window->SetX(Player::menu_offset_x + range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->SetVisible(false);
@@ -938,7 +975,7 @@ int Scene_Debug::GetNumMainMenuItems() const {
 	return static_cast<int>(eLastMainMenuOption) - 1;
 }
 
-int Scene_Debug::GetLastPage() {
+int Scene_Debug::GetLastPage() const {
 	size_t num_elements = 0;
 	switch (mode) {
 		case eMain:
@@ -971,7 +1008,7 @@ int Scene_Debug::GetLastPage() {
 			num_elements = Game_Map::GetHighestEventId();
 			break;
 		case eString:
-			num_elements = strings.size();
+			num_elements = Main_Data::game_strings->GetSizeWithLimit();
 			break;
 		case eInterpreter:
 			//if (state_interpreter.show_frame_switches) {

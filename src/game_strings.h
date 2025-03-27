@@ -77,6 +77,9 @@ public:
 	std::string_view GetWithMode(std::string_view str_data, int mode, int arg, const Game_Variables& variables) const;
 	std::string GetWithModeAndPos(std::string_view str_data, int mode, int arg, int& pos, const Game_Variables& variables);
 
+	int GetSizeWithLimit();
+	std::string_view GetName(int id) const;
+
 #ifdef HAVE_NLOHMANN_JSON
 	nlohmann::ordered_json* ParseJson(int id);
 #endif
@@ -112,6 +115,7 @@ private:
 
 	Strings_t _strings;
 	mutable int _warnings = max_warnings;
+	int _size = -1;
 
 #ifdef HAVE_NLOHMANN_JSON
 	std::unordered_map<int, nlohmann::ordered_json> _json_cache;
@@ -134,6 +138,9 @@ inline void Game_Strings::Set(Str_Params params, std::string_view string) {
 			return;
 		} else {
 			_strings[params.string_id] = ins_string;
+			if (params.string_id > _size) {
+				_size = params.string_id;
+			}
 		}
 	} else {
 		it->second = ins_string;
@@ -146,6 +153,7 @@ inline void Game_Strings::Set(Str_Params params, std::string_view string) {
 
 inline void Game_Strings::SetData(Strings_t s) {
 	_strings = std::move(s);
+	_size = -1;
 
 #ifdef HAVE_NLOHMANN_JSON
 	_json_cache.clear();
@@ -160,7 +168,9 @@ inline void Game_Strings::SetData(const std::vector<lcf::DBString>& s) {
 		}
 		++i;
 	}
-
+	if ((i - 1) > _size) {
+		_size = i - 1;
+	}
 #ifdef HAVE_NLOHMANN_JSON
 	_json_cache.clear();
 #endif

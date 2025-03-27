@@ -24,17 +24,25 @@
 #include "game_strings.h"
 #include "bitmap.h"
 #include <lcf/data.h>
-#include "output.h"
 #include <lcf/reader_util.h>
+#include "input.h"
+#include "output.h"
 #include "game_party.h"
 #include "game_map.h"
+#include "game_system.h"
 
-Window_VarList::Window_VarList(std::vector<std::string> commands) :
-Window_Command(commands, 224, 10) {
-	SetX(0);
-	SetY(32);
-	SetHeight(176);
-	SetWidth(224);
+constexpr int LINE_COUNT = 10;
+
+Window_VarList::Window_VarList() :
+	Window_Selectable(0, 32, 224, 176) {
+
+	item_max = LINE_COUNT;
+	items.reserve(LINE_COUNT);
+	for (int i = 0; i < LINE_COUNT; i++)
+		items.push_back("");
+
+	index = 0;
+	SetContents(Bitmap::Create(this->width - 16, item_max * menu_item_height));
 }
 
 Window_VarList::~Window_VarList() {
@@ -43,38 +51,55 @@ Window_VarList::~Window_VarList() {
 
 void Window_VarList::Refresh() {
 	contents->Clear();
-	for (int i = 0; i < 10; i++) {
+
+	for (int i = 0; i < LINE_COUNT; i++) {
+		DrawItem(i, Font::ColorDefault);
+	}
+	const int item_count = GetItemCount();
+	for (int i = 0; i < item_count; i++) {
 		DrawItemValue(i);
 	}
+}
+
+int Window_VarList::GetItemIndex() const {
+	return GetIndex() * GetItemCount() / LINE_COUNT;
+}
+
+void Window_VarList::SetItemIndex(int index) {
+	SetIndex(index * LINE_COUNT / GetItemCount());
+}
+
+void Window_VarList::DrawItem(int index, Font::SystemColor color) {
+	const int y = menu_item_height * index + 2;
+	contents->ClearRect(Rect(0, y, contents->GetWidth() - 0, menu_item_height));
+	contents->TextDraw(0, y + menu_item_height / 8, color, items[index]);
 }
 
 void Window_VarList::DrawItemValue(int index){
 	if (!DataIsValid(first_var+index)) {
 		return;
 	}
+	const int y = menu_item_height * index * LINE_COUNT / GetItemCount() + 2;
 	switch (mode) {
 		case eSwitch:
 			{
 				auto value = Main_Data::game_switches->Get(first_var + index);
 				auto font = (!value) ? Font::ColorCritical : Font::ColorDefault;
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, value ? "[ON]" : "[OFF]", Text::AlignRight);
+				contents->TextDraw(GetWidth() - 16, y, font, value ? "[ON]" : "[OFF]", Text::AlignRight);
 			}
 			break;
 		case eVariable:
 			{
 				auto value = Main_Data::game_variables->Get(first_var + index);
 				auto font = (value < 0) ? Font::ColorCritical : Font::ColorDefault;
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
+				contents->TextDraw(GetWidth() - 16, y, font, std::to_string(value), Text::AlignRight);
 			}
 			break;
 		case eItem:
 			{
 				auto value = Main_Data::game_party->GetItemCount(first_var + index);
 				auto font = (value == 0) ? Font::ColorCritical : Font::ColorDefault;
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
+				contents->TextDraw(GetWidth() - 16, y, font, std::to_string(value), Text::AlignRight);
 			}
 			break;
 		case eTroop:
@@ -83,35 +108,17 @@ void Window_VarList::DrawItemValue(int index){
 		case eCommonEvent:
 		case eMapEvent:
 			{
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
+				contents->TextDraw(GetWidth() - 16, y, Font::ColorDefault, "", Text::AlignRight);
 			}
 			break;
 		case eLevel:
 			{
 				auto value = Main_Data::game_party->GetActors()[first_var + index - 1]->GetLevel();
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, std::to_string(value), Text::AlignRight);
+				contents->TextDraw(GetWidth() - 16, y, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 			}
 			break;
 		case eString:
-		{
-			auto value = ToString(Main_Data::game_strings->Get(first_var + index));
-			DrawItem(index, Font::ColorDefault);
-			if (value.empty()) {
-				contents->TextDraw(34, 16 * index + 2, Font::ColorDisabled, "undefined", Text::AlignLeft);
-			} else {
-				size_t pos = 0;
-				while ((pos = value.find("\n", pos)) != std::string::npos) {
-					value.replace(pos, 1, "\\n");
-					pos += 3;
-				}
-				if (value.length() > 28) {
-					value = value.substr(0, 25) + "...";
-				}
-				contents->TextDraw(34, 16 * index + 2, Font::ColorDefault, value, Text::AlignLeft);
-			}
-		}
+			DrawStringVarItem(index, y);
 		break;
 		case eNone:
 			break;
@@ -127,12 +134,18 @@ void Window_VarList::UpdateList(int first_value){
 				[](const lcf::rpg::MapInfo& l, int r) { return l.ID < r; });
 		map_idx = iter - lcf::Data::treemap.maps.begin();
 	}
-	for (int i = 0; i < 10; i++){
+
+	for (int i = 0; i < LINE_COUNT; i++) {
+		this->SetItemText(i, "");
+	}
+
+	const int item_count = GetItemCount();
+	for (int i = 0; i < item_count; i++){
 		if (!DataIsValid(first_var+i)) {
 			continue;
 		}
 		ss.str("");
-		ss << std::setfill('0') << std::setw(4) << (first_value + i) << ": ";
+		ss << std::setfill('0') << std::setw(GetDigitCount()) << (first_value + i) << ": ";
 		switch (mode) {
 			case eSwitch:
 				ss << Main_Data::game_switches->GetName(first_value + i);
@@ -173,19 +186,33 @@ void Window_VarList::UpdateList(int first_value){
 				ss << lcf::ReaderUtil::GetElement(lcf::Data::commonevents, first_value+i)->name;
 				break;
 			case eMapEvent:
-				ss << Game_Map::GetEvent(first_value+i)->GetName();
+				ss << Game_Map::GetEvent(first_value + i)->GetName();
 				break;
 			case eString:
+				if (show_detail) {
+					std::string strvar_name = ToString(Main_Data::game_strings->GetName(first_value + i));
+					if (strvar_name.empty()) {
+						strvar_name = "---";
+					}
+					ss << strvar_name;
+				}
+				break;
 			default:
 				break;
 		}
-		this->SetItemText(i, ss.str());
+		int item_idx = i * LINE_COUNT / item_count;
+		this->SetItemText(item_idx, ss.str());
 	}
 }
 
-void Window_VarList::SetMode(Mode mode, int max_length_strings) {
+void Window_VarList::SetItemText(unsigned index, std::string_view text) {
+	if (index < item_max) {
+		items[index] = ToString(text);
+	}
+}
+
+void Window_VarList::SetMode(Mode mode) {
 	this->mode = mode;
-	this->max_length_strings = max_length_strings;
 	SetVisible((mode != eNone));
 	Refresh();
 }
@@ -211,10 +238,102 @@ bool Window_VarList::DataIsValid(int range_index) {
 		case eMapEvent:
 			return Game_Map::GetEvent(range_index) != nullptr;
 		case eString:
-			return range_index > 0 && range_index <= max_length_strings;
+			return range_index > 0 && range_index <= Main_Data::game_strings->GetSizeWithLimit();
 		default:
 			break;
 	}
 	return false;
 }
 
+int Window_VarList::GetNumElements(Mode mode) {
+	switch (mode) {
+		case Window_VarList::eSwitch:
+			return Main_Data::game_switches->GetSizeWithLimit();
+		case Window_VarList::eVariable:
+			return Main_Data::game_variables->GetSizeWithLimit();
+		case eItem:
+			return static_cast<int>(lcf::Data::items.size());
+		case eTroop:
+			return static_cast<int>(lcf::Data::troops.size());
+		case eMap:
+			return lcf::Data::treemap.maps.size() > 0 ? lcf::Data::treemap.maps.back().ID : 0;
+		case eCommonEvent:
+			return static_cast<int>(lcf::Data::commonevents.size());
+		case eMapEvent:
+			return Game_Map::GetHighestEventId();
+		case eString:
+			return Main_Data::game_strings->GetSizeWithLimit();
+		default:
+			return -1;
+	}
+}
+
+void Window_VarList::Update() {
+	int index_prev = this->index;
+
+	if (show_detail) {
+		suspend_cursor_refresh = true;
+	}
+
+	Window_Selectable::Update();
+
+	if (show_detail) {
+		int div = LINE_COUNT / GetItemCount();
+		if (int offs = index % div; offs > 0) {
+			if (index < index_prev) {
+				index -= offs;
+				if (index < 0) {
+					index = 0;
+				}
+			} else if (index > index_prev) {
+				index -= offs;
+				if (index + div < item_max) {
+					index += div;
+				} else if (index_prev != 0) {
+					index = 0;
+				}
+			}
+		}
+		suspend_cursor_refresh = false;
+		UpdateCursorRect();
+		SetCursorRect({ cursor_rect.x, cursor_rect.y, cursor_rect.width, cursor_rect.height * div });
+	}
+}
+
+void Window_VarList::UpdateCursorRect() {
+	if (suspend_cursor_refresh) {
+		return;
+	}
+	Window_Selectable::UpdateCursorRect();
+}
+
+void Window_VarList::DrawStringVarItem(int index, int y) {
+	auto value = ToString(Main_Data::game_strings->Get(first_var + index));
+	const int space_reserved = (GetDigitCount() + 2);
+	int x = space_reserved * 6, max_len_vals = 32 - space_reserved;
+
+	if (show_detail) {
+		x = 6;
+		y += menu_item_height;
+		max_len_vals += space_reserved;
+	}
+	if (value.empty()) {
+		contents->TextDraw(x, y, Font::ColorDisabled, "undefined", Text::AlignLeft);
+	} else {
+		size_t pos = 0;
+		while ((pos = value.find("\n", pos)) != std::string::npos) {
+			value.replace(pos, 1, "\\n");
+			pos += 3;
+		}
+		if (value.length() > max_len_vals) {
+			value = value.substr(0, max_len_vals - 3) + "...";
+		}
+		if (show_detail) {
+			contents->TextDraw(x, y, Font::ColorDisabled, "\"", Text::AlignLeft);
+			contents->TextDraw(x + 6, y, Font::ColorCritical, value, Text::AlignLeft);
+			contents->TextDraw(x + value.length() * 6 + 6, y, Font::ColorDisabled, "\"", Text::AlignLeft);
+		} else {
+			contents->TextDraw(x, y, Font::ColorCritical, value, Text::AlignLeft);
+		}
+	}
+}
