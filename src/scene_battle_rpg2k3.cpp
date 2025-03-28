@@ -421,7 +421,7 @@ void Scene_Battle_Rpg2k3::UpdateAnimations() {
 		}
 	}
 
-	auto frame_counter = Main_Data::game_system->GetFrameCounter();
+	auto frame_counter = static_cast<uint32_t>(Main_Data::game_system->GetFrameCounter());
 
 	bool ally_set = false;
 	if (status_window->GetActive()

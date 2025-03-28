@@ -143,7 +143,7 @@ static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 // Set of neighboring autotiles -> autotile variant
 // Each neighbor is represented by a single bit (1 - same autotile, 0 - any other case)
 // The bits are ordered as follows (from most to least significant bit): NW N NE W E SW S SE
-static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = { //it also works with A 
+static const std::unordered_map<uint8_t, int> AUTOTILE_D_VARIANTS_MAP = { //it also works with A
 	{0b11111111, 0},
 	{0b01111111, 1},
 	{0b11011111, 2},
@@ -285,7 +285,7 @@ void TilemapLayer::Draw(Bitmap& dst, uint8_t z_order, int render_ox, int render_
 	};
 
 	// FIXME: When Game_Map singleton is made an object we can remove this null check
-	const auto frames = Main_Data::game_system ? Main_Data::game_system->GetFrameCounter() : 0;
+	const auto frames = Main_Data::game_system ? static_cast<uint32_t>(Main_Data::game_system->GetFrameCounter()) : 0u;
 	auto animation_step_c = (frames / 6) % 4;
 	auto animation_step_ab = frames / animation_speed;
 	if (animation_type) {
