@@ -371,7 +371,7 @@ RETRO_API void retro_get_system_info(struct retro_system_info* info) {
 	info->library_name = GAME_TITLE;
 	info->library_version = PLAYER_VERSION_FULL;
 	info->need_fullpath = true;
-	info->valid_extensions = "ldb|zip|easyrpg";
+	info->valid_extensions = "ldb|zip|lzh|easyrpg";
 	info->block_extract = true;
 }
 
