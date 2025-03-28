@@ -86,7 +86,7 @@
 #include "message_overlay.h"
 #include "audio_midi.h"
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
 #endif
 
@@ -376,7 +376,7 @@ void Player::Update(bool update_scene) {
 		Scene::instance->Update();
 	}
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 	EpAndroid::invoke();
 #endif
 }
