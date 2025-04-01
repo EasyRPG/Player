@@ -112,6 +112,10 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 			bgm_pending = true;
 			FileRequestAsync* request = AsyncHandler::RequestFile("Music", bgm.name);
 			music_request_id = request->Bind(&Game_System::OnBgmReady, this);
+			if (EndsWith(bgm.name, ".script")) {
+				// Is a Ineluki Script File
+				request->SetImportantFile(true);
+			}
 			request->Start();
 		}
 	} else {
@@ -533,6 +537,12 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	} else if (!stream) {
 		Output::Debug("Music not found: {}", result->file);
+		return;
+	}
+
+	if (Player::IsPatchKeyPatch() && EndsWith(result->file, ".script")) {
+		// Is a Ineluki Script File
+		Main_Data::game_ineluki->Execute(result->file);
 		return;
 	}
 

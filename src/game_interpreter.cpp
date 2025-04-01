@@ -71,6 +71,7 @@
 #include "baseui.h"
 #include "algo.h"
 #include "rand.h"
+#include <scene_load.h>
 
 using namespace Game_Interpreter_Shared;
 
@@ -1970,9 +1971,41 @@ bool Game_Interpreter::CommandWait(lcf::rpg::EventCommand const& com) { // code 
 	return false;
 }
 
+namespace InelukiKeyPatch {
+	bool HandleScriptFile(std::string_view file_name, bool is_music, AsyncOp& async_op) {
+		if (Player::IsPatchKeyPatch() && EndsWith(file_name, ".script")) {
+			//if (!Player::game_config.patch_key_patch_no_async.Get()) {
+			//	// Script will be handled in place of the usual sound processing -> Game_System
+			//	return false;
+			//}
+			// Is a Ineluki Script File
+			FileRequestAsync* request = AsyncHandler::RequestFile(is_music ? "Music" : "Sound", file_name);
+			request->SetImportantFile(true);
+			request->Start();
+
+			if (!request->IsReady()) {
+				async_op = AsyncOp::MakeYieldRepeat();
+				return true;
+			}
+			auto op = Main_Data::game_ineluki->Execute(is_music ? FileFinder::FindMusic(file_name) : FileFinder::FindSound(file_name));
+			if (op.IsActive()) {
+				async_op = op;
+			}
+			return true;
+		}
+		return false;
+	}
+}
+
 bool Game_Interpreter::CommandPlayBGM(lcf::rpg::EventCommand const& com) { // code 11510
 	lcf::rpg::Music music;
-	music.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
+	auto music_name = CommandStringOrVariableBitfield(com, 4, 0, 5);
+
+	if (InelukiKeyPatch::HandleScriptFile(music_name, true, _async_op)) {
+		return true;
+	}
+
+	music.name = ToString(music_name);
 
 	music.fadein = ValueOrVariableBitfield(com, 4, 1, 0);
 	music.volume = ValueOrVariableBitfield(com, 4, 2, 1);
@@ -1991,7 +2024,13 @@ bool Game_Interpreter::CommandFadeOutBGM(lcf::rpg::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // code 11550
 	lcf::rpg::Sound sound;
-	sound.name = ToString(CommandStringOrVariableBitfield(com, 3, 0, 4));
+	auto sound_name = CommandStringOrVariableBitfield(com, 3, 0, 4);
+
+	if (InelukiKeyPatch::HandleScriptFile(sound_name, false, _async_op)) {
+		return true;
+	}
+
+	sound.name = ToString(sound_name);
 
 	sound.volume = ValueOrVariableBitfield(com, 3, 1, 0);
 	sound.tempo = ValueOrVariableBitfield(com, 3, 2, 1);
@@ -2002,6 +2041,25 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 }
 
 bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /* com */) { // code 12310
+	if (auto var_id = Player::game_config.patch_better_aep.Get()) {
+		switch (Main_Data::game_variables->Get(var_id)) {
+			case 1:
+				if (var_id = Player::game_config.patch_custom_save_load.Get()) {
+					if (auto save_slot = Main_Data::game_variables->Get(var_id) > 0) {
+						_async_op = MakeLoadOp("CustomSaveLoad", save_slot);
+						return true;
+					}
+				}
+				Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+				return true;
+			case 2:
+				Player::exit_flag = true;
+				return true;
+			default:
+				break;
+		}
+	}
+
 	EndEventProcessing();
 	return true;
 }
@@ -4299,25 +4357,16 @@ bool Game_Interpreter::CommandManiacGetSaveInfo(lcf::rpg::EventCommand const& co
 	Main_Data::game_variables->Set(com.parameters[4], 0);
 	Main_Data::game_variables->Set(com.parameters[5], 0);
 
-	if (save_number <= 0) {
-		Output::Debug("ManiacGetSaveInfo: Invalid save number {}", save_number);
-		return true;
-	}
+	bool save_corrupted = false;
+	auto save = ValidateAndLoadSave("ManiacGetSaveInfo", FileFinder::Save(), save_number, save_corrupted);
 
-	auto savefs = FileFinder::Save();
-	std::string save_name = Scene_Save::GetSaveFilename(savefs, save_number);
-	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
-
-	if (!save_stream) {
-		Output::Debug("ManiacGetSaveInfo: Save not found {}", save_number);
-		return true;
-	}
-
-	auto save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
-	if (!save) {
-		Output::Debug("ManiacGetSaveInfo: Save corrupted {}", save_number);
+	if (save_corrupted) {
 		// Maniac Patch writes this for whatever reason
 		Main_Data::game_variables->Set(com.parameters[2], 8991230);
+		return true;
+	}
+
+	if (!save) {
 		return true;
 	}
 
@@ -4392,27 +4441,19 @@ bool Game_Interpreter::CommandManiacLoad(lcf::rpg::EventCommand const& com) {
 	}
 
 	int slot = ValueOrVariable(com.parameters[0], com.parameters[1]);
-	if (slot <= 0) {
-		Output::Debug("ManiacLoad: Invalid save slot {}", slot);
-		return true;
-	}
 
 	// Not implemented (kinda useless feature):
 	// When com.parameters[2] is 1 the check whether the file exists is skipped
 	// When skipped and missing RPG_RT will crash
-	auto savefs = FileFinder::Save();
-	std::string save_name = Scene_Save::GetSaveFilename(savefs, slot);
-	auto save_stream = FileFinder::Save().OpenInputStream(save_name);
-	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_stream, Player::encoding);
+	auto op = MakeLoadOp("ManiacLoad", slot);
 
-	if (!save) {
-		Output::Debug("ManiacLoad: Save not found {}", slot);
+	if (!op.IsActive()) {
 		return true;
 	}
 
 	// FIXME: In Maniac the load causes a blackscreen followed by a fade-in that can be cancelled by a transition event
 	// This is not implemented yet, the loading is instant without fading
-	_async_op = AsyncOp::MakeLoad(slot);
+	_async_op = op;
 
 	return true;
 }
