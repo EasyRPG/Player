@@ -160,4 +160,8 @@
     <string name="view_show_game_title">타이틀 사용</string>
     <string name="view">보기</string>
     <string name="settings_input_show_ab_as_zx">A/B 버튼을 Z/X 버튼으로 표시</string>
+    <string name="unsupported_engine_card">$ENGINE 엔진은 지원하지 않음</string>
+    <string name="unsupported_engine_explanation">이 게임은 $ENGINE 엔진으로 제작되었기 때문에 EasyRPG에서 플레이할 수 없습니다.\n\nEasyRPG Player는 RPG Maker 2000 및 2003 게임만 지원하도록 설계되었으며 다른 엔진을 지원할 계획은 없습니다.\n\n이 게임을 시작할 수 있는 다른 소프트웨어를 확인해 보세요.</string>
+    <string name="unsupported_engine_title">지원하지 않는 엔진</string>
+    <string name="open_save_folder">게임 저장 폴더 열기</string>
 </resources>
