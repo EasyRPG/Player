@@ -161,11 +161,11 @@
     <string name="view">Visualizar</string>
     <string name="unsupported_engine_card">$ENGINE não é suportado</string>
     <string name="settings_fonts_explanation2">O jogo que decide se usa o tipo de letra primeiro ou o segundo tipo de letra.</string>
-    <string name="unsupported_engine_explanation">Este jogo pode ser jogado em EasyRPG Jogador porque ele foi criado com o $do MOTOR.\n\nEasyRPG Player is designed to support only RPG Maker 2000 and 2003 games, with no plans to expand to other engines.\n\nFor software capable of launching this game, please check the Play Store.</string>
+    <string name="unsupported_engine_explanation">Este jogo não pode ser jogado no EasyRPG Player porque foi criado com o $ENGINE.\n\nO EasyRPG Player foi projetado para suportar apenas jogos do RPG Maker 2000 e 2003, sem planos para expandir para outros motores.\n\nPara softwares capazes de iniciar este jogo, por favor, verifique a Play Store.</string>
     <string name="unsupported_engine_title">Sem suporte do motor</string>
     <string name="settings_fonts_size_explanation">A configuração de tamanho de fonte, não tem nenhum efeito quando usando o built-in tipo de letra ou de determinadas fontes de bitmap.</string>
-    <string name="rtp_not_found">RTP $ANO não foi encontrado. Jogos que exigem esse RTP terá faltando ativos.</string>
+    <string name="rtp_not_found">RTP $YEAR não foi encontrado. Jogos que exigem esse RTP terão ativos faltando.</string>
     <string name="font">Fonte</string>
     <string name="open_save_folder">Abrir pasta savegame</string>
-    <string name="rtp_found">RTP $ANO encontradas: $NOME ($ENCONTRADO de r $MAX ativos encontrados)</string>
+    <string name="rtp_found">RTP $YEAR encontrado: $NAME ($FOUND de $MAX ativos encontrados)</string>
 </resources>
