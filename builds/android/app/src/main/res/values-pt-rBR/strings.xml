@@ -104,7 +104,7 @@
     <string name="watch_explanation_video">Iniciando e adicionando jogos (Vídeo Explicativo)</string>
     <string name="easyrpg_folders">Pastas EasyRPG</string>
     <string name="open_the_sound_fonts_folder">Abra a pasta de \"soundfonts\"</string>
-    <string name="settings_soundfont_found">Soundfonts:</string>
+    <string name="settings_soundfont_found">Fontes sonoras:</string>
     <string name="settings_default_soundfont">Soundfont padrão</string>
     <string name="id_select_games_folder_explanation">O EasyRPG Player requer uma pasta única. Após tocar no botão, você será perguntado para selecionar uma pasta.
 \n
@@ -141,4 +141,31 @@
     <string name="settings_resolution_ultrawide">Tela Ultra Cheia (560x240, 21:9, Experimental)</string>
     <string name="fast_forward_mode_tap">tocar</string>
     <string name="fast_forward_mode_hold">manter</string>
+    <string name="view_show_game_folder">Usar o nome de pasta</string>
+    <string name="view_show_title_desc">Escolha a forma como os jogos são nomeados</string>
+    <string name="view_show_game_title">Usar o título</string>
+    <string name="settings_fonts_explanation">Colocar fontes em \"fontes\" da pasta. Para melhor resultado use fontes TTF ou mapa de bits (FON) de tipos de letra.</string>
+    <string name="toggle_fps">Alternar FPS de visualização</string>
+    <string name="game_rename">Mudar o nome do jogo</string>
+    <string name="revert">Reverter</string>
+    <string name="scale_nearest">Escala para tamanho de tela usando o vizinho mais próximo (Rápido, de má qualidade)</string>
+    <string name="settings_input_show_ab_as_zx">Exibição de botões A e B Z e X</string>
+    <string name="do_want_reset">Você realmente deseja redefinir?</string>
+    <string name="settings_font_1">Primeira Fonte:</string>
+    <string name="settings_font_size">Tamanho fonte</string>
+    <string name="settings_font_2">Segundo Fonte:</string>
+    <string name="settings_font_default">Fonte Interna</string>
+    <string name="reset_game">Reposição de jogo</string>
+    <string name="open_fonts_folder">Abra as \"fontes\" da pasta</string>
+    <string name="settings_fonts_size_explanation2">O tamanho deve ser definido de modo que o # é pelo menos parcialmente visível. Se você não pode vê-lo, o texto será cortado do jogo.</string>
+    <string name="view">Visualizar</string>
+    <string name="unsupported_engine_card">$ENGINE não é suportado</string>
+    <string name="settings_fonts_explanation2">O jogo que decide se usa o tipo de letra primeiro ou o segundo tipo de letra.</string>
+    <string name="unsupported_engine_explanation">Este jogo pode ser jogado em EasyRPG Jogador porque ele foi criado com o $do MOTOR.\n\nEasyRPG Player is designed to support only RPG Maker 2000 and 2003 games, with no plans to expand to other engines.\n\nFor software capable of launching this game, please check the Play Store.</string>
+    <string name="unsupported_engine_title">Sem suporte do motor</string>
+    <string name="settings_fonts_size_explanation">A configuração de tamanho de fonte, não tem nenhum efeito quando usando o built-in tipo de letra ou de determinadas fontes de bitmap.</string>
+    <string name="rtp_not_found">RTP $ANO não foi encontrado. Jogos que exigem esse RTP terá faltando ativos.</string>
+    <string name="font">Fonte</string>
+    <string name="open_save_folder">Abrir pasta savegame</string>
+    <string name="rtp_found">RTP $ANO encontradas: $NOME ($ENCONTRADO de r $MAX ativos encontrados)</string>
 </resources>
