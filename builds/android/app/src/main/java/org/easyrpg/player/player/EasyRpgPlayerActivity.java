@@ -142,7 +142,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        hideStatusBar();
 
         // Screen orientation
         if (SettingsManager.isForcedLandscape()) {
@@ -205,12 +204,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         }
         openOrCloseMenu();
         return false;
-    }
-
-    public void hideStatusBar() {
-        // Hide the status bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
