@@ -24,6 +24,10 @@ public class SettingsVideoActivity extends BaseActivity implements View.OnClickL
         this.setContentView(R.layout.activity_settings_video);
 
         // Setting UI components
+        CheckBox fullscreenCheckbox = findViewById(R.id.fullscreen_mode);
+        fullscreenCheckbox.setChecked(SettingsManager.isFullscreen());
+        fullscreenCheckbox.setOnClickListener(this);
+
         CheckBox forceLandscapeModeCheckbox = findViewById(R.id.force_landscape_mode);
         forceLandscapeModeCheckbox.setChecked(SettingsManager.isForcedLandscape());
         forceLandscapeModeCheckbox.setOnClickListener(this);
@@ -67,6 +71,10 @@ public class SettingsVideoActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.fullscreen_mode) {
+            SettingsManager.setFullscreen(((CheckBox)v).isChecked());
+        }
+
         if (v.getId() == R.id.force_landscape_mode) {
             SettingsManager.setForcedLandscape(((CheckBox)v).isChecked());
         }

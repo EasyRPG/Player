@@ -5,9 +5,9 @@ android {
     assetPacks = [":assets"]
     defaultConfig {
         applicationId "org.easyrpg.player"
-        compileSdk 35
+        compileSdk 34
         minSdkVersion 21
-        targetSdkVersion 35
+        targetSdkVersion 34
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
     }

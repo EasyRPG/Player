@@ -12,6 +12,13 @@
         tools:context="org.easyrpg.player.settings.SettingsVideoActivity">
 
         <CheckBox
+            android:id="@+id/fullscreen_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fullscreen_mode"
+            android:textSize="20sp"/>
+
+        <CheckBox
             android:id="@+id/force_landscape_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

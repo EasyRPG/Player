@@ -22,6 +22,7 @@ enum SettingsEnum {
     MUSIC_VOLUME("MusicVolume"),
     SOUND_VOLUME("SoundVolume"),
     STRETCH("Stretch"),
+    FULLSCREEN("Fullscreen"),
     GAME_RESOLUTION("GameResolution"),
     SPEED_MODIFIER_A("SpeedModifierA"),
     FONT1_URI("Font1"),

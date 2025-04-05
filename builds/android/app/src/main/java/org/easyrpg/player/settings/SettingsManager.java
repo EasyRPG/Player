@@ -33,6 +33,7 @@ public class SettingsManager {
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
     private static boolean stretch;
+    private static boolean fullscreen;
     private static boolean rtpScanningEnabled;
     private static int imageSize, gameResolution;
     private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
@@ -80,6 +81,7 @@ public class SettingsManager {
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
         stretch = configIni.video.getBoolean(STRETCH.toString(), false);
+        fullscreen = configIni.video.getBoolean(FULLSCREEN.toString(), true);
         fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), FAST_FORWARD_MODE_TAP);
 
         musicVolume = configIni.audio.getInteger(MUSIC_VOLUME.toString(), 100);
@@ -286,6 +288,16 @@ public class SettingsManager {
     public static void setStretch(boolean b) {
         stretch = b;
         configIni.video.set(STRETCH.toString(), b);
+        configIni.save();
+    }
+
+    public static boolean isFullscreen() {
+        return fullscreen;
+    }
+
+    public static void setFullscreen(boolean b) {
+        fullscreen = b;
+        configIni.video.set(FULLSCREEN.toString(), b);
         configIni.save();
     }
 
