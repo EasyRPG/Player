@@ -38,7 +38,7 @@
     <string name="end_game">退出游戏</string>
     <string name="report_bug">报告错误</string>
     <string name="report_bug_msg">此选项将打开您的电子邮件应用(如 Gmail)来向我们发送错误报告。 \n \n如果您不想发送邮件或者没有安装电子邮件应用，可以在 https://github.com/EasyRPG/Player/issues 创建一个新的 Issue。</string>
-    <string name="report_bug_mail">感谢您对 EasyRPG Player 的支持。\n这封电子邮件附带了日志文件和您的游戏存档。\n请不要删除日志文件！我们需要一个靠近错误位置的游戏存档。\n请详细告诉我们出了什么问题。</string>
+    <string name="report_bug_mail">感谢您对 EasyRPG Player 的支持。\n这封电子邮件附带了日志文件和您的游戏存档。\n请不要删除日志文件！我们需要一个能复现错误的游戏存档。\n请详细告诉我们出了什么问题。</string>
     <!--Settings Activities-->
     <string name="video">视频</string>
     <string name="audio">音频</string>
@@ -47,7 +47,7 @@
     <string name="enable_vibration">开启震动</string>
     <string name="vibrate_when_sliding_direction">往另一个方向滑动时振动</string>
     <string name="input_layout_transparency">按键透明度:</string>
-    <string name="ignore_size_settings">统一全部按钮大小：</string>
+    <string name="ignore_size_settings">全局按钮大小：</string>
     <string name="no_read_access_on_dir">没有读取 %1$s 的权限</string>
     <string name="quick_access">快速访问</string>
     <string name="force_landscape_mode">强制横屏</string>
@@ -62,7 +62,7 @@
     <string name="reset_button_mapping">恢复默认</string>
     <string name="exit_without_saving">退出而不保存</string>
     <string name="save_and_quit">保存并退出</string>
-    <string name="key_enter">决定键 (Z)</string>
+    <string name="key_enter">决定键 (Enter 或 Z)</string>
     <string name="key_cancel">取消键 (ESC 或 X)</string>
     <string name="key_shift">Shift键</string>
     <string name="key_fast_forward">快进</string>
@@ -81,7 +81,7 @@
     <string name="id_select_games_folder_explanation">EasyRPG Player 需要一个专用文件夹。点击按钮后，系统会要求您选择一个文件夹。\n\n如果您是第一次使用此应用，请创建一个新文件夹并选中，用作 EasyRPG 文件夹。\n\n如果您以前使用过此应用，请选择现有的 EasyRPG 文件夹。</string>
     <string name="Loading">加载中……</string>
     <string name="enable_rtp_support">启用 RTP 支持</string>
-    <string name="rtp_explanation">RTP 提供某些游戏使用到的共享素材。 \n将 RPG Maker 2000 RTP 放入路径 \"rtp/2000\" ，将 RPG Maker 2003 RTP 放入路径 \"rtp/2000\" 。 \n请注意，启用 RTP 支持将显著增加游戏的初始加载时间。</string>
+    <string name="rtp_explanation">RTP 提供某些游戏使用到的共享素材。 \n将 RPG Maker 2000 RTP 放入路径 \"rtp/2000\" ，将 RPG Maker 2003 RTP 放入路径 \"rtp/2003\" 。 \n请注意，启用 RTP 支持将显著增加游戏的初始加载时间。</string>
     <string name="open_rtp_folder">打开 \"rtp\" 文件夹</string>
     <string name="music_volume">音乐音量</string>
     <string name="sound_volume">音效音量</string>
@@ -131,14 +131,14 @@
     <string name="settings_font_default">内置字体</string>
     <string name="reset_game">重启游戏</string>
     <string name="open_fonts_folder">打开 \"fonts\" 文件夹</string>
-    <string name="settings_fonts_size_explanation2">设置的大小必须使 # 至少部分可见。如果它不可见，游戏中的文字可能会超出显示范围。</string>
+    <string name="settings_fonts_size_explanation2">设置的大小必须使最右侧的 # 至少部分可见。如果它不可见，游戏中的文字可能会超出显示范围。</string>
     <string name="view">视图</string>
     <string name="unsupported_engine_card">不支持 $ENGINE</string>
     <string name="settings_fonts_explanation2">由游戏决定是使用第一种字体还是第二种字体。</string>
     <string name="unsupported_engine_explanation">此游戏无法使用 EasyRPG Player 运行，因为它是使用 $ENGINE 制作的。\n\nEasyRPG Player 仅支持使用 RPG Maker 2000/2003 制作的游戏，并且没有支持其他引擎的计划。\n\n对于能够运行此游戏的应用，请前往应用商店搜索。</string>
     <string name="unsupported_engine_title">不支持的引擎</string>
     <string name="settings_fonts_size_explanation">使用内置字体或者某些点阵字体时，字体大小设置无效。</string>
-    <string name="rtp_not_found">未找到 RTP $YEAR。需要此 RTP 的游戏将缺少文件。</string>
+    <string name="rtp_not_found">未找到 RTP $YEAR。需要此 RTP 的游戏将缺少必要文件。</string>
     <string name="font">字体</string>
     <string name="open_save_folder">打开存档文件夹</string>
     <string name="rtp_found">RTP $YEAR 已找到：$NAME（已找到 $MAX 中的 $FOUND）</string>

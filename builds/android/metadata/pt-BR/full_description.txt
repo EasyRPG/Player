@@ -1,7 +1,7 @@
-EasyRPG é um software que te permite jogar qualquer jogo criado com RPG Maker 2000 ou 2003 (obs: as novas engines como XP, VX, VX Ace e MV não são suportadas).
+Com EasyRPG Player você pode jogar jogos criados com o RPG Maker 2000 e RPG Maker 2003. Motores novos, como o XP, VX, MV e MZ não são suportados.
 
-Página inicial: https://easyrpg.org/
-Changelog (novidades/mudanças): https://blog.easyrpg.org/
-Reportar Erros/Bugs: https://github.com/EasyRPG/Player/issues/
+O EasyRPG Player não é um editor. Você não pode criar seus próprios jogos com ele.
 
-Este aplicativo não é afiliado com a Kadokawa Corporation.
+Site oficial: https://easyrpg.org/
+
+Este aplicativo não é afiliado à Kadokawa Corporation.
