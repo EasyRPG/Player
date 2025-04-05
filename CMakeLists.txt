@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16...3.31 FATAL_ERROR)
 
-project(EasyRPG_Player VERSION 0.8
+project(EasyRPG_Player VERSION 0.8.1
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
 	HOMEPAGE_URL "https://easyrpg.org"
 	LANGUAGES CXX)
@@ -920,7 +920,7 @@ if(PLAYER_BUILD_LIBLCF)
 	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
-	player_find_package(NAME liblcf VERSION 0.8
+	player_find_package(NAME liblcf VERSION 0.8.1
 		TARGET liblcf::liblcf
 		REQUIRED)
 endif()
