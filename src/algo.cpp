@@ -171,6 +171,9 @@ int VarianceAdjustEffect(int base, int var) {
 }
 
 int AdjustDamageForDefend(int dmg, const Game_Battler& target) {
+	if (RuntimePatches::GuardRevamp::OverrideDamageAdjustment(dmg, target)) {
+		return dmg;
+	}
 	if (target.IsDefending()) {
 		dmg /= 2;
 		if (target.HasStrongDefense()) {
