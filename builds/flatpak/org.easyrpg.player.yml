@@ -1,6 +1,6 @@
 app-id: org.easyrpg.player
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 command: easyrpg-player
 rename-desktop-file: easyrpg-player.desktop
@@ -22,7 +22,7 @@ cleanup:
   - /lib/*.so
 modules:
   # external libraries
-  # this is copied from shared-modules to not add the dependency on it
+  # this is adapted from shared-modules to not add the dependency on it
   - name: libfluidsynth
     buildsystem: cmake-ninja
     config-opts:
@@ -30,8 +30,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/FluidSynth/fluidsynth.git
-        tag: v2.3.4
-        commit: 5ecdc4568e45123216c6888892caad07918ef127
+        tag: v2.3.5
+        commit: 619fc5c3380513146cd05e17decf8d747b02bba4
     cleanup:
       - /bin
       - /share
@@ -44,8 +44,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/fmtlib/fmt.git
-        tag: '9.1.0'
-        commit: a33701196adfad74917046096bf5a2aa0ab0bb50
+        tag: 11.1.4
+        commit: 123913715afeb8a437e6388b4473fcc4753e1c9a
   - name: libxmp
     buildsystem: cmake-ninja
     config-opts:
@@ -56,17 +56,45 @@ modules:
     sources:
       - type: git
         url: https://github.com/libxmp/libxmp.git
-        tag: libxmp-4.6.0
-        commit: 8201d26cf933688a8be64292457c429fd8e654ab
+        tag: libxmp-4.6.2
+        commit: 828ef357943e1fbb13910e7a6fca21987c5c5827
   - name: libinih
     buildsystem: meson
     config-opts:
       - --buildtype=debugoptimized
+      - -Ddefault_library=shared
+      - -Ddistro_install=true
+      - -Dwith_INIReader=false
     sources:
       - type: git
         url: https://github.com/benhoyt/inih.git
-        tag: 58
-        commit: 5cc5e2c24642513aaa5b19126aad42d0e4e0923e
+        tag: r60
+        commit: 9de2a5fe4956447a22a324e2efc0648c5aad5285
+  - name: nlohmann_json
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DJSON_BuildTests=OFF
+    sources:
+      - type: git
+        url: https://github.com/nlohmann/json.git
+        tag: v3.11.3
+        commit: 9cca280a4d0ccf0c08f47a99aa71d1b0e52f8d03
+    cleanup:
+      - /share
+  - name: lhasa
+    config-opts:
+      - --enable-shared
+      - --disable-static
+    sources:
+      - type: git
+        url: https://github.com/fragglet/lhasa.git
+        tag: v0.4.0
+        commit: 3b8f502c1480c5d9f2927e95d7e0f022b9cdd0a1
+    cleanup:
+      - /bin
+      - /share/man
+      - /lib/*.la
   # own libraries
   - name: liblcf
     buildsystem: cmake-ninja
@@ -84,6 +112,7 @@ modules:
       - /share
   - name: player
     buildsystem: cmake-ninja
+    builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
       - -DPLAYER_VERSION_APPEND='(Flatpak)'
