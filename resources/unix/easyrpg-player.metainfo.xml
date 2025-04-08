@@ -6,7 +6,7 @@
 	<developer_name>EasyRPG Team</developer_name>
 	<update_contact>easyrpg_AT_easyrpg.org</update_contact>
 
-	<!-- Copyright 2022 EasyRPG team -->
+	<!-- Copyright 2022-2025 EasyRPG team -->
 	<metadata_license>FSFAP</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 
@@ -67,6 +67,16 @@
 	</content_rating>
 
 	<releases>
+		<release version="0.8.1" date="2025-04-07">
+			<description>
+				<p>
+					"Stun"
+				</p>
+				<p>
+					https://blog.easyrpg.org/2025/04/easyrpg-player-0-8-1-stun/
+				</p>
+			</description>
+		</release>
 		<release version="0.8" date="2023-04-29">
 			<description>
 				<p>
