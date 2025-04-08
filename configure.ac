@@ -84,9 +84,9 @@ PKG_CHECK_MODULES([FMT],[fmt],,[
 	],[AC_MSG_RESULT([yes])])
 ])
 PKG_CHECK_MODULES([SDL],[sdl3],[sdl_version=3],[
-	PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.5],[sdl_version=2],[
+	PKG_CHECK_MODULES([SDL],[sdl2 >= 2.0.14],[sdl_version=2],[
 		PKG_CHECK_MODULES([SDL],[sdl],[sdl_version=1],[
-			AC_MSG_ERROR([Could not find SDL! Consider installing version 2.0.5 or newer.])
+			AC_MSG_ERROR([Could not find SDL! Consider installing version 2.0.14 or newer.])
 		])
 	])
 ])
