@@ -340,14 +340,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 #endif
 
 	if (!sdl_window) {
-		#ifdef __ANDROID__
-		// Workaround SDL bug: https://bugzilla.libsdl.org/show_bug.cgi?id=2291
-		// Set back buffer format to 565
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
-		#endif
-
 		#if defined(__APPLE__) && TARGET_OS_OSX
 		// Use OpenGL on Mac only -- to work around an SDL Metal deficiency
 		// where it will always use discrete GPU.
@@ -1231,7 +1223,6 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
-	// Constants starting from 15 require newer SDL2 versions
 	switch (button_index) {
 		case SDL_CONTROLLER_BUTTON_A: return Input::Keys::JOY_A;
 		case SDL_CONTROLLER_BUTTON_B: return Input::Keys::JOY_B;
@@ -1242,19 +1233,20 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 		case SDL_CONTROLLER_BUTTON_START: return Input::Keys::JOY_START;
 		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return Input::Keys::JOY_LSTICK;
 		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return Input::Keys::JOY_RSTICK;
-		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER	: return Input::Keys::JOY_SHOULDER_LEFT;
+		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: return Input::Keys::JOY_SHOULDER_LEFT;
 		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Input::Keys::JOY_SHOULDER_RIGHT;
 		case SDL_CONTROLLER_BUTTON_DPAD_UP: return Input::Keys::JOY_DPAD_UP;
 		case SDL_CONTROLLER_BUTTON_DPAD_DOWN: return Input::Keys::JOY_DPAD_DOWN;
 		case SDL_CONTROLLER_BUTTON_DPAD_LEFT: return Input::Keys::JOY_DPAD_LEFT;
 		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return Input::Keys::JOY_DPAD_RIGHT;
-		case 15	: return Input::Keys::JOY_OTHER_1; // SDL_CONTROLLER_BUTTON_MISC1 (2.0.14)
-		case 16	: return Input::Keys::JOY_REAR_RIGHT_1; // SDL_CONTROLLER_BUTTON_PADDLE1 (2.0.14)
-		case 17	: return Input::Keys::JOY_REAR_RIGHT_2; // SDL_CONTROLLER_BUTTON_PADDLE2 (2.0.14)
-		case 18	: return Input::Keys::JOY_REAR_LEFT_1; // SDL_CONTROLLER_BUTTON_PADDLE3 (2.0.14)
-		case 19	: return Input::Keys::JOY_REAR_LEFT_2; // SDL_CONTROLLER_BUTTON_PADDLE4 (2.0.14)
-		case 20	: return Input::Keys::JOY_TOUCH; // SDL_CONTROLLER_BUTTON_TOUCHPAD (2.0.14)
-		default : return Input::Keys::NONE;
+		case SDL_CONTROLLER_BUTTON_MISC1: return Input::Keys::JOY_OTHER_1;
+		case SDL_CONTROLLER_BUTTON_PADDLE1: return Input::Keys::JOY_REAR_RIGHT_1;
+		case SDL_CONTROLLER_BUTTON_PADDLE2: return Input::Keys::JOY_REAR_RIGHT_2;
+		case SDL_CONTROLLER_BUTTON_PADDLE3: return Input::Keys::JOY_REAR_LEFT_1;
+		case SDL_CONTROLLER_BUTTON_PADDLE4: return Input::Keys::JOY_REAR_LEFT_2;
+		case SDL_CONTROLLER_BUTTON_TOUCHPAD: return Input::Keys::JOY_TOUCH;
+
+		default: return Input::Keys::NONE;
 	}
 }
 #endif
@@ -1335,7 +1327,6 @@ Rect Sdl2Ui::GetWindowMetrics() const {
 }
 
 bool Sdl2Ui::OpenURL(std::string_view url) {
-#if SDL_VERSION_ATLEAST(2, 0, 14)
 	if (IsFullscreen()) {
 		ToggleFullscreen();
 	}
@@ -1346,9 +1337,4 @@ bool Sdl2Ui::OpenURL(std::string_view url) {
 	}
 
 	return true;
-#else
-	(void)url;
-	Output::Warning("Cannot Open URL: SDL2 version too old (must be 2.0.14)");
-	return false;
-#endif
 }
