@@ -39,7 +39,7 @@ To generate the "configure" script, run before following the above section:
 Building requirements:
 
 - pkg-config (only on Linux)
-- CMake 3.10 or newer
+- CMake 3.18 or newer
 
 Step-by-step instructions:
 

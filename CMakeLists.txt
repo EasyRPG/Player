@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.31 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8.1
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
@@ -607,7 +607,7 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 	# SDL2 depends on some systems on SDL2::SDL2main but SDL2::SDL2 is not always a dependency of it
 	# Manually add the dependencies
 	player_find_package(NAME SDL2
-		VERSION 2.0.5
+		VERSION 2.0.14
 		TARGET SDL2::SDL2
 		REQUIRED)
 

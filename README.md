@@ -17,7 +17,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 ### minimal / required
 
 - [liblcf] for RPG Maker data reading.
-- SDL3 or SDL2 >= 2.0.5 for screen backend support.
+- SDL3 or SDL2 >= 2.0.14 for screen backend support.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image and ZIP archive support.
