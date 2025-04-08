@@ -30,10 +30,10 @@ jobs:
         image:
           #   version of: # CMake  | g++    | SDL    |     support end  #
           # -------------------------------------------------------------
-          - ubuntu:20.04  # 3.16.3 |  9.3.0 | 2.0.10 | LTS       (4/25) #
           - debian:11     # 3.18.4 | 10.2.1 | 2.0.14 | oldstable (8/24) #
-          - ubuntu:22.04  # 3.22.1 | 11.2.0 | 2.0.20 | LTS       (6/27) #
+          - ubuntu:22.04  # 3.22.1 | 11.2.0 | 2.0.20 | LTS       (4/27) #
           - debian:12     # 3.25.1 | 12.2.0 | 2.26.5 | stable    (6/26) #
+          - ubuntu:24.04  # 3.28.3 | 13.2.0 | 2.30.0 | LTS       (4/29) #
 
     steps:
       - name: Install dependencies
@@ -45,7 +45,7 @@ jobs:
             libicu-dev libexpat1-dev libinih-dev nlohmann-json3-dev \
             libsdl2-dev libpng-dev libpixman-1-dev libfmt-dev \
             libfreetype6-dev libharfbuzz-dev libmpg123-dev libsndfile-dev \
-            libvorbis-dev libopusfile-dev libspeexdsp-dev \
+            libvorbis-dev libopusfile-dev libspeexdsp-dev liblhasa-dev \
             libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
 
       - name: Clone Repository
