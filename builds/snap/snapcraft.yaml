@@ -1,5 +1,5 @@
 name: easyrpg-player
-base: core20
+base: core22
 adopt-info: easyrpg-player
 summary: easyrpg-player
 description: |
@@ -17,7 +17,7 @@ apps:
     plugs:
       - x11
       - wayland
-      - unity7
+      - unity8
       - opengl
       - audio-playback
       - joystick
@@ -35,16 +35,18 @@ layout:
 
 parts:
   liblcf:
-    plugin: autotools
+    plugin: cmake
     source: https://github.com/EasyRPG/liblcf
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
       - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
-    autotools-configure-parameters:
-      - --prefix=/usr
-      - --disable-static
-      - --disable-tools
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DBUILD_SHARED_LIBS=ON
+      - -DLIBLCF_ENABLE_TOOLS=OFF
+      - -DLIBLCF_UPDATE_MIMEDB=OFF
     override-build: |
       git fetch
       snapcraftctl build
@@ -52,20 +54,22 @@ parts:
     build-packages:
       - libexpat1-dev
       - libicu-dev
+      - libinih-dev
       - icu-devtools
     stage-packages:
-      - libicu66
+      - libicu70
 
-  easyrpg-player:   
-    plugin: autotools
+  easyrpg-player:
+    plugin: cmake
     after: [libwildmidi,liblcf,desktop-glib-only]
     source: https://github.com/EasyRPG/Player
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
       - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
-    autotools-configure-parameters:
-      - --prefix=/usr
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       last_committed_tag="$(git tag --list | tail -n1)"
       last_released_tag="$(snap info easyrpg-player | awk '$1 == "latest/beta:" { print $2 }')"
@@ -91,7 +95,6 @@ parts:
       - libpng-dev
       - libsndfile1-dev
       - libsdl2-dev
-      - libsdl2-mixer-dev
       - libspeexdsp-dev
       - libvorbis-dev
       - libxmp-dev
@@ -108,7 +111,6 @@ parts:
       - libpixman-1-0
       - libpng16-16
       - libsdl2-2.0-0
-      - libsdl2-mixer-2.0-0
       - libsndfile1
       - libspeexdsp1
       - libvorbis0a
