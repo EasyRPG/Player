@@ -96,17 +96,13 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, st
 	LzhEntry entry;
 	std::vector<std::string> paths;
 
-	// Compressed data offset is manually calculated to reduce calls to tellg()
-	auto last_offset = is.tellg();
-
 	// Read one file, when it fails consider it not an Lzh archive
 	if (lha_reader_next_file(lha_reader.get()) == nullptr) {
 		Output::Debug("LzhFS: {} is not a valid archive", GetPath());
 		return;
 	}
 
-	is.clear();
-	is.seekg(last_offset);
+	Rewind();
 
 	// Guess the encoding
 	if (encoding.empty()) {
@@ -149,11 +145,7 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, st
 		}
 		Output::Debug("Detected LZH encoding: {}", encoding);
 
-		is.clear();
-		is.seekg(last_offset);
-
-		// Cannot figure out how to rewind the reader: Creating a new one instead
-		lha_reader.reset(lha_reader_new(lha_is.get()));
+		Rewind();
 
 		if (!lha_reader) {
 			Output::Debug("LzhFS: {} is not a valid archive", GetPath());
@@ -163,6 +155,9 @@ LzhFilesystem::LzhFilesystem(std::string base_path, FilesystemView parent_fs, st
 
 	// Read the archive
 	lcf::Encoder lzh_encoder(encoding);
+
+	// Compressed data offset is manually calculated to reduce calls to tellg()
+	auto last_offset = is.tellg();
 
 	while ((header = lha_reader_next_file(lha_reader.get())) != nullptr) {
 		std::string filepath;
@@ -351,6 +346,14 @@ const LzhFilesystem::LzhEntry* LzhFilesystem::Find(std::string_view what) const 
 	}
 
 	return nullptr;
+}
+
+void LzhFilesystem::Rewind() {
+	is.clear();
+	is.seekg(0);
+
+	// Cannot figure out how to rewind the reader: Creating a new one instead
+	lha_reader.reset(lha_reader_new(lha_is.get()));
 }
 
 std::string LzhFilesystem::Describe() const {
