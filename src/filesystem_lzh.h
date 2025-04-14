@@ -24,9 +24,7 @@
 
 #include "filesystem.h"
 #include "filesystem_stream.h"
-#include <fstream>
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 #include <lhasa.h>
@@ -87,6 +85,8 @@ private:
 			lha_decoder_free(o);
 		}
 	};
+
+	void Rewind();
 
 	mutable Filesystem_Stream::InputStream is;
 	mutable std::unique_ptr<LHAInputStream, LhasaDeleter> lha_is;
