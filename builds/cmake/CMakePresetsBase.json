@@ -24,7 +24,7 @@
 			"displayName": "build RelWithDebInfo",
 			"hidden": true,
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "ReleaseWithDebInfo"
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
 		},
 		{
