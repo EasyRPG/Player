@@ -779,6 +779,10 @@ endif()
 # Shared by homebrew platforms
 if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
+	if(VITA)
+		# This optimisation is unstable on Vita (crashes at the end of MainLoop)
+		target_compile_options(${PROJECT_NAME} PUBLIC -fno-optimize-sibling-calls)
+	endif()
 	set(CMAKE_DL_LIBS "") # hack4icu!
 	set(PLAYER_ENABLE_TESTS OFF)
 	option(PLAYER_VERSIONED_PACKAGES "Create zip packages with versioned name (for internal use)" ON)
