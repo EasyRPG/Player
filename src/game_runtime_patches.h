@@ -196,6 +196,8 @@ namespace RuntimePatches {
 
 	namespace VirtualKeys {
 		constexpr Input::Keys::InputKey VirtualKeyToInputKey(uint32_t key_id);
+
+		constexpr uint32_t InputKeyToVirtualKey(Input::Keys::InputKey input_key);
 	}
 }
 
@@ -300,6 +302,109 @@ constexpr Input::Keys::InputKey RuntimePatches::VirtualKeys::VirtualKeyToInputKe
 		case 0xA3: return Input::Keys::RCTRL;
 
 		default: return Input::Keys::NONE;
+	}
+}
+
+constexpr uint32_t RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::InputKey input_key) {
+	switch (input_key) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+		case Input::Keys::MOUSE_LEFT: return 0x1;
+		case Input::Keys::MOUSE_RIGHT: return 0x2;
+		case Input::Keys::MOUSE_MIDDLE: return 0x4;
+		case Input::Keys::MOUSE_XBUTTON1: return 0x5;
+		case Input::Keys::MOUSE_XBUTTON2: return 0x6;
+#endif
+		case Input::Keys::BACKSPACE: return 0x8;
+		case Input::Keys::TAB: return 0x9;
+		case Input::Keys::RETURN: return 0xD;
+		case Input::Keys::SHIFT: return 0x10;
+		case Input::Keys::CTRL: return 0x11;
+		case Input::Keys::ALT: return 0x12;
+		case Input::Keys::PAUSE: return 0x13;
+		case Input::Keys::CAPS_LOCK: return 0x14;
+		case Input::Keys::ESCAPE: return 0x1B;
+		case Input::Keys::SPACE: return 0x20;
+		case Input::Keys::PGUP: return 0x21;
+		case Input::Keys::PGDN: return 0x22;
+		case Input::Keys::ENDS: return 0x23;
+		case Input::Keys::HOME: return 0x24;
+		case Input::Keys::LEFT: return 0x25;
+		case Input::Keys::UP: return 0x26;
+		case Input::Keys::RIGHT: return 0x27;
+		case Input::Keys::DOWN: return 0x28;
+		case Input::Keys::INSERT: return 0x2D;
+		case Input::Keys::DEL: return 0x2E;
+		case Input::Keys::N0: return 0x30;
+		case Input::Keys::N1: return 0x31;
+		case Input::Keys::N2: return 0x32;
+		case Input::Keys::N3: return 0x33;
+		case Input::Keys::N4: return 0x34;
+		case Input::Keys::N5: return 0x35;
+		case Input::Keys::N6: return 0x36;
+		case Input::Keys::N7: return 0x37;
+		case Input::Keys::N8: return 0x38;
+		case Input::Keys::N9: return 0x39;
+		case Input::Keys::A: return 0x41;
+		case Input::Keys::B: return 0x42;
+		case Input::Keys::C: return 0x43;
+		case Input::Keys::D: return 0x44;
+		case Input::Keys::E: return 0x45;
+		case Input::Keys::F: return 0x46;
+		case Input::Keys::G: return 0x47;
+		case Input::Keys::H: return 0x48;
+		case Input::Keys::I: return 0x49;
+		case Input::Keys::J: return 0x4A;
+		case Input::Keys::K: return 0x4B;
+		case Input::Keys::L: return 0x4C;
+		case Input::Keys::M: return 0x4D;
+		case Input::Keys::N: return 0x4E;
+		case Input::Keys::O: return 0x4F;
+		case Input::Keys::P: return 0x50;
+		case Input::Keys::Q: return 0x51;
+		case Input::Keys::R: return 0x52;
+		case Input::Keys::S: return 0x53;
+		case Input::Keys::T: return 0x54;
+		case Input::Keys::U: return 0x55;
+		case Input::Keys::V: return 0x56;
+		case Input::Keys::W: return 0x57;
+		case Input::Keys::X: return 0x58;
+		case Input::Keys::Y: return 0x59;
+		case Input::Keys::Z: return 0x5A;
+		case Input::Keys::KP0: return 0x60;
+		case Input::Keys::KP1: return 0x61;
+		case Input::Keys::KP2: return 0x62;
+		case Input::Keys::KP3: return 0x63;
+		case Input::Keys::KP4: return 0x64;
+		case Input::Keys::KP5: return 0x65;
+		case Input::Keys::KP6: return 0x66;
+		case Input::Keys::KP7: return 0x67;
+		case Input::Keys::KP8: return 0x68;
+		case Input::Keys::KP9: return 0x69;
+		case Input::Keys::KP_MULTIPLY: return 0x6A;
+		case Input::Keys::KP_ADD: return 0x6B;
+		case Input::Keys::KP_SUBTRACT: return 0x6D;
+		case Input::Keys::KP_PERIOD: return 0x6E;
+		case Input::Keys::KP_DIVIDE: return 0x6F;
+		case Input::Keys::F1: return 0x70;
+		case Input::Keys::F2: return 0x71;
+		case Input::Keys::F3: return 0x72;
+		case Input::Keys::F4: return 0x73;
+		case Input::Keys::F5: return 0x74;
+		case Input::Keys::F6: return 0x75;
+		case Input::Keys::F7: return 0x76;
+		case Input::Keys::F8: return 0x77;
+		case Input::Keys::F9: return 0x78;
+		case Input::Keys::F10: return 0x79;
+		case Input::Keys::F11: return 0x7A;
+		case Input::Keys::F12: return 0x7B;
+		case Input::Keys::NUM_LOCK: return 0x90;
+		case Input::Keys::SCROLL_LOCK: return 0x91;
+		case Input::Keys::LSHIFT: return 0xA0;
+		case Input::Keys::RSHIFT: return 0xA1;
+		case Input::Keys::LCTRL: return 0xA2;
+		case Input::Keys::RCTRL: return 0xA3;
+
+		default: return 0;
 	}
 }
 
