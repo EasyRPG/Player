@@ -203,11 +203,7 @@ void Scene_Debug::SetupUiRangeList() {
 	range_index = idx.range_index;
 	range_page = idx.range_page;
 
-	//if (mode == eInterpreter && (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars)) {
-	//	var_window->SetMode(state_interpreter.show_frame_switches ? Window_VarList::eFrameSwitch : Window_VarList::eFrameVariable);
-	//} else {
-		var_window->SetMode(vmode);
-	//}
+	var_window->SetMode(vmode);
 	UpdateDetailWindow();
 
 	range_window->SetIndex(range_index);
@@ -335,7 +331,7 @@ void Scene_Debug::Pop() {
 	stringview_window->SetVisible(false);
 	interpreter_window->SetActive(false);
 
-	if (mode == eInterpreter /* && !(state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) */) {
+	if (mode == eInterpreter) {
 		interpreter_window->SetIndex(-1);
 		interpreter_window->SetVisible(true);
 		var_window->SetVisible(false);
@@ -391,8 +387,6 @@ void Scene_Debug::Pop() {
 			interpreter_window->SetIndex(frame.value - 1);
 			var_window->SetVisible(false);
 			interpreter_window->SetVisible(true);
-			//state_interpreter.show_frame_switches = false;
-			//state_interpreter.show_frame_vars = false;
 			break;
 	}
 
@@ -615,22 +609,7 @@ void Scene_Debug::vUpdate() {
 				}
 				break;
 			case eInterpreter:
-				if (sz == 3) {
-					if (state_interpreter.selected_frame >= 0) {
-						/*std::vector<std::string> choices;
-						std::vector<bool> choices_enabled;
-
-						choices.push_back("FrameSwitches");
-						choices.push_back("FrameVariables");
-
-						choices_enabled.push_back(GetSelectedInterpreterFrameFromUiState().easyrpg_frame_switches.size() > 0);
-						choices_enabled.push_back(GetSelectedInterpreterFrameFromUiState().easyrpg_frame_variables.size() > 0);
-
-						PushUiChoices(choices, choices_enabled);*/
-					} else {
-						Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
-					}
-				} else if (sz == 2) {
+				if (sz == 2) {
 					PushUiInterpreterView();
 				} else if (sz == 1) {
 					if (!interpreter_states_cached) {
@@ -853,12 +832,6 @@ void Scene_Debug::UpdateRangeListWindow() {
 			break;
 		case eInterpreter:
 		{
-			//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
-			//	for (int i = 0; i < 10; i++) {
-			//		const auto st = range_page * 100 + i * 10 + 1;
-			//		addItem(fmt::format("{}[{:03d}-{:03d}]", state_interpreter.show_frame_switches ? "FSw" : "FVr", st, st + 9));
-			//	}
-			//} else {
 				int skip_items = range_page * 10;
 				int count_items = 0;
 				if (range_page == 0) {
@@ -885,7 +858,6 @@ void Scene_Debug::UpdateRangeListWindow() {
 					addItem(fmt::format("{}CE{:04d}: {}", state_interpreter.state_ce[i].wait_movement ? "(W) " : "", ce_id, ce->name));
 					count_items++;
 				}
-			//}
 		}
 		break;
 		default:
@@ -899,16 +871,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 
 void Scene_Debug::UpdateDetailWindow() {
 	if (mode == eInterpreter) {
-		//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
-		//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
-		//	var_window->SetInterpreterFrame(&interpreter_frame);
-		//	var_window->UpdateList(GetSelectedIndexFromRange());
-		//
-		//	interpreter_window->SetVisible(false);
-		//	interpreter_window->SetActive(false);
-		//} else {
-			UpdateInterpreterWindow(GetSelectedIndexFromRange());
-		//}
+		UpdateInterpreterWindow(GetSelectedIndexFromRange());
 	} else {
 		var_window->UpdateList(GetSelectedIndexFromRange());
 	}
@@ -916,14 +879,8 @@ void Scene_Debug::UpdateDetailWindow() {
 
 void Scene_Debug::RefreshDetailWindow() {
 	if (mode == eInterpreter) {
-		//if (state_interpreter.show_frame_switches || state_interpreter.show_frame_vars) {
-		//	var_window->Refresh();
-		//} else {
-			//var_window->SetInterpreterFrame(nullptr);
-			interpreter_window->Refresh();
-		//}
+		interpreter_window->Refresh();
 	} else {
-		//var_window->SetInterpreterFrame(nullptr);
 		var_window->Refresh();
 	}
 }
@@ -1011,16 +968,8 @@ int Scene_Debug::GetLastPage() const {
 			num_elements = Main_Data::game_strings->GetSizeWithLimit();
 			break;
 		case eInterpreter:
-			//if (state_interpreter.show_frame_switches) {
-			//	auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
-			//	return interpreter_frame.easyrpg_frame_switches.size();
-			//} else if (state_interpreter.show_frame_vars) {
-			//		auto & interpreter_frame = GetSelectedInterpreterFrameFromUiState();
-			//		return interpreter_frame.easyrpg_frame_variables.size();
-			//} else {
-				num_elements = 1 + state_interpreter.ev.size() + state_interpreter.ce.size();
-				return (static_cast<int>(num_elements) - 1) / 10;
-			//}
+			num_elements = 1 + state_interpreter.ev.size() + state_interpreter.ce.size();
+			return (static_cast<int>(num_elements) - 1) / 10;
 		default:
 			break;
 	}
