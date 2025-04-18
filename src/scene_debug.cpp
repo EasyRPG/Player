@@ -290,7 +290,20 @@ void Scene_Debug::PushUiStringView() {
 	stringview_window->SetVisible(true);
 
 	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+
+#ifdef HAVE_NLOHMANN_JSON
+	auto& json_cache = Main_Data::game_strings->_json_cache;
+
+	auto it = json_cache.find(str_id);
+	if (it != json_cache.end()) {
+		stringview_window->SetDisplayData(value, it->second);
+	} else {
+		stringview_window->SetDisplayData(value);
+	}
+#else
 	stringview_window->SetDisplayData(value);
+#endif
+
 	stringview_window->SetIndex(0);
 	stringview_window->Refresh();
 }

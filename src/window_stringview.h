@@ -21,6 +21,10 @@
 // Headers
 #include "window_command.h"
 
+#ifdef HAVE_NLOHMANN_JSON
+#include <nlohmann/json.hpp>
+#endif
+
 class Window_StringView : public Window_Selectable {
 public:
 	Window_StringView(int ix, int iy, int iwidth, int iheight);
@@ -31,20 +35,38 @@ public:
 	void SetDisplayData(std::string_view data);
 	std::string GetDisplayData(bool eval_cmds);
 
+#ifdef HAVE_NLOHMANN_JSON
+	void SetDisplayData(std::string_view data, const nlohmann::ordered_json& json_data);
+#endif
+
 	void Refresh();
 protected:
 	void DrawCmdLines();
 	void DrawLine(int index);
+
+	int GetReservedLineCount() const;
 private:
-	const int top_lines_reserved = 2, max_str_length = 42;
-	bool auto_linebreak = false, cmd_eval = false;
+	const int max_str_length = 42;
+	bool auto_linebreak = false, cmd_eval = false, pretty_print = false;
 
 	std::string display_data_raw;
+#ifdef HAVE_NLOHMANN_JSON
+	const nlohmann::ordered_json* json_data;
+#endif
 
 	std::vector<std::string> lines;
 	std::vector<int> line_numbers;
 
 	int line_count = 0, line_no_max_digits = 0;
 };
+
+inline int Window_StringView::GetReservedLineCount() const {
+#ifdef HAVE_NLOHMANN_JSON
+	if (this->json_data) {
+		return 3;
+	}
+#endif
+	return 2;
+}
 
 #endif

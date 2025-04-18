@@ -23,6 +23,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
+#include "json_helper.h"
 
 Window_StringView::Window_StringView(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -35,13 +36,34 @@ Window_StringView::~Window_StringView() {
 
 void Window_StringView::SetDisplayData(std::string_view data) {
 	display_data_raw = ToString(data);
+#ifdef HAVE_NLOHMANN_JSON
+	this->json_data = nullptr;
+#endif
 }
 
 std::string Window_StringView::GetDisplayData(bool eval_cmds) {
-	if (eval_cmds)
-		return PendingMessage::ApplyTextInsertingCommands(display_data_raw, Player::escape_char, Game_Message::CommandCodeInserter);
-	return display_data_raw;
+	std::string display_str = ToString(this->display_data_raw);
+
+#ifdef HAVE_NLOHMANN_JSON
+	if (this->json_data && pretty_print) {
+		if (auto parsed_json = Json_Helper::Parse(display_str)) {
+			display_str = Json_Helper::PrettyPrint(*parsed_json, 2);
+		}
+	}
+#endif
+
+	if (eval_cmds) {
+		return PendingMessage::ApplyTextInsertingCommands(display_str, Player::escape_char, Game_Message::CommandCodeInserter);
+	}
+	return display_str;
 }
+
+#ifdef HAVE_NLOHMANN_JSON
+void Window_StringView::SetDisplayData(std::string_view data, const nlohmann::ordered_json& json_data) {
+	display_data_raw = ToString(data);
+	this->json_data = &json_data;
+}
+#endif
 
 void Window_StringView::Refresh() {
 	lines.clear();
@@ -94,24 +116,27 @@ void Window_StringView::Refresh() {
 		line_numbers.push_back(++c);
 	}
 
-	item_max = lines.size() + top_lines_reserved;
+	item_max = lines.size() + GetReservedLineCount();
 
 	CreateContents();
 	contents->Clear();
 	DrawCmdLines();
 
-	for (int i = 0; i < item_max - top_lines_reserved; ++i) {
+	for (int i = 0; i < item_max - GetReservedLineCount(); ++i) {
 		DrawLine(i);
 	}
 }
 
 void Window_StringView::Update() {
 	Window_Selectable::Update();
-	if (active && index >= 0 && index <= 1 && Input::IsTriggered(Input::DECISION)) {
-		if (index == 0)
+	if (active && index >= 0 && index < GetReservedLineCount() && Input::IsTriggered(Input::DECISION)) {
+		if (index == 0) {
 			auto_linebreak = !auto_linebreak;
-		else
+		} else if (index == 1) {
 			cmd_eval = !cmd_eval;
+		} else {
+			pretty_print = !pretty_print;
+		}
 
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Refresh();
@@ -130,11 +155,21 @@ void Window_StringView::DrawCmdLines() {
 
 	contents->TextDraw(rect.x, rect.y, Font::ColorHeal, "Command evaluation: ");
 	contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorCritical, cmd_eval ? "[ON]" : "[OFF]", Text::AlignRight);
+
+#ifdef HAVE_NLOHMANN_JSON
+	if (this->json_data) {
+		rect = GetItemRect(2);
+		contents->ClearRect(rect);
+
+		contents->TextDraw(rect.x, rect.y, Font::ColorHeal, "Pretty Print: ");
+		contents->TextDraw(GetWidth() - 16, rect.y, Font::ColorCritical, pretty_print ? "[ON]" : "[OFF]", Text::AlignRight);
+	}
+#endif
 }
 
 void Window_StringView::DrawLine(int index) {
-	Rect rect = GetItemRect(index + top_lines_reserved);
-	contents->ClearRect(rect);
+	Rect rect = GetItemRect(index + GetReservedLineCount());
+	//contents->ClearRect(rect);
 
 	std::string line = lines[index];
 
