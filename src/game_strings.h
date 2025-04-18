@@ -120,6 +120,8 @@ private:
 #ifdef HAVE_NLOHMANN_JSON
 	std::unordered_map<int, nlohmann::ordered_json> _json_cache;
 #endif
+	friend class Scene_Debug;
+	friend class Window_VarList;
 };
 
 inline void Game_Strings::Set(Str_Params params, std::string_view string) {

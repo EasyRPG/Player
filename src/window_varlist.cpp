@@ -312,6 +312,20 @@ void Window_VarList::DrawStringVarItem(int index, int y) {
 	const int space_reserved = (GetDigitCount() + 2);
 	int x = space_reserved * 6, max_len_vals = 32 - space_reserved;
 
+	bool is_json = false;
+#ifdef HAVE_NLOHMANN_JSON
+	auto& json_cache = Main_Data::game_strings->_json_cache;
+	is_json = json_cache.find(first_var + index) != json_cache.end();
+#endif
+
+	if (is_json) {
+		if (show_detail) {
+			contents->TextDraw(GetWidth() - 16, y, Font::ColorHeal, "[JSON]", Text::AlignRight);
+		} else {
+			contents->TextDraw(GetWidth() - 16, y, Font::ColorHeal, "[J]", Text::AlignRight);
+		}
+	}
+
 	if (show_detail) {
 		x = 6;
 		y += menu_item_height;
