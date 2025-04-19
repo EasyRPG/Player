@@ -133,9 +133,9 @@ constexpr std::string_view Window_VarList::GetPrefix(Mode mode) {
 		case eString:
 			return "St";
 		default:
-			break;
+			assert(false);
+			return {};
 	}
-	assert(false);
 }
 
 constexpr int Window_VarList::GetItemCount(Mode mode, bool show_detail) {
@@ -151,7 +151,7 @@ constexpr int Window_VarList::GetItemCount(Mode mode, bool show_detail) {
 	return 10;
 }
 
-constexpr int Window_VarList::GetDigitCount(Mode mode) {
+constexpr int Window_VarList::GetDigitCount(Mode /* mode */) {
 	return 4;
 }
 
