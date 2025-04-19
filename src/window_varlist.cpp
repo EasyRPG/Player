@@ -206,7 +206,7 @@ void Window_VarList::UpdateList(int first_value){
 }
 
 void Window_VarList::SetItemText(unsigned index, std::string_view text) {
-	if (index < item_max) {
+	if (static_cast<int>(index) < item_max) {
 		items[index] = ToString(text);
 	}
 }
@@ -339,7 +339,7 @@ void Window_VarList::DrawStringVarItem(int index, int y) {
 			value.replace(pos, 1, "\\n");
 			pos += 3;
 		}
-		if (value.length() > max_len_vals) {
+		if (static_cast<int>(value.length()) > max_len_vals) {
 			value = value.substr(0, max_len_vals - 3) + "...";
 		}
 		if (show_detail) {
