@@ -1854,8 +1854,6 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVi
 		pm.PushLine(ToString(lcf::Data::terms.victory) + Player::escape_symbol + "|");
 		pm.PushPageEnd();
 
-		std::string space = Player::IsRPG2k3E() ? " " : "";
-
 		if (exp > 0) {
 			pm.PushLine(PartyMessage::GetExperienceGainedMessage(exp));
 			pm.PushPageEnd();
