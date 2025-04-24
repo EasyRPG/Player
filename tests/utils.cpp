@@ -93,4 +93,14 @@ TEST_CASE("TrimWhitespace") {
 	}
 }
 
+TEST_CASE("StringIsAscii") {
+	REQUIRE(Utils::StringIsAscii("Hello"));
+	REQUIRE(Utils::StringIsAscii("Hello World"));
+	REQUIRE(Utils::StringIsAscii(""));
+
+	REQUIRE_FALSE(Utils::StringIsAscii("Holerö"));
+	REQUIRE_FALSE(Utils::StringIsAscii("こんにちは"));
+	REQUIRE_FALSE(Utils::StringIsAscii("　")); // Full-Width-Space
+}
+
 TEST_SUITE_END();
