@@ -19,8 +19,8 @@ defaults:
 
 jobs:
   docker:
-    name: ${{ matrix.image }}
-    runs-on: ubuntu-latest
+    name: ${{ matrix.image }} (${{ matrix.os.arch }})
+    runs-on: ${{ matrix.os.name }}
     container:
       image: ${{ matrix.image }}
 
@@ -34,6 +34,18 @@ jobs:
           - ubuntu:22.04  # 3.22.1 | 11.2.0 | 2.0.20 | LTS       (4/27) #
           - debian:12     # 3.25.1 | 12.2.0 | 2.26.5 | stable    (6/26) #
           - ubuntu:24.04  # 3.28.3 | 13.2.0 | 2.30.0 | LTS       (4/29) #
+        os:
+          - arch: x86_64
+            name: ubuntu-latest
+          - arch: arm64
+            name: ubuntu-24.04-arm
+        exclude:
+          - os:
+              arch: arm64
+            image: debian:11
+          - os:
+              arch: arm64
+            image: ubuntu:22.04
 
     steps:
       - name: Install dependencies
