@@ -24,3 +24,9 @@ if(MSVC)
 	# Interpret character literals as UTF-8
 	add_compile_options("/utf-8")
 endif()
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio" AND CMAKE_CONFIGURATION_TYPES)
+	# Multi-Config is not supported due to limitations in the CMake Find Scripts
+	# Remove all configuration types except the current build type
+	set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE})
+endif()
