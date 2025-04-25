@@ -760,6 +760,8 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.font1_size.ToIni(os);
 	player.font2.ToIni(os);
 	player.font2_size.ToIni(os);
+	player.log_enabled.ToIni(os);
+	player.screenshot_scale.ToIni(os);
 
 	os << "\n";
 }
