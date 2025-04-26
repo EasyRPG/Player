@@ -434,7 +434,23 @@ void Window_Settings::RefreshEngine() {
 
 	GetFrame().options.back().help2 = fmt::format("Screenshot size: {}x{}",
 		Player::screen_width * cfg.screenshot_scale.Get(), Player::screen_height * cfg.screenshot_scale.Get());
+
+	auto fmt_sample_name = [](bool is_auto_screenshot) {
+		auto name = Output::GetScreenshotName(is_auto_screenshot);
+		if (Player::player_config.screenshot_timestamp.Get()) {
+			//return name + "[_1].png";
+			return name + ".png";
+		}
+		return name + "_0.png";
+	};
+
+	AddOption(cfg.screenshot_timestamp, [this, &cfg]() { cfg.screenshot_timestamp.Toggle(); });
+	GetFrame().options.back().help2 = fmt::format("Sample name: {}", fmt_sample_name(false));
+
 	AddOption(cfg.automatic_screenshots, [&cfg]() { cfg.automatic_screenshots.Toggle(); });
+	if (Player::player_config.automatic_screenshots.Get()) {
+		GetFrame().options.back().help2 = fmt::format("Sample name: {}", fmt_sample_name(true));
+	}
 	AddOption(cfg.automatic_screenshots_interval, [this, &cfg]() { cfg.automatic_screenshots_interval.Set(GetCurrentOption().current_value); });
 }
 

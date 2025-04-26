@@ -29,6 +29,7 @@
 namespace Utils {
 	constexpr std::string_view DateFormat_YYMMDD = "%y%m%d";
 	constexpr std::string_view DateFormat_HHMMSS = "%H%M%S";
+	constexpr std::string_view DateFormat_YYYYMMDD_HHMMSS = "%Y%m%d_%H%M%S";
 
 	/**
 	 * Converts a string to lower case (ASCII only)
