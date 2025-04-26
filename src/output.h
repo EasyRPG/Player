@@ -85,6 +85,8 @@ namespace Output {
 	 */
 	bool TakeScreenshot(std::ostream& os);
 
+	std::string GetScreenshotName(bool is_auto_screenshot);
+
 	/**
 	 * Gets the next available file name for a screenshot
 	 *
@@ -92,7 +94,7 @@ namespace Output {
 	 * @param is_auto_screenshot
 	 * @return the file name
 	 */
-	std::string GetNextScreenshotName(FilesystemView fs, bool is_auto_screenshot);
+	std::string GetNextScreenshotFileName(FilesystemView fs, bool is_auto_screenshot);
 
 	/**
 	 * Shows/Hides the output log overlay.
