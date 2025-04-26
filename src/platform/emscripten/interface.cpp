@@ -77,7 +77,7 @@ void Emscripten_Interface::TakeScreenshot(bool is_auto_screenshot) {
 	std::ostringstream os;
 	Output::TakeScreenshot(os);
 	std::string screenshot = os.str();
-	std::string filename = GetScreenshotName(is_auto_screenshot);
+	std::string filename = Output::GetScreenshotName(is_auto_screenshot);
 	if (!Player::player_config.screenshot_timestamp.Get()) {
 		filename += "_" + std::to_string(index++) + ".png";
 	} else {
