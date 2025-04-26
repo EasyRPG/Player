@@ -197,16 +197,13 @@ void Output::Quit() {
 	Game_Config::CloseLogFile();
 }
 
-bool Output::TakeScreenshot() {
+bool Output::TakeScreenshot(bool is_auto_screenshot) {
 #ifdef EMSCRIPTEN
 	Emscripten_Interface::TakeScreenshot();
 	return true;
 #else
-	int index = 0;
-	std::string p;
-	do {
-		p = "screenshot_" + std::to_string(index++) + ".png";
-	} while(FileFinder::Save().Exists(p));
+	auto fs = FileFinder::Save();
+	auto p = GetNextScreenshotName(fs, is_auto_screenshot);
 	return TakeScreenshot(p);
 #endif
 }
@@ -231,6 +228,15 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	} else {
 		return DisplayUi->GetDisplaySurface()->WritePNG(os);
 	}
+}
+
+std::string Output::GetNextScreenshotName(FilesystemView fs, bool is_auto_screenshot) {
+	std::string p;
+	int index = 0;
+	do {
+		p = (is_auto_screenshot ? "auto_" : "screenshot_") + std::to_string(index++) + ".png";
+	} while (fs.Exists(p));
+	return p;
 }
 
 void Output::ToggleLog() {

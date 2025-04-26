@@ -45,7 +45,7 @@ namespace Output {
 	/**
 	 * Sets the log level for filtering logs
 	 *
-	 * @param ll the new log level
+	 * @param lvl the new log level
 	 */
 	void SetLogLevel(LogLevel lvl);
 
@@ -64,9 +64,10 @@ namespace Output {
 	/**
 	 * Takes screenshot and save it in the save directory.
 	 *
+	 * @param is_auto_screenshot
 	 * @return true if success, otherwise false.
 	 */
-	bool TakeScreenshot();
+	bool TakeScreenshot(bool is_auto_screenshot = false);
 
 	/**
 	 * Takes screenshot and save it to specified file.
@@ -83,6 +84,15 @@ namespace Output {
 	 * @return true if success, otherwise false.
 	 */
 	bool TakeScreenshot(std::ostream& os);
+
+	/**
+	 * Gets the next available file name for a screenshot
+	 *
+	 * @param fs the output path where to store the file
+	 * @param is_auto_screenshot
+	 * @return the file name
+	 */
+	std::string GetNextScreenshotName(FilesystemView fs, bool is_auto_screenshot);
 
 	/**
 	 * Shows/Hides the output log overlay.

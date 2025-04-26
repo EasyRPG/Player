@@ -434,6 +434,8 @@ void Window_Settings::RefreshEngine() {
 
 	GetFrame().options.back().help2 = fmt::format("Screenshot size: {}x{}",
 		Player::screen_width * cfg.screenshot_scale.Get(), Player::screen_height * cfg.screenshot_scale.Get());
+	AddOption(cfg.automatic_screenshots, [&cfg]() { cfg.automatic_screenshots.Toggle(); });
+	AddOption(cfg.automatic_screenshots_interval, [this, &cfg]() { cfg.automatic_screenshots_interval.Set(GetCurrentOption().current_value); });
 }
 
 void Window_Settings::RefreshEngineFont(bool mincho) {
