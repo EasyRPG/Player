@@ -575,6 +575,8 @@ public:
 	 */
 	virtual bool Move(int dir);
 
+	virtual bool CheckMove(int dir);
+
 	/**
 	 * Jump to (x, y)
 	 *

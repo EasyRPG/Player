@@ -674,7 +674,28 @@ static int GetPassableMask(int old_x, int old_y, int new_x, int new_y) {
 	return bit;
 }
 
-static bool WouldCollide(const Game_Character& self, const Game_Character& other, bool self_conflict) {
+static int GetEventId(Game_Character const& ch) {
+	switch (ch.GetType()) {
+		case Game_Character::Event:
+			return static_cast<Game_Event const&>(ch).GetId();
+		case Game_Character::Player:
+			return Game_Character::CharPlayer;
+		case Game_Character::Vehicle:
+			switch (static_cast<Game_Vehicle const&>(ch).GetVehicleType()) {
+				case Game_Vehicle::Boat:
+					return Game_Character::CharBoat;
+				case Game_Vehicle::Ship:
+					return Game_Character::CharShip;
+				case Game_Vehicle::Airship:
+					return Game_Character::CharAirship;
+			}
+	}
+	assert(false);
+	return 0;
+}
+
+template<typename T, Game_Map::CheckOrMakeWayImpl impl>
+static bool WouldCollide(const Game_Character& self, const T& other, bool self_conflict) {
 	if (self.GetThrough() || other.GetThrough()) {
 		return false;
 	}
@@ -690,14 +711,131 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 	if (self.GetType() == Game_Character::Event
 			&& other.GetType() == Game_Character::Event
 			&& (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
+		if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+			if (self.IsOverlapForbidden()) {
+				Output::Warning("MoveRoute: {} is not allowed to overlap with other events!", Debug::FormatEventName(self));
+			} else {
+				Output::Warning("MoveRoute: {} is not allowed to overlap with event {}!", Debug::FormatEventName(self), Debug::FormatEventName(other));
+			}
+		}
 		return true;
 	}
 
 	if (other.GetLayer() == lcf::rpg::EventPage::Layers_same && self_conflict) {
+		if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+			Output::Warning("MoveRoute: {} can't move (self collision)!", Debug::FormatEventName(self));
+		}
 		return true;
 	}
 
 	if (self.GetLayer() == other.GetLayer()) {
+		if constexpr (impl == Game_Map::eImpl_AssertWayBackground) {
+			// check if 'self' is blocked by player
+			// (if the blocked movement doesn't occur inside
+			// 'foreground' context, then they might just walk away)
+
+			if (other.GetType() == Game_Character::Player) {
+				return false;
+			}
+			if (other.GetType() == Game_Character::Vehicle) {
+				return false;
+			}
+		}
+		if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+			const auto rng_moves = {
+				lcf::rpg::EventPage::MoveType_random,
+				lcf::rpg::EventPage::MoveType_toward,
+				lcf::rpg::EventPage::MoveType_away
+			};
+
+			// check if 'other' could still move away due to some routing behavior...
+			bool do_check_next_move_command = false;
+			auto check_rng_move = [&](Game_Character const& ch, lcf::Span<int> ignore_list) {
+				return Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX(), ch.GetY() + ch.GetDyFromDirection(Game_Character::Up), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX(), ch.GetY() + ch.GetDyFromDirection(Game_Character::Down), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX() + ch.GetDxFromDirection(Game_Character::Left), ch.GetY(), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX() + ch.GetDxFromDirection(Game_Character::Right), ch.GetY(), true, ignore_list);
+			};
+			std::vector<int> ignore_list;
+			ignore_list.emplace_back(GetEventId(self));
+
+			if (other.IsMoveRouteOverwritten() && !other.IsMoveRouteFinished()) {
+				do_check_next_move_command = true;
+			} else if (other.GetType() == Game_Character::Event) {
+				if constexpr (impl == Game_Map::eImpl_AssertWayForeground) {
+					auto* page = reinterpret_cast<Game_Event const&>(other).GetActivePage();
+					auto move_type = page ? page->move_type : 0;
+
+					if (move_type == lcf::rpg::EventPage::MoveType_vertical) {
+						//check if 'other' event could still move up/down...
+						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Up), true, ignore_list)
+							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Down), true, ignore_list)) {
+							return false;
+						}
+					} else if (move_type == lcf::rpg::EventPage::MoveType_horizontal) {
+						//check if 'other' event could still move left/right...
+						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Left), other.GetY(), true, ignore_list)
+							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Right), other.GetY(), true, ignore_list)) {
+							return false;
+						}
+					} else if (std::any_of(rng_moves.begin(), rng_moves.end(), [&move_type](auto mt) { return move_type == mt; })) {
+						//check if 'other' event could still move in any direction...
+						if (check_rng_move(other, ignore_list)) {
+							return false;
+						}
+					} else if (move_type == lcf::rpg::EventPage::MoveType_custom) {
+						//check if the other event's custom route would make it possible for this event to move...
+						do_check_next_move_command = true;
+					}
+				}
+			}
+
+			if (do_check_next_move_command) {
+				auto& move_command = other.GetMoveRoute().move_commands[other.GetMoveRouteIndex()];
+				bool move_success = false;
+
+				using Code = lcf::rpg::MoveCommand::Code;
+				switch (static_cast<Code>(move_command.command_id)) {
+					case Code::move_up:
+					case Code::move_right:
+					case Code::move_down:
+					case Code::move_left:
+					case Code::move_upright:
+					case Code::move_downright:
+					case Code::move_downleft:
+					case Code::move_upleft:
+						move_success = other.CheckMove(static_cast<Game_Character::Direction>(move_command.command_id));
+						break;
+					case Code::move_forward:
+						move_success = other.CheckMove(other.GetDirection());
+						break;
+					case Code::move_random:
+						move_success = check_rng_move(other, ignore_list);
+						break;
+					case Code::move_towards_hero:
+						if constexpr (impl == Game_Map::eImpl_AssertWayForeground) {
+							move_success = check_rng_move(other, ignore_list);
+						} else {
+							move_success = other.CheckMove(other.GetDirectionToCharacter(*Main_Data::game_player));
+						}
+						break;
+					case Code::move_away_from_hero:
+						if constexpr (impl == Game_Map::eImpl_AssertWayForeground) {
+							move_success = check_rng_move(other, ignore_list);
+						} else {
+							move_success = other.CheckMove(other.GetDirectionAwayCharacter(*Main_Data::game_player));
+						}
+						break;
+					default:
+						break;
+				}
+				if (move_success) {
+					return false;
+				}
+			}
+
+			Output::Warning("MoveRoute: {} would overlap with {}!", Debug::FormatEventName(self), Debug::FormatEventName(other));
+		}
 		return true;
 	}
 
@@ -713,7 +851,7 @@ static void MakeWayUpdate(Game_Event& other) {
 	other.Update(false);
 }
 
-template <typename T>
+template <typename T, Game_Map::CheckOrMakeWayImpl impl>
 static bool CheckWayTestCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
 	if (&self == &other) {
 		return false;
@@ -723,7 +861,7 @@ static bool CheckWayTestCollideEvent(int x, int y, const Game_Character& self, T
 		return false;
 	}
 
-	return WouldCollide(self, other, self_conflict);
+	return WouldCollide<T, impl>(self, other, self_conflict);
 }
 
 template <typename T>
@@ -743,7 +881,7 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 		return false;
 	}
 
-	return WouldCollide(self, other, self_conflict);
+	return WouldCollide<T, Game_Map::eImpl_MakeWay>(self, other, self_conflict);
 }
 
 static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
@@ -758,8 +896,8 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, {}, false
+	return CheckOrMakeWayEx <true, eImpl_CheckWay>(
+		self, from_x, from_y, to_x, to_y, {}
 	);
 }
 
@@ -768,19 +906,38 @@ bool Game_Map::CheckWay(const Game_Character& self,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
 		Span<int> ignore_some_events_by_id) {
-	return CheckOrMakeWayEx(
+	if (check_events_and_vehicles) {
+		return CheckOrMakeWayEx<true, eImpl_CheckWay>(
+			self, from_x, from_y, to_x, to_y,
+			ignore_some_events_by_id
+		);
+	}
+	return CheckOrMakeWayEx<false, eImpl_CheckWay>(
 		self, from_x, from_y, to_x, to_y,
-		check_events_and_vehicles,
-		ignore_some_events_by_id, false
+		ignore_some_events_by_id
 	);
 }
 
+bool Game_Map::AssertWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y, bool main_flag
+)
+{
+	if (main_flag) {
+		return CheckOrMakeWayEx<true, eImpl_AssertWayForeground>(
+			self, from_x, from_y, to_x, to_y, {}
+		);
+	}
+	return CheckOrMakeWayEx<true, eImpl_AssertWayBackground>(
+		self, from_x, from_y, to_x, to_y, {}
+	);
+}
+
+template<bool check_events_and_vehicles, Game_Map::CheckOrMakeWayImpl impl>
 bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
-		bool check_events_and_vehicles,
-		Span<int> ignore_some_events_by_id,
-		bool make_way
+		Span<int> ignore_some_events_by_id
 		)
 {
 	// Infer directions before we do any rounding.
@@ -793,6 +950,9 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
 	if (!Game_Map::IsValid(to_x, to_y)) {
+		if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+			Output::Warning("MoveRoute: {} can't move out-of-bounds (x:{}, y:{})!", Debug::FormatEventName(self), to_x, to_y);
+		}
 		return false;
 	}
 
@@ -805,14 +965,13 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 
 	// Depending on whether we're supposed to call MakeWayCollideEvent
 	// (which might change the map) or not, choose what to call:
-	auto CheckOrMakeCollideEvent = [&](auto& other) {
-		if (make_way) {
+	auto CheckOrMakeCollideEvent = [&](auto& other) -> bool {
+		if constexpr (impl == eImpl_MakeWay) {
 			return MakeWayCollideEvent(to_x, to_y, self, other, self_conflict);
-		} else {
-			return CheckWayTestCollideEvent(
-				to_x, to_y, self, other, self_conflict
-			);
 		}
+		return CheckWayTestCollideEvent<decltype(other), impl>(
+			to_x, to_y, self, other, self_conflict
+		);
 	};
 
 	if (!self.IsJumping()) {
@@ -838,6 +997,9 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 			from_x = Game_Map::RoundX(from_x);
 			from_y = Game_Map::RoundY(from_y);
 			if (!IsPassableTile(&self, bit_from, from_x, from_y)) {
+				if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+					Output::Warning("MoveRoute: {} can't step of current tile (x:{}, y:{})!", Debug::FormatEventName(self), from_x, from_y);
+				}
 				return false;
 			}
 		}
@@ -886,19 +1048,34 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
 	}
 
-	return IsPassableTile(
-		&self, bit, to_x, to_y, check_events_and_vehicles, true
+	bool result = IsPassableTile<check_events_and_vehicles>(
+		&self, bit, to_x, to_y
 		);
+	if constexpr (impl == Game_Map::eImpl_AssertWayForeground || impl == Game_Map::eImpl_AssertWayBackground) {
+		if (!result) {
+			Output::Warning("MoveRoute: {} can't pass target tile (x:{}, y:{})!", Debug::FormatEventName(self), to_x, to_y);
+		}
+	}
+	return result;
 }
+
+// explicit template declarations
+template bool Game_Map::CheckOrMakeWayEx<true, Game_Map::eImpl_CheckWay>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<true, Game_Map::eImpl_MakeWay>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<true, Game_Map::eImpl_AssertWayForeground>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<true, Game_Map::eImpl_AssertWayBackground>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<false, Game_Map::eImpl_CheckWay>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<false, Game_Map::eImpl_MakeWay>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<false, Game_Map::eImpl_AssertWayForeground>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
+template bool Game_Map::CheckOrMakeWayEx<false, Game_Map::eImpl_AssertWayBackground>(const Game_Character& self, int, int, int, int, lcf::Span<int>);
 
 bool Game_Map::MakeWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y
 		)
 {
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, {}, true
-		);
+	return CheckOrMakeWayEx<true, eImpl_MakeWay>(
+		self, from_x, from_y, to_x, to_y, {});
 }
 
 
@@ -995,22 +1172,14 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 	return (passages_down[tile_id] & bit) != 0;
 }
 
+template<bool check_events_and_vehicles, bool check_map_geometry>
 bool Game_Map::IsPassableTile(
 		const Game_Character* self, int bit, int x, int y
-		) {
-	return IsPassableTile(
-		self, bit, x, y, true, true
-	);
-}
-
-bool Game_Map::IsPassableTile(
-		const Game_Character* self, int bit, int x, int y,
-		bool check_events_and_vehicles, bool check_map_geometry
 		) {
 	if (!IsValid(x, y)) return false;
 
 	const auto vehicle_type = GetCollisionVehicleType(self);
-	if (check_events_and_vehicles) {
+	if constexpr(check_events_and_vehicles) {
 		if (vehicle_type != Game_Vehicle::None) {
 			const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
 			if (!terrain) {
@@ -1061,7 +1230,7 @@ bool Game_Map::IsPassableTile(
 		}
 	}
 
-	if (check_map_geometry) {
+	if constexpr(check_map_geometry) {
 		int tile_index = x + y * GetTilesX();
 		int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 		tile_id = map_info.upper_tiles[tile_id];
