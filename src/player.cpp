@@ -1663,18 +1663,16 @@ int32_t Player::Constants::MaxActorSpValue() {
 
 int32_t Player::Constants::MaxEnemyHpValue() {
 	auto val = lcf::Data::system.easyrpg_max_enemy_hp;
-	TryGetOverriddenConstant(GameConstantType::MaxEnemyHP, val);
 	if (val == -1) {
-		return Player::IsRPG2k() ? 9'999 : 99'999;
+		return std::numeric_limits<int32_t>::max();
 	}
 	return val;
 }
 
 int32_t Player::Constants::MaxEnemySpValue() {
 	auto val = lcf::Data::system.easyrpg_max_enemy_sp;
-	TryGetOverriddenConstant(GameConstantType::MaxEnemySP, val);
 	if (val == -1) {
-		return 9'999;
+		return std::numeric_limits<int32_t>::max();
 	}
 	return val;
 }
