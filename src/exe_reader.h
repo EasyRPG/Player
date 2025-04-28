@@ -64,12 +64,15 @@ public:
 		uint32_t geep_size = 0;
 		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
+		uint32_t code_ofs = 0;
 
 		int GetEngineType(bool& is_maniac_patch) const;
 		void Print() const;
 	};
 
 	const FileInfo& GetFileInfo();
+
+	std::map<Player::GameConstantType, int32_t> GetOverriddenGameConstants();
 
 private:
 	// Bounds-checked unaligned reader primitives.

@@ -501,6 +501,42 @@ namespace Player {
 		bool TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value);
 		void OverrideGameConstant(GameConstantType const_type, int32_t value);
 		void ResetOverrides();
+		void PrintActiveOverrides();
+
+		enum class KnownPatchConfigurations {
+			Rm2k3_Italian_WD_108,		// Italian "WhiteDragon" patch
+			StatDelimiter,
+			LAST
+		};
+		static constexpr auto kKnownPatchConfigurations = lcf::makeEnumTags<KnownPatchConfigurations>(
+			"Rm2k3 Italian 1.08",
+			"StatDelimiter"
+		);
+
+		static_assert(kKnownPatchConfigurations.size() == static_cast<size_t>(KnownPatchConfigurations::LAST));
+
+		using T = Player::GameConstantType;
+		using patch_config = std::map<Player::GameConstantType, int32_t>;
+		inline const std::map<KnownPatchConfigurations, patch_config> known_patch_configurations = {
+			{
+				KnownPatchConfigurations::Rm2k3_Italian_WD_108, {
+					{ T::MinVarLimit,	-999999999 },
+					{ T::MaxVarLimit,	 999999999 },
+					{ T::MaxEnemyHP,	 999999999 },
+					{ T::MaxEnemySP,     999999999 },
+					{ T::MaxActorHP,	     99999 },
+					{ T::MaxActorSP,          9999 },
+					{ T::MaxStatBaseValue,    9999 },
+					{ T::MaxDamageValue,     99999 },
+					{ T::MaxGoldValue,     9999999 }
+			}},{
+			KnownPatchConfigurations::StatDelimiter, {
+				{ T::MaxActorHP,           9999999 },
+				{ T::MaxActorSP,           9999999 },
+				{ T::MaxStatBaseValue,      999999 },
+				{ T::MaxStatBattleValue,    999999 }
+		}}
+		};
 	}
 }
 
