@@ -773,6 +773,7 @@ void Player::CreateGameObjects() {
 	}
 
 	int& engine = game_config.engine;
+	std::map<Player::GameConstantType, int32_t> game_constant_overrides;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
@@ -796,6 +797,8 @@ void Player::CreateGameObjects() {
 				game_config.patch_maniac.Set(maniac_patch_version);
 			}
 		}
+
+		game_constant_overrides = exe_reader->GetOverriddenGameConstants();
 
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
@@ -853,6 +856,14 @@ void Player::CreateGameObjects() {
 	}
 
 	game_config.PrintActivePatches();
+
+	Constants::ResetOverrides();
+	if (game_constant_overrides.size() > 0) {
+		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();++it) {
+			Constants::OverrideGameConstant(it->first, it->second);
+		}
+		Constants::PrintActiveOverrides();
+	}
 
 	ResetGameObjects();
 
@@ -1774,4 +1785,33 @@ void Player::Constants::OverrideGameConstant(GameConstantType const_type, int32_
 
 void Player::Constants::ResetOverrides() {
 	constant_overrides.clear();
+}
+
+void Player::Constants::PrintActiveOverrides() {
+	std::vector<std::tuple<std::string, int32_t>> overridden_constants;
+
+	auto it = Player::kGameConstantType.begin();
+	int32_t value;
+	while (it != Player::kGameConstantType.end()) {
+		auto const_type = static_cast<GameConstantType>((*it).value);
+		if (!TryGetOverriddenConstant(const_type, value)) {
+			++it;
+			continue;
+		}
+		overridden_constants.push_back(std::make_tuple((*it).name, value));
+		++it;
+	}
+
+	if (!overridden_constants.empty()) {
+		std::string out = "Overridden Game Constants: ";
+		bool first = true;
+		for (const auto& p : overridden_constants) {
+			if (!first) {
+				out += ", ";
+			}
+			out += fmt::format("{}: {}", std::get<std::string>(p), std::get<int32_t>(p));
+			first = false;
+		}
+		Output::DebugStr(out);
+	}
 }

@@ -20,9 +20,7 @@
 
 #include <cstdint>
 #include <string>
-#include <istream>
 #include <vector>
-#include "bitmap.h"
 #include "player.h"
 
 /**
@@ -65,12 +63,15 @@ public:
 		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
 		int maniac_patch_version = 0;
+		uint32_t code_ofs = 0;
 
 		int GetEngineType(int& mp_version) const;
 		void Print() const;
 	};
 
 	const FileInfo& GetFileInfo();
+
+	std::map<Player::GameConstantType, int32_t> GetOverriddenGameConstants();
 
 private:
 	// Bounds-checked unaligned reader primitives.
