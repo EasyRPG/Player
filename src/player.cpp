@@ -1714,7 +1714,7 @@ int32_t Player::Constants::MaxExpValue() {
 }
 
 int32_t Player::Constants::MaxLevel() {
-	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
+	auto max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
 	if (TryGetOverriddenConstant(GameConstantType::MaxLevel, max_level)) {
 		return max_level;
 	}
