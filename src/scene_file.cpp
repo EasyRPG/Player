@@ -168,7 +168,7 @@ void Scene_File::RefreshWindows() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		PopulateSaveWindow(*w, i);
 		w->Refresh();
