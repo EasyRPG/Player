@@ -8,10 +8,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.util.DisplayMetrics;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -68,17 +71,41 @@ public class Helper {
 	 *            Y position from 0 to 1
 	 */
 	public static void setLayoutPosition(Activity a, View view, double x, double y) {
-		DisplayMetrics displayMetrics = a.getResources().getDisplayMetrics();
-		float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-		float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
+        int padW = 0;
+        int padH = 0;
 
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
+        // Consider the display cut out when calculating the button position to avoid that they are
+        // rendered out of bounds.
+        // Starting from Android 15 (SDK35) the reported display metrics are of the entire screen
+        // including the system bar but our activity has insets configured
+        // Substract the size of the display cutout to prevent that our buttons are displayed out of
+        // bounds.
+        if (Build.VERSION.SDK_INT >= 35) {
+            WindowInsets insets = a.getWindow().getDecorView().getRootWindowInsets();
+            if (insets != null) {
+                Insets systemBar = insets.getInsets(WindowInsets.Type.displayCutout());
 
-		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
-		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+                padW = systemBar.left + systemBar.right;
+                padH = systemBar.top + systemBar.bottom;
+            }
+        }
 
-		view.setLayoutParams(params);
+        DisplayMetrics displayMetrics = a.getResources().getDisplayMetrics();
+        float screenWidthDp = (displayMetrics.widthPixels) / displayMetrics.density;
+        float screenHeightDp = (displayMetrics.heightPixels) / displayMetrics.density;
+
+        float screenWidthDpFit = (displayMetrics.widthPixels - padW) / displayMetrics.density;
+        float screenHeightDpFit = (displayMetrics.heightPixels - padH) / displayMetrics.density;
+
+        float widthRatio = screenWidthDpFit / screenWidthDp;
+        float heightRatio = screenHeightDpFit / screenHeightDp;
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+        params.leftMargin = Helper.getPixels(a, screenWidthDpFit * x * widthRatio);
+        params.topMargin = Helper.getPixels(a, screenHeightDpFit * y * heightRatio);
+
+        view.setLayoutParams(params);
 	}
 
     public static Paint getUIPainter() {
