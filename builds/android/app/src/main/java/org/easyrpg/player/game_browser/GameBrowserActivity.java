@@ -72,6 +72,8 @@ public class GameBrowserActivity extends BaseActivity
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        onBackPressedCallback.setEnabled(true);
     }
 
     @Override

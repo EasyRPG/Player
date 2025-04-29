@@ -97,6 +97,8 @@ public class ButtonMappingActivity extends BaseActivity implements NavigationVie
         } else {
             drawButtons();
         }
+
+        onBackPressedCallback.setEnabled(true);
     }
 
     @Override
