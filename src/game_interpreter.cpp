@@ -5762,6 +5762,10 @@ bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand cons
 
 	int target_event = ValueOrVariable(com.parameters[0], com.parameters[1]);
 
+	if (target_event == 0 || target_event == Game_Character::CharThisEvent) {
+		target_event = GetThisEventId();
+	}
+
 	_async_op = AsyncOp::MakeDestroyMapEvent(target_event);
 
 	return true;
