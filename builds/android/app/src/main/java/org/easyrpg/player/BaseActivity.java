@@ -13,6 +13,7 @@ import org.easyrpg.player.settings.SettingsManager;
  */
 public class BaseActivity extends AppCompatActivity {
     public static Boolean libraryLoaded = false;
+    protected OnBackPressedCallback onBackPressedCallback = null;
 
     private static void loadNativeLibraries() {
         if (!libraryLoaded) {
@@ -48,7 +49,7 @@ public class BaseActivity extends AppCompatActivity {
         loadNativeLibraries();
 
         // Handle pressing of back button on newer Android 35+
-        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        onBackPressedCallback = new OnBackPressedCallback(false) {
             @Override
             public void handleOnBackPressed() {
                 backPressed();
