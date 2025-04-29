@@ -78,6 +78,16 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--engine-path")) {
+			if (arg.NumValues() > 0) {
+				std::string path = arg.Value(0);
+				path = FileFinder::MakeCanonical(path, 0);
+				if (!path.empty()) {
+					engine_path.Set(path);
+				}
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 0, "--no-patch")) {
 			patch_support.Set(false);
 			patch_dynrpg.Lock(false);
@@ -192,6 +202,7 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 
 	new_game.FromIni(ini);
 	engine_str.FromIni(ini);
+	engine_path.FromIni(ini);
 	fake_resolution.FromIni(ini);
 
 	if (patch_easyrpg.FromIni(ini)) {

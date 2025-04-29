@@ -3795,7 +3795,7 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	// BreakLoop will jump to the end of the event if there is no loop.
 
-	bool has_bug = !Player::IsPatchManiac();
+	bool has_bug = !Player::HasBreakLoopFix();
 	if (!has_bug) {
 		SkipToNextConditional({ Cmd::EndLoop }, list[index].indent - 1);
 		++index;

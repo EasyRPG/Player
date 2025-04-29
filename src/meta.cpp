@@ -177,7 +177,7 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView&
 
 	if (is_match) {
 		// Scan over every possible save file and see if any match.
-		for (int saveId = 0; saveId < 15; saveId++) {
+		for (int saveId = 0; saveId < Player::Constants::MaxSaveFiles(); saveId++) {
 			std::stringstream ss;
 			ss << "Save" << (saveId <= 8 ? "0" : "") << (saveId + 1) << ".lsd";
 

@@ -37,6 +37,7 @@
 #include "rand.h"
 #include "cmdline_parser.h"
 #include "game_dynrpg.h"
+#include "game_dynrpg_loader.h"
 #include "filefinder.h"
 #include "filefinder_rtp.h"
 #include "fileext_guesser.h"
@@ -136,6 +137,7 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+	bool break_loop_fix;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -751,14 +753,48 @@ void Player::CreateGameObjects() {
 	if (!exfont_stream) {
 		// Backwards compatible with older Player versions
 		exfont_stream = FileFinder::OpenImage(".", "ExFont");
+	} else {
+		Output::Debug("Using custom ExFont: {}", FileFinder::GetPathInsideGamePath(exfont_stream.GetName()));
+		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
 	}
 
+	Constants::ResetOverrides();
+	DetectEngine(false);
+
+	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
+
+	game_config.PrintActivePatches();
+	Constants::PrintActiveOverrides();
+
+	ResetGameObjects();
+
+	LoadFonts();
+
+	if (Player::IsPatchKeyPatch()) {
+		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	}
+
+	if (Player::IsPatchDestiny()) {
+		Main_Data::game_destiny->Load();
+	}
+}
+
+void Player::DetectEngine(bool ignore_patch_override) {
 	int& engine = game_config.engine;
+
+	auto engine_build = EXE::BuildInfo::KnownEngineBuildVersions::UnknownBuild;
+	EXE::Shared::EngineCustomization engine_customization;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
-	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+	const auto exe_file = game_config.engine_path.Get().empty() ? EXE_NAME : game_config.engine_path.Get();
+
+	if (!game_config.engine_path.Get().empty()) {
+		Output::Debug("Using specified .EXE '{}' for engine detection", exe_file);
+	}
+
+	auto exeis = FileFinder::Game().OpenFile(exe_file);
 
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
@@ -769,9 +805,23 @@ void Player::CreateGameObjects() {
 			version_info.Print();
 			bool is_patch_maniac;
 			engine = version_info.GetEngineType(is_patch_maniac);
-			if (!game_config.patch_override) {
+			if (!game_config.patch_override || ignore_patch_override) {
 				game_config.patch_maniac.Set(is_patch_maniac);
 			}
+		}
+		engine_build = exe_reader->GetEngineBuildVersion();
+		for (auto p : exe_reader->GetOverriddenGameConstants()) {
+			engine_customization.constant_overrides[p.first] = p.second;
+		}
+
+		if (!game_config.patch_override || ignore_patch_override) {
+			for (auto p : exe_reader->CheckForPatches()) {
+				engine_customization.runtime_patches[p.patch_type] = p;
+			}
+		}
+
+		for (auto p : exe_reader->GetEmbeddedStrings(encoding)) {
+			engine_customization.strings[p.first] = p.second;
 		}
 
 		if (engine == EngineNone) {
@@ -781,11 +831,6 @@ void Player::CreateGameObjects() {
 		Output::Debug("Cannot find RPG_RT");
 	}
 #endif
-
-	if (exfont_stream) {
-		Output::Debug("Using custom ExFont: {}", FileFinder::GetPathInsideGamePath(exfont_stream.GetName()));
-		Cache::exfont_custom = Utils::ReadStream(exfont_stream);
-	}
 
 	if (engine == EngineNone) {
 		if (lcf::Data::system.ldb_id == 2003) {
@@ -808,9 +853,7 @@ void Player::CreateGameObjects() {
 
 	Output::Debug("Engine configured as: 2k={} 2k3={} MajorUpdated={} Eng={}", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	Main_Data::filefinder_rtp = std::make_unique<FileFinder_RTP>(no_rtp_flag, no_rtp_warning_flag, rtp_path);
-
-	if (!game_config.patch_override) {
+	if (!game_config.patch_override || ignore_patch_override) {
 		if (!FileFinder::Game().FindFile("harmony.dll").empty()) {
 			game_config.patch_key_patch.Set(true);
 		}
@@ -827,21 +870,82 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+#ifndef EMSCRIPTEN
+		if (game_config.patch_dynrpg.Get()) {
+			for (auto p : DynRpg_Loader::DetectRuntimePatches(engine_build)) {
+				engine_customization.runtime_patches[p.patch_type] = p;
+			}
+			DynRpg_Loader::ApplyQuickPatches(engine_customization, engine_build);
+		}
+#endif
+
+		using Patch = EXE::Patches::KnownPatches;
+
+		if (engine_customization.runtime_patches.size() > 0) {
+			for (auto it = engine_customization.runtime_patches.begin(); it != engine_customization.runtime_patches.end(); ++it) {
+				auto& patch = it->second;
+
+				switch (static_cast<Patch>(patch.patch_type)) {
+					case Patch::UnlockPics:
+						if (!game_config.patch_unlock_pics.Get()) {
+							game_config.patch_unlock_pics.Set(true);
+						}
+						break;
+					case Patch::CommonThisEvent:
+						if (!game_config.patch_common_this_event.Get()) {
+							game_config.patch_common_this_event.Set(true);
+						}
+						break;
+					case Patch::BreakLoopFix:
+						break_loop_fix = true;
+						break;
+					case Patch::AutoEnterPatch:
+						game_config.new_game.Set(true);
+						break;
+					case Patch::BetterAEP:
+						game_config.new_game.Set(true);
+						// FIXME: implement BetterAEP's extended patch functionality
+						// -> patch_var (default: 3350)
+						break;
+					case Patch::PicPointer:
+					case Patch::PicPointer_R:
+						//TODO
+						break;
+					case Patch::DirectMenu:
+						if (!game_config.patch_direct_menu.Get()) {
+							game_config.patch_direct_menu.Set(patch.customizations[0]);
+						}
+						break;
+				}
+			}
+		}
 	}
 
-	game_config.PrintActivePatches();
-
-	ResetGameObjects();
-
-	LoadFonts();
-
-	if (Player::IsPatchKeyPatch()) {
-		Main_Data::game_ineluki->ExecuteScriptList(FileFinder::Game().FindFile("autorun.script"));
+	if (engine_customization.constant_overrides.size() > 0) {
+		for (auto it = engine_customization.constant_overrides.begin(); it != engine_customization.constant_overrides.end(); ++it) {
+			Constants::OverrideGameConstant(it->first, it->second);
+		}
 	}
+}
 
-	if (Player::IsPatchDestiny()) {
-		Main_Data::game_destiny->Load();
+void Player::PrintEngineInfo() {
+	auto fs = FileFinder::Game();
+
+	if (!fs) {
+		fs = FileFinder::Root().Create(Main_Data::GetDefaultProjectPath());
+		if (!fs) {
+			Output::Error("{} is not a valid path", Main_Data::GetDefaultProjectPath());
+		}
+		FileFinder::SetGameFilesystem(fs);
 	}
+	// Parse game specific settings
+	CmdlineParser cp(arguments);
+	game_config = Game_ConfigGame::Create(cp);
+
+	DetectEngine(true);
+
+	// TODO
 }
 
 void Player::UpdateTitle(std::string new_game_title) {
@@ -906,22 +1010,9 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
-	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
-	if (min_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		} else {
-			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-		}
-	}
-	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
-	if (max_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		} else {
-			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
-		}
-	}
+	int32_t min_var, max_var;
+	Player::Constants::GetVariableLimits(min_var, max_var);
+
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
@@ -1430,6 +1521,8 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --engine-path EXE    Set a custom path for the executable which is to be used
+                      by the automatic engine detection.
  --font1 FILE         Font to use for the first font. The system graphic of the
                       game determines whether font 1 or 2 is used.
  --font1-size PX      Size of font 1 in pixel. The default is 12.
@@ -1612,4 +1705,299 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+namespace Player::Constants {
+	std::map<EXE::Shared::GameConstantType, int32_t> constant_overrides;
+}
+
+void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
+
+	min_var = lcf::Data::system.easyrpg_variable_min_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MinVarLimit, min_var);
+	if (min_var == 0) {
+		if (Player::IsPatchManiac()) {
+			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
+		} else {
+			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+		}
+	}
+	max_var = lcf::Data::system.easyrpg_variable_max_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxVarLimit, max_var);
+	if (max_var == 0) {
+		if (Player::IsPatchManiac()) {
+			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
+		} else {
+			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+		}
+	}
+}
+
+int32_t Player::Constants::MaxActorHpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_actor_hp;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxActorHP, val);
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999 : 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxActorSpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_actor_sp;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxActorSP, val);
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemyHpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_enemy_hp;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxEnemyHP, val);
+	if (val == -1) {
+		return Player::IsRPG2k() ? 9'999 : 99'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemySpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_enemy_sp;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxEnemySP, val);
+	if (val == -1) {
+		return 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAtkBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAtkBaseValue, val);
+	if (val == -1) {
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDefBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDefBaseValue, val);
+	if (val == -1) {
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxSpiBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSpiBaseValue, val);
+	if (val == -1) {
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAgiBaseValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAgiBaseValue, val);
+	if (val == -1) {
+		return max_stat_base_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAtkBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAtkBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDefBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDefBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxSpiBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSpiBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxAgiBattleValue() {
+	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxAgiBattleValue, val);
+	if (val == -1) {
+		return max_stat_battle_value;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDamageValue() {
+	auto& val = lcf::Data::system.easyrpg_max_damage;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxDamageValue, val);
+	if (val == -1) {
+		return (Player::IsRPG2k() ? 999 : 9'999);
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxExpValue() {
+	auto& val = lcf::Data::system.easyrpg_max_exp;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxExpValue, val);
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999'999 : 9'999'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxLevel() {
+	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxLevel, max_level)) {
+		return max_level;
+	}
+	if (lcf::Data::system.easyrpg_max_level > -1) {
+		max_level = lcf::Data::system.easyrpg_max_level;
+	}
+	return max_level;
+}
+
+int32_t Player::Constants::MaxGoldValue() {
+	int32_t max_gold = 999'999;
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxGoldValue, max_gold)) {
+		return max_gold;
+	}
+	return max_gold;
+}
+
+int32_t Player::Constants::MaxItemCount() {
+	int32_t max_item_count = (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);;
+	TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxItemCount, max_item_count);
+	return max_item_count;
+}
+
+int32_t Player::Constants::MaxSaveFiles() {
+	int32_t max_savefiles = Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
+	if (TryGetOverriddenConstant(EXE::Shared::GameConstantType::MaxSaveFiles, max_savefiles)) {
+		return max_savefiles - 1;
+	}
+	return max_savefiles;
+}
+
+bool Player::Constants::TryGetOverriddenConstant(EXE::Shared::GameConstantType const_type, int32_t& out_value) {
+	auto it = constant_overrides.find(const_type);
+	if (it != constant_overrides.end()) {
+		out_value = (*it).second;
+	}
+	return it != constant_overrides.end();
+}
+
+void Player::Constants::OverrideGameConstant(EXE::Shared::GameConstantType const_type, int32_t value) {
+	constant_overrides[const_type] = value;
+}
+
+void Player::Constants::ResetOverrides() {
+	constant_overrides.clear();
+}
+
+void Player::Constants::PrintActiveOverrides() {
+	std::vector<std::tuple<std::string, int32_t>> overridden_constants;
+
+	auto tags = EXE::Shared::kGameConstantType.tags();
+	int32_t value;
+	for (int i = 0; i < tags.size(); i++) {
+		auto const_type = static_cast<EXE::Shared::GameConstantType>(tags[i].value);
+		if (!TryGetOverriddenConstant(const_type, value)) {
+			continue;
+		}
+
+		overridden_constants.push_back(std::make_tuple(tags[i].name, value));
+	}
+
+	if (!overridden_constants.empty()) {
+		std::string out = "Overridden Game Constants: ";
+		bool first = true;
+		for (const auto& p : overridden_constants) {
+			if (!first) {
+				out += ", ";
+			}
+			out += fmt::format("{}: {}", std::get<std::string>(p), std::get<int32_t>(p));
+			first = false;
+		}
+		Output::DebugStr(out);
+	}
+}
+
+bool Player::Constants::HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes type, StringView& template_string) {
+	//TODO
+
+	using Str = EXE::Shared::EmbeddedStringTypes;
+
+	switch (type) {
+		case Str::Battle_DamageToEnemy:
+		case Str::Battle_DamageToAlly:
+			template_string = "%s took %d%s";
+			return true;
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void Player::Constants::SetTemplateString(EXE::Shared::EmbeddedStringTypes type, std::string template_string) {
+	auto apply_new_placeholders = [](std::string& str, std::initializer_list<char> replacements) {
+		size_t index = str.find("%");
+		auto repl = replacements.begin();
+		while (index != std::string::npos) {
+			index++;
+			if (index < str.length()) {
+				char type = str[index];
+				if (type == 's' && replacements.end() != repl) {
+					str[index] = *repl;
+					++repl;
+				} else if (type == 'd') {
+					str[index] = 'V';
+				}
+			}
+
+			index = str.find("%", index);
+		}
+	};
+
+	using Str = EXE::Shared::EmbeddedStringTypes;
+
+	switch (type) {
+		case Str::Battle_DamageToEnemy:
+		case Str::Battle_DamageToAlly:
+			apply_new_placeholders(template_string, { 'S', 'T' });
+			break;
+		case Str::Battle_AbsorbEnemy:
+		case Str::Battle_AbsorbAlly:
+			apply_new_placeholders(template_string, { 'O', 'U', 'T'});
+			break;
+		case Str::Battle_UseItem:
+			apply_new_placeholders(template_string, { 'S', 'O', 'T' });
+			break;
+		case Str::Battle_StatIncrease:
+		case Str::Battle_StatDecrease:
+		case Str::Battle_HpSpRecovery:
+			apply_new_placeholders(template_string, { 'S', 'U', 'T'});
+			break;
+		case Str::Msg_LevelUp:
+			apply_new_placeholders(template_string, { 'S', 'L', 'T' });
+			break;
+		default:
+			break;
+	}
+
+	//TODO
 }

@@ -19,12 +19,14 @@
 #define EP_PLAYER_H
 
 // Headers
+#include "exe_shared.h"
 #include "fileext_guesser.h"
 #include "meta.h"
 #include "translation.h"
 #include "game_clock.h"
 #include "game_config.h"
 #include "game_config_game.h"
+#include "game_variables.h"
 #include <vector>
 #include <memory>
 #include <cstdint>
@@ -129,6 +131,10 @@ namespace Player {
 	 * Initializes all game objects
 	 */
 	void CreateGameObjects();
+
+	void DetectEngine(bool ignore_patch_override);
+
+	void PrintEngineInfo();
 
 	/**
 	 * Change the resolution of the Player
@@ -297,6 +303,8 @@ namespace Player {
 	 */
 	bool IsPatchDestiny();
 
+	bool HasBreakLoopFix();
+
 	/**
 	 * @return True when EasyRpg extensions are on
 	 */
@@ -415,6 +423,8 @@ namespace Player {
 	/** Translation manager, including list of languages and current translation. */
 	extern Translation translation;
 
+	extern bool break_loop_fix;
+
 	/**
 	 * The default speed modifier applied when the speed up button is pressed
 	 *  Only used for configuring the speedup, don't read this var directly use
@@ -435,6 +445,55 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
+
+	namespace Constants {
+		using Var_t = int32_t;
+
+		static constexpr int32_t max_level_2k = 50;
+		static constexpr int32_t max_level_2k3 = 99;
+
+		static constexpr int32_t max_hp_2k = 999;
+		static constexpr int32_t max_hp_2k3 = 9'999;
+		static constexpr int32_t max_stat_base_value = 999;
+		static constexpr int32_t max_stat_battle_value = 9'999;
+
+		void GetVariableLimits(Var_t& min_var, Var_t& max_var);
+
+		int32_t MaxActorHpValue();
+		int32_t MaxActorSpValue();
+
+		int32_t MaxEnemyHpValue();
+		int32_t MaxEnemySpValue();
+
+		int32_t MaxAtkBaseValue();
+		int32_t MaxDefBaseValue();
+		int32_t MaxSpiBaseValue();
+		int32_t MaxAgiBaseValue();
+
+		int32_t MaxAtkBattleValue();
+		int32_t MaxDefBattleValue();
+		int32_t MaxSpiBattleValue();
+		int32_t MaxAgiBattleValue();
+
+		int32_t MaxDamageValue();
+
+		int32_t MaxExpValue();
+		int32_t MaxLevel();
+
+		int32_t MaxGoldValue();
+		int32_t MaxItemCount();
+		int32_t MaxSaveFiles();
+
+		extern std::map<EXE::Shared::GameConstantType, int32_t> constant_overrides;
+
+		bool TryGetOverriddenConstant(EXE::Shared::GameConstantType const_type, int32_t& out_value);
+		void OverrideGameConstant(EXE::Shared::GameConstantType const_type, int32_t value);
+		void ResetOverrides();
+		void PrintActiveOverrides();
+
+		bool HasEmbeddedTemplateString(EXE::Shared::EmbeddedStringTypes type, StringView& template_string);
+		void SetTemplateString(EXE::Shared::EmbeddedStringTypes type, std::string template_string);
+	}
 }
 
 inline bool Player::IsRPG2k() {
@@ -505,8 +564,11 @@ inline bool Player::IsPatchDestiny() {
 	return game_config.patch_destiny.Get();
 }
 
+inline bool Player::HasBreakLoopFix() {
+	return IsPatchManiac() || break_loop_fix;
+}
+
 inline bool Player::HasEasyRpgExtensions() {
 	return game_config.patch_easyrpg.Get();
 }
-
 #endif

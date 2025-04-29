@@ -55,10 +55,6 @@ public:
 
 	int MaxSpValue() const override;
 
-	int MaxStatBattleValue() const override;
-
-	int MaxStatBaseValue() const override;
-
 	int MaxExpValue() const;
 
 	virtual PermanentStates GetPermanentStates() const override;
@@ -425,7 +421,7 @@ public:
 
 	/**
 	 * Sets exp of actor.
-	 * The value is adjusted to the boundary 0 up 999999.
+	 * The value is adjusted to the boundary 0 up to a maximum (dependent on engine type & patch).
 	 * Other actor attributes are not altered. Use ChangeExp to do a proper
 	 * experience change.
 	 *

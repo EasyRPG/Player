@@ -114,7 +114,9 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	}
 
 	// Check if 4 digits are needed instead of 3
-	int limit = actor.MaxStatBaseValue();
+	int limit = std::max(Player::Constants::MaxAtkBaseValue(), Player::Constants::MaxDefBaseValue());
+	limit = std::max(limit, Player::Constants::MaxSpiBaseValue());
+	limit = std::max(limit, Player::Constants::MaxAgiBaseValue());
 	bool more_space_needed = (Player::IsRPG2k3() && limit >= 500) || limit >= 1000;
 
 	// Draw Term

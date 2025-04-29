@@ -135,12 +135,10 @@ void Scene_Equip::UpdateStatusWindow() {
 		}
 		add_item(current_item, 1);
 
-		int limit = actor.MaxStatBaseValue();
-
-		atk = Utils::Clamp(atk, 1, limit);
-		def = Utils::Clamp(def, 1, limit);
-		spi = Utils::Clamp(spi, 1, limit);
-		agi = Utils::Clamp(agi, 1, limit);
+		atk = Utils::Clamp(atk, 1, Player::Constants::MaxAtkBaseValue());
+		def = Utils::Clamp(def, 1, Player::Constants::MaxDefBaseValue());
+		spi = Utils::Clamp(spi, 1, Player::Constants::MaxSpiBaseValue());
+		agi = Utils::Clamp(agi, 1, Player::Constants::MaxAgiBaseValue());
 
 		atk = actor.CalcValueAfterAtkStates(atk);
 		def = actor.CalcValueAfterDefStates(def);

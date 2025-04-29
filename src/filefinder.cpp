@@ -399,7 +399,7 @@ bool FileFinder::HasSavegame() {
 int FileFinder::GetSavegames() {
 	auto fs = Save();
 
-	for (int i = 1; i <= 15; i++) {
+	for (int i = 1; i <= Player::Constants::MaxSaveFiles(); i++) {
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 		std::string filename = fs.FindFile(ss.str());
