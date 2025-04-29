@@ -1038,9 +1038,8 @@ bool Game_Map::IsPassableTile(
 				continue;
 			}
 			if (ev.IsInPosition(x, y) && ev.GetLayer() == lcf::rpg::EventPage::Layers_below) {
-				int tile_id = ev.GetTileId();
-				if (tile_id > 0) {
-					event_tile_id = tile_id;
+				if (ev.HasTileSprite()) {
+					event_tile_id = ev.GetTileId();
 				}
 			}
 		}
