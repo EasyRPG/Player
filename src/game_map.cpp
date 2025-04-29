@@ -491,8 +491,10 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 	AddEventToCache(new_event);
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-	scene->spriteset->Refresh();
-	SetNeedRefresh(true);
+	if (scene) {
+		scene->spriteset->Refresh();
+		SetNeedRefresh(true);
+	}
 
 	return true;
 }
