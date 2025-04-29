@@ -478,7 +478,7 @@ bool Game_Map::CloneMapEvent(int src_map_id, int src_event_id, int target_x, int
 		}), new_event);
 
 	auto game_event = Game_Event(GetMapId(), &*insert_it);
-	game_event.data()->easyrpg_clone_event_id = source_event->ID;
+	game_event.data()->easyrpg_clone_event_id = src_event_id;
 	game_event.data()->easyrpg_clone_map_id = src_map_id;
 
 	events.insert(
