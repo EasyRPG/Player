@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.easyrpg.player.BaseActivity;
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.settings.SettingsManager;
@@ -25,7 +26,7 @@ import org.easyrpg.player.settings.SettingsManager;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ButtonMappingActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
+public class ButtonMappingActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     private ViewGroup layoutManager;
     private List<VirtualButton> buttonList;
@@ -132,8 +133,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
+    public void backPressed() {
         openOrCloseMenu();
     }
 

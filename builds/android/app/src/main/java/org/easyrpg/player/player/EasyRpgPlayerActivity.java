@@ -49,6 +49,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -164,6 +165,14 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         updateScreenPosition();
 
         showInputLayout();
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                backPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     @Override
@@ -308,8 +317,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         ((TextView) alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    @Override
-    public void onBackPressed() {
+    public void backPressed() {
         openOrCloseMenu();
     }
 
