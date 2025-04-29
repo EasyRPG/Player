@@ -2066,6 +2066,7 @@ std::optional<bool> Game_Interpreter::HandleDestinyScript(const lcf::rpg::EventC
 
 		return Main_Data::game_destiny->Main(GetFrame());
 	}
+	return std::nullopt;
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
