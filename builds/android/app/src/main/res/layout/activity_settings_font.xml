@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<org.easyrpg.player.ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -160,4 +160,4 @@
             android:text="@string/settings_fonts_size_explanation2"
             android:textSize="18sp" />
     </LinearLayout>
-</ScrollView>
+</org.easyrpg.player.ScrollView>

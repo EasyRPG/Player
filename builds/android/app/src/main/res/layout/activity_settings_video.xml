@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<org.easyrpg.player.ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -104,4 +104,4 @@
 
         <include layout="@layout/separator"/>
     </LinearLayout>
-</ScrollView>
+</org.easyrpg.player.ScrollView>
