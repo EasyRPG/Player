@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/settings_main_video"
+<org.easyrpg.player.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/video"
-        android:drawableStart="@drawable/ic_video_label_black"
-        style="?android:attr/borderlessButtonStyle" />
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/settings_main_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/video"
+            android:drawableStart="@drawable/ic_video_label_black"
+            style="?android:attr/borderlessButtonStyle" />
 
-    <Button
-        android:id="@+id/settings_main_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/audio"
-        android:drawableStart="@drawable/ic_volume_up_black"
-        style="?android:attr/borderlessButtonStyle" />
+        <Button
+            android:id="@+id/settings_main_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/audio"
+            android:drawableStart="@drawable/ic_volume_up_black"
+            style="?android:attr/borderlessButtonStyle" />
 
-    <Button
-        android:id="@+id/settings_main_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/input"
-        android:drawableStart="@drawable/ic_gamepad_black"
-        style="?android:attr/borderlessButtonStyle" />
+        <Button
+            android:id="@+id/settings_main_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/input"
+            android:drawableStart="@drawable/ic_gamepad_black"
+            style="?android:attr/borderlessButtonStyle" />
 
-    <Button
-        android:id="@+id/settings_main_font"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/font"
-        android:drawableStart="@drawable/ic_article_black"
-        style="?android:attr/borderlessButtonStyle" />
+        <Button
+            android:id="@+id/settings_main_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/font"
+            android:drawableStart="@drawable/ic_article_black"
+            style="?android:attr/borderlessButtonStyle" />
 
-    <Button
-        android:id="@+id/settings_main_easyrpg_folders"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/easyrpg_folders"
-        android:drawableStart="@drawable/ic_folder_open_black"
-        style="?android:attr/borderlessButtonStyle" />
+        <Button
+            android:id="@+id/settings_main_easyrpg_folders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/easyrpg_folders"
+            android:drawableStart="@drawable/ic_folder_open_black"
+            style="?android:attr/borderlessButtonStyle" />
+    </LinearLayout>
 
-</LinearLayout>
+</org.easyrpg.player.ScrollView>

@@ -33,7 +33,7 @@
             android:layout_toStartOf="@+id/game_browser_thumbnail_option_button"
             android:padding="4dp"
 
-            android:textColor="#222"
+            android:textColor="@color/colorBrowserTitlePortrait"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
@@ -48,7 +48,7 @@
             android:layout_toEndOf="@+id/screen"
             android:padding="4dp"
 
-            android:textColor="#666"
+            android:textColor="@color/colorBrowserSubTitlePortrait"
             android:textSize="14sp"
             android:textStyle="normal" />
 
