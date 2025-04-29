@@ -77,8 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/settings_custom_soundfont"
-            android:textSize="20sp"
-            android:textColor="#000000"/>
+            android:textSize="20sp"/>
         <Button
             android:id="@+id/button_open_soundfont_folder"
             android:layout_width="wrap_content"
