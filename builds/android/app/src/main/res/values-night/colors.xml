@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorIcon">#FFFFFF</color>
+    <color name="colorBrowserTitlePortrait">#DDDDDD</color>
+    <color name="colorBrowserSubTitlePortrait">#999999</color>
+    <color name="colorBrowserTitleLandscape">#FFFFFF</color>
+    <color name="colorBrowserSubTitleLandscape">#FFFFFF</color>
+</resources>
