@@ -33,6 +33,7 @@ namespace Data {
 	rpg::System& system = data.system;
 	std::vector<rpg::Switch>& switches = data.switches;
 	std::vector<rpg::Variable>& variables = data.variables;
+	std::vector<rpg::StringVariable>& maniac_string_variables = data.maniac_string_variables;
 
 	rpg::TreeMap treemap;
 }
@@ -56,6 +57,7 @@ void Data::Clear() {
 	system = rpg::System();
 	switches.clear();
 	variables.clear();
+	maniac_string_variables.clear();
 	treemap.active_node = 0;
 	treemap.maps.clear();
 	treemap.tree_order.clear();
