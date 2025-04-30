@@ -27,10 +27,6 @@ class Game_Actor;
 class Game_Battler;
 class Game_Enemy;
 
-// When this compile flag is set, all of the evaluation logic for these patches
-// will be disabled, by simply voiding any calls to their function hooks.
-//#define NO_RUNTIME_PATCHES
-
 namespace RuntimePatches {
 	struct PatchArg {
 		ConfigParam<int>* config_param = nullptr;
