@@ -15,6 +15,11 @@ finish-args:
 #  - --filesystem=home # user can store games anywhere
   - --device=all # needed for gamepad access
   - --allow=devel
+cleanup-commands:
+  # provide launcher and wizard
+  - mv /app/bin/{easyrpg-player,org.easyrpg.player.real}
+  - mv /app/bin/{firststart,easyrpg-firststart}
+  - mv /app/bin/{launcher,easyrpg-player}
 cleanup:
   - /include
   - /lib/cmake
@@ -122,3 +127,23 @@ modules:
     cleanup:
       - /share/bash-completion
       - /share/pixmaps
+  - name: wizard
+    buildsystem: cmake-ninja
+    subdir: Flatpak/firststart
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    sources:
+      - type: git
+        disable-submodules: true
+        url: https://github.com/EasyRPG/packaging.git
+        commit: a5f26c7243d24a690b2615dff4955148d3f79c14
+  - name: launcher
+    buildsystem: simple
+    subdir: Flatpak
+    sources:
+      - type: git
+        disable-submodules: true
+        url: https://github.com/EasyRPG/packaging.git
+        commit: a5f26c7243d24a690b2615dff4955148d3f79c14
+    build-commands:
+      - install -Dm755 flatpak-launcher.sh /app/bin/launcher
