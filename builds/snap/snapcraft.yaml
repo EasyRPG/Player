@@ -3,11 +3,13 @@ base: core22
 adopt-info: easyrpg-player
 summary: easyrpg-player
 description: |
-    EasyRPG Player is a program that allows to play games created with RPG Maker 2000 and 2003.
-    EasyRPG is developed by the amazing people running the [EasyRPG project](https://easyrpg.org/).
+    EasyRPG Player is a program that allows to play games created with
+    RPG Maker 2000 and 2003. EasyRPG is developed by the amazing people running
+    the [EasyRPG project](https://easyrpg.org/).
 
     It aims to be a free (as in freedom) cross-platform RPG Maker 2000/2003 interpreter.
-    The main goal is to play all games created with them as the original game interpreter (RPG_RT) does.
+    The main goal is to play all games created with them as the original
+    game interpreter (RPG_RT) does.
 confinement: strict
 grade: stable
 
@@ -40,7 +42,7 @@ parts:
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
@@ -62,12 +64,12 @@ parts:
 
   easyrpg-player:
     plugin: cmake
-    after: [libwildmidi,liblcf,desktop-glib-only]
+    after: [libwildmidi, liblcf, desktop-glib-only]
     source: https://github.com/EasyRPG/Player
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_PREFIX_PATH=${SNAPCRAFT_STAGE}/usr
@@ -130,7 +132,7 @@ parts:
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_SHARED_LIBS=ON

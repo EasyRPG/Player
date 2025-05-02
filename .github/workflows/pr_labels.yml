@@ -15,10 +15,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
         with:
-           # pull_request_target is run under forks, use main repo source
-           fetch-depth: 0
-           repository: EasyRPG/Player
-           ref: master
+          # pull_request_target is run under forks, use main repo source
+          fetch-depth: 0
+          repository: EasyRPG/Player
+          ref: master
 
       - name: Update labels
         uses: actions/labeler@v5
