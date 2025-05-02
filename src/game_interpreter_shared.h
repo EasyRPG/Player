@@ -22,8 +22,11 @@
 #include <lcf/rpg/eventcommand.h>
 #include <lcf/rpg/movecommand.h>
 #include <lcf/rpg/saveeventexecframe.h>
+#include <lcf/rpg/save.h>
 #include <string_view.h>
+#include "async_op.h"
 #include "compiler.h"
+#include "filesystem.h"
 
 class Game_Character;
 class Game_BaseInterpreterContext;
@@ -103,6 +106,22 @@ namespace Game_Interpreter_Shared {
 	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
 
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
+
+	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot);
+	std::unique_ptr<lcf::rpg::Save> ValidateAndLoadSave(const char* caller, const FilesystemView& fs, int save_slot, bool& save_corrupted);
+	int GetLatestSaveSlot(const FilesystemView& fs);
+
+
+	AsyncOp MakeLoadOp(const char* caller, int save_slot);
+
+	/**
+	* Sets up a "Parallel Load" which is a loading operation that is meant to run
+	* in the background while not actually stopping the game's execution.
+	* Note: This is coded to only emulate the behavior of certain RPG_RT patches
+	*  & will likely lead to many unexpected results, depending on the usage.
+	* DO NOT USE this mechanic for implementing load-mechanics in a new game!
+	*/
+	AsyncOp MakeLoadParallel(const char* caller, int save_slot);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {

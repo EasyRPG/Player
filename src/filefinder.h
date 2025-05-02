@@ -362,6 +362,9 @@ namespace FileFinder {
 	/** @returns Amount of savegames in the save directory */
 	int GetSavegames();
 
+	std::string GetSaveFilename(int slot);
+	std::string GetSaveFilename(const FilesystemView& fs, int slot, bool validate_exists = true);
+
 	/**
 	 * Known file sizes
 	 */

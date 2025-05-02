@@ -177,14 +177,13 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FilesystemView&
 
 	if (is_match) {
 		// Scan over every possible save file and see if any match.
-		for (int saveId = 0; saveId < 15; saveId++) {
-			std::stringstream ss;
-			ss << "Save" << (saveId <= 8 ? "0" : "") << (saveId + 1) << ".lsd";
+		for (int saveId = 0; saveId < Player::Constants::MaxSaveFiles(); saveId++) {
+			auto filename = FileFinder::GetSaveFilename(saveId + 1);
 
 			// Check for an existing, non-corrupt file with the right mapID
 			// Note that corruptness is checked later (in window_savefile.cpp)
-			if (child_tree.Exists(ss.str())) {
-				auto filePath= child_tree.GetSubPath() + "/" + ss.str();
+			if (child_tree.Exists(filename)) {
+				auto filePath = child_tree.GetSubPath() + "/" + filename;
 				std::unique_ptr<lcf::rpg::Save> savegame = lcf::LSD_Reader::Load(filePath, Player::encoding);
 				if (savegame != nullptr) {
 					if (savegame->party_location.map_id == pivot_map_id || pivot_map_id==0) {

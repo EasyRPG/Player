@@ -45,6 +45,8 @@
 #include "baseui.h"
 #include <lcf/reader_util.h>
 
+Scene_Title::CommandOptionType Scene_Title::force_cursor_index = Scene_Title::CommandOption_None;
+
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
 }
@@ -108,7 +110,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 }
 
 void Scene_Title::TransitionIn(SceneType prev_scene) {
-	if (Game_Battle::battle_test.enabled || !Check2k3ShowTitle() || Player::game_config.new_game.Get())
+	if (Game_Battle::battle_test.enabled || CheckStartNewGame())
 		return;
 
 	if (prev_scene == Scene::Load || Player::hide_title_flag) {
@@ -133,7 +135,7 @@ void Scene_Title::vUpdate() {
 		return;
 	}
 
-	if (!Check2k3ShowTitle() || Player::game_config.new_game.Get()) {
+	if (CheckStartNewGame()) {
 		Player::SetupNewGame();
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
@@ -170,10 +172,24 @@ void Scene_Title::vUpdate() {
 void Scene_Title::Refresh() {
 	// Enable load game if available
 	continue_enabled = FileFinder::HasSavegame();
-	if (continue_enabled) {
+
+	if (force_cursor_index != CommandOption_None) {
+		if (auto idx = GetCommandIndex(force_cursor_index); idx != -1) {
+			command_window->SetIndex(idx);
+		}
+		force_cursor_index = CommandOption_None;
+	} else if (continue_enabled) {
 		command_window->SetIndex(1);
 	}
 	command_window->SetItemEnabled(1, continue_enabled);
+}
+
+int Scene_Title::GetCommandIndex(CommandOptionType cmd) const {
+	auto it = std::find(command_options.begin(), command_options.end(), cmd);
+	if (it != command_options.end()) {
+		return (it - command_options.begin());
+	}
+	return -1;
 }
 
 void Scene_Title::OnTranslationChanged() {
@@ -211,35 +227,59 @@ void Scene_Title::RepositionWindow(Window_Command& window, bool center_vertical)
 void Scene_Title::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(ToString(lcf::Data::terms.new_game));
-	options.push_back(ToString(lcf::Data::terms.load_game));
+
+	using Cmd = CommandOptionType;
 
 	// Reset index to fix issues on reuse.
 	indices = CommandIndices();
 
+	command_options.push_back(Cmd::NewGame);
+	command_options.push_back(Cmd::ContinueGame);
+
 	// Set "Import" based on metadata
 	if (Player::meta->IsImportEnabled()) {
-		options.push_back(Player::meta->GetExVocabImportSaveTitleText());
-		indices.import = indices.exit;
-		indices.exit++;
+		command_options.push_back(Cmd::Import);
 	}
-
 	// Set "Settings" based on the configuration
 	if (Player::player_config.settings_in_title.Get()) {
-		// FIXME: Translation? Not shown by default though
-		options.push_back("Settings");
-		indices.settings = indices.exit;
-		indices.exit++;
+		command_options.push_back(Cmd::Settings);
 	}
-
 	// Set "Translate" based on metadata
 	if (Player::translation.HasTranslations() && Player::player_config.lang_select_in_title.Get()) {
-		options.push_back(Player::meta->GetExVocabTranslateTitleText());
-		indices.translate = indices.exit;
-		indices.exit++;
+		command_options.push_back(Cmd::Translate);
 	}
 
-	options.push_back(ToString(lcf::Data::terms.exit_game));
+	command_options.push_back(Cmd::Exit);
+
+	for (int i = 0; i < command_options.size(); ++i) {
+		switch (command_options[i]) {
+			case Cmd::NewGame:
+				indices.new_game = i;
+				options.push_back(ToString(lcf::Data::terms.new_game));
+				break;
+			case Cmd::ContinueGame:
+				indices.continue_game = i;
+				options.push_back(ToString(lcf::Data::terms.load_game));
+				break;
+			case Cmd::Import:
+				indices.import = i;
+				options.push_back(Player::meta->GetExVocabImportSaveTitleText());
+				break;
+			case Cmd::Settings:
+				indices.settings = i;
+				// FIXME: Translation? Not shown by default though
+				options.push_back("Settings");
+				break;
+			case Cmd::Translate:
+				indices.translate = i;
+				options.push_back(Player::meta->GetExVocabTranslateTitleText());
+				break;
+			case Cmd::Exit:
+				indices.exit = i;
+				options.push_back(ToString(lcf::Data::terms.exit_game));
+				break;
+		}
+	}
 
 	command_window.reset(new Window_Command(options));
 	RepositionWindow(*command_window, Player::hide_title_flag);
@@ -267,7 +307,7 @@ void Scene_Title::PlayTitleMusic() {
 
 bool Scene_Title::CheckEnableTitleGraphicAndMusic() {
 	return Check2k3ShowTitle() &&
-		!Player::game_config.new_game.Get() &&
+		!CheckStartNewGame() &&
 		!Game_Battle::battle_test.enabled &&
 		!Player::hide_title_flag;
 }
@@ -278,6 +318,10 @@ bool Scene_Title::Check2k3ShowTitle() {
 
 bool Scene_Title::CheckValidPlayerLocation() {
 	return (lcf::Data::treemap.start.party_map_id > 0);
+}
+
+bool Scene_Title::CheckStartNewGame() {
+	return (!Check2k3ShowTitle() || Player::game_config.new_game.Get()) && !Player::force_make_to_title_flag;
 }
 
 void Scene_Title::CommandNewGame() {
@@ -341,4 +385,5 @@ void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 
 void Scene_Title::OnGameStart() {
 	restart_title_cache = true;
+	Player::force_make_to_title_flag = false;
 }

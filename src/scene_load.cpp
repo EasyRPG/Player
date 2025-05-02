@@ -29,8 +29,7 @@ Scene_Load::Scene_Load() :
 }
 
 void Scene_Load::Action(int index) {
-	std::string save_name = fs.FindFile(fmt::format("Save{:02d}.lsd", index + 1));
-
+	std::string save_name = FileFinder::GetSaveFilename(fs, index + 1);
 	Player::LoadSavegame(save_name, index + 1);
 }
 

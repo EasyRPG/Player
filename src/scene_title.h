@@ -80,6 +80,13 @@ public:
 	bool CheckValidPlayerLocation();
 
 	/**
+	 * Checks whether to immediately start into a new game.
+	 *
+	 * @return true if the title screen should be skipped
+	 */
+	bool CheckStartNewGame();
+
+	/**
 	 * Option New Game.
 	 * Starts a new game.
 	 */
@@ -119,6 +126,20 @@ public:
 	 */
 	void OnGameStart();
 
+	enum class CommandOptionType {
+		NewGame = 1,
+		ContinueGame,
+		Import,
+		Settings,
+		Translate,
+		Exit
+	};
+
+	int GetCommandIndex(CommandOptionType cmd) const;
+
+	static const CommandOptionType CommandOption_None = static_cast<CommandOptionType>(0);
+	static CommandOptionType force_cursor_index;
+
 	/**
 	 * Moves a window (typically the New/Continue/Quit menu) to the middle or bottom-center of the screen.
 	 * @param window The window to resposition.
@@ -142,14 +163,17 @@ private:
 	 * Stored in a struct for easy resetting, as Scene_Title can be reused.
 	 */
 	struct CommandIndices {
-		int new_game =  0;
-		int continue_game =  1;
+		int new_game = 0;
+		int continue_game = 1;
 		int import = -1;
 		int settings = -1;
 		int translate = -1;
-		int exit =  2;
+		int exit = 2;
 	};
 	CommandIndices indices;
+
+	 /** Options available in the menu. */
+	std::vector<CommandOptionType> command_options;
 
 	/** Contains the state of continue button. */
 	bool continue_enabled = false;

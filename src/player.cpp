@@ -136,6 +136,7 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+	bool force_make_to_title_flag = false;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -827,6 +828,44 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+		if (!FileFinder::Game().FindFile("powerp.oex").empty()) {
+			Output::Warning("This game uses Power Patch and might not run properly.");
+		}
+
+		// PowerMode2003 can be detected via the existence of the files "hvm.dll", "fmodex.dll" &
+		// "warp.dll", but some games seem to only ship with the latter of the three.
+		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
+			Output::Warning("This game uses Power Mode 2003 and might not run properly.");
+		}
+
+		/*if (game_config.patch_key_patch.Get()) {
+			auto exe_util_types = Utils::MakeSvArray(".exe", ".dll", ".dat");
+			auto exe_util_names = Utils::MakeSvArray("ppcomp", "sfx");
+
+			auto exe_util_names_with_ext = Utils::MakeSvArray("savecount.dat", "ls.dat");
+
+			for (auto util_name : exe_util_names) {
+				if (!FileFinder::Game().FindFile(util_name, exe_util_types).empty()) {
+					Output::Debug("KeyPatch: Found external program '{}'. Patch scripts will behave synchronously.", util_name);
+					game_config.patch_key_patch_no_async.Set(true);
+					break;
+				}
+			}
+			if (!game_config.patch_key_patch_no_async.Get()) {
+				for (auto util_name : exe_util_names_with_ext) {
+					if (!FileFinder::Game().FindFile(util_name).empty()) {
+						Output::Debug("KeyPatch: Found external program '{}'. Patch scripts will behave synchronously.", util_name);
+						game_config.patch_key_patch_no_async.Set(true);
+						break;
+					}
+				}
+			}
+		}*/
+
+		if (Player::game_config.patch_better_aep.Get()) {
+			Player::game_config.new_game.Set(true);
+		}
 	}
 
 	game_config.PrintActivePatches();
@@ -1121,12 +1160,12 @@ static void OnMapSaveFileReady(FileRequestResult*, lcf::rpg::Save save) {
 			std::move(save.common_events));
 }
 
-void Player::LoadSavegame(const std::string& save_name, int save_id) {
+void Player::LoadSavegame(const std::string& save_name, int save_id, bool load_parallel) {
 	Output::Debug("Loading Save {}", save_name);
 
 	bool load_on_map = Scene::instance->type == Scene::Map;
 
-	if (!load_on_map) {
+	if (!load_on_map && !load_parallel) {
 		Main_Data::game_system->BgmFade(800);
 		// We erase the screen now before loading the saved game. This prevents an issue where
 		// if the save game has a different system graphic, the load screen would change before
@@ -1184,7 +1223,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 		save->airship_location.animation_type = Game_Character::AnimType::AnimType_non_continuous;
 	}
 
-	if (!load_on_map) {
+	if (!load_on_map || load_parallel) {
 		Scene::PopUntil(Scene::Title);
 	}
 
@@ -1206,12 +1245,12 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(
-		[save=std::move(*save), load_on_map, save_id](auto* request) {
+		[save=std::move(*save), load_on_map, load_parallel, save_id](auto* request) {
 			Game_Map::Dispose();
 
 			OnMapSaveFileReady(request, std::move(save));
 
-			if (load_on_map) {
+			if (load_on_map && !load_parallel) {
 				// Increment frame counter for consistency with a normal savegame load
 				IncFrame();
 				static_cast<Scene_Map*>(Scene::instance.get())->StartFromSave(save_id);
@@ -1223,7 +1262,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 
 	map->Start();
 	// load_on_map is handled in the async callback
-	if (!load_on_map) {
+	if (!load_on_map || load_parallel) {
 		Scene::Push(std::make_shared<Scene_Map>(save_id));
 	}
 }
@@ -1453,6 +1492,9 @@ Engine options:
  --patch-direct-menu VAR
                       Directly access subscreens of the default menu by setting
                       VAR.
+ --patch-better-aep VAR
+                      Emulates the behavior of the "BetterAEP" patch, which
+                      is commonly used for implementing customized title screens.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
@@ -1612,4 +1654,8 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+int32_t Player::Constants::MaxSaveFiles() {
+	return Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
 }
