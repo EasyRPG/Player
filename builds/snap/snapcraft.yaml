@@ -58,6 +58,7 @@ parts:
       - icu-devtools
     stage-packages:
       - libicu70
+      - libinih1
 
   easyrpg-player:
     plugin: cmake
@@ -69,6 +70,7 @@ parts:
       - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_PREFIX_PATH=${SNAPCRAFT_STAGE}/usr
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       last_committed_tag="$(git tag --list | tail -n1)"
@@ -84,11 +86,12 @@ parts:
       fi
       snapcraftctl build
       strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/easyrpg-player
-
     build-packages:
+      - libfluidsynth-dev
       - libfmt-dev
       - libfreetype6-dev
       - libharfbuzz-dev
+      - liblhasa-dev
       - libmpg123-dev
       - libopusfile-dev
       - libpixman-1-dev
@@ -98,15 +101,17 @@ parts:
       - libspeexdsp-dev
       - libvorbis-dev
       - libxmp-dev
-
     stage-packages:
       - freepats
+      - libfluidsynth3
+      - libfmt8
       - libfreetype6
       - libharfbuzz0b
       - libmpg123-0
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
+      - liblhasa0
       - libopusfile0
       - libpixman-1-0
       - libpng16-16
@@ -114,6 +119,7 @@ parts:
       - libsndfile1
       - libspeexdsp1
       - libvorbis0a
+      - libvorbisfile3
       - libwayland-egl1-mesa
       - libwildmidi-config
       - libxmp4
