@@ -68,8 +68,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/baseui.h
 	src/battle_animation.cpp
 	src/battle_animation.h
-	src/battle_message.cpp
-	src/battle_message.h
 	src/bitmap.cpp
 	src/bitmapfont.h
 	src/bitmapfont_glyph.h
@@ -192,6 +190,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_map.h
 	src/game_message.cpp
 	src/game_message.h
+	src/game_message_terms.cpp
+	src/game_message_terms.h
 	src/game_party_base.cpp
 	src/game_party_base.h
 	src/game_party.cpp

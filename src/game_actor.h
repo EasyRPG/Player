@@ -937,9 +937,6 @@ public:
 	 */
 	float GetCriticalHitChance(Weapon weapon = WeaponAll) const override;
 
-	std::string GetLevelUpMessage(int new_level) const;
-	std::string GetLearningMessage(const lcf::rpg::Skill& skill) const;
-
 	BattlerType GetType() const override;
 
 	/**
