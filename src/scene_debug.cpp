@@ -622,7 +622,12 @@ void Scene_Debug::vUpdate() {
 				}
 				break;
 			case eInterpreter:
-				if (sz == 2) {
+				if (sz == 3) {
+					auto action = interpreter_window->GetSelectedAction();
+					if (action == Window_Interpreter::UiAction::ShowStackItem) {
+						/* */
+					}
+				} else if (sz == 2) {
 					PushUiInterpreterView();
 				} else if (sz == 1) {
 					if (!interpreter_states_cached) {

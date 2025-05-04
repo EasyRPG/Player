@@ -18,13 +18,55 @@
 #ifndef EP_WINDOW_INTERPRETER_H
 #define EP_WINDOW_INTERPRETER_H
 
-// Headers
+ // Headers
 #include "window_command.h"
+#include "game_interpreter_shared.h"
 #include "lcf/rpg/saveeventexecstate.h"
 #include "lcf/rpg/saveeventexecframe.h"
 
 class Window_Interpreter : public Window_Selectable {
 public:
+	enum UiAction {
+		None = 0,
+		ShowRuntimeFlags = 1,
+		ShowMovementInfo,
+		ShowStackItem
+	};
+
+	class UiSubActionLine {
+	public:
+		UiSubActionLine() {
+
+		}
+
+		UiSubActionLine(std::initializer_list<UiAction> actions, std::initializer_list<std::string> texts,
+			std::initializer_list<Font::SystemColor> colors, std::initializer_list<std::function<bool()>> visibility_delegates) {
+
+			assert(actions.size() == texts.size());
+			assert(actions.size() == colors.size());
+			assert(actions.size() == visibility_delegates.size());
+
+			this->actions = actions;
+			this->texts = texts;
+			this->colors = colors;
+			this->visibility_delegates = visibility_delegates;
+		}
+
+		bool IsVisible() const;
+		void Update(Window_Selectable& parent);
+		void Draw(BitmapRef contents, Rect rect) const;
+		void ClearIndex();
+		UiAction GetSelectedAction() const;
+
+	private:
+		int index = 0;
+
+		std::vector<UiAction> actions;
+		std::vector<std::string> texts;
+		std::vector<Font::SystemColor> colors;
+		std::vector<std::function<bool()>> visibility_delegates;
+	};
+
 	Window_Interpreter(int ix, int iy, int iwidth, int iheight);
 	~Window_Interpreter() override;
 
@@ -34,14 +76,21 @@ public:
 	void Refresh();
 	bool IsValid();
 
-	int GetSelectedStackFrameLine();
+	UiAction GetSelectedAction() const;
+	int GetSelectedStackFrameLine() const;
+
 protected:
+	bool IsHoveringSubActionLine() const;
 	void DrawDescriptionLines();
 	void DrawStackLine(int index);
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	void DrawRuntimeFlagsWindow() const;
+#endif
 private:
 	struct InterpDisplayItem {
-		bool is_ce;
-		int owner_evt_id;
+		bool is_ce = false;
+		int owner_evt_id = 0;
 		std::string desc;
 	};
 
@@ -53,7 +102,7 @@ private:
 	};
 
 	const int lines_without_stack_fixed = 3;
-	
+
 	lcf::rpg::SaveEventExecState state;
 	int lines_without_stack = 0;
 
@@ -61,6 +110,9 @@ private:
 
 	InterpDisplayItem display_item;
 	std::vector<StackItem> stack_display_items;
+
+	UiSubActionLine sub_actions;
+	std::unique_ptr<Window_Selectable> sub_window_flags;
 };
 
 #endif
