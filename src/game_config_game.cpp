@@ -171,6 +171,8 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 					patch_key_patch.Set(true);
 				} else if (v == "rpg2k3-cmds" || v == "rpg2k3-commands") {
 					patch_rpg2k3_commands.Set(true);
+				} else if (v == "web-skipindexjson") {
+					patch_web_skip_index_json.Set(true);
 				}
 			}
 			patch_override = true;

@@ -49,6 +49,8 @@ struct Game_ConfigGame {
 	ConfigParam<int> patch_anti_lag_switch{ "Anti-Lag Switch", "Disable event page refreshes when switch is set", "Patch", "AntiLagSwitch", 0 };
 	ConfigParam<int> patch_direct_menu{ "Direct Menu", " Allows direct access to subscreens of the default menu", "Patch", "DirectMenu", 0 };
 
+	BoolConfigParam patch_web_skip_index_json{ "Skip Index.JSON's Check (WEB PLAYER ONLY)", "Skip the validation from index.json when load images (Web Build)", "Patch", "SkipIndexJSON", false };
+
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 
