@@ -1,0 +1,62 @@
+name: Lint Files
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    name: YAML, CMake & Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install tools
+        run: |
+          pip install yamllint
+          pip install cmakelint
+
+      - uses: tj-actions/changed-files@v46
+        if: '!cancelled()'
+        id: changed-files-yaml
+        with:
+          files: |
+            **/*.yaml
+            **/*.yml
+      - name: Lint YAML files
+        if: steps.changed-files-yaml.outputs.any_changed == 'true'
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: {max: 100}}}" \
+            ${{ steps.changed-files-yaml.outputs.all_changed_files }}
+          # we often have extra long lines, so relaxing the check (from 80)
+
+      - uses: tj-actions/changed-files@v46
+        if: '!cancelled()'
+        id: changed-files-cmake
+        with:
+          files: |
+            **/*.cmake
+            **/CMakeLists.txt
+      - name: Lint CMake files
+        if: steps.changed-files-cmake.outputs.any_changed == 'true'
+        run: |
+          cmakelint --filter=-whitespace/tabs --linelength=120 \
+            ${{ steps.changed-files-cmake.outputs.all_changed_files }}
+          # we often have extra long lines, so relaxing the check (from 80)
+          # also do not warn about tabstops
+
+      - uses: tj-actions/changed-files@v46
+        if: '!cancelled()'
+        id: changed-files-md
+        with:
+          files: '**/*.md'
+          separator: ","
+      - name: Lint Markdown files
+        if: steps.changed-files-md.outputs.any_changed == 'true'
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: ${{ steps.changed-files-md.outputs.all_changed_files }}
+          separator: ","

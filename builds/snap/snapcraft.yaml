@@ -1,13 +1,15 @@
 name: easyrpg-player
-base: core20
+base: core22
 adopt-info: easyrpg-player
 summary: easyrpg-player
 description: |
-    EasyRPG Player is a program that allows to play games created with RPG Maker 2000 and 2003.
-    EasyRPG is developed by the amazing people running the [EasyRPG project](https://easyrpg.org/).
+    EasyRPG Player is a program that allows to play games created with
+    RPG Maker 2000 and 2003. EasyRPG is developed by the amazing people running
+    the [EasyRPG project](https://easyrpg.org/).
 
     It aims to be a free (as in freedom) cross-platform RPG Maker 2000/2003 interpreter.
-    The main goal is to play all games created with them as the original game interpreter (RPG_RT) does.
+    The main goal is to play all games created with them as the original
+    game interpreter (RPG_RT) does.
 confinement: strict
 grade: stable
 
@@ -17,7 +19,7 @@ apps:
     plugs:
       - x11
       - wayland
-      - unity7
+      - unity8
       - opengl
       - audio-playback
       - joystick
@@ -35,16 +37,18 @@ layout:
 
 parts:
   liblcf:
-    plugin: autotools
+    plugin: cmake
     source: https://github.com/EasyRPG/liblcf
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
-    autotools-configure-parameters:
-      - --prefix=/usr
-      - --disable-static
-      - --disable-tools
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DBUILD_SHARED_LIBS=ON
+      - -DLIBLCF_ENABLE_TOOLS=OFF
+      - -DLIBLCF_UPDATE_MIMEDB=OFF
     override-build: |
       git fetch
       snapcraftctl build
@@ -52,20 +56,24 @@ parts:
     build-packages:
       - libexpat1-dev
       - libicu-dev
+      - libinih-dev
       - icu-devtools
     stage-packages:
-      - libicu66
+      - libicu70
+      - libinih1
 
-  easyrpg-player:   
-    plugin: autotools
-    after: [libwildmidi,liblcf,desktop-glib-only]
+  easyrpg-player:
+    plugin: cmake
+    after: [libwildmidi, liblcf, desktop-glib-only]
     source: https://github.com/EasyRPG/Player
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
-    autotools-configure-parameters:
-      - --prefix=/usr
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_PREFIX_PATH=${SNAPCRAFT_STAGE}/usr
+      - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       last_committed_tag="$(git tag --list | tail -n1)"
       last_released_tag="$(snap info easyrpg-player | awk '$1 == "latest/beta:" { print $2 }')"
@@ -80,38 +88,40 @@ parts:
       fi
       snapcraftctl build
       strip --strip-all $SNAPCRAFT_PART_INSTALL/usr/bin/easyrpg-player
-
     build-packages:
+      - libfluidsynth-dev
       - libfmt-dev
       - libfreetype6-dev
       - libharfbuzz-dev
+      - liblhasa-dev
       - libmpg123-dev
       - libopusfile-dev
       - libpixman-1-dev
       - libpng-dev
       - libsndfile1-dev
       - libsdl2-dev
-      - libsdl2-mixer-dev
       - libspeexdsp-dev
       - libvorbis-dev
       - libxmp-dev
-
     stage-packages:
       - freepats
+      - libfluidsynth3
+      - libfmt8
       - libfreetype6
       - libharfbuzz0b
       - libmpg123-0
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
+      - liblhasa0
       - libopusfile0
       - libpixman-1-0
       - libpng16-16
       - libsdl2-2.0-0
-      - libsdl2-mixer-2.0-0
       - libsndfile1
       - libspeexdsp1
       - libvorbis0a
+      - libvorbisfile3
       - libwayland-egl1-mesa
       - libwildmidi-config
       - libxmp4
@@ -122,7 +132,7 @@ parts:
     source-type: git
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fuse-ld=gold -flto=$(nproc) -ffunction-sections -fdata-sections"
-      - LDFLAGS:  "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
+      - LDFLAGS: "$LDFLAGS  -fuse-ld=gold -flto=$(nproc) -Wl,--gc-sections"
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_SHARED_LIBS=ON
