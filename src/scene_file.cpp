@@ -123,7 +123,7 @@ void Scene_File::Start() {
 	// Refresh File Finder Save Folder
 	fs = FileFinder::Save();
 
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
@@ -168,7 +168,7 @@ void Scene_File::RefreshWindows() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		PopulateSaveWindow(*w, i);
 		w->Refresh();

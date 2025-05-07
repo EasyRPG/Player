@@ -754,11 +754,16 @@ void Player::CreateGameObjects() {
 	}
 
 	int& engine = game_config.engine;
+	std::map<Player::GameConstantType, int32_t> game_constant_overrides;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
-	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+	const auto exe_file = game_config.engine_path.Get().empty() ? EXE_NAME : game_config.engine_path.Get();
+	if (!game_config.engine_path.Get().empty()) {
+		Output::Debug("Using specified .EXE '{}' for engine detection", exe_file);
+	}
+	auto exeis = FileFinder::Game().OpenFile(exe_file);
 
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
@@ -773,6 +778,8 @@ void Player::CreateGameObjects() {
 				game_config.patch_maniac.Set(is_patch_maniac);
 			}
 		}
+
+		game_constant_overrides = exe_reader->GetOverriddenGameConstants();
 
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
@@ -830,6 +837,14 @@ void Player::CreateGameObjects() {
 	}
 
 	game_config.PrintActivePatches();
+
+	Constants::ResetOverrides();
+	if (game_constant_overrides.size() > 0) {
+		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();++it) {
+			Constants::OverrideGameConstant(it->first, it->second);
+		}
+		Constants::PrintActiveOverrides();
+	}
 
 	ResetGameObjects();
 
@@ -906,22 +921,9 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
-	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
-	if (min_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		} else {
-			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-		}
-	}
-	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
-	if (max_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		} else {
-			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
-		}
-	}
+	int32_t min_var, max_var;
+	Player::Constants::GetVariableLimits(min_var, max_var);
+
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
@@ -1430,6 +1432,8 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --engine-path EXE    Set a custom path for the executable which is to be used
+                      by the automatic engine detection.
  --font1 FILE         Font to use for the first font. The system graphic of the
                       game determines whether font 1 or 2 is used.
  --font1-size PX      Size of font 1 in pixel. The default is 12.
@@ -1612,4 +1616,175 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+namespace Player::Constants {
+	std::map<GameConstantType, int32_t> constant_overrides;
+}
+
+void Player::Constants::GetVariableLimits(Var_t& min_var, Var_t& max_var) {
+	min_var = lcf::Data::system.easyrpg_variable_min_value;
+	TryGetOverriddenConstant(GameConstantType::MinVarLimit, min_var);
+	if (min_var == 0) {
+		if (Player::IsPatchManiac()) {
+			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
+		} else {
+			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+		}
+	}
+	max_var = lcf::Data::system.easyrpg_variable_max_value;
+	TryGetOverriddenConstant(GameConstantType::MaxVarLimit, max_var);
+	if (max_var == 0) {
+		if (Player::IsPatchManiac()) {
+			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
+		} else {
+			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+		}
+	}
+}
+
+int32_t Player::Constants::MaxActorHpValue() {
+	auto val = lcf::Data::system.easyrpg_max_actor_hp;
+	TryGetOverriddenConstant(GameConstantType::MaxActorHP, val);
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999 : 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxActorSpValue() {
+	auto val = lcf::Data::system.easyrpg_max_actor_sp;
+	TryGetOverriddenConstant(GameConstantType::MaxActorSP, val);
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemyHpValue() {
+	auto val = lcf::Data::system.easyrpg_max_enemy_hp;
+	if (val == -1) {
+		return std::numeric_limits<int32_t>::max();
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxEnemySpValue() {
+	auto val = lcf::Data::system.easyrpg_max_enemy_sp;
+	if (val == -1) {
+		return std::numeric_limits<int32_t>::max();
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxStatBaseValue() {
+	auto val = lcf::Data::system.easyrpg_max_stat_base_value;
+	TryGetOverriddenConstant(GameConstantType::MaxStatBaseValue, val);
+	if (val == -1) {
+		return 999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxStatBattleValue() {
+	auto val = lcf::Data::system.easyrpg_max_stat_battle_value;
+	TryGetOverriddenConstant(GameConstantType::MaxStatBattleValue, val);
+	if (val == -1) {
+		return 9'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxDamageValue() {
+	auto val = lcf::Data::system.easyrpg_max_damage;
+	TryGetOverriddenConstant(GameConstantType::MaxDamageValue, val);
+	if (val == -1) {
+		return (Player::IsRPG2k() ? 999 : 9'999);
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxExpValue() {
+	auto val = lcf::Data::system.easyrpg_max_exp;
+	TryGetOverriddenConstant(GameConstantType::MaxExpValue, val);
+	if (val == -1) {
+		return Player::IsRPG2k() ? 999'999 : 9'999'999;
+	}
+	return val;
+}
+
+int32_t Player::Constants::MaxLevel() {
+	auto max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
+	if (TryGetOverriddenConstant(GameConstantType::MaxLevel, max_level)) {
+		return max_level;
+	}
+	if (lcf::Data::system.easyrpg_max_level > -1) {
+		max_level = lcf::Data::system.easyrpg_max_level;
+	}
+	return max_level;
+}
+
+int32_t Player::Constants::MaxGoldValue() {
+	int32_t max_gold = 999'999;
+	if (TryGetOverriddenConstant(GameConstantType::MaxGoldValue, max_gold)) {
+		return max_gold;
+	}
+	return max_gold;
+}
+
+int32_t Player::Constants::MaxItemCount() {
+	int32_t max_item_count = (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);;
+	TryGetOverriddenConstant(GameConstantType::MaxItemCount, max_item_count);
+	return max_item_count;
+}
+
+int32_t Player::Constants::MaxSaveFiles() {
+	int32_t max_savefiles = Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99);
+	TryGetOverriddenConstant(GameConstantType::MaxSaveFiles, max_savefiles);
+	return max_savefiles;
+}
+
+bool Player::Constants::TryGetOverriddenConstant(GameConstantType const_type, int32_t& out_value) {
+	auto it = constant_overrides.find(const_type);
+	if (it != constant_overrides.end()) {
+		out_value = (*it).second;
+	}
+	return it != constant_overrides.end();
+}
+
+void Player::Constants::OverrideGameConstant(GameConstantType const_type, int32_t value) {
+	constant_overrides[const_type] = value;
+}
+
+void Player::Constants::ResetOverrides() {
+	constant_overrides.clear();
+}
+
+void Player::Constants::PrintActiveOverrides() {
+	std::vector<std::tuple<std::string, int32_t>> overridden_constants;
+
+	auto it = Player::kGameConstantType.begin();
+	int32_t value;
+	while (it != Player::kGameConstantType.end()) {
+		auto const_type = static_cast<GameConstantType>((*it).value);
+		if (!TryGetOverriddenConstant(const_type, value)) {
+			++it;
+			continue;
+		}
+		overridden_constants.push_back(std::make_tuple((*it).name, value));
+		++it;
+	}
+
+	if (!overridden_constants.empty()) {
+		std::string out = "Overridden Game Constants: ";
+		bool first = true;
+		for (const auto& p : overridden_constants) {
+			if (!first) {
+				out += ", ";
+			}
+			out += fmt::format("{}: {}", std::get<std::string>(p), std::get<int32_t>(p));
+			first = false;
+		}
+		Output::DebugStr(out);
+	}
 }

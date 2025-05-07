@@ -52,7 +52,7 @@
 #include "feature.h"
 
 static inline int MaxDamageValue() {
-	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
+	return Player::Constants::MaxDamageValue();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
