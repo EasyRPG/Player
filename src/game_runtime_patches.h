@@ -21,20 +21,21 @@
 #include "game_config_game.h"
 #include "cmdline_parser.h"
 #include "player.h"
-#include "input.h"
 
 class Game_Actor;
 class Game_Battler;
 class Game_Enemy;
 
 namespace RuntimePatches {
+	// TODO: Consider adding global functions like "ModifyMaxHp" which delegate to various patches
+
 	struct PatchArg {
-		ConfigParam<int>* config_param = nullptr;
+		ConfigParam<int>& config_param;
 		char const* cmd_arg;
 		int const default_value = 0;
 
 		constexpr PatchArg(ConfigParam<int>& config_param, char const* cmd_arg, int const default_value)
-			: config_param(&config_param), cmd_arg(cmd_arg), default_value(default_value) {
+			: config_param(config_param), cmd_arg(cmd_arg), default_value(default_value) {
 		}
 	};
 
@@ -74,7 +75,7 @@ namespace RuntimePatches {
 	 * This patch scales the default battle parameters of an enemy
 	 * based on the contents of some in-game variables.
 	 * (Default: V[1001] - V[1010])
-	 * 
+	 *
 	 * When a switch is set (default: S[1001]) to ON, an alternative
 	 * scaling formula, based on the average party level, is used.
 	 *
@@ -98,7 +99,7 @@ namespace RuntimePatches {
 			{ Player::game_config.patch_monsca_gold, "-gold", 1008 },
 			{ Player::game_config.patch_monsca_item, "-item", 1009 },
 			{ Player::game_config.patch_monsca_droprate, "-droprate", 1010 },
-			{ Player::game_config.patch_monsca_levelscaling, "-lvlscale", 1001 },
+			{ Player::game_config.patch_monsca_levelscaling, "-lvlscale", 1001 }, // Switch
 			{ Player::game_config.patch_monsca_plus, "-plus", 0 }
 		} };
 
