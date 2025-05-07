@@ -27,27 +27,26 @@
 #include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
-#include "output.h"
 
 namespace {
-	template<int C>
+	template<size_t C>
 	void LockPatchArguments(std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		for (auto& patch_arg : patch_args) {
-			patch_arg.config_param->Lock(0);
+			patch_arg.config_param.Lock(0);
 		}
 	}
 
-	template<int C>
+	template<size_t C>
 	bool ParsePatchArguments(CmdlineParser& cp, CmdlineArg arg, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		if (arg.ArgIsOff()) {
 			for (auto& patch_arg : patch_args) {
-				patch_arg.config_param->Set(0);
+				patch_arg.config_param.Set(0);
 			}
 			return true;
 		}
 		if (arg.ArgIsOn()) {
 			for (auto& patch_arg : patch_args) {
-				patch_arg.config_param->Set(patch_arg.default_value);
+				patch_arg.config_param.Set(patch_arg.default_value);
 			}
 
 			std::string value;
@@ -56,7 +55,7 @@ namespace {
 				int i = 0, pos = 0, new_pos;
 				while ((new_pos = value.rfind(',', pos)) >= 0) {
 					int v = std::atoi(value.substr(pos, new_pos - pos).c_str());
-					patch_args[i++].config_param->Set(v);
+					patch_args[i++].config_param.Set(v);
 					if (i == static_cast<int>(patch_args.size())) {
 						break;
 					}
@@ -73,7 +72,7 @@ namespace {
 					if (cp.ParseNext(arg, 1, patch_args[i].cmd_arg)) {
 						parsed = true;
 						if (arg.ParseValue(0, li_value)) {
-							patch_args[i].config_param->Set(li_value);
+							patch_args[i].config_param.Set(li_value);
 						}
 					}
 				}
@@ -84,22 +83,22 @@ namespace {
 		return false;
 	}
 
-	template<int C>
+	template<size_t C>
 	bool ParsePatchFromIni(lcf::INIReader& ini, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		bool patch_override = false;
 		for (auto& patch_arg : patch_args) {
-			patch_override |= patch_arg.config_param->FromIni(ini);
+			patch_override |= patch_arg.config_param.FromIni(ini);
 		}
 		return patch_override;
 	}
 
-	template<int C>
+	template<size_t C>
 	void PrintPatch(std::vector<std::string>& patches, std::array<RuntimePatches::PatchArg, C> const& patch_args) {
 		assert(patch_args.size() > 0);
 
 		bool is_set = false;
 		for (auto& patch_arg : patch_args) {
-			if (patch_arg.config_param->Get() > 0) {
+			if (patch_arg.config_param.Get() > 0) {
 				is_set = true;
 				break;
 			}
@@ -109,60 +108,61 @@ namespace {
 		}
 
 		if (patch_args.size() == 1) {
-			patches.push_back(fmt::format("{} ({})", patch_args[0].config_param->GetName(), patch_args[0].config_param->Get()));
+			patches.push_back(fmt::format("{} ({})", patch_args[0].config_param.GetName(), patch_args[0].config_param.Get()));
 			return;
 		}
 
-		std::string out = fmt::format("{} (", patch_args[0].config_param->GetName());
+		std::string out = fmt::format("{} (", patch_args[0].config_param.GetName());
 		for (int i = 0; i < static_cast<int>(patch_args.size()); ++i) {
 			if (i > 0) {
 				out += ", ";
 			}
-			out += fmt::format("{}", patch_args[i].config_param->Get());
+			out += fmt::format("{}", patch_args[i].config_param.Get());
 		}
 		out += ")";
+
 		patches.push_back(out);
 	}
 }
 
 void RuntimePatches::LockPatchesAsDiabled() {
-	LockPatchArguments<2>(EncounterRandomnessAlert::patch_args);
-	LockPatchArguments<12>(MonSca::patch_args);
-	LockPatchArguments<2>(EXPlus::patch_args);
-	LockPatchArguments<2>(GuardRevamp::patch_args);
+	LockPatchArguments(EncounterRandomnessAlert::patch_args);
+	LockPatchArguments(MonSca::patch_args);
+	LockPatchArguments(EXPlus::patch_args);
+	LockPatchArguments(GuardRevamp::patch_args);
 }
 
 bool RuntimePatches::ParseFromCommandLine(CmdlineParser& cp) {
 	CmdlineArg arg;
 	if (cp.ParseNext(arg, 1, { "--patch-encounter-alert", "--no-patch-encounter-alert" })) {
-		return ParsePatchArguments<2>(cp, arg, EncounterRandomnessAlert::patch_args);
+		return ParsePatchArguments(cp, arg, EncounterRandomnessAlert::patch_args);
 	}
 	if (cp.ParseNext(arg, 1, { "--patch-monsca", "--no-patch-monsca" })) {
-		return ParsePatchArguments<12>(cp, arg, MonSca::patch_args);
+		return ParsePatchArguments(cp, arg, MonSca::patch_args);
 	}
 	if (cp.ParseNext(arg, 1, { "--patch-explus", "--no-patch-explus" })) {
-		return ParsePatchArguments<2>(cp, arg, EXPlus::patch_args);
+		return ParsePatchArguments(cp, arg, EXPlus::patch_args);
 	}
 	if (cp.ParseNext(arg, 1, { "--patch-guardrevamp", "--no-patch-guardrevamp" })) {
-		return ParsePatchArguments<2>(cp, arg, GuardRevamp::patch_args);
+		return ParsePatchArguments(cp, arg, GuardRevamp::patch_args);
 	}
 	return false;
 }
 
 bool RuntimePatches::ParseFromIni(lcf::INIReader& ini) {
 	bool patch_override = false;
-	patch_override |= ParsePatchFromIni<2>(ini, EncounterRandomnessAlert::patch_args);
-	patch_override |= ParsePatchFromIni<12>(ini, MonSca::patch_args);
-	patch_override |= ParsePatchFromIni<2>(ini, EXPlus::patch_args);
-	patch_override |= ParsePatchFromIni<2>(ini, GuardRevamp::patch_args);
+	patch_override |= ParsePatchFromIni(ini, EncounterRandomnessAlert::patch_args);
+	patch_override |= ParsePatchFromIni(ini, MonSca::patch_args);
+	patch_override |= ParsePatchFromIni(ini, EXPlus::patch_args);
+	patch_override |= ParsePatchFromIni(ini, GuardRevamp::patch_args);
 	return patch_override;
 }
 
 void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
-	PrintPatch<2>(patches, EncounterRandomnessAlert::patch_args);
-	PrintPatch<12>(patches, MonSca::patch_args);
-	PrintPatch<2>(patches, EXPlus::patch_args);
-	PrintPatch<2>(patches, GuardRevamp::patch_args);
+	PrintPatch(patches, EncounterRandomnessAlert::patch_args);
+	PrintPatch(patches, MonSca::patch_args);
+	PrintPatch(patches, EXPlus::patch_args);
+	PrintPatch(patches, GuardRevamp::patch_args);
 }
 
 bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
