@@ -2044,13 +2044,13 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
-			return std::nullopt;
+			return {};
 		}
 
 		if (!Player::IsPatchDynRpg() && Player::HasEasyRpgExtensions()) {
 			// Only accept commands starting with @easyrpg_
 			if (!StartsWith(com.string, "@easyrpg_")) {
-				return std::nullopt;
+				return {};
 			}
 		}
 
@@ -2073,7 +2073,6 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 
 		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
-
 	return {};
 }
 
