@@ -48,22 +48,6 @@ namespace {
 			for (auto& patch_arg : patch_args) {
 				patch_arg.config_param.Set(patch_arg.default_value);
 			}
-
-			std::string value;
-			if (arg.ParseValue(0, value)) {
-				std::string::iterator it;
-				int i = 0, pos = 0, new_pos;
-				while ((new_pos = value.rfind(',', pos)) >= 0) {
-					int v = std::atoi(value.substr(pos, new_pos - pos).c_str());
-					patch_args[i++].config_param.Set(v);
-					if (i == static_cast<int>(patch_args.size())) {
-						break;
-					}
-					pos = new_pos + 1;
-				}
-				return true;
-			}
-
 			bool parsed;
 			long li_value = 0;
 			do {
