@@ -2044,13 +2044,13 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		if (com.string.empty() || com.string[0] != '@') {
 			// Not a DynRPG command
-			return std::nullopt;
+			return {};
 		}
 
 		if (!Player::IsPatchDynRpg() && Player::HasEasyRpgExtensions()) {
 			// Only accept commands starting with @easyrpg_
 			if (!StartsWith(com.string, "@easyrpg_")) {
-				return std::nullopt;
+				return {};
 			}
 		}
 
@@ -2073,6 +2073,7 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 
 		return Main_Data::game_dynrpg->Invoke(command, this);
 	}
+	return {};
 }
 
 std::optional<bool> Game_Interpreter::HandleDestinyScript(const lcf::rpg::EventCommand& com) {
@@ -2080,12 +2081,12 @@ std::optional<bool> Game_Interpreter::HandleDestinyScript(const lcf::rpg::EventC
 	if (Player::IsPatchDestiny()) {
 		if (com.string.empty() || com.string[0] != '$') {
 			// Not a DestinyScript
-			return std::nullopt;
+			return {};
 		}
 
 		return Main_Data::game_destiny->Main(GetFrame());
 	}
-	return std::nullopt;
+	return {};
 }
 
 bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
