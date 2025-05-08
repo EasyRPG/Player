@@ -50,7 +50,7 @@ namespace FileFinder {
 	 * Type of the project. Used to differentiate between supported games (2kX or EasyRPG)
 	 * and known but unsupported (i.e. newer RPG Makers).
 	 */
-	enum ProjectType {
+	enum class ProjectType {
 		Unknown,
 		// 2kX or EasyRPG
 		Supported,
@@ -62,7 +62,8 @@ namespace FileFinder {
 		WolfRpgEditor,
 		Encrypted2k3Maniacs,
 		RpgMaker95,
-		SimRpgMaker95
+		SimRpgMaker95,
+		LAST
 	};
 
 	constexpr auto kProjectType = lcf::makeEnumTags<ProjectType>(
@@ -77,6 +78,7 @@ namespace FileFinder {
 		"RPG Maker 95",
 		"Sim RPG Maker 95"
 	);
+	static_assert(kProjectType.size() == static_cast<size_t>(ProjectType::LAST));
 
 	/**
 	 * Helper struct combining the project's directory and its type (used by Game Browser)

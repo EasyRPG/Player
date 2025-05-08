@@ -21,14 +21,76 @@
 
 #include <lcf/rpg/eventcommand.h>
 #include <lcf/rpg/movecommand.h>
+#include <lcf/rpg/saveeventexecstate.h>
 #include <lcf/rpg/saveeventexecframe.h>
 #include <string_view.h>
 #include "compiler.h"
+#include <optional>
+
+#define ENABLE_DYNAMIC_INTERPRETER_CONFIG
 
 class Game_Character;
 class Game_BaseInterpreterContext;
 
 namespace Game_Interpreter_Shared {
+
+	enum class EventType {
+		None = 0,
+		MapEvent,
+		CommonEvent,
+		BattleEvent,
+		LAST
+	};
+	static constexpr auto kEventType = lcf::makeEnumTags<EventType>(
+		"None",
+		"MapEvent",
+		"CommonEvent",
+		"BattleEvent"
+	);
+	static_assert(kEventType.size() == static_cast<size_t>(EventType::LAST));
+
+	enum class ExecutionType {
+		/*
+		 * MapEvent Triggered by decision key
+		 * (or via custom command EasyRpg_TriggerEventAt)
+		 */
+		Action = 0,
+		Touch,
+		Collision,
+		AutoStart,
+		Parallel,
+		/* Frame was pushed via "CallCommand" */
+		Call,
+		/* Maniac's special CE type "Battle start" */
+		BattleStart,
+		/* Maniac's special CE type "Battle Parallel" */
+		BattleParallel,
+
+		/* 2k3 Death Handler */
+		DeathHandler = 10,
+		/* Event code was dynamically evaluated. (ManiacCallCommand) */
+		Eval,
+		DebugCall,
+		ManiacHook,
+		LAST
+	};
+	static constexpr auto kExecutionType = lcf::makeEnumTags<ExecutionType>(
+		"Action",
+		"Touch",
+		"Collision",
+		"AutoStart",
+		"Parallel",
+		"Call",
+		"BattleStart",
+		"BattleParallel",
+		"---",
+		"---",
+		"DeathHandler",
+		"Eval",
+		"DebugCall",
+		"ManiacHook"
+	);
+	static_assert(kExecutionType.size() == static_cast<size_t>(ExecutionType::LAST));
 
 	/*
 	* Indicates how the target of an interpreter operation (lvalue) should be evaluated.
@@ -103,6 +165,20 @@ namespace Game_Interpreter_Shared {
 	lcf::rpg::MoveCommand DecodeMove(lcf::DBArray<int32_t>::const_iterator& it);
 
 	bool ManiacCheckContinueLoop(int val, int val2, int type, int op);
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	using StateRuntimeFlagRef = bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::*;
+
+	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState const& state, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
+
+	std::optional<bool> GetRuntimeFlag(lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const& state_runtime_flags, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off);
+#endif
+
+	ExecutionType ManiacExecutionType(lcf::rpg::SaveEventExecFrame const& frame);
+	EventType ManiacEventType(lcf::rpg::SaveEventExecFrame const& frame);
+
+	ExecutionType EasyRpgExecutionType(lcf::rpg::SaveEventExecFrame const& frame);
+	EventType EasyRpgEventType(lcf::rpg::SaveEventExecFrame const& frame);
 }
 
 inline bool Game_Interpreter_Shared::CheckOperator(int val, int val2, int op) {
@@ -141,13 +217,51 @@ inline bool Game_Interpreter_Shared::ManiacCheckContinueLoop(int val, int val2, 
 	}
 }
 
+using InterpreterExecutionType = Game_Interpreter_Shared::ExecutionType;
+using InterpreterEventType = Game_Interpreter_Shared::EventType;
+
+inline InterpreterExecutionType Game_Interpreter_Shared::ManiacExecutionType(lcf::rpg::SaveEventExecFrame const& frame) {
+	if (int type_ex = (frame.maniac_event_info & 0xF); type_ex <= static_cast<int>(ExecutionType::BattleParallel)) {
+		return static_cast<InterpreterExecutionType>(type_ex);
+	}
+	return InterpreterExecutionType::Action;
+}
+
+inline InterpreterEventType Game_Interpreter_Shared::ManiacEventType(lcf::rpg::SaveEventExecFrame const& frame) {
+	if ((frame.maniac_event_info & 0x10) > 0) {
+		return InterpreterEventType::MapEvent;
+	} else if ((frame.maniac_event_info & 0x20) > 0) {
+		return InterpreterEventType::CommonEvent;
+	} else if ((frame.maniac_event_info & 0x40) > 0) {
+		return InterpreterEventType::BattleEvent;
+	}
+	return InterpreterEventType::None;
+}
+
+inline InterpreterExecutionType Game_Interpreter_Shared::EasyRpgExecutionType(lcf::rpg::SaveEventExecFrame const& frame) {
+	return static_cast<InterpreterExecutionType>(frame.maniac_event_info & 0xF);
+}
+
+inline InterpreterEventType Game_Interpreter_Shared::EasyRpgEventType(lcf::rpg::SaveEventExecFrame const& frame) {
+	// Same as ManiacEventType, because no special new event types exist at the moment
+	return ManiacEventType(frame);
+}
+
 class Game_BaseInterpreterContext {
 public:
 	virtual ~Game_BaseInterpreterContext() {}
 
 	virtual int GetThisEventId() const = 0;
 	virtual Game_Character* GetCharacter(int event_id, std::string_view origin) const = 0;
+
+	virtual const lcf::rpg::SaveEventExecState& GetState() const = 0;
 	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;
+
+#ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
+	inline std::optional<bool> GetRuntimeFlag(Game_Interpreter_Shared::StateRuntimeFlagRef const field_on, Game_Interpreter_Shared::StateRuntimeFlagRef const field_off) const {
+		return Game_Interpreter_Shared::GetRuntimeFlag(GetState(), field_on, field_off);
+	};
+#endif
 
 protected:
 	template<bool validate_patches, bool support_range_indirect, bool support_expressions, bool support_bitmask, bool support_scopes, bool support_named = false>
