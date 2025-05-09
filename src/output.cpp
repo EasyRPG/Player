@@ -197,16 +197,13 @@ void Output::Quit() {
 	Game_Config::CloseLogFile();
 }
 
-bool Output::TakeScreenshot() {
+bool Output::TakeScreenshot(bool is_auto_screenshot) {
 #ifdef EMSCRIPTEN
-	Emscripten_Interface::TakeScreenshot();
+	Emscripten_Interface::TakeScreenshot(is_auto_screenshot);
 	return true;
 #else
-	int index = 0;
-	std::string p;
-	do {
-		p = "screenshot_" + std::to_string(index++) + ".png";
-	} while(FileFinder::Save().Exists(p));
+	auto fs = FileFinder::Save();
+	auto p = GetNextScreenshotFileName(fs, is_auto_screenshot);
 	return TakeScreenshot(p);
 #endif
 }
@@ -231,6 +228,38 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	} else {
 		return DisplayUi->GetDisplaySurface()->WritePNG(os);
 	}
+}
+
+std::string Output::GetScreenshotName(bool is_auto_screenshot) {
+	std::string prefix = is_auto_screenshot ? "auto" : "screenshot";
+
+	if (Player::player_config.screenshot_timestamp.Get()) {
+		std::time_t t = std::time(nullptr);
+		std::tm* tm = std::localtime(&t);
+		prefix += "_" + Utils::FormatDate(tm, Utils::DateFormat_YYYYMMDD_HHMMSS);
+	}
+
+	return prefix;
+}
+
+std::string Output::GetNextScreenshotFileName(FilesystemView fs, bool is_auto_screenshot) {
+	std::string output_path;
+	int index = 0;
+	std::string name = GetScreenshotName(is_auto_screenshot);
+
+	if (Player::player_config.screenshot_timestamp.Get()) {
+		output_path = name + ".png";
+		if (!fs.Exists(output_path)) {
+			return output_path;
+		}
+		index++;
+	}
+	name += "_";
+
+	do {
+		output_path = name + std::to_string(index++) + ".png";
+	} while (fs.Exists(output_path));
+	return output_path;
 }
 
 void Output::ToggleLog() {

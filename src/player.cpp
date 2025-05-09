@@ -139,6 +139,7 @@ namespace Player {
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+	Game_Clock::time_point last_auto_screenshot;
 }
 
 namespace {
@@ -204,6 +205,8 @@ void Player::Init(std::vector<std::string> args) {
 	player_config = std::move(cfg.player);
 	speed_modifier_a = cfg.input.speed_modifier_a.Get();
 	speed_modifier_b = cfg.input.speed_modifier_b.Get();
+
+	last_auto_screenshot = Game_Clock::now();
 }
 
 void Player::Run() {
@@ -272,6 +275,14 @@ void Player::MainLoop() {
 	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
 		Exit();
 		return;
+	}
+
+	if (Player::player_config.automatic_screenshots.Get() && FileFinder::Game()) {
+		auto diff = std::chrono::duration_cast<std::chrono::seconds>(Game_Clock::now() - last_auto_screenshot);
+		if (diff.count() >= Player::player_config.automatic_screenshots_interval.Get()) {
+			last_auto_screenshot = Game_Clock::now();
+			Output::TakeScreenshot(true);
+		}
 	}
 
 	auto frame_limit = DisplayUi->GetFrameLimit();
