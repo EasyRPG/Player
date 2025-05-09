@@ -1222,7 +1222,6 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 	lcf::rpg::SaveEventExecState state_display;
 	std::string first_line = "";
 	bool valid = false;
-	int evt_id = 0;
 
 	auto& bg_states = state_interpreter.background_states;
 
@@ -1241,7 +1240,6 @@ void Scene_Debug::UpdateInterpreterWindow(int index) {
 		for (auto& ce : Game_Map::GetCommonEvents()) {
 			if (ce.GetId() == ce_id) {
 				first_line = Debug::FormatEventName(ce);
-				evt_id = ce_id;
 				valid = true;
 				break;
 			}

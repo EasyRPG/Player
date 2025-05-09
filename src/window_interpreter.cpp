@@ -108,7 +108,7 @@ void Window_Interpreter::Refresh() {
 			max_evt_id = item.evt_id;
 		if (item.page_id > max_page_id)
 			max_page_id = item.page_id;
-		if (item.cmd_count > max_cmd_count)
+		if (static_cast<int>(item.cmd_count) > max_cmd_count)
 			max_cmd_count = item.cmd_count;
 	}
 
