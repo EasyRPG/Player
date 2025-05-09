@@ -803,6 +803,12 @@ Scene_Battle_Rpg2k::SceneActionReturn Scene_Battle_Rpg2k::ProcessSceneActionBatt
 		PrepareBattleAction(battler);
 		pending_battle_action = battler->GetBattleAlgorithm();
 
+		if (pending_battle_action == nullptr) {
+			RemoveCurrentAction();
+			SetSceneActionSubState(ePost);
+			return SceneActionReturn::eContinueThisFrame;
+		}
+
 #ifdef EP_DEBUG_BATTLE2K_STATE_MACHINE
 		Output::Debug("Battle2k StartBattleAction battler={} frame={}", battler->GetName(), Main_Data::game_system->GetFrameCounter());
 #endif
@@ -1987,3 +1993,20 @@ bool Scene_Battle_Rpg2k::CheckBattleEndConditions() {
 	return false;
 }
 
+void Scene_Battle_Rpg2k::OnPartyChanged(Game_Actor* actor, bool added) {
+	if (!added) {
+		for (auto& battle_action : battle_actions) {
+			auto battle_alg = battle_action->GetBattleAlgorithm();
+			if (!battle_alg) {
+				continue;
+			}
+			// Invalidate all battle actions that may have targeted the now removed actor
+			// The action itself is removed later in the pre-processing step inside ProcessSceneActionBattle
+			auto targets = battle_alg->GetOriginalTargets();
+			if (std::any_of(targets.begin(), targets.end(), [&actor](auto& t) { return t == actor; })) {
+				battle_action->SetBattleAlgorithm(nullptr);
+			}
+		}
+		return;
+	}
+}
