@@ -438,7 +438,6 @@ void Window_Settings::RefreshEngine() {
 	auto fmt_sample_name = [](bool is_auto_screenshot) {
 		auto name = Output::GetScreenshotName(is_auto_screenshot);
 		if (Player::player_config.screenshot_timestamp.Get()) {
-			//return name + "[_1].png";
 			return name + ".png";
 		}
 		return name + "_0.png";

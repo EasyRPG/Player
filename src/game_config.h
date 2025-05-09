@@ -105,7 +105,7 @@ struct Game_ConfigPlayer {
 	BoolConfigParam lang_select_in_title{ "Show language menu on title screen", "Display language menu item on the title screen", "Player", "LanguageInTitle", true };
 	BoolConfigParam log_enabled{ "Logging", "Write diagnostic messages into a logfile", "Player", "Logging", true };
 	RangeConfigParam<int> screenshot_scale { "Screenshot scaling factor", "Scale screenshots by the given factor", "Player", "ScreenshotScale", 1, 1, 24};
-	BoolConfigParam screenshot_timestamp{ "Screenshot timestamp", "Add the current date and time to the file name", "Player", "ScreenshotTimestamp", false };
+	BoolConfigParam screenshot_timestamp{ "Screenshot timestamp", "Add the current date and time to the file name", "Player", "ScreenshotTimestamp", true };
 	BoolConfigParam automatic_screenshots{ "Automatic screenshots", "Periodically take screenshots", "Player", "AutomaticScreenshots", false };
 	RangeConfigParam<int> automatic_screenshots_interval{ "Screenshot interval", "The interval between automatic screenshots (seconds)", "Player", "AutomaticScreenshotsInterval", 30, 1, 999999 };
 
