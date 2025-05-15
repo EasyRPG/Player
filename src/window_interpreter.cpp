@@ -315,7 +315,7 @@ void Window_Interpreter::UiSubActionLine::Update(Window_Selectable& parent) {
 		i++;
 
 		while (i != this->index) {
-			if (i >= actions.size())
+			if (i >= static_cast<int>(actions.size()))
 				i = 0;
 			if (visibility_delegates[i]())
 				break;
@@ -363,7 +363,7 @@ namespace {
 void Window_Interpreter::UiSubActionLine::Draw(BitmapRef contents, Rect rect) const {
 	int offset_x = 0;
 
-	for (int i = 0; i < this->actions.size(); i++) {
+	for (int i = 0; i < static_cast<int>(this->actions.size()); i++) {
 		if (!visibility_delegates[i]())
 			continue;
 		TextDrawUnderlined(contents, rect.x + offset_x, rect.y, colors[i], texts[i]);
@@ -391,7 +391,6 @@ void Window_Interpreter::DrawRuntimeFlagsWindow() const {
 
 	int i = 0;
 	for (auto info : runtime_flags) {
-		using Flags = lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags;
 		auto flag = Game_Interpreter_Shared::GetRuntimeFlag(state, info.field_on, info.field_off);;
 		if (!flag) {
 			continue;
