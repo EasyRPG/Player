@@ -136,7 +136,6 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
-	lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags* active_interpreter_flags = nullptr;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif

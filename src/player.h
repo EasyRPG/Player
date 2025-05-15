@@ -443,7 +443,8 @@ namespace Player {
 #endif
 
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
-	extern lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags* active_interpreter_flags;
+	inline lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags interpreter_default_flags{};
+	inline lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags* active_interpreter_flags = &interpreter_default_flags;
 
 	std::optional<bool> GetRuntimeFlag(Game_Interpreter_Shared::StateRuntimeFlagRef field_on, Game_Interpreter_Shared::StateRuntimeFlagRef field_off);
 #endif
@@ -570,9 +571,9 @@ inline bool Player::HasEasyRpgExtensions() {
 }
 
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
-
 inline std::optional<bool> Player::GetRuntimeFlag(Game_Interpreter_Shared::StateRuntimeFlagRef field_on, Game_Interpreter_Shared::StateRuntimeFlagRef field_off) {
-	if (active_interpreter_flags) {
+	assert(active_interpreter_flags);
+	if (active_interpreter_flags->conf_override_active) {
 		return Game_Interpreter_Shared::GetRuntimeFlag(*active_interpreter_flags, field_on, field_off);
 	}
 	return std::nullopt;
