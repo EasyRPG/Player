@@ -385,7 +385,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 #ifdef ENABLE_DYNAMIC_INTERPRETER_CONFIG
 	Player::active_interpreter_flags = &_state.easyrpg_runtime_flags;
 	auto flags_guard = lcf::makeScopeGuard([]() {
-		Player::active_interpreter_flags = nullptr;
+		Player::active_interpreter_flags = &Player::interpreter_default_flags;
 	});
 #endif
 
