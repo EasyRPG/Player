@@ -72,12 +72,17 @@ void Emscripten_Interface::RefreshScene() {
 	Scene::instance->Refresh();
 }
 
-void Emscripten_Interface::TakeScreenshot() {
+void Emscripten_Interface::TakeScreenshot(bool is_auto_screenshot) {
 	static int index = 0;
 	std::ostringstream os;
 	Output::TakeScreenshot(os);
 	std::string screenshot = os.str();
-	std::string filename = "screenshot_" + std::to_string(index++) + ".png";
+	std::string filename = Output::GetScreenshotName(is_auto_screenshot);
+	if (!Player::player_config.screenshot_timestamp.Get()) {
+		filename += "_" + std::to_string(index++) + ".png";
+	} else {
+		filename += ".png";
+	}
 	EM_ASM_ARGS({
 		Module.api_private.download_js($0, $1, $2);
 	}, screenshot.data(), screenshot.size(), filename.c_str());

@@ -63,6 +63,9 @@ void Game_ConfigPlayer::Hide() {
 	font2.SetOptionVisible(false);
 	font2_size.SetOptionVisible(false);
 #endif
+	if (automatic_screenshots.IsOptionVisible()) {
+		automatic_screenshots_interval.SetLocked(!automatic_screenshots.Get());
+	}
 }
 
 void Game_ConfigVideo::Hide() {
@@ -673,6 +676,9 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.font2_size.FromIni(ini);
 	player.log_enabled.FromIni(ini);
 	player.screenshot_scale.FromIni(ini);
+	player.screenshot_timestamp.FromIni(ini);
+	player.automatic_screenshots.FromIni(ini);
+	player.automatic_screenshots_interval.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -762,6 +768,9 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.font2_size.ToIni(os);
 	player.log_enabled.ToIni(os);
 	player.screenshot_scale.ToIni(os);
+	player.screenshot_timestamp.ToIni(os);
+	player.automatic_screenshots.ToIni(os);
+	player.automatic_screenshots_interval.ToIni(os);
 
 	os << "\n";
 }
