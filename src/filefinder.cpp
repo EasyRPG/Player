@@ -424,6 +424,13 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string find_generic_with_fallback(DirectoryTree::Args& args) {
+	if (!Tr::GetCurrentTranslationId().empty()) {
+		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
+		auto translated_file = tr_fs.FindFile(args);
+		if (!translated_file.empty()) {
+			return translated_file;
+		}
+	}
 	std::string found = FileFinder::Save().FindFile(args);
 	if (found.empty()) {
 		return find_generic(args);
@@ -478,6 +485,14 @@ Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_vi
 }
 
 Filesystem_Stream::InputStream open_generic_with_fallback(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
+	if (!Tr::GetCurrentTranslationId().empty()) {
+		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
+		auto is = tr_fs.OpenFile(args);
+		if (is) {
+			return is;
+		}
+	}
+
 	auto is = FileFinder::Save().OpenFile(args);
 	if (!is) { is = open_generic(dir, name, args); }
 	if (!is) {
