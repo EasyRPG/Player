@@ -85,7 +85,7 @@ public:
 	 * Returns the interpreters current state information.
 	 * For saving state into a save file, use GetSaveState instead.
 	 */
-	const lcf::rpg::SaveEventExecState& GetState() const;
+	const lcf::rpg::SaveEventExecState& GetState() const override;
 
 	/**
 	 * Returns a SaveEventExecState needed for the savefile.
@@ -309,6 +309,9 @@ protected:
 
 	void ForegroundTextPush(PendingMessage pm);
 	void EndEventProcessing();
+
+	std::optional<bool> HandleDynRpgScript(const lcf::rpg::EventCommand& com);
+	std::optional<bool> HandleDestinyScript(const lcf::rpg::EventCommand& com);
 
 	FileRequestBinding request_id;
 	enum class Keys {
