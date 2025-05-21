@@ -3,7 +3,9 @@ package org.easyrpg.player;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.easyrpg.player.settings.SettingsManager;
 
 /**
@@ -11,6 +13,7 @@ import org.easyrpg.player.settings.SettingsManager;
  */
 public class BaseActivity extends AppCompatActivity {
     public static Boolean libraryLoaded = false;
+    protected OnBackPressedCallback onBackPressedCallback = null;
 
     private static void loadNativeLibraries() {
         if (!libraryLoaded) {
@@ -44,5 +47,18 @@ public class BaseActivity extends AppCompatActivity {
         SettingsManager.init(getApplicationContext());
 
         loadNativeLibraries();
+
+        // Handle pressing of back button on newer Android 35+
+        onBackPressedCallback = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                backPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+    }
+
+    public void backPressed() {
+        // no-op, to be overwritten
     }
 }

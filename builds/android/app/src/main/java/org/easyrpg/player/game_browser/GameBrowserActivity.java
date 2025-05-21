@@ -72,6 +72,8 @@ public class GameBrowserActivity extends BaseActivity
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        onBackPressedCallback.setEnabled(true);
     }
 
     @Override
@@ -93,14 +95,13 @@ public class GameBrowserActivity extends BaseActivity
         scanGamesAndDisplayResult(false);
     }
 
-    @Override
-    public void onBackPressed() {
+    public void backPressed() {
         // Open the lateral menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            drawer.openDrawer(GravityCompat.START);
         }
     }
 
