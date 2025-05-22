@@ -50,22 +50,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Hashtable;
 import java.util.Locale;
 
 // EasyRPG additions
 import org.easyrpg.player.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
     SDL Activity
 */
+// EasyRPG modification: extends AppCompatActivity
 public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVisibilityChangeListener {
     private static final String TAG = "SDL";
     private static final int SDL_MAJOR_VERSION = 2;
     private static final int SDL_MINOR_VERSION = 32;
-    private static final int SDL_MICRO_VERSION = 2;
+    private static final int SDL_MICRO_VERSION = 6;
 /*
     // Display InputType.SOURCE/CLASS of events and devices
     //
