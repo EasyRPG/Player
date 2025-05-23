@@ -220,6 +220,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_vehicle.h
 	src/game_windows.cpp
 	src/game_windows.h
+	src/generated/bitmapfont_baekmuk.h
 	src/generated/bitmapfont_rmg2000.h
 	src/generated/bitmapfont_ttyp0.h
 	src/generated/bitmapfont_wqy.h
@@ -1161,6 +1162,18 @@ if(PLAYER_HAS_AUDIO)
 			src/decoder_drwav.h
 			src/external/dr_wav.h)
 	endif()
+endif()
+
+# Fonts
+option(PLAYER_WITH_BAEKMUK "Enable built-in Baekmuk font (Korean)" ON)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WQY "Enable built-in WenQuanYi font (Chinese)" ON "NOT PLAYER_NONFREE" OFF)
+
+if(PLAYER_WITH_BAEKMUK)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FONT_BAEKMUK=1)
+endif()
+
+if(PLAYER_WITH_WQY)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FONT_WQY=1)
 endif()
 
 # Executable

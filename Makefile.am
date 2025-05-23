@@ -192,6 +192,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_vehicle.h \
 	src/game_windows.cpp \
 	src/game_windows.h \
+	src/generated/bitmapfont_baekmuk.h \
 	src/generated/bitmapfont_rmg2000.h \
 	src/generated/bitmapfont_ttyp0.h \
 	src/generated/bitmapfont_wqy.h \
