@@ -20,6 +20,7 @@
 
 // Headers
 #include <vector>
+#include "game_interpreter_debug.h"
 #include "scene.h"
 #include "window_command.h"
 #include "window_numberinput.h"
@@ -190,13 +191,9 @@ private:
 	bool interpreter_states_cached = false;
 
 	void UpdateInterpreterWindow(int index);
-	lcf::rpg::SaveEventExecFrame& GetSelectedInterpreterFrameFromUiState() const;
-	void CacheBackgroundInterpreterStates();
+	lcf::rpg::SaveEventExecFrame const& GetSelectedInterpreterFrameFromUiState() const;
 	struct {
-		std::vector<int> ev;
-		std::vector<int> ce;
-		std::vector<lcf::rpg::SaveEventExecState> state_ev;
-		std::vector<lcf::rpg::SaveEventExecState> state_ce;
+		Debug::ParallelInterpreterStates background_states;
 
 		// Frame-scoped data types introduced in 'ScopedVars' branch
 		// bool show_frame_switches = false;
