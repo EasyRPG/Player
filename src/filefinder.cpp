@@ -424,13 +424,14 @@ std::string find_generic(const DirectoryTree::Args& args) {
 }
 
 std::string find_generic_with_fallback(DirectoryTree::Args& args) {
-	if (!Tr::GetCurrentTranslationId().empty()) {
-		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
-		auto translated_file = tr_fs.FindFile(args);
-		if (!translated_file.empty()) {
-			return translated_file;
-		}
+	// Searches first in the Save directory (because the game could have written
+	// files there, then in the Game directory.
+	// Disable this behaviour when Game and Save are shared as this breaks the
+	// translation redirection.
+	if (Player::shared_game_and_save_directory) {
+		return find_generic(args);
 	}
+
 	std::string found = FileFinder::Save().FindFile(args);
 	if (found.empty()) {
 		return find_generic(args);
