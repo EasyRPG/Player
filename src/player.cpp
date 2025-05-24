@@ -123,6 +123,7 @@ namespace Player {
 	uint32_t escape_char;
 	std::string game_title;
 	std::string game_title_original;
+	bool shared_game_and_save_directory = false;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	std::string startup_language;
@@ -716,7 +717,9 @@ void Player::CreateGameObjects() {
 
 	std::string game_path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
 	std::string save_path = FileFinder::GetFullFilesystemPath(FileFinder::Save());
-	if (game_path == save_path) {
+	shared_game_and_save_directory = (game_path == save_path);
+
+	if (shared_game_and_save_directory) {
 		Output::DebugStr("Game and Save Directory:");
 		FileFinder::DumpFilesystem(FileFinder::Game());
 	} else {
