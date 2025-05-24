@@ -136,7 +136,6 @@ public:
 
 	void Start() override;
 	void vUpdate() override;
-	void OnPartyChanged(Game_Actor* actor, bool add) override;
 
 protected:
 	bool UpdateBattleState();
