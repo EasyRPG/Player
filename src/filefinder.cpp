@@ -460,11 +460,6 @@ std::string FileFinder::FindFont(std::string_view name) {
 	return find_generic(args);
 }
 
-std::string FileFinder::FindText(std::string_view name) {
-	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, true };
-	return find_generic_with_fallback(args);
-}
-
 Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
