@@ -422,14 +422,6 @@ namespace Player {
 	extern Translation translation;
 
 	/**
-	 * The default speed modifier applied when the speed up button is pressed
-	 *  Only used for configuring the speedup, don't read this var directly use
-	 *  GetSpeedModifier() instead.
-	 */
-	extern int speed_modifier_a;
-	extern int speed_modifier_b;
-
-	/**
 	 * The engine game logic configuration
 	 */
 	extern Game_ConfigPlayer player_config;
