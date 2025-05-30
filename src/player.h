@@ -409,6 +409,9 @@ namespace Player {
 	/** Original game title, in case it was overriden by a translation. */
 	extern std::string game_title_original;
 
+	/** Indicates whether FileFinder::Game() and Save() point to the same directory. */
+	extern bool shared_game_and_save_directory;
+
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
 

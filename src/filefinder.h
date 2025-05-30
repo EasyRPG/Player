@@ -164,14 +164,6 @@ namespace FileFinder {
 	std::string FindFont(std::string_view name);
 
 	/**
-	 * Finds a text file in the current RPG Maker game.
-	 *
-	 * @param name the text path and name.
-	 * @return path to file.
-	 */
-	std::string FindText(std::string_view name);
-
-	/**
 	 * Finds an image file and opens a file handle to it.
 	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
