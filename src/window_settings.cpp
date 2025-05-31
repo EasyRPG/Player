@@ -628,8 +628,8 @@ void Window_Settings::RefreshInput() {
 	AddOption(cfg.gamepad_swap_ab_and_xy, [&cfg](){ cfg.gamepad_swap_ab_and_xy.Toggle(); Input::ResetTriggerKeys(); });
 	AddOption(cfg.gamepad_swap_analog, [&cfg](){ cfg.gamepad_swap_analog.Toggle(); Input::ResetTriggerKeys(); });
 	AddOption(cfg.gamepad_swap_dpad_with_buttons, [&cfg](){ cfg.gamepad_swap_dpad_with_buttons.Toggle(); Input::ResetTriggerKeys(); });
-	AddOption(cfg.speed_modifier_a, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_a = tmp; cfg.speed_modifier_a.Set(tmp); });
-	AddOption(cfg.speed_modifier_b, [this, &cfg](){ auto tmp = GetCurrentOption().current_value; Player::speed_modifier_b = tmp; cfg.speed_modifier_b.Set(tmp); });
+	AddOption(cfg.speed_modifier_a, [this, &cfg](){ cfg.speed_modifier_a.Set(GetCurrentOption().current_value); });
+	AddOption(cfg.speed_modifier_b, [this, &cfg](){ cfg.speed_modifier_b.Set(GetCurrentOption().current_value); });
 }
 
 void Window_Settings::RefreshButtonCategory() {
