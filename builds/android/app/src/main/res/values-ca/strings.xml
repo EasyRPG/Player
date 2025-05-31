@@ -168,4 +168,5 @@
     <string name="font">Tipus de lletra</string>
     <string name="open_save_folder">Obre carpeta de desar el joc</string>
     <string name="rtp_found">RTP $YEAR trobat: $NAME ($FOUND de $MAX recursos trobats)</string>
+    <string name="fullscreen_mode">Pantalla completa</string>
 </resources>

@@ -71,7 +71,7 @@
 \nPokud tuto aplikaci používáte poprvé, není k dispozici žádná složka EasyRPG. Vytvořte novou složku EasyRPG a poté ji vyberte.
 \n
 \nPokud jste tuto aplikaci používali již dříve, vyberte stávající složku EasyRPG.</string>
-    <string name="open_rtp_folder">Otevřít složku \"rtp\"</string>
+    <string name="open_rtp_folder">Otevřít složku „rtp“</string>
     <string name="easyrpg_folders">Složky EasyRPG</string>
     <string name="settings_resolution_desc">Změna rozlišení může způsobit grafické chyby nebo rozbít hru. Byli jste varováni!</string>
     <string name="edit_layout">Upravit rozhraní</string>
@@ -143,4 +143,6 @@
     <string name="settings_input_show_ab_as_zx">Zobrazit tlačítka A a B jako Z a X</string>
     <string name="view">Zobrazit</string>
     <string name="unsupported_engine_card">$ENGINE není podporovaný</string>
+    <string name="unsupported_engine_title">Nepodporovaný engine</string>
+    <string name="open_save_folder">Otevřít složku s uloženými hrami</string>
 </resources>

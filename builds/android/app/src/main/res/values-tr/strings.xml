@@ -142,4 +142,5 @@
     <string name="audio">Ses</string>
     <string name="change_the_layout">Düzeni değiştir</string>
     <string name="rtp_found">RTP $YEAR bulundu: $NAME ($MAX varlıktan $FOUND varlık bulundu)</string>
+    <string name="fullscreen_mode">Tam Ekran</string>
 </resources>

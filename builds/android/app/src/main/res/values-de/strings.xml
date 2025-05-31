@@ -161,4 +161,5 @@
     <string name="unsupported_engine_title">Nicht unterstützte Engine</string>
     <string name="open_save_folder">Ordner mit Spielständen öffnen</string>
     <string name="unsupported_engine_explanation">Dieses Spiel wurde mit $ENGINE erstellt und kann daher nicht von EasyRPG Player ausgeführt werden.\n\nEasyRPG Player unterstützt nur Spiele, die mit RPG Maker 2000 oder 2003 erstellt wurden. Eine Unterstützung für weitere Engines ist nicht geplant.\n\nBitte suche im Play Store nach einer alternativen Software, um dieses Spiel auszuführen.</string>
+    <string name="fullscreen_mode">Vollbild</string>
 </resources>
