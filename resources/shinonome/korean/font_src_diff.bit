@@ -1,4 +1,4 @@
-COMMENT This font is based on Bakemuk Gulim as downloaded here:
+COMMENT This font is based on Baekmuk Gulim as downloaded here:
 COMMENT http://koji.fedoraproject.org/koji/buildinfo?buildID=523096
 COMMENT
 COMMENT The original comment is as follows:
@@ -17,20 +17,20 @@ COMMENT
 COMMENT Baekmuk license is as follows:
 COMMENT ----
 COMMENT (c) Copyright 1986-2000, Hwan Design Inc.
-COMMENT 
+COMMENT
 COMMENT You are hereby granted permission under all Hwan Design propriety rights
 COMMENT to use, copy, modify, sublicense, sell, and redistribute the 4 Baekmuk
 COMMENT truetype outline fonts for any purpose and without restriction;
 COMMENT provided, that this notice is left intact on all copies of such fonts
 COMMENT and that Hwan Design Int.'s trademark is acknowledged as shown below
 COMMENT on all copies of the 4 Baekmuk truetype fonts.
-COMMENT 
+COMMENT
 COMMENT BAEKMUK BATANG is a registered trademark of Hwan Design Inc.
 COMMENT BAEKMUK GULIM is a registered trademark of Hwan Design Inc.
 COMMENT BAEKMUK DOTUM is a registered trademark of Hwan Design Inc.
 COMMENT BAEKMUK HEADLINE is a registered trademark of Hwan Design Inc.
 COMMENT ----
-COMMENT 
+COMMENT
 # K+2121/ U+3000 skipped as it is already in Shinonome
 # K+2122/ U+3001 skipped as it is already in Shinonome
 # K+2123/ U+3002 skipped as it is already in Shinonome
