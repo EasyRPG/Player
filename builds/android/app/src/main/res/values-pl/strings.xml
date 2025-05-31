@@ -155,4 +155,5 @@
     <string name="font">Czcionka</string>
     <string name="open_save_folder">Otwórz folder zapisów gry</string>
     <string name="rtp_found">Znaleziono RTP $YEAR: $NAME ($FOUND z $MAX zasobów)</string>
+    <string name="fullscreen_mode">Pełny ekran</string>
 </resources>
