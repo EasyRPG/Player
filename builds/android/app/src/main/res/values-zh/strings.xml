@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--GameBrowser Activity-->
-    <string name="autodetect">自动检测语言(推荐)</string>
+    <string name="autodetect">自动检测语言（推荐）</string>
     <string name="west_europe">西欧</string>
     <string name="east_europe">中欧/东欧</string>
     <string name="cyrillic">西里尔</string>
@@ -23,11 +23,11 @@
     <string name="no">取消</string>
     <string name="creating_dir_failed">创建 $PATH 目录失败</string>
     <string name="path_not_readable">无法读取 $PATH</string>
-    <string name="no_external_storage">没有找到外部存储设备(如 SD 卡)</string>
+    <string name="no_external_storage">没有找到外部存储设备（如 SD 卡）</string>
     <string name="not_valid_game">$PATH 不是有效的游戏</string>
     <string name="select_game_region">选择游戏语言</string>
     <string name="change_the_layout">更改按键布局</string>
-    <string name="choose_layout">选择一个布局</string>
+    <string name="choose_layout">选择布局</string>
     <string name="unknown_region">未知语言</string>
     <string name="region_modification_failed">修改语言失败</string>
     <string name="refresh">刷新</string>
@@ -37,7 +37,7 @@
     <string name="toggle_ui">显示/隐藏虚拟按钮</string>
     <string name="end_game">退出游戏</string>
     <string name="report_bug">报告错误</string>
-    <string name="report_bug_msg">此选项将打开您的电子邮件应用(如 Gmail)来向我们发送错误报告。 \n \n如果您不想发送邮件或者没有安装电子邮件应用，可以在 https://github.com/EasyRPG/Player/issues 创建一个新的 Issue。</string>
+    <string name="report_bug_msg">此选项将打开您的电子邮件应用（如 Gmail）来向我们发送错误报告。 \n \n如果您不想发送邮件或者没有安装电子邮件应用，可以在 https://github.com/EasyRPG/Player/issues 创建一个新的 Issue。</string>
     <string name="report_bug_mail">感谢您对 EasyRPG Player 的支持。\n这封电子邮件附带了日志文件和您的游戏存档。\n请不要删除日志文件！我们需要一个能复现错误的游戏存档。\n请详细告诉我们出了什么问题。</string>
     <!--Settings Activities-->
     <string name="video">视频</string>
@@ -64,7 +64,7 @@
     <string name="save_and_quit">保存并退出</string>
     <string name="key_enter">决定键 (Enter 或 Z)</string>
     <string name="key_cancel">取消键 (ESC 或 X)</string>
-    <string name="key_shift">Shift键</string>
+    <string name="key_shift">Shift 键</string>
     <string name="key_fast_forward">快进</string>
     <!--GameBrowserAPI15-->
     <string name="navigation_drawer_open">打开侧边栏</string>
@@ -79,7 +79,7 @@
     <string name="open_the_sound_fonts_folder">打开 \"soundfonts\" 文件夹</string>
     <string name="select_the_games_folder">选择 EasyRPG 文件夹</string>
     <string name="id_select_games_folder_explanation">EasyRPG Player 需要一个专用文件夹。点击按钮后，系统会要求您选择一个文件夹。\n\n如果您是第一次使用此应用，请创建一个新文件夹并选中，用作 EasyRPG 文件夹。\n\n如果您以前使用过此应用，请选择现有的 EasyRPG 文件夹。</string>
-    <string name="Loading">加载中……</string>
+    <string name="Loading">加载中…</string>
     <string name="enable_rtp_support">启用 RTP 支持</string>
     <string name="rtp_explanation">RTP 提供某些游戏使用到的共享素材。 \n将 RPG Maker 2000 RTP 放入路径 \"rtp/2000\" ，将 RPG Maker 2003 RTP 放入路径 \"rtp/2003\" 。 \n请注意，启用 RTP 支持将显著增加游戏的初始加载时间。</string>
     <string name="open_rtp_folder">打开 \"rtp\" 文件夹</string>
@@ -94,16 +94,16 @@
     <string name="settings_resolution_desc">警告！更改分辨率可能会导致图像故障甚至游戏损坏！</string>
     <string name="settings_resolution_original">原始（320x240，4:3，推荐）</string>
     <string name="no_games_found_and_explanation_android_30">没有找到 RPG Maker 2000/2003 游戏。\n\n您选择的 EasyRPG 文件夹中包含一个 \"games\" 文件夹。使用文件管理器将您的游戏放入此文件夹中。 \n游戏可以放在子文件夹或者 ZIP/LZH 格式的压缩包中。 \n\nEasyRPG 文件夹可以在设置中更改。</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">将您的 RPG Maker 2000/2003 游戏放在 \"games\" 文件夹中。\n游戏必须解压缩或者保存在ZIP/LZH格式的压缩包中。\n不支持 RAR、7z 和 EXE 文件。\n\n可选功能（请前往设置）：\n-RTP 支持（某些游戏使用到的共享素材）\n-自定义 Soundfont ，用于更改 MIDI 音乐的音色</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">将您的 RPG Maker 2000/2003 游戏放在 \"games\" 文件夹中。\n游戏必须解压缩或者保存在 ZIP/LZH 格式的压缩包中。\n不支持 RAR、7z 和 EXE 文件。\n\n可选功能（请前往设置）：\n- RTP 支持（某些游戏使用到的共享素材）\n- 自定义 Soundfont ，用于更改 MIDI 音乐的音色</string>
     <string name="settings_soundfont_explanation">将 SF2 格式的 Sounfont 文件放在 \"soundfonts\" 文件夹中，用于更改 MIDI 音乐的音色。</string>
     <string name="settings_soundfont_found">使用的 Soundfont：</string>
     <string name="settings_default_soundfont">默认 Soundfont</string>
     <string name="horizontal_input_layout">横屏按键布局</string>
     <string name="vertical_input_layout">竖屏按键布局</string>
-    <string name="settings_edit_layout_explanation">编辑按键布局时，可以添加按钮（如 Shift）。 \n要添加按钮，请先按返回键，然后选择添加。</string>
-    <string name="scale_nearest">按屏幕大小缩放（速度快、质量差）</string>
-    <string name="scale_integer">按游戏分辨率缩放（速度快、图像更小、质量好）</string>
-    <string name="scale_bilinear">按屏幕大小缩放并使用双线性滤波器（速度慢、质量好）</string>
+    <string name="settings_edit_layout_explanation">编辑按键布局时，可以添加按钮（如 Shift 键）。 \n要添加按钮，请先按返回键，然后选择“添加按钮”。</string>
+    <string name="scale_nearest">按屏幕大小缩放（速度快，质量差）</string>
+    <string name="scale_integer">按游戏分辨率缩放（速度快，图像更小，质量好）</string>
+    <string name="scale_bilinear">按屏幕大小缩放并使用双线性滤波器（速度慢，质量好）</string>
     <string name="stretch">忽略长宽比（拉伸到全屏）</string>
     <string name="error_no_games_folder">\"games\" 文件夹不存在或者不是一个文件夹。请手动创建 \"games\" 文件夹或者选择其他位置作为 EasyRPG 文件夹。EasyRPG 文件夹可以在设置中更改。</string>
     <string name="settings_resolution_widescreen">宽屏（416x240，16:9，实验性）</string>
@@ -138,8 +138,9 @@
     <string name="unsupported_engine_explanation">此游戏无法使用 EasyRPG Player 运行，因为它是使用 $ENGINE 制作的。\n\nEasyRPG Player 仅支持使用 RPG Maker 2000/2003 制作的游戏，并且没有支持其他引擎的计划。\n\n对于能够运行此游戏的应用，请前往应用商店搜索。</string>
     <string name="unsupported_engine_title">不支持的引擎</string>
     <string name="settings_fonts_size_explanation">使用内置字体或者某些点阵字体时，字体大小设置无效。</string>
-    <string name="rtp_not_found">未找到 RTP $YEAR。需要此 RTP 的游戏将缺少必要文件。</string>
+    <string name="rtp_not_found">没有找到 RTP $YEAR。需要此 RTP 的游戏将缺少素材。</string>
     <string name="font">字体</string>
     <string name="open_save_folder">打开存档文件夹</string>
-    <string name="rtp_found">RTP $YEAR 已找到：$NAME（已找到 $MAX 中的 $FOUND）</string>
+    <string name="rtp_found">RTP $YEAR 已找到：$NAME（总共 $MAX 个素材，已找到 $FOUND 个）</string>
+    <string name="fullscreen_mode">全屏</string>
 </resources>
