@@ -98,4 +98,5 @@
     <string name="launch_debug_mode">デバッグモードで起動</string>
     <string name="error_no_games_folder">\" games \"フォルダが存在しないか、フォルダになっていません。手動で作成するか、\" EasyRPG \"フォルダの別の場所を選択してください。\" EasyRPG \"フォルダは設定で変更できます。</string>
     <string name="error_games_no_rw">\" games \"フォルダが読み書きできません。\" EasyRPG \"フォルダは別の場所を選択してください。\" EasyRPG \"フォルダは設定で変更できます。</string>
+    <string name="revert">Revert</string>
 </resources>
