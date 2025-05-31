@@ -29,7 +29,7 @@
 	#define EP_VERSION_MAJOR 0
 	#define EP_VERSION_MINOR 8
 	#define EP_VERSION_PATCH 1
-	#define EP_VERSION_TWEAK 0
+	#define EP_VERSION_TWEAK 1
 
 	// concatenate short version string
 	#define _VER1 TO_STRING(EP_VERSION_MAJOR) "." TO_STRING(EP_VERSION_MINOR)
