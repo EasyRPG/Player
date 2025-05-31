@@ -685,7 +685,8 @@ Game_Config Player::ParseCommandLine() {
 void Player::CreateGameObjects() {
 	// Parse game specific settings
 	CmdlineParser cp(arguments);
-	game_config = Game_ConfigGame::Create(cp);
+	game_config = Game_ConfigGame();
+	game_config.Initialize(cp);
 
 	// Reinit MIDI
 	MidiDecoder::Reset();
@@ -837,6 +838,11 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
 			game_config.patch_destiny.Set(true);
 		}
+
+		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
+			game_config.patch_powermode.Set(true);
+		}
+
 	}
 
 	game_config.PrintActivePatches();
@@ -962,6 +968,8 @@ void Player::ResetGameObjects() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	Main_Data::game_system->ReloadSystemGraphic();
+
+	RuntimePatches::OnResetGameObjects();
 
 	Input::ResetMask();
 }
@@ -1220,6 +1228,7 @@ void Player::LoadSavegame(const std::string& save_name, int save_id) {
 			Game_Map::Dispose();
 
 			OnMapSaveFileReady(request, std::move(save));
+			RuntimePatches::OnLoadSavegame();
 
 			if (load_on_map) {
 				// Increment frame counter for consistency with a normal savegame load
@@ -1463,6 +1472,8 @@ Engine options:
  --patch-direct-menu VAR
                       Directly access subscreens of the default menu by setting
                       VAR.
+ --patch-encounter-alert VAR
+                      Set troop id to variable VAR and skip random battles.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
@@ -1474,6 +1485,7 @@ Engine options:
                       version of the engine.
  --patch-rpg2k3-cmds  Support all RPG Maker 2003 event commands in any version
                       of the engine.
+ --patch-powermode    Enable PowerMode 2003 Patch by Firesta.
  --no-patch           Disable all engine patches. To disable a single patch,
                       prefix any of the patch options with --no-
  --project-path PATH  Instead of using the working directory, the game in PATH
