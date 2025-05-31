@@ -67,6 +67,16 @@
 	</content_rating>
 
 	<releases>
+		<release version="0.8.1.1" date="2025-06-01">
+			<description>
+				<p>
+					"Stun - Patch 1"
+				</p>
+				<p>
+					https://blog.easyrpg.org/2025/06/easyrpg-player-0-8-1-1-stun-patch-1/
+				</p>
+			</description>
+		</release>
 		<release version="0.8.1" date="2025-04-07">
 			<description>
 				<p>

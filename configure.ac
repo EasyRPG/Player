@@ -7,7 +7,7 @@ AC_PREREQ([2.69])
 m4_define([ep_version_major], [0])
 m4_define([ep_version_minor], [8])
 m4_define([ep_version_patch], [1])
-m4_define([ep_version_tweak], [0])
+m4_define([ep_version_tweak], [1])
 m4_define([ep_version], [ep_version_major.ep_version_minor])
 m4_append([ep_version], m4_if(ep_version_tweak, 0,
 		m4_if(ep_version_patch, 0,, [.ep_version_patch]),

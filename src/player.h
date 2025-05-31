@@ -409,6 +409,9 @@ namespace Player {
 	/** Original game title, in case it was overriden by a translation. */
 	extern std::string game_title_original;
 
+	/** Indicates whether FileFinder::Game() and Save() point to the same directory. */
+	extern bool shared_game_and_save_directory;
+
 	/** Meta class containing additional external data for this game. */
 	extern std::shared_ptr<Meta> meta;
 
@@ -420,14 +423,6 @@ namespace Player {
 
 	/** Translation manager, including list of languages and current translation. */
 	extern Translation translation;
-
-	/**
-	 * The default speed modifier applied when the speed up button is pressed
-	 *  Only used for configuring the speedup, don't read this var directly use
-	 *  GetSpeedModifier() instead.
-	 */
-	extern int speed_modifier_a;
-	extern int speed_modifier_b;
 
 	/**
 	 * The engine game logic configuration

@@ -123,6 +123,7 @@ namespace Player {
 	uint32_t escape_char;
 	std::string game_title;
 	std::string game_title_original;
+	bool shared_game_and_save_directory = false;
 	std::shared_ptr<Meta> meta;
 	FileExtGuesser::RPG2KFileExtRemap fileext_map;
 	std::string startup_language;
@@ -131,8 +132,6 @@ namespace Player {
 	std::string replay_input_path;
 	std::string record_input_path;
 	std::string command_line;
-	int speed_modifier_a;
-	int speed_modifier_b;
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
@@ -203,8 +202,6 @@ void Player::Init(std::vector<std::string> args) {
 	Input::AddRecordingData(Input::RecordingData::CommandLine, command_line);
 
 	player_config = std::move(cfg.player);
-	speed_modifier_a = cfg.input.speed_modifier_a.Get();
-	speed_modifier_b = cfg.input.speed_modifier_b.Get();
 
 	last_auto_screenshot = Game_Clock::now();
 }
@@ -325,10 +322,10 @@ void Player::UpdateInput() {
 	}
 	float speed = 1.0;
 	if (Input::IsSystemPressed(Input::FAST_FORWARD_A)) {
-		speed = speed_modifier_a;
+		speed = Input::GetInputSource()->GetConfig().speed_modifier_a.Get();
 	}
 	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
-		speed = speed_modifier_b;
+		speed = Input::GetInputSource()->GetConfig().speed_modifier_b.Get();
 	}
 	Game_Clock::SetGameSpeedFactor(speed);
 
@@ -716,7 +713,9 @@ void Player::CreateGameObjects() {
 
 	std::string game_path = FileFinder::GetFullFilesystemPath(FileFinder::Game());
 	std::string save_path = FileFinder::GetFullFilesystemPath(FileFinder::Save());
-	if (game_path == save_path) {
+	shared_game_and_save_directory = (game_path == save_path);
+
+	if (shared_game_and_save_directory) {
 		Output::DebugStr("Game and Save Directory:");
 		FileFinder::DumpFilesystem(FileFinder::Game());
 	} else {

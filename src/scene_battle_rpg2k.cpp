@@ -1224,6 +1224,12 @@ Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionAn
 }
 
 Scene_Battle_Rpg2k::BattleActionReturn Scene_Battle_Rpg2k::ProcessBattleActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
+	if (!action->IsCurrentTargetValid()) {
+		// FIXME: Pick a new target instead of ending the action
+		SetBattleActionState(BattleActionState_Finished);
+		return BattleActionReturn::eContinue;
+	}
+
 	action->Execute();
 	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
 			|| action->GetType() == Game_BattleAlgorithm::Type::Skill
