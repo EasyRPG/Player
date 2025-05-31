@@ -146,4 +146,5 @@
     <string name="stretch">A képarány figyelmen kívül hagyása (Nyújtás a képernyő szélességére)</string>
     <string name="error_no_games_folder">A játékok mappa (games) nem létezik, vagy nem mappa. Kérjük hozz létre egyet kézzel vagy válasz egy másik helyet az EasyRPG mappának. Az EasyRPG mappa módosítható a beállítások között.</string>
     <string name="rtp_found">RTP $YEAR megtalálva: $NAME ($FOUND/$MAX talált eszköz)</string>
+    <string name="fullscreen_mode">Teljes képernyő</string>
 </resources>
