@@ -168,4 +168,5 @@
     <string name="unsupported_engine_card">$ENGINE no es compatible</string>
     <string name="unsupported_engine_explanation">Este juego no se puede jugar en EasyRPG Player porque fue creado con $ENGINE.\n\nEasyRPG Player está diseñado para ser compatible únicamente con juegos de RPG Maker 2000 y 2003, y no hay planes de expandirse a otros motores.\n\nPara obtener software capaz de ejecutar este juego, consulta Play Store.</string>
     <string name="unsupported_engine_title">Motor no compatible</string>
+    <string name="fullscreen_mode">Pantalla Completa</string>
 </resources>
