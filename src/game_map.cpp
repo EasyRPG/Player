@@ -241,16 +241,20 @@ void Game_Map::SetupFromSave(
 
 	if (is_map_save_compat) {
 		std::vector<int> destroyed_event_ids;
-		for (size_t i = 0, j = 0; i < events.size();++i) {
+
+		for (size_t i = 0, j = 0; i < events.size() && j < map_info.events.size(); ++i) {
 			auto& ev = events[i];
 			auto& save_ev = map_info.events[j];
 			if (ev.GetId() == save_ev.ID) {
 				ev.SetSaveData(save_ev);
 				++j;
 			} else {
-				assert(save_ev.ID > ev.GetId());
-				// assume that the event has been destroyed during gameplay via "DestroyMapEvent"
-				destroyed_event_ids.emplace_back(ev.GetId());
+				if (save_ev.ID > ev.GetId()) {
+					// assume that the event has been destroyed during gameplay via "DestroyMapEvent"
+					destroyed_event_ids.emplace_back(ev.GetId());
+				} else {
+					Output::Debug("SetupFromSave: Unexpected ID {}/{}", save_ev.ID, ev.GetId());
+				}
 			}
 		}
 		for (size_t i = 0; i < destroyed_event_ids.size(); ++i) {
