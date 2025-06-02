@@ -259,32 +259,6 @@ namespace Game_Map {
 			int to_x, int to_y);
 
 	/**
-	 * Extended function behind MakeWay and CheckWay
-	 * that allows controlling exactly which events are
-	 * ignored in the collision, and whether events should
-	 * be prompted to make way with side effects (for MakeWay)
-	 * or not (for CheckWay).
-	 *
-	 * @param self See CheckWay or MakeWay.
-	 * @param from_x See CheckWay or MakeWay.
-	 * @param from_y See CheckWay or MakeWay.
-	 * @param to_x See CheckWay or MakeWay.
-	 * @param to_y See CheckWay or MakeWay.
-	 * @param check_events_and_vehicles whether to check
-	 * events, or only consider map collision.
-	 * @param make_way Whether to cause side effects.
-	 * @param ignore_some_events_by_id A set of
-	 * specific event IDs to ignore.
-	 * @return See CheckWay or MakeWay.
-	 */
-	 bool CheckOrMakeWayEx(const Game_Character& self,
-			int from_x, int from_y,
-			int to_x, int to_y,
-			bool check_events_and_vehicles,
-			Span<int> ignore_some_events_by_id,
-			bool make_way);
-
-	/**
 	 * Gets if possible to land the airship at (x,y)
 	 *
 	 * @param x tile x.

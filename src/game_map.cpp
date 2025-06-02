@@ -753,29 +753,26 @@ static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
 	return Game_Vehicle::None;
 }
 
-bool Game_Map::CheckWay(const Game_Character& self,
-		int from_x, int from_y,
-		int to_x, int to_y
-		)
-{
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, {}, false
-	);
-}
-
-bool Game_Map::CheckWay(const Game_Character& self,
-		int from_x, int from_y,
-		int to_x, int to_y,
-		bool check_events_and_vehicles,
-		Span<int> ignore_some_events_by_id) {
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y,
-		check_events_and_vehicles,
-		ignore_some_events_by_id, false
-	);
-}
-
-bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
+/**
+ * Extended function behind MakeWay and CheckWay
+ * that allows controlling exactly which events are
+ * ignored in the collision, and whether events should
+ * be prompted to make way with side effects (for MakeWay)
+ * or not (for CheckWay).
+ *
+ * @param self See CheckWay or MakeWay.
+ * @param from_x See CheckWay or MakeWay.
+ * @param from_y See CheckWay or MakeWay.
+ * @param to_x See CheckWay or MakeWay.
+ * @param to_y See CheckWay or MakeWay.
+ * @param check_events_and_vehicles whether to check
+ * events, or only consider map collision.
+ * @param make_way Whether to cause side effects.
+ * @param ignore_some_events_by_id A set of
+ * specific event IDs to ignore.
+ * @return See CheckWay or MakeWay.
+ */
+static bool ProcessWay(const Game_Character& self,
 		int from_x, int from_y,
 		int to_x, int to_y,
 		bool check_events_and_vehicles,
@@ -837,7 +834,7 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 			// inbounds after the first move.
 			from_x = Game_Map::RoundX(from_x);
 			from_y = Game_Map::RoundY(from_y);
-			if (!IsPassableTile(&self, bit_from, from_x, from_y)) {
+			if (!Game_Map::IsPassableTile(&self, bit_from, from_x, from_y)) {
 				return false;
 			}
 		}
@@ -845,13 +842,13 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 	if (vehicle_type != Game_Vehicle::Airship && check_events_and_vehicles) {
 		// Check for collision with events on the target tile.
 		if (ignore_some_events_by_id.empty()) {
-			for (auto& other: GetEvents()) {
+			for (auto& other: Game_Map::GetEvents()) {
 				if (CheckOrMakeCollideEvent(other)) {
 					return false;
 				}
 			}
 		} else {
-			for (auto& other: GetEvents()) {
+			for (auto& other: Game_Map::GetEvents()) {
 				if (std::find(ignore_some_events_by_id.begin(), ignore_some_events_by_id.end(), other.GetId()) != ignore_some_events_by_id.end())
 					continue;
 				if (CheckOrMakeCollideEvent(other)) {
@@ -886,9 +883,31 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
 	}
 
-	return IsPassableTile(
+	return Game_Map::IsPassableTile(
 		&self, bit, to_x, to_y, check_events_and_vehicles, true
 		);
+}
+
+bool Game_Map::CheckWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y
+)
+{
+	return ProcessWay(
+		self, from_x, from_y, to_x, to_y, true, {}, false
+	);
+}
+
+bool Game_Map::CheckWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y,
+	bool check_events_and_vehicles,
+	Span<int> ignore_some_events_by_id) {
+	return ProcessWay(
+		self, from_x, from_y, to_x, to_y,
+		check_events_and_vehicles,
+		ignore_some_events_by_id, false
+	);
 }
 
 bool Game_Map::MakeWay(const Game_Character& self,
@@ -896,7 +915,7 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	return CheckOrMakeWayEx(
+	return ProcessWay(
 		self, from_x, from_y, to_x, to_y, true, {}, true
 		);
 }
