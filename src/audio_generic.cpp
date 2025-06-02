@@ -329,9 +329,9 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 				if (currently_mixed_channel.stopped) {
 					currently_mixed_channel.decoder.reset();
 				} else {
-					currently_mixed_channel.decoder->Update(std::chrono::microseconds(1000 * 1000 / 60));
 					volume = current_master_volume * (currently_mixed_channel.decoder->GetVolume() / 100.0);
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
+					currently_mixed_channel.decoder->Update(std::chrono::milliseconds(samples_per_frame * 1000 / frequency));
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
 					total_volume += volume;
