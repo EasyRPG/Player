@@ -611,10 +611,14 @@ void Window_Settings::RefreshLicense() {
 #ifdef HAVE_NLOHMANN_JSON
 	AddOption(MenuItem("nlohmann_json", "Processing of JSON files", "MIT"), [](){});
 #endif
+#ifdef WANT_FONT_BAEKMUK
 	AddOption(MenuItem("Baekmuk", "Korean font family", "Baekmuk"), [](){});
+#endif
 	AddOption(MenuItem("Shinonome", "Japanese font family", "Public Domain"), [](){});
 	AddOption(MenuItem("ttyp0", "ttyp0 font family", "ttyp0"), [](){});
+#ifdef WANT_FONT_WQY
 	AddOption(MenuItem("WenQuanYi", "WenQuanYi font family (CJK)", "GPLv2+ with FE"), [](){});
+#endif
 #ifdef EMSCRIPTEN
 	AddOption(MenuItem("Teenyicons", "Tiny minimal 1px icons", "MIT"), [](){});
 #endif
