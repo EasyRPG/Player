@@ -50,11 +50,13 @@ void Plane::Draw(Bitmap& dst) {
 	int src_x = -ox - GetRenderOx();
 	int src_y = -oy - GetRenderOy();
 
+	int offset_x = 0;
+
 	// Apply screen shaking
 	const int shake_x = Main_Data::game_screen->GetShakeOffsetX();
 	const int shake_y = Main_Data::game_screen->GetShakeOffsetY();
 	if (Game_Map::LoopHorizontal()) {
-		src_x += shake_x;
+		offset_x = shake_x;
 	} else {
 		// The panorama occupies the same rectangle as the whole map.
 		// Using coordinates where the top-left of the screen is the origin...
@@ -83,10 +85,17 @@ void Plane::Draw(Bitmap& dst) {
 		dst_rect.width = bg_width;
 
 		// Correct the offset if the top-left corner moved.
-		src_x += shake_x + bg_x;
+		offset_x = shake_x + bg_x;
 	}
 	src_y += shake_y;
 
-	dst.TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
+	dst.TiledBlit(src_x + offset_x, src_y, source->GetRect(), *source, dst_rect, 255);
+	if (offset_x < 0) {
+		auto clear_rect = Rect(dst.GetRect().x, dst.GetRect().y, abs(offset_x), dst.GetRect().height);
+		dst.ClearRect(clear_rect);
+	} else if (offset_x > 0) {
+		auto clear_rect = Rect(dst.GetRect().width - offset_x, dst.GetRect().y, offset_x, dst.GetRect().height);
+		dst.ClearRect(clear_rect);
+	}
 }
 
