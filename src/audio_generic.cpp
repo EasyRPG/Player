@@ -332,9 +332,9 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 				if (currently_mixed_channel.stopped) {
 					currently_mixed_channel.decoder.reset();
 				} else {
-					std::tie(vleft, vright) = currently_mixed_channel.decoder->GetVolume();
-					vleft *= current_master_volume / 100.0f;
-					vright *= current_master_volume / 100.0f;
+					StereoVolume volume = currently_mixed_channel.decoder->GetVolume();
+					vleft = volume.left_volume / 100.0f * current_master_volume;
+					vright = volume.right_volume / 100.0f * current_master_volume;
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					currently_mixed_channel.decoder->Update(std::chrono::milliseconds(samples_per_frame * 1000 / frequency));
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
@@ -368,9 +368,9 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 				if (currently_mixed_channel.stopped) {
 					currently_mixed_channel.decoder.reset();
 				} else {
-					std::tie(vleft, vright) = currently_mixed_channel.decoder->GetVolume();
-					vleft *= current_master_volume / 100.0f;
-					vright *= current_master_volume / 100.0f;
+					StereoVolume volume = currently_mixed_channel.decoder->GetVolume();
+					vleft = volume.left_volume / 100.0f * current_master_volume;
+					vright = volume.right_volume / 100.0f * current_master_volume;
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 

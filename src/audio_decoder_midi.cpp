@@ -181,12 +181,12 @@ void AudioDecoderMidi::Resume() {
 	}
 }
 
-std::pair<int, int> AudioDecoderMidi::GetVolume() const {
+StereoVolume AudioDecoderMidi::GetVolume() const {
 	// When handled by Midi messages fake a 100 otherwise the volume is adjusted twice
 
 	if (!mididec->SupportsMidiMessages()) {
 		const auto& [left, right] = log_volume;
-		return std::pair(static_cast<int>(left), static_cast<int>(right));
+		return {static_cast<int>(left), static_cast<int>(right)};
 	}
 
 	return {100, 100};
@@ -509,7 +509,7 @@ void AudioDecoderMidi::SetLogVolume() {
 		} else {
 			left_gain = (100 - balance) / 50.f;
 		}
-		log_volume.first = AdjustVolume(volume * left_gain);
-		log_volume.second = AdjustVolume(volume * right_gain);
+		log_volume.left_volume = AdjustVolume(volume * left_gain);
+		log_volume.right_volume = AdjustVolume(volume * right_gain);
 	}
 }

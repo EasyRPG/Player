@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return current volume (from 0 - 100)
 	 */
-	std::pair<int, int> GetVolume() const final override;
+	StereoVolume GetVolume() const final override;
 
 	/**
 	 * Sets the volume of the audio decoder.
@@ -108,7 +108,10 @@ public:
 private:
 	bool paused = false;
 	float volume = 0.0f;
-	std::pair<float, float> log_volume = {0.0f, 0.0f}; // as used by RPG_RT
+	struct {
+		float left_volume;
+		float right_volume;
+	} log_volume = {0.0f, 0.0f}; // as used by RPG_RT
 
 	int fade_volume_end = 0;
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);

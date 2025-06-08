@@ -21,6 +21,7 @@
 // Headers
 // Don't remove the system.h include, prevents heap corruption for automake (preprocessor defines)
 #include "audio_decoder.h"
+#include "audio_decoder_base.h"
 #include "system.h"
 #include <string>
 #include <memory>
@@ -89,7 +90,7 @@ public:
 	 *
 	 * @return pair of current left-right volume (from 0 - 100)
 	 */
-	std::pair<int, int> GetVolume() const override;
+	StereoVolume GetVolume() const override;
 
 	/**
 	 * Sets the current volume of the wrapped decoder.

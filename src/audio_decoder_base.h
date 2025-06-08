@@ -28,6 +28,15 @@
 #include "filesystem_stream.h"
 
 /**
+ * Stereo volume for left and right channels.
+ * Both values are in the range 0 - 100.
+ */
+struct StereoVolume {
+	int left_volume;
+	int right_volume;
+};
+
+/**
  * The AudioDecoder class provides an abstraction over the decoding of
  * common audio formats.
  * This is the base class containing shared logic.
@@ -145,7 +154,7 @@ public:
 	 *
 	 * @return left-right pair of current volume (from 0 - 100)
 	 */
-	virtual std::pair<int, int> GetVolume() const = 0;
+	virtual StereoVolume GetVolume() const = 0;
 
 	/**
 	 * Sets the current volume of the audio decoder.

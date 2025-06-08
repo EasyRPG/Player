@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "audio_decoder_base.h"
 #include "system.h"
 
 #ifdef USE_AUDIO_RESAMPLER
@@ -283,7 +284,7 @@ void AudioResampler::Resume() {
 	wrapped_decoder->Resume();
 }
 
-std::pair<int, int> AudioResampler::GetVolume() const {
+StereoVolume AudioResampler::GetVolume() const {
 	return wrapped_decoder->GetVolume();
 }
 

@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <cstring>
 #include "audio_decoder.h"
+#include "audio_decoder_base.h"
 #include "audio_midi.h"
 #include "audio_resampler.h"
 #include "output.h"
@@ -178,9 +179,9 @@ void AudioDecoder::Update(std::chrono::microseconds delta) {
 	SetLogVolume();
 }
 
-std::pair<int, int> AudioDecoder::GetVolume() const {
+StereoVolume AudioDecoder::GetVolume() const {
 	auto& [left, right] = log_volume;
-	return std::pair(static_cast<int>(left), static_cast<int>(right));
+	return {static_cast<int>(left), static_cast<int>(right)};
 }
 
 void AudioDecoder::SetVolume(int new_volume) {
@@ -232,6 +233,6 @@ void AudioDecoder::SetLogVolume() {
 	} else {
 		left_gain = (100 - balance) / 50.f;
 	}
-	log_volume.first = AdjustVolume(volume * left_gain);
-	log_volume.second = AdjustVolume(volume * right_gain);
+	log_volume.left_volume = AdjustVolume(volume * left_gain);
+	log_volume.right_volume = AdjustVolume(volume * right_gain);
 }

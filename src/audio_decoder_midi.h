@@ -56,7 +56,7 @@ public:
 	 *
 	 * @return current volume (from 0 - 100)
 	 */
-	std::pair<int, int> GetVolume() const override;
+	StereoVolume GetVolume() const override;
 
 	/**
 	 * Sets the volume of the MIDI devices by sending MIDI messages
@@ -182,7 +182,10 @@ private:
 	bool paused = false;
 	float volume = 0.0f;
 	float global_volume = 1.0f; // only used by midiout
-	std::pair<float, float> log_volume = {0.0f, 0.0f}; // as used by RPG_RT, for Midi decoder without event support
+	struct {
+		float left_volume;
+		float right_volume;
+	} log_volume = {0.0f, 0.0f}; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
 	int fade_steps = 0;

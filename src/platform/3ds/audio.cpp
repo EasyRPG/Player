@@ -25,6 +25,7 @@
 #include "game_clock.h"
 #include "output.h"
 #include "audio_secache.h"
+#include "audio_decoder_base.h"
 
 //#define EP_DEBUG_CTRAUDIO
 #ifdef EP_DEBUG_CTRAUDIO
@@ -96,7 +97,7 @@ bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, 
 	return res;
 }
 
-void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, int pitch, int fadein) {
+void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, int pitch, int fadein, int balance) {
 	if (!dsp_inited)
 		return;
 
@@ -119,6 +120,7 @@ void CtrAudio::BGM_Play(Filesystem_Stream::InputStream filestream, int volume, i
 		bgm.decoder->SetVolume(0);
 		bgm.decoder->SetFade(volume, std::chrono::milliseconds(fadein));
 		bgm.decoder->SetLooping(true);
+		bgm.decoder->SetBalance(balance);
 
 		if (!set_channel_format(bgm.channel, format, channels, out_format)) {
 			DebugLog("{} has unsupported format, using close format.", name);
@@ -212,7 +214,7 @@ std::string CtrAudio::BGM_GetType() const {
 	return "";
 }
 
-void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se_cache, int volume, int pitch) {
+void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se_cache, int volume, int pitch, int balance) {
 	if (!dsp_inited)
 		return;
 
@@ -236,6 +238,7 @@ void CtrAudio::SE_Play(std::unique_ptr<AudioSeCache> se_cache, int volume, int p
 
 	auto dec = se_cache->CreateSeDecoder();
 	dec->SetPitch(pitch);
+	dec->SetBalance(balance);
 
 	int frequency;
 	AudioDecoder::Format format, out_format;
@@ -350,7 +353,9 @@ void n3ds_audio_thread(void* userdata) {
 				reinterpret_cast<uint8_t*>(bgm.buf[target_block].data_pcm16),
 				bgm.buf_size);
 			DSP_FlushDataCache(bgm.buf[target_block].data_pcm16, bgm.buf_size);
-			mix[0] = mix[1] = bgm.decoder->GetVolume() / 100.0f * audio->GetConfig().music_volume.Get() / 100.0f;
+			StereoVolume volume = bgm.decoder->GetVolume();
+			mix[0] = volume.left_volume / 100.0f * audio->GetConfig().music_volume.Get() / 100.0f;
+			mix[1] = volume.right_volume / 100.0f * audio->GetConfig().music_volume.Get() / 100.0f;
 			ndspChnSetMix(bgm.channel, mix);
 			ndspChnWaveBufAdd(bgm.channel, &bgm.buf[target_block]);
 		} else {

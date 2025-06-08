@@ -33,7 +33,7 @@ public:
 	CtrAudio(const Game_ConfigAudio& cfg);
 	~CtrAudio();
 
-	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;
+	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein, int balance) override;
 	void BGM_Pause() override;
 	void BGM_Resume() override;
 	void BGM_Stop() override;
@@ -44,7 +44,7 @@ public:
 	void BGM_Volume(int volume) override;
 	void BGM_Pitch(int pitch) override;
 	std::string BGM_GetType() const override;
-	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) override;
+	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch, int balance) override;
 	void SE_Stop() override;
 	void Update() override;
 
