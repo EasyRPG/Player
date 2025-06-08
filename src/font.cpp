@@ -71,35 +71,45 @@ namespace {
 			return wqy;
 		}
 		else {
-			static BitmapFontGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
 			Output::Debug("glyph not found: {:#x}", uint32_t(code));
-			return &replacement_glyph;
+			return &BITMAPFONT_REPLACEMENT_GLYPH;
 		}
+	}
+
+	BitmapFontGlyph const* find_baekmuk_glyph(char32_t code) {
+		// Korean
+		auto* baekmuk = find_glyph(BITMAPFONT_BAEKMUK, code);
+		return baekmuk != NULL ? baekmuk : find_fallback_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_gothic_glyph(char32_t code) {
 		if (Player::IsCP936()) {
+			// For simplified chinese prefer WQY
 			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
 			if (wqy != NULL) {
 				return wqy;
 			}
 		}
+		// Shinonome Gothic -> Baekmuk (Korean) -> Fallback (WQY)
 		auto* gothic = find_glyph(SHINONOME_GOTHIC, code);
-		return gothic != NULL ? gothic : find_fallback_glyph(code);
+		return gothic != NULL ? gothic : find_baekmuk_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
 		if (Player::IsCP936()) {
+			// For simplified chinese prefer WQY
 			auto* wqy = find_glyph(BITMAPFONT_WQY, code);
 			if (wqy != NULL) {
 				return wqy;
 			}
 		}
+		// Shinonome Mincho -> Shinonome Gothic (see above)
 		auto* mincho = find_glyph(SHINONOME_MINCHO, code);
 		return mincho == NULL ? find_gothic_glyph(code) : mincho;
 	}
 
 	BitmapFontGlyph const* find_rmg2000_glyph(char32_t code) {
+		// rmg2000 -> ttyp0 -> Shinonome Mincho (see above)
 		auto* rmg2000 = find_glyph(BITMAPFONT_RMG2000, code);
 		if (rmg2000 != NULL) {
 			return rmg2000;
@@ -110,6 +120,7 @@ namespace {
 	}
 
 	BitmapFontGlyph const* find_ttyp0_glyph(char32_t code) {
+		// ttyp0 -> Shinonome Gothic (see above)
 		auto* ttyp0 = find_glyph(BITMAPFONT_TTYP0, code);
 		return ttyp0 != NULL ? ttyp0 : find_gothic_glyph(code);
 	}

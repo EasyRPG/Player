@@ -124,6 +124,10 @@ AS_IF([test "x$with_audio" != "xno"],[
 ])
 AM_CONDITIONAL([HAVE_ALSA], [test "$with_alsa" = "yes"])
 
+# fonts
+AC_DEFINE([WANT_FONT_BAEKMUK],[1],[Baekmuk font (Korean)])
+AC_DEFINE([WANT_FONT_WQY],[1],[WenQuanYi font (Chinese)])
+
 # bash completion
 AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
 	[Install the parameter auto-completion script for bash in DIR. @<:@default=auto@:>@])],

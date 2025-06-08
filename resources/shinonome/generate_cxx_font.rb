@@ -22,7 +22,7 @@ class Glyph
   attr_reader :code, :is_full, :data
 
   def initialize(c, f, d)
-    raise "type error" unless c.instance_of? Fixnum
+    raise "type error" unless c.instance_of? Integer
     raise "type error" unless d.instance_of? Array
 
     @code = c
@@ -194,13 +194,17 @@ print "done\n"
 # generating
 print "Generating Gothic..."
 gothic_final = gothic.merge(hankaku) \
-	.merge(korean).merge(chinese).merge(latin) \
+	.merge(chinese).merge(latin) \
     .merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
 code_max = write_all(File.new("#{OUTPUT_FOLDER}/shinonome_gothic.h", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
 code_max = [write_all(File.new("#{OUTPUT_FOLDER}/shinonome_mincho.h", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+print "done\n"
+
+print "Generating Korean (Baekmuk)..."
+code_max = [write_all(File.new("#{OUTPUT_FOLDER}/bitmapfont_baekmuk.h", "w"), "BITMAPFONT_BAEKMUK", korean), code_max].max
 print "done\n"
 
 print "Generating RMG2000..."

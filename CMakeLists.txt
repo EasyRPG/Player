@@ -31,6 +31,8 @@ option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
+option(PLAYER_NONFREE "For commercial usage disable libraries and fonts that are licensed under (L)GPL." OFF)
+
 # Source Files
 add_library(${PROJECT_NAME} OBJECT
 	src/lcf_data.cpp
@@ -218,6 +220,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/game_vehicle.h
 	src/game_windows.cpp
 	src/game_windows.h
+	src/generated/bitmapfont_baekmuk.h
 	src/generated/bitmapfont_rmg2000.h
 	src/generated/bitmapfont_ttyp0.h
 	src/generated/bitmapfont_wqy.h
@@ -1036,13 +1039,13 @@ if(PLAYER_HAS_AUDIO)
 	endif()
 endif()
 
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
 
@@ -1159,6 +1162,18 @@ if(PLAYER_HAS_AUDIO)
 			src/decoder_drwav.h
 			src/external/dr_wav.h)
 	endif()
+endif()
+
+# Fonts
+option(PLAYER_WITH_BAEKMUK "Enable built-in Baekmuk font (Korean)" ON)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WQY "Enable built-in WenQuanYi font (Chinese)" ON "NOT PLAYER_NONFREE" OFF)
+
+if(PLAYER_WITH_BAEKMUK)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FONT_BAEKMUK=1)
+endif()
+
+if(PLAYER_WITH_WQY)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FONT_WQY=1)
 endif()
 
 # Executable
