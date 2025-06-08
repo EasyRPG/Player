@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return current volume (from 0 - 100)
 	 */
-	int GetVolume() const final override;
+	std::pair<int, int> GetVolume() const final override;
 
 	/**
 	 * Sets the volume of the audio decoder.
@@ -100,14 +100,21 @@ public:
 	 * @param delta Time in us since the last call of this function.
 	 */
 	void Update(std::chrono::microseconds delta) final override;
+
+	/**
+	 * Sets the pan/balance of the audio decoder.
+	 */
+	void SetBalance(int new_balance) override;
 private:
 	bool paused = false;
 	float volume = 0.0f;
-	float log_volume = 0.0f; // as used by RPG_RT
+	std::pair<float, float> log_volume = {0.0f, 0.0f}; // as used by RPG_RT
 
 	int fade_volume_end = 0;
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);
 	float delta_volume_step = 0.0f;
+
+	void SetLogVolume();
 };
 
 #endif

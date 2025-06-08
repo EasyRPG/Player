@@ -283,7 +283,7 @@ void AudioResampler::Resume() {
 	wrapped_decoder->Resume();
 }
 
-int AudioResampler::GetVolume() const {
+std::pair<int, int> AudioResampler::GetVolume() const {
 	return wrapped_decoder->GetVolume();
 }
 
@@ -321,6 +321,14 @@ void AudioResampler::SetLooping(bool enable) {
 
 int AudioResampler::GetLoopCount() const {
 	return wrapped_decoder->GetLoopCount();
+}
+
+int AudioResampler::GetBalance() const {
+	return wrapped_decoder->GetBalance();
+}
+
+void AudioResampler::SetBalance(int new_balance) {
+	wrapped_decoder->SetBalance(new_balance);
 }
 
 std::streampos AudioResampler::Tell() const {

@@ -175,16 +175,17 @@ void AudioDecoder::Update(std::chrono::microseconds delta) {
 
 	volume += static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(delta).count()) * delta_volume_step;
 	volume = Utils::Clamp(static_cast<float>(volume), 0.0f, 100.0f);
-	log_volume = AdjustVolume(volume);
+	SetLogVolume();
 }
 
-int AudioDecoder::GetVolume() const {
-	return static_cast<int>(log_volume);
+std::pair<int, int> AudioDecoder::GetVolume() const {
+	auto& [left, right] = log_volume;
+	return std::pair(static_cast<int>(left), static_cast<int>(right));
 }
 
 void AudioDecoder::SetVolume(int new_volume) {
 	volume = Utils::Clamp(static_cast<float>(new_volume), 0.0f, 100.0f);
-	log_volume = AdjustVolume(volume);
+	SetLogVolume();
 }
 
 void AudioDecoder::SetFade(int end, std::chrono::milliseconds duration) {
@@ -198,6 +199,11 @@ void AudioDecoder::SetFade(int end, std::chrono::milliseconds duration) {
 	fade_volume_end = end;
 	fade_time = duration;
 	delta_volume_step = (static_cast<float>(fade_volume_end) - volume) / fade_time.count();
+}
+
+void AudioDecoder::SetBalance(int balance) {
+	AudioDecoderBase::SetBalance(balance);
+	SetLogVolume();
 }
 
 int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
@@ -216,4 +222,16 @@ int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
 
 	assert(false && "Bad format");
 	return -1;
+}
+
+void AudioDecoder::SetLogVolume() {
+	int balance = GetBalance();
+	float left_gain = 1.f, right_gain = 1.f;
+	if (balance <= 50) {
+		right_gain = balance / 50.f;
+	} else {
+		left_gain = (100 - balance) / 50.f;
+	}
+	log_volume.first = AdjustVolume(volume * left_gain);
+	log_volume.second = AdjustVolume(volume * right_gain);
 }

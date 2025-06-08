@@ -61,8 +61,9 @@ struct AudioInterface {
 	 * @param volume volume.
 	 * @param pitch pitch.
 	 * @param fadein fadein.
+	 * @param balance balance (0 - 100)
 	 */
-	virtual void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) = 0;
+	virtual void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein, int balance) = 0;
 
 	/**
 	 * Stops the currently playing background music.
@@ -129,8 +130,9 @@ struct AudioInterface {
 	 * @param se se to play.
 	 * @param volume volume.
 	 * @param pitch pitch.
+	 * @param balance balance (0 - 100)
 	 */
-	virtual void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) = 0;
+	virtual void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch, int balance) = 0;
 
 	/**
 	 * Stops the currently playing sound effect.
@@ -162,7 +164,7 @@ protected:
 struct EmptyAudio : public AudioInterface {
 public:
 	explicit EmptyAudio(const Game_ConfigAudio& cfg);
-	void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override;
+	void BGM_Play(Filesystem_Stream::InputStream, int, int, int, int) override;
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}
 	void BGM_Stop() override;
@@ -173,7 +175,7 @@ public:
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
 	std::string BGM_GetType() const override { return {}; };
-	void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
+	void SE_Play(std::unique_ptr<AudioSeCache>, int, int, int) override {}
 	void SE_Stop() override {}
 	void Update() override {}
 	void vGetConfig(Game_ConfigAudio& cfg) const override;

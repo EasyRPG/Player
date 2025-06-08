@@ -87,9 +87,9 @@ public:
 	/**
 	 * Obtains the volume of the wrapped decoder.
 	 *
-	 * @return current volume (from 0 - 100)
+	 * @return pair of current left-right volume (from 0 - 100)
 	 */
-	int GetVolume() const override;
+	std::pair<int, int> GetVolume() const override;
 
 	/**
 	 * Sets the current volume of the wrapped decoder.
@@ -142,6 +142,17 @@ public:
 	 * @return loop count
 	 */
 	int GetLoopCount() const override;
+
+	/**
+	 * Gets the current pan/balance of the underlying decoder.
+	 * 0 = full left, 50 = center, 100 = full right
+	 */
+	int GetBalance() const override;
+
+	/**
+	 * Sets the pan/balance of the underlying decoder.
+	 */
+	void SetBalance(int new_balance) override;
 
 	/**
 	 * Wraps the tell function of the contained decoder

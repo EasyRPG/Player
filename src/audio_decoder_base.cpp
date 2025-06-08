@@ -73,6 +73,14 @@ int AudioDecoderBase::GetLoopCount() const {
 	return loop_count;
 }
 
+int AudioDecoderBase::GetBalance() const {
+	return balance;
+}
+
+void AudioDecoderBase::SetBalance(int new_balance) {
+	balance = Utils::Clamp(new_balance, 0, 100);
+}
+
 bool AudioDecoderBase::WasInited() const {
 	return true;
 }

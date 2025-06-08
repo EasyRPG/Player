@@ -548,12 +548,12 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	Audio().BGM_Play(std::move(stream), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(std::move(stream), data.current_music.volume, data.current_music.tempo, data.current_music.fadein, data.current_music.balance);
 }
 
 void Game_System::OnBgmInelukiReady(FileRequestResult* result) {
 	bgm_pending = false;
-	Audio().BGM_Play(FileFinder::Game().OpenFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	Audio().BGM_Play(FileFinder::Game().OpenFile(result->file), data.current_music.volume, data.current_music.tempo, data.current_music.fadein, data.current_music.balance);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool stop_sounds) {
@@ -600,7 +600,7 @@ void Game_System::OnSeReady(FileRequestResult* result, lcf::rpg::Sound se, bool 
 		return;
 	}
 
-	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo);
+	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo, se.balance);
 }
 
 void Game_System::OnSeInelukiReady(FileRequestResult* result, lcf::rpg::Sound se) {
@@ -620,7 +620,7 @@ void Game_System::OnSeInelukiReady(FileRequestResult* result, lcf::rpg::Sound se
 		return;
 	}
 
-	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo);
+	Audio().SE_Play(std::move(se_cache), se.volume, se.tempo, se.balance);
 }
 
 bool Game_System::IsMessageTransparent() {
