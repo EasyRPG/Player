@@ -18,7 +18,8 @@
 #ifndef EP_WINDOW_INTERPRETER_H
 #define EP_WINDOW_INTERPRETER_H
 
- // Headers
+// Headers
+#include "game_interpreter_debug.h"
 #include "window_command.h"
 #include "game_interpreter_shared.h"
 #include "lcf/rpg/saveeventexecstate.h"
@@ -72,7 +73,7 @@ public:
 
 	void Update() override;
 
-	void SetStackState(bool is_ce, int owner_evt_id, std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
+	void SetStackState(std::string interpreter_desc, lcf::rpg::SaveEventExecState state);
 	void Refresh();
 	bool IsValid();
 
@@ -89,17 +90,9 @@ protected:
 #endif
 private:
 	struct InterpDisplayItem {
-		bool is_ce = false;
-		int owner_evt_id = 0;
 		std::string desc;
 	};
 
-	struct StackItem {
-		bool is_ce;
-		int evt_id, page_id;
-		std::string name;
-		int cmd_current, cmd_count;
-	};
 
 	const int lines_without_stack_fixed = 3;
 
@@ -109,10 +102,10 @@ private:
 	int digits_stackitemno = 0, digits_evt_id = 0, digits_page_id = 0, digits_evt_combined_id = 0, digits_cmdcount = 0;
 
 	InterpDisplayItem display_item;
-	std::vector<StackItem> stack_display_items;
 
 	UiSubActionLine sub_actions;
 	std::unique_ptr<Window_Selectable> sub_window_flags;
+	std::vector<Debug::CallStackItem> stack_display_items;
 };
 
 #endif
