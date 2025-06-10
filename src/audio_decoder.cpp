@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <cstring>
 #include "audio_decoder.h"
@@ -226,13 +227,15 @@ int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
 }
 
 void AudioDecoder::SetLogVolume() {
+	float base_gain = AdjustVolume(volume);
 	int balance = GetBalance();
 	float left_gain = 1.f, right_gain = 1.f;
+	constexpr float pan_exp = 0.5012f;
 	if (balance <= 50) {
-		right_gain = balance / 50.f;
+		right_gain = std::pow(pan_exp, (50 - balance) / 10.f);
 	} else {
-		left_gain = (100 - balance) / 50.f;
+		left_gain = std::pow(pan_exp, (balance - 50) / 10.f);
 	}
-	log_volume.left_volume = AdjustVolume(volume * left_gain);
-	log_volume.right_volume = AdjustVolume(volume * right_gain);
+	log_volume.left_volume = base_gain * left_gain;
+	log_volume.right_volume = base_gain * right_gain;
 }

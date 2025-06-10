@@ -120,6 +120,11 @@ struct AudioInterface {
 	virtual void BGM_Pitch(int pitch) = 0;
 
 	/**
+	 * Adjusts the balance of the currently playing background music.
+	 */
+	virtual void BGM_Balance(int balance) = 0;
+
+	/**
 	 * @return Type of music being played.
 	 */
 	virtual std::string BGM_GetType() const = 0;
@@ -174,6 +179,7 @@ public:
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
+	void BGM_Balance(int) override {}
 	std::string BGM_GetType() const override { return {}; };
 	void SE_Play(std::unique_ptr<AudioSeCache>, int, int, int) override {}
 	void SE_Stop() override {}

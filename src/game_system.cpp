@@ -93,6 +93,12 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 		Output::Debug("BGM {} has invalid tempo {}", bgm.name, bgm.tempo);
 	}
 
+	if (bgm.balance < 0 || bgm.balance > 100) {
+		data.current_music.balance = Utils::Clamp<int32_t>(bgm.balance, 0, 100);
+
+		Output::Debug("BGM {} has invalid balance {}", bgm.name, bgm.balance);
+	}
+
 	// (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		// Same music: Only adjust volume and speed
@@ -105,6 +111,11 @@ void Game_System::BgmPlay(lcf::rpg::Music const& bgm) {
 			if (previous_music.tempo != data.current_music.tempo) {
 				if (!bgm_pending) { // Delay if not ready
 					Audio().BGM_Pitch(data.current_music.tempo);
+				}
+			}
+			if (previous_music.balance != data.current_music.balance) {
+				if (!bgm_pending) {
+					Audio().BGM_Balance(data.current_music.balance);
 				}
 			}
 		} else {
@@ -164,6 +175,7 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 
 	int32_t volume = se.volume;
 	int32_t tempo = se.tempo;
+	int32_t balance = se.balance;
 
 	// Validate
 	if (volume < 0 || volume > 100) {
@@ -177,10 +189,16 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 		tempo = Utils::Clamp<int32_t>(se.tempo, 10, 400);
 	}
 
+	if (balance < 0 || balance > 100) {
+		Output::Debug("SE {} has invalid balance {}", se.name, balance);
+		balance = Utils::Clamp<int32_t>(se.balance, 0, 100);
+	}
+
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
 	lcf::rpg::Sound se_adj = se;
 	se_adj.volume = volume;
 	se_adj.tempo = tempo;
+	se_adj.balance = balance;
 	se_request_ids[se.name] = request->Bind(&Game_System::OnSeReady, this, se_adj, stop_sounds);
 	if (EndsWith(se.name, ".script")) {
 		// Is a Ineluki Script File

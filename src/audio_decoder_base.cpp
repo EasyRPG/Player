@@ -26,7 +26,8 @@
 float AudioDecoderBase::AdjustVolume(float volume) {
 	// Adjust to RPG_RT (Direct Sound) volume scale
 	if (volume > 0) {
-		return 100.0f * std::pow(10.0f, (-100 + volume) / 60.0f);
+		// return 100.0f * std::pow(10.0f, (-100 + volume) / 60.0f);
+		return 100.0f * std::pow(10.0f, -(35.0f / 20.0f) * (1.0f - volume / 100.0f));
 	}
 	return 0.0f;
 }

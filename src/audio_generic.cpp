@@ -151,6 +151,14 @@ void GenericAudio::BGM_Pitch(int pitch) {
 	UnlockMutex();
 }
 
+void GenericAudio::BGM_Balance(int balance) {
+	LockMutex();
+	for (auto& BGM_Channel : BGM_Channels) {
+		BGM_Channel.SetBalance(balance);
+	}
+	UnlockMutex();
+}
+
 std::string GenericAudio::BGM_GetType() const {
 	std::string type;
 
@@ -542,6 +550,14 @@ void GenericAudio::BgmChannel::SetPitch(int pitch) {
 		instance->midi_thread->GetMidiOut().SetPitch(pitch);
 	} else if (decoder) {
 		decoder->SetPitch(pitch);
+	}
+}
+
+void GenericAudio::BgmChannel::SetBalance(int balance) {
+	if (midi_out_used) {
+		instance->midi_thread->GetMidiOut().SetBalance(balance);
+	} else if (decoder) {
+		decoder->SetBalance(balance);
 	}
 }
 

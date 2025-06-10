@@ -207,6 +207,13 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	}
 }
 
+void CtrAudio::BGM_Balance(int balance) {
+	if (!bgm.decoder)
+		return;
+
+	bgm.decoder->SetBalance(balance);
+}
+
 std::string CtrAudio::BGM_GetType() const {
 	if (bgm.decoder) {
 		return bgm.decoder->GetType();
