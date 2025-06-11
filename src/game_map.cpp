@@ -712,7 +712,40 @@ static int GetPassableMask(int old_x, int old_y, int new_x, int new_y) {
 	return bit;
 }
 
-static bool WouldCollide(const Game_Character& self, const Game_Character& other, bool self_conflict) {
+static int GetEventId(Game_Character const& ch) {
+	switch (ch.GetType()) {
+		case Game_Character::Event:
+			return static_cast<Game_Event const&>(ch).GetId();
+		case Game_Character::Player:
+			return Game_Character::CharPlayer;
+		case Game_Character::Vehicle:
+			switch (static_cast<Game_Vehicle const&>(ch).GetVehicleType()) {
+				case Game_Vehicle::Boat:
+					return Game_Character::CharBoat;
+				case Game_Vehicle::Ship:
+					return Game_Character::CharShip;
+				case Game_Vehicle::Airship:
+					return Game_Character::CharAirship;
+			}
+	}
+	assert(false);
+	return 0;
+}
+
+enum ProcessWayImpl {
+	eProcessWayImpl_CheckWay,
+	/* 'ProcessWay' causes side effects. */
+	eProcessWayImpl_MakeWay,
+	/* 'ProcessWay' will generate warnings
+		for blocked movement. */
+	eProcessWayImpl_AssertWayForeground,
+	/* 'ProcessWayEx' will generate warnings
+		for blocked movement. */
+	eProcessWayImpl_AssertWayBackground
+};
+
+template<typename T, ProcessWayImpl impl>
+static bool WouldCollide(const Game_Character& self, const T& other, bool self_conflict) {
 	if (self.GetThrough() || other.GetThrough()) {
 		return false;
 	}
@@ -728,14 +761,131 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 	if (self.GetType() == Game_Character::Event
 			&& other.GetType() == Game_Character::Event
 			&& (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
+		if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+			if (self.IsOverlapForbidden()) {
+				Output::Warning("MoveRoute: {} is not allowed to overlap with other events!", Debug::FormatEventName(self));
+			} else {
+				Output::Warning("MoveRoute: {} is not allowed to overlap with event {}!", Debug::FormatEventName(self), Debug::FormatEventName(other));
+			}
+		}
 		return true;
 	}
 
 	if (other.GetLayer() == lcf::rpg::EventPage::Layers_same && self_conflict) {
+		if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+			Output::Warning("MoveRoute: {} can't move (self collision)!", Debug::FormatEventName(self));
+		}
 		return true;
 	}
 
 	if (self.GetLayer() == other.GetLayer()) {
+		if constexpr (impl == eProcessWayImpl_AssertWayBackground) {
+			// check if 'self' is blocked by player
+			// if the blocked movement doesn't occur in foreground
+			// context, then they could just walk away
+
+			if (other.GetType() == Game_Character::Player) {
+				return false;
+			}
+			//TODO: should maybe check if offscreen
+			if (other.GetType() == Game_Character::Vehicle) {
+				return false;
+			}
+		}
+		if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+			const auto rng_moves = {
+				lcf::rpg::EventPage::MoveType_random,
+				lcf::rpg::EventPage::MoveType_toward,
+				lcf::rpg::EventPage::MoveType_away
+			};
+
+			// check if 'other' could still move away due to some routing behavior...
+			bool do_check_next_move_command = false;
+			auto check_rng_move = [&](Game_Character const& ch, lcf::Span<int> ignore_list) {
+				return Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX(), ch.GetY() + ch.GetDyFromDirection(Game_Character::Up), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX(), ch.GetY() + ch.GetDyFromDirection(Game_Character::Down), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX() + ch.GetDxFromDirection(Game_Character::Left), ch.GetY(), true, ignore_list)
+					|| Game_Map::CheckWay(ch, ch.GetX(), ch.GetY(), ch.GetX() + ch.GetDxFromDirection(Game_Character::Right), ch.GetY(), true, ignore_list);
+			};
+			std::vector<int> ignore_list; 
+			ignore_list.emplace_back(GetEventId(self));
+
+			if (other.IsMoveRouteOverwritten() && !other.IsMoveRouteFinished()) {
+				do_check_next_move_command = true;
+			} else if (other.GetType() == Game_Character::Event) {
+				if constexpr (impl == eProcessWayImpl_AssertWayForeground) {
+					auto* page = reinterpret_cast<Game_Event const&>(other).GetActivePage();
+					auto move_type = page ? page->move_type : 0;
+
+					//TODO: only when !main_flag
+					if (move_type == lcf::rpg::EventPage::MoveType_vertical) {
+						//check if other event culd still move up/down...
+						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Up), true, ignore_list)
+							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX(), other.GetY() + other.GetDyFromDirection(Game_Character::Down), true, ignore_list)) {
+							return false;
+						}
+					} else if (move_type == lcf::rpg::EventPage::MoveType_horizontal) {
+						//check if other event culd still move left/right...
+						if (Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Left), other.GetY(), true, ignore_list)
+							|| Game_Map::CheckWay(other, other.GetX(), other.GetY(), other.GetX() + other.GetDxFromDirection(Game_Character::Right), other.GetY(), true, ignore_list)) {
+							return false;
+						}
+					} else if (std::any_of(rng_moves.begin(), rng_moves.end(), [&move_type](auto mt) { return move_type == mt; })) {
+						//check if other event culd still move in any direction...
+						if (check_rng_move(other, ignore_list)) {
+							return false;
+						}
+					} else if (move_type == lcf::rpg::EventPage::MoveType_custom) {
+						//check if other events custom route would make it possible for this event to move...
+						do_check_next_move_command = true;
+					}
+				}
+			}
+
+			if (do_check_next_move_command) {
+				auto& move_command = other.GetMoveRoute().move_commands[other.GetMoveRouteIndex()];
+				bool move_success = false;
+
+				using Code = lcf::rpg::MoveCommand::Code;
+				switch (static_cast<Code>(move_command.command_id)) {
+					case Code::move_up:
+					case Code::move_right:
+					case Code::move_down:
+					case Code::move_left:
+					case Code::move_upright:
+					case Code::move_downright:
+					case Code::move_downleft:
+					case Code::move_upleft:
+						move_success = other.CheckMove(static_cast<Game_Character::Direction>(move_command.command_id));
+						break;
+					case Code::move_forward:
+						move_success = other.CheckMove(other.GetDirection());
+						break;
+					case Code::move_random:
+						move_success = check_rng_move(other, ignore_list);
+						break;
+					case Code::move_towards_hero:
+						if constexpr (impl == eProcessWayImpl_AssertWayForeground) {
+							move_success = check_rng_move(other, ignore_list);
+						} else {
+							move_success = other.CheckMove(other.GetDirectionToCharacter(*Main_Data::game_player));
+						}
+						break;
+					case Code::move_away_from_hero:
+						if constexpr (impl == eProcessWayImpl_AssertWayForeground) {
+							move_success = check_rng_move(other, ignore_list);
+						} else {
+							move_success = other.CheckMove(other.GetDirectionAwayCharacter(*Main_Data::game_player));
+						}
+						break;
+				}
+				if (move_success) {
+					return false;
+				}
+			}
+
+			Output::Warning("MoveRoute: {} would overlap with {}!", Debug::FormatEventName(self), Debug::FormatEventName(other));
+		}
 		return true;
 	}
 
@@ -751,7 +901,7 @@ static void MakeWayUpdate(Game_Event& other) {
 	other.Update(false);
 }
 
-template <typename T>
+template <typename T, ProcessWayImpl impl>
 static bool CheckWayTestCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
 	if (&self == &other) {
 		return false;
@@ -761,7 +911,7 @@ static bool CheckWayTestCollideEvent(int x, int y, const Game_Character& self, T
 		return false;
 	}
 
-	return WouldCollide(self, other, self_conflict);
+	return WouldCollide<T, impl>(self, other, self_conflict);
 }
 
 template <typename T>
@@ -781,7 +931,7 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 		return false;
 	}
 
-	return WouldCollide(self, other, self_conflict);
+	return WouldCollide<T, eProcessWayImpl_MakeWay>(self, other, self_conflict);
 }
 
 static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
@@ -791,36 +941,30 @@ static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
 	return Game_Vehicle::None;
 }
 
-bool Game_Map::CheckWay(const Game_Character& self,
-		int from_x, int from_y,
-		int to_x, int to_y
-		)
-{
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, {}, false
-	);
-}
-
-bool Game_Map::CheckWay(const Game_Character& self,
-		int from_x, int from_y,
-		int to_x, int to_y,
-		bool check_events_and_vehicles,
-		Span<int> ignore_some_events_by_id) {
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y,
-		check_events_and_vehicles,
-		ignore_some_events_by_id, false
-	);
-}
-
-bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
-		int from_x, int from_y,
-		int to_x, int to_y,
-		bool check_events_and_vehicles,
-		Span<int> ignore_some_events_by_id,
-		bool make_way
-		)
-{
+/**
+ * Extended function behind MakeWay, CheckWay & AssertWay
+ * that allows controlling exactly which events are
+ * ignored in the collision, and whether events should
+ * be prompted to make way with side effects (for MakeWay)
+ * or not (for CheckWay & AssertWay).
+ *
+ * @tparam check_events_and_vehicles whether to check
+ * events, or only consider map collision
+ * @tparam impl
+ * @param self See CheckWay or MakeWay.
+ * @param from_x See CheckWay or MakeWay.
+ * @param from_y See CheckWay or MakeWay.
+ * @param to_x See CheckWay or MakeWay.
+ * @param to_y See CheckWay or MakeWay.
+ * @param ignore_some_events_by_id A set of
+ * specific event IDs to ignore.
+ * @return See CheckWay or MakeWay.
+ */
+template<bool check_events_and_vehicles, ProcessWayImpl impl>
+static bool ProcessWay(const Game_Character & self,
+	int from_x, int from_y,
+	int to_x, int to_y,
+	Span<int> ignore_some_events_by_id) {
 	// Infer directions before we do any rounding.
 	const int bit_from = GetPassableMask(from_x, from_y, to_x, to_y);
 	const int bit_to = GetPassableMask(to_x, to_y, from_x, from_y);
@@ -831,6 +975,9 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
 	if (!Game_Map::IsValid(to_x, to_y)) {
+		if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+			Output::Warning("MoveRoute: {} can't move out-of-bounds (x:{}, y:{})!", Debug::FormatEventName(self), to_x, to_y);
+		}
 		return false;
 	}
 
@@ -843,14 +990,13 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 
 	// Depending on whether we're supposed to call MakeWayCollideEvent
 	// (which might change the map) or not, choose what to call:
-	auto CheckOrMakeCollideEvent = [&](auto& other) {
-		if (make_way) {
+	auto CheckOrMakeCollideEvent = [&](auto& other) -> bool {
+		if constexpr (impl == eProcessWayImpl_MakeWay) {
 			return MakeWayCollideEvent(to_x, to_y, self, other, self_conflict);
-		} else {
-			return CheckWayTestCollideEvent(
-				to_x, to_y, self, other, self_conflict
-			);
 		}
+		return CheckWayTestCollideEvent<decltype(other), impl>(
+			to_x, to_y, self, other, self_conflict
+		);
 	};
 
 	if (!self.IsJumping()) {
@@ -875,7 +1021,10 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 			// inbounds after the first move.
 			from_x = Game_Map::RoundX(from_x);
 			from_y = Game_Map::RoundY(from_y);
-			if (!IsPassableTile(&self, bit_from, from_x, from_y)) {
+			if (!Game_Map::IsPassableTile(&self, bit_from, from_x, from_y)) {
+				if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+					Output::Warning("MoveRoute: {} can't step of current tile (x:{}, y:{})!", Debug::FormatEventName(self), from_x, from_y);
+				}
 				return false;
 			}
 		}
@@ -883,13 +1032,13 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 	if (vehicle_type != Game_Vehicle::Airship && check_events_and_vehicles) {
 		// Check for collision with events on the target tile.
 		if (ignore_some_events_by_id.empty()) {
-			for (auto& other: GetEvents()) {
+			for (auto& other: Game_Map::GetEvents()) {
 				if (CheckOrMakeCollideEvent(other)) {
 					return false;
 				}
 			}
 		} else {
-			for (auto& other: GetEvents()) {
+			for (auto& other: Game_Map::GetEvents()) {
 				if (std::find(ignore_some_events_by_id.begin(), ignore_some_events_by_id.end(), other.GetId()) != ignore_some_events_by_id.end())
 					continue;
 				if (CheckOrMakeCollideEvent(other)) {
@@ -924,9 +1073,56 @@ bool Game_Map::CheckOrMakeWayEx(const Game_Character& self,
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
 	}
 
-	return IsPassableTile(
-		&self, bit, to_x, to_y, check_events_and_vehicles, true
+	bool result = Game_Map::IsPassableTile<check_events_and_vehicles>(
+		&self, bit, to_x, to_y
+	);
+	if constexpr (impl == eProcessWayImpl_AssertWayForeground || impl == eProcessWayImpl_AssertWayBackground) {
+		if (!result) {
+			Output::Warning("MoveRoute: {} can't pass target tile (x:{}, y:{})!", Debug::FormatEventName(self), to_x, to_y);
+		}
+	}
+	return result;
+}
+
+
+bool Game_Map::CheckWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y
+) {
+	return ProcessWay<true, eProcessWayImpl_CheckWay>(
+		self, from_x, from_y, to_x, to_y, {}
+	);
+}
+
+bool Game_Map::CheckWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y,
+	bool check_events_and_vehicles,
+	Span<int> ignore_some_events_by_id) {
+	if (check_events_and_vehicles) {
+		return ProcessWay<true, eProcessWayImpl_CheckWay>(
+			self, from_x, from_y, to_x, to_y,
+			ignore_some_events_by_id
 		);
+	}
+	return ProcessWay<false, eProcessWayImpl_CheckWay>(
+		self, from_x, from_y, to_x, to_y,
+		ignore_some_events_by_id
+	);
+}
+
+bool Game_Map::AssertWay(const Game_Character& self,
+	int from_x, int from_y,
+	int to_x, int to_y, bool main_flag
+) {
+	if (main_flag) {
+		return ProcessWay<true, eProcessWayImpl_AssertWayForeground>(
+			self, from_x, from_y, to_x, to_y, {}
+		);
+	}
+	return ProcessWay<true, eProcessWayImpl_AssertWayBackground>(
+		self, from_x, from_y, to_x, to_y, {}
+	);
 }
 
 bool Game_Map::MakeWay(const Game_Character& self,
@@ -934,9 +1130,8 @@ bool Game_Map::MakeWay(const Game_Character& self,
 		int to_x, int to_y
 		)
 {
-	return CheckOrMakeWayEx(
-		self, from_x, from_y, to_x, to_y, true, {}, true
-		);
+	return ProcessWay<true, eProcessWayImpl_MakeWay>(
+		self, from_x, from_y, to_x, to_y, {});
 }
 
 
@@ -1033,22 +1228,14 @@ bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 	return (passages_down[tile_id] & bit) != 0;
 }
 
+template<bool check_events_and_vehicles, bool check_map_geometry>
 bool Game_Map::IsPassableTile(
 		const Game_Character* self, int bit, int x, int y
-		) {
-	return IsPassableTile(
-		self, bit, x, y, true, true
-	);
-}
-
-bool Game_Map::IsPassableTile(
-		const Game_Character* self, int bit, int x, int y,
-		bool check_events_and_vehicles, bool check_map_geometry
 		) {
 	if (!IsValid(x, y)) return false;
 
 	const auto vehicle_type = GetCollisionVehicleType(self);
-	if (check_events_and_vehicles) {
+	if constexpr(check_events_and_vehicles) {
 		if (vehicle_type != Game_Vehicle::None) {
 			const auto* terrain = lcf::ReaderUtil::GetElement(lcf::Data::terrains, GetTerrainTag(x, y));
 			if (!terrain) {
@@ -1098,7 +1285,7 @@ bool Game_Map::IsPassableTile(
 		}
 	}
 
-	if (check_map_geometry) {
+	if constexpr(check_map_geometry) {
 		int tile_index = x + y * GetTilesX();
 		int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 		tile_id = map_info.upper_tiles[tile_id];
@@ -1431,7 +1618,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 		if (run_ce) {
-			interp.Push(run_ce);
+			interp.Push<InterpreterExecutionType::AutoStart>(run_ce);
 		}
 
 		Game_Event* run_ev = nullptr;
@@ -1446,7 +1633,25 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 		if (run_ev) {
-			interp.Push(run_ev);
+			if (run_ev->WasStartedByDecisionKey()) {
+				interp.Push<InterpreterExecutionType::Action>(run_ev);
+			} else {
+				switch (run_ev->GetTrigger()) {
+					case lcf::rpg::EventPage::Trigger_touched:
+						interp.Push<InterpreterExecutionType::Touch>(run_ev);
+						break;
+					case lcf::rpg::EventPage::Trigger_collision:
+						interp.Push<InterpreterExecutionType::Collision>(run_ev);
+						break;
+					case lcf::rpg::EventPage::Trigger_auto_start:
+						interp.Push<InterpreterExecutionType::AutoStart>(run_ev);
+						break;
+					case lcf::rpg::EventPage::Trigger_action:
+					default:
+						interp.Push<InterpreterExecutionType::Action>(run_ev);
+						break;
+				}
+			}
 			run_ev->ClearWaitingForegroundExecution();
 		}
 
@@ -1596,7 +1801,7 @@ static void OnEncounterEnd(BattleResult result) {
 	auto* ce = lcf::ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
 	if (ce) {
 		auto& interp = Game_Map::GetInterpreter();
-		interp.Push(ce);
+		interp.Push<InterpreterExecutionType::DeathHandler>(ce);
 	}
 
 	auto tt = Game_Battle::GetDeathHandlerTeleport();

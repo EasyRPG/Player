@@ -258,31 +258,9 @@ namespace Game_Map {
 			int from_x, int from_y,
 			int to_x, int to_y);
 
-	/**
-	 * Extended function behind MakeWay and CheckWay
-	 * that allows controlling exactly which events are
-	 * ignored in the collision, and whether events should
-	 * be prompted to make way with side effects (for MakeWay)
-	 * or not (for CheckWay).
-	 *
-	 * @param self See CheckWay or MakeWay.
-	 * @param from_x See CheckWay or MakeWay.
-	 * @param from_y See CheckWay or MakeWay.
-	 * @param to_x See CheckWay or MakeWay.
-	 * @param to_y See CheckWay or MakeWay.
-	 * @param check_events_and_vehicles whether to check
-	 * events, or only consider map collision.
-	 * @param make_way Whether to cause side effects.
-	 * @param ignore_some_events_by_id A set of
-	 * specific event IDs to ignore.
-	 * @return See CheckWay or MakeWay.
-	 */
-	 bool CheckOrMakeWayEx(const Game_Character& self,
-			int from_x, int from_y,
-			int to_x, int to_y,
-			bool check_events_and_vehicles,
-			Span<int> ignore_some_events_by_id,
-			bool make_way);
+	bool AssertWay(const Game_Character& self,
+		int from_x, int from_y,
+		int to_x, int to_y, bool main_flag);
 
 	/**
 	 * Gets if possible to land the airship at (x,y)
@@ -652,19 +630,16 @@ namespace Game_Map {
 	 *
 	 * Returns true if move is possible.
 	 *
+	 * @tparam  check_events_and_vehicles Whether to consider events and vehicles.
+	 * @tparam  check_map_geometry Whether to take map collision into account.
 	 * @param self Character to move. If not nullptr, checks the vehicle type and performs vehicle specific checks if is vehicle.
 	 *        Also ignores self in the event tile graphic checks if self is not nullptr.
 	 * @param bit which direction bits to check
 	 * @param x target tile x.
 	 * @param y target tile y.
-	 * @param check_events_and_vehicles Whether to consider events and vehicles.
-	 * @param check_map_geometry Whether to take map collision into account.
 	 * @return whether is passable.
 	 */
-	bool IsPassableTile(
-		const Game_Character* self, int bit, int x, int y,
-		bool check_events_and_vehicles, bool check_map_geometry
-		);
+	template<bool check_events_and_vehicles = true, bool check_map_geometry = true>
 	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
 	/**

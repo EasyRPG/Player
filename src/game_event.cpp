@@ -587,7 +587,7 @@ AsyncOp Game_Event::Update(bool resume_async) {
 	// the wait will tick by 1 each time the interpreter is invoked.
 	if ((resume_async || GetTrigger() == lcf::rpg::EventPage::Trigger_parallel) && interpreter) {
 		if (!interpreter->IsRunning() && page && !page->event_commands.empty()) {
-			interpreter->Push(this);
+			interpreter->Push<InterpreterExecutionType::Parallel>(this);
 		}
 		interpreter->Update(!resume_async);
 

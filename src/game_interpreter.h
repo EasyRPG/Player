@@ -38,6 +38,9 @@ class Game_Event;
 class Game_CommonEvent;
 class PendingMessage;
 
+
+using InterpreterPush = std::tuple<InterpreterExecutionType, InterpreterEventType>;
+
 /**
  * Game_Interpreter class
  */
@@ -64,14 +67,20 @@ public:
 
 	void Update(bool reset_loop_count=true);
 
+	template<InterpreterExecutionType type_ex, InterpreterEventType type_ev>
 	void Push(
-			std::vector<lcf::rpg::EventCommand> _list,
-			int _event_id,
-			bool started_by_decision_key = false,
-			int event_page_id = 0
+		std::vector<lcf::rpg::EventCommand> _list,
+		int _event_id,
+		int event_page_id = 0
 	);
+
+	template<InterpreterExecutionType type_ex>
 	void Push(Game_Event* ev);
-	void Push(Game_Event* ev, const lcf::rpg::EventPage* page, bool triggered_by_decision_key);
+
+	template<InterpreterExecutionType type_ex>
+	void Push(Game_Event* ev, const lcf::rpg::EventPage* page);
+
+	template<InterpreterExecutionType type_ex>
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
@@ -351,8 +360,62 @@ protected:
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
-	friend class Scene_Debug;
+	private:
+		void PushInternal(
+			InterpreterPush push_info,
+			std::vector<lcf::rpg::EventCommand> _list,
+			int _event_id,
+			int event_page_id = 0
+		);
+
+		void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
+		void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
+		void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
+
+	friend class Game_Interpreter_Inspector;
 };
+
+class Game_Interpreter_Inspector {
+public:
+	bool IsInActiveExcecution(Game_Event const& ev, bool background_only);
+
+	bool IsInActiveExcecution(Game_CommonEvent const& ce, bool background_only);
+
+	lcf::rpg::SaveEventExecState const& GetForegroundExecState();
+	lcf::rpg::SaveEventExecState& GetForegroundExecStateUnsafe();
+
+	lcf::rpg::SaveEventExecState const& GetExecState(Game_Event const& ev);
+	lcf::rpg::SaveEventExecState const& GetExecState(Game_CommonEvent const& ce);
+
+	lcf::rpg::SaveEventExecState& GetExecStateUnsafe(Game_Event& ev);
+	lcf::rpg::SaveEventExecState& GetExecStateUnsafe(Game_CommonEvent& ce);
+};
+
+template<InterpreterExecutionType type_ex, InterpreterEventType type_ev>
+inline void Game_Interpreter::Push(std::vector<lcf::rpg::EventCommand> _list, int _event_id, int event_page_id) {
+	PushInternal({ type_ex, type_ev }, _list, _event_id, event_page_id);
+}
+
+template<InterpreterExecutionType type_ex>
+inline void Game_Interpreter::Push(Game_Event* ev) {
+	static_assert(type_ex <= InterpreterExecutionType::Call || type_ex == InterpreterExecutionType::DebugCall, "Unexpected ExecutionType for MapEvent");
+	PushInternal(ev, type_ex);
+}
+
+template<InterpreterExecutionType type_ex>
+inline void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* page) {
+	static_assert(type_ex <= InterpreterExecutionType::Call || type_ex == InterpreterExecutionType::DebugCall, "Unexpected ExecutionType for MapEvent");
+	PushInternal(ev, page, type_ex);
+}
+
+template<InterpreterExecutionType type_ex>
+inline void Game_Interpreter::Push(Game_CommonEvent* ev) {
+	static_assert(type_ex == InterpreterExecutionType::AutoStart || type_ex == InterpreterExecutionType::Parallel
+		|| type_ex == InterpreterExecutionType::Call || type_ex == InterpreterExecutionType::DeathHandler
+		|| type_ex == InterpreterExecutionType::DebugCall || type_ex == InterpreterExecutionType::ManiacHook, "Unexpected ExecutionType for CommonEvent"
+	);
+	PushInternal(ev, type_ex);
+}
 
 inline const lcf::rpg::SaveEventExecFrame* Game_Interpreter::GetFramePtr() const {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
