@@ -23,6 +23,7 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_battle.h"
+#include "window_message.h"
 #include <player.h>
 
 Sprite_Timer::Sprite_Timer(int which) :
@@ -90,7 +91,7 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 	if (Game_Battle::IsBattleRunning()) {
 		SetY((Player::screen_height / 3 * 2) - 20);
 	}
-	else if (Game_Message::IsMessageActive() && Game_Message::GetRealPosition() == 0) {
+	else if (Game_Message::GetWindow()->GetY() < 20) {
 		SetY(Player::screen_height - 20 - Player::menu_offset_y);
 	}
 	else {
