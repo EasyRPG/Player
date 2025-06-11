@@ -90,12 +90,14 @@ void Plane::Draw(Bitmap& dst) {
 	src_y += shake_y;
 
 	dst.TiledBlit(src_x + offset_x, src_y, source->GetRect(), *source, dst_rect, 255);
-	if (offset_x < 0) {
-		auto clear_rect = Rect(dst.GetRect().x, dst.GetRect().y, abs(offset_x), dst.GetRect().height);
-		dst.ClearRect(clear_rect);
-	} else if (offset_x > 0) {
-		auto clear_rect = Rect(dst.GetRect().width - offset_x, dst.GetRect().y, offset_x, dst.GetRect().height);
-		dst.ClearRect(clear_rect);
+	if (!Game_Map::LoopHorizontal()) {
+		if (offset_x < 0) {
+			auto clear_rect = Rect(dst.GetRect().x, dst.GetRect().y, abs(offset_x), dst.GetRect().height);
+			dst.ClearRect(clear_rect);
+		} else if (offset_x > 0) {
+			auto clear_rect = Rect(dst.GetRect().width - offset_x, dst.GetRect().y, offset_x, dst.GetRect().height);
+			dst.ClearRect(clear_rect);
+		}
 	}
 }
 
