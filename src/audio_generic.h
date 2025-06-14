@@ -43,7 +43,7 @@ public:
 	GenericAudio(const Game_ConfigAudio& cfg);
 	virtual ~GenericAudio() = default;
 
-	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override;
+	void BGM_Play(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein, int balance) override;
 	void BGM_Pause() override;
 	void BGM_Resume() override;
 	void BGM_Stop() override;
@@ -53,9 +53,10 @@ public:
 	void BGM_Fade(int fade) override;
 	void BGM_Volume(int volume) override;
 	void BGM_Pitch(int pitch) override;
+	void BGM_Balance(int balance) override;
 	std::string BGM_GetType() const override;
 
-	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch) override;
+	void SE_Play(std::unique_ptr<AudioSeCache> se, int volume, int pitch, int balance) override;
 	void SE_Stop() override;
 	virtual void Update() override;
 
@@ -84,6 +85,7 @@ private:
 		void SetFade(int fade);
 		void SetVolume(int volume);
 		void SetPitch(int pitch);
+		void SetBalance(int balance);
 		bool IsUsed() const;
 	};
 	struct SeChannel {
@@ -100,8 +102,8 @@ private:
 	};
 	Format output_format = {};
 
-	bool PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein);
-	bool PlayOnChannel(SeChannel& chan, std::unique_ptr<AudioSeCache> se, int volume, int pitch);
+	bool PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein, int balance);
+	bool PlayOnChannel(SeChannel& chan, std::unique_ptr<AudioSeCache> se, int volume, int pitch, int balance);
 
 	static constexpr unsigned nr_of_se_channels = 31;
 	static constexpr unsigned nr_of_bgm_channels = 2;
