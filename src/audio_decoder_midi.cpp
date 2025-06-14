@@ -224,9 +224,8 @@ void AudioDecoderMidi::SetBalance(int new_balance) {
 	AudioDecoderBase::SetBalance(new_balance);
 	SetLogVolume();
 
-	uint8_t pan = Utils::Clamp(last_known_midi_pan + ((GetBalance() - 50) * 2), 0, 127);
 	for (int channel = 0; channel < 16; channel++) {
-		uint32_t msg = midimsg_pan(channel, pan);
+		uint32_t msg = midimsg_pan(channel, ChannelPan(midi_requested_channel_pans[channel]));
 		mididec->SendMidiMessage(msg);
 	}
 }
@@ -408,10 +407,8 @@ void AudioDecoderMidi::midi_message(int, uint_least32_t message) {
 		// Send the modified volume to midiout
 		message = midimsg_volume(channel, static_cast<uint8_t>(value2 * volume * global_volume));
 	} else if (event_type == midi_event_control_change && value1 == midi_control_pan) {
-		// See #2585 for details on MIDI values processed by RPG_RT
-		last_known_midi_pan = value2;
-		uint8_t pan = Utils::Clamp(value2 + ((GetBalance() - 50) * 2), 0, 127);
-		message = midimsg_pan(channel, pan);
+		midi_requested_channel_pans[channel] = value2;
+		message = midimsg_pan(channel, ChannelPan(value2));
 	}
 	if (midimsg_validate(message)) {
 		mididec->SendMidiMessage(message);
@@ -515,4 +512,8 @@ void AudioDecoderMidi::SetLogVolume() {
 		log_volume.left_volume = base_gain * left_gain;
 		log_volume.right_volume = base_gain * right_gain;
 	}
+}
+
+int AudioDecoderMidi::ChannelPan(int desired_pan) const {
+	return Utils::Clamp(desired_pan + ((GetBalance() - 50) * 2), 0, 127);
 }

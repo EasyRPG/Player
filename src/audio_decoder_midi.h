@@ -177,6 +177,8 @@ private:
 	void reset() override;
 	void reset_tempos_after_loop();
 
+	int ChannelPan(int desired_pan) const;
+
 	std::chrono::microseconds mtime = std::chrono::microseconds(0);
 	float pitch = 1.0f;
 	bool paused = false;
@@ -220,7 +222,7 @@ private:
 	std::vector<MidiTempoData> tempo;
 
 	void SetLogVolume();
-	int last_known_midi_pan = 64;
+	int midi_requested_channel_pans[16] {64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64};
 };
 
 #endif
