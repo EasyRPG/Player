@@ -181,8 +181,7 @@ void AudioDecoder::Update(std::chrono::microseconds delta) {
 }
 
 StereoVolume AudioDecoder::GetVolume() const {
-	auto& [left, right] = log_volume;
-	return {static_cast<int>(left), static_cast<int>(right)};
+	return log_volume;
 }
 
 void AudioDecoder::SetVolume(int new_volume) {

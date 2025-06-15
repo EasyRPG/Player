@@ -108,10 +108,7 @@ public:
 private:
 	bool paused = false;
 	float volume = 0.0f;
-	struct {
-		float left_volume;
-		float right_volume;
-	} log_volume = {0.0f, 0.0f}; // as used by RPG_RT
+	StereoVolume log_volume = {0.f, 0.f}; // as used by RPG_RT
 
 	int fade_volume_end = 0;
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);

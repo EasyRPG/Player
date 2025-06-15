@@ -32,8 +32,8 @@
  * Both values are in the range 0 - 100.
  */
 struct StereoVolume {
-	int left_volume;
-	int right_volume;
+	float left_volume;
+	float right_volume;
 };
 
 /**

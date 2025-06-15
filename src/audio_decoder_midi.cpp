@@ -187,7 +187,7 @@ StereoVolume AudioDecoderMidi::GetVolume() const {
 
 	if (!mididec->SupportsMidiMessages()) {
 		const auto& [left, right] = log_volume;
-		return {static_cast<int>(left), static_cast<int>(right)};
+		return {left, right};
 	}
 
 	return {100, 100};
