@@ -56,7 +56,7 @@ public:
 	 *
 	 * @return current volume (from 0 - 100)
 	 */
-	int GetVolume() const override;
+	StereoVolume GetVolume() const override;
 
 	/**
 	 * Sets the volume of the MIDI devices by sending MIDI messages
@@ -156,6 +156,11 @@ public:
 	 */
 	bool IsPaused() const;
 
+	/**
+	 * Sets the balance of the MIDI decoder.
+	 */
+	void SetBalance(int new_balance) override;
+
 	std::vector<uint8_t> file_buffer;
 	size_t file_buffer_pos = 0;
 private:
@@ -172,12 +177,14 @@ private:
 	void reset() override;
 	void reset_tempos_after_loop();
 
+	int ChannelPan(int desired_pan) const;
+
 	std::chrono::microseconds mtime = std::chrono::microseconds(0);
 	float pitch = 1.0f;
 	bool paused = false;
 	float volume = 0.0f;
 	float global_volume = 1.0f; // only used by midiout
-	float log_volume = 0.0f; // as used by RPG_RT, for Midi decoder without event support
+	StereoVolume log_volume = {0.0f, 0.0f}; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
 	int fade_steps = 0;
@@ -210,6 +217,9 @@ private:
 	// Contains one entry per tempo change (latest on top)
 	// When looping all entries after the loop point are dropped
 	std::vector<MidiTempoData> tempo;
+
+	void ApplyLogVolume();
+	std::array<uint8_t, 16> midi_requested_channel_pans;
 };
 
 #endif

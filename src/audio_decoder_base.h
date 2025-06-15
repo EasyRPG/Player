@@ -28,6 +28,15 @@
 #include "filesystem_stream.h"
 
 /**
+ * Stereo volume for left and right channels.
+ * Both values are in the range 0 - 100.
+ */
+struct StereoVolume {
+	float left_volume;
+	float right_volume;
+};
+
+/**
  * The AudioDecoder class provides an abstraction over the decoding of
  * common audio formats.
  * This is the base class containing shared logic.
@@ -107,6 +116,18 @@ public:
 	 */
 	virtual int GetLoopCount() const;
 
+	/**
+	 * Gets the current balance of the audio decoder.
+	 * The value is in the range 0 - 100, where 0 is full left, 100 is full right
+	 */
+	virtual int GetBalance() const;
+
+	/**
+	 * Sets the balance of the audio decoder.
+	 * The value is clamped to the range 0 - 100.
+	 */
+	virtual void SetBalance(int new_balance);
+
 	// Functions to be implemented by the audio decoder
 	/**
 	 * Assigns a stream to the audio decoder.
@@ -131,9 +152,9 @@ public:
 	 * Gets the current volume of the audio decoder.
 	 * Fades are considered.
 	 *
-	 * @return current volume (from 0 - 100)
+	 * @return left-right pair of current volume (from 0 - 100)
 	 */
-	virtual int GetVolume() const = 0;
+	virtual StereoVolume GetVolume() const = 0;
 
 	/**
 	 * Sets the current volume of the audio decoder.
@@ -282,6 +303,7 @@ protected:
 
 	bool looping = false;
 	int loop_count = 0;
+	int balance = 50;
 
 	int Decode(uint8_t* buffer, int length, int recursion_depth);
 };
