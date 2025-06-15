@@ -129,7 +129,7 @@ void Window_GameList::DrawItem(int index) {
 
 #ifndef USE_CUSTOM_FILEBUF
 	auto color = Font::ColorDefault;
-	if (ge.type == FileFinder::Unknown) {
+	if (ge.type == FileFinder::ProjectType::Unknown) {
 		color = Font::ColorHeal;
 	} else if (ge.type > FileFinder::ProjectType::Supported) {
 		color = Font::ColorKnockout;
