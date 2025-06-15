@@ -184,10 +184,7 @@ private:
 	bool paused = false;
 	float volume = 0.0f;
 	float global_volume = 1.0f; // only used by midiout
-	struct {
-		float left_volume;
-		float right_volume;
-	} log_volume = {0.0f, 0.0f}; // as used by RPG_RT, for Midi decoder without event support
+	StereoVolume log_volume = {0.0f, 0.0f}; // as used by RPG_RT, for Midi decoder without event support
 	bool loops_to_end = false;
 
 	int fade_steps = 0;
@@ -221,8 +218,8 @@ private:
 	// When looping all entries after the loop point are dropped
 	std::vector<MidiTempoData> tempo;
 
-	void SetLogVolume();
-	int midi_requested_channel_pans[16] {64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64};
+	void ApplyLogVolume();
+	std::array<uint8_t, 16> midi_requested_channel_pans;
 };
 
 #endif

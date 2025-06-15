@@ -119,6 +119,7 @@ AudioDecoderMidi::AudioDecoderMidi(std::unique_ptr<MidiDecoder> mididec)
 	: mididec(std::move(mididec)) {
 	seq = std::make_unique<midisequencer::sequencer>();
 	channel_volumes.fill(127);
+	midi_requested_channel_pans.fill(64);
 	music_type = "midi";
 }
 
@@ -186,8 +187,7 @@ StereoVolume AudioDecoderMidi::GetVolume() const {
 	// When handled by Midi messages fake a 100 otherwise the volume is adjusted twice
 
 	if (!mididec->SupportsMidiMessages()) {
-		const auto& [left, right] = log_volume;
-		return {left, right};
+		return log_volume;
 	}
 
 	return {100, 100};
@@ -203,7 +203,7 @@ void AudioDecoderMidi::SetVolume(int new_volume) {
 		mididec->SendMidiMessage(msg);
 	}
 
-	SetLogVolume();
+	ApplyLogVolume();
 }
 
 void AudioDecoderMidi::SetFade(int end, std::chrono::milliseconds duration) {
@@ -222,7 +222,7 @@ void AudioDecoderMidi::SetFade(int end, std::chrono::milliseconds duration) {
 
 void AudioDecoderMidi::SetBalance(int new_balance) {
 	AudioDecoderBase::SetBalance(new_balance);
-	SetLogVolume();
+	ApplyLogVolume();
 
 	for (int channel = 0; channel < 16; channel++) {
 		uint32_t msg = midimsg_pan(channel, ChannelPan(midi_requested_channel_pans[channel]));
@@ -267,7 +267,7 @@ void AudioDecoderMidi::Update(std::chrono::microseconds delta) {
 	}
 	if (fade_steps > 0 && mtime - last_fade_mtime > 0.1s) {
 		volume = Utils::Clamp<float>(volume + delta_volume_step, 0.0f, 1.0f);
-		SetLogVolume();
+		ApplyLogVolume();
 		for (int i = 0; i < 16; i++) {
 			uint32_t msg = midimsg_volume(i, static_cast<uint8_t>(channel_volumes[i] * volume * global_volume));
 			mididec->SendMidiMessage(msg);
@@ -498,7 +498,7 @@ int AudioDecoderMidi::MidiTempoData::GetSamples(std::chrono::microseconds mtime_
 	return samples + static_cast<int>(ticks_since_last * samples_per_tick);
 }
 
-void AudioDecoderMidi::SetLogVolume() {
+void AudioDecoderMidi::ApplyLogVolume() {
 	if (!mididec->SupportsMidiMessages()) {
 		float base_gain = AdjustVolume(volume);
 		int balance = GetBalance();

@@ -177,7 +177,7 @@ void AudioDecoder::Update(std::chrono::microseconds delta) {
 
 	volume += static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(delta).count()) * delta_volume_step;
 	volume = Utils::Clamp(static_cast<float>(volume), 0.0f, 100.0f);
-	SetLogVolume();
+	ApplyLogVolume();
 }
 
 StereoVolume AudioDecoder::GetVolume() const {
@@ -186,7 +186,7 @@ StereoVolume AudioDecoder::GetVolume() const {
 
 void AudioDecoder::SetVolume(int new_volume) {
 	volume = Utils::Clamp(static_cast<float>(new_volume), 0.0f, 100.0f);
-	SetLogVolume();
+	ApplyLogVolume();
 }
 
 void AudioDecoder::SetFade(int end, std::chrono::milliseconds duration) {
@@ -204,7 +204,7 @@ void AudioDecoder::SetFade(int end, std::chrono::milliseconds duration) {
 
 void AudioDecoder::SetBalance(int balance) {
 	AudioDecoderBase::SetBalance(balance);
-	SetLogVolume();
+	ApplyLogVolume();
 }
 
 int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
@@ -225,7 +225,7 @@ int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
 	return -1;
 }
 
-void AudioDecoder::SetLogVolume() {
+void AudioDecoder::ApplyLogVolume() {
 	float base_gain = AdjustVolume(volume);
 	int balance = GetBalance();
 	float left_gain = 1.f, right_gain = 1.f;

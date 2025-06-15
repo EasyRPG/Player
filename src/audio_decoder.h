@@ -114,7 +114,7 @@ private:
 	std::chrono::microseconds fade_time = std::chrono::microseconds(0);
 	float delta_volume_step = 0.0f;
 
-	void SetLogVolume();
+	void ApplyLogVolume();
 };
 
 #endif
