@@ -3566,6 +3566,7 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 		case 0:
 			// Is actor in party
 			result = Main_Data::game_party->IsActorInParty(actor_id);
+			RuntimePatches::EXPlus::StoreActorPosition(actor_id);
 			break;
 		case 1:
 			// Name
@@ -4847,7 +4848,11 @@ bool Game_Interpreter::CommandManiacKeyInputProcEx(lcf::rpg::EventCommand const&
 		}
 	} else if (operation == 2) {
 		int key_id = ValueOrVariable(com.parameters[2], com.parameters[3]);
-		bool key_state = ManiacPatch::GetKeyState(key_id);
+		auto key = RuntimePatches::VirtualKeys::VirtualKeyToInputKey(key_id);
+		if (key == Input::Keys::NONE) {
+			Output::Debug("Maniac KeyInputProcEx: Unsupported keycode {}", key_id);
+		}
+		bool key_state = Input::IsRawKeyPressed(key);
 		Main_Data::game_variables->Set(start_var_id, key_state ? 1 : 0);
 	} else {
 		Output::Warning("Maniac KeyInputProcEx: Joypad not supported");

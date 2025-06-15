@@ -178,6 +178,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_pictures.h \
 	src/game_player.cpp \
 	src/game_player.h \
+	src/game_runtime_patches.cpp \
+	src/game_runtime_patches.h \
 	src/game_screen.cpp \
 	src/game_screen.h \
 	src/game_strings.cpp \
