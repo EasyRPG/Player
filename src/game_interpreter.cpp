@@ -26,20 +26,18 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "async_handler.h"
-#include "audio.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
 #include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
-#include "game_enemyparty.h"
-#include "game_ineluki.h"
 #include "game_player.h"
 #include "game_targets.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
 #include "game_actors.h"
+#include "game_strings.h"
 #include "game_system.h"
 #include "game_message.h"
 #include "game_pictures.h"
@@ -70,7 +68,6 @@
 #include "transition.h"
 #include "baseui.h"
 #include "algo.h"
-#include "rand.h"
 
 using namespace Game_Interpreter_Shared;
 
@@ -4903,91 +4900,21 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 
 	int operation = com.parameters[0];
 
-	auto load_global_save = [&]() {
-		Main_Data::global_save_opened = true;
-
-		// Load
-		auto lgs = FileFinder::Save().OpenFile("Save.lgs");
-		if (!lgs) {
-			return;
-		}
-
-		lcf::LcfReader reader(lgs);
-		std::string header;
-		reader.ReadString(header, reader.ReadInt());
-		if (header.length() != 13 || header != "LcfGlobalSave") {
-			Output::Debug("This is not a valid global save.");
-			return;
-		}
-
-		lcf::LcfReader::Chunk chunk;
-
-		while (!reader.Eof()) {
-			chunk.ID = reader.ReadInt();
-			chunk.length = reader.ReadInt();
-			switch (chunk.ID) {
-				case 1: {
-					Game_Switches::Switches_t switches;
-					reader.Read(switches, chunk.length);
-					Main_Data::game_switches_global->SetData(std::move(switches));
-					break;
-				}
-				case 2: {
-					Game_Variables::Variables_t variables;
-					reader.Read(variables, chunk.length);
-					Main_Data::game_variables_global->SetData(std::move(variables));
-					break;
-				}
-				default:
-					reader.Skip(chunk, "CommandManiacControlGlobalSave");
-			}
-		}
-	};
-
 	if (operation == 0) {
-		// Open
-		load_global_save();
+		// Open: Fill Global Save with data from Save.lgs
+		// Does nothing when already opened
+		ManiacPatch::GlobalSave::Load();
 	} else if (operation == 1) {
 		// Close
-		Main_Data::global_save_opened = false;
+		// Marks the file as closed and does nothing
+		ManiacPatch::GlobalSave::Close();
 	} else if (operation == 2 || operation == 3) {
 		// 2: Save (write to file)
 		// 3: Save and Close
-		if (!Main_Data::global_save_opened) {
-			return true;
-		}
-
-		auto savelgs_name = FileFinder::Save().FindFile("Save.lgs");
-		if (savelgs_name.empty()) {
-			savelgs_name = "Save.lgs";
-		}
-
-		auto lgs_out = FileFinder::Save().OpenOutputStream(savelgs_name);
-		if (!lgs_out) {
-			Output::Warning("Maniac ControlGlobalSave: Saving failed");
-			return true;
-		}
-
-		lcf::LcfWriter writer(lgs_out, lcf::EngineVersion::e2k3);
-		writer.WriteInt(13);
-		const std::string header = "LcfGlobalSave";
-		writer.Write(header);
-		writer.WriteInt(1);
-		writer.WriteInt(Main_Data::game_switches_global->GetSize());
-		writer.Write(Main_Data::game_switches_global->GetData());
-		writer.WriteInt(2);
-		writer.WriteInt(Main_Data::game_variables_global->GetSize() * sizeof(int32_t));
-		writer.Write(Main_Data::game_variables_global->GetData());
-
-		AsyncHandler::SaveFilesystem();
-
-		if (operation == 3) {
-			Main_Data::global_save_opened = false;
-		}
+		ManiacPatch::GlobalSave::Save(operation == 3);
 	} else if (operation == 4 || operation == 5) {
-		if (!Main_Data::global_save_opened) {
-			load_global_save();
-		}
+		// Reload the file when it was already closed
+		ManiacPatch::GlobalSave::Load();
 
 		int type = com.parameters[2];
 		int game_state_idx = ValueOrVariableBitfield(com.parameters[1], 0, com.parameters[3]);

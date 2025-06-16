@@ -18,9 +18,7 @@
 // Headers
 #include <cstdlib>
 #include "main_data.h"
-#include "filefinder.h"
 #include "filefinder_rtp.h"
-#include "filesystem.h"
 #include "game_destiny.h"
 #include "game_system.h"
 #include "game_actors.h"
@@ -38,10 +36,7 @@
 #include "game_targets.h"
 #include "game_quit.h"
 #include "game_windows.h"
-#include "font.h"
-#include "player.h"
 #include "system.h"
-#include "output.h"
 
 #ifndef _WIN32
 #  include <unistd.h>
@@ -75,7 +70,6 @@ namespace Main_Data {
 	std::unique_ptr<Game_DynRpg> game_dynrpg;
 	std::unique_ptr<Game_Ineluki> game_ineluki;
 	std::unique_ptr<Game_Destiny> game_destiny;
-	bool global_save_opened = false;
 	std::unique_ptr<Game_Switches> game_switches_global;
 	std::unique_ptr<Game_Variables> game_variables_global;
 
@@ -132,7 +126,6 @@ void Main_Data::Cleanup() {
 	game_dynrpg.reset();
 	game_ineluki.reset();
 	game_destiny.reset();
-	global_save_opened = false;
 	game_switches_global.reset();
 	game_variables_global.reset();
 }
