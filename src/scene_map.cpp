@@ -16,15 +16,12 @@
  */
 
 // Headers
-#include "scene_gameover.h"
 #include "scene_map.h"
-#include "scene_menu.h"
 #include "scene_save.h"
 #include "scene_debug.h"
 #include "scene_settings.h"
 #include "main_data.h"
 #include "game_map.h"
-#include "game_actors.h"
 #include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
@@ -38,9 +35,6 @@
 #include "transition.h"
 #include "audio.h"
 #include "input.h"
-#include "screen.h"
-#include "scene_load.h"
-#include "output.h"
 #include "game_dynrpg.h"
 
 using namespace std::chrono_literals;
