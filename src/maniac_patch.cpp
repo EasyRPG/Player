@@ -17,6 +17,7 @@
 
 #include "maniac_patch.h"
 
+#include "filesystem_stream.h"
 #include "input.h"
 #include "game_actors.h"
 #include "game_interpreter_control_variables.h"
@@ -29,7 +30,9 @@
 #include "output.h"
 #include "player.h"
 
+#include <lcf/reader_lcf.h>
 #include <lcf/reader_util.h>
+#include <lcf/writer_lcf.h>
 #include <vector>
 
 /*
@@ -117,6 +120,8 @@ namespace {
 		Divmul,
 		Between
 	};
+
+	bool global_save_opened = false;
 }
 
 struct ProcessAssignmentRet {
@@ -940,4 +945,112 @@ std::string_view ManiacPatch::GetLcfDescription(int data_type, int id, bool is_d
 
 	Output::Warning("GetLcfDescription: Unsupported data_type {} {}", data_type, id);
 	return {};
+}
+
+bool ManiacPatch::GlobalSave::Load() {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	if (global_save_opened) {
+		return true;
+	}
+
+	// Even consider it opened when the file is missing
+	// It will be created on Save
+	global_save_opened = true;
+
+	auto lgs_in = FileFinder::Save().OpenFile("Save.lgs");
+	if (!lgs_in) {
+		return false;
+	}
+
+	return Load(lgs_in);
+}
+
+bool ManiacPatch::GlobalSave::Load(Filesystem_Stream::InputStream& lgs_in) {
+	if (!lgs_in) {
+		return false;
+	}
+
+	lcf::LcfReader reader(lgs_in);
+	std::string header;
+	reader.ReadString(header, reader.ReadInt());
+	if (header.length() != 13 || header != "LcfGlobalSave") {
+		Output::Debug("This is not a valid global save.");
+		return false;
+	}
+
+	lcf::LcfReader::Chunk chunk;
+
+	while (!reader.Eof()) {
+		chunk.ID = reader.ReadInt();
+		chunk.length = reader.ReadInt();
+		switch (chunk.ID) {
+			case 1: {
+				Game_Switches::Switches_t switches;
+				reader.Read(switches, chunk.length);
+				Main_Data::game_switches_global->SetData(std::move(switches));
+				break;
+			}
+			case 2: {
+				Game_Variables::Variables_t variables;
+				reader.Read(variables, chunk.length);
+				Main_Data::game_variables_global->SetData(std::move(variables));
+				break;
+			}
+			default:
+				reader.Skip(chunk, "CommandManiacControlGlobalSave");
+		}
+	}
+
+	return true;
+}
+
+bool ManiacPatch::GlobalSave::Save(bool close_global_save) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	if (!global_save_opened) {
+		return true;
+	}
+
+	auto savelgs_name = FileFinder::Save().FindFile("Save.lgs");
+	if (savelgs_name.empty()) {
+		savelgs_name = "Save.lgs";
+	}
+
+	auto lgs_out = FileFinder::Save().OpenOutputStream(savelgs_name);
+	if (!Save(lgs_out)) {
+		Output::Warning("Maniac ControlGlobalSave: Saving failed");
+		return false;
+	}
+
+	global_save_opened = !close_global_save;
+
+	AsyncHandler::SaveFilesystem();
+	return true;
+}
+
+bool ManiacPatch::GlobalSave::Save(Filesystem_Stream::OutputStream& lgs_out) {
+	if (!lgs_out) {
+		return false;
+	}
+
+	lcf::LcfWriter writer(lgs_out, lcf::EngineVersion::e2k3);
+	writer.WriteInt(13);
+	const std::string header = "LcfGlobalSave";
+	writer.Write(header);
+	writer.WriteInt(1);
+	writer.WriteInt(Main_Data::game_switches_global->GetSize());
+	writer.Write(Main_Data::game_switches_global->GetData());
+	writer.WriteInt(2);
+	writer.WriteInt(Main_Data::game_variables_global->GetSize() * sizeof(int32_t));
+	writer.Write(Main_Data::game_variables_global->GetData());
+	return true;
+}
+
+void ManiacPatch::GlobalSave::Close() {
+	global_save_opened = false;
 }
