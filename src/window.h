@@ -35,7 +35,7 @@ public:
 
 	virtual void Update();
 	BitmapRef const& GetWindowskin() const;
-	void SetWindowskin(BitmapRef const& nwindowskin, bool transparent = false);
+	void SetWindowskin(BitmapRef const& nwindowskin);
 	BitmapRef GetContents() const;
 	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
@@ -84,6 +84,8 @@ public:
 	void SetContentsOpacity(int ncontents_opacity);
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
+	bool GetBackgroundAlpha() const;
+	void SetBackgroundAlpha(bool alpha);
 
 	FontRef GetFont() const;
 	void SetFont(FontRef font);
@@ -326,6 +328,10 @@ inline int Window::GetContentsOpacity() const {
 
 inline void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
+}
+
+inline bool Window::GetBackgroundAlpha() const {
+	return background_alpha;
 }
 
 inline bool Window::IsSystemGraphicUpdateAllowed() const {

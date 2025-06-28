@@ -304,6 +304,11 @@ void Window_Message::InsertNewPage() {
 		gold_window->SetBackOpacity(255);
 	}
 
+	// 2k3 applies transparent color to gold window
+	bool gold_tc = Player::IsRPG2k3()
+		&& (Main_Data::game_system->IsMessageTransparent());
+	gold_window->SetBackgroundAlpha(gold_tc);
+
 	if (IsFaceEnabled()) {
 		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
