@@ -291,6 +291,19 @@ void Window_Message::InsertNewPage() {
 		gold_window->SetBackOpacity(GetBackOpacity());
 	}
 
+	// In some cases the gold window is always opaque
+	bool gold_window_opaque =
+		// 2k does not support system graphic transparency setting
+		Player::IsRPG2k() ||
+		// system graphic set to opaque
+		lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ||
+		// RPG2k3 < 1.10 and traditional battle (mode A)
+		(!Player::IsRPG2k3E() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional);
+
+	if (gold_window_opaque) {
+		gold_window->SetBackOpacity(255);
+	}
+
 	if (IsFaceEnabled()) {
 		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
