@@ -149,6 +149,10 @@ public:
 		// Special handling for chipset graphic.
 		// Generates a tile opacity list.
 		Flag_Chipset = 1 << 2,
+		// Disables premultiplied alpha. Used for the system graphic to preserve
+		// the colors of the transparent pixels in RPG2k and in RPG2k3 with semi-
+		// transparent message box.
+		Flag_NoPremultipliedAlpha = 1 << 3,
 		// Bitmap will not be written to. This allows blit optimisations because the
 		// opacity information will not change.
 		Flag_ReadOnly = 1 << 16
@@ -627,7 +631,7 @@ protected:
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
-	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
+	void ConvertImage(int& width, int& height, void*& pixels, bool transparent, uint32_t flags);
 
 	static PixmanImagePtr GetSubimage(Bitmap const& src, const Rect& src_rect);
 	static inline void MultiplyAlpha(uint8_t &r, uint8_t &g, uint8_t &b, const uint8_t &a) {

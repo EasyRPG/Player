@@ -40,8 +40,8 @@
 using namespace std::chrono_literals;
 
 namespace {
-	std::string MakeHashKey(std::string_view folder_name, std::string_view filename, bool transparent) {
-		return ToString(folder_name) + ":" + ToString(filename) + ":" + (transparent ? "T" : " ");
+	std::string MakeHashKey(std::string_view folder_name, std::string_view filename, bool transparent, uint32_t extra_flags = 0) {
+		return fmt::format("{}:{}:{}:{}", folder_name, filename, transparent, extra_flags);
 	}
 
 	std::string MakeTileHashKey(std::string_view chipset_name, int id) {
@@ -236,7 +236,7 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string_view filename, bool transparent) {
+	BitmapRef LoadBitmap(std::string_view filename, bool transparent, uint32_t extra_flags = 0) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
 
@@ -247,7 +247,7 @@ namespace {
 
 		BitmapRef bmp;
 
-		const auto key = MakeHashKey(s.directory, filename, transparent);
+		const auto key = MakeHashKey(s.directory, filename, transparent, extra_flags);
 		auto it = cache.find(key);
 		if (it == cache.end()) {
 			if (filename == CACHE_DEFAULT_BITMAP) {
@@ -270,6 +270,8 @@ namespace {
 					auto flags = Bitmap::Flag_ReadOnly | (
 							T == Material::Chipset ? Bitmap::Flag_Chipset :
 							T == Material::System ? Bitmap::Flag_System : 0);
+					flags |= extra_flags;
+
 					bmp = Bitmap::Create(std::move(is), transparent, flags);
 					if (!bmp) {
 						Output::Warning("Invalid image: {}/{}", s.directory, filename);
@@ -328,10 +330,10 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string_view f) {
+	BitmapRef LoadBitmap(std::string_view f, uint32_t extra_flags = 0) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 		const Spec& s = spec[T];
-		return LoadBitmap<T>(f, s.transparent);
+		return LoadBitmap<T>(f, s.transparent, extra_flags);
 	}
 }
 
@@ -397,8 +399,13 @@ BitmapRef Cache::Title(std::string_view file) {
 	return LoadBitmap<Material::Title>(file);
 }
 
-BitmapRef Cache::System(std::string_view file) {
-	return LoadBitmap<Material::System>(file);
+BitmapRef Cache::System(std::string_view file, bool preserve_transparent_color) {
+	uint32_t flags = 0;
+	if (preserve_transparent_color || Player::IsRPG2k()) {
+		flags = Bitmap::Flag_NoPremultipliedAlpha;
+	}
+
+	return LoadBitmap<Material::System>(file, flags);
 }
 
 BitmapRef Cache::Exfont() {
@@ -554,9 +561,9 @@ void Cache::SetSystem2Name(std::string filename) {
 	system2_name = std::move(filename);
 }
 
-BitmapRef Cache::System() {
+BitmapRef Cache::System(bool preserve_transparent_color) {
 	if (!system_name.empty()) {
-		return Cache::System(system_name);
+		return Cache::System(system_name, preserve_transparent_color);
 	} else {
 		return nullptr;
 	}
@@ -567,8 +574,8 @@ BitmapRef Cache::SysBlack() {
 	return system_black;
 }
 
-BitmapRef Cache::SystemOrBlack() {
-	auto system = Cache::System();
+BitmapRef Cache::SystemOrBlack(bool preserve_transparent_color) {
+	auto system = Cache::System(preserve_transparent_color);
 	if (system) {
 		return system;
 	}
