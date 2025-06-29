@@ -224,7 +224,14 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 
 void Scene_Map::DrawBackground(Bitmap& dst) {
 	if (spriteset->RequireClear(GetDrawableList())) {
+#ifdef __WIIU__
+		// Workaround SDL2 bug on WiiU:
+		// Transparent (Alpha 0) pixels on the screen surface are not overwritten.
+		// Causes "trippy trail" rendering glitch
+		dst.Fill(Color(0, 0, 0, 255));
+#else
 		dst.Clear();
+#endif
 	}
 }
 
