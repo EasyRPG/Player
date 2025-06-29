@@ -494,7 +494,7 @@ add_library(${PROJECT_NAME} OBJECT
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Optimize floating point math functions into intrinsics and don't check or set errno (i.e. sqrt(-1))
-if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_compile_options(${PROJECT_NAME} PUBLIC "-fno-math-errno")
 endif()
 
@@ -658,8 +658,7 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
 		src/platform/sdl/sdl_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC
 		USE_SDL=1
-		EASYRPG_CONFIG_NAME="config_sdl1.ini"
-	)
+		EASYRPG_CONFIG_NAME="config_sdl1.ini")
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
@@ -825,8 +824,7 @@ if(AMIGA)
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/platform/morphos/integration.cpp)
 		set_property(SOURCE src/platform/morphos/integration.cpp
-			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION="${PLAYER_VERSION_FULL}"
-		)
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION="${PLAYER_VERSION_FULL}")
 	endif()
 	if(AMIGAOS4)
 		# FIXME: needed?
@@ -890,7 +888,7 @@ endif()
 
 # Endianess check
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
-	if (CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+	if(CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
 	endif()
 else()
@@ -996,8 +994,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 		VERSION 3.9.1
 		DEFINITION HAVE_NLOHMANN_JSON
 		TARGET nlohmann_json::nlohmann_json
-		REQUIRED
-	)
+		REQUIRED)
 else()
 	option(PLAYER_WITH_NLOHMANN_JSON "Support processing of JSON files" ON)
 	player_find_package(NAME nlohmann_json
@@ -1005,8 +1002,7 @@ else()
 		CONDITION PLAYER_WITH_NLOHMANN_JSON
 		DEFINITION HAVE_NLOHMANN_JSON
 		TARGET nlohmann_json::nlohmann_json
-		ONLY_CONFIG
-	)
+		ONLY_CONFIG)
 endif()
 
 # Configure Audio backends
@@ -1014,7 +1010,7 @@ if(PLAYER_HAS_AUDIO)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	if(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
-		if (WIN32 OR UNIX OR APPLE)
+		if(WIN32 OR UNIX OR APPLE)
 			set(SUPPORT_NATIVE_MIDI ON)
 		endif()
 	elseif(WIN32 OR MACOS)
@@ -1037,8 +1033,7 @@ if(PLAYER_HAS_AUDIO)
 			target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_ALSA=1)
 			target_sources(${PROJECT_NAME} PRIVATE
 				src/platform/linux/midiout_device_alsa.cpp
-				src/platform/linux/midiout_device_alsa.h
-			)
+				src/platform/linux/midiout_device_alsa.h)
 			target_link_libraries(${PROJECT_NAME} ALSA::ALSA)
 			find_package(Threads)
 			if(Threads_FOUND)
@@ -1456,11 +1451,9 @@ else() # library
 			src/platform/libretro/ui.cpp
 			src/platform/libretro/ui.h
 			src/platform/libretro/midiout_device.cpp
-			src/platform/libretro/midiout_device.h
-		)
+			src/platform/libretro/midiout_device.h)
 		set_property(SOURCE src/platform/libretro/ui.cpp
-			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION_FULL="${PLAYER_VERSION_FULL}"
-		)
+			PROPERTY COMPILE_DEFINITIONS PLAYER_VERSION_FULL="${PLAYER_VERSION_FULL}")
 		target_link_libraries(easyrpg_libretro ${PROJECT_NAME})
 		set_target_properties(easyrpg_libretro PROPERTIES PREFIX "")
 		set(PLAYER_TEST_LIBRARIES "easyrpg_libretro")
@@ -1566,8 +1559,7 @@ if(PLAYER_ENABLE_TESTS)
 	add_executable(test_runner_player EXCLUDE_FROM_ALL ${TEST_FILES})
 	set_target_properties(test_runner_player PROPERTIES
 		OUTPUT_NAME "test_runner"
-		WIN32_EXECUTABLE FALSE
-	)
+		WIN32_EXECUTABLE FALSE)
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 		target_compile_definitions(test_runner_player
@@ -1598,9 +1590,9 @@ endif()
 # Instrumentation framework
 set(PLAYER_ENABLE_INSTRUMENTATION "OFF" CACHE STRING "Build performance instrumentation hooks")
 set_property(CACHE PLAYER_ENABLE_INSTRUMENTATION PROPERTY STRINGS OFF VTune)
-if (NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
+if(NOT ${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "OFF")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_INSTRUMENTATION=${PLAYER_ENABLE_INSTRUMENTATION})
-	if (${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
+	if(${PLAYER_ENABLE_INSTRUMENTATION} STREQUAL "VTune")
 		player_find_package(NAME VTune TARGET VTune::ITT REQUIRED)
 	endif()
 endif()
@@ -1745,7 +1737,7 @@ message(STATUS "Doxygen: ${DOXYGEN_STATUS}")
 
 message(STATUS "")
 
-if (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
+if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	message(WARNING "SDL1 is deprecated!")
 	message(WARNING "Please migrate to SDL2 or SDL3!")
 endif()
