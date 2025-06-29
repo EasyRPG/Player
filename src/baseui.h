@@ -255,6 +255,15 @@ public:
 	virtual void ToggleTouchUi() {};
 
 	/**
+	 * Adjusts the scaling of the screen (for overscan/underscan)
+	 *
+	 * @param scale Screen scaling in percent (50 - 150)
+	 */
+	virtual void SetScreenScale(int scale) {
+		(void)scale;
+	}
+
+	/**
 	 * @return current video options.
 	 */
 	Game_ConfigVideo GetConfig() const;
