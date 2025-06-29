@@ -15,7 +15,9 @@ include(PlayerMisc)
 include(GetGitRevisionDescription)
 
 # Dependencies provided by CMake Presets
-option(PLAYER_FIND_ROOT_PATH_APPEND "When enabled the items from CMAKE_PREFIX_PATH are added to CMAKE_FIND_ROOT_PATH. Works around problematic CMake Toolchain files" OFF)
+option(PLAYER_FIND_ROOT_PATH_APPEND
+	"Append CMAKE_PREFIX_PATH to CMAKE_FIND_ROOT_PATH. Works around problematic CMake Toolchain files" OFF)
+
 list(APPEND CMAKE_PREFIX_PATH "${PLAYER_PREFIX_PATH_APPEND}")
 if(PLAYER_FIND_ROOT_PATH_APPEND)
 	list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_PREFIX_PATH}")
@@ -29,7 +31,8 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Must be at global scope, otherwise breaks -DPLAYER_BUILD_LIBLCF (see CMP0077)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
-option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
+option(CMAKE_FIND_PACKAGE_PREFER_CONFIG
+	"Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
 option(PLAYER_NONFREE "For commercial usage disable libraries and fonts that are licensed under (L)GPL." OFF)
 
@@ -746,7 +749,8 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
 	endif()
 else()
 	# Assuming that all platforms not targeting SDL have only one audio backend
-	set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM} CACHE STRING "Audio system to use. Options: ${PLAYER_TARGET_PLATFORM} OFF")
+	set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM} CACHE STRING
+		"Audio system to use. Options: ${PLAYER_TARGET_PLATFORM} OFF")
 	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS ${PLAYER_TARGET_PLATFORM} OFF)
 endif()
 
@@ -778,7 +782,8 @@ endif()
 
 get_property(AUDIO_PROP CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS)
 if(NOT PLAYER_AUDIO_BACKEND IN_LIST AUDIO_PROP)
-	message(FATAL_ERROR "Incompatible audio backend configuration ${PLAYER_AUDIO_BACKEND}.\nPlease clear the CMake cache.\nOptions: ${AUDIO_PROP}")
+	message(FATAL_ERROR
+		"Incompatible audio backend ${PLAYER_AUDIO_BACKEND}.\nPlease clear the CMake cache.\nOptions: ${AUDIO_PROP}")
 endif()
 
 # Shared by homebrew platforms
@@ -875,10 +880,12 @@ if(APPLE)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-	option(PLAYER_JS_BUILD_SHELL "Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
+	option(PLAYER_JS_BUILD_SHELL
+		"Build the Player executable as a shell file (.html) instead of a standalone javascript file (.js)" OFF)
 	set(PLAYER_JS_GAME_URL "games/" CACHE STRING "Game URL/directory where the web player searches for games")
 	set(PLAYER_JS_OUTPUT_NAME "easyrpg-player" CACHE STRING "Output name of the js, html and wasm files")
-	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
+	set_property(SOURCE src/async_handler.cpp APPEND PROPERTY
+		COMPILE_DEFINITIONS "EM_GAME_URL=\"${PLAYER_JS_GAME_URL}\"")
 endif()
 
 # Endianess check
@@ -903,9 +910,11 @@ set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
 set(CMAKE_XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.easyrpg.player")
 
 # liblcf
-option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf, clone liblcf into lib/liblcf and build it along with the Player. This is convenient for development." OFF)
-set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING "Git repository of liblcf to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
-set(PLAYER_BUILD_LIBLCF_BRANCH "master" CACHE STRING "Branch of the liblcf repository to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
+option(PLAYER_BUILD_LIBLCF "For developers: Clone liblcf and builds it along with the Player." OFF)
+set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git"
+	CACHE STRING "Git repository of liblcf to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
+set(PLAYER_BUILD_LIBLCF_BRANCH "master"
+	CACHE STRING "Branch of the liblcf repository to clone. Requires PLAYER_BUILD_LIBLCF=ON.")
 
 if(PLAYER_BUILD_LIBLCF)
 	# liblcf is built as part of this cmake file
@@ -939,7 +948,7 @@ endif()
 player_find_package(NAME PNG TARGET PNG::PNG REQUIRED CONFIG_BROKEN)
 player_find_package(NAME fmt TARGET fmt::fmt VERSION 5.2 REQUIRED)
 
-# Do not use player_find_package. enable_language used by pixman on Android does not work properly inside function calls
+# Do not use player_find_package. enable_language used by pixman on Android does not work properly inside functions
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
@@ -951,7 +960,9 @@ endif()
 
 # freetype and harfbuzz
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ
+	"Enable HarfBuzz text shaping (Requires FreeType)" ON
+	"PLAYER_WITH_FREETYPE" OFF)
 
 # Freetype is not really broken however only using FT config without HB config causes problems
 player_find_package(NAME freetype
@@ -1015,7 +1026,9 @@ if(PLAYER_HAS_AUDIO)
 		endif()
 	endif()
 
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_NATIVE_MIDI "Play MIDI audio using the API of the operating system" ON "SUPPORT_NATIVE_MIDI" OFF)
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_NATIVE_MIDI
+		"Play MIDI audio using the API of the operating system" ON
+		"SUPPORT_NATIVE_MIDI" OFF)
 	if(PLAYER_WITH_NATIVE_MIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_NATIVE_MIDI=1)
 		if(WIN32)
@@ -1041,15 +1054,33 @@ if(PLAYER_HAS_AUDIO)
 	endif()
 endif()
 
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH "Play MIDI audio with fluidsynth" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE "Play MIDI audio with fluidlite" ON "PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV "Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123
+	"Play MP3 audio with libmpg123" ON
+	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE
+	"Play WAV audio with libsndfile" ON
+	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS
+	"Play Ogg Vorbis audio with libvorbis" ON
+	"PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS
+	"Play Opus audio with opusfile" ON
+	"PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI
+	"Play MIDI audio with wildmidi" ON
+	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH
+	"Play MIDI audio with fluidsynth" ON
+	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE
+	"Play MIDI audio with fluidlite" ON
+	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP
+	"Play MOD audio with libxmp" ON
+	"PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV
+	"Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON
+	"PLAYER_HAS_AUDIO" OFF)
 
 if(PLAYER_HAS_AUDIO)
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
@@ -1059,8 +1090,12 @@ if(PLAYER_HAS_AUDIO)
 		set(PLAYER_AUDIO_RESAMPLER_IS_AUTO ON)
 	endif()
 
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SPEEXDSP "Use speexdsp as resampler when available." ON "PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SAMPLERATE "Use libsamplerate as resampler when available." ON "PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SPEEXDSP
+		"Use speexdsp as resampler when available." ON
+		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SAMPLERATE
+		"Use libsamplerate as resampler when available." ON
+		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
 
 	if(PLAYER_AUDIO_RESAMPLER_IS_AUTO)
 		player_find_package(NAME speexdsp
@@ -1168,7 +1203,9 @@ endif()
 
 # Fonts
 option(PLAYER_WITH_BAEKMUK "Enable built-in Baekmuk font (Korean)" ON)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WQY "Enable built-in WenQuanYi font (Chinese)" ON "NOT PLAYER_NONFREE" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WQY
+	"Enable built-in WenQuanYi font (Chinese)" ON
+	"NOT PLAYER_NONFREE" OFF)
 
 if(PLAYER_WITH_BAEKMUK)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FONT_BAEKMUK=1)
@@ -1185,7 +1222,8 @@ if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND N
 		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 		add_executable(${EXE_NAME} MACOSX_BUNDLE "src/platform/sdl/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
 		configure_file(resources/macos/Info.plist.in resources/macos/Info.plist @ONLY)
-		set_target_properties(${EXE_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/macos/Info.plist")
+		set_target_properties(${EXE_NAME} PROPERTIES
+			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/macos/Info.plist")
 		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
@@ -1263,11 +1301,16 @@ if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND N
 
 	if(UNIX)
 		# Install desktop entry, icons and metainfo
-		install(FILES resources/unix/easyrpg-player.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png DESTINATION ${CMAKE_INSTALL_DATADIR}/pixmaps) # legacy
-		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps)
-		install(FILES resources/unix/easyrpg-player.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
-		install(FILES resources/unix/easyrpg-player.metainfo.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+		install(FILES resources/unix/easyrpg-player.desktop
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/pixmaps) # legacy
+		install(FILES resources/unix/icon-48.png RENAME easyrpg-player.png
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps)
+		install(FILES resources/unix/easyrpg-player.svg
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+		install(FILES resources/unix/easyrpg-player.metainfo.xml
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 	endif()
 
 	if(MSVC)
@@ -1484,7 +1527,8 @@ set(BASHCOMPLETION_STATUS "Unavailable")
 find_package(bash-completion QUIET)
 if(BASH_COMPLETION_FOUND OR (UNIX AND NOT APPLE))
 	set(BASHCOMPLETION_STATUS "Available")
-	install(FILES resources/unix/bash-completion/easyrpg-player DESTINATION "${CMAKE_INSTALL_DATADIR}/bash-completion/completions")
+	install(FILES resources/unix/bash-completion/easyrpg-player
+		DESTINATION "${CMAKE_INSTALL_DATADIR}/bash-completion/completions")
 endif()
 
 # Doxygen
@@ -1526,14 +1570,18 @@ if(PLAYER_ENABLE_TESTS)
 	)
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		target_compile_definitions(test_runner_player PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
-		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"/assets\")
-		target_compile_definitions(test_runner_player PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
+		target_compile_definitions(test_runner_player
+			PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
+		target_compile_definitions(test_runner_player
+			PUBLIC EP_TEST_PATH=\"/assets\")
+		target_compile_definitions(test_runner_player
+			PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
 
 		target_link_libraries(test_runner_player "nodefs.js")
 		set_property(TARGET test_runner_player PROPERTY LINK_FLAGS "-sALLOW_MEMORY_GROWTH --bind")
 	else()
-		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
+		target_compile_definitions(test_runner_player
+			PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
 	endif()
 	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
 	if(CMAKE_COLOR_DIAGNOSTICS)
