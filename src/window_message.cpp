@@ -106,6 +106,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 		&& (Player::IsRPG2k3E() || lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional);
 	if (msg_transparent) {
 		SetBackOpacity(160);
+		SetBackgroundPreserveTransparentColor(true);
 	}
 	gold_window->SetBackOpacity(GetBackOpacity());
 
@@ -289,6 +290,25 @@ void Window_Message::InsertNewPage() {
 	} else {
 		SetOpacity(255);
 		gold_window->SetBackOpacity(GetBackOpacity());
+	}
+
+	// In some cases the gold window is always opaque
+	bool gold_window_opaque =
+		// 2k does not support system graphic transparency setting
+		Player::IsRPG2k() ||
+		// system graphic set to opaque
+		lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_opaque ||
+		// RPG2k3 < 1.10 and traditional battle (mode A)
+		(!Player::IsRPG2k3E() && lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_traditional);
+
+	if (gold_window_opaque) {
+		gold_window->SetBackOpacity(255);
+	}
+
+	// 2k3 applies transparent color to gold window
+	if (Player::IsRPG2k3()) {
+		gold_window->SetBackgroundAlpha(Main_Data::game_system->IsMessageTransparent());
+		gold_window->SetBackgroundPreserveTransparentColor(GetBackgroundPreserveTransparentColor() && !gold_window->GetBackgroundAlpha());
 	}
 
 	if (IsFaceEnabled()) {

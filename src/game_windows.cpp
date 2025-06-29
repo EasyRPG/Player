@@ -363,8 +363,9 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 	auto& pic = Main_Data::game_pictures->GetPicture(data.ID);
 
-	window->SetWindowskin(system, pic.data.use_transparent_color);
+	window->SetWindowskin(system);
 	window->SetStretch(data.message_stretch == lcf::rpg::System::Stretch_stretch);
+	window->SetBackgroundAlpha(pic.data.use_transparent_color);
 
 	if (data.message_stretch == lcf::rpg::System::Stretch_easyrpg_none) {
 		window->SetBackOpacity(0);

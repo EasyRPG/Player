@@ -362,7 +362,7 @@ void Transition::Draw(Bitmap& dst) {
 					m_pointer = static_cast<uint32_t *>(screen_pointer1->pixels()) + j * w + i;
 					m_pointer += ((i == 0 ? 1 : 0) + (j == 0 ? w : 0)) * (m_size - 1);
 					dst.pixel_format.uint32_to_rgba(*m_pointer, m_r, m_g, m_b, m_a);
-					dst.FillRect(Rect(i - ((m_size - w % m_size) % m_size) / 2, j - ((m_size - h % m_size) % m_size) / 2, m_size, m_size), Color(m_r, m_g, m_b, m_a));
+					dst.FillRect(Rect(i - ((m_size - w % m_size) % m_size) / 2, j - ((m_size - h % m_size) % m_size) / 2, m_size, m_size), Color(m_r, m_g, m_b, 255));
 				}
 		else
 			dst.Blit(0, 0, *screen_pointer1, screen_pointer1->GetRect(), 255);
