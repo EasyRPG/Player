@@ -39,7 +39,7 @@ Window_Base::Window_Base(int x, int y, int width, int height, Drawable::Flags fl
 	SetZ(Priority_Window);
 
 	if (Player::IsRPG2k()) {
-		SetPreserveTransparentColor(true);
+		SetBackgroundPreserveTransparentColor(true);
 	}
 }
 
@@ -66,7 +66,7 @@ bool Window_Base::IsMovementActive() {
 void Window_Base::Update() {
 	Window::Update();
 	if (IsSystemGraphicUpdateAllowed()) {
-		SetWindowskin(Cache::SystemOrBlack(GetPreserveTransparentColor() ? Bitmap::Flag_NoPremultipliedAlpha : 0));
+		SetWindowskin(Cache::SystemOrBlack(GetBackgroundPreserveTransparentColor() ? Bitmap::Flag_SystemBgPreserveColor : 0));
 		SetStretch(Main_Data::game_system->GetMessageStretch() == lcf::rpg::System::Stretch_stretch);
 	}
 	UpdateMovement();

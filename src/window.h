@@ -90,8 +90,8 @@ public:
 	void SetBackgroundAlpha(bool alpha);
 	// Whether transparent pixels keep there original color instead of
 	// converting them to black
-	bool GetPreserveTransparentColor() const;
-	void SetPreserveTransparentColor(bool preserve);
+	bool GetBackgroundPreserveTransparentColor() const;
+	void SetBackgroundPreserveTransparentColor(bool preserve);
 
 	FontRef GetFont() const;
 	void SetFont(FontRef font);
@@ -138,7 +138,7 @@ private:
 	void RefreshCursor();
 
 	bool background_alpha = false;
-	bool preserve_transparent_color = false;
+	bool bg_preserve_transparent_color = false;
 	bool background_needs_refresh;
 	bool frame_needs_refresh;
 	bool cursor_needs_refresh;
@@ -341,8 +341,8 @@ inline bool Window::GetBackgroundAlpha() const {
 	return background_alpha;
 }
 
-inline bool Window::GetPreserveTransparentColor() const {
-	return preserve_transparent_color;
+inline bool Window::GetBackgroundPreserveTransparentColor() const {
+	return bg_preserve_transparent_color;
 }
 
 inline bool Window::IsSystemGraphicUpdateAllowed() const {

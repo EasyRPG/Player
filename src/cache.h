@@ -52,7 +52,7 @@ namespace Cache {
 	BitmapRef Picture(std::string_view filename, bool transparent);
 	BitmapRef Chipset(std::string_view filename);
 	BitmapRef Title(std::string_view filename);
-	BitmapRef System(std::string_view filename, bool preserve_transparent_color = false);
+	BitmapRef System(std::string_view filename, bool bg_preserve_transparent_color = false);
 	BitmapRef System2(std::string_view filename);
 
 	BitmapRef Tile(std::string_view filename, int tile_id);
@@ -62,13 +62,13 @@ namespace Cache {
 	void ClearAll();
 
 	/** @return the configured system bitmap, or nullptr if there is no system */
-	BitmapRef System(bool preserve_transparent_color = false);
+	BitmapRef System(bool bg_preserve_transparent_color = false);
 
 	/** @return a black system graphic bitmap */
 	BitmapRef SysBlack();
 
 	/** @return the configured system bitmap, or a default black bitmap if there is no system */
-	BitmapRef SystemOrBlack(bool preserve_transparent_color = false);
+	BitmapRef SystemOrBlack(bool bg_preserve_transparent_color = false);
 
 	/** @return the configured system2 bitmap, or nullptr if there is no system2 */
 	BitmapRef System2();

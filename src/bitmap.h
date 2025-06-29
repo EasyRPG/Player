@@ -149,10 +149,10 @@ public:
 		// Special handling for chipset graphic.
 		// Generates a tile opacity list.
 		Flag_Chipset = 1 << 2,
-		// Disables premultiplied alpha. Used for the system graphic to preserve
-		// the colors of the transparent pixels in RPG2k and in RPG2k3 with semi-
-		// transparent message box.
-		Flag_NoPremultipliedAlpha = 1 << 3,
+		// Disables premultiplied alpha for the background section of the system
+		// graphic (at 0,0,32,32) to preserve the colors of the transparent
+		// pixels in RPG2k and in RPG2k3 with semi-transparent message box.
+		Flag_SystemBgPreserveColor = 1 << 3,
 		// Bitmap will not be written to. This allows blit optimisations because the
 		// opacity information will not change.
 		Flag_ReadOnly = 1 << 16

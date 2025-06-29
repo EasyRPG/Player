@@ -66,12 +66,12 @@ void Window::SetBackgroundAlpha(bool alpha) {
 	background_alpha = alpha;
 }
 
-void Window::SetPreserveTransparentColor(bool preserve) {
-	if (preserve == preserve_transparent_color) {
+void Window::SetBackgroundPreserveTransparentColor(bool preserve) {
+	if (preserve == bg_preserve_transparent_color) {
 		return;
 	}
 
-	preserve_transparent_color = preserve;
+	bg_preserve_transparent_color = preserve;
 }
 
 void Window::Draw(Bitmap& dst) {

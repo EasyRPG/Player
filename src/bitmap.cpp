@@ -539,7 +539,7 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 	const DynamicFormat& img_format = transparent ? image_format : opaque_image_format;
 
 	// premultiply alpha
-	if ((flags & Flag_NoPremultipliedAlpha) == 0) {
+	if ((flags & Flag_SystemBgPreserveColor) == 0) {
 		for (int y = 0; y < height; y++) {
 			uint8_t* dst = (uint8_t*) pixels + y * width * 4;
 			for (int x = 0; x < width; x++) {
@@ -547,6 +547,23 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 				uint8_t &g = *dst++;
 				uint8_t &b = *dst++;
 				uint8_t &a = *dst++;
+				MultiplyAlpha(r, g, b, a);
+			}
+		}
+	} else {
+		for (int y = 0; y < height; y++) {
+			uint8_t* dst = (uint8_t*) pixels + y * width * 4;
+			for (int x = 0; x < width; x++) {
+				uint8_t &r = *dst++;
+				uint8_t &g = *dst++;
+				uint8_t &b = *dst++;
+				uint8_t &a = *dst++;
+
+				// Skip alpha calculation for 32x32 system background graphic
+				if (x < 32 && y < 32) {
+					continue;
+				}
+
 				MultiplyAlpha(r, g, b, a);
 			}
 		}

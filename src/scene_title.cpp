@@ -253,7 +253,7 @@ void Scene_Title::CreateCommandWindow() {
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		command_window->SetBackOpacity(160);
-		command_window->SetPreserveTransparentColor(true);
+		command_window->SetBackgroundPreserveTransparentColor(true);
 	}
 
 	command_window->SetVisible(true);

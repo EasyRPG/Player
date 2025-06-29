@@ -399,10 +399,10 @@ BitmapRef Cache::Title(std::string_view file) {
 	return LoadBitmap<Material::Title>(file);
 }
 
-BitmapRef Cache::System(std::string_view file, bool preserve_transparent_color) {
+BitmapRef Cache::System(std::string_view file, bool bg_preserve_transparent_color) {
 	uint32_t flags = 0;
-	if (preserve_transparent_color || Player::IsRPG2k()) {
-		flags = Bitmap::Flag_NoPremultipliedAlpha;
+	if (bg_preserve_transparent_color || Player::IsRPG2k()) {
+		flags = Bitmap::Flag_SystemBgPreserveColor;
 	}
 
 	return LoadBitmap<Material::System>(file, flags);
@@ -561,9 +561,9 @@ void Cache::SetSystem2Name(std::string filename) {
 	system2_name = std::move(filename);
 }
 
-BitmapRef Cache::System(bool preserve_transparent_color) {
+BitmapRef Cache::System(bool bg_preserve_transparent_color) {
 	if (!system_name.empty()) {
-		return Cache::System(system_name, preserve_transparent_color);
+		return Cache::System(system_name, bg_preserve_transparent_color);
 	} else {
 		return nullptr;
 	}
@@ -574,8 +574,8 @@ BitmapRef Cache::SysBlack() {
 	return system_black;
 }
 
-BitmapRef Cache::SystemOrBlack(bool preserve_transparent_color) {
-	auto system = Cache::System(preserve_transparent_color);
+BitmapRef Cache::SystemOrBlack(bool bg_preserve_transparent_color) {
+	auto system = Cache::System(bg_preserve_transparent_color);
 	if (system) {
 		return system;
 	}

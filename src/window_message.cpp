@@ -106,7 +106,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 		&& (Player::IsRPG2k3E() || lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_traditional);
 	if (msg_transparent) {
 		SetBackOpacity(160);
-		SetPreserveTransparentColor(true);
+		SetBackgroundPreserveTransparentColor(true);
 	}
 	gold_window->SetBackOpacity(GetBackOpacity());
 
@@ -308,7 +308,7 @@ void Window_Message::InsertNewPage() {
 	// 2k3 applies transparent color to gold window
 	if (Player::IsRPG2k3()) {
 		gold_window->SetBackgroundAlpha(Main_Data::game_system->IsMessageTransparent());
-		gold_window->SetPreserveTransparentColor(GetPreserveTransparentColor() && !gold_window->GetBackgroundAlpha());
+		gold_window->SetBackgroundPreserveTransparentColor(GetBackgroundPreserveTransparentColor() && !gold_window->GetBackgroundAlpha());
 	}
 
 	if (IsFaceEnabled()) {
