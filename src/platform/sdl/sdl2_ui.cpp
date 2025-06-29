@@ -1292,6 +1292,9 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.game_resolution.SetOptionVisible(true);
 	cfg.pause_when_focus_lost.SetOptionVisible(true);
 	cfg.screen_scale.SetOptionVisible(true);
+#if defined(__wii__)
+	cfg.screen_scale.SetMax(100);
+#endif
 
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);
