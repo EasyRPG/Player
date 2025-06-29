@@ -866,7 +866,7 @@ if(APPLE)
 		src/platform/macos/macos_utils.h)
 
 	if(MACOS)
-		find_Library(MACOSAUDIOUNIT AudioUnit REQUIRED)
+		find_library(MACOSAUDIOUNIT AudioUnit REQUIRED)
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/platform/macos/midiout_device_coreaudio.cpp
 			src/platform/macos/midiout_device_coreaudio.h)
@@ -958,7 +958,7 @@ endif()
 
 # freetype and harfbuzz
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ
+cmake_dependent_option(PLAYER_WITH_HARFBUZZ
 	"Enable HarfBuzz text shaping (Requires FreeType)" ON
 	"PLAYER_WITH_FREETYPE" OFF)
 
@@ -1022,7 +1022,7 @@ if(PLAYER_HAS_AUDIO)
 		endif()
 	endif()
 
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_NATIVE_MIDI
+	cmake_dependent_option(PLAYER_WITH_NATIVE_MIDI
 		"Play MIDI audio using the API of the operating system" ON
 		"SUPPORT_NATIVE_MIDI" OFF)
 	if(PLAYER_WITH_NATIVE_MIDI)
@@ -1049,31 +1049,31 @@ if(PLAYER_HAS_AUDIO)
 	endif()
 endif()
 
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123
+cmake_dependent_option(PLAYER_WITH_MPG123
 	"Play MP3 audio with libmpg123" ON
 	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE
+cmake_dependent_option(PLAYER_WITH_LIBSNDFILE
 	"Play WAV audio with libsndfile" ON
 	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS
+cmake_dependent_option(PLAYER_WITH_OGGVORBIS
 	"Play Ogg Vorbis audio with libvorbis" ON
 	"PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS
+cmake_dependent_option(PLAYER_WITH_OPUS
 	"Play Opus audio with opusfile" ON
 	"PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI
+cmake_dependent_option(PLAYER_WITH_WILDMIDI
 	"Play MIDI audio with wildmidi" ON
 	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDSYNTH
+cmake_dependent_option(PLAYER_WITH_FLUIDSYNTH
 	"Play MIDI audio with fluidsynth" ON
 	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_FLUIDLITE
+cmake_dependent_option(PLAYER_WITH_FLUIDLITE
 	"Play MIDI audio with fluidlite" ON
 	"PLAYER_HAS_AUDIO;NOT PLAYER_NONFREE" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP
+cmake_dependent_option(PLAYER_WITH_XMP
 	"Play MOD audio with libxmp" ON
 	"PLAYER_HAS_AUDIO" OFF)
-CMAKE_DEPENDENT_OPTION(PLAYER_ENABLE_DRWAV
+cmake_dependent_option(PLAYER_ENABLE_DRWAV
 	"Play WAV audio with dr_wav (built-in). Unsupported files are played by libsndfile." ON
 	"PLAYER_HAS_AUDIO" OFF)
 
@@ -1085,10 +1085,10 @@ if(PLAYER_HAS_AUDIO)
 		set(PLAYER_AUDIO_RESAMPLER_IS_AUTO ON)
 	endif()
 
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SPEEXDSP
+	cmake_dependent_option(PLAYER_WITH_SPEEXDSP
 		"Use speexdsp as resampler when available." ON
 		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
-	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SAMPLERATE
+	cmake_dependent_option(PLAYER_WITH_SAMPLERATE
 		"Use libsamplerate as resampler when available." ON
 		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
 
@@ -1198,7 +1198,7 @@ endif()
 
 # Fonts
 option(PLAYER_WITH_BAEKMUK "Enable built-in Baekmuk font (Korean)" ON)
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WQY
+cmake_dependent_option(PLAYER_WITH_WQY
 	"Enable built-in WenQuanYi font (Chinese)" ON
 	"NOT PLAYER_NONFREE" OFF)
 
