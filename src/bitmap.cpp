@@ -200,12 +200,16 @@ size_t Bitmap::GetSize() const {
 }
 
 ImageOpacity Bitmap::ComputeImageOpacity() const {
+	if (!GetTransparent()) {
+		return ImageOpacity::Opaque;
+	}
+
 	bool all_opaque = true;
 	bool all_transp = true;
 	bool alpha_1bit = true;
 
 	auto* p = reinterpret_cast<const uint32_t*>(pixels());
-	const auto mask = pixel_format.rgba_to_uint32_t(0, 0, 0, 0xFF);
+	const auto mask = format.rgba_to_uint32_t(0, 0, 0, 0xFF);
 
 	int n = GetSize() / sizeof(uint32_t);
 	for (int i = 0; i < n; ++i ) {
@@ -225,6 +229,10 @@ ImageOpacity Bitmap::ComputeImageOpacity() const {
 }
 
 ImageOpacity Bitmap::ComputeImageOpacity(Rect rect) const {
+	if (!GetTransparent()) {
+		return ImageOpacity::Opaque;
+	}
+
 	bool all_opaque = true;
 	bool all_transp = true;
 	bool alpha_1bit = true;
@@ -234,7 +242,7 @@ ImageOpacity Bitmap::ComputeImageOpacity(Rect rect) const {
 
 	auto* p = reinterpret_cast<const uint32_t*>(pixels());
 	const int stride = pitch() / sizeof(uint32_t);
-	const auto mask = pixel_format.rgba_to_uint32_t(0, 0, 0, 0xFF);
+	const auto mask = format.rgba_to_uint32_t(0, 0, 0, 0xFF);
 
 	int xend = (rect.x + rect.width);
 	int yend = (rect.y + rect.height);
