@@ -349,24 +349,36 @@ void Transition::Draw(Bitmap& dst) {
 		dst.StretchBlit(Rect(0, 0, w, h), *screen_pointer1, Rect(z_pos[0], z_pos[1], z_size[0], z_size[1]), 255);
 		break;
 	case TransitionMosaicIn:
-	case TransitionMosaicOut:
-		// If TransitionMosaicIn, invert percentage and screen:
-		// FIXME: When the map is smaller than the viewport this will look weird because it mixes the black corners with the mosaic
-		if (transition_type == TransitionMosaicIn) { percentage = 100 - percentage; }
-		screen_pointer1 = transition_type == TransitionMosaicIn ? screen2 : screen1;
+	case TransitionMosaicOut: {
+		// Goes from scale 2 to 41 (current_frame is 0 - 39)
+		// If TransitionMosaicIn, invert scale and screen:
+		if (transition_type == TransitionMosaicIn) {
+			m_size = total_frames + 2 - current_frame;
+			screen_pointer1 = screen2;
+		} else {
+			m_size = current_frame + 2;
+			screen_pointer1 = screen1;
+		}
 
-		m_size = (percentage + 1) * 4 / 10;
-		if (m_size > 1)
-			for (int i = 0; i < w; i += m_size)
-				for (int j = 0; j < h; j += m_size) {
-					m_pointer = static_cast<uint32_t *>(screen_pointer1->pixels()) + j * w + i;
-					m_pointer += ((i == 0 ? 1 : 0) + (j == 0 ? w : 0)) * (m_size - 1);
-					dst.pixel_format.uint32_to_rgba(*m_pointer, m_r, m_g, m_b, m_a);
-					dst.FillRect(Rect(i - ((m_size - w % m_size) % m_size) / 2, j - ((m_size - h % m_size) % m_size) / 2, m_size, m_size), Color(m_r, m_g, m_b, 255));
-				}
-		else
-			dst.Blit(0, 0, *screen_pointer1, screen_pointer1->GetRect(), 255);
+		// The offset defines where at (X,Y) the pixel is picked for scaling (nearest neighbour)
+		// The pixel is usually initially out of bounds
+		// in this case the nearest pixel of the image is choosen (edge handling = extend)
+		int off = (m_size / 2);
+
+		for (int row = 0; row < h; ++row) {
+			int src_row = std::clamp(((row + off) / m_size) * m_size - off, 0, h - 1);
+
+			for (int col = 0; col < w; ++col) {
+				int src_col = std::clamp(((col + off) / m_size) * m_size - off, 0, w - 1);
+				m_pointer = static_cast<uint32_t*>(screen_pointer1->pixels()) + src_row * w + src_col;
+				dst.pixel_format.uint32_to_rgba(*m_pointer, m_r, m_g, m_b, m_a);
+
+				Rect r(col, row, 1, 1);
+				dst.FillRect(r, Color(m_r, m_g, m_b, 255));
+			}
+		}
 		break;
+	}
 	case TransitionWaveIn:
 	case TransitionWaveOut:
 		{
