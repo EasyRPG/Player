@@ -1054,7 +1054,7 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 			route.skippable = args.skip_when_failed;
 			route.repeat = false;
 
-			for (SearchNode node2 : list_move) {
+			for (SearchNode const& node2 : list_move) {
 				if (node2.direction >= 0) {
 					lcf::rpg::MoveCommand cmd;
 					cmd.command_id = node2.direction;
