@@ -685,7 +685,8 @@ Game_Config Player::ParseCommandLine() {
 void Player::CreateGameObjects() {
 	// Parse game specific settings
 	CmdlineParser cp(arguments);
-	game_config = Game_ConfigGame::Create(cp);
+	game_config = Game_ConfigGame();
+	game_config.Initialize(cp);
 
 	// Reinit MIDI
 	MidiDecoder::Reset();
@@ -1463,6 +1464,8 @@ Engine options:
  --patch-direct-menu VAR
                       Directly access subscreens of the default menu by setting
                       VAR.
+ --patch-encounter-alert VAR
+                      Set troop id to variable VAR and skip random battles.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
