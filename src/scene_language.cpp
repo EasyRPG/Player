@@ -94,6 +94,7 @@ void Scene_Language::CreateTranslationWindow() {
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		translate_window->SetBackOpacity(160);
+		translate_window->SetBackgroundPreserveTransparentColor(true);
 	}
 
 	translate_window->SetVisible(false);
@@ -104,6 +105,7 @@ void Scene_Language::CreateHelpWindow() {
 
 	if (Player::IsRPG2k3E() && lcf::Data::battlecommands.transparency == lcf::rpg::BattleCommands::Transparency_transparent) {
 		help_window->SetBackOpacity(160);
+		help_window->SetBackgroundPreserveTransparentColor(true);
 	}
 
 	help_window->SetVisible(false);

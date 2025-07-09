@@ -35,7 +35,7 @@ public:
 
 	virtual void Update();
 	BitmapRef const& GetWindowskin() const;
-	void SetWindowskin(BitmapRef const& nwindowskin, bool transparent = false);
+	void SetWindowskin(BitmapRef const& nwindowskin);
 	BitmapRef GetContents() const;
 	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
@@ -84,6 +84,14 @@ public:
 	void SetContentsOpacity(int ncontents_opacity);
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
+	// Whether transparent pixels on the window background are drawn in black
+	// or transparent
+	bool GetBackgroundAlpha() const;
+	void SetBackgroundAlpha(bool alpha);
+	// Whether transparent pixels keep there original color instead of
+	// converting them to black
+	bool GetBackgroundPreserveTransparentColor() const;
+	void SetBackgroundPreserveTransparentColor(bool preserve);
 
 	FontRef GetFont() const;
 	void SetFont(FontRef font);
@@ -130,6 +138,7 @@ private:
 	void RefreshCursor();
 
 	bool background_alpha = false;
+	bool bg_preserve_transparent_color = false;
 	bool background_needs_refresh;
 	bool frame_needs_refresh;
 	bool cursor_needs_refresh;
@@ -326,6 +335,14 @@ inline int Window::GetContentsOpacity() const {
 
 inline void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
+}
+
+inline bool Window::GetBackgroundAlpha() const {
+	return background_alpha;
+}
+
+inline bool Window::GetBackgroundPreserveTransparentColor() const {
+	return bg_preserve_transparent_color;
 }
 
 inline bool Window::IsSystemGraphicUpdateAllowed() const {
