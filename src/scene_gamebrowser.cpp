@@ -52,7 +52,7 @@ void Scene_GameBrowser::Continue(SceneType /* prev_scene */) {
 	AudioSeCache::Clear();
 	MidiDecoder::Reset();
 	lcf::Data::Clear();
-	Main_Data::Cleanup();
+	Player::ResetGameObjects();
 
 	// Restore the base resolution
 	Player::RestoreBaseResolution();
