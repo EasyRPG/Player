@@ -1,6 +1,6 @@
 # Building
 
-## Dependencies:
+## Dependencies
 
 If your operating system has a package manager, we recommend installing the
 dependencies with it.
@@ -28,7 +28,7 @@ CMake is the only supported way to build Player. On Windows all dependencies
 must be installed with [vcpkg].
 
 
-## libretro core:
+## libretro core
 
 Additional commands required before building:
 
@@ -43,7 +43,7 @@ Set shared libs to ON or OFF depending on which type of libraries RetroArch
 uses on the platform you are targeting.
 
 
-## Android APK:
+## Android APK
 
 Building requirements:
 
@@ -76,8 +76,7 @@ Building requirements:
 - devkitA64 for Switch
 - vitasdk for PSVita/PSTV
 
-You can get them at devkitPro: https://devkitpro.org/wiki/Getting_Started
-and vitasdk: https://vitasdk.org
+You can get them at [devkitpro.org] and [vitasdk.org].
 
 Invoke CMake with these additional parameters:
 
@@ -92,3 +91,5 @@ Switch, Wii U and 3DS support shipping games, use these parameters:
 [buildscripts]: https://github.com/EasyRPG/buildscripts
 [liblcf]: https://github.com/EasyRPG/liblcf
 [vcpkg]: https://github.com/Microsoft/vcpkg
+[devkitpro.org]: https://devkitpro.org/wiki/Getting_Started
+[vitasdk.org]: https://vitasdk.org
