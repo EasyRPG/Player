@@ -1,0 +1,214 @@
+#!/bin/bash
+
+# configure - helper script to aid CMake migration
+# by carstene1ns 2024, released under the MIT license
+
+set -e
+#set -x
+
+# helper functions
+
+colorize() {
+  RESET="\e[0m"
+  BOLD="\e[1m"
+  BLUE="${BOLD}\e[34m"
+  GREEN="${BOLD}\e[32m"
+  RED="${BOLD}\e[31m"
+  YELLOW="${BOLD}\e[33m"
+}
+
+message() {
+  printf "${GREEN}==>${RESET} ${1}\n"
+}
+
+argument() {
+  printf "${BLUE}${1} ->${RESET} ${2}\n"
+}
+
+argument_simple() {
+  printf "${BLUE}${1} ->${RESET} For ${2} support use '-D${3}=ON|OFF'\n"
+}
+
+warning() {
+  printf "${YELLOW}WARNING:${RESET}${BOLD} ${1}${RESET}\n" >&2
+}
+
+error() {
+  printf "${RED}ERROR:${RESET}${BOLD} ${1}${RESET}\n" >&2
+}
+
+# variables
+show_dirinfo=0
+show_crossinfo=0
+show_libflaginfo=0
+arguments=""
+
+# main
+
+# check for terminal output
+test -t 0 && colorize
+
+warning "After version 0.8.1 autotools support has been removed.\n \
+        We migrated to CMake (https://cmake.org) exclusively.\n \
+        Please check the docs/BUILDING.md document. Now follows a\n \
+        generated help based on provided arguments for pointers\n \
+        how to migrate your build settings to cmake invocation.\n"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    # ignore
+    --help=*|-h|--help|-q|--quiet|--silent)
+      shift
+      ;;
+
+    # directories
+    --*dir=*)
+      show_dirinfo=1
+      shift
+      ;;
+    --*dir)
+      show_dirinfo=1
+      shift 2
+      ;;
+
+    # crossbuild
+    --build=*|--host=*)
+      show_crossinfo=1
+      shift
+      ;;
+    --build|--host)
+      show_crossinfo=1
+      shift 2
+      ;;
+
+    # variables
+    *_LIBS=*|*_CFLAGS=*)
+      show_libflaginfo=1
+      shift
+      ;;
+
+    # libraries
+    --disable-fmmidi*|--enable-fmmidi*)
+      argument_simple "$1" "FMMidi" "PLAYER_ENABLE_FMMIDI"
+      shift
+      ;;
+
+    --disable-drwav*|--enable-drwav*)
+      argument_simple "$1" "drwav" "PLAYER_ENABLE_DRWAV"
+      shift
+      ;;
+
+    --disable-doxygen*|--enable-doxygen*)
+      argument "$1" "To build doxygen documentation use 'doc' target after generating, e.g. 'make doc'"
+      shift
+      ;;
+
+    --with-freetype*|--without-freetype*)
+      argument_simple "$1" "FreeType" "PLAYER_WITH_FREETYPE"
+      shift
+      ;;
+
+    --with-harfbuzz*|--without-harfbuzz*)
+      argument_simple "$1" "Harfbuzz" "PLAYER_WITH_HARFBUZZ"
+      shift
+      ;;
+
+    --with-lhasa*|--without-lhasa*)
+      argument_simple "$1" "Lhasa" "PLAYER_WITH_LHASA"
+      shift
+      ;;
+
+    --with-audio*|--without-audio*)
+      argument "$1" "To disable audio use '-DPLAYER_AUDIO_BACKEND=OFF'"
+      shift
+      ;;
+
+    --with-libmpg123*|--without-libmpg123*)
+      argument_simple "$1" "mpeg123" "HAVE_LIBMPG123"
+      shift
+      ;;
+
+    --with-libwildmidi*|--without-libwildmidi*)
+      argument_simple "$1" "WildMidi" "PLAYER_WITH_WILDMIDI"
+      shift
+      ;;
+
+    --with-fluidsynth*|--without-fluidsynth*)
+      argument_simple "$1" "Fluidsynth" "PLAYER_WITH_FLUIDSYNTH"
+      shift
+      ;;
+
+    --with-fluidlite*|--without-fluidlite*)
+      argument_simple "$1" "FluidLite" "PLAYER_WITH_FLUIDLITE"
+      shift
+      ;;
+
+    --with-alsa*|--without-alsa*)
+      argument_simple "$1" "Native MIDI" "PLAYER_WITH_NATIVE_MIDI"
+      shift
+      ;;
+
+    --with-oggvorbis*|--without-oggvorbis*)
+      argument_simple "$1" "Ogg Vorbis" "PLAYER_WITH_OGGVORBIS"
+      shift
+      ;;
+
+    --with-opus*|--without-opus*)
+      argument_simple "$1" "Opus" "PLAYER_WITH_OPUS"
+      shift
+      ;;
+
+    --with-libsndfile*|--without-libsndfile*)
+      argument_simple "$1" "Sndfile" "PLAYER_WITH_LIBSNDFILE"
+      shift
+      ;;
+
+    --with-libxmp*|--without-libxmp*)
+      argument_simple "$1" "xmp" "PLAYER_WITH_XMP"
+      shift
+      ;;
+
+    --with-libspeexdsp*|--without-libspeexdsp*)
+      argument_simple "$1" "speexDSP" "PLAYER_WITH_SPEEXDSP"
+      shift
+      ;;
+
+    # ignore remaining, notify later
+    *)
+      arguments="$arguments $1"
+      shift
+      ;;
+  esac
+done
+
+echo
+
+# show generic messages
+if [ $show_dirinfo -eq 1 ]; then
+  message "You provided one or more directory options (--somedir=somewhere),\n \
+   Changing installation directories is supported, see the following link for reference:\n \
+   https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html\n"
+fi
+if [ $show_crossinfo -eq 1 ]; then
+  message "For crosscompiling you need a toolchain file, see the following link for reference:\n \
+   https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html#cross-compiling\n"
+fi
+if [ $show_libflaginfo -eq 1 ]; then
+  message "For custom library flags, it might be needed to have a look at the 'Find*.cmake'\n \
+   Modules in 'builds/cmake/Modules' directory\n"
+fi
+
+# show other options
+if [ -n "$arguments" ]; then
+  error "The following options are unrecognized:"
+  for arg in $arguments; do
+    echo "         $arg"
+  done
+  echo
+fi
+
+echo "If you need further help, use our bug tracker or contact us:"
+echo "https://github.com/EasyRPG/Player/issues - https://easyrpg.org/contact/"
+
+# exit with error code to make external tools aware of "unsuccessful" build
+exit 1

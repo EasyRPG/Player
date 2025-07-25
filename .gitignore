@@ -1,5 +1,3 @@
-/bin/
-/Makefile
 /easyrpg-player
 /Player.app
 *.a
@@ -9,33 +7,8 @@
 *.orig
 *.bak
 
-# autotools
-/autom4te.cache/
-/easyrpg-player-*/
-/.libs/
-.deps/
-Makefile.in
-aclocal.m4
-config.h
-config.h.in
-config.status
-configure
-libtool
-/builds/autoconf/aux/
-/builds/autoconf/m4/*.m4
-!/builds/autoconf/m4/ax_*.m4
-!/builds/autoconf/m4/with_pkg.m4
-stamp-h1
-.dirstamp
-*.la
-*.lo
-/output
-/utils
-/directorytree
-/.version-append
-/.version-git
-
 # cmake
+/Makefile
 CMakeFiles/
 CMakeScripts/
 CMakeCache.txt
@@ -88,10 +61,10 @@ build/
 # test/run artifacts
 easyrpg_log.txt
 /*.log
-/*.trs
 Testing/
 
 # distribution archives
+/easyrpg-player-*/
 easyrpg-player-*.tar.*
 *.zip
 
@@ -109,9 +82,8 @@ __MACOSX
 /RelWithDebInfo/
 /*.build/
 
-# legacy
+# legacy, used for PLAYER_BUILD_LIBLCF
 /lib/liblcf/
-.buildconfig
 
 # Android
 *.iml

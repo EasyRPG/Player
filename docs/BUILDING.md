@@ -1,6 +1,6 @@
 # Building
 
-## Dependencies:
+## Dependencies
 
 If your operating system has a package manager, we recommend installing the
 dependencies with it.
@@ -9,32 +9,7 @@ In case you want to compile the dependencies yourself, you can find them,
 except for [liblcf], in our [buildscripts] repository.
 
 
-## Autotools Makefile method:
-
-Building requirements:
-
-- pkg-config
-- GNU make
-
-Step-by-step instructions:
-
-    tar xf easyrpg-player-0.8.1.tar.xz # unpack the tarball
-    cd easyrpg-player-0.8.1            # enter in the package directory
-    ./configure                        # find libraries, set options
-    make                               # compile the executable
-
-Additional building requirements when using the source tree (git):
-
-- autoconf >= 2.69
-- automake >= 1.11.4
-- libtool
-
-To generate the "configure" script, run before following the above section:
-
-    autoreconf -i
-
-
-## CMake method:
+## Standard build with CMake
 
 Building requirements:
 
@@ -49,13 +24,11 @@ Step-by-step instructions:
     cmake --build .                       # compile the executable
     sudo cmake --build . --target install # install system-wide
 
-CMake is the only supported way to build Player for Windows. All dependencies
+CMake is the only supported way to build Player. On Windows all dependencies
 must be installed with [vcpkg].
 
 
-## libretro core:
-
-Building for libretro is based on the CMake method.
+## libretro core
 
 Additional commands required before building:
 
@@ -70,7 +43,7 @@ Set shared libs to ON or OFF depending on which type of libraries RetroArch
 uses on the platform you are targeting.
 
 
-## Android APK:
+## Android APK
 
 Building requirements:
 
@@ -96,8 +69,6 @@ The unsigned APK is stored in:
 
 ## Nintendo and Sony Homebrew ports (Wii (U), 3DS, Switch, PSVita/PSTV)
 
-This is based on the CMake method.
-
 Building requirements:
 
 - devkitPPC for Wii and Wii U
@@ -105,8 +76,7 @@ Building requirements:
 - devkitA64 for Switch
 - vitasdk for PSVita/PSTV
 
-You can get them at devkitPro: https://devkitpro.org/wiki/Getting_Started
-and vitasdk: https://vitasdk.org
+You can get them at [devkitpro.org] and [vitasdk.org].
 
 Invoke CMake with these additional parameters:
 
@@ -121,3 +91,5 @@ Switch, Wii U and 3DS support shipping games, use these parameters:
 [buildscripts]: https://github.com/EasyRPG/buildscripts
 [liblcf]: https://github.com/EasyRPG/liblcf
 [vcpkg]: https://github.com/Microsoft/vcpkg
+[devkitpro.org]: https://devkitpro.org/wiki/Getting_Started
+[vitasdk.org]: https://vitasdk.org
