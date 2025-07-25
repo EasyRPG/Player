@@ -82,6 +82,9 @@ __MACOSX
 /RelWithDebInfo/
 /*.build/
 
+# legacy, used for PLAYER_BUILD_LIBLCF
+/lib/liblcf/
+
 # Android
 *.iml
 local.properties

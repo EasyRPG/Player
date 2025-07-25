@@ -7,6 +7,7 @@
 *.rb      text
 *.sh      text
 
+# external sources
 tests/doctest.h -diff linguist-vendored
 src/external/* -diff linguist-vendored
 src/midiprogram.h -diff linguist-vendored
@@ -27,6 +28,7 @@ src/generated/* -diff linguist-generated
 #TODO? .gitmodules export-ignore
 #TODO? /builds/libretro/ export-ignore
 
+#TODO: Android is usually built from git, but maybe keep it (e.g. f-droid)?
 /builds/android/ export-ignore
 /builds/flatpak/ export-ignore
 /builds/snap/ export-ignore
