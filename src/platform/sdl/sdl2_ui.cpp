@@ -586,6 +586,11 @@ void Sdl2Ui::ToggleVsync() {
 #endif
 }
 
+void Sdl2Ui::SetScreenScale(int scale) {
+	vcfg.screen_scale.Set(std::clamp(scale, 50, 150));
+	window.size_changed = true;
+}
+
 void Sdl2Ui::UpdateDisplay() {
 #ifdef __WIIU__
 	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
@@ -609,60 +614,55 @@ void Sdl2Ui::UpdateDisplay() {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
 
-		float width_float = static_cast<float>(window.width);
-		float height_float = static_cast<float>(window.height);
+		int win_width = window.width * vcfg.screen_scale.Get() / 100.0;
+		int win_height = window.height * vcfg.screen_scale.Get() / 100.0;
+
+		int border_x = (window.width - win_width) / 2;
+		int border_y = (window.height - win_height) / 2;
+
+		float width_float = static_cast<float>(win_width);
+		float height_float = static_cast<float>(win_height);
 
 		float want_aspect = (float)main_surface->width() / main_surface->height();
 		float real_aspect = width_float / height_float;
 
-		auto do_stretch = [this]() {
+		auto do_stretch = [this, border_x, win_width]() {
 			if (vcfg.stretch.Get()) {
-				viewport.x = 0;
-				viewport.w = window.width;
+				viewport.x = border_x;
+				viewport.w = win_width;
 			}
 		};
 
 		if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
-				window.scale = static_cast<float>(window.width / main_surface->width());
+				window.scale = static_cast<float>(win_width / main_surface->width());
 			} else {
-				window.scale = static_cast<float>(window.height / main_surface->height());
+				window.scale = static_cast<float>(win_height / main_surface->height());
 			}
 
 			viewport.w = static_cast<int>(ceilf(main_surface->width() * window.scale));
-			viewport.x = (window.width - viewport.w) / 2;
+			viewport.x = (win_width - viewport.w) / 2 + border_x;
 			viewport.h = static_cast<int>(ceilf(main_surface->height() * window.scale));
-			viewport.y = (window.height - viewport.h) / 2;
+			viewport.y = (win_height - viewport.h) / 2 + border_y;
 			do_stretch();
-
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
-		} else if (fabs(want_aspect - real_aspect) < 0.0001) {
-			// The aspect ratios are the same, let SDL2 scale it
-			window.scale = width_float / main_surface->width();
-			SDL_RenderSetViewport(sdl_renderer, nullptr);
-
-			// Only used here for the mouse coordinates
-			viewport.x = 0;
-			viewport.y = 0;
-			viewport.w = window.width;
-			viewport.h = window.height;
 		} else if (want_aspect > real_aspect) {
 			// Letterboxing (black bars top and bottom)
 			window.scale = width_float / main_surface->width();
-			viewport.x = 0;
-			viewport.w = window.width;
+			viewport.x = border_x;
+			viewport.w = win_width;
 			viewport.h = static_cast<int>(ceilf(main_surface->height() * window.scale));
-			viewport.y = (window.height - viewport.h) / 2;
+			viewport.y = (win_height - viewport.h) / 2 + border_y;
 			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		} else {
-			// black bars left and right
+			// black bars left and right (or nothing when aspect ratio matches)
 			window.scale = height_float / main_surface->height();
-			viewport.y = 0;
-			viewport.h = window.height;
+			viewport.y = border_y;
+			viewport.h = win_height;
 			viewport.w = static_cast<int>(ceilf(main_surface->width() * window.scale));
-			viewport.x = (window.width - viewport.w) / 2;
+			viewport.x = (win_width - viewport.w) / 2 + border_x;
 			do_stretch();
 			SDL_RenderSetViewport(sdl_renderer, &viewport);
 		}
@@ -1291,6 +1291,10 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.stretch.SetOptionVisible(true);
 	cfg.game_resolution.SetOptionVisible(true);
 	cfg.pause_when_focus_lost.SetOptionVisible(true);
+	cfg.screen_scale.SetOptionVisible(true);
+#if defined(__wii__)
+	cfg.screen_scale.SetMax(100);
+#endif
 
 	cfg.vsync.Set(current_display_mode.vsync);
 	cfg.window_zoom.Set(current_display_mode.zoom);

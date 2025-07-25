@@ -284,6 +284,7 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.pause_when_focus_lost, [cfg]() mutable { DisplayUi->SetPauseWhenFocusLost(cfg.pause_when_focus_lost.Toggle()); });
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
 	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<ConfigEnum::GameResolution>(GetCurrentOption().current_value)); });
+	AddOption(cfg.screen_scale, [this](){ DisplayUi->SetScreenScale(GetCurrentOption().current_value); });
 }
 
 void Window_Settings::RefreshAudio() {
