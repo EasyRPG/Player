@@ -20,8 +20,6 @@
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
-#include <iomanip>
-#include <fstream>
 #include <memory>
 
 #ifdef _WIN32
@@ -45,7 +43,6 @@
 #include "game_battle.h"
 #include "game_destiny.h"
 #include "game_map.h"
-#include "game_message.h"
 #include "game_enemyparty.h"
 #include "game_ineluki.h"
 #include "game_party.h"
@@ -85,6 +82,7 @@
 #include "game_clock.h"
 #include "message_overlay.h"
 #include "audio_midi.h"
+#include "maniac_patch.h"
 
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
@@ -912,6 +910,8 @@ void Player::RestoreBaseResolution() {
 
 void Player::ResetGameObjects() {
 	// The init order is important
+	ManiacPatch::GlobalSave::Save(true);
+
 	Main_Data::Cleanup();
 
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
