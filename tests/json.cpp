@@ -17,7 +17,7 @@ TEST_CASE("Get Value") {
 	auto obj = load("obj.json");
 	auto get = [&](std::string_view path) {
 		return Json_Helper::GetValue(obj, path);
-	};
+		};
 
 	CHECK_EQ(get("/name"), "Aina");
 	CHECK_EQ(get("/level"), "5");
@@ -39,12 +39,12 @@ TEST_CASE("Set Value") {
 
 	auto get = [&](std::string_view path) {
 		return Json_Helper::GetValue(obj, path);
-	};
+		};
 
 	auto set = [&](std::string_view path, std::string_view value) {
 		Json_Helper::SetValue(obj, path, value);
 		CHECK_EQ(get(path), value);
-	};
+		};
 
 	set("/name", "Easy");
 	set("/level", "A");
@@ -66,7 +66,7 @@ TEST_CASE("Get Length") {
 
 	auto len = [&](std::string_view path) {
 		return Json_Helper::GetLength(obj, path);
-	};
+		};
 
 	CHECK_EQ(len("/name"), 0);
 	CHECK_EQ(len("/atk"), 5);
@@ -79,7 +79,7 @@ TEST_CASE("Get Keys") {
 
 	auto keys = [&](std::string_view path) {
 		return Json_Helper::GetKeys(obj, path);
-	};
+		};
 
 	CHECK_EQ(keys("/name"), std::vector<std::string>());
 	CHECK_EQ(keys("/atk"), std::vector<std::string>{"0", "1", "2", "3", "4"});
@@ -92,7 +92,7 @@ TEST_CASE("Get Type") {
 
 	auto check = [&](std::string_view path) {
 		return Json_Helper::GetType(obj, path);
-	};
+		};
 
 	CHECK_EQ(check("/name"), "string");
 	CHECK_EQ(check("/atk"), "array");
@@ -108,7 +108,7 @@ TEST_CASE("Get Path") {
 
 	auto path = [&](std::string_view path) {
 		return Json_Helper::GetPath(obj, path);
-	};
+		};
 
 	// Function isn't fully implemented yet and not used by the Player
 	CHECK_EQ(path("Aina"), "/name");
@@ -120,37 +120,49 @@ TEST_CASE("Get Path") {
 }
 
 TEST_CASE("Remove Value") {
-	auto obj = load("obj.json");
-
-	auto remove = [&](std::string_view path) {
-		Json_Helper::RemoveValue(obj, path);
-	};
-
+	// Test removing the root element, which should clear the object to {}
 	{
-	auto orig = obj;
-	remove("/");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto obj = load("obj.json");
+		Json_Helper::RemoveValue(obj, "/");
+		CHECK_EQ(obj.dump(), "{}");
 	}
 
+	// Test removing a top-level key
 	{
-	auto orig = obj;
-	remove("/name");
-	orig.erase("name");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto obj = load("obj.json");
+		auto expected = load("obj.json");
+		expected.erase("name");
+
+		Json_Helper::RemoveValue(obj, "/name");
+		CHECK_EQ(obj.dump(), expected.dump());
 	}
 
+	// Test removing an element from an array
 	{
-	auto orig = obj;
-	remove("/atk/1");
-	orig["atk"].erase(1);
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto obj = load("obj.json");
+		auto expected = load("obj.json");
+		expected["atk"].erase(1);
+
+		Json_Helper::RemoveValue(obj, "/atk/1");
+		CHECK_EQ(obj.dump(), expected.dump());
 	}
 
+	// Test removing a key from a nested object
 	{
-	auto orig = obj;
-	remove("/skills/0/name");
-	orig["skills"][0].erase("name");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto obj = load("obj.json");
+		auto expected = load("obj.json");
+		expected["skills"][0].erase("name");
+
+		Json_Helper::RemoveValue(obj, "/skills/0/name");
+		CHECK_EQ(obj.dump(), expected.dump());
+	}
+
+	// Test that removing a non-existent path does nothing
+	{
+		auto obj = load("obj.json");
+		auto expected = load("obj.json");
+		Json_Helper::RemoveValue(obj, "/missing_path");
+		CHECK_EQ(obj.dump(), expected.dump());
 	}
 }
 
@@ -159,14 +171,14 @@ TEST_CASE("Push Value") {
 
 	auto push = [&](std::string_view path, std::string_view value) {
 		Json_Helper::PushValue(obj, path, value);
-	};
+		};
 
 	auto orig = obj.dump();
 	push("/name", "Easy");
 	CHECK_EQ(orig, obj.dump());
 
 	push("/atk", "3");
-	CHECK_EQ(obj["atk"], std::vector<int>{1,5,10,30,20,3});
+	CHECK_EQ(obj["atk"], std::vector<json>{1, 5, 10, 30, 20, 3});
 }
 
 TEST_CASE("Pop Value") {
@@ -178,7 +190,7 @@ TEST_CASE("Pop Value") {
 		CHECK_EQ(!json_obj.empty(), success);
 
 		return element;
-	};
+		};
 
 	CHECK_EQ(pop("/atk"), "20");
 	CHECK_EQ(pop("/atk"), "30");
@@ -198,8 +210,9 @@ TEST_CASE("Contains") {
 
 	auto check = [&](std::string_view path) {
 		return Json_Helper::Contains(obj, path);
-	};
+		};
 
+	CHECK_EQ(check("/"), true);
 	CHECK_EQ(check("/name"), true);
 	CHECK_EQ(check("/atk"), true);
 	CHECK_EQ(check("/skills/0"), true);

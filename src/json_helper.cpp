@@ -47,6 +47,23 @@ namespace {
 		return json_obj.dump();
 	}
 
+	// Helper to get a reference to the target json value, handling the root path case.
+	template <typename JsonType>
+	auto GetJsonTarget(JsonType& json_obj, std::string_view json_path) -> decltype(&json_obj) {
+		if (json_path == "/") {
+			return &json_obj;
+		}
+
+		std::string path_str(json_path);
+		json::json_pointer ptr(path_str);
+
+		if (json_obj.contains(ptr)) {
+			return &json_obj[ptr];
+		}
+
+		return nullptr;
+	}
+
 } // namespace
 
 namespace Json_Helper {
@@ -74,29 +91,24 @@ namespace Json_Helper {
 	}
 
 	std::string GetValue(json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-
-		if (!json_obj.contains(ptr)) {
-			return {};
+		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+			return GetValueAsString(*target);
 		}
-
-		const json& value = json_obj[ptr];
-		auto val = GetValueAsString(value);
-		return val;
+		return {};
 	}
 
-
 	std::string SetValue(json& json_obj, std::string_view json_path, std::string_view value) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-
 		json obj_value = json::parse(value, nullptr, false);
 		if (obj_value.is_discarded()) {
-			// If parsing fails, treat it as a string value
-			json_obj[ptr] = std::string(value);
+			obj_value = std::string(value);
+		}
+
+		if (json_path == "/") {
+			json_obj = obj_value;
 		}
 		else {
+			std::string path_str(json_path);
+			json::json_pointer ptr(path_str);
 			json_obj[ptr] = obj_value;
 		}
 
@@ -104,61 +116,42 @@ namespace Json_Helper {
 	}
 
 	size_t GetLength(const json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-
-		if (!json_obj.contains(ptr)) {
-			return 0;
+		if (const auto* target = GetJsonTarget(json_obj, json_path)) {
+			if (target->is_array() || target->is_object()) {
+				return target->size();
+			}
 		}
-
-		const json& value = json_obj[ptr];
-		if (!value.is_array() && !value.is_object()) {
-			return 0;
-		}
-
-		return value.size();
+		return 0;
 	}
 
 	std::vector<std::string> GetKeys(const json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-		if (!json_obj.contains(ptr)) {
-			return {};
-		}
-
-		const json& value = json_obj[ptr];
-
 		std::vector<std::string> keys;
-
-		if (value.is_object()) {
-			for (const auto& item : value.items()) {
-				keys.push_back(item.key());
+		if (const auto* target = GetJsonTarget(json_obj, json_path)) {
+			if (target->is_object()) {
+				for (const auto& item : target->items()) {
+					keys.push_back(item.key());
+				}
 			}
-		}
-		else if (value.is_array()) {
-			for (size_t i = 0; i < value.size(); ++i) {
-				keys.push_back(std::to_string(i));
+			else if (target->is_array()) {
+				for (size_t i = 0; i < target->size(); ++i) {
+					keys.push_back(std::to_string(i));
+				}
 			}
 		}
 		return keys;
 	}
 
 	std::string GetType(const json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
-		if (!json_obj.contains(ptr)) {
-			return {};
+		if (const auto* value = GetJsonTarget(json_obj, json_path)) {
+			if (value->is_object()) return std::string("object");
+			if (value->is_array()) return std::string("array");
+			if (value->is_string()) return std::string("string");
+			if (value->is_number()) return std::string("number");
+			if (value->is_boolean()) return std::string("boolean");
+			if (value->is_null()) return std::string("null");
+			return std::string("unknown");
 		}
-
-		const json& value = json_obj[ptr];
-
-		if (value.is_object()) return std::string("object");
-		if (value.is_array()) return std::string("array");
-		if (value.is_string()) return std::string("string");
-		if (value.is_number()) return std::string("number");
-		if (value.is_boolean()) return std::string("boolean");
-		if (value.is_null()) return std::string("null");
-		return std::string("unknown");
+		return {};
 	}
 
 	std::string GetPath(const json& json_obj, const json& search_value) {
@@ -166,7 +159,7 @@ namespace Json_Helper {
 
 		find_path = [&find_path](const json& obj, const json& target, const std::string& current_path) -> std::string {
 			if (obj == target) {
-				return current_path;
+				return current_path.empty() ? "/" : current_path;
 			}
 
 			if (obj.is_object()) {
@@ -192,32 +185,35 @@ namespace Json_Helper {
 	}
 
 	std::string RemoveValue(json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
+		// Per user feedback, removing the root clears the object.
+		if (json_path == "/") {
+			// .clear() correctly handles both objects ({}) and arrays ([]).
+			json_obj.clear();
+			return json_obj.dump();
+		}
+
+		std::string path_str(json_path);
 		json::json_pointer ptr(path_str);
 
 		if (!json_obj.contains(ptr)) {
 			return {};
 		}
 
-		// Get parent path and key/index to remove
 		auto parent_ptr = ptr.parent_pointer();
-
 		json& parent = json_obj[parent_ptr];
-		json_path.remove_prefix(parent_ptr.to_string().size() + 1);
+		const std::string& key = ptr.back();
 
 		if (parent.is_object()) {
-			parent.erase(std::string(json_path));
+			parent.erase(key);
 		}
 		else if (parent.is_array()) {
-			// Check if key is a valid positive number
 			unsigned index;
-			auto ec = std::from_chars(json_path.data(), json_path.data() + json_path.size(), index).ec;
-			if (ec == std::errc()) {
-				if (index < parent.size()) {
-					parent.erase(index);
-				}
-			} else {
-				Output::Warning("JSON: Invalid array index at: {}", json_path);
+			auto [p, ec] = std::from_chars(key.data(), key.data() + key.size(), index);
+			if (ec == std::errc() && index < parent.size()) {
+				parent.erase(index);
+			}
+			else {
+				Output::Warning("JSON: Invalid array index for removal at: {}", json_path);
 				return {};
 			}
 		}
@@ -226,53 +222,45 @@ namespace Json_Helper {
 	}
 
 	std::string PushValue(json& json_obj, std::string_view json_path, std::string_view value) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
+		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+			if (!target->is_array()) {
+				Output::Warning("JSON: Path does not point to an array: {}", json_path);
+				return {};
+			}
 
-		if (!json_obj.contains(ptr)) {
-			return {};
-		}
+			json obj_value = json::parse(value, nullptr, false);
+			if (obj_value.is_discarded()) {
+				target->push_back(std::string(value));
+			}
+			else {
+				target->push_back(obj_value);
+			}
 
-		json& array = json_obj[ptr];
-		if (!array.is_array()) {
-			Output::Warning("JSON: Path does not point to an array: {}", json_path);
-			return {};
+			return json_obj.dump();
 		}
-
-		json obj_value = json::parse(value, nullptr, false);
-		if (obj_value.is_discarded()) {
-			// If parsing fails, treat it as a string value
-			array.push_back(std::string(value));
-		}
-		else {
-			array.push_back(obj_value);
-		}
-
-		return json_obj.dump();
+		return {};
 	}
 
 	std::tuple<std::string, std::string> PopValue(json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
-		json::json_pointer ptr(path_str);
+		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+			if (!target->is_array() || target->empty()) {
+				Output::Warning("JSON: Path does not point to a non-empty array: {}", json_path);
+				return {};
+			}
 
-		if (!json_obj.contains(ptr)) {
-			return {};
+			json popped = target->back();
+			target->erase(target->size() - 1);
+
+			return { json_obj.dump(), GetValueAsString(popped) };
 		}
-
-		json& array = json_obj[ptr];
-		if (!array.is_array() || array.empty()) {
-			Output::Warning("JSON: Path does not point to a non-empty array: {}", json_path);
-			return {};
-		}
-
-		json popped = array.back();
-		array.erase(array.size() - 1);
-
-		return {json_obj.dump(), GetValueAsString(popped)};
+		return {};
 	}
 
 	bool Contains(const json& json_obj, std::string_view json_path) {
-		std::string path_str = std::string(json_path);
+		if (json_path == "/") {
+			return true;
+		}
+		std::string path_str(json_path);
 		json::json_pointer ptr(path_str);
 
 		return json_obj.contains(ptr);
