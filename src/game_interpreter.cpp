@@ -41,6 +41,7 @@
 #include "game_system.h"
 #include "game_message.h"
 #include "game_pictures.h"
+#include "game_runtime_patches.h"
 #include "game_screen.h"
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
