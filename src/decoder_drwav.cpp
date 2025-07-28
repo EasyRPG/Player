@@ -52,9 +52,17 @@ drwav_bool32 seek_func(void* userdata, int offset, drwav_seek_origin origin) {
 	return DRWAV_TRUE;
 }
 
+drwav_bool32 tell_func(void* userdata, drwav_int64* cursor) {
+	auto* f = reinterpret_cast<Filesystem_Stream::InputStream*>(userdata);
+
+	*cursor = f->GetPosition();
+
+	return DRWAV_TRUE;
+}
+
 bool DrWavDecoder::Open(Filesystem_Stream::InputStream stream_) {
 	this->stream = std::move(stream_);
-	init = drwav_init_ex(&handle, read_func, seek_func, nullptr, &this->stream, nullptr, DRWAV_SEQUENTIAL, nullptr) == DRWAV_TRUE;
+	init = drwav_init_ex(&handle, read_func, seek_func, tell_func, nullptr, &this->stream, nullptr, DRWAV_SEQUENTIAL, nullptr) == DRWAV_TRUE;
 	return init;
 }
 
