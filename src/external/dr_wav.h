@@ -1537,6 +1537,10 @@ static DRWAV_INLINE int drwav__is_little_endian(void)
     return DRWAV_TRUE;
 #elif defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && __BYTE_ORDER == __LITTLE_ENDIAN
     return DRWAV_TRUE;
+// EasyRPG modification {
+#elif defined(WORDS_BIGENDIAN)
+    return DRWAV_FALSE;
+// }
 #else
     int n = 1;
     return (*(char*)&n) == 1;
