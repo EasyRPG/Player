@@ -62,7 +62,11 @@ drwav_bool32 tell_func(void* userdata, drwav_int64* cursor) {
 
 bool DrWavDecoder::Open(Filesystem_Stream::InputStream stream_) {
 	this->stream = std::move(stream_);
+#if DRWAV_VERSION_MINOR < 14
+	init = drwav_init_ex(&handle, read_func, seek_func, nullptr, &this->stream, nullptr, DRWAV_SEQUENTIAL, nullptr) == DRWAV_TRUE;
+#else
 	init = drwav_init_ex(&handle, read_func, seek_func, tell_func, nullptr, &this->stream, nullptr, DRWAV_SEQUENTIAL, nullptr) == DRWAV_TRUE;
+#endif
 	return init;
 }
 
