@@ -21,8 +21,6 @@
 
 #include "output.h"
 #include <nlohmann/json.hpp>
-#include <sstream>
-#include <unordered_map>
 #include <charconv>
 #include "string_view.h"
 
@@ -49,7 +47,7 @@ namespace {
 
 	// Helper to get a reference to the target json value, handling the root path case.
 	template <typename JsonType>
-	auto GetJsonTarget(JsonType& json_obj, std::string_view json_path) -> decltype(&json_obj) {
+	JsonType* GetJsonTarget(JsonType& json_obj, std::string_view json_path) {
 		if (json_path == "/") {
 			return &json_obj;
 		}
@@ -91,7 +89,7 @@ namespace Json_Helper {
 	}
 
 	std::string GetValue(json& json_obj, std::string_view json_path) {
-		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+		if (auto* target = GetJsonTarget(json_obj, json_path); target) {
 			return GetValueAsString(*target);
 		}
 		return {};
@@ -100,6 +98,7 @@ namespace Json_Helper {
 	std::string SetValue(json& json_obj, std::string_view json_path, std::string_view value) {
 		json obj_value = json::parse(value, nullptr, false);
 		if (obj_value.is_discarded()) {
+			// If parsing fails, treat it as a string value
 			obj_value = std::string(value);
 		}
 
@@ -116,7 +115,7 @@ namespace Json_Helper {
 	}
 
 	size_t GetLength(const json& json_obj, std::string_view json_path) {
-		if (const auto* target = GetJsonTarget(json_obj, json_path)) {
+		if (auto* target = GetJsonTarget(json_obj, json_path); target) {
 			if (target->is_array() || target->is_object()) {
 				return target->size();
 			}
@@ -126,7 +125,7 @@ namespace Json_Helper {
 
 	std::vector<std::string> GetKeys(const json& json_obj, std::string_view json_path) {
 		std::vector<std::string> keys;
-		if (const auto* target = GetJsonTarget(json_obj, json_path)) {
+		if (auto* target = GetJsonTarget(json_obj, json_path); target) {
 			if (target->is_object()) {
 				for (const auto& item : target->items()) {
 					keys.push_back(item.key());
@@ -209,8 +208,10 @@ namespace Json_Helper {
 		else if (parent.is_array()) {
 			unsigned index;
 			auto [p, ec] = std::from_chars(key.data(), key.data() + key.size(), index);
-			if (ec == std::errc() && index < parent.size()) {
-				parent.erase(index);
+			if (ec == std::errc()) {
+				if (index < parent.size()) {
+					parent.erase(index);
+				}
 			}
 			else {
 				Output::Warning("JSON: Invalid array index for removal at: {}", json_path);
@@ -222,7 +223,7 @@ namespace Json_Helper {
 	}
 
 	std::string PushValue(json& json_obj, std::string_view json_path, std::string_view value) {
-		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+		if (auto* target = GetJsonTarget(json_obj, json_path); target) {
 			if (!target->is_array()) {
 				Output::Warning("JSON: Path does not point to an array: {}", json_path);
 				return {};
@@ -230,6 +231,7 @@ namespace Json_Helper {
 
 			json obj_value = json::parse(value, nullptr, false);
 			if (obj_value.is_discarded()) {
+				// If parsing fails, treat it as a string value
 				target->push_back(std::string(value));
 			}
 			else {
@@ -242,7 +244,7 @@ namespace Json_Helper {
 	}
 
 	std::tuple<std::string, std::string> PopValue(json& json_obj, std::string_view json_path) {
-		if (auto* target = GetJsonTarget(json_obj, json_path)) {
+		if (auto* target = GetJsonTarget(json_obj, json_path); target) {
 			if (!target->is_array() || target->empty()) {
 				Output::Warning("JSON: Path does not point to a non-empty array: {}", json_path);
 				return {};
