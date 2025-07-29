@@ -39,6 +39,7 @@ namespace Filesystem_Stream {
 
 		std::string_view GetName() const;
 		std::streampos GetSize() const;
+		std::streampos GetPosition() const;
 		void Close();
 
 		template <typename T>

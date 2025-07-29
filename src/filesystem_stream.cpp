@@ -52,11 +52,15 @@ std::string_view Filesystem_Stream::InputStream::GetName() const {
 std::streampos Filesystem_Stream::InputStream::GetSize() const {
 	if (!size_cached) {
 		size_cached = true;
-		auto cur_pos = rdbuf()->pubseekoff(0, std::ios_base::cur, std::ios_base::in);
+		auto cur_pos = GetPosition();
 		size = rdbuf()->pubseekoff(0, std::ios_base::end, std::ios_base::in);
 		rdbuf()->pubseekoff(cur_pos, std::ios_base::beg, std::ios_base::in);
 	}
 	return size;
+}
+
+std::streampos Filesystem_Stream::InputStream::GetPosition() const {
+	return rdbuf()->pubseekoff(0, std::ios_base::cur, std::ios_base::in);
 }
 
 void Filesystem_Stream::InputStream::Close() {
