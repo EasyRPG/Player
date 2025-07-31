@@ -523,7 +523,7 @@ void Game_Config::LoadFromArgs(CmdlineParser& cp) {
 		}
 		if (cp.ParseNext(arg, 1, "--sound-volume")) {
 			if (arg.ParseValue(0, li_value)) {
-				audio.music_volume.Set(li_value);
+				audio.sound_volume.Set(li_value);
 			}
 			continue;
 		}
