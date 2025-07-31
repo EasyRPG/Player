@@ -3692,6 +3692,16 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 					// Assuming 'true' as Player usually suspends when loosing focus
 					result = true;
 					break;
+				case 3:
+					// File Output available
+					// We return here whether the save directory is usable
+					// Maniacs has a rate limit for too many write operations and this condition
+					// is used to check if the rate limit is reached
+					result = static_cast<bool>(FileFinder::Save());
+					break;
+				default:
+					Output::Warning("ConditionalBranch Maniac: Unknown Op {}", com.parameters[1]);
+					break;
 			}
 		}
 		break;

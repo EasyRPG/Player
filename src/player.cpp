@@ -776,10 +776,10 @@ void Player::CreateGameObjects() {
 		if (engine == EngineNone) {
 			auto version_info = exe_reader->GetFileInfo();
 			version_info.Print();
-			bool is_patch_maniac;
-			engine = version_info.GetEngineType(is_patch_maniac);
+			int maniac_patch_version;
+			engine = version_info.GetEngineType(maniac_patch_version);
 			if (!game_config.patch_override) {
-				game_config.patch_maniac.Set(is_patch_maniac);
+				game_config.patch_maniac.Set(maniac_patch_version);
 			}
 		}
 
@@ -829,8 +829,8 @@ void Player::CreateGameObjects() {
 			Output::Debug("This game uses DynRPG. Depending on the plugins used it will not run properly.");
 		}
 
-		if (!FileFinder::Game().FindFile("accord.dll").empty()) {
-			game_config.patch_maniac.Set(true);
+		if (!FileFinder::Game().FindFile("accord.dll").empty() && !Player::IsPatchManiac()) {
+			game_config.patch_maniac.Set(1);
 		}
 
 		if (!FileFinder::Game().FindFile(DESTINY_DLL).empty()) {
@@ -919,18 +919,18 @@ void Player::ResetGameObjects() {
 
 	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
 	if (min_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		} else {
+		if (!Player::IsPatchManiac() || Player::game_config.patch_maniac.Get() == 2) {
 			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+		} else {
+			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
 		}
 	}
 	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
 	if (max_var == 0) {
-		if ((Player::game_config.patch_maniac.Get() & 1) == 1) {
-			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		} else {
+		if (!Player::IsPatchManiac() || Player::game_config.patch_maniac.Get() == 2) {
 			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+		} else {
+			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
 		}
 	}
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);

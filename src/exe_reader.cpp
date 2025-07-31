@@ -21,6 +21,7 @@
 #include "exe_reader.h"
 #include "image_bmp.h"
 #include "output.h"
+#include "utils.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -336,6 +337,7 @@ const EXEReader::FileInfo& EXEReader::GetFileInfo() {
 		return file_info;
 	}
 
+	// VS_FIXEDFILEINFO added by MSVC (EasyRPG and Maniacs)
 	uint16_t resourcesNDEs = GetU16(versionDBase + 0x0C) + (uint32_t) GetU16(versionDBase + 0x0E);
 	uint32_t resourcesNDEbase = versionDBase + 0x10;
 	while (resourcesNDEs) {
@@ -369,12 +371,31 @@ const EXEReader::FileInfo& EXEReader::GetFileInfo() {
 				file_info.version_str = fmt::format("{}.{}.{}.{}", (version_high >> 16) & 0xFFFF, version_high & 0xFFFF, (version_low >> 16) & 0xFFFF, version_low & 0xFFFF);
 			}
 
-			std::array<uint8_t, 30> easyrpg_player_str = {
-				0x45, 0x00, 0x61, 0x00, 0x73, 0x00, 0x79, 0x00, 0x52, 0x00, 0x50, 0x00, 0x47, 0x00, 0x20, 0x00,
-				0x50, 0x00, 0x6C, 0x00, 0x61, 0x00, 0x79, 0x00, 0x65, 0x00, 0x72, 0x00, 0x00, 0x00
-			};
-			auto ep_it = std::search(version_info.begin(), version_info.end(), easyrpg_player_str.begin(), easyrpg_player_str.end());
-			file_info.is_easyrpg_player = ep_it != version_info.end();
+			// Search for entries in the StringFileInfo catalog
+			// StringFileInfo (UTF-16)
+			std::array file_info_str = {'S','\0','t','\0','r','\0','i','\0','n','\0','g','\0','F','\0','i','\0','l','\0','e','\0','I','\0','n','\0','f','\0','o','\0'};
+			auto sfi_it = std::search(version_info.begin(), version_info.end(), file_info_str.begin(), file_info_str.end());
+
+			if (sfi_it != version_info.end()) {
+				// EasyRPG Player (UTF-16)
+				std::array easyrpg_player_str = {'E','\0','a','\0','s','\0','y','\0','R','\0','P','\0','G','\0', 'P','\0','l','\0','a','\0','y','\0','e','\0','r','\0'};
+				auto ep_it = std::search(sfi_it, version_info.end(), easyrpg_player_str.begin(), easyrpg_player_str.end());
+				if (ep_it != version_info.end()) {
+					file_info.is_easyrpg_player = true;
+				} else {
+					const int version_length = 12;
+					// Maniac Version information
+					// Maniacs, vXXXXXX (UTF-16) (XXXXXX = Version number)
+					std::array maniac_version_str = {'M','\0','a','\0','n','\0','i','\0','a','\0','c','\0','s','\0',',','\0',' ','\0','v','\0'};
+					auto mp_it = std::search(sfi_it, version_info.end(), maniac_version_str.begin(), maniac_version_str.end());
+					if (mp_it != version_info.end() && mp_it + version_length < version_info.end()) {
+						std::string mp_version = {mp_it + maniac_version_str.size(), mp_it + maniac_version_str.size() + version_length};
+						mp_version.erase(std::remove(mp_version.begin(), mp_version.end(), '\0'), mp_version.end());
+						file_info.maniac_patch_version = atoi(mp_version.c_str());
+					}
+				}
+
+			}
 
 			Output::Debug("EXEReader: VERSIONINFO resource found (DE {:#x}; {:#x}; len {:#x})", dataent, filebase, filesize);
 			return file_info;
@@ -453,11 +474,11 @@ bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 }
 
 void EXEReader::FileInfo::Print() const {
-	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} arch={} easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, kMachineTypes[machine_type], is_easyrpg_player);
+	Output::Debug("RPG_RT information: version={} logos={} code={:#x} cherry={:#x} geep={:#x} arch={} mpversion={}, easyrpg={}", version_str, logos, code_size, cherry_size, geep_size, kMachineTypes[machine_type], maniac_patch_version, is_easyrpg_player);
 }
 
-int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
-	is_maniac_patch = false;
+int EXEReader::FileInfo::GetEngineType(int& mp_version) const {
+	mp_version = maniac_patch_version;
 
 	if (is_easyrpg_player || machine_type == MachineType::Unknown) {
 		return Player::EngineNone;
@@ -498,7 +519,10 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 		// New version of Maniac Patch is version 1.1.2.1 and is an rewrite of the engine
 		// Has no logos, no CODE segment and no CHERRY segment
 		if (ver[0] == 1 && ver[1] == 1 && ver[2] == 2 && ver[3] == 1 && code_size == 0 && cherry_size == 0) {
-			is_maniac_patch = true;
+			if (mp_version == 0) {
+				// Exact version not detected, use default
+				mp_version = 1;
+			}
 			return Player::EngineRpg2k3 | Player::EngineMajorUpdated | Player::EngineEnglish;
 		}
 
@@ -526,7 +550,10 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 				// Old versions of Maniac Patch are a hacked 1.1.2.1
 				// The first versions have a GEEP segment (No idea what this abbreviation means)
 				// Later versions have no GEEP segment but an enlarged CHERRY segment
-				is_maniac_patch = (geep_size > 0 || cherry_size > 0x10000);
+				if (mp_version == 0) {
+					// Exact version not detected, use default
+					mp_version = (geep_size > 0 || cherry_size > 0x10000) ? 1 : 0;
+				}
 			}
 
 			return Player::EngineRpg2k3 | Player::EngineMajorUpdated | Player::EngineEnglish;

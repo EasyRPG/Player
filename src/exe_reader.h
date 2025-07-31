@@ -64,8 +64,9 @@ public:
 		uint32_t geep_size = 0;
 		MachineType machine_type = MachineType::Unknown;
 		bool is_easyrpg_player = false;
+		int maniac_patch_version = 0;
 
-		int GetEngineType(bool& is_maniac_patch) const;
+		int GetEngineType(int& mp_version) const;
 		void Print() const;
 	};
 
@@ -74,7 +75,7 @@ public:
 private:
 	// Bounds-checked unaligned reader primitives.
 	// In case of out-of-bounds, returns 0 - this will usually result in a harmless error at some other level,
-	//  or a partial correct interpretation.
+	// or a partial correct interpretation.
 	uint8_t GetU8(uint32_t point);
 	uint16_t GetU16(uint32_t point);
 	uint32_t GetU32(uint32_t point);

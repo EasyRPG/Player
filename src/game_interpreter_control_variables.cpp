@@ -288,8 +288,13 @@ int ControlVariables::Other(int op) {
 		case 13:
 			// Patch version
 			if (Player::IsPatchManiac()) {
-				// Latest version before the engine rewrite
-				return 200128;
+				auto var = Player::game_config.patch_maniac.Get();
+				if (var < 10) {
+					// Latest version before the engine rewrite
+					return 200128;
+				}
+
+				return var;
 			}
 			break;
 	}
