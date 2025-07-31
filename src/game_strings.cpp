@@ -20,6 +20,8 @@
 #include <lcf/encoder.h>
 #include <lcf/reader_util.h>
 #include "async_handler.h"
+#include "filefinder.h"
+#include "filesystem_stream.h"
 #include "game_map.h"
 #include "game_message.h"
 #include "game_strings.h"
@@ -237,20 +239,27 @@ bool Game_Strings::ToFile(Str_Params params, std::string filename, int encoding)
 		filename += ".txt";
 	}
 
-	auto txt_out = FileFinder::Save().OpenOutputStream(filename);
-	auto txt_dir = FileFinder::GetPathAndFilename(filename).first;
+	filename = FileFinder::MakeCanonical(filename, 1);
 
-	if (!txt_out) {
-		if (!FileFinder::Save().MakeDirectory(txt_dir, false)) {
+	auto txt_file = FileFinder::Save().FindFile(filename);
+	Filesystem_Stream::OutputStream txt_out;
+
+	if (txt_file.empty()) {
+		// File not found: Create directory hierarchy to ensure file creation succeeds
+		auto txt_dir = FileFinder::GetPathAndFilename(filename).first;
+
+		if (!txt_dir.empty() && !FileFinder::Save().MakeDirectory(txt_dir, false)) {
 			Output::Warning("Maniac String Op ToFile failed. Cannot create directory {}", txt_dir);
 			return false;
 		}
 
-		txt_out = FileFinder::Save().OpenOutputStream(filename);
-		if (!txt_out) {
-			Output::Warning("Maniac String Op ToFile failed. Cannot write to {}", filename);
-			return false;
-		}
+		txt_file = filename;
+	}
+
+	txt_out = FileFinder::Save().OpenOutputStream(txt_file);
+	if (!txt_out) {
+		Output::Warning("Maniac String Op ToFile failed. Cannot write to {}", filename);
+		return false;
 	}
 
 	if (encoding == 0) {
