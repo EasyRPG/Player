@@ -303,7 +303,6 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, std::unique_ptr<AudioSeCache> 
 
 void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	bool channel_active = false;
-	float total_volume = 0;
 	int samples_per_frame = buffer_length / output_format.channels / 2;
 
 	assert(buffer_length > 0);
@@ -347,8 +346,6 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					currently_mixed_channel.decoder->Update(std::chrono::milliseconds(samples_per_frame * 1000 / frequency));
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
-					total_volume += std::max(vleft, vright);
-
 					// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
 					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
 					bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
@@ -381,8 +378,6 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					vright = volume.right_volume / 100.0f * current_master_volume;
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
-
-					total_volume += std::max(vleft, vright);
 
 					// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
 					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
@@ -472,24 +467,59 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	}
 
 	if (channel_active) {
-		if (total_volume > 1.0) {
-			float threshold = 0.8f;
-			for (unsigned i = 0; i < (unsigned)(samples_per_frame * 2); i++) {
-				float sample = mixer_buffer[i];
-				float sign = (sample < 0) ? -1.0 : 1.0;
-				sample /= sign;
-				//dynamic range compression
-				if (sample > threshold) {
-					sample_buffer[i] = sign * 32768.0 * (threshold + (1.0 - threshold) * (sample - threshold) / (total_volume - threshold));
-				} else {
-					sample_buffer[i] = sign * sample * 32768.0;
+		// Lookahead limiter to prevents audio samples from exceeding a maximum amplitude of (1.0)
+		// to prevent clipping
+		const int lookahead_samples = output_format.frequency * 5 / 1000;	// 5 ms
+		const int attack_samples = output_format.frequency * 2 / 1000;	// 2 ms
+		constexpr float release_per_sample = 0.0000175f;
+
+		std::vector<float> attack_curve(attack_samples, 1.0f);
+		int attack_index = attack_samples;
+		float current_scale = 1.0f;
+		float target_scale = 1.0f;
+
+		std::vector<float> padded_buffer = mixer_buffer;
+		padded_buffer.resize(mixer_buffer.size() + lookahead_samples * 2, 0.0f);
+
+		for (int i = 0; i < samples_per_frame; ++i) {
+			float max_sample = 0.0f;
+			// When peak is above 1.0 adjust to prevent clipping
+			for (int j = 0; j < lookahead_samples; ++j) {
+				int idx = (i + j) * 2;
+				float abs_l = std::fabs(padded_buffer[idx]);
+				float abs_r = std::fabs(padded_buffer[idx + 1]);
+				max_sample = std::max({max_sample, abs_l, abs_r});
+			}
+			float required_scale = (max_sample > 1.0f) ? (1.0f / max_sample) : 1.0f;
+			float safe_peak = std::max(max_sample, 0.0001f);
+
+			// Attack
+			// When a peak is detected, reduces the gain over 2 ms (attack_samples) using a linear ramp (attack_curve).
+			if (required_scale < target_scale) {
+				target_scale = required_scale;
+				float att_start = current_scale;
+				float att_diff = target_scale - att_start;
+				for (int k = 0; k < attack_samples; ++k) {
+					attack_curve[k] = att_start + (att_diff * k) / attack_samples;
 				}
+				attack_index = 0;
 			}
-		} else {
-			//No dynamic range compression necessary
-			for (unsigned i = 0; i < (unsigned)(samples_per_frame * 2); i++) {
-				sample_buffer[i] = mixer_buffer[i] * 32768.0;
+			if (attack_index < attack_samples) {
+				current_scale = attack_curve[attack_index];
+				attack_index += 1;
 			}
+			// Release
+			// Gradually increase back to 1.0 at a rate determined by release_per_sample
+			else if (current_scale < 1.0f) {
+				float release_rate = (max_sample < 1.0f) ? (release_per_sample / safe_peak) : release_per_sample;
+				current_scale += release_rate;
+				if (current_scale > 1.0f) current_scale = 1.0f;
+				target_scale = current_scale;
+			}
+			float sample_l = std::clamp(mixer_buffer[i * 2] * current_scale, -1.0f, 1.0f);
+			float sample_r = std::clamp(mixer_buffer[i * 2 + 1] * current_scale, -1.0f, 1.0f);
+			sample_buffer[i * 2] = static_cast<int16_t>(sample_l * 32767.0f);
+			sample_buffer[i * 2 + 1] = static_cast<int16_t>(sample_r * 32767.0f);
 		}
 
 		memcpy(output_buffer, sample_buffer.data(), buffer_length);
