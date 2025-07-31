@@ -31,7 +31,7 @@
 #include "sprite_actor.h"
 #include "sprite_enemy.h"
 
-Spriteset_Battle::Spriteset_Battle(const std::string bg_name, int terrain_id)
+Spriteset_Battle::Spriteset_Battle(std::string bg_name, int terrain_id)
 {
 	background_name = std::move(bg_name);
 
