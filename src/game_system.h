@@ -547,7 +547,7 @@ inline bool Game_System::GetMessageEventMessageActive() {
 }
 
 inline bool Game_System::IsLoadedThisFrame() const {
-	return loaded_frame_count + 1 == data.frame_count;
+	return loaded_frame_count != 0 && loaded_frame_count + 1 == data.frame_count;
 }
 
 inline Game_System::AtbMode Game_System::GetAtbMode() {
