@@ -427,7 +427,17 @@ namespace RuntimePatches::PowerMode2003 {
 			if (input_key == Input::Keys::NONE) {
 				Output::Debug("PowerMode2003: Unsupported keycode {}", vk_id);
 			}
-			if (!Input::IsRawKeyPressed(input_key)) {
+			bool pressed = false;
+			if (input_key == Input::Keys::SHIFT) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LSHIFT) || Input::IsRawKeyPressed(Input::Keys::RSHIFT);
+			} else if (input_key == Input::Keys::CTRL) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LCTRL) || Input::IsRawKeyPressed(Input::Keys::RCTRL);
+			} else if (input_key == Input::Keys::ALT) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LALT) || Input::IsRawKeyPressed(Input::Keys::RALT);
+			} else {
+				pressed = Input::IsRawKeyPressed(input_key);
+			}
+			if (!pressed) {
 				Main_Data::game_variables->Set(PM_VAR_KEY, 0);
 			}
 		} else {
