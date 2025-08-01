@@ -378,7 +378,7 @@ void Player::Update(bool update_scene) {
 		if (Main_Data::game_ineluki) {
 			Main_Data::game_ineluki->Update();
 		}
-
+		RuntimePatches::OnUpdate();
 		Scene::instance->Update();
 	}
 
