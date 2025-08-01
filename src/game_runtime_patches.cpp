@@ -403,13 +403,22 @@ namespace RuntimePatches::PowerMode2003 {
 #endif
 		int vk_id = Main_Data::game_variables->Get(PM_VAR_KEY);
 		if (vk_id == 0) {
-			// check the whole keyboard for any key press
-			for (int i = 1; i < Input::Keys::KEYS_COUNT; ++i) {
-				auto input_key = static_cast<Input::Keys::InputKey>(i);
-				if (Input::IsRawKeyPressed(input_key) && (vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(input_key))) {
-					break;
+			if (Input::IsRawKeyPressed(Input::Keys::LSHIFT) || Input::IsRawKeyPressed(Input::Keys::RSHIFT)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::SHIFT);
+			} else if (Input::IsRawKeyPressed(Input::Keys::LCTRL) || Input::IsRawKeyPressed(Input::Keys::RCTRL)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::CTRL);
+			} else if (Input::IsRawKeyPressed(Input::Keys::LALT) || Input::IsRawKeyPressed(Input::Keys::RALT)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::ALT);
+			} else {
+				// check the whole keyboard for any key press
+				for (int i = 1; i < Input::Keys::KEYS_COUNT; ++i) {
+					auto input_key = static_cast<Input::Keys::InputKey>(i);
+					if (Input::IsRawKeyPressed(input_key) && (vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(input_key))) {
+						break;
+					}
 				}
 			}
+
 			Main_Data::game_variables->Set(PM_VAR_KEY, vk_id);
 		} else if (vk_id > 0 && vk_id <= 255) {
 			// check a single key
