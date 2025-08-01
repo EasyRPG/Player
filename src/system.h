@@ -18,14 +18,6 @@
 #ifndef EP_SYSTEM_H
 #define EP_SYSTEM_H
 
-/*
- * Includes GNU Autotools build configuration parameters.
- * This option may have defined USE_SDL and others.
- */
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #if !(defined(USE_SDL) || defined(PLAYER_UI))
 #  error "This build doesn't target a backend"
 #endif
