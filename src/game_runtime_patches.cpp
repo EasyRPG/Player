@@ -155,10 +155,53 @@ void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 	PrintPatch(patches, GuardRevamp::patch_args);
 }
 
+void RuntimePatches::OnUpdate() {
+	// Handle virtual key bindings for mouse buttons.
+	if (mouse_bindings.enabled) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT)) {
+			if ((mouse_bindings.bind_decision == MouseButtonBindingMode::Left || mouse_bindings.bind_decision == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::DECISION);
+			}
+			if ((mouse_bindings.bind_cancel == MouseButtonBindingMode::Left || mouse_bindings.bind_cancel == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::CANCEL);
+			}
+		} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
+			if ((mouse_bindings.bind_decision == MouseButtonBindingMode::Right || mouse_bindings.bind_decision == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::DECISION);
+			}
+			if ((mouse_bindings.bind_cancel == MouseButtonBindingMode::Right || mouse_bindings.bind_cancel == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::CANCEL);
+			}
+		}
+
+		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLUP)) {
+			if (mouse_bindings.bind_wheel == MouseWheelMode::UpDown) {
+				Input::SimulateButtonPress(Input::UP);
+			} else if (mouse_bindings.bind_wheel == MouseWheelMode::LeftRight) {
+				Input::SimulateButtonPress(Input::LEFT);
+			}
+		} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLDOWN)) {
+			if (mouse_bindings.bind_wheel == MouseWheelMode::UpDown) {
+				Input::SimulateButtonPress(Input::DOWN);
+			} else if (mouse_bindings.bind_wheel == MouseWheelMode::LeftRight) {
+				Input::SimulateButtonPress(Input::RIGHT);
+			}
+		}
+#endif
+	}
+}
+
 void RuntimePatches::OnResetGameObjects() {
+	mouse_bindings = {};
+
 	if (Player::game_config.patch_powermode.Get()) {
 		Player::game_config.new_game.Set(true);
 		Main_Data::game_variables->Set(PowerMode2003::PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+
+		mouse_bindings.enabled = true;
+		mouse_bindings.bind_decision = MouseButtonBindingMode::Left;
+		mouse_bindings.bind_cancel = MouseButtonBindingMode::Right;
 	}
 }
 

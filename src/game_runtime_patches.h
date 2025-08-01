@@ -41,6 +41,26 @@ namespace RuntimePatches {
 		}
 	};
 
+	enum class MouseButtonBindingMode {
+		None,
+		Left,
+		Right,
+		Both
+	};
+
+	enum class MouseWheelMode {
+		None,
+		UpDown,
+		LeftRight
+	};
+
+	inline struct {
+		bool enabled = false;
+		MouseButtonBindingMode bind_decision = MouseButtonBindingMode::None;
+		MouseButtonBindingMode bind_cancel = MouseButtonBindingMode::None;
+		MouseWheelMode bind_wheel = MouseWheelMode::None;
+	} mouse_bindings;
+
 	void LockPatchesAsDiabled();
 
 	bool ParseFromCommandLine(CmdlineParser& cp);
@@ -48,6 +68,8 @@ namespace RuntimePatches {
 	bool ParseFromIni(lcf::INIReader& ini);
 
 	void DetermineActivePatches(std::vector<std::string>& patches);
+
+	void OnUpdate();
 
 	void OnResetGameObjects();
 

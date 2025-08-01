@@ -86,11 +86,6 @@ private:
 	void UpdateKeys();
 
 	/**
-	 * Handles virtual key bindings for mouse buttons.
-	 */
-	void UpdateMouse();
-
-	/**
 	 * Parses and caches the script.
 	 *
 	 * @param ini_file Script to parse
@@ -133,22 +128,6 @@ private:
 	bool key_support = false;
 	bool mouse_support = false;
 	int mouse_id_prefix = 0;
-
-	enum class MouseReturnMode {
-		None,
-		Left,
-		Right,
-		Both
-	};
-
-	enum class MouseWheelMode {
-		None,
-		UpDown,
-		LeftRight
-	};
-
-	MouseReturnMode mouse_decision_binding = MouseReturnMode::None;
-	MouseWheelMode mouse_wheel_binding = MouseWheelMode::None;
 
 	struct Mapping {
 		Input::Keys::InputKey key;
