@@ -52,12 +52,6 @@ private:
 	int FillBuffer(uint8_t*, int) override { return -1; };
 };
 const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
-const std::array<char[2], 4> aac_magics = { {
-	{ (char)0xFF, (char)0xF1 },
-	{ (char)0xFF, (char)0xF0 },
-	{ (char)0xFF, (char)0xF8 },
-	{ (char)0xFF, (char)0xF9 }
-}};
 
 std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputStream& stream, bool resample) {
 	char magic[4] = { 0 };
@@ -147,13 +141,6 @@ std::unique_ptr<AudioDecoderBase> AudioDecoder::Create(Filesystem_Stream::InputS
 		if (mp3dec->WasInited()) {
 			if (strncmp(magic, "ID3", 3) == 0) {
 				return mp3dec;
-			}
-
-			bool is_aac = std::any_of(aac_magics.begin(), aac_magics.end(), [&](auto& mpeg4_magic) {
-				return memcmp(magic, mpeg4_magic, 2);
-			});
-			if (is_aac) {
-				return nullptr;
 			}
 
 			// Parsing MP3s seems to be the only reliable way to detect them
