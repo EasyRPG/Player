@@ -324,7 +324,7 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 			// Check some metrics to identify custom fonts which were based
 			// on the broken RM2000 font & thus also need the same workaround
 			rm2000_workaround = true;
-			for (int i = 0; i < glyphs.size(); ++i) {
+			for (size_t i = 0; i < glyphs.size(); ++i) {
 				auto glyph_index = FT_Get_Char_Index(face, std::get<0>(glyphs[i]));
 
 				if (glyph_index == 0 || FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
