@@ -475,8 +475,6 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 		std::vector<float> attack_curve(attack_samples, 1.0f);
 		int attack_index = attack_samples;
-		float current_scale = 1.0f;
-		float target_scale = 1.0f;
 
 		std::vector<float> padded_buffer = mixer_buffer;
 		padded_buffer.resize(mixer_buffer.size() + lookahead_samples * 2, 0.0f);
