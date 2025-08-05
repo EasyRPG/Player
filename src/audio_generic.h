@@ -117,6 +117,9 @@ private:
 	unsigned scrap_buffer_size = 0;
 	std::vector<float> mixer_buffer = {};
 
+	float current_scale = 1.0f;
+	float target_scale = 1.0f;
+
 	std::unique_ptr<GenericAudioMidiOut> midi_thread;
 };
 
