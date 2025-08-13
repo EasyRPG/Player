@@ -141,6 +141,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/filesystem_stream.h
 	src/filesystem_zip.cpp
 	src/filesystem_zip.h
+	src/filesystem_tar.cpp
+	src/filesystem_tar.h
 	src/flash.h
 	src/flat_map.h
 	src/font.cpp

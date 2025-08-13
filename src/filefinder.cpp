@@ -287,7 +287,7 @@ bool FileFinder::IsSupportedArchiveExtension(std::string path) {
 	}
 #endif
 
-	return EndsWith(pv, ".zip") || EndsWith(pv, ".easyrpg");
+	return EndsWith(pv, ".zip") || EndsWith(pv, ".tar") || EndsWith(pv, ".easyrpg");
 }
 
 void FileFinder::Quit() {

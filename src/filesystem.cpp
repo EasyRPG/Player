@@ -19,6 +19,7 @@
 #include "filesystem_native.h"
 #include "filesystem_lzh.h"
 #include "filesystem_zip.h"
+#include "filesystem_tar.h"
 #include "filesystem_stream.h"
 #include "filefinder.h"
 #include "utils.h"
@@ -139,7 +140,11 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 			filesystem = std::make_shared<LzhFilesystem>(path_prefix, Subtree(dir_of_file));
 #endif
 			if (!filesystem->IsValid()) {
-				return {};
+				filesystem = std::make_shared<TarFilesystem>(path_prefix, Subtree(dir_of_file));
+
+				if (!filesystem->IsValid()) {
+					return {};
+				}
 			}
 		}
 		if (!internal_path.empty()) {
