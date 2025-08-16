@@ -94,8 +94,10 @@ void Scene_GameBrowser::CreateWindows() {
 	options.push_back("Games");
 	options.push_back("Settings");
 	options.push_back("About");
+#ifndef __PS4__
 	options.push_back("Exit");
 
+#endif
 	command_window = std::make_unique<Window_Command_Horizontal>(options, Player::screen_width);
 	command_window->SetY(32);
 	command_window->SetIndex(0);
@@ -136,8 +138,10 @@ void Scene_GameBrowser::UpdateCommand() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
+#ifndef __PS4__
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 		Scene::Pop();
+#endif
 	} else if (Input::IsTriggered(Input::DECISION)) {
 
 		switch (menu_index) {

@@ -22,9 +22,15 @@
 #include <cassert>
 #include <cstdint>
 #include <chrono>
+#ifndef __PS4__
 #include <SDL.h>
 #include <SDL_audio.h>
 #include <SDL_version.h>
+#else
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_audio.h>
+#include <SDL2/SDL_version.h>
+#endif
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>

@@ -28,7 +28,11 @@
 #include "main_data.h"
 
 #ifdef HAVE_FREETYPE
+#ifndef __PS4__
 #  include <ft2build.h>
+#else
+#  include <proto-include.h>
+#endif
 #  include FT_FREETYPE_H
 #  include FT_BITMAP_H
 #  include FT_MODULE_H
