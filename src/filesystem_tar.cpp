@@ -6,11 +6,11 @@
 #include <string>
 #include <variant>
 #include <string_view>
+#include <iostream>
 
 #include "filesystem_tar.h"
 
-static std::string cstr_to_string_safe(const char *s, size_t n)
-{
+static std::string cstr_to_string_safe(const char *s, size_t n) {
     std::string target;
     target.resize(n);
     strncat(target.data(), s, n);
@@ -25,15 +25,16 @@ TarFilesystem::Entry::Entry() {}
 
 TarFilesystem::Entry::Entry(std::string dirname) : name(dirname), data(Children()) {}
 
-TarFilesystem::Entry::Entry(long offs, entry_raw from, long *skip) {
+TarFilesystem::Entry::Entry(long offs, tar_entry_raw from, long *skip) {
     name = cstr_to_string_safe(from.data.ustar.path_prefix, sizeof(from.data.ustar.path_prefix)) + cstr_to_string_safe(from.data.filename, sizeof(from.data.filename));
 
     std::string sizestr = cstr_to_string_safe(from.data.size, sizeof(from.data.size));
     char *end;
     long filesize = strtol(sizestr.c_str(), &end, 8);
 
-    if (memcmp(from.data.ustar.magic, "ustar ", 6)) {
-        Output::Debug("TarFilesystem: invalid magic '{}' (offset {})", cstr_to_string_safe(from.data.ustar.magic, 6), offs);
+    auto magic = cstr_to_string_safe(from.data.ustar.magic, 6);
+    if (magic != "ustar " && magic != "ustar") {
+        Output::Debug("TarFilesystem: invalid magic '{}' (offset {})", magic, offs);
         invalidate();
         return;
     }
@@ -76,8 +77,8 @@ void TarFilesystem::Entry::invalidate() {
 bool TarFilesystem::Entry::add(Entry &&entry) {
     assert(!std::get_if<std::monostate>(&entry.data));
 
-    int slashloc = entry.name.rfind('/');
-    auto dirname = entry.name.substr(0, slashloc);
+    auto slashloc = entry.name.rfind('/');
+    auto dirname = slashloc == std::string::npos ? "" : entry.name.substr(0, slashloc);
     entry.name = entry.name.substr(slashloc + 1);
 
     auto parent_entry = locate(dirname, true);
@@ -119,11 +120,12 @@ const TarFilesystem::Entry *TarFilesystem::Entry::locate(std::string path) const
 TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : Filesystem(base_path, parent_fs), stream(parent_fs.OpenInputStream(GetPath())) {
     if (!stream) {
         Output::Warning("Failed to open {}", base_path);
+        rootdir.invalidate();
         return;
     }
 
-    entry_raw data;
-    int blank = 0;
+    tar_entry_raw data;
+    int blank = 0, n = 0;
     static const char key[32] = { 0 };
     while (stream.ReadIntoObj(data)) {
         if (memcmp(&data, key, sizeof(key)) == 0 && memcmp(&data, sizeof(key) + (const char *)&data, sizeof(data) - sizeof(key)) == 0) {
@@ -132,6 +134,8 @@ TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : 
             continue;
         }
         blank = 0;
+
+        ++n;
 
         long skip;
         Entry entry { stream.tellg(), data, &skip };
@@ -149,19 +153,24 @@ TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : 
             return;
         }
     }
-    Output::Warning("TarFIlesystem: tar file has no terminator");
+    Output::Warning("TarFilesystem: tar file has no terminator");
 }
 
 bool TarFilesystem::IsFile(std::string_view path) const {
     auto entry = rootdir.locate(std::string(path));
-    if (!entry)
-        Output::Error("TarFilesystem: no file exists at path {}", path);
+    if (!entry) {
+        return false;
+    }
     return !!std::get_if<Entry::FileEntryInfo>(&entry->data);
 }
 
 bool TarFilesystem::IsDirectory(std::string_view path, bool follow_symlinks) const {
     (void)follow_symlinks;
-    return !IsFile(path);
+
+    auto entry = rootdir.locate(std::string(path));
+    if (!entry)
+        return false;
+    return !!std::get_if<Entry::Children>(&entry->data);
 }
 
 bool TarFilesystem::Exists(std::string_view path) const {
@@ -173,10 +182,10 @@ bool TarFilesystem::Exists(std::string_view path) const {
 int64_t TarFilesystem::GetFilesize(std::string_view path) const {
     auto entry = rootdir.locate(std::string(path));
     if (!entry)
-        Output::Error("TarFilesystem: no file exists at path {}", path);
+        return 0;
     auto info = std::get_if<Entry::FileEntryInfo>(&entry->data);
     if (!info)
-        Output::Error("TarFilesystem: {} is a directory", path);
+        return 0;
     return info->size;
 }
 
@@ -196,8 +205,10 @@ std::streambuf* TarFilesystem::CreateInputStreambuffer(std::string_view path, st
     data.resize(info->size);
 
     stream.seekg(info->offs, std::ios_base::beg);
-    if (stream.read(reinterpret_cast<char*>(data.data()), info->size).gcount() != info->size)
-        Output::Error("TarFilesystem: error reading archive");
+    if (stream.read(reinterpret_cast<char*>(data.data()), info->size).gcount() != info->size) {
+        Output::Warning("TarFilesystem: error reading archive");
+        return nullptr;
+    }
 
     return new Filesystem_Stream::InputMemoryStreamBuf(std::move(data));
 }
@@ -214,7 +225,7 @@ bool TarFilesystem::GetDirectoryContent(std::string_view path, std::vector<Direc
         return false;
     }
     for (const auto &pair : *contents)
-        entries.emplace_back(std::string(pair.first), !std::get_if<Entry::FileEntryInfo>(&pair.second.data) ? DirectoryTree::FileType::Directory : DirectoryTree::FileType::Regular );
+        entries.emplace_back(std::string(pair.first), !std::get_if<Entry::FileEntryInfo>(&pair.second.data) ? DirectoryTree::FileType::Directory : DirectoryTree::FileType::Regular);
     return true;
 }
 

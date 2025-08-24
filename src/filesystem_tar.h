@@ -10,7 +10,7 @@
 #include "filesystem.h"
 #include "filesystem_stream.h"
 
-union entry_raw {
+union tar_entry_raw {
     struct {
         char filename[100];
         char perms[8];
@@ -46,7 +46,7 @@ class TarFilesystem : public Filesystem
 
         Entry();
         Entry(std::string dirname);
-        Entry(long offs, entry_raw from, long *skip);
+        Entry(long offs, tar_entry_raw from, long *skip);
 
         bool valid() const;
         void invalidate();
