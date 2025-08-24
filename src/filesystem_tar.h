@@ -34,8 +34,7 @@ union tar_entry_raw {
     char pack[512];
 };
 
-class TarFilesystem : public Filesystem
-{
+class TarFilesystem : public Filesystem {
     struct Entry {
         struct FileEntryInfo {
             long offs, size;
