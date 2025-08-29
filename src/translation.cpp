@@ -90,13 +90,17 @@ void Translation::InitTranslations()
 	// Reset
 	Reset();
 
-	// Determine if the "languages" directory exists, and convert its case.
-	auto fs = FileFinder::Game();
-	auto game_tree = fs.ListDirectory();
-	for (const auto& tr_name : *game_tree) {
-		if (tr_name.first == TRDIR_NAME) {
-			translation_root_fs = fs.Subtree(tr_name.second.name);
-			break;
+	// Try the command-line --language-path option first before checking Language folder.
+	translation_root_fs = FileFinder::Language();
+	if (!translation_root_fs) {
+		// Determine if the "languages" directory exists, and convert its case.
+		auto fs = FileFinder::Game();
+		auto game_tree = fs.ListDirectory();
+		for (const auto& tr_name : *game_tree) {
+			if (tr_name.first == TRDIR_NAME) {
+				translation_root_fs = fs.Subtree(tr_name.second.name);
+				break;
+			}
 		}
 	}
 	if (translation_root_fs) {

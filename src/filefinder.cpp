@@ -61,6 +61,7 @@ namespace {
 	std::shared_ptr<Filesystem> root_fs;
 	FilesystemView game_fs;
 	FilesystemView save_fs;
+	FilesystemView lang_fs;
 }
 
 FilesystemView FileFinder::Game() {
@@ -128,6 +129,14 @@ FilesystemView FileFinder::Save() {
 
 void FileFinder::SetSaveFilesystem(FilesystemView filesystem) {
 	save_fs = filesystem;
+}
+
+FilesystemView FileFinder::Language() {
+	return lang_fs;
+}
+
+void FileFinder::SetLanguageFilesystem(FilesystemView filesystem) {
+	lang_fs = filesystem;
 }
 
 FilesystemView FileFinder::Root() {

@@ -132,6 +132,20 @@ namespace FileFinder {
 	void SetSaveFilesystem(FilesystemView filesystem);
 
 	/**
+	 * A filesystem handle for file access inside the languages directory.
+	 *
+	 * @return Language filesystem handle
+	 */
+	FilesystemView Language();
+
+	/**
+	 * Sets the language filesystem.
+	 *
+	 * @param filesystem Language filesystem to use.
+	 */
+	void SetLanguageFilesystem(FilesystemView filesystem);
+
+	/**
 	 * Finds an image file in the current RPG Maker game.
 	 *
 	 * @param dir directory to check.
