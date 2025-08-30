@@ -1,3 +1,5 @@
+#include <orbis/SystemService.h>
+
 #include "player.h"
 #include "output.h"
 
@@ -19,10 +21,7 @@ int main(int argc, char* argv[])
 	
 	Player::Run();
 	
-	while(1)
-	{
-	
-	}
+	sceSystemServiceLoadExec("EXIT",NULL);
 	
 	return Player::exit_code;
 }
