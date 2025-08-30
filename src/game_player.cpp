@@ -874,13 +874,12 @@ int Game_Player::GetPanWait() {
 	return distance / speed + (distance % speed != 0);
 }
 
-#ifdef __PS4__
-static double min(const double& a, const double& b)
-{
-    return (b < a) ? b : a;
-}
+// Fixes compilation error with OpenOrbis toolchain where std::abs fails to cast to double on values where it should
+#if __PS4__
+#	define PS4_WORKAROUND (double)
+#else
+#	define PS4_WORKAROUND
 #endif
-
 void Game_Player::UpdatePan() {
 	if (!IsPanActive())
 		return;
@@ -897,13 +896,8 @@ void Game_Player::UpdatePan() {
 		const double step_y = data()->maniac_vertical_pan_speed;
 
 		// Maniac uses doubles for smoother screen scrolling
-		#ifndef __PS4__
-		double dx2 = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
-		double dy2 = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
-		#else
-		double dx2 = min(step_x, std::abs(static_cast<double>(pan_remain_x)));
-		double dy2 = min(step_y, std::abs(static_cast<double>(pan_remain_y)));
-		#endif
+		double dx2 = std::min(step_x, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_x)));
+		double dy2 = std::min(step_y, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_y)));
 
 		dx2 = pan_remain_x >= 0 ? dx2 : -dx2;
 		dy2 = pan_remain_y >= 0 ? dy2 : -dy2;
@@ -915,14 +909,9 @@ void Game_Player::UpdatePan() {
 		dx = Utils::RoundTo<double>(std::abs(maniac_pan_current_x)) == std::ceil(std::abs(maniac_pan_current_x)) ? static_cast<int>(std::floor(dx2)) : static_cast<int>(std::ceil(dx2));
 		dy = Utils::RoundTo<double>(std::abs(maniac_pan_current_y)) == std::ceil(std::abs(maniac_pan_current_y)) ? static_cast<int>(std::floor(dy2)) : static_cast<int>(std::ceil(dy2));
 	} else {
-		#ifndef __PS4__
 		dx = std::min(step, std::abs(pan_remain_x));
 		dy = std::min(step, std::abs(pan_remain_y));
-		#else
-		dx = min(step, std::abs(pan_remain_x));
-		dy = min(step, std::abs(pan_remain_y));
-		#endif
-		
+
 		dx = pan_remain_x >= 0 ? dx : -dx;
 		dy = pan_remain_y >= 0 ? dy : -dy;
 	}
