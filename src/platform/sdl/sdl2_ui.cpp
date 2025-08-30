@@ -610,6 +610,7 @@ void Sdl2Ui::UpdateDisplay() {
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
 #endif
 
+#ifndef __PS4__
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
@@ -693,6 +694,10 @@ void Sdl2Ui::UpdateDisplay() {
 	} else {
 		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
 	}
+#else
+	SDL_RenderClear(sdl_renderer);
+	SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+#endif
 	SDL_RenderPresent(sdl_renderer);
 }
 
@@ -1324,8 +1329,10 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
-	cfg.game_resolution.Lock(ConfigEnum::GameResolution::Original);
-	cfg.scaling_mode.Lock(ConfigEnum::ScalingMode::Nearest);
+	cfg.game_resolution.SetOptionVisible(false);
+	cfg.scaling_mode.SetOptionVisible(false);
+	cfg.stretch.SetOptionVisible(false);
+	cfg.screen_scale.SetOptionVisible(false);
 #endif
 
 }
