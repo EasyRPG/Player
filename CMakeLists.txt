@@ -1425,8 +1425,15 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
 			DESTINATION . COMPONENT psvita)
 	elseif(PS4)
+
 		add_executable(easyrpg-player "src/platform/ps4/main.cpp")
 		target_link_libraries(easyrpg-player ${PROJECT_NAME} bz2 SDL2 SceSysmodule ScePigletv2VSH SceUserService SceAudioOut SceSystemService ScePad samplerate freetype)
+		
+		configure_file(${OPENORBIS}/samples/piglet/sce_module/libc.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libc.prx COPYONLY)
+		configure_file(${OPENORBIS}/samples/piglet/sce_module/libSceFios2.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libSceFios2.prx COPYONLY)
+		configure_file(${OPENORBIS}/samples/piglet/sce_sys/about/right.sprx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_sys/about/right.sprx COPYONLY)
+
+
 		add_self(easyrpg-player)
 		add_pkg(easyrpg-player ${CMAKE_SOURCE_DIR}/resources/ps4 "ERPG00001" "easyRPG" "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
 	endif()
