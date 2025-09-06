@@ -1323,9 +1323,7 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(false);
 	// WiiU always pauses apps in the background
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
-#endif
-
-#if defined(__PS4__)
+#elif defined(__PS4__)
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
 	cfg.window_zoom.SetOptionVisible(false);
