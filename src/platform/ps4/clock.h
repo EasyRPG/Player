@@ -1,5 +1,5 @@
-#ifndef EP_PLATFORM_PSVITA_CLOCK_H
-#define EP_PLATFORM_PSVITA_CLOCK_H
+#ifndef EP_PLATFORM_PS4_CLOCK_H
+#define EP_PLATFORM_PS4_CLOCK_H
 
 #include <orbis/libkernel.h>
 #include <cstdint>
