@@ -1427,7 +1427,7 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 	elseif(PS4)
 
 		add_executable(easyrpg-player "src/platform/ps4/main.cpp")
-		target_link_libraries(easyrpg-player ${PROJECT_NAME} bz2 SDL2 SceSysmodule ScePigletv2VSH SceUserService SceAudioOut SceSystemService ScePad samplerate freetype)
+		target_link_libraries(easyrpg-player ${PROJECT_NAME} bz2 SceSysmodule ScePigletv2VSH SceUserService SceAudioOut SceSystemService ScePad)
 		
 		configure_file(${OPENORBIS}/samples/piglet/sce_module/libc.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libc.prx COPYONLY)
 		configure_file(${OPENORBIS}/samples/piglet/sce_module/libSceFios2.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libSceFios2.prx COPYONLY)
