@@ -357,6 +357,7 @@ protected:
 	int ManiacBitmask(int value, int mask) const;
 
 	lcf::rpg::SaveEventExecState _state;
+	bool _WatchingMusicState = false;
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
