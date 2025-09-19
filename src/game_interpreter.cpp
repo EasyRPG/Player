@@ -37,7 +37,11 @@
 #include "game_variables.h"
 #include "game_party.h"
 #include "game_actors.h"
-#include <SDL.h> // For SDL_StartTextInput and SDL_StopTextInput
+
+#if defined(USE_SDL)
+#include <SDL.h>
+#endif
+
 #include "game_strings.h"
 #include "game_system.h"
 #include "game_message.h"
@@ -442,7 +446,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			_state.wait_time--;
 			break;
 		}
-
+		#if defined(USE_SDL)
 		if (_state.wait_typing_input) {
 			if (_is_typing_mode) {
 				// We are waiting for typing to finish. Break the loop to wait another frame.
@@ -451,7 +455,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			// Typing is no longer active, so clear the wait flag and continue execution.
 			_state.wait_typing_input = false;
 		}
-
+		#endif
 		if (_state.wait_key_enter) {
 			if (Game_Message::IsMessageActive()) {
 				break;
@@ -5757,6 +5761,8 @@ bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand cons
 }
 
 bool Game_Interpreter::CommandEasyRpgTypeMode(const lcf::rpg::EventCommand& com) {
+	#if defined(USE_SDL)
+
 	int output_var_id = 0;
 	if (com.parameters.size() > 1) {
 		output_var_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
@@ -5817,10 +5823,14 @@ bool Game_Interpreter::CommandEasyRpgTypeMode(const lcf::rpg::EventCommand& com)
 	SDL_StartTextInput();
 
 	return true;
+	#endif
+
+	Output::Warning("TypeMode: SDL not supported on this platform");
+	return true;
 }
 
 // --- public methods for UI layer ---
-
+#if defined(USE_SDL)
 void Game_Interpreter::AppendTypingText(const char* text) {
 	if (!_is_typing_mode) return;
 	std::string current_text = std::string(Main_Data::game_strings->Get(_typing_output_var_id));
@@ -5861,7 +5871,9 @@ void Game_Interpreter::FinalizeTyping(bool accepted) {
 	if (!_is_typing_mode) return;
 
 	_is_typing_mode = false;
+	#if defined(USE_SDL)
 	SDL_StopTextInput();
+	#endif
 
 	if (!accepted) {
 		if (_typing_output_var_id > 0) {
@@ -5869,7 +5881,7 @@ void Game_Interpreter::FinalizeTyping(bool accepted) {
 		}
 	}
 }
-
+#endif
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
