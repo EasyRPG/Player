@@ -138,7 +138,7 @@ TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : 
         ++n;
 
         long skip;
-        Entry entry { stream.tellg(), data, &skip };
+        Entry entry { (long)stream.tellg(), data, &skip };
         if (!entry.valid()) {
             rootdir.invalidate();
             return;
