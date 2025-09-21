@@ -14,7 +14,7 @@ static std::string cstr_to_string_safe(const char *s, size_t n) {
     std::string target;
     target.resize(n);
     strncat(target.data(), s, n);
-    if (int nul = target.find('\0'); nul != std::string::npos) {
+    if (auto nul = target.find('\0'); nul != std::string::npos) {
         target.resize(nul);
         target.shrink_to_fit();
     }
@@ -32,8 +32,8 @@ TarFilesystem::Entry::Entry(long offs, tar_entry_raw from, long *skip) {
     char *end;
     long filesize = strtol(sizestr.c_str(), &end, 8);
 
-    auto magic = cstr_to_string_safe(from.data.ustar.magic, 6);
-    if (magic != "ustar " && magic != "ustar") {
+    auto magic = cstr_to_string_safe(from.data.ustar.magic, 5);
+    if (magic != "ustar") {
         Output::Debug("TarFilesystem: invalid magic '{}' (offset {})", magic, offs);
         invalidate();
         return;
