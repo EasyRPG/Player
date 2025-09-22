@@ -554,6 +554,16 @@ Game_Config Player::ParseCommandLine() {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--language-path") && arg.NumValues() > 0) {
+			if (arg.NumValues() > 0) {
+				auto langfs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
+				if (!langfs) {
+					Output::Error("Invalid --language-path {}", arg.Value(0));
+				}
+				FileFinder::SetLanguageFilesystem(langfs);
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 1, "--save-path")) {
 			if (arg.NumValues() > 0) {
 				auto savefs = FileFinder::Root().Create(FileFinder::MakeCanonical(arg.Value(0), 0));
@@ -1449,6 +1459,8 @@ Engine options:
  --font-path PATH     The path in which the settings scene looks for fonts.
                       The default is config-path/Font.
  --language LANG      Load the game translation in language/LANG folder.
+ --language-path PATH Use the translations at PATH instead of the translations
+                      in the language folder.
  --load-game-id N     Skip the title scene and load SaveN.lsd (N is padded to
                       two digits).
  --log-file FILE      Path to the logfile. The Player will write diagnostic

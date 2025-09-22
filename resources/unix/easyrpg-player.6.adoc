@@ -84,6 +84,10 @@ NOTE: For games that only use ASCII (English games) use '1252'.
 *--language* _LANG_::
   Loads the game translation in language/'LANG' folder.
 
+*--language-path* _PATH_::
+  Use the translations at 'PATH' instead of the translations
+  in the game's language folder.
+
 *--load-game-id* _ID_::
   Skip the title scene and load Save__ID__.lsd ('ID' is padded to two digits).
 
