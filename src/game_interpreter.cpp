@@ -24,6 +24,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include "audio.h"
 #include "game_interpreter.h"
 #include "async_handler.h"
 #include "game_dynrpg.h"
@@ -3165,12 +3166,87 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 	return true;
 }
 
-bool Game_Interpreter::CommandMemorizeBGM(lcf::rpg::EventCommand const& /* com */) { // code 11530
+bool Game_Interpreter::CommandMemorizeBGM(lcf::rpg::EventCommand const& com) { // code 11530
 	Main_Data::game_system->MemorizeBGM();
+
+	// EasyRPG Extension: Store current timestamp in a variable
+	// Parameter 1: Mode (0: Direct, 1: Variable, 2: Indirect)
+	// Parameter 2: Variable ID
+	if (com.parameters.size() >= 2) {
+		int mode = com.parameters[0];
+		int var_id = com.parameters[1];
+		int target_var_id = 0;
+
+		switch (mode) {
+		case 0: // Direct
+			target_var_id = var_id;
+			break;
+		case 1: // Variable
+			target_var_id = Main_Data::game_variables->Get(var_id);
+			break;
+		case 2: // Variable Indirect (v[v[ID]])
+			target_var_id = Main_Data::game_variables->GetIndirect(var_id);
+			break;
+		}
+
+		if (target_var_id > 0) {
+			int timestamp_ticks = Audio().BGM_GetTicks();
+			Main_Data::game_variables->Set(target_var_id, timestamp_ticks);
+			Game_Map::SetNeedRefreshForVarChange(target_var_id);
+		}
+	}
+
 	return true;
 }
 
-bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& /* com */) { // code 11540
+bool Game_Interpreter::CommandPlayMemorizedBGM(lcf::rpg::EventCommand const& com) {
+	double start_tick = 0;
+	double current_tick = 0;
+
+	if (com.parameters.size() >= 2) {
+		start_tick = Main_Data::game_variables->Get(ValueOrVariable(com.parameters[0], com.parameters[1]));
+	}
+
+	if (_WatchingMusicState) {
+		const lcf::rpg::Music& current_bgm = Main_Data::game_system->GetCurrentBGM();
+		current_tick = Audio().BGM_GetTicks();
+		int current_volume = current_bgm.volume;
+		int current_tempo = current_bgm.tempo;
+
+
+
+		if (Audio().BGM_GetType() == "midi") {
+			const int TICKS_PER_SECOND = 100;
+
+			current_tick = trunc(current_tick / TICKS_PER_SECOND);
+			start_tick = trunc(start_tick / TICKS_PER_SECOND);
+			Audio().BGM_Pitch(1000);
+			Output::Debug("MIDI Seek: Target {}s, Current {}", start_tick, current_tick);
+
+		} else Audio().BGM_Pitch(100000);
+			// For non-MIDI files, ticks are already in seconds.
+			if (current_tick != start_tick) {
+				
+				Audio().BGM_Volume(0);
+				return false;
+			}
+		
+
+		// Seek point reached, restore normal playback.
+		Audio().BGM_Pitch(current_tempo);
+		Audio().BGM_Volume(current_volume);
+		_WatchingMusicState = false;
+		return true;
+	}
+
+	if (start_tick > 0) {
+		Audio().BGM_Stop();
+		Main_Data::game_system->PlayMemorizedBGM();
+		_WatchingMusicState = true;
+		return false;
+
+	}
+
 	Main_Data::game_system->PlayMemorizedBGM();
 	return true;
 }
