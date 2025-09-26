@@ -575,6 +575,8 @@ elseif(NINTENDO_WIIU)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
 elseif(AMIGA)
 	set(PLAYER_TARGET_PLATFORM "SDL1" CACHE STRING "Platform to compile for.")
+elseif(PS4)
+	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for.")
 else()
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL3 SDL2 SDL1 libretro")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL3 SDL2 SDL1 libretro)
@@ -788,7 +790,7 @@ if(NOT PLAYER_AUDIO_BACKEND IN_LIST AUDIO_PROP)
 endif()
 
 # Shared by homebrew platforms
-if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA)
+if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA OR PS4)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	if(VITA)
 		# This optimisation is unstable on Vita (crashes at the end of MainLoop)
@@ -1422,6 +1424,18 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
 			DESTINATION . COMPONENT psvita)
+	elseif(PS4)
+
+		add_executable(easyrpg-player "src/platform/ps4/main.cpp")
+		target_link_libraries(easyrpg-player ${PROJECT_NAME} bz2 SceSysmodule ScePigletv2VSH SceUserService SceAudioOut SceSystemService ScePad)
+		
+		configure_file(${OPENORBIS}/samples/piglet/sce_module/libc.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libc.prx COPYONLY)
+		configure_file(${OPENORBIS}/samples/piglet/sce_module/libSceFios2.prx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_module/libSceFios2.prx COPYONLY)
+		configure_file(${OPENORBIS}/samples/piglet/sce_sys/about/right.sprx ${CMAKE_CURRENT_SOURCE_DIR}/resources/ps4/sce_sys/about/right.sprx COPYONLY)
+
+
+		add_self(easyrpg-player)
+		add_pkg(easyrpg-player ${CMAKE_SOURCE_DIR}/resources/ps4 "ERPG00001" "easyRPG" "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
 	endif()
 	install(TARGETS easyrpg-player RUNTIME DESTINATION . COMPONENT debug)
 	# debug information

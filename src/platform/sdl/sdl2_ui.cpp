@@ -317,7 +317,7 @@ void Sdl2Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
-#ifdef EMSCRIPTEN
+#if defined(EMSCRIPTEN) || defined(__PS4__)
 			SetIsFullscreen(true);
 #else
 			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -450,7 +450,7 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		window_sg.Dismiss();
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
-#ifndef EMSCRIPTEN
+#if !defined(EMSCRIPTEN) && !defined(__PS4__)
 		bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -610,6 +610,7 @@ void Sdl2Ui::UpdateDisplay() {
 	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
 #endif
 
+#ifndef __PS4__
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
@@ -693,6 +694,10 @@ void Sdl2Ui::UpdateDisplay() {
 	} else {
 		SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
 	}
+#else
+	SDL_RenderClear(sdl_renderer);
+	SDL_RenderCopy(sdl_renderer, sdl_texture_game, nullptr, nullptr);
+#endif
 	SDL_RenderPresent(sdl_renderer);
 }
 
@@ -1274,6 +1279,8 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("SDL2 (Software, Wii)");
 #elif defined(__WIIU__)
 	cfg.renderer.Lock("SDL2 (Software, Wii U)");
+#elif defined(__PS4__)
+	cfg.renderer.Lock("SDL2 (Software, PS4)");
 #else
 	cfg.renderer.Lock("SDL2 (Software)");
 #endif
@@ -1316,7 +1323,16 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.fullscreen.SetOptionVisible(false);
 	// WiiU always pauses apps in the background
 	cfg.pause_when_focus_lost.SetOptionVisible(false);
+#elif defined(__PS4__)
+	cfg.fullscreen.SetOptionVisible(false);
+	cfg.pause_when_focus_lost.SetOptionVisible(false);
+	cfg.window_zoom.SetOptionVisible(false);
+	cfg.game_resolution.SetOptionVisible(false);
+	cfg.scaling_mode.SetOptionVisible(false);
+	cfg.stretch.SetOptionVisible(false);
+	cfg.screen_scale.SetOptionVisible(false);
 #endif
+
 }
 
 Rect Sdl2Ui::GetWindowMetrics() const {

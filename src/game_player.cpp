@@ -874,6 +874,12 @@ int Game_Player::GetPanWait() {
 	return distance / speed + (distance % speed != 0);
 }
 
+// Fixes compilation error with OpenOrbis toolchain where std::abs fails to cast to double on values where it should
+#if __PS4__
+#	define PS4_WORKAROUND (double)
+#else
+#	define PS4_WORKAROUND
+#endif
 void Game_Player::UpdatePan() {
 	if (!IsPanActive())
 		return;
@@ -890,8 +896,8 @@ void Game_Player::UpdatePan() {
 		const double step_y = data()->maniac_vertical_pan_speed;
 
 		// Maniac uses doubles for smoother screen scrolling
-		double dx2 = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
-		double dy2 = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
+		double dx2 = std::min(step_x, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_x)));
+		double dy2 = std::min(step_y, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_y)));
 
 		dx2 = pan_remain_x >= 0 ? dx2 : -dx2;
 		dy2 = pan_remain_y >= 0 ? dy2 : -dy2;

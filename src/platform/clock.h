@@ -41,6 +41,9 @@ using Platform_Clock = EmscriptenClock;
 // Only use libretro clock on platforms with no custom clock
 #include "platform/libretro/clock.h"
 using Platform_Clock = LibretroClock;
+#elif defined(__PS4__)
+#include "platform/ps4/clock.h"
+using Platform_Clock = Ps4Clock;
 #else
 #include "std_clock.h"
 using Platform_Clock = StdClock;

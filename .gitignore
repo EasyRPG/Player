@@ -139,6 +139,10 @@ eboot.bin
 *.vpk
 *.velf
 
+# ps4
+*.prx
+*.sprx
+
 # flatpak
 /.flatpak-builder
 

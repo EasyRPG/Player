@@ -165,6 +165,8 @@ FilesystemView Game_Config::GetGlobalConfigFilesystem() {
 		path = "sdmc:/data/easyrpg-player";
 #elif defined(__vita__)
 		path = "ux0:/data/easyrpg-player";
+#elif defined(__PS4__)
+		path = "/data/easyrpg-player/";
 #elif defined(USE_LIBRETRO)
 		const char* dir = nullptr;
 		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
