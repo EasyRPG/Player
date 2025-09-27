@@ -112,6 +112,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/filesystem_stream.h \
 	src/filesystem_zip.cpp \
 	src/filesystem_zip.h \
+	src/filesystem_tar.cpp \
+	src/filesystem_tar.h \
 	src/flash.h \
 	src/flat_map.h \
 	src/font.cpp \
@@ -750,6 +752,7 @@ test_runner_SOURCES = \
 	tests/filefinder.cpp \
 	tests/filesystem.cpp \
 	tests/filesystem_zip.cpp \
+    tests/filesystem_tar.cpp \
 	tests/flat_map.cpp \
 	tests/font.cpp \
 	tests/game_actor.cpp \
