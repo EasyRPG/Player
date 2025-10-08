@@ -19,7 +19,7 @@ jobs:
           pip install yamllint
           pip install cmakelint
 
-      - uses: tj-actions/changed-files@v46
+      - uses: tj-actions/changed-files@v47
         if: '!cancelled()'
         id: changed-files-yaml
         with:
@@ -33,7 +33,7 @@ jobs:
             ${{ steps.changed-files-yaml.outputs.all_changed_files }}
           # we often have extra long lines, so relaxing the check (from 80)
 
-      - uses: tj-actions/changed-files@v46
+      - uses: tj-actions/changed-files@v47
         if: '!cancelled()'
         id: changed-files-cmake
         with:
@@ -48,7 +48,7 @@ jobs:
           # we often have extra long lines, so relaxing the check (from 80)
           # also do not warn about tabstops
 
-      - uses: tj-actions/changed-files@v46
+      - uses: tj-actions/changed-files@v47
         if: '!cancelled()'
         id: changed-files-md
         with:
