@@ -27,6 +27,7 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_runtime_patches.h"
 #include "game_system.h"
 #include "game_variables.h"
 #include "input.h"
@@ -837,6 +838,7 @@ void Window_Message::InputNumber() {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(true);
+		RuntimePatches::OnVariableChanged(pending_message.GetNumberInputVariable());
 		number_input_window->SetNumber(0);
 		number_input_window->SetActive(false);
 	}

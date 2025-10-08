@@ -21,6 +21,8 @@
 #include "game_config_game.h"
 #include "cmdline_parser.h"
 #include "player.h"
+#include "input.h"
+#include "lcf/rpg/savepicture.h"
 
 class Game_Actor;
 class Game_Battler;
@@ -39,6 +41,26 @@ namespace RuntimePatches {
 		}
 	};
 
+	enum class MouseButtonBindingMode {
+		None,
+		Left,
+		Right,
+		Both
+	};
+
+	enum class MouseWheelMode {
+		None,
+		UpDown,
+		LeftRight
+	};
+
+	inline struct {
+		bool enabled = false;
+		MouseButtonBindingMode bind_decision = MouseButtonBindingMode::None;
+		MouseButtonBindingMode bind_cancel = MouseButtonBindingMode::None;
+		MouseWheelMode bind_wheel = MouseWheelMode::None;
+	} mouse_bindings;
+
 	void LockPatchesAsDiabled();
 
 	bool ParseFromCommandLine(CmdlineParser& cp);
@@ -46,6 +68,24 @@ namespace RuntimePatches {
 	bool ParseFromIni(lcf::INIReader& ini);
 
 	void DetermineActivePatches(std::vector<std::string>& patches);
+
+	void OnUpdate();
+
+	void OnResetGameObjects();
+
+	void OnLoadSavegame();
+
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableChanged(int variable_id);
+
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableChanged(std::initializer_list<int> variable_ids);
+
+	// Handles patch side effects caused by Variable changes. This function is meant
+	// to be called only for operations that are possible in an unpatched RPG_RT!
+	void OnVariableRangeChanged(int start_id, int end_id);
 
 	/**
 	 * Support for RPG_RT patch 'Encounter Randomness Alert'.
@@ -195,6 +235,38 @@ namespace RuntimePatches {
 		constexpr Input::Keys::InputKey VirtualKeyToInputKey(uint32_t key_id);
 
 		constexpr uint32_t InputKeyToVirtualKey(Input::Keys::InputKey input_key);
+	}
+
+
+	/**
+	 * Support for RPG_RT patch 'Power Mode 2003'.
+	 *  (aka. "Mega Patch 2003" in Italian scene)
+	 * 
+	 * This patch adds some specialiced commands by hooking into
+	 * the first 8 in-game variables, functionally using them
+	 * as 'Control Registers'.
+	 *
+	 * These new commands include:
+	 * - V[1]:   Calling up the Load menu, Exiting the game
+	 *             & Checking for the existence of Savefiles
+	 * - V[2-3]: Retrieving the current coordinates of the mouse cursor.
+	 * - V[4]:   Retrieving key inputs for entire keyboard.
+	 * - V[5-7]: Floating-point operations
+	 * - V[8]:   Specifying custom rotation for Picture IDs 1 - 50
+	 * */
+	namespace PowerMode2003 {
+		constexpr int PM_VAR_CR0 = 1;
+		constexpr int PM_VAR_MCOORDX = 2;
+		constexpr int PM_VAR_MCOORDY = 3;
+		constexpr int PM_VAR_KEY = 4;
+		constexpr int PM_VAR_FVALUE1 = 5;
+		constexpr int PM_VAR_FVALUE2 = 6;
+		constexpr int PM_VAR_FCODE = 7;
+		constexpr int PM_VAR_SPECIAL = 8;
+
+		void HandleVariableHooks(int var_id);
+
+		bool ApplyPictureRotation(lcf::rpg::SavePicture& pict);
 	}
 }
 

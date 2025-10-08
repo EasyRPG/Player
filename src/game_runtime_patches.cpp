@@ -18,6 +18,7 @@
 // Headers
 #include "game_runtime_patches.h"
 
+#include <cmath>
 #include "game_map.h"
 #include "game_party.h"
 #include "game_switches.h"
@@ -27,6 +28,11 @@
 #include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
+#include "output.h"
+#include "input.h"
+#include "scene.h"
+#include "scene_load.h"
+#include "baseui.h"
 
 namespace {
 	template<size_t C>
@@ -147,6 +153,84 @@ void RuntimePatches::DetermineActivePatches(std::vector<std::string>& patches) {
 	PrintPatch(patches, MonSca::patch_args);
 	PrintPatch(patches, EXPlus::patch_args);
 	PrintPatch(patches, GuardRevamp::patch_args);
+}
+
+void RuntimePatches::OnUpdate() {
+	// Handle virtual key bindings for mouse buttons.
+	if (mouse_bindings.enabled) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT)) {
+			if ((mouse_bindings.bind_decision == MouseButtonBindingMode::Left || mouse_bindings.bind_decision == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::DECISION);
+			}
+			if ((mouse_bindings.bind_cancel == MouseButtonBindingMode::Left || mouse_bindings.bind_cancel == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::CANCEL);
+			}
+		} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
+			if ((mouse_bindings.bind_decision == MouseButtonBindingMode::Right || mouse_bindings.bind_decision == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::DECISION);
+			}
+			if ((mouse_bindings.bind_cancel == MouseButtonBindingMode::Right || mouse_bindings.bind_cancel == MouseButtonBindingMode::Both)) {
+				Input::SimulateButtonPress(Input::CANCEL);
+			}
+		}
+
+		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLUP)) {
+			if (mouse_bindings.bind_wheel == MouseWheelMode::UpDown) {
+				Input::SimulateButtonPress(Input::UP);
+			} else if (mouse_bindings.bind_wheel == MouseWheelMode::LeftRight) {
+				Input::SimulateButtonPress(Input::LEFT);
+			}
+		} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLDOWN)) {
+			if (mouse_bindings.bind_wheel == MouseWheelMode::UpDown) {
+				Input::SimulateButtonPress(Input::DOWN);
+			} else if (mouse_bindings.bind_wheel == MouseWheelMode::LeftRight) {
+				Input::SimulateButtonPress(Input::RIGHT);
+			}
+		}
+#endif
+	}
+}
+
+void RuntimePatches::OnResetGameObjects() {
+	mouse_bindings = {};
+
+	if (Player::game_config.patch_powermode.Get()) {
+		Player::game_config.new_game.Set(true);
+		Main_Data::game_variables->Set(PowerMode2003::PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+
+		mouse_bindings.enabled = true;
+		mouse_bindings.bind_decision = MouseButtonBindingMode::Left;
+		mouse_bindings.bind_cancel = MouseButtonBindingMode::Right;
+	}
+}
+
+void RuntimePatches::OnLoadSavegame() {
+	if (Player::game_config.patch_powermode.Get()) {
+		Main_Data::game_variables->Set(PowerMode2003::PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+}
+
+void RuntimePatches::OnVariableChanged(int variable_id) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		PowerMode2003::HandleVariableHooks(variable_id);
+	}
+}
+
+void RuntimePatches::OnVariableChanged(std::initializer_list<int> variable_ids) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		for (int var_id : variable_ids) {
+			PowerMode2003::HandleVariableHooks(var_id);
+		}
+	}
+}
+
+void RuntimePatches::OnVariableRangeChanged(int start_id, int end_id) {
+	if (EP_UNLIKELY(Player::game_config.patch_powermode.Get())) {
+		for (int var_id = start_id; var_id <= end_id; ++var_id) {
+			PowerMode2003::HandleVariableHooks(var_id);
+		}
+	}
 }
 
 bool RuntimePatches::EncounterRandomnessAlert::HandleEncounter(int troop_id) {
@@ -287,5 +371,164 @@ bool RuntimePatches::GuardRevamp::OverrideDamageAdjustment(int& dmg, const Game_
 		dmg /= 100;
 		return true;
 	}
+	return false;
+}
+
+namespace RuntimePatches::PowerMode2003 {
+	void HandleCommands() {
+		int op = Main_Data::game_variables->Get(PM_VAR_CR0);
+		if (op == 255 && FileFinder::HasSavegame()) {
+			Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+		} else if (op == 254) {
+			Player::exit_flag = true;
+		}
+		Main_Data::game_variables->Set(PM_VAR_CR0, FileFinder::HasSavegame() ? 1 : 0);
+	}
+
+	void HandleMouse() {
+#if !defined(USE_MOUSE_OR_TOUCH) || !defined(SUPPORT_MOUSE_OR_TOUCH)
+		Output::Warning("PowerMode2003: Mouse input is not supported on this platform");
+		return;
+#endif
+		Point mouse_pos = Input::GetMousePosition();
+		Main_Data::game_variables->Set(PM_VAR_MCOORDX, mouse_pos.x);
+		Main_Data::game_variables->Set(PM_VAR_MCOORDY, mouse_pos.y);
+
+	}
+
+	void HandleKeyboard() {
+#if !defined(SUPPORT_KEYBOARD)
+		Output::Warning("PowerMode2003: Keyboard input is not supported on this platform");
+		return;
+#endif
+		int vk_id = Main_Data::game_variables->Get(PM_VAR_KEY);
+		if (vk_id == 0) {
+			if (Input::IsRawKeyPressed(Input::Keys::LSHIFT) || Input::IsRawKeyPressed(Input::Keys::RSHIFT)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::SHIFT);
+			} else if (Input::IsRawKeyPressed(Input::Keys::LCTRL) || Input::IsRawKeyPressed(Input::Keys::RCTRL)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::CTRL);
+			} else if (Input::IsRawKeyPressed(Input::Keys::LALT) || Input::IsRawKeyPressed(Input::Keys::RALT)) {
+				vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(Input::Keys::ALT);
+			} else {
+				// check the whole keyboard for any key press
+				for (int i = 1; i < Input::Keys::KEYS_COUNT; ++i) {
+					auto input_key = static_cast<Input::Keys::InputKey>(i);
+					if (Input::IsRawKeyPressed(input_key) && (vk_id = RuntimePatches::VirtualKeys::InputKeyToVirtualKey(input_key))) {
+						break;
+					}
+				}
+			}
+
+			Main_Data::game_variables->Set(PM_VAR_KEY, vk_id);
+		} else if (vk_id > 0 && vk_id <= 255) {
+			// check a single key
+			auto input_key = RuntimePatches::VirtualKeys::VirtualKeyToInputKey(vk_id);
+			int result = 0;
+			if (input_key == Input::Keys::NONE) {
+				Output::Debug("PowerMode2003: Unsupported keycode {}", vk_id);
+			}
+			bool pressed = false;
+			if (input_key == Input::Keys::SHIFT) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LSHIFT) || Input::IsRawKeyPressed(Input::Keys::RSHIFT);
+			} else if (input_key == Input::Keys::CTRL) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LCTRL) || Input::IsRawKeyPressed(Input::Keys::RCTRL);
+			} else if (input_key == Input::Keys::ALT) {
+				pressed = Input::IsRawKeyPressed(Input::Keys::LALT) || Input::IsRawKeyPressed(Input::Keys::RALT);
+			} else {
+				pressed = Input::IsRawKeyPressed(input_key);
+			}
+			if (!pressed) {
+				Main_Data::game_variables->Set(PM_VAR_KEY, 0);
+			}
+		} else {
+			Main_Data::game_variables->Set(PM_VAR_KEY, 0);
+		}
+	}
+
+	void HandleFloatComputation() {
+		auto input1 = static_cast<float>(Main_Data::game_variables->Get(PM_VAR_FVALUE1));
+
+		// Some versions of the documentation for this patch have the target ids swapped.
+		// (SIN -> FVALUE1, COS -> FVALUE2, TAN -> FVALUE1)
+		//
+		// But the only known RPG_RT versions of this patch actually save them like follows..:
+		switch (Main_Data::game_variables->Get(PM_VAR_FCODE)) {
+			case 1:
+			{
+				auto v_sin = std::sin(input1 * M_PI / 180);
+				auto v_cos = std::cos(input1 * M_PI / 180);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_sin * 1'000'000));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_cos * 1'000'000));
+				break;
+			}
+			case 2:
+			{
+				auto v_tan = std::tan(input1 * M_PI / 180);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_tan * 1'000'000));
+				break;
+			}
+			case 3:
+			{
+				float v_int;
+				float v_fract = std::modf(std::sqrt(input1), &v_int);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_int));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_fract * 1'000'000));
+				break;
+			}
+			case 4:
+			{
+				auto input2 = static_cast<float>(Main_Data::game_variables->Get(PM_VAR_FVALUE2));
+				float v_int;
+				float v_fract = std::modf(input1 / input2, &v_int);
+				Main_Data::game_variables->Set(PM_VAR_FVALUE1, static_cast<Game_Variables::Var_t>(v_int));
+				Main_Data::game_variables->Set(PM_VAR_FVALUE2, static_cast<Game_Variables::Var_t>(v_fract * 1'000'000));
+				break;
+			}
+			default:
+				break;
+		}
+	}
+}
+
+void RuntimePatches::PowerMode2003::HandleVariableHooks(int var_id) {
+	switch (var_id) {
+		case PM_VAR_CR0:
+			HandleCommands();
+			break;
+		case PM_VAR_MCOORDY:
+			HandleMouse();
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_MCOORDX);
+			break;
+		case PM_VAR_KEY:
+			HandleKeyboard();
+			break;
+		case PM_VAR_FCODE:
+			HandleFloatComputation();
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_FVALUE1);
+			Game_Map::SetNeedRefreshForVarChange(PM_VAR_FVALUE2);
+			break;
+		default:
+			return;
+	}
+}
+
+bool RuntimePatches::PowerMode2003::ApplyPictureRotation(lcf::rpg::SavePicture& pict) {
+	if (Player::game_config.patch_powermode.Get()) {
+		auto var_start_pict_rotations = Main_Data::game_variables->Get(PM_VAR_SPECIAL);
+		if (var_start_pict_rotations <= 10) {
+			// if the "SPECIAL" mode is off, then the value for "bottom transparency"
+			// is reused to specify a counter-clock-wise rotation
+			if (static_cast<int8_t>(pict.finish_bot_trans) >= 50) {
+				pict.current_rotation -= pict.current_effect_power;
+				return true;
+			}
+			return false;
+		}
+		if (pict.ID <= 50) {
+			pict.current_rotation = Main_Data::game_variables->Get(var_start_pict_rotations + pict.ID - 1);
+			return true;
+		}
+	}
+
 	return false;
 }
