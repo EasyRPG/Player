@@ -38,6 +38,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/autobattle.h \
 	src/background.cpp \
 	src/background.h \
+	src/base64.hpp \
 	src/baseui.cpp \
 	src/baseui.h \
 	src/battle_animation.cpp \

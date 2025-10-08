@@ -53,6 +53,51 @@
 #define SHGFP_TYPE_CURRENT 0
 #endif
 
+#include "filesystem_stream.h"
+#include "base64.hpp"
+
+namespace { // Anonymous namespace
+
+	struct DataUriResult {
+		std::string_view mime_type;
+		bool is_base64 = false;
+		std::vector<unsigned char> data;
+	};
+
+	std::optional<DataUriResult> parse_data_uri(std::string_view uri) {
+		if (!StartsWith(uri, "data:")) {
+			return std::nullopt;
+		}
+		// ... (rest of the function is the same)
+		auto header_end = uri.find(',');
+		if (header_end == std::string_view::npos) return std::nullopt;
+		auto header = uri.substr(5, header_end - 5);
+		auto data_payload = uri.substr(header_end + 1);
+		DataUriResult result;
+		if (header.find(";base64") != std::string_view::npos) {
+			result.is_base64 = true;
+			result.mime_type = header.substr(0, header.find(";base64"));
+		}
+		else {
+			result.mime_type = header;
+		}
+		if (result.is_base64) {
+			try {
+				result.data = base64::decode_into<std::vector<unsigned char>>(data_payload.begin(), data_payload.end());
+			}
+			catch (const std::exception& e) {
+				Output::Warning("Base64 decoding failed: {}", e.what());
+				return std::nullopt;
+			}
+		}
+		else {
+			result.data.assign(data_payload.begin(), data_payload.end());
+		}
+		return result;
+	}
+
+} 
+
 namespace {
 #ifdef SUPPORT_MOVIES
 	auto MOVIE_TYPES = { ".avi", ".mpg" };
@@ -421,6 +466,12 @@ int FileFinder::GetSavegames() {
 }
 
 std::string find_generic(const DirectoryTree::Args& args) {
+	// *** NEW CENTRALIZED LOGIC ***
+	if (StartsWith(args.path, "data:")) {
+		return std::string(args.path); // The URI is its own "path"
+	}
+	// *** END OF NEW LOGIC ***
+
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
 		auto translated_file = tr_fs.FindFile(args);
@@ -471,6 +522,33 @@ std::string FileFinder::FindFont(std::string_view name) {
 }
 
 Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
+	// *** NEW CENTRALIZED LOGIC ***
+  // Check the 'name' part first, as it's the most likely place for a data URI.
+	if (StartsWith(name, "data:")) {
+		auto parsed_result = parse_data_uri(name);
+		if (parsed_result) {
+			auto mem_buf = new Filesystem_Stream::InputMemoryStreamBuf(std::move(parsed_result->data));
+			return Filesystem_Stream::InputStream(mem_buf, std::string(name));
+		}
+		else {
+			Output::Warning("Failed to parse data URI passed to open_generic.");
+			return Filesystem_Stream::InputStream(nullptr, ""); // Return an invalid stream
+		}
+	}
+	// Also check the full path in 'args' in case it was pre-combined.
+	if (StartsWith(args.path, "data:")) {
+		auto parsed_result = parse_data_uri(args.path);
+		if (parsed_result) {
+			auto mem_buf = new Filesystem_Stream::InputMemoryStreamBuf(std::move(parsed_result->data));
+			return Filesystem_Stream::InputStream(mem_buf, std::string(args.path));
+		}
+		else {
+			Output::Warning("Failed to parse data URI passed to open_generic.");
+			return Filesystem_Stream::InputStream(nullptr, ""); // Return an invalid stream
+		}
+	}
+	// *** END OF NEW LOGIC ***
+
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
 		auto is = tr_fs.OpenFile(args);
