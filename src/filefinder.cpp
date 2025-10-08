@@ -54,9 +54,9 @@
 #endif
 
 #include "filesystem_stream.h"
-#include "base64.hpp"
+#include "base64.h"
 
-namespace { // Anonymous namespace
+namespace {
 
 	struct DataUriResult {
 		std::string_view mime_type;
@@ -68,7 +68,7 @@ namespace { // Anonymous namespace
 		if (!StartsWith(uri, "data:")) {
 			return std::nullopt;
 		}
-		// ... (rest of the function is the same)
+
 		auto header_end = uri.find(',');
 		if (header_end == std::string_view::npos) return std::nullopt;
 		auto header = uri.substr(5, header_end - 5);
@@ -82,13 +82,7 @@ namespace { // Anonymous namespace
 			result.mime_type = header;
 		}
 		if (result.is_base64) {
-			try {
-				result.data = base64::decode_into<std::vector<unsigned char>>(data_payload.begin(), data_payload.end());
-			}
-			catch (const std::exception& e) {
-				Output::Warning("Base64 decoding failed: {}", e.what());
-				return std::nullopt;
-			}
+				result.data = base64::decode_into<std::vector<unsigned char>>(data_payload.begin(), data_payload.end());			
 		}
 		else {
 			result.data.assign(data_payload.begin(), data_payload.end());
@@ -466,11 +460,11 @@ int FileFinder::GetSavegames() {
 }
 
 std::string find_generic(const DirectoryTree::Args& args) {
-	// *** NEW CENTRALIZED LOGIC ***
+	// *** DATA URI LOGIC ***
 	if (StartsWith(args.path, "data:")) {
 		return std::string(args.path); // The URI is its own "path"
 	}
-	// *** END OF NEW LOGIC ***
+	// *** END OF DATA URI LOGIC ***
 
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
@@ -522,7 +516,7 @@ std::string FileFinder::FindFont(std::string_view name) {
 }
 
 Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
-	// *** NEW CENTRALIZED LOGIC ***
+	// *** DATA URI LOGIC ***
   // Check the 'name' part first, as it's the most likely place for a data URI.
 	if (StartsWith(name, "data:")) {
 		auto parsed_result = parse_data_uri(name);
@@ -547,7 +541,7 @@ Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_vi
 			return Filesystem_Stream::InputStream(nullptr, ""); // Return an invalid stream
 		}
 	}
-	// *** END OF NEW LOGIC ***
+	// *** END OF DATA URI LOGIC ***
 
 	if (!Tr::GetCurrentTranslationId().empty()) {
 		auto tr_fs = Tr::GetCurrentTranslationFilesystem();

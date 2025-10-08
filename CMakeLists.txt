@@ -69,7 +69,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/autobattle.h
 	src/background.cpp
 	src/background.h
-	src/base64.hpp
+	src/base64.h
 	src/baseui.cpp
 	src/baseui.h
 	src/battle_animation.cpp

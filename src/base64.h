@@ -11,6 +11,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include "output.h"
+
 #if defined(__cpp_lib_bit_cast)
 #include <bit>  // For std::bit_cast.
 #endif
@@ -546,7 +548,7 @@ inline OutputBuffer encode_into(InputIterator begin, InputIterator end) {
       break;
     }
     default: {
-      throw std::runtime_error{"Invalid base64 encoded data"};
+		Output::Warning("Invalid base64 encoded data");
     }
   }
 
@@ -574,15 +576,13 @@ inline OutputBuffer decode_into(std::string_view base64Text) {
   }
 
   if ((base64Text.size() & 3) != 0) {
-    throw std::runtime_error{
-        "Invalid base64 encoded data - Size not divisible by 4"};
+	  Output::Warning("Invalid base64 encoded data - Size not divisible by 4");
   }
 
   const size_t numPadding =
       std::count(base64Text.rbegin(), base64Text.rbegin() + 4, '=');
   if (numPadding > 2) {
-    throw std::runtime_error{
-        "Invalid base64 encoded data - Found more than 2 padding signs"};
+	  Output::Warning("Invalid base64 encoded data - Found more than 2 padding signs");
   }
 
   const size_t decodedsize = (base64Text.size() * 3 >> 2) - numPadding;
@@ -605,8 +605,7 @@ inline OutputBuffer decode_into(std::string_view base64Text) {
     const uint32_t temp = d1 | d2 | d3 | d4;
 
     if (temp >= detail::bad_char) {
-      throw std::runtime_error{
-          "Invalid base64 encoded data - Invalid character"};
+		Output::Warning("Invalid base64 encoded data - Invalid character");
     }
 
     // Use bit_cast instead of union and type punning to avoid
@@ -636,8 +635,7 @@ inline OutputBuffer decode_into(std::string_view base64Text) {
       const uint32_t temp = d1 | d2 | d3;
 
       if (temp >= detail::bad_char) {
-        throw std::runtime_error{
-            "Invalid base64 encoded data - Invalid character"};
+		  Output::Warning("Invalid base64 encoded data - Invalid character");
       }
 
       // Use bit_cast instead of union and type punning to avoid
@@ -659,8 +657,7 @@ inline OutputBuffer decode_into(std::string_view base64Text) {
       const uint32_t temp = d1 | d2;
 
       if (temp >= detail::bad_char) {
-        throw std::runtime_error{
-            "Invalid base64 encoded data - Invalid character"};
+		  Output::Warning("Invalid base64 encoded data - Invalid character");
       }
 
       const std::array<char, 4> tempBytes =
@@ -669,8 +666,7 @@ inline OutputBuffer decode_into(std::string_view base64Text) {
       break;
     }
     default: {
-      throw std::runtime_error{
-          "Invalid base64 encoded data - Invalid padding number"};
+		Output::Warning("Invalid base64 encoded data - Invalid padding number");
     }
   }
 
