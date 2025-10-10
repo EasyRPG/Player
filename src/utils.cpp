@@ -18,6 +18,9 @@
 // Headers
 #include "utils.h"
 #include "compiler.h"
+#include "game_message.h"
+#include "player.h"
+
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
@@ -408,17 +411,60 @@ int Utils::UTF8Length(std::string_view str) {
 
 Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 	ExFontRet ret;
-	if (end - iter >= 2 && *iter == '$') {
-		auto next_ch = *(iter + 1);
-		// Don't use std::isalpha, because it's indirects based on locale.
-		bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
-		bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
-		if (is_lower || is_upper) {
-			ret.next = iter + 2;
-			ret.value = next_ch;
-			ret.is_valid = true;
+	if (end - iter < 2 || *iter != '$') {
+		return ret; // Not an ExFont command.
+	}
+
+	// --- Maniacs Patch Extended Syntax Handling ---
+	if (Player::IsPatchManiac() && *(iter + 1) == '[') {
+		const char* start_bracket = iter + 1;
+		const char* end_bracket = std::find(start_bracket + 1, end, ']');
+
+		if (end_bracket != end) {
+			std::string_view content(start_bracket + 1, end_bracket - (start_bracket + 1));
+			if (content.length() == 1 && std::isalpha(static_cast<unsigned char>(content[0]))) {
+				// AZ Mode: $[A]
+				ret.next = end_bracket + 1;
+				ret.value = content[0];
+				ret.is_valid = true;
+				return ret;
+			}
+
+			auto pres = Game_Message::ParseArray(start_bracket, end, Player::escape_char, true);
+			if (!pres.values.empty()) {
+				if (pres.is_array && pres.values.size() >= 2) {
+					// XY Mode: $[x,y]
+					uint32_t x = pres.values[0];
+					uint32_t y = pres.values[1];
+					ret.next = pres.next;
+					ret.value = EXFONT_XY_FLAG | (y << 8) | x;
+					ret.is_valid = true;
+					return ret;
+				}
+				else if (!pres.is_array && pres.values.size() == 1) {
+					// Index Mode: $[n] or $[\V[n]]
+					int icon_index = pres.values[0];
+					int x = icon_index % 13;
+					int y = icon_index / 13;
+					ret.next = pres.next;
+					ret.value = EXFONT_XY_FLAG | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
+					ret.is_valid = true;
+					return ret;
+				}
+			}
 		}
 	}
+
+	// --- Standard $A-Z Syntax (and Fallback) ---
+	auto next_ch = *(iter + 1);
+	bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
+	bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
+	if (is_lower || is_upper) {
+		ret.next = iter + 2;
+		ret.value = next_ch;
+		ret.is_valid = true;
+	}
+
 	return ret;
 }
 

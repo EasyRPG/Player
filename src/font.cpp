@@ -937,19 +937,35 @@ FontRef Font::exfont = std::make_shared<ExFont>();
 Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
+	bm->Clear();
 
-	bool is_lower = (glyph >= 'a' && glyph <= 'z');
-	bool is_upper = (glyph >= 'A' && glyph <= 'Z');
+	Rect rect(0, 0, 0, 0);
 
-	if (!is_lower && !is_upper) {
-		// Invalid ExFont
+	if (Player::IsPatchManiac() && (glyph & Utils::EXFONT_XY_FLAG)) {
+		// Maniacs Patch $[x,y] or $[n] mode
+		int x = glyph & 0xFF;
+		int y = (glyph >> 8) & 0xFF;
+		rect = Rect(x * WIDTH, y * HEIGHT, WIDTH, HEIGHT);
+	}
+	else {
+		// Standard $[A-Za-z] or Maniacs $[A] mode
+		bool is_lower = (glyph >= 'a' && glyph <= 'z');
+		bool is_upper = (glyph >= 'A' && glyph <= 'Z');
+
+		if (!is_lower && !is_upper) {
+			// Invalid ExFont character
+			return { bm, {WIDTH, 0}, {0, 0}, false };
+		}
+
+		char32_t adjusted_glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
+		rect = Rect((adjusted_glyph % 13) * WIDTH, (adjusted_glyph / 13) * HEIGHT, WIDTH, HEIGHT);
+	}
+
+	if (rect.x + rect.width > exfont->GetWidth() || rect.y + rect.height > exfont->GetHeight()) {
+		// Coordinates are out of bounds for the ExFont sheet
 		return { bm, {WIDTH, 0}, {0, 0}, false };
 	}
 
-	glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
-
-	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
-	bm->Clear();
 	bm->Blit(0, 0, *exfont, rect, Opacity::Opaque());
 
 	// EasyRPG Extension: Support for colored ExFont

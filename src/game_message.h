@@ -106,6 +106,17 @@ namespace Game_Message {
 	// Which one we'll use by default.
 	static constexpr int default_max_recursion = easyrpg_default_max_recursion;
 
+	/** Struct returned by maniacs patch array parsing */
+	struct ParseArrayResult {
+		const char* next;
+		std::vector<int> values;
+		// is_array will be true if at least one comma was found,
+		// indicating multiple values were intended. e.g., for `[123]`, is_array is false. for `[1,2]`, it's true.
+		bool is_array = false;
+	};
+
+	ParseArrayResult ParseArray(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = 4);
+
 	/** Struct returned by parameter parsing methods */
 	struct ParseParamResult {
 		/** iterator to the next character after parsed content */
