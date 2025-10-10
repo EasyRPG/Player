@@ -301,6 +301,8 @@ namespace {
 
 		assert(bmp);
 
+		if (s.oob_check && (T == Material::System && Player::IsPatchManiac())) return bmp;
+
 		if (s.oob_check) {
 			int w = bmp->GetWidth();
 			int h = bmp->GetHeight();

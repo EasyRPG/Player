@@ -429,22 +429,32 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 					// Special message codes
 					switch (ch) {
-						case 'c':
-						case 'C':
-						{
-							// Color
-							auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
-							auto value = pres.value;
+					case 'c':
+					case 'C':
+					{
+						// Color
+						if (Player::IsPatchManiac()) {
+							auto pres = Game_Message::ParseArray(text_index, end, Player::escape_char, true);
 							text_index = pres.next;
 
-							if (Player::IsPatchManiac()) {
-								text_color = value;
-							}
-							else {
-								text_color = value > 19 ? 0 : value;
+							if (!pres.values.empty()) {
+								if (pres.is_array && pres.values.size() >= 2) {
+									// Maniacs \C[x,y] -> y * 10 + x
+									text_color = pres.values[1] * 10 + pres.values[0];
+								}
+								else {
+									// Maniacs \C[n]
+									text_color = pres.values[0];
+								}
 							}
 						}
-						break;
+						else {
+							auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
+							text_index = pres.next;
+							text_color = pres.value > 19 ? 0 : pres.value;
+						}
+					}
+					break;
 					}
 					continue;
 				}

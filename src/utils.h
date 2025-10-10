@@ -165,9 +165,11 @@ namespace Utils {
 	 */
 	std::string FromWideString(const std::wstring& str);
 
+	constexpr uint32_t EXFONT_XY_FLAG = (1 << 30);
+
 	struct ExFontRet {
 		const char* next = nullptr;
-		char value = '\0';
+		uint32_t value = 0; // Changed from char to uint32_t
 		bool is_valid = false;
 
 		explicit operator bool() const { return is_valid; }
