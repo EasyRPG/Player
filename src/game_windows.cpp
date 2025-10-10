@@ -436,7 +436,13 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 							auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
 							auto value = pres.value;
 							text_index = pres.next;
-							text_color = value > 19 ? 0 : value;
+
+							if (Player::IsPatchManiac()) {
+								text_color = value;
+							}
+							else {
+								text_color = value > 19 ? 0 : value;
+							}
 						}
 						break;
 					}

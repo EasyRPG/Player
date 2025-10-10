@@ -581,7 +581,13 @@ void Window_Message::UpdateMessage() {
 					text_index = pres.next;
 					DebugLogText("{}: MSG Color \\c[{}]", value);
 					SetWaitForNonPrintable(0);
-					text_color = value > 19 ? 0 : value;
+
+					if (Player::IsPatchManiac()) {
+						text_color = value;
+					}
+					else {
+						text_color = value > 19 ? 0 : value;
+					}
 				}
 				break;
 			case 's':
