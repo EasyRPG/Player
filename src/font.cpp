@@ -37,6 +37,7 @@
 #  include FT_BITMAP_H
 #  include FT_MODULE_H
 #  include FT_TRUETYPE_TABLES_H
+#  include FT_FONT_FORMATS_H
 #endif
 
 #ifdef HAVE_HARFBUZZ
@@ -315,6 +316,32 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 	if (!strcmp(face->family_name, "RM2000") || !strcmp(face->family_name, "RMG2000")) {
 		// Workaround for bad kerning in RM2000 and RMG2000 fonts
 		rm2000_workaround = true;
+	} else if (!FT_HAS_COLOR(face) && FT_HAS_FIXED_SIZES(face)) {
+		auto font_format = FT_Get_Font_Format(face);
+		if (!strcmp(font_format, "Windows FNT")) {
+			static constexpr std::array<std::pair<char32_t, int>, 4> glyphs = {{
+				{ 'h', 6},
+				{ 'l', 4},
+				{ 'I', 15},
+				{ ' ', 15}
+			}};
+			// Check some metrics to identify custom fonts which were based
+			// on the broken RM2000 font & thus also need the same workaround
+			rm2000_workaround = true;
+			for (size_t i = 0; i < glyphs.size(); ++i) {
+				auto glyph_index = FT_Get_Char_Index(face, std::get<0>(glyphs[i]));
+
+				if (glyph_index == 0 || FT_Load_Glyph(face, glyph_index, FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO) != FT_Err_Ok) {
+					rm2000_workaround = false;
+					break;
+				}
+				auto advance_x = Utils::RoundTo<int>(face->glyph->advance.x / 64.0);
+				if (advance_x != std::get<1>(glyphs[i])) {
+					rm2000_workaround = false;
+					break;
+				}
+			}
+		}
 	}
 }
 
