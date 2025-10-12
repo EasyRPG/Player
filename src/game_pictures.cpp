@@ -253,11 +253,6 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 bool Game_Pictures::Show(int id, const ShowParams& params) {
 	auto& pic = GetPicture(id);
 	if (pic.Show(params)) {
-		if (pic.sprite && !pic.data.name.empty()) {
-			// When the name is empty the current image buffer is reused by ShowPicture command (Used by Yume2kki)
-			// In all other cases hide the current image until replaced while doing an Async load
-			pic.sprite->SetVisible(false);
-		}
 		RequestPictureSprite(pic);
 		return true;
 	}
