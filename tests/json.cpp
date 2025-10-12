@@ -119,6 +119,13 @@ TEST_CASE("Get Path") {
 	CHECK_EQ(Json_Helper::GetPath(obj, "/missing"), "");
 }
 
+TEST_CASE("Remove Root Element") {
+	// Clears the object
+	auto obj = load("obj.json");
+	Json_Helper::RemoveValue(obj, "/");
+	CHECK_EQ(obj.dump(), "{}");
+}
+
 TEST_CASE("Remove Value") {
 	auto obj = load("obj.json");
 
@@ -126,31 +133,35 @@ TEST_CASE("Remove Value") {
 		Json_Helper::RemoveValue(obj, path);
 	};
 
+	// Test removing a top-level key
 	{
-	auto orig = obj;
-	remove("/");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto orig = obj;
+		remove("/name");
+		orig.erase("name");
+		CHECK_EQ(obj.dump(), orig.dump());
 	}
 
+	// Test removing an element from an array
 	{
-	auto orig = obj;
-	remove("/name");
-	orig.erase("name");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto orig = obj;
+		remove("/atk/1");
+		orig["atk"].erase(1);
+		CHECK_EQ(obj.dump(), orig.dump());
 	}
 
+	// Test removing a key from a nested object
 	{
-	auto orig = obj;
-	remove("/atk/1");
-	orig["atk"].erase(1);
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto orig = obj;
+		remove("/skills/0/name");
+		orig["skills"][0].erase("name");
+		CHECK_EQ(obj.dump(), orig.dump());
 	}
 
+	// Test that removing a non-existent path does nothing
 	{
-	auto orig = obj;
-	remove("/skills/0/name");
-	orig["skills"][0].erase("name");
-	CHECK_EQ(obj.dump(), orig.dump());
+		auto orig = obj;
+		Json_Helper::RemoveValue(obj, "/missing_path");
+		CHECK_EQ(obj.dump(), orig.dump());
 	}
 }
 
@@ -166,7 +177,7 @@ TEST_CASE("Push Value") {
 	CHECK_EQ(orig, obj.dump());
 
 	push("/atk", "3");
-	CHECK_EQ(obj["atk"], std::vector<int>{1,5,10,30,20,3});
+	CHECK_EQ(obj["atk"], std::vector<json>{1, 5, 10, 30, 20, 3});
 }
 
 TEST_CASE("Pop Value") {
@@ -200,6 +211,7 @@ TEST_CASE("Contains") {
 		return Json_Helper::Contains(obj, path);
 	};
 
+	CHECK_EQ(check("/"), true);
 	CHECK_EQ(check("/name"), true);
 	CHECK_EQ(check("/atk"), true);
 	CHECK_EQ(check("/skills/0"), true);
