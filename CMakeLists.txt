@@ -12,7 +12,6 @@ include(PlayerConfigureWindows)
 include(PlayerFindPackage)
 include(PlayerBuildType)
 include(PlayerMisc)
-include(GetGitRevisionDescription)
 
 # Dependencies provided by CMake Presets
 option(PLAYER_FIND_ROOT_PATH_APPEND
@@ -513,53 +512,24 @@ set(PLAYER_VERSION_FULL ${PLAYER_VERSION})
 string(CONCAT PROJECT_VERSION
 	${PROJECT_VERSION_MAJOR} "." ${PROJECT_VERSION_MINOR} "."
 	${PROJECT_VERSION_PATCH} "." ${PROJECT_VERSION_TWEAK})
+set(PLAYER_VERSION_DEFS EP_VERSION="${PLAYER_VERSION}"
+	EP_VERSION_MAJOR=${PROJECT_VERSION_MAJOR} EP_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+	EP_VERSION_PATCH=${PROJECT_VERSION_PATCH} EP_VERSION_TWEAK=${PROJECT_VERSION_TWEAK})
 
-set(PLAYER_VERSION_GIT "")
-git_get_exact_tag(GIT_TAG)
-# Do not include a hash, if we are building a release tag
-if(NOT GIT_TAG)
-	# otherwise concatenate a version with hash
-	git_describe(GIT_DESCRIPTION)
-	if(GIT_DESCRIPTION)
-		string(REPLACE "-" ";" GIT_DESCRIPTION ${GIT_DESCRIPTION})
-		list(LENGTH GIT_DESCRIPTION GIT_DESCRIPTION_PARTS)
-		set(GIT_MESSAGE "Found git info: ")
-		if(GIT_DESCRIPTION_PARTS EQUAL 3)
-			list(GET GIT_DESCRIPTION 0 GIT_TAG)
-			list(GET GIT_DESCRIPTION 1 GIT_COMMITS)
-			list(GET GIT_DESCRIPTION 2 GIT_HASH)
-			string(APPEND GIT_MESSAGE "${GIT_COMMITS} commits since tag \"${GIT_TAG}\", ")
-			string(PREPEND GIT_COMMITS "+")
-			# strip the g prefix
-			string(SUBSTRING ${GIT_HASH} 1 -1 GIT_HASH)
-		else()
-			# no tags found, only hash
-			list(GET GIT_DESCRIPTION 0 GIT_HASH)
-		endif()
-		set(PLAYER_VERSION_GIT "git${GIT_COMMITS}@${GIT_HASH}")
-		string(APPEND GIT_MESSAGE "object hash is ${GIT_HASH}")
-		git_local_changes(GIT_DIRTY)
-		if(GIT_DIRTY STREQUAL "DIRTY")
-			string(APPEND PLAYER_VERSION_GIT "-dirty")
-			string(APPEND GIT_MESSAGE ", you have uncommitted changes")
-		endif()
-		string(APPEND PLAYER_VERSION_FULL "-${PLAYER_VERSION_GIT}")
-
-		message(STATUS "${GIT_MESSAGE}")
-	endif()
+player_find_gitversion(VERSION_VAR PLAYER_VERSION_GIT
+	MESSAGE_VAR GIT_STATUS)
+if(PLAYER_VERSION_GIT)
+	string(APPEND PLAYER_VERSION_FULL "-${PLAYER_VERSION_GIT}")
+	list(APPEND PLAYER_VERSION_DEFS EP_VERSION_GIT="${PLAYER_VERSION_GIT}")
 endif()
 
 string(TIMESTAMP PLAYER_DATE "(%Y-%m-%d)")
 set(PLAYER_VERSION_APPEND ${PLAYER_DATE} CACHE STRING "Additional version information to include")
-set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS
-	EP_VERSION="${PLAYER_VERSION}";
-	EP_VERSION_MAJOR=${PROJECT_VERSION_MAJOR};
-	EP_VERSION_MINOR=${PROJECT_VERSION_MINOR};
-	EP_VERSION_PATCH=${PROJECT_VERSION_PATCH};
-	EP_VERSION_TWEAK=${PROJECT_VERSION_TWEAK};
-	EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}";
-	EP_VERSION_GIT="${PLAYER_VERSION_GIT}"
-)
+if(NOT PLAYER_VERSION_APPEND STREQUAL "")
+	list(APPEND PLAYER_VERSION_DEFS EP_VERSION_APPEND="${PLAYER_VERSION_APPEND}")
+endif()
+
+set_property(SOURCE src/version.cpp PROPERTY COMPILE_DEFINITIONS ${PLAYER_VERSION_DEFS})
 
 # Platform setup
 if(NINTENDO_3DS)
@@ -1546,14 +1516,7 @@ find_package(Doxygen)
 set(DOXYGEN_STATUS "Unavailable")
 if(DOXYGEN_FOUND)
 	set(DOXYGEN_STATUS "Available (target \"doc\")")
-	# fake autotools variables
-	set(PACKAGE_VERSION ${PLAYER_VERSION})
-	set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
-	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 	configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
-	unset(PACKAGE_VERSION)
-	unset(DX_DOCDIR)
-	unset(srcdir)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
@@ -1630,6 +1593,9 @@ endif()
 
 # Print summary
 message(STATUS "")
+message(STATUS "EasyRPG Player version ${PLAYER_VERSION} has been configured --")
+message(STATUS "Git info: ${GIT_STATUS}")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 set(TARGET_STATUS "${PLAYER_TARGET_PLATFORM}")
 if(NINTENDO_WIIU)
 	set(TARGET_STATUS "Wii U (SDL2)")
