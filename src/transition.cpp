@@ -404,6 +404,7 @@ void Transition::Draw(Bitmap& dst) {
 			auto& screen = (transition_type == TransitionWaveIn) ? *screen2 : *screen1;
 			auto depth = p * 40 / 100;
 			auto phase = p * 5 * M_PI / 100.0 + M_PI;
+			dst.FillRect(Rect(0, 0, w, h), Color(0, 0, 0, 255));
 			dst.WaverBlit(0, 0, 1, 1, screen, screen.GetRect(), depth, phase, Opacity::Opaque());
 		}
 		break;
