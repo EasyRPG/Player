@@ -176,7 +176,7 @@ void Transition::SetAttributesTransitions() {
 			const int initial_scale = 2;
 			const int excl_interval = -1;
 			// by default i 0..39 for scale 2..41
-			mosaic_random_offset[i] = Rand::GetRandomNumber(0, i + initial_scale - excl_interval);
+			mosaic_random_offset[i] = Rand::GetRandomNumber(0, i + initial_scale + excl_interval);
 		}
 		break;
 	default:
