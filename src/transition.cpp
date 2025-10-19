@@ -399,11 +399,11 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionWaveIn:
 	case TransitionWaveOut:
 		{
-			// If TransitionWaveIn, invert percentage and screen:
-			auto p = (transition_type == TransitionWaveIn) ? 100 - percentage : percentage;
+			// If TransitionWaveIn, invert depth, phase and screen:
+			auto p = (transition_type == TransitionWaveIn) ? total_frames - current_frame : current_frame;
 			auto& screen = (transition_type == TransitionWaveIn) ? *screen2 : *screen1;
-			auto depth = p * 40 / 100;
-			auto phase = p * 5 * M_PI / 100.0 + M_PI;
+			auto depth = p;
+			auto phase = p * 5 * M_PI / total_frames + M_PI;
 			dst.FillRect(Rect(0, 0, w, h), Color(0, 0, 0, 255));
 			dst.WaverBlit(0, 0, 1, 1, screen, screen.GetRect(), depth, phase, Opacity::Opaque());
 		}
