@@ -242,22 +242,22 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	case TransitionVerticalStripesIn:
 	case TransitionVerticalStripesOut:
-		for (int i = 0; i < h / 6 + 1 - h / 6 * percentage / 100; i++) {
+		for (int i = 0; i < total_frames - current_frame; i++) {
 			dst.Blit(0, i * 6 + 3, *screen1, Rect(0, i * 6 + 3, w, 3), 255);
 			dst.Blit(0, h - i * 6, *screen1, Rect(0, h - i * 6, w, 3), 255);
 		}
-		for (int i = 0; i < h / 6 * percentage / 100; i++) {
+		for (int i = 0; i < current_frame; i++) {
 			dst.Blit(0, i * 6, *screen2, Rect(0, i * 6, w, 3), 255);
 			dst.Blit(0, h - 3 - i * 6, *screen2, Rect(0, h - 3 - i * 6, w, 3), 255);
 		}
 		break;
 	case TransitionHorizontalStripesIn:
 	case TransitionHorizontalStripesOut:
-		for (int i = 0; i < w / 8 + 1 - w / 8 * percentage / 100; i++) {
+		for (int i = 0; i < total_frames - current_frame; i++) {
 			dst.Blit(i * 8 + 4, 0, *screen1, Rect(i * 8 + 4, 0, 4, h), 255);
 			dst.Blit(w - i * 8, 0, *screen1, Rect(w - i * 8, 0, 4, h), 255);
 		}
-		for (int i = 0; i < w / 8 * percentage / 100; i++) {
+		for (int i = 0; i < current_frame; i++) {
 			dst.Blit(i * 8, 0, *screen2, Rect(i * 8, 0, 4, h), 255);
 			dst.Blit(w - 4 - i * 8, 0, *screen2, Rect(w - 4 - i * 8, 0, 4, h), 255);
 		}
@@ -274,23 +274,23 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	case TransitionScrollUpIn:
 	case TransitionScrollUpOut:
-		dst.Blit(0, -h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, h - h * percentage / 100, *screen2, screen2->GetRect(), 255);
+		dst.Blit(0, -h * current_frame / total_frames, *screen1, screen1->GetRect(), 255);
+		dst.Blit(0, h - h * current_frame / total_frames, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollDownIn:
 	case TransitionScrollDownOut:
-		dst.Blit(0, h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, -h + h * percentage / 100, *screen2, screen2->GetRect(), 255);
+		dst.Blit(0, h * current_frame / total_frames, *screen1, screen1->GetRect(), 255);
+		dst.Blit(0, -h + h * current_frame / total_frames, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollLeftIn:
 	case TransitionScrollLeftOut:
-		dst.Blit(-w * percentage / 100, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(w - w * percentage / 100, 0, *screen2, screen2->GetRect(), 255);
+		dst.Blit(-w * current_frame / total_frames, 0, *screen1, screen1->GetRect(), 255);
+		dst.Blit(w - w * current_frame / total_frames, 0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollRightIn:
 	case TransitionScrollRightOut:
-		dst.Blit(w * percentage / 100, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(-w + w * percentage / 100, 0, *screen2, screen2->GetRect(), 255);
+		dst.Blit(w * current_frame / total_frames, 0, *screen1, screen1->GetRect(), 255);
+		dst.Blit(-w + w * current_frame / total_frames, 0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionVerticalCombine:
 	case TransitionVerticalDivision:
