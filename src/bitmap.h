@@ -107,6 +107,7 @@ public:
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+	virtual ~Bitmap() = default;
 
 	/**
 	 * Gets the bitmap width.
