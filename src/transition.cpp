@@ -265,12 +265,12 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionBorderToCenterIn:
 	case TransitionBorderToCenterOut:
 		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255);
-		dst.Blit((w / 2) * percentage / 100, (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100), 255);
+		dst.Blit((w / 2) * current_frame / total_frames, (h / 2) * current_frame / total_frames, *screen1, Rect((w / 2) * current_frame / total_frames, (h / 2) * current_frame / total_frames, w - w * current_frame / total_frames, h - h * current_frame / total_frames), 255);
 		break;
 	case TransitionCenterToBorderIn:
 	case TransitionCenterToBorderOut:
 		dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100), 255);
+		dst.Blit(w / 2 - (w / 2) * current_frame / total_frames, h / 2 - (h / 2) * current_frame / total_frames, *screen2, Rect(w / 2 - (w / 2) * current_frame / total_frames, h / 2 - (h / 2) * current_frame / total_frames, w * current_frame / total_frames, h * current_frame / total_frames), 255);
 		break;
 	case TransitionScrollUpIn:
 	case TransitionScrollUpOut:
