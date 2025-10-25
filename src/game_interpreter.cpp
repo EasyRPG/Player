@@ -4184,10 +4184,10 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			int32_t tile_layer = com.parameters[2]; // 0: Lower || 1: Upper
 			Rect tile_coords;
 
-			tile_coords.x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
-			tile_coords.y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
-			tile_coords.width = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
-			tile_coords.height = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[6]);
+			tile_coords.x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+			tile_coords.y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+			tile_coords.width = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+			tile_coords.height = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
 
 			if (tile_coords.width <= 0 || tile_coords.height <= 0) return true;
 
