@@ -50,7 +50,6 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 
 BitmapRef Bitmap::Create(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {
 
-	// Proposed change: Add GIF check
 	uint8_t magic[8] = {};
 	(void)stream.read(reinterpret_cast<char*>(magic), 8).gcount();
 	stream.seekg(0, std::ios::ios_base::beg);
@@ -60,7 +59,6 @@ BitmapRef Bitmap::Create(Filesystem_Stream::InputStream stream, bool transparent
 		if (!bmp->pixels()) return BitmapRef();
 		return bmp;
 	}
-	// End of proposed change
 
 	BitmapRef bmp = std::make_shared<Bitmap>(std::move(stream), transparent, flags);
 
