@@ -317,20 +317,21 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	}
 	case TransitionCrossCombine:
-	case TransitionCrossDivision:
-		// If TransitionCrossCombine, invert percentage and screen:
-		if (transition_type == TransitionCrossCombine) { percentage = 100 - percentage; }
+	case TransitionCrossDivision: {
+		// If TransitionCrossCombine, invert current_frame and screen:
+		int cross_cf = transition_type == TransitionCrossCombine ? total_frames - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionCrossCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionCrossCombine ? screen1 : screen2;
 
-		dst.Blit(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen_pointer1, Rect(0, 0, w / 2, h / 2), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen_pointer1, Rect(w / 2, 0, w / 2, h / 2), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
-		dst.Blit(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(0, h / 2, w / 2, h / 2), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100), 255);
-		dst.Blit(0, h / 2 - (h / 2) * percentage / 100, *screen_pointer2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
+		dst.Blit(-(w / 2) * cross_cf / total_frames, -(h / 2) * cross_cf / total_frames, *screen_pointer1, Rect(0, 0, w / 2, h / 2), 255);
+		dst.Blit(w / 2 + (w / 2) * cross_cf / total_frames, -(h / 2) * cross_cf / total_frames, *screen_pointer1, Rect(w / 2, 0, w / 2, h / 2), 255);
+		dst.Blit(w / 2 + (w / 2) * cross_cf / total_frames, h / 2 + (h / 2) * cross_cf / total_frames, *screen_pointer1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
+		dst.Blit(-(w / 2) * cross_cf / total_frames, h / 2 + (h / 2) * cross_cf / total_frames, *screen_pointer1, Rect(0, h / 2, w / 2, h / 2), 255);
+		dst.Blit(w / 2 - (w / 2) * cross_cf / total_frames, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * cross_cf / total_frames, 0, w * cross_cf / total_frames, h / 2 - (h / 2) * cross_cf / total_frames), 255);
+		dst.Blit(w / 2 - (w / 2) * cross_cf / total_frames, h / 2 + (h / 2) * cross_cf / total_frames, *screen_pointer2, Rect(w / 2 - (w / 2) * cross_cf / total_frames, h / 2 + (h / 2) * cross_cf / total_frames, w * cross_cf / total_frames, h / 2 + (h / 2) * cross_cf / total_frames), 255);
+		dst.Blit(0, h / 2 - (h / 2) * cross_cf / total_frames, *screen_pointer2, Rect(0, h / 2 - (h / 2) * cross_cf / total_frames, w, h * cross_cf / total_frames), 255);
 		break;
+	}
 	case TransitionZoomIn:
 	case TransitionZoomOut:
 		// If TransitionZoomOut, invert percentage and screen:
