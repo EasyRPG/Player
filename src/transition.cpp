@@ -293,27 +293,29 @@ void Transition::Draw(Bitmap& dst) {
 		dst.Blit(-w + w * current_frame / total_frames, 0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionVerticalCombine:
-	case TransitionVerticalDivision:
-		// If TransitionVerticalCombine, invert percentage and screen:
-		if (transition_type == TransitionVerticalCombine) { percentage = 100 - percentage; }
+	case TransitionVerticalDivision: {
+		// If TransitionVerticalCombine, invert current_frame and screen:
+		int ver_cf = transition_type == TransitionVerticalCombine ? total_frames - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionVerticalCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionVerticalCombine ? screen1 : screen2;
 
-		dst.Blit(0, -(h / 2) * percentage / 100, *screen_pointer1, Rect(0, 0, w, h / 2), 255);
-		dst.Blit(0, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(0, h / 2, w, h / 2), 255);
-		dst.Blit(0, h / 2 - (h / 2) * percentage / 100, *screen_pointer2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
+		dst.Blit(0, -(h / 2) * ver_cf / total_frames, *screen_pointer1, Rect(0, 0, w, h / 2), 255);
+		dst.Blit(0, h / 2 + (h / 2) * ver_cf / total_frames, *screen_pointer1, Rect(0, h / 2, w, h / 2), 255);
+		dst.Blit(0, h / 2 - (h / 2) * ver_cf / total_frames, *screen_pointer2, Rect(0, h / 2 - (h / 2) * ver_cf / total_frames, w, h * ver_cf / total_frames), 255);
 		break;
+	}
 	case TransitionHorizontalCombine:
-	case TransitionHorizontalDivision:
-		// If TransitionHorizontalCombine, invert percentage and screen:
-		if (transition_type == TransitionHorizontalCombine) { percentage = 100 - percentage; }
+	case TransitionHorizontalDivision: {
+		// If TransitionHorizontalCombine, invert current_frame and screen:
+		int hor_cf = transition_type == TransitionHorizontalCombine ? total_frames - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionHorizontalCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionHorizontalCombine ? screen1 : screen2;
 
-		dst.Blit(-(w / 2) * percentage / 100, 0, *screen_pointer1, Rect(0, 0, w / 2, h), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, 0, *screen_pointer1, Rect(w / 2, 0, w / 2, h), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h), 255);
+		dst.Blit(-(w / 2) * hor_cf / total_frames, 0, *screen_pointer1, Rect(0, 0, w / 2, h), 255);
+		dst.Blit(w / 2 + (w / 2) * hor_cf / total_frames, 0, *screen_pointer1, Rect(w / 2, 0, w / 2, h), 255);
+		dst.Blit(w / 2 - (w / 2) * hor_cf / total_frames, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * hor_cf / total_frames, 0, w * hor_cf / total_frames, h), 255);
 		break;
+	}
 	case TransitionCrossCombine:
 	case TransitionCrossDivision:
 		// If TransitionCrossCombine, invert percentage and screen:
