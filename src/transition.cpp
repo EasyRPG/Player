@@ -190,7 +190,7 @@ void Transition::Draw(Bitmap& dst) {
 		return;
 
 	std::vector<int> z_pos(2), z_size(2), z_length(2);
-	int z_min, z_max, z_percent, z_fixed_pos, z_fixed_size;
+	int z_min, z_max, z_frame, z_fixed_pos, z_fixed_size;
 	uint8_t m_r, m_g, m_b, m_a;
 	uint32_t *m_pointer, blocks_to_print;
 	int m_size;
@@ -333,35 +333,36 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	}
 	case TransitionZoomIn:
-	case TransitionZoomOut:
-		// If TransitionZoomOut, invert percentage and screen:
-		if (transition_type == TransitionZoomOut) { percentage = 100 - percentage; }
+	case TransitionZoomOut: {
+		// If TransitionZoomOut, invert current_frame and screen:
+		int z_cf = transition_type == TransitionZoomOut ? total_frames - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionZoomOut ? screen2 : screen1;
 
 		// X Coordinate: [0]   Y Coordinate: [1]
 		z_length[0] = w;
 		z_length[1] = h;
-		percentage = percentage <= 97 ? percentage : 97;
+		z_cf = z_cf <= total_frames - 1 ? z_cf : total_frames - 1;
 
 		for (int i = 0; i < 2; i++) {
 			z_min = z_length[i] / 4;
 			z_max = z_length[i] * 3 / 4;
-			z_pos[i] = std::max(z_min, std::min((int)zoom_position[i], z_max)) * percentage / 100;
-			z_size[i] = z_length[i] * (100 - percentage) / 100;
+			z_pos[i] = std::max(z_min, std::min((int)zoom_position[i], z_max)) * z_cf / total_frames;
+			z_size[i] = z_length[i] * (total_frames - z_cf) / total_frames;
 
-			z_percent = (zoom_position[i] < z_min) ? (100 * zoom_position[i] / z_min - 100) :
-				(zoom_position[i] > z_max) ? (100 * (zoom_position[i] - z_max) / (z_length[i] - z_max)) : 0;
+			z_frame = (zoom_position[i] < z_min) ? (total_frames * zoom_position[i] / z_min - total_frames) :
+				(zoom_position[i] > z_max) ? (total_frames * (zoom_position[i] - z_max) / (z_length[i] - z_max)) : 0;
 
-			if (z_percent != 0 && percentage > 0) {
-				z_fixed_pos = z_pos[i] * std::abs(z_percent) / percentage;
-				z_fixed_size = z_length[i] * (100 - std::abs(z_percent)) / 100;
-				z_pos[i] += percentage < std::abs(z_percent) ? (z_percent > 0 ? 1 : 0) * (z_length[i] - z_size[i]) - z_pos[i] :
-					(z_percent > 0 ? z_length[i] - z_fixed_pos - z_fixed_size : -z_fixed_pos);
+			if (z_frame != 0 && z_cf > 0) {
+				z_fixed_pos = z_pos[i] * std::abs(z_frame) / z_cf;
+				z_fixed_size = z_length[i] * (total_frames - std::abs(z_frame)) / total_frames;
+				z_pos[i] += z_cf < std::abs(z_frame) ? (z_frame > 0 ? 1 : 0) * (z_length[i] - z_size[i]) - z_pos[i] :
+					(z_frame > 0 ? z_length[i] - z_fixed_pos - z_fixed_size : -z_fixed_pos);
 			}
 		}
 
 		dst.StretchBlit(Rect(0, 0, w, h), *screen_pointer1, Rect(z_pos[0], z_pos[1], z_size[0], z_size[1]), 255);
 		break;
+	}
 	case TransitionMosaicIn:
 	case TransitionMosaicOut: {
 		// Goes from scale 2 to 41 (current_frame is 0 - 39)
