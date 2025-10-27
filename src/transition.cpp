@@ -205,18 +205,16 @@ void Transition::Draw(Bitmap& dst) {
 		return;
 	}
 
-	int percentage = (current_frame) * 100 / (total_frames);
-
 	switch (transition_type) {
 	case TransitionFadeIn:
 	case TransitionFadeOut:
 		dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * percentage / 100);
+		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * current_frame / total_frames);
 		break;
 	case TransitionRandomBlocks:
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
-		blocks_to_print = random_blocks.size() * percentage / 100;
+		blocks_to_print = random_blocks.size() * current_frame / total_frames;
 
 		for (uint32_t i = current_blocks_print; i < blocks_to_print; i++) {
 			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
