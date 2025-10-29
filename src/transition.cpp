@@ -45,6 +45,7 @@ int Transition::GetDefaultFrames(Transition::Type type)
 			return 32;
 		case TransitionCutIn:
 		case TransitionCutOut:
+			return 1;
 		case TransitionNone:
 			return 0;
 		default:
