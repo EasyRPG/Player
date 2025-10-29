@@ -81,7 +81,8 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool next_er
 	transition_type = type;
 	scene = linked_scene;
 
-	current_frame = 0;
+	// Don't skip Frame 0 (Update is called before Draw).
+	current_frame = -1;
 	flash = {};
 	flash_power = 0;
 	flash_iterations = 0;
