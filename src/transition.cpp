@@ -42,14 +42,14 @@ int Transition::GetDefaultFrames(Transition::Type type)
 	switch (type) {
 		case TransitionFadeIn:
 		case TransitionFadeOut:
-			return 32;
+			return 35;
 		case TransitionCutIn:
 		case TransitionCutOut:
 			return 1;
 		case TransitionNone:
 			return 0;
 		default:
-			return 40;
+			return 41;
 	}
 	return 0;
 }
