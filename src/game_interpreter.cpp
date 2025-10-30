@@ -4981,17 +4981,95 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		return true;
 	}
 
-	int operation = com.parameters[1];
-	//int value = ValueOrVariable(com.parameters[0], com.parameters[2]);
+	// This command changes various engine settings at runtime, specific to the Maniac Patch.
+	// The specific option is determined by `parameters[1]`.
+	enum class SetGameOptionType {
+		RunWhenInactive = 0,
+		FatalMix = 1,
+		PicturesLimit = 2,
+		SkipFrames = 3,
+		MouseTextMessage = 4,
+		BattleScreenOrigin = 5,
+		AnimationLimit = 6,
+		WindowFaceSize = 7
+	};
 
-	switch (operation) {
-		case 2: // Change Picture Limit (noop, we support arbitrary amount of pictures)
-			break;
-		default:
-			Output::Warning("Maniac SetGameOption: Operation {} not supported", operation);
+	const auto option_type = static_cast<SetGameOptionType>(com.parameters[1]);
+
+	switch (option_type) {
+	case SetGameOptionType::RunWhenInactive: { // .runWhenInactive or .pauseWhenInactive
+		const bool run_when_inactive = (ValueOrVariable(com.parameters[0], com.parameters[2]) != 0);
+
+		if (DisplayUi) {
+			DisplayUi->SetPauseWhenFocusLost(!run_when_inactive);
+		}
+		return true;
 	}
+	case SetGameOptionType::FatalMix: { // .fatal fps, testPlayMode, fastForwardText
+		const int fps = ValueOrVariableBitfield(com, 0, 0, 2);
+		const int test_play_mode = com.parameters[3] & 3; // 0: From Game, 1: Off, 2: On
+		const bool enable_fast_forward_text = (com.parameters[3] & 16) != 0;
 
-	return true;
+		if (fps > 0) {
+			Game_Clock::SetGameSpeedFactor(static_cast<float>(fps) / 60.0f);
+		}
+
+		switch (test_play_mode) {
+		case 0:
+			Player::debug_flag = Player::program_test_play;
+			break;
+		case 1:
+			Player::debug_flag = false;
+			break;
+		case 2:
+			Player::debug_flag = true;
+			break;
+		}
+
+		Main_Data::game_system->SetFastForwardText(enable_fast_forward_text);
+		return true;
+	}
+	case SetGameOptionType::PicturesLimit: { // .picLimit limit
+		// No-op by design. EasyRPG Player dynamically allocates pictures.
+		return true;
+	}
+	case SetGameOptionType::SkipFrames: { // .fullFrame, .oneFifth, .oneThird, .oneHalf
+		const int skip_mode = com.parameters[2];
+		Main_Data::game_system->SetFrameSkipMode(skip_mode);
+		return true;
+	}
+	case SetGameOptionType::MouseTextMessage: { // .mouse.disableMsgProcession value
+		const bool disable_mouse_for_messages = (ValueOrVariableBitfield(com, 0, 0, 2) != 0);
+		Main_Data::game_system->SetMessageMouseDisabled(disable_mouse_for_messages);
+		return true;
+	}
+	case SetGameOptionType::BattleScreenOrigin: { // .btlOrigin position
+		// 0: center, 1: topLeft, 2: bottomLeft, 3: topRight, 4: bottomRight,
+		// 5: top, 6: bottom, 7: left, 8: right
+		const int battle_origin = com.parameters[2];
+
+		// TODO: Store this value, likely in `Game_System`, and have `Scene_Battle` use it
+		// to adjust the layout of its windows and sprites during initialization.
+		Output::Warning("Maniac Patch - Command SetGameOption: Reposition Battle UI (position: {}) is not yet implemented.", battle_origin);
+		return true;
+	}
+	case SetGameOptionType::AnimationLimit: { // .animLimit limit
+		// No-op by design. EasyRPG Player handles battle animations dynamically.
+		return true;
+	}
+	case SetGameOptionType::WindowFaceSize: { // .winFaceSize width, height
+		const int width = ValueOrVariableBitfield(com, 0, 0, 2);
+		const int height = ValueOrVariableBitfield(com, 0, 1, 3);
+
+		// TODO: Store these values in Game_System (e.g., `message_face_width`/`height`).
+		// `Window_Message::Refresh` must then use these values when drawing the face graphic.
+		Output::Warning("Maniac Patch - Command SetGameOption: Custom WinFaceSize ({}x{}) is not yet implemented.", width, height);
+		return true;
+	}
+	default:
+		Output::Warning("Maniac SetGameOption: Unknown Operation {}", static_cast<int>(option_type));
+		return true;
+	}
 }
 
 bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const& com) {

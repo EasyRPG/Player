@@ -200,6 +200,15 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 void Window_Message::OnFinishPage() {
 	DebugLog("{}: FINISH PAGE");
 
+	if (Player::IsPatchManiac() && Main_Data::game_system->GetFastForwardText()) {
+		if ((text.data() + text.size() - text_index) < 3 && !pending_message.HasNumberInput() && pending_message.GetNumChoices() <= 0) {
+			line_char_counter = 0;
+			SetWait(5);
+			FinishMessageProcessing();
+			return;
+		}
+	}
+
 	if (pending_message.GetNumChoices() > 0) {
 		StartChoiceProcessing();
 	} else if (pending_message.HasNumberInput()) {
@@ -312,6 +321,7 @@ void Window_Message::InsertNewPage() {
 	}
 
 	if (IsFaceEnabled()) {
+		int face_width = Main_Data::game_system->GetMessageFaceWidth();
 		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
 			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), LeftMargin, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
@@ -478,7 +488,8 @@ void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
 	bool instant_speed_forced = false;
 
-	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
+	if ((Player::debug_flag && Input::IsPressed(Input::SHIFT)) ||
+		(Main_Data::game_system->GetFastForwardText() && Input::IsRawKeyPressed(Input::Keys::RSHIFT))) {
 		instant_speed = true;
 		instant_speed_forced = true;
 	}
@@ -832,6 +843,14 @@ void Window_Message::InputChoice() {
 }
 
 void Window_Message::InputNumber() {
+
+	if (Main_Data::game_system->IsMessageMouseDisabled()) {
+		// When mouse is disabled, it shouldn't trigger number input either
+		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT) || Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
+			return;
+		}
+	}
+
 	number_input_window->SetVisible(true);
 	if (Input::IsTriggered(Input::DECISION)) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));

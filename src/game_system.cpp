@@ -649,3 +649,48 @@ bool Game_System::IsMessageTransparent() {
 	return data.message_transparent != 0;
 }
 
+void Game_System::SetFastForwardText(bool enabled) {
+	data.maniac_fast_forward_text = enabled;
+}
+
+bool Game_System::GetFastForwardText() const {
+	return data.maniac_fast_forward_text;
+}
+
+void Game_System::SetFrameSkipMode(int mode) {
+	data.maniac_frame_skip_mode = mode;
+	Player::SetFrameSkip(mode);
+}
+
+int Game_System::GetFrameSkipMode() const {
+	return data.maniac_frame_skip_mode;
+}
+
+void Game_System::SetMessageMouseDisabled(bool disabled) {
+	message_mouse_disabled = disabled;
+}
+
+bool Game_System::IsMessageMouseDisabled() const {
+	return message_mouse_disabled;
+}
+
+void Game_System::SetBattleOrigin(int origin) {
+	data.maniac_battle_origin = origin;
+}
+
+int Game_System::GetBattleOrigin() const {
+	return data.maniac_battle_origin;
+}
+
+void Game_System::SetMessageFaceSize(int width, int height) {
+	data.message_face_width = width;
+	data.message_face_height = height;
+}
+
+int Game_System::GetMessageFaceWidth() const {
+	return data.message_face_width;
+}
+
+int Game_System::GetMessageFaceHeight() const {
+	return data.message_face_height;
+}
