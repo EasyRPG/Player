@@ -604,6 +604,10 @@ bool Game_Interpreter::ExecuteCommand() {
 }
 
 bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
+	if (com.code != static_cast<int>(Cmd::MoveEvent) && com.code != 3027 /* AddMoveRoute */) {
+		_move_route_chain_active = false;
+	}
+
 	switch (static_cast<Cmd>(com.code)) {
 		case Cmd::ShowMessage:
 			return CmdSetup<&Game_Interpreter::CommandShowMessage, 0>(com);
@@ -3139,28 +3143,46 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 	int repeat = ManiacBitmask(com.parameters[2], 0x1);
 
 	Game_Character* event = GetCharacter(event_id, "MoveEvent");
-	if (event != NULL) {
-		// If the event is a vehicle in use, push the commands to the player instead
-		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
-			if (static_cast<Game_Vehicle*>(event)->IsInUse())
-				event = Main_Data::game_player.get();
+	if (event == nullptr) {
+		_move_route_chain_active = false;
+		return true;
+	}
 
-		lcf::rpg::MoveRoute route;
-		int move_freq = com.parameters[1];
+	// If the event is a vehicle in use, push the commands to the player instead
+	if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
+		if (static_cast<Game_Vehicle*>(event)->IsInUse())
+			event = Main_Data::game_player.get();
 
-		if (move_freq <= 0 || move_freq > 8) {
-			// Invalid values
-			move_freq = 6;
-		}
+	lcf::rpg::MoveRoute route;
+	int move_freq = com.parameters[1];
 
-		route.repeat = repeat != 0;
-		route.skippable = com.parameters[3] != 0;
+	if (move_freq <= 0 || move_freq > 8) {
+		// Invalid values
+		move_freq = 6;
+	}
 
-		for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
-			route.move_commands.push_back(DecodeMove(it));
-		}
+	route.repeat = repeat != 0;
+	route.skippable = com.parameters[3] != 0;
 
+	for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
+		route.move_commands.push_back(DecodeMove(it));
+	}
+
+	auto& frame = GetFrame();
+	bool is_chain_start = (frame.current_command + 1 < static_cast<int>(frame.commands.size()) &&
+		frame.commands[frame.current_command + 1].code == 3027 /* AddMoveRoute */);
+
+	if (is_chain_start) {
+		// This is the start of a chain. Buffer the data and don't execute yet.
+		_move_route_event_id = event->GetId();
+		_move_route_chain_active = true;
+		_move_route_buffer = std::move(route);
+		_move_route_frequency = move_freq;
+	}
+	else {
+		// This is a standalone command. Execute immediately.
 		event->ForceMoveRoute(route, move_freq);
+		_move_route_chain_active = false;
 	}
 	return true;
 }
