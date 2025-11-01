@@ -37,6 +37,8 @@ class Game_Player : public Game_PlayerBase {
 public:
 	Game_Player();
 
+	int GetId() const override { return CharPlayer; }
+
 	/** Load from saved game */
 	void SetSaveData(lcf::rpg::SavePartyLocation data);
 

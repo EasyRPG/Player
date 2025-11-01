@@ -42,6 +42,8 @@ public:
 
 	explicit Game_Vehicle(Type type);
 
+	int GetId() const override { return -data()->vehicle - 1; } // Boat:-2, Ship:-3, Airship:-4
+
 	/** Load from saved game */
 	void SetSaveData(lcf::rpg::SaveVehicleLocation save);
 

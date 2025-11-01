@@ -372,6 +372,10 @@ protected:
 
 	/** Shared instance for ResolveEventCommand */
 	lcf::rpg::EventCommand resolved_cmd;
+	int _move_route_event_id = 0;
+	bool _move_route_chain_active = false;
+	lcf::rpg::MoveRoute _move_route_buffer;
+	int _move_route_frequency = 0;
 
 private:
 	void PushInternal(
