@@ -211,7 +211,7 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionFadeIn:
 	case TransitionFadeOut:
 		dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * (current_frame + 1) / (total_frames - 2);
+		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * (current_frame + 1) / (total_frames - 2));
 		break;
 	case TransitionRandomBlocks:
 	case TransitionRandomBlocksDown:
