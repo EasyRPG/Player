@@ -78,7 +78,7 @@ public:
 	}
 
 	std::streambuf::pos_type seekpos(std::streambuf::pos_type pos, std::ios_base::openmode mode) override {
-		return LibretroFilesystem::vfs.iface->tell(handle);
+		return seekoff(pos, std::ios_base::beg, mode);
 	}
 
 private:
