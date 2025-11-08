@@ -139,9 +139,21 @@ private:
 	char* buffer_end = &buffer.back();
 };
 
-std::streambuf* LibretroFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode) const {
-	struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE, RETRO_VFS_FILE_ACCESS_HINT_NONE);
-	return handle == nullptr ? nullptr : new LibretroStreamBufIn(handle);
+std::streambuf* LibretroFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
+	if ((mode & std::ios_base::app) == std::ios_base::app && Exists(path)) {
+		struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE | RETRO_VFS_FILE_ACCESS_UPDATE_EXISTING, RETRO_VFS_FILE_ACCESS_HINT_NONE);
+		if (handle == nullptr) {
+			return nullptr;
+		}
+		if (vfs.iface->seek(handle, 0, RETRO_VFS_SEEK_POSITION_END) == -1) {
+			vfs.iface->close(handle);
+			return nullptr;
+		}
+		return new LibretroStreamBufIn(handle);
+	} else {
+		struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE, RETRO_VFS_FILE_ACCESS_HINT_NONE);
+		return handle == nullptr ? nullptr : new LibretroStreamBufIn(handle);
+	}
 }
 
 // To prevent leaking of the directory handle if an exception is thrown within GetDirectoryContent
