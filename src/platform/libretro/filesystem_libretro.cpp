@@ -41,7 +41,7 @@ bool LibretroFilesystem::Exists(std::string_view filename) const {
 
 int64_t LibretroFilesystem::GetFilesize(std::string_view path) const {
 	int32_t size;
-	int flags = vfs.iface->stat(ToString(path).c_str(), &flags);
+	int flags = vfs.iface->stat(ToString(path).c_str(), &size);
 	return flags & RETRO_VFS_STAT_IS_VALID ? size : -1;
 }
 
