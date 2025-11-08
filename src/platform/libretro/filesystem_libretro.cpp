@@ -195,7 +195,7 @@ bool LibretroFilesystem::GetDirectoryContent(std::string_view path, std::vector<
 }
 
 bool LibretroFilesystem::MakeDirectory(std::string_view path, bool) const {
-	return vfs.iface->mkdir(ToString(path).c_str()) >= 0;
+	return vfs.iface->mkdir(ToString(path).c_str()) != -1;
 }
 
 bool LibretroFilesystem::IsFeatureSupported(Feature f) const {
