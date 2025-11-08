@@ -318,12 +318,10 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 	};
 	cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
 
-	if (LibretroFilesystem::vfs.required_interface_version < EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION) {
-		LibretroFilesystem::vfs.required_interface_version = EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION;
-		if (!cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &LibretroFilesystem::vfs)) {
-			LibretroFilesystem::vfs.required_interface_version = 0;
-			LibretroFilesystem::vfs.iface = nullptr;
-		}
+	struct retro_vfs_interface_info vfs;
+	vfs.required_interface_version = EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION;
+	if (cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs)) {
+		LibretroFilesystem::vfs = vfs;
 	}
 }
 
