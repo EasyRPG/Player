@@ -1463,6 +1463,8 @@ else() # library
 			src/platform/libretro/audio.h
 			src/platform/libretro/clock.cpp
 			src/platform/libretro/clock.h
+			src/platform/libretro/filesystem_libretro.cpp
+			src/platform/libretro/filesystem_libretro.h
 			src/platform/libretro/input_buttons.cpp
 			src/platform/libretro/ui.cpp
 			src/platform/libretro/ui.h
