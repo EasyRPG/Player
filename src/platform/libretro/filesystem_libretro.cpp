@@ -56,7 +56,7 @@ public:
 	}
 
 	int underflow() override {
-		ssize_t res = LibretroFilesystem::vfs.iface->read(handle, buffer.data(), buffer.size());
+		int64_t res = LibretroFilesystem::vfs.iface->read(handle, buffer.data(), buffer.size());
 		if (res == 0) {
 			return traits_type::eof();
 		} else if (res < 0) {
@@ -110,7 +110,7 @@ public:
 		}
 		if (c != EOF) {
 			char a = static_cast<char>(c);
-			ssize_t res = LibretroFilesystem::vfs.iface->write(handle, &a, 1);
+			int64_t res = LibretroFilesystem::vfs.iface->write(handle, &a, 1);
 			if (res < 1) {
 				return traits_type::eof();
 			}
@@ -124,7 +124,7 @@ public:
 		if (len == 0) {
 			return 0;
 		}
-		ssize_t res = LibretroFilesystem::vfs.iface->write(handle, pbase(), len);
+		int64_t res = LibretroFilesystem::vfs.iface->write(handle, pbase(), len);
 		setp(buffer_start, buffer_end);
 		if (res < len) {
 			return -1;
