@@ -183,7 +183,7 @@ std::streambuf* LibretroFilesystem::CreateOutputStreambuffer(std::string_view pa
 		}
 	}
 	LibretroFileGuard guard(handle);
-	LibretroStreamBufIn* stream = new LibretroStreamBufIn(handle);
+	LibretroStreamBufOut* stream = new LibretroStreamBufOut(handle);
 	guard.forget();
 	return stream;
 }
