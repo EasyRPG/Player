@@ -45,6 +45,26 @@ int64_t LibretroFilesystem::GetFilesize(std::string_view path) const {
 	return flags & RETRO_VFS_STAT_IS_VALID ? size : -1;
 }
 
+// To prevent leaking of the file handle if an exception is thrown within CreateInputStreambuffer/CreateOutputStreambuffer
+class LibretroFileGuard {
+public:
+	LibretroFileGuard(struct retro_vfs_file_handle* handle) noexcept : handle(handle) {
+	}
+
+	~LibretroFileGuard() {
+		if (handle != nullptr) {
+			LibretroFilesystem::vfs.iface->close(handle);
+		}
+	}
+
+	void forget() noexcept {
+		handle = nullptr;
+	}
+
+private:
+	struct retro_vfs_file_handle* handle;
+};
+
 class LibretroStreamBufIn : public std::streambuf {
 public:
 	LibretroStreamBufIn(struct retro_vfs_file_handle* handle) : std::streambuf(), handle(handle) {
@@ -90,7 +110,13 @@ private:
 
 std::streambuf* LibretroFilesystem::CreateInputStreambuffer(std::string_view path, std::ios_base::openmode) const {
 	struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_READ, RETRO_VFS_FILE_ACCESS_HINT_NONE);
-	return handle == nullptr ? nullptr : new LibretroStreamBufIn(handle);
+	if (handle == nullptr) {
+		return nullptr;
+	}
+	LibretroFileGuard guard(handle);
+	LibretroStreamBufIn* stream = new LibretroStreamBufIn(handle);
+	guard.forget();
+	return stream;
 }
 
 class LibretroStreamBufOut : public std::streambuf {
@@ -140,8 +166,9 @@ private:
 };
 
 std::streambuf* LibretroFilesystem::CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const {
+	struct retro_vfs_file_handle* handle;
 	if ((mode & std::ios_base::app) == std::ios_base::app && Exists(path)) {
-		struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE | RETRO_VFS_FILE_ACCESS_UPDATE_EXISTING, RETRO_VFS_FILE_ACCESS_HINT_NONE);
+		handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE | RETRO_VFS_FILE_ACCESS_UPDATE_EXISTING, RETRO_VFS_FILE_ACCESS_HINT_NONE);
 		if (handle == nullptr) {
 			return nullptr;
 		}
@@ -149,17 +176,22 @@ std::streambuf* LibretroFilesystem::CreateOutputStreambuffer(std::string_view pa
 			vfs.iface->close(handle);
 			return nullptr;
 		}
-		return new LibretroStreamBufIn(handle);
 	} else {
-		struct retro_vfs_file_handle* handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE, RETRO_VFS_FILE_ACCESS_HINT_NONE);
-		return handle == nullptr ? nullptr : new LibretroStreamBufIn(handle);
+		handle = vfs.iface->open(ToString(path).c_str(), RETRO_VFS_FILE_ACCESS_WRITE, RETRO_VFS_FILE_ACCESS_HINT_NONE);
+		if (handle == nullptr) {
+			return nullptr;
+		}
 	}
+	LibretroFileGuard guard(handle);
+	LibretroStreamBufIn* stream = new LibretroStreamBufIn(handle);
+	guard.forget();
+	return stream;
 }
 
 // To prevent leaking of the directory handle if an exception is thrown within GetDirectoryContent
 class LibretroDirGuard {
 public:
-	LibretroDirGuard(struct retro_vfs_dir_handle* handle) : handle(handle) {
+	LibretroDirGuard(struct retro_vfs_dir_handle* handle) noexcept : handle(handle) {
 	}
 
 	~LibretroDirGuard() {
