@@ -305,6 +305,7 @@ protected:
 	bool CommandManiacChangePictureId(lcf::rpg::EventCommand const& com);
 	bool CommandManiacSetGameOption(lcf::rpg::EventCommand const& com);
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
+	bool CommandManiacSaveImage(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
