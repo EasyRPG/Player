@@ -5350,6 +5350,12 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 
 		auto& picture = Main_Data::game_pictures->GetPicture(pic_id);
 
+		if (picture.IsRequestPending()) {
+			picture.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+
 		// Retrieve bitmap from picture
 		// If the picture is invalid or not showing, this might be null
 		if (picture.sprite) {
