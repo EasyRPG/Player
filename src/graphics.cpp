@@ -30,6 +30,10 @@
 #include "drawable_mgr.h"
 #include "baseui.h"
 #include "game_clock.h"
+#include "game_screen.h"
+#include "main_data.h"
+#include "game_map.h"
+
 
 using namespace std::chrono_literals;
 
@@ -118,9 +122,86 @@ void Graphics::Draw(Bitmap& dst) {
 	LocalDraw(dst, min_z, max_z);
 }
 
+static Drawable::Z_t GetZForManiacLayer(int layer) {
+	if (layer <= 0) return std::numeric_limits<Drawable::Z_t>::min();
+	if (layer >= 10) return std::numeric_limits<Drawable::Z_t>::max();
+
+	// Layer 9 (Windows) includes Message Text (Overlay)
+	if (layer == 9) return Priority_Overlay;
+
+	// For layers 1-8, the range ends just before the start of the *next* logical layer group.
+	Drawable::Z_t next_layer_start = 0;
+	switch (layer) {
+	case 1: next_layer_start = Priority_TilesetBelow; break;    // Panorama
+	case 2: next_layer_start = Priority_EventsBelow; break;     // Lower Chipset
+	case 3: next_layer_start = Priority_Player; break;          // Events Below Hero
+	case 4: next_layer_start = Priority_TilesetAbove; break;    // Hero / Events Same Level
+	case 5: next_layer_start = Priority_EventsFlying; break;    // Upper Chipset
+	case 6: next_layer_start = Priority_PictureNew; break;      // Events Above Hero
+	case 7: next_layer_start = Priority_BattleAnimation; break; // Pictures (All priorities)
+	case 8: next_layer_start = Priority_Window; break;          // Animations
+	}
+
+	return next_layer_start - 1;
+}
+
 void Graphics::LocalDraw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z) {
 	auto& drawable_list = DrawableMgr::GetLocalList();
 
+	// Maniac Zoom Handling
+	// Check if game_screen exists to prevent crash during init/cleanup
+	// Also ensure we are in a Map or Battle scene
+	if (Main_Data::game_screen && current_scene &&
+		(current_scene->type == Scene::Map || current_scene->type == Scene::Battle))
+	{
+		int zoom_layer = Main_Data::game_screen->GetZoomLayer();
+
+		if (zoom_layer > 0) {
+			Drawable::Z_t threshold_z = GetZForManiacLayer(zoom_layer);
+
+			// Only intervene if the zoom layer is within the current drawing range
+			if (threshold_z >= min_z) {
+				static BitmapRef zoom_buffer;
+				// Ensure intermediate buffer exists and matches screen size
+				if (!zoom_buffer || zoom_buffer->GetWidth() != dst.GetWidth() || zoom_buffer->GetHeight() != dst.GetHeight()) {
+					zoom_buffer = Bitmap::Create(dst.GetWidth(), dst.GetHeight(), true);
+				}
+
+				// 1. Prepare Buffer
+				if (min_z == std::numeric_limits<Drawable::Z_t>::min()) {
+					// If rendering from the bottom, fill background to prevent trails.
+					dst.Fill(Color(0, 0, 0, 255));
+
+					// Draw the scene background (e.g. Panorama or color) into the buffer
+					current_scene->DrawBackground(*zoom_buffer);
+				}
+				else {
+					zoom_buffer->Clear();
+				}
+
+				// 2. Draw layers *affected* by zoom into the buffer
+				// We clip max_z to threshold_z
+				drawable_list.Draw(*zoom_buffer, min_z, std::min(max_z, threshold_z));
+
+				// 3. Apply Zoom Transform
+				double rate = Main_Data::game_screen->GetZoomRate();
+				int cx = Main_Data::game_screen->GetZoomX();
+				int cy = Main_Data::game_screen->GetZoomY();
+
+				dst.ZoomOpacityBlit(cx, cy, cx, cy, *zoom_buffer, zoom_buffer->GetRect(), rate, rate, Opacity::Opaque());
+
+				// 4. Continue rendering remaining layers normally (on top of the zoomed image)
+				// Adjust min_z to start after the threshold
+				if (max_z > threshold_z) {
+					drawable_list.Draw(dst, threshold_z + 1, max_z);
+				}
+
+				return;
+			}
+		}
+	}
+
+	// Standard Rendering (No Zoom or Game_Screen not ready)
 	if (!drawable_list.empty() && min_z == std::numeric_limits<Drawable::Z_t>::min()) {
 		current_scene->DrawBackground(dst);
 	}
