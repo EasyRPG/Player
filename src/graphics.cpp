@@ -127,7 +127,7 @@ static Drawable::Z_t GetZForManiacLayer(int layer) {
 	if (layer >= 10) return std::numeric_limits<Drawable::Z_t>::max();
 
 	// Layer 9 (Windows) includes Message Text (Overlay)
-	if (layer == 9) return Priority_Overlay;
+	if (layer == 9) return Priority_Frame;
 
 	// For layers 1-8, the range ends just before the start of the *next* logical layer group.
 	Drawable::Z_t next_layer_start = 0;

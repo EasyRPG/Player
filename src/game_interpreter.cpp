@@ -4402,6 +4402,7 @@ bool Game_Interpreter::CommandManiacZoom(lcf::rpg::EventCommand const& com) {
 		SetupWaitFrames(duration);
 	}
 
+	Output::Debug("Maniac Zoom: CenterX {}, CenterY {}, Rate {}, Duration {}, Layer {}", center_x, center_y, rate, duration, layer);
 	return true;
 }
 
