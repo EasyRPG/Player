@@ -60,6 +60,7 @@ public:
 		Teleport,
 		Settings,
 		LanguageMenu,
+		DebugPicture,
 		SceneMax
 	};
 
@@ -203,7 +204,7 @@ public:
 	static std::vector<std::shared_ptr<Scene> > old_instances;
 
 	/** Contains name of the Scenes. For debug purposes. */
-	static const char scene_names[SceneMax][12];
+	static const char scene_names[SceneMax][13];
 
 	/**
 	 * Called by the graphic system to request drawing of a background, usually a system color background

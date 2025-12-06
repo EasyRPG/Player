@@ -72,6 +72,7 @@ public:
 		eCallMapEvent,
 		eCallBattleEvent,
 		eString,
+		ePictureTool,
 		eInterpreter,
 		eOpenMenu,
 		eLastMainMenuOption,

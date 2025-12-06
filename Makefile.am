@@ -280,6 +280,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_battle_rpg2k3.h \
 	src/scene_debug.cpp \
 	src/scene_debug.h \
+	src/scene_debug_picture.cpp \
+	src/scene_debug_picture.h \
 	src/scene_end.cpp \
 	src/scene_end.h \
 	src/scene_equip.cpp \
@@ -426,6 +428,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_numberinput.h \
 	src/window_paramstatus.cpp \
 	src/window_paramstatus.h \
+	src/window_debug_picture.cpp \
+	src/window_debug_picture.h \
 	src/window_savefile.cpp \
 	src/window_savefile.h \
 	src/window_selectable.cpp \

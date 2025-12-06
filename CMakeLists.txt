@@ -305,6 +305,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/scene.cpp
 	src/scene_debug.cpp
 	src/scene_debug.h
+	src/scene_debug_picture.cpp
+	src/scene_debug_picture.h
 	src/scene_end.cpp
 	src/scene_end.h
 	src/scene_equip.cpp
@@ -420,6 +422,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_command.h
 	src/window_command_horizontal.cpp
 	src/window_command_horizontal.h
+	src/window_debug_picture.cpp
+	src/window_debug_picture.h
 	src/window.cpp
 	src/window_equip.cpp
 	src/window_equip.h
