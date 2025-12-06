@@ -34,6 +34,7 @@
 #include "scene_menu.h"
 #include "scene_save.h"
 #include "scene_map.h"
+#include "scene_debug_picture.h"
 #include "scene_battle.h"
 #include "player.h"
 #include "window_command.h"
@@ -621,6 +622,10 @@ void Scene_Debug::vUpdate() {
 					PushUiRangeList();
 				}
 				break;
+			case ePictureTool:
+				Scene::Push(std::make_shared<Scene_DebugPicture>());
+				mode = eMain;
+				return;
 			case eInterpreter:
 				if (sz == 3) {
 					auto action = interpreter_window->GetSelectedAction();
@@ -776,6 +781,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Call MapEvent", Scene::Find(Scene::Map) != nullptr);
 				addItem("Call BtlEvent", is_battle);
 				addItem("Strings", Player::IsPatchManiac());
+				addItem("Pictures");
 				addItem("Interpreter");
 				addItem("Open Menu", !is_battle);
 			}
