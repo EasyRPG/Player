@@ -509,7 +509,7 @@ Filesystem_Stream::InputStream open_generic_with_fallback(std::string_view dir, 
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(std::string_view dir, std::string_view name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
-	return open_generic(dir, name, args);
+	return open_generic_with_fallback(dir, name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenMusic(std::string_view name) {
