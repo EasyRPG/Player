@@ -5326,7 +5326,7 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 
 	// Decode Flags
 	int flags = com.parameters[4];
-	bool is_dynamic = (flags & 1) != 0;
+	bool apply_effects = (flags & 1) != 0;
 	bool is_opaque = (flags & 2) != 0;
 
 	// Prepare Bitmap
@@ -5339,7 +5339,6 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 	}
 	else if (target_type == 1) {
 		// Target: Picture (.pic)
-
 		// Decode Picture ID using the mode in bits 0-3 of parameter 0
 		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
 
@@ -5356,16 +5355,49 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 			return true;
 		}
 
-		// Retrieve bitmap from picture
-		// If the picture is invalid or not showing, this might be null
-		if (picture.sprite) {
+		// Retrieve bitmap
+		// If Opaque flag is set, prefer loading the cached image without transparency
+		// to recover the original background color (key color).
+		bool use_cached_opaque = false;
+		if (is_opaque && !picture.data.name.empty()) {
+			bool is_canvas = false;
+			if (picture.sprite && picture.sprite->GetBitmap()) {
+				// Canvas bitmaps have IDs starting with "Canvas:"
+				is_canvas = StartsWith(picture.sprite->GetBitmap()->GetId(), "Canvas:");
+			}
+			// Also if it's a Window (StringPic), we can't reload from file
+			bool is_window = picture.data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
+
+			if (!is_canvas && !is_window) {
+				use_cached_opaque = true;
+			}
+		}
+
+		if (use_cached_opaque) {
+			// Load fresh from cache with transparency disabled
+			bitmap = Cache::Picture(picture.data.name, false);
+		}
+		else if (picture.sprite) {
 			bitmap = picture.sprite->GetBitmap();
 		}
 
-		if (bitmap && is_dynamic) {
-			// .dynamic: Reflect color tone, flash, and other effects
+		const auto& data = picture.data;
+		Rect src_rect;
 
-			const auto& data = picture.data;
+		// Calculate Spritesheet frame
+		if (bitmap) {
+			src_rect = bitmap->GetRect();
+			if (picture.NumSpriteSheetFrames() > 1) {
+				int frame_w = bitmap->GetWidth() / data.spritesheet_cols;
+				int frame_h = bitmap->GetHeight() / data.spritesheet_rows;
+				int sx = (data.spritesheet_frame % data.spritesheet_cols) * frame_w;
+				int sy = (data.spritesheet_frame / data.spritesheet_cols) * frame_h;
+				src_rect = Rect(sx, sy, frame_w, frame_h);
+			}
+		}
+
+		if (bitmap && apply_effects) {
+			// .dynamic: Reflect color tone, flash, and other effects
 
 			// Tone
 			auto tone = Tone((int)(data.current_red * 128 / 100),
@@ -5388,9 +5420,12 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 			bool flip_x = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) == lcf::rpg::SavePicture::EasyRpgFlip_x;
 			bool flip_y = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) == lcf::rpg::SavePicture::EasyRpgFlip_y;
 
-			// Apply effects
-			// We use the full bitmap rect to save the whole image state, including spritesheets
-			bitmap = Cache::SpriteEffect(bitmap, bitmap->GetRect(), flip_x, flip_y, tone, flash);
+			// Cache::SpriteEffect creates a new bitmap based on src_rect
+			bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+		}
+		else if (bitmap && src_rect != bitmap->GetRect()) {
+			// .static: Crop specific cell if it's a spritesheet
+			bitmap = Bitmap::Create(*bitmap, src_rect);
 		}
 	}
 	else {
@@ -5401,18 +5436,20 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 	// Save logic
 	if (bitmap) {
 		if (is_opaque) {
-			// .opaq: Make transparent/semitransparent pixels opaque
+			// .opaq: Force Alpha to 255
 			// Clone to avoid modifying the original cached/displayed bitmap
 			bitmap = Bitmap::Create(*bitmap, bitmap->GetRect());
 
-			int count = bitmap->GetWidth() * bitmap->GetHeight();
-			auto* pixels = static_cast<uint32_t*>(bitmap->pixels());
+			if (bitmap->bpp() == 4) {
+				int count = bitmap->GetWidth() * bitmap->GetHeight();
+				auto* pixels = static_cast<uint32_t*>(bitmap->pixels());
 
-			uint8_t r, g, b, a;
-			for (int i = 0; i < count; ++i) {
-				Bitmap::pixel_format.uint32_to_rgba(pixels[i], r, g, b, a);
-				if (a != 255) {
-					pixels[i] = Bitmap::pixel_format.rgba_to_uint32_t(r, g, b, 255);
+				uint8_t r, g, b, a;
+				for (int i = 0; i < count; ++i) {
+					Bitmap::pixel_format.uint32_to_rgba(pixels[i], r, g, b, a);
+					if (a != 255) {
+						pixels[i] = Bitmap::pixel_format.rgba_to_uint32_t(r, g, b, 255);
+					}
 				}
 			}
 		}
