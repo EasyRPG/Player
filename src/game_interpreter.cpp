@@ -2202,6 +2202,16 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 	music.volume = com.parameters[2];
 	music.tempo = com.parameters[3];
 	music.balance = com.parameters[4];
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 5) {
+		int opts = com.parameters[5];
+		music.name = ToString(Main_Data::game_strings->GetWithMode(music.name, (opts & 0xF), com.parameters[6], *Main_Data::game_variables));
+		music.fadein = ValueOrVariableBitfield(opts, 1, music.fadein);
+		music.volume = ValueOrVariableBitfield(opts, 2, music.volume);
+		music.tempo = ValueOrVariableBitfield(opts, 3, music.tempo);
+		music.balance = ValueOrVariableBitfield(opts, 4, music.balance);
+	}
+
 	Main_Data::game_system->SetSystemBGM(context, std::move(music));
 	return true;
 }
@@ -2213,14 +2223,29 @@ bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com)
 	sound.volume = com.parameters[1];
 	sound.tempo = com.parameters[2];
 	sound.balance = com.parameters[3];
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 4) {
+		int opts = com.parameters[4];
+		sound.name = ToString(Main_Data::game_strings->GetWithMode(sound.name, (opts & 0xF), com.parameters[5], *Main_Data::game_variables));
+		sound.volume = ValueOrVariableBitfield(opts, 1, sound.volume);
+		sound.tempo = ValueOrVariableBitfield(opts, 2, sound.tempo);
+		sound.balance = ValueOrVariableBitfield(opts, 3, sound.balance);
+	}
+
 	Main_Data::game_system->SetSystemSE(context, std::move(sound));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Main_Data::game_system->SetSystemGraphic(ToString(CommandStringOrVariable(com, 2, 3)),
-			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
-			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
+	std::string name = ToString(com.string);
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 2) {
+		name = ToString(CommandStringOrVariableBitfield(com, 2, 0, 3));
+	}
+
+	Main_Data::game_system->SetSystemGraphic(name,
+		static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
+		static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
 	return true;
 }
@@ -2331,6 +2356,11 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& com) { // Code 10870
 	int event1_id = com.parameters[0];
 	int event2_id = com.parameters[1];
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 2) {
+		event1_id = ValueOrVariableBitfield(com.parameters[2], 0, event1_id);
+		event2_id = ValueOrVariableBitfield(com.parameters[2], 1, event2_id);
+	}
 
 	Game_Character *event1 = GetCharacter(event1_id, "TradeEventLocations");
 	Game_Character *event2 = GetCharacter(event2_id, "TradeEventLocations");
@@ -3374,6 +3404,10 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com) { // code 11710
 	int chipset_id = com.parameters[0];
 
+	if (Player::IsPatchManiac() && com.parameters.size() > 1) {
+		chipset_id = ValueOrVariable(com.parameters[1], com.parameters[0]);
+	}
+
 	if (chipset_id == Game_Map::GetChipset()) {
 		return true;
 	}
@@ -3393,12 +3427,26 @@ bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com
 bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
 	params.name = ToString(com.string);
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 7) {
+		params.name = ToString(CommandStringOrVariableBitfield(com, 6, 0, 7));
+	}
+
 	params.scroll_horz = com.parameters[0] != 0;
 	params.scroll_vert = com.parameters[1] != 0;
 	params.scroll_horz_auto = com.parameters[2] != 0;
 	params.scroll_horz_speed = com.parameters[3];
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 6) {
+		params.scroll_horz_speed = ValueOrVariableBitfield(com.parameters[6], 4, com.parameters[3]);
+	}
+
 	params.scroll_vert_auto = com.parameters[4] != 0;
 	params.scroll_vert_speed = com.parameters[5];
+
+	if (Player::IsPatchManiac() && com.parameters.size() > 6) {
+		params.scroll_vert_speed = ValueOrVariableBitfield(com.parameters[6], 6, com.parameters[5]);
+	}
 
 	Game_Map::Parallax::ChangeBG(params);
 
