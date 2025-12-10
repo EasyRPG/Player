@@ -4203,9 +4203,71 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			Main_Data::game_variables->Set(var + 1, Player::screen_height);
 			break;
 		case 3: // Get pixel info
-			// FIXME: figure out how 'Pixel info' works
-			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
+		{
+			// 1. Decode Parameters
+			// [0] Packing: Bits 0-3: X Mode, 4-7: Y Mode, etc.
+			int p_x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+			int p_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+			int p_w = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+			int p_h = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+			int dest_var_id = com.parameters[7];
+
+			// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
+			bool ignore_alpha = (com.parameters[2] & 1) != 0;
+
+			// 2. Capture Screen
+			// Creates a snapshot of the current frame
+			BitmapRef screen = DisplayUi->CaptureScreen();
+			if (!screen) return true;
+
+
+			int screen_w = screen->GetWidth();
+			int screen_h = screen->GetHeight();
+
+			if (p_w <= 0 || p_h <= 0) return true;
+
+			uint32_t* pixels = static_cast<uint32_t*>(screen->pixels());
+			int pitch = screen->pitch() / 4; // stride in uint32 elements
+
+			auto& variables = *Main_Data::game_variables;
+
+			int var_idx = 0;
+			uint8_t r, g, b, a;
+
+			// 4. Read Loop
+			for (int iy = 0; iy < p_h; ++iy) {
+				int sy = p_y + iy;
+
+				// If row out of bounds, skip variables for this row
+				if (sy < 0 || sy >= screen_h) {
+					var_idx += p_w;
+					continue;
+				}
+
+				for (int ix = 0; ix < p_w; ++ix) {
+					int target_var = dest_var_id + var_idx++;
+					int sx = p_x + ix;
+
+					if (sx >= 0 && sx < screen_w) {
+						uint32_t raw_pixel = pixels[sy * pitch + sx];
+
+						Bitmap::opaque_pixel_format.uint32_to_rgba(raw_pixel, r, g, b, a);
+
+						if (ignore_alpha) {
+							a = 0;
+						}
+						else {
+							a = 255; //In maniacs, bellow parallax layer can't be transparent is this the best approach?
+						}
+
+						// Maniacs format: AARRGGBB (Signed 32-bit)
+						uint32_t packed = (a << 24) | (r << 16) | (g << 8) | b;
+						variables.Set(target_var, static_cast<int32_t>(packed));
+					}
+				}
+			}
 			break;
+		}
 		case 4: // Get command interpreter state
 		{
 			// Parameter "Nest" in the English version of Maniacs
