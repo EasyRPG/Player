@@ -185,83 +185,6 @@ std::optional<std::string> Game_Message::CommandCodeInserter(char ch, const char
 	return PendingMessage::DefaultCommandInserter(ch, iter, end, escape_char);
 }
 
-Game_Message::ParseArrayResult Game_Message::ParseArray(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
-	if (!skip_prefix) {
-		const auto begin = iter;
-		if (iter == end) {
-			return { begin, {}, false };
-		}
-		auto ret = Utils::UTF8Next(iter, end);
-		if (ret.ch != escape_char) {
-			return { begin, {}, false };
-		}
-		iter = ret.next;
-		if (iter != end) { // Skip the command character (e.g., 'C' in \C)
-			auto cmd_char_ret = Utils::UTF8Next(iter, end);
-			iter = cmd_char_ret.next;
-		}
-	}
-
-	if (iter == end || *iter != '[') {
-		return { iter, {}, false };
-	}
-	++iter;
-
-	// Helper lambda to parse one number, supporting \V[n]
-	auto parse_one_number = [&](int& out_val) {
-		bool stop_parsing = false;
-		while (iter != end && *iter != ']' && *iter != ',') {
-			if (stop_parsing) { ++iter; continue; }
-
-			if (*iter >= '0' && *iter <= '9') {
-				out_val = out_val * 10 + (*iter - '0');
-				++iter;
-				continue;
-			}
-
-			if (max_recursion > 0) {
-				auto ret = Utils::UTF8Next(iter, end);
-				if (ret.ch == escape_char && ret.next != end && (*ret.next == 'V' || *ret.next == 'v')) {
-					auto var_ret = ParseVariable(ret.next, end, escape_char, false, max_recursion - 1);
-					int var_val = Main_Data::game_variables->Get(var_ret.value);
-					int m = 10;
-					if (out_val != 0) { while (m <= std::abs(var_val)) m *= 10; }
-					out_val = out_val * m + var_val;
-					iter = var_ret.next;
-					continue;
-				}
-			}
-			stop_parsing = true;
-		}
-		};
-
-	ParseArrayResult result;
-	result.next = iter;
-
-	if (iter != end && *iter != ']') {
-		do {
-			int current_value = 0;
-			parse_one_number(current_value);
-			result.values.push_back(current_value);
-
-			if (iter != end && *iter == ',') {
-				result.is_array = true;
-				++iter;
-			}
-			else {
-				break;
-			}
-		} while (iter != end && *iter != ']');
-	}
-
-	if (iter != end && *iter == ']') {
-		++iter;
-	}
-
-	result.next = iter;
-	return result;
-}
-
 Game_Message::ParseParamResult Game_Message::ParseParam(
 		char upper,
 		char lower,
@@ -269,7 +192,8 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		const char* end,
 		uint32_t escape_char,
 		bool skip_prefix,
-		int max_recursion)
+		int max_recursion,
+		bool parse_array)
 {
 	if (!skip_prefix) {
 		const auto begin = iter;
@@ -294,6 +218,7 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 	}
 
 	int value = 0;
+	std::vector<int> values;
 	++iter;
 	bool stop_parsing = false;
 	bool got_valid_number = false;
@@ -317,6 +242,14 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 			auto ret = Utils::UTF8Next(iter, end);
 			auto ch = ret.ch;
 			iter = ret.next;
+
+			if (parse_array && ch == ',') {
+				// command contains a list of numbers
+				values.push_back(value);
+				value = 0;
+				got_valid_number = false;
+				continue;
+			}
 
 			// Recursive variable case.
 			if (ch == escape_char) {
@@ -350,15 +283,17 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		++iter;
 	}
 
+	values.emplace_back(value);
+
 	// Actor 0 references the first party member
-	if (upper == 'N' && value == 0 && got_valid_number) {
+	if (upper == 'N' && values.front() == 0 && got_valid_number) {
 		auto* party = Main_Data::game_party.get();
 		if (party->GetBattlerCount() > 0) {
-			value = (*party)[0].GetId();
+			values.front() = (*party)[0].GetId();
 		}
 	}
 
-	return { iter, value };
+	return { iter, values.front(), values };
 }
 
 Game_Message::ParseParamStringResult Game_Message::ParseStringParam(
@@ -435,8 +370,8 @@ Game_Message::ParseParamResult Game_Message::ParseString(const char* iter, const
 	return ParseParam('T', 't', iter, end, escape_char, skip_prefix, max_recursion);
 }
 
-Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
-	return ParseParam('C', 'c', iter, end, escape_char, skip_prefix, max_recursion);
+Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion, bool parse_array) {
+	return ParseParam('C', 'c', iter, end, escape_char, skip_prefix, max_recursion, parse_array);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseSpeed(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {

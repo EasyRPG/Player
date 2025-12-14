@@ -106,23 +106,16 @@ namespace Game_Message {
 	// Which one we'll use by default.
 	static constexpr int default_max_recursion = easyrpg_default_max_recursion;
 
-	/** Struct returned by maniacs patch array parsing */
-	struct ParseArrayResult {
-		const char* next;
-		std::vector<int> values;
-		// is_array will be true if at least one comma was found,
-		// indicating multiple values were intended. e.g., for `[123]`, is_array is false. for `[1,2]`, it's true.
-		bool is_array = false;
-	};
-
-	ParseArrayResult ParseArray(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = 4);
-
 	/** Struct returned by parameter parsing methods */
 	struct ParseParamResult {
 		/** iterator to the next character after parsed content */
 		const char* next = nullptr;
 		/** value that was parsed */
 		int value = 0;
+		/** multiple values in case of array parsing. For compatibility first number is also stored in `value` */
+		std::vector<int> values;
+
+		bool is_array() const { return values.size() >= 2; }
 	};
 
 	/** Struct returned by parameter parsing methods */
@@ -167,7 +160,7 @@ namespace Game_Message {
 	 *
 	 * @return \refer ParseParamResult
 	 */
-	ParseParamResult ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+	ParseParamResult ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion, bool parse_array = false);
 
 	/** Parse a \s[] speed string
 	 *
@@ -193,7 +186,7 @@ namespace Game_Message {
 	 */
 	ParseParamResult ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 
-	Game_Message::ParseParamResult ParseParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+	Game_Message::ParseParamResult ParseParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion, bool parse_array = false);
 	// same as ParseParam but the parameter is of structure \x[some_word] instead of \x[1]
 	Game_Message::ParseParamStringResult ParseStringParam(char upper, char lower, const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 }

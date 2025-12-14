@@ -415,53 +415,49 @@ Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 		return ret; // Not an ExFont command.
 	}
 
-	// --- Maniacs Patch Extended Syntax Handling ---
+	// The (0xFFu << 16) is to avoid detection as a control character by the
+	// font rendering code
+
+	// Maniacs Patch Extended Syntax $[x,y] Handling
 	if (Player::IsPatchManiac() && *(iter + 1) == '[') {
-		const char* start_bracket = iter + 1;
-		const char* end_bracket = std::find(start_bracket + 1, end, ']');
+		auto pres = Game_Message::ParseParam('$', '$', ++iter, end, Player::escape_char, true, Game_Message::default_max_recursion, true);
+		if (pres.values.empty()) {
+			// parse error
+			return ret;
+		}
 
-		if (end_bracket != end) {
-			std::string_view content(start_bracket + 1, end_bracket - (start_bracket + 1));
-			if (content.length() == 1 && std::isalpha(static_cast<unsigned char>(content[0]))) {
-				// AZ Mode: $[A]
-				ret.next = end_bracket + 1;
-				ret.value = content[0];
-				ret.is_valid = true;
-				return ret;
-			}
+		ret.next = pres.next;
 
-			auto pres = Game_Message::ParseArray(start_bracket, end, Player::escape_char, true);
-			if (!pres.values.empty()) {
-				if (pres.is_array && pres.values.size() >= 2) {
-					// XY Mode: $[x,y]
-					uint32_t x = pres.values[0];
-					uint32_t y = pres.values[1];
-					ret.next = pres.next;
-					ret.value = EXFONT_XY_FLAG | (y << 8) | x;
-					ret.is_valid = true;
-					return ret;
-				}
-				else if (!pres.is_array && pres.values.size() == 1) {
-					// Index Mode: $[n] or $[\V[n]]
-					int icon_index = pres.values[0];
-					int x = icon_index % 13;
-					int y = icon_index / 13;
-					ret.next = pres.next;
-					ret.value = EXFONT_XY_FLAG | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
-					ret.is_valid = true;
-					return ret;
-				}
-			}
+		if (pres.is_array()) {
+			// XY Mode: $[x,y]
+			uint32_t x = pres.values[0];
+			uint32_t y = pres.values[1];
+			ret.value = (0xFFu << 16) | (y << 8) | x;
+			ret.is_valid = true;
+			return ret;
+		}
+		else if (pres.values.size() == 1) {
+			// Index Mode: $[n] or $[\V[n]]
+			int icon_index = pres.values[0];
+			int x = icon_index % 13;
+			int y = icon_index / 13;
+			ret.value = (0xFFu << 16) | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
+			ret.is_valid = true;
+			return ret;
 		}
 	}
 
-	// --- Standard $A-Z Syntax (and Fallback) ---
+	// Standard $A-Z Syntax
 	auto next_ch = *(iter + 1);
 	bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
 	bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
+
 	if (is_lower || is_upper) {
 		ret.next = iter + 2;
-		ret.value = next_ch;
+		char32_t adjusted_glyph = is_lower ? (next_ch - 'a' + 26) : (next_ch - 'A');
+		int x = adjusted_glyph % 13;
+		int y = adjusted_glyph / 13;
+		ret.value = (0xFFu << 16) | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
 		ret.is_valid = true;
 	}
 

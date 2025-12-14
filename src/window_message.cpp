@@ -576,24 +576,19 @@ void Window_Message::UpdateMessage() {
 			case 'C':
 			{
 				// Color
-				if (Player::IsPatchManiac()) {
-					auto pres = Game_Message::ParseArray(text_index, end, Player::escape_char, true);
-					text_index = pres.next;
+				auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true, Game_Message::default_max_recursion, Player::IsPatchManiac());
+				text_index = pres.next;
 
-					if (!pres.values.empty()) {
-						if (pres.is_array && pres.values.size() >= 2) {
-							// Maniacs \C[x,y] -> y * 10 + x
-							text_color = pres.values[1] * 10 + pres.values[0];
-						}
-						else {
-							// Maniacs \C[n]
-							text_color = pres.values[0];
-						}
+				if (Player::IsPatchManiac()) {
+					if (pres.is_array()) {
+						// Maniacs \C[x,y] -> y * 10 + x
+						text_color = pres.values[1] * 10 + pres.values[0];
+					} else {
+						// Maniacs \C[n] (arbitrary amount of colors)
+						text_color = pres.values[0];
 					}
 				}
 				else {
-					auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
-					text_index = pres.next;
 					text_color = pres.value > 19 ? 0 : pres.value;
 				}
 

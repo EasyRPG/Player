@@ -941,25 +941,10 @@ Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 
 	Rect rect(0, 0, 0, 0);
 
-	if (Player::IsPatchManiac() && (glyph & Utils::EXFONT_XY_FLAG)) {
-		// Maniacs Patch $[x,y] or $[n] mode
+	// Glyph contains two packed coordinates (YX, 8 bits each)
 		int x = glyph & 0xFF;
 		int y = (glyph >> 8) & 0xFF;
 		rect = Rect(x * WIDTH, y * HEIGHT, WIDTH, HEIGHT);
-	}
-	else {
-		// Standard $[A-Za-z] or Maniacs $[A] mode
-		bool is_lower = (glyph >= 'a' && glyph <= 'z');
-		bool is_upper = (glyph >= 'A' && glyph <= 'Z');
-
-		if (!is_lower && !is_upper) {
-			// Invalid ExFont character
-			return { bm, {WIDTH, 0}, {0, 0}, false };
-		}
-
-		char32_t adjusted_glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
-		rect = Rect((adjusted_glyph % 13) * WIDTH, (adjusted_glyph / 13) * HEIGHT, WIDTH, HEIGHT);
-	}
 
 	if (rect.x + rect.width > exfont->GetWidth() || rect.y + rect.height > exfont->GetHeight()) {
 		// Coordinates are out of bounds for the ExFont sheet
