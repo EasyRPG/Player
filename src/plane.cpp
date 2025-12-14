@@ -84,20 +84,26 @@ void Plane::Draw(Bitmap& dst) {
 		dst_rect.x = bg_x;
 		dst_rect.width = bg_width;
 
+		if (Game_Map::GetDisplayX() / 16 + Player::screen_width > Game_Map::GetTilesX() * TILE_SIZE) {
+			// Do not draw out of bounds to the right
+			dst_rect.width -= (Game_Map::GetDisplayX() / 16 + Player::screen_width) - (Game_Map::GetTilesX() * TILE_SIZE);
+		}
+
 		// Correct the offset if the top-left corner moved.
 		offset_x = shake_x + bg_x;
 	}
 	src_y += shake_y;
 
 	dst.TiledBlit(src_x + offset_x, src_y, source->GetRect(), *source, dst_rect, 255);
+
 	if (!Game_Map::LoopHorizontal()) {
-		if (offset_x < 0) {
-			auto clear_rect = Rect(dst.GetRect().x, dst.GetRect().y, abs(offset_x), dst.GetRect().height);
+		// Clear out of bounds map area visible during shake
+		if (offset_x < 0 && src_x + offset_x < 0) {
+			auto clear_rect = Rect(dst.GetRect().x, dst.GetRect().y, -offset_x, dst.GetRect().height);
 			dst.ClearRect(clear_rect);
-		} else if (offset_x > 0) {
-			auto clear_rect = Rect(dst.GetRect().width - offset_x, dst.GetRect().y, offset_x, dst.GetRect().height);
+		} else if (dst_rect.width < Player::screen_width) {
+			auto clear_rect = Rect(dst_rect.width, dst.GetRect().y, Player::screen_width - dst_rect.width, dst.GetRect().height);
 			dst.ClearRect(clear_rect);
 		}
 	}
 }
-
