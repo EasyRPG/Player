@@ -979,7 +979,7 @@ void Scene_Battle_Rpg2k3::vUpdate() {
 			if (!parallel_interpreter.IsRunning()) {
 				for (auto common_event : battle_parallel_events)
 				{
-					parallel_interpreter.Push<InterpreterExecutionType::Parallel>(common_event);
+					parallel_interpreter.Push<InterpreterExecutionType::BattleParallel>(common_event);
 				}
 			}
 		}
@@ -1132,7 +1132,7 @@ void Scene_Battle_Rpg2k3::CallBattleBeginCommonEvents() {
 			if (data_common_event.trigger == data_common_event.Trigger_maniac_battle_start) {
 				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
 
-				Game_Battle::GetInterpreterBattle().Push<InterpreterExecutionType::Parallel>(common_event);
+				Game_Battle::GetInterpreterBattle().Push<InterpreterExecutionType::BattleParallel>(common_event);
 			}
 			else if (data_common_event.trigger == data_common_event.Trigger_maniac_battle_parallel) {
 				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
