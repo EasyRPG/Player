@@ -20,6 +20,7 @@
 #include "filefinder.h"
 #include "bitmap.h"
 #include "font.h"
+#include "output.h"
 #include "system.h"
 
 Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
@@ -69,6 +70,11 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 				// A platform is considered "fast" when it does not require our custom IO buffer
 #ifndef USE_CUSTOM_FILEBUF
 				auto fs = base_fs.Create(dir.second.name);
+				if (!fs) {
+					Output::Debug("Skipping archive {} due to error", dir.second.name);
+					continue;
+				}
+
 				game_entries.push_back({ dir.second.name, FileFinder::GetProjectType(fs) });
 #else
 				game_entries.push_back({ dir.second.name, FileFinder::ProjectType::Unknown });
@@ -77,6 +83,11 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 		} else if (dir.second.type == DirectoryTree::FileType::Directory) {
 #ifndef USE_CUSTOM_FILEBUF
 			auto fs = base_fs.Create(dir.second.name);
+			if (!fs) {
+				Output::Debug("Skipping directory {} due to error", dir.second.name);
+				continue;
+			}
+
 			game_entries.push_back({ dir.second.name, FileFinder::GetProjectType(fs) });
 #else
 			game_entries.push_back({ dir.second.name, FileFinder::ProjectType::Unknown });
