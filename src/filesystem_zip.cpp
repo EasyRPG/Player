@@ -59,6 +59,12 @@ ZipFilesystem::ZipFilesystem(std::string base_path, FilesystemView parent_fs, st
 		return;
 	}
 
+	if (EndsWith(base_path, ".tar")) {
+		// Workaround: TAR archives are uncompressed.
+		// If a TAR archive contains a ZIP file, it is incorrectly recognized as a ZIP archive.
+		return;
+	}
+
 	uint16_t central_directory_entries = 0;
 	uint32_t central_directory_size = 0;
 	uint32_t central_directory_offset = 0;

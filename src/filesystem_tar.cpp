@@ -42,8 +42,9 @@ TarFilesystem::Entry::Entry(long offs, tar_entry_raw from, long *skip) {
 	switch (from.data.type) {
 	case '0':
 	case '\0':
-		if (*end != 0) {
-			Output::Debug("TarFilesystem: couldn't parse file size (offset {})", offs);
+		// BSD manpage tar(5): Numeric fields must be terminated with either space or NUL characters
+		if (*end != 0 && *end != ' ') {
+			Output::Debug("TarFilesystem: couldn't parse file size (file {}, offset {})", name, offs);
 			invalidate();
 			return;
 		}
@@ -52,8 +53,8 @@ TarFilesystem::Entry::Entry(long offs, tar_entry_raw from, long *skip) {
 			*skip += 512 - *skip % 512;
 		break;
 	case '5':
-		if (filesize != 0 || *end != 0) {
-			Output::Debug("TarFilesystem: invalid size for directory (offset {})", offs);
+		if (filesize != 0 || (*end != 0 && *end != ' ')) {
+			Output::Debug("TarFilesystem: invalid size for directory (file {}, offset {})", name, offs);
 			invalidate();
 			return;
 		}
@@ -61,7 +62,7 @@ TarFilesystem::Entry::Entry(long offs, tar_entry_raw from, long *skip) {
 		*skip = 0;
 		break;
 	default:
-		Output::Debug("TarFilesystem: unknown format '{}'", from.data.type);
+		Output::Debug("TarFilesystem: unknown format '{}' (file {})", from.data.type, name);
 		invalidate();
 	}
 }
@@ -86,6 +87,13 @@ bool TarFilesystem::Entry::add(Entry &&entry) {
 		Output::Debug("TarFilesystem: invalid path to archive entry");
 		return false;
 	}
+
+	if (entry.name.empty()) {
+		// Is a directory (name becomes empty when ending on /)
+		// "locate" already adds the directory
+		return true;
+	}
+
 	std::get<Children>(parent_entry->data)[entry.name] = std::move(entry);
 	return true;
 }
@@ -194,12 +202,10 @@ std::streambuf* TarFilesystem::CreateInputStreambuffer(std::string_view path, st
 
 	auto entry = rootdir.locate(std::string(path));
 	if (!entry) {
-		Output::Warning("TarFilesystem: no file exists at path {}", path);
 		return nullptr;
 	}
 	auto info = std::get_if<Entry::FileEntryInfo>(&entry->data);
 	if (!info) {
-		Output::Warning("TarFilesystem: {} is a directory", path);
 		return nullptr;
 	}
 	data.resize(info->size);
@@ -216,12 +222,12 @@ std::streambuf* TarFilesystem::CreateInputStreambuffer(std::string_view path, st
 bool TarFilesystem::GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const {
 	auto entry = rootdir.locate(std::string(path));
 	if (!entry) {
-		Output::Warning("TarFilesystem: no file exists at path {}", path);
+		Output::Debug("TarFilesystem: no file exists at path {}", path);
 		return false;
 	}
 	auto contents = std::get_if<Entry::Children>(&entry->data);
 	if (!contents) {
-		Output::Warning("TarFilesystem: {} is a file", path);
+		Output::Debug("TarFilesystem: {} is a file", path);
 		return false;
 	}
 	for (const auto &pair : *contents)
