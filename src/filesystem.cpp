@@ -130,6 +130,11 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 			}
 		}
 
+		if (!handle_internal) {
+			// No supported archive type found
+			return {};
+		}
+
 		if (!internal_path.empty()) {
 			internal_path.pop_back();
 		}
