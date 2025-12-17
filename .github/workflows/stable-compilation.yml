@@ -61,10 +61,10 @@ jobs:
             libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
 
       - name: Clone Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         if: github.event.inputs.git-ref == ''
       - name: Clone Repository (with custom ref)
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         if: github.event.inputs.git-ref != ''
         with:
           ref: ${{ github.event.inputs.git-ref }}
