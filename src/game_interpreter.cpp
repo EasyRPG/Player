@@ -28,6 +28,7 @@
 #include "async_handler.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
+#include "cache.h"
 #include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -806,6 +807,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
 		case Cmd::Maniac_ControlStrings:
 			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
+		case static_cast<Cmd>(3026): //Maniac_SaveImage
+			return CmdSetup<&Game_Interpreter::CommandManiacSaveImage, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
@@ -5285,6 +5288,190 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		Output::Warning("Unknown or unimplemented string operation {}", op);
 		break;
 	}
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	/*
+	TPC Structure Reference:
+	@img.save .screen .dst "filename"
+	@img.save .pic ID .static/.dynamic .opaq .dst "filename"
+
+	Parameters:
+	[0] Packing:
+		Bits 0-3: Picture ID Mode (0: Const, 1: Var, 2: Indirect)
+		Bits 4-7: Filename Mode (0: Literal, 1: String/Variable)
+	[1] Target Type: 0 = Screen, 1 = Picture
+	[2] Picture ID (Value)
+	[3] Filename ID (Value if not literal)
+	[4] Flags:
+		Bit 0: Dynamic (1) / Static (0)
+		Bit 1: Opaque (1)
+	*/
+
+	int target_type = com.parameters[1];
+
+	// Decode Filename using the mode in bits 4-7 of parameter 0
+	// val_idx 3 corresponds to the .dst argument
+	std::string filename = ToString(CommandStringOrVariableBitfield(com, 0, 1, 3));
+
+	if (filename.empty()) {
+		Output::Warning("ManiacSaveImage: Filename is empty");
+		return true;
+	}
+
+	// Decode Flags
+	int flags = com.parameters[4];
+	bool apply_effects = (flags & 1) != 0;
+	bool is_opaque = (flags & 2) != 0;
+
+	// Prepare Bitmap
+	BitmapRef bitmap;
+
+	if (target_type == 0) {
+		// Target: Screen (.screen)
+		// Capture the current screen buffer
+		bitmap = DisplayUi->CaptureScreen();
+	}
+	else if (target_type == 1) {
+		// Target: Picture (.pic)
+		// Decode Picture ID using the mode in bits 0-3 of parameter 0
+		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
+
+		if (pic_id <= 0) {
+			Output::Warning("ManiacSaveImage: Invalid Picture ID {}", pic_id);
+			return true;
+		}
+
+		auto& picture = Main_Data::game_pictures->GetPicture(pic_id);
+
+		if (picture.IsRequestPending()) {
+			picture.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+
+		// Retrieve bitmap
+		// If Opaque flag is set, prefer loading the cached image without transparency
+		// to recover the original background color (key color).
+		bool use_cached_opaque = false;
+		if (is_opaque && !picture.data.name.empty()) {
+			bool is_canvas = false;
+			if (picture.sprite && picture.sprite->GetBitmap()) {
+				// Canvas bitmaps have IDs starting with "Canvas:"
+				is_canvas = StartsWith(picture.sprite->GetBitmap()->GetId(), "Canvas:");
+			}
+			// Also if it's a Window (StringPic), we can't reload from file
+			bool is_window = picture.data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
+
+			if (!is_canvas && !is_window) {
+				use_cached_opaque = true;
+			}
+		}
+
+		if (use_cached_opaque) {
+			// Load fresh from cache with transparency disabled
+			bitmap = Cache::Picture(picture.data.name, false);
+		}
+		else if (picture.sprite) {
+			bitmap = picture.sprite->GetBitmap();
+		}
+
+		const auto& data = picture.data;
+		Rect src_rect;
+
+		// Calculate Spritesheet frame
+		if (bitmap) {
+			src_rect = bitmap->GetRect();
+			if (picture.NumSpriteSheetFrames() > 1) {
+				int frame_w = bitmap->GetWidth() / data.spritesheet_cols;
+				int frame_h = bitmap->GetHeight() / data.spritesheet_rows;
+				int sx = (data.spritesheet_frame % data.spritesheet_cols) * frame_w;
+				int sy = (data.spritesheet_frame / data.spritesheet_cols) * frame_h;
+				src_rect = Rect(sx, sy, frame_w, frame_h);
+			}
+		}
+
+		if (bitmap && apply_effects) {
+			// .dynamic: Reflect color tone, flash, and other effects
+
+			// Tone
+			auto tone = Tone((int)(data.current_red * 128 / 100),
+				(int)(data.current_green * 128 / 100),
+				(int)(data.current_blue * 128 / 100),
+				(int)(data.current_sat * 128 / 100));
+
+			if (data.flags.affected_by_tint) {
+				auto screen_tone = Main_Data::game_screen->GetTone();
+				tone = Blend(tone, screen_tone);
+			}
+
+			// Flash
+			Color flash = Color();
+			if (data.flags.affected_by_flash) {
+				flash = Main_Data::game_screen->GetFlashColor();
+			}
+
+			// Flip
+			bool flip_x = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) == lcf::rpg::SavePicture::EasyRpgFlip_x;
+			bool flip_y = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) == lcf::rpg::SavePicture::EasyRpgFlip_y;
+
+			// Cache::SpriteEffect creates a new bitmap based on src_rect
+			bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+		}
+		else if (bitmap && src_rect != bitmap->GetRect()) {
+			// .static: Crop specific cell if it's a spritesheet
+			bitmap = Bitmap::Create(*bitmap, src_rect);
+		}
+	}
+	else {
+		Output::Warning("ManiacSaveImage: Unsupported target type {}", target_type);
+		return true;
+	}
+
+	// Save logic
+	if (bitmap) {
+		if (is_opaque) {
+			// .opaq: Force Alpha to 255
+			// Clone to avoid modifying the original cached/displayed bitmap
+			bitmap = Bitmap::Create(*bitmap, bitmap->GetRect());
+
+			if (bitmap->bpp() == 4) {
+				int count = bitmap->GetWidth() * bitmap->GetHeight();
+				auto* pixels = static_cast<uint32_t*>(bitmap->pixels());
+
+				uint8_t r, g, b, a;
+				for (int i = 0; i < count; ++i) {
+					Bitmap::pixel_format.uint32_to_rgba(pixels[i], r, g, b, a);
+					if (a != 255) {
+						pixels[i] = Bitmap::pixel_format.rgba_to_uint32_t(r, g, b, 255);
+					}
+				}
+			}
+		}
+
+		// Save to disk
+		// Ensure 'filename' has a valid extension (.png).
+		if (!EndsWith(Utils::LowerCase(filename), ".png")) {
+			filename += ".png";
+		}
+
+		auto os = FileFinder::Save().OpenOutputStream(filename);
+		if (os) {
+			bitmap->WritePNG(os);
+		}
+		else {
+			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
+		}
+	}
+	else {
+		Output::Debug("ManiacSaveImage: Nothing to save (Target {})", target_type);
+	}
+
 	return true;
 }
 
