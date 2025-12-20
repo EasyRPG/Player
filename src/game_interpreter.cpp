@@ -69,6 +69,8 @@
 #include "transition.h"
 #include "baseui.h"
 #include "algo.h"
+#include "sprite_picture.h"
+#include "bitmap.h"
 
 using namespace Game_Interpreter_Shared;
 
@@ -810,6 +812,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
+		case static_cast<Cmd>(3025):
+			return CmdSetup<&Game_Interpreter::CommandManiacSetPicturePixel, 8>(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -4203,9 +4207,71 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			Main_Data::game_variables->Set(var + 1, Player::screen_height);
 			break;
 		case 3: // Get pixel info
-			// FIXME: figure out how 'Pixel info' works
-			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
+		{
+			// 1. Decode Parameters
+			// [0] Packing: Bits 0-3: X Mode, 4-7: Y Mode, etc.
+			int p_x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+			int p_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+			int p_w = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+			int p_h = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+			int dest_var_id = com.parameters[7];
+
+			// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
+			bool ignore_alpha = (com.parameters[2] & 1) != 0;
+
+			// 2. Capture Screen
+			// Creates a snapshot of the current frame
+			BitmapRef screen = DisplayUi->CaptureScreen();
+			if (!screen) return true;
+
+
+			int screen_w = screen->GetWidth();
+			int screen_h = screen->GetHeight();
+
+			if (p_w <= 0 || p_h <= 0) return true;
+
+			uint32_t* pixels = static_cast<uint32_t*>(screen->pixels());
+			int pitch = screen->pitch() / 4; // stride in uint32 elements
+
+			auto& variables = *Main_Data::game_variables;
+
+			int var_idx = 0;
+			uint8_t r, g, b, a;
+
+			// 4. Read Loop
+			for (int iy = 0; iy < p_h; ++iy) {
+				int sy = p_y + iy;
+
+				// If row out of bounds, skip variables for this row
+				if (sy < 0 || sy >= screen_h) {
+					var_idx += p_w;
+					continue;
+				}
+
+				for (int ix = 0; ix < p_w; ++ix) {
+					int target_var = dest_var_id + var_idx++;
+					int sx = p_x + ix;
+
+					if (sx >= 0 && sx < screen_w) {
+						uint32_t raw_pixel = pixels[sy * pitch + sx];
+
+						Bitmap::opaque_pixel_format.uint32_to_rgba(raw_pixel, r, g, b, a);
+
+						if (ignore_alpha) {
+							a = 0;
+						}
+						else {
+							a = 255; //In maniacs, bellow parallax layer can't be transparent is this the best approach?
+						}
+
+						// Maniacs format: AARRGGBB (Signed 32-bit)
+						uint32_t packed = (a << 24) | (r << 16) | (g << 8) | b;
+						variables.Set(target_var, static_cast<int32_t>(packed));
+					}
+				}
+			}
 			break;
+		}
 		case 4: // Get command interpreter state
 		{
 			// Parameter "Nest" in the English version of Maniacs
@@ -4360,6 +4426,136 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 	}
 
 	Game_Map::SetNeedRefresh(true);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacSetPicturePixel(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
+	if (pic_id <= 0) {
+		Output::Warning("ManiacSetPicturePixel: Invalid picture ID {}", pic_id);
+		return true;
+	}
+
+	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+
+	if (pic.IsRequestPending()) {
+		pic.MakeRequestImportant();
+		_async_op = AsyncOp::MakeYieldRepeat();
+		return true;
+	}
+
+	auto* sprite = pic.sprite.get();
+	if (!sprite) return true;
+
+	auto bitmap = sprite->GetBitmap();
+	if (!bitmap) return true;
+
+	// 1. Calculate Spritesheet Offset
+	// Maniacs operations are relative to the currently active cell.
+	int offset_x = 0;
+	int offset_y = 0;
+
+	const auto& data = pic.data;
+	if (data.spritesheet_cols > 1 || data.spritesheet_rows > 1) {
+		int frame_width = bitmap->GetWidth() / data.spritesheet_cols;
+		int frame_height = bitmap->GetHeight() / data.spritesheet_rows;
+
+		// Map current frame index to X/Y coords
+		offset_x = (data.spritesheet_frame % data.spritesheet_cols) * frame_width;
+		offset_y = (data.spritesheet_frame / data.spritesheet_cols) * frame_height;
+	}
+
+	// 2. COW & Window Detach Logic
+	BitmapRef writeable_bitmap = bitmap;
+
+	bool is_cached = !bitmap->GetId().empty() && !StartsWith(bitmap->GetId(), "Canvas:");
+	bool wrong_format = bitmap->bpp() != 4;
+	bool is_window = data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
+
+	if (is_cached || wrong_format || is_window) {
+		writeable_bitmap = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight());
+		writeable_bitmap->BlitFast(0, 0, *bitmap, bitmap->GetRect(), 255);
+
+		writeable_bitmap->SetId("Canvas:" + std::to_string(pic_id));
+
+		sprite->SetBitmap(writeable_bitmap);
+
+		if (is_window) {
+			pic.data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
+		}
+
+		// Force sprite to recalculate its clipping rectangle immediately.
+		// Otherwise, SetBitmap resets src_rect to full size, showing the whole sheet.
+		sprite->OnPictureShow();
+	}
+
+	// 3. Parameters
+	int x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+	int y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+	int w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[4]);
+	int h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[5]);
+
+	int src_var_start = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[6]);
+
+	int flags = com.parameters[7];
+	bool flag_opaq = (flags & 1) != 0;
+	bool flag_skip_trans = (flags & 2) != 0;
+
+	// 4. Drawing Loop
+	int bmp_w = writeable_bitmap->GetWidth();
+	int bmp_h = writeable_bitmap->GetHeight();
+
+	if (w <= 0 || h <= 0) return true;
+
+	uint32_t* pixels = static_cast<uint32_t*>(writeable_bitmap->pixels());
+	int pitch = writeable_bitmap->pitch() / 4;
+
+	int current_var = src_var_start;
+	auto& vars = *Main_Data::game_variables;
+
+	for (int iy = 0; iy < h; ++iy) {
+		// Apply Y Offset here
+		int py = y + iy + offset_y;
+
+		if (py < 0 || py >= bmp_h) {
+			current_var += w;
+			continue;
+		}
+
+		for (int ix = 0; ix < w; ++ix) {
+			int32_t color_val = vars.Get(current_var++);
+
+			// Apply X Offset here
+			int px = x + ix + offset_x;
+
+			if (px < 0 || px >= bmp_w) continue;
+
+			uint8_t a = (color_val >> 24) & 0xFF;
+			uint8_t r = (color_val >> 16) & 0xFF;
+			uint8_t g = (color_val >> 8) & 0xFF;
+			uint8_t b = (color_val) & 0xFF;
+
+			if (flag_skip_trans && a == 0) continue;
+
+			if (flag_opaq) {
+				a = 0xFF;
+			}
+
+			if (a < 255) {
+				r = (r * a) / 255;
+				g = (g * a) / 255;
+				b = (b * a) / 255;
+			}
+
+			uint32_t final_pixel = Bitmap::pixel_format.rgba_to_uint32_t(r, g, b, a);
+			pixels[py * pitch + px] = final_pixel;
+		}
+	}
 
 	return true;
 }
@@ -4678,9 +4874,12 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	int pic_id = ValueOrVariable(com.parameters[0], com.parameters[3]);
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+
+	// 1. Validate Picture existence
 	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
 
+	// 2. Handle Async Loading
 	if (pic.IsRequestPending()) {
 		// Cannot do anything useful here without the dimensions
 		pic.MakeRequestImportant();
@@ -4689,6 +4888,92 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	}
 
 	const auto& data = pic.data;
+	int info_type = com.parameters[1];
+
+	// --- Type 3: Pixel Data Extraction ---
+	if (info_type == 3) {
+		// Verify Sprite existence
+		auto* sprite = pic.sprite.get();
+		if (!sprite) return true;
+
+		auto bitmap = sprite->GetBitmap();
+		if (!bitmap) return true;
+
+		// If this is a Window (String Picture), the visual content is generated by the Window class.
+		// We force a refresh/draw cycle here to ensure we read the actual text/window graphics.
+		if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+			const auto& window = Main_Data::game_windows->GetWindow(pic_id);
+			if (window.window) {
+				bitmap->Clear();
+				window.window->Draw(*bitmap);
+			}
+		}
+
+		// 3. Decode Parameters
+		int x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+		int y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+		int w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+		int h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[7]);
+		int dest_var_id = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[8]);
+
+		int flags = com.parameters[2];
+		bool ignore_alpha = (flags & 2) != 0;
+
+		int bmp_w = bitmap->GetWidth();
+		int bmp_h = bitmap->GetHeight();
+
+		// 4. Prepare for Raw Access
+		if (bitmap->bpp() != 4) {
+			Output::Debug("GetPictureInfo: Pixel read supported on 32-bit bitmaps only.");
+			return true;
+		}
+
+		uint32_t* pixels = static_cast<uint32_t*>(bitmap->pixels());
+		int pitch = bitmap->pitch() / 4;
+
+		auto& variables = *Main_Data::game_variables;
+
+		int var_idx = 0;
+		uint8_t r, g, b, a;
+
+		// 5. Read Loop
+		for (int iy = 0; iy < h; ++iy) {
+			int by = y + iy;
+
+			// If row out of bounds, skip variables for this row. 
+			// Do NOT write 0. This preserves the existing values in the variables.
+			if (by < 0 || by >= bmp_h) {
+				var_idx += w;
+				continue;
+			}
+
+			for (int ix = 0; ix < w; ++ix) {
+				int target_var = dest_var_id + var_idx++;
+				int bx = x + ix;
+
+				// Only write if inside bounds.
+				if (bx >= 0 && bx < bmp_w) {
+					uint32_t raw_pixel = pixels[by * pitch + bx];
+
+					Bitmap::pixel_format.uint32_to_rgba(raw_pixel, r, g, b, a);
+
+					if (ignore_alpha) {
+						a = 0;
+					}
+
+					// Maniacs format: AARRGGBB
+					uint32_t packed = (a << 24) | (r << 16) | (g << 8) | b;
+					variables.Set(target_var, static_cast<int32_t>(packed));
+				}
+				// Else: Out of bounds. Do nothing.
+			}
+		}
+
+		Game_Map::SetNeedRefresh(true);
+		return true;
+	}
+
+	// --- Logic for Info Types 0, 1, 2 ---
 
 	int x = 0;
 	int y = 0;
