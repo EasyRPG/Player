@@ -44,7 +44,7 @@
 std::shared_ptr<Scene> Scene::instance;
 std::vector<std::shared_ptr<Scene> > Scene::old_instances;
 std::vector<std::shared_ptr<Scene> > Scene::instances;
-const char Scene::scene_names[SceneMax][12] =
+const char Scene::scene_names[SceneMax][13] =
 {
 	"Null",
 	"Title",
@@ -69,7 +69,8 @@ const char Scene::scene_names[SceneMax][12] =
 	"GameBrowser",
 	"Teleport",
 	"Settings",
-	"Language"
+	"Language",
+	"DebugPicture"
 };
 
 enum PushPopOperation {
@@ -115,6 +116,8 @@ lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
 		case Gameover:
 			return lcf::rpg::SaveSystem::Scene_game_over;
 		case Debug:
+			return lcf::rpg::SaveSystem::Scene_debug;
+		case DebugPicture:
 			return lcf::rpg::SaveSystem::Scene_debug;
 	}
 	return lcf::rpg::SaveSystem::Scene(-1);
