@@ -18,6 +18,9 @@
 // Headers
 #include "utils.h"
 #include "compiler.h"
+#include "game_message.h"
+#include "player.h"
+
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
@@ -408,17 +411,56 @@ int Utils::UTF8Length(std::string_view str) {
 
 Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 	ExFontRet ret;
-	if (end - iter >= 2 && *iter == '$') {
-		auto next_ch = *(iter + 1);
-		// Don't use std::isalpha, because it's indirects based on locale.
-		bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
-		bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
-		if (is_lower || is_upper) {
-			ret.next = iter + 2;
-			ret.value = next_ch;
+	if (end - iter < 2 || *iter != '$') {
+		return ret; // Not an ExFont command.
+	}
+
+	// The (0xFFu << 16) is to avoid detection as a control character by the
+	// font rendering code
+
+	// Maniacs Patch Extended Syntax $[x,y] Handling
+	if (Player::IsPatchManiac() && *(iter + 1) == '[') {
+		auto pres = Game_Message::ParseParam('$', '$', ++iter, end, Player::escape_char, true, Game_Message::default_max_recursion, true);
+		if (pres.values.empty()) {
+			// parse error
+			return ret;
+		}
+
+		ret.next = pres.next;
+
+		if (pres.is_array()) {
+			// XY Mode: $[x,y]
+			uint32_t x = pres.values[0];
+			uint32_t y = pres.values[1];
+			ret.value = (0xFFu << 16) | (y << 8) | x;
 			ret.is_valid = true;
+			return ret;
+		}
+		else if (pres.values.size() == 1) {
+			// Index Mode: $[n] or $[\V[n]]
+			int icon_index = pres.values[0];
+			int x = icon_index % 13;
+			int y = icon_index / 13;
+			ret.value = (0xFFu << 16) | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
+			ret.is_valid = true;
+			return ret;
 		}
 	}
+
+	// Standard $A-Z Syntax
+	auto next_ch = *(iter + 1);
+	bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
+	bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
+
+	if (is_lower || is_upper) {
+		ret.next = iter + 2;
+		char32_t adjusted_glyph = is_lower ? (next_ch - 'a' + 26) : (next_ch - 'A');
+		int x = adjusted_glyph % 13;
+		int y = adjusted_glyph / 13;
+		ret.value = (0xFFu << 16) | (static_cast<uint32_t>(y) << 8) | static_cast<uint32_t>(x);
+		ret.is_valid = true;
+	}
+
 	return ret;
 }
 

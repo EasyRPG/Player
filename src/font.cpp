@@ -937,26 +937,27 @@ FontRef Font::exfont = std::make_shared<ExFont>();
 Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	if (EP_UNLIKELY(!bm)) { bm = Bitmap::Create(WIDTH, HEIGHT, true); }
 	auto exfont = Cache::Exfont();
+	bm->Clear();
 
-	bool is_lower = (glyph >= 'a' && glyph <= 'z');
-	bool is_upper = (glyph >= 'A' && glyph <= 'Z');
+	Rect rect(0, 0, 0, 0);
 
-	if (!is_lower && !is_upper) {
-		// Invalid ExFont
+	// Glyph contains two packed coordinates (YX, 8 bits each)
+	int x = glyph & 0xFF;
+	int y = (glyph >> 8) & 0xFF;
+	rect = Rect(x * WIDTH, y * HEIGHT, WIDTH, HEIGHT);
+
+	if (rect.x + rect.width > exfont->GetWidth() || rect.y + rect.height > exfont->GetHeight()) {
+		// Coordinates are out of bounds for the ExFont sheet
 		return { bm, {WIDTH, 0}, {0, 0}, false };
 	}
 
-	glyph = is_lower ? (glyph - 'a' + 26) : (glyph - 'A');
-
-	Rect const rect((glyph % 13) * WIDTH, (glyph / 13) * HEIGHT, WIDTH, HEIGHT);
-	bm->Clear();
 	bm->Blit(0, 0, *exfont, rect, Opacity::Opaque());
 
 	// EasyRPG Extension: Support for colored ExFont
 	bool has_color = false;
 	const auto* pixels = reinterpret_cast<uint8_t*>(bm->pixels());
-	// For performance reasons only check the red channel of every 4th pixel (16 = 4 * 4 RGBA pixel) for color
-	for (int i = 0; i < bm->pitch() * bm->height(); i += 16) {
+	// For performance reasons only check the red channel of every pixel for color
+	for (int i = 0; i < bm->pitch() * bm->height(); i += 4) {
 		auto pixel = pixels[i];
 		if (pixel != 0 && pixel != 255) {
 			has_color = true;
