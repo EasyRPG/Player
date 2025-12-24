@@ -360,6 +360,11 @@ protected:
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
+	int _move_route_event_id = 0;
+	bool _move_route_chain_active = false;
+	lcf::rpg::MoveRoute _move_route_buffer;
+	int _move_route_frequency = 0;
+
 	private:
 		void PushInternal(
 			InterpreterPush push_info,

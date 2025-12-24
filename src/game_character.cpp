@@ -41,6 +41,12 @@ Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 {
 }
 
+int Game_Character::GetId() const {
+	// This should be overridden by subclasses that have a meaningful ID.
+	// Returning 0 for the base class is a safe default.
+	return 0;
+}
+
 void Game_Character::SanitizeData(std::string_view name) {
 	SanitizeMoveRoute(name, data()->move_route, data()->move_route_index, "move_route_index");
 }
@@ -445,6 +451,49 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
 				case Code::decrease_transp:
 					SetTransparency(GetTransparency() - 1);
 					break;
+					// START of Maniac Patch custom commands
+				case static_cast<Code>(100): // Custom: Set Speed
+					SetMoveSpeed(move_command.parameter_a);
+					break;
+				case static_cast<Code>(101): // Custom: Set Freq
+					SetMoveFrequency(move_command.parameter_a);
+					SetMaxStopCountForStep();
+					break;
+				case static_cast<Code>(102): // Custom: Set Transparency
+					SetTransparency(move_command.parameter_a);
+					break;
+					// END of Maniac Patch custom commands
+
+					// START of new custom "off-script" commands
+				case static_cast<Code>(110): // SetAnimationType
+					SetAnimationType(static_cast<lcf::rpg::EventPage::AnimType>(move_command.parameter_a));
+					break;
+				case static_cast<Code>(111): { // Event2Event
+					Game_Character* target = GetCharacter(move_command.parameter_a, GetId());
+					if (target) {
+						SetFacing(target->GetFacing());
+						SetDirection(target->GetDirection());
+						SetX(target->GetX());
+						SetY(target->GetY());
+					}
+					break;
+				}
+				case static_cast<Code>(112): { // FaceTowards
+					Game_Character* target = GetCharacter(move_command.parameter_a, GetId());
+					if (target && !IsMoving()) {
+						TurnTowardCharacter(*target);
+						UpdateFacing();
+					}
+					break;
+				}
+				case static_cast<Code>(113): { // FaceAway
+					Game_Character* target = GetCharacter(move_command.parameter_a, GetId());
+					if (target && !IsMoving()) {
+						TurnAwayFromCharacter(*target);
+						UpdateFacing();
+					}
+					break;
+				}
 				default:
 					break;
 			}
@@ -788,6 +837,14 @@ void Game_Character::CancelMoveRoute() {
 		SetMaxStopCountForStep();
 	}
 	SetMoveRouteOverwritten(false);
+	SetMoveRouteFinished(false);
+}
+
+void Game_Character::AppendMoveRoute(const lcf::rpg::MoveRoute& new_route) {
+	auto& current_commands = data()->move_route.move_commands;
+	const auto& new_commands = new_route.move_commands;
+	current_commands.insert(current_commands.end(), new_commands.begin(), new_commands.end());
+	// Do NOT overwrite repeat/skippable flags. They belong to the whole route.
 	SetMoveRouteFinished(false);
 }
 
