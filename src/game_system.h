@@ -436,6 +436,24 @@ public:
 	/** @return Whether the game was loaded from a savegame in the current frame */
 	bool IsLoadedThisFrame() const;
 
+	void SetFastForwardText(bool enabled);
+	bool GetFastForwardText() const;
+
+	void SetFrameSkipMode(int mode);
+	int GetFrameSkipMode() const;
+
+	void SetMessageMouseDisabled(bool disabled);
+	bool IsMessageMouseDisabled() const;
+
+	void SetBattleOrigin(int origin);
+	int GetBattleOrigin() const;
+
+	void SetMessageFaceSize(int width, int height);
+	int GetMessageFaceWidth() const;
+	int GetMessageFaceHeight() const;
+
+	bool message_mouse_disabled = false;
+
 private:
 	std::string InelukiReadLink(Filesystem_Stream::InputStream& stream);
 
