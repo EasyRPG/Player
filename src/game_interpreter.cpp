@@ -812,6 +812,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
+		case static_cast<Cmd>(3032): // Maniac_Zoom
+			return CmdSetup<&Game_Interpreter_Map::CommandManiacZoom, 7>(com);
 		case Cmd::EasyRpg_ProcessJson:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgProcessJson, 8>(com);
 		case Cmd::EasyRpg_CloneMapEvent:
@@ -4361,6 +4363,46 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 
 	Game_Map::SetNeedRefresh(true);
 
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacZoom(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	if (com.parameters.size() < 7) {
+		Output::Warning("Maniac Zoom: Insufficient parameters");
+		return true;
+	}
+
+	// Parameter[0] contains the modes packed in 4-bit chunks
+	int center_x = ValueOrVariableBitfield(com, 0, 0, 1);
+	int center_y = ValueOrVariableBitfield(com, 0, 1, 2);
+	int rate = ValueOrVariableBitfield(com, 0, 2, 3);
+	int duration = ValueOrVariableBitfield(com, 0, 3, 4);
+	int layer = ValueOrVariableBitfield(com, 0, 4, 5);
+	bool wait = com.parameters[6] != 0;
+
+	// Maniacs Patch behavior: Rate < 0 is invalid/ignored usually, but safe to clamp to 100%
+	if (rate < 0) {
+		rate = 100;
+	}
+
+	// Layer 0 indicates cancellation/reset in Maniacs
+	if (layer <= 0) {
+		layer = 0;
+		// Reset rate to 100% when disabling to ensure clean state, 
+		rate = 100;
+	}
+
+	Main_Data::game_screen->SetZoom(center_x, center_y, rate, duration, layer);
+
+	if (wait && duration > 0) {
+		SetupWaitFrames(duration);
+	}
+
+	Output::Debug("Maniac Zoom: CenterX {}, CenterY {}, Rate {}, Duration {}, Layer {}", center_x, center_y, rate, duration, layer);
 	return true;
 }
 
