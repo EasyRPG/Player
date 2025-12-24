@@ -86,6 +86,13 @@ public:
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
+	/*
+	 * Resolves a Maniac Patch @cmd (Call Command) into the actual EventCommand it represents.
+	 * If the input is not a @cmd, it returns the input copy.
+	 * This handles variables, pointers, and expressions to build the final command.
+	*/
+	lcf::rpg::EventCommand ResolveEventCommand(const lcf::rpg::EventCommand& com);
+
 	bool ExecuteCommand();
 	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
 
