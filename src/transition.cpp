@@ -42,13 +42,14 @@ int Transition::GetDefaultFrames(Transition::Type type)
 	switch (type) {
 		case TransitionFadeIn:
 		case TransitionFadeOut:
-			return 32;
+			return 35;
 		case TransitionCutIn:
 		case TransitionCutOut:
+			return 1;
 		case TransitionNone:
 			return 0;
 		default:
-			return 40;
+			return 41;
 	}
 	return 0;
 }
@@ -80,7 +81,8 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool next_er
 	transition_type = type;
 	scene = linked_scene;
 
-	current_frame = 0;
+	// Don't skip Frame 0 (Update is called before Draw).
+	current_frame = -1;
 	flash = {};
 	flash_power = 0;
 	flash_iterations = 0;
@@ -173,10 +175,8 @@ void Transition::SetAttributesTransitions() {
 	case TransitionMosaicIn:
 	case TransitionMosaicOut:
 		for (int i = 0; i < total_frames; ++i) {
-			const int initial_scale = 2;
-			const int excl_interval = -1;
-			// by default i 0..39 for scale 2..41
-			mosaic_random_offset[i] = Rand::GetRandomNumber(0, i + initial_scale - excl_interval);
+			// by default i 0..40 for scale 1..41
+			mosaic_random_offset[i] = Rand::GetRandomNumber(0, i);
 		}
 		break;
 	default:
@@ -190,7 +190,7 @@ void Transition::Draw(Bitmap& dst) {
 		return;
 
 	std::vector<int> z_pos(2), z_size(2), z_length(2);
-	int z_min, z_max, z_percent, z_fixed_pos, z_fixed_size;
+	int z_min, z_max, z_frame, z_fixed_pos, z_fixed_size;
 	uint8_t m_r, m_g, m_b, m_a;
 	uint32_t *m_pointer, blocks_to_print;
 	int m_size;
@@ -204,19 +204,19 @@ void Transition::Draw(Bitmap& dst) {
 		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), color, 255);
 		return;
 	}
-
-	int percentage = (current_frame) * 100 / (total_frames);
+	
+	int tf_off = total_frames - 1;
 
 	switch (transition_type) {
 	case TransitionFadeIn:
 	case TransitionFadeOut:
 		dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * percentage / 100);
+		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255 * (current_frame + 1) / (total_frames - 2));
 		break;
 	case TransitionRandomBlocks:
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
-		blocks_to_print = random_blocks.size() * percentage / 100;
+		blocks_to_print = random_blocks.size() * (current_frame + 1) / tf_off;
 
 		for (uint32_t i = current_blocks_print; i < blocks_to_print; i++) {
 			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
@@ -230,34 +230,34 @@ void Transition::Draw(Bitmap& dst) {
 		break;
 	case TransitionBlindOpen:
 		for (int i = 0; i < h / 8; i++) {
-			dst.Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - 8 * percentage / 100), 255);
-			dst.Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255);
+			dst.Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - (current_frame + 5) / 5), 255);
+			dst.Blit(0, i * 8 + 8 - (current_frame + 5) / 5, *screen2, Rect(0, i * 8 + 8 - (current_frame + 5) / 5, w, (current_frame + 5) / 5), 255);
 		}
 		break;
 	case TransitionBlindClose:
 		for (int i = 0; i < h / 8; i++) {
-			dst.Blit(0, i * 8 + 8 * percentage / 100, *screen1, Rect(0, i * 8 + 8 * percentage / 100, w, 8 - 8 * percentage / 100), 255);
-			dst.Blit(0, i * 8, *screen2, Rect(0, i * 8, w, 8 * percentage / 100), 255);
+			dst.Blit(0, i * 8 + (current_frame + 5) / 5, *screen1, Rect(0, i * 8 + (current_frame + 5) / 5, w, 8 - (current_frame + 5) / 5), 255);
+			dst.Blit(0, i * 8, *screen2, Rect(0, i * 8, w, (current_frame + 5) / 5), 255);
 		}
 		break;
 	case TransitionVerticalStripesIn:
 	case TransitionVerticalStripesOut:
-		for (int i = 0; i < h / 6 + 1 - h / 6 * percentage / 100; i++) {
+		for (int i = 0; i < tf_off - (current_frame + 1); i++) {
 			dst.Blit(0, i * 6 + 3, *screen1, Rect(0, i * 6 + 3, w, 3), 255);
 			dst.Blit(0, h - i * 6, *screen1, Rect(0, h - i * 6, w, 3), 255);
 		}
-		for (int i = 0; i < h / 6 * percentage / 100; i++) {
+		for (int i = 0; i < current_frame + 1; i++) {
 			dst.Blit(0, i * 6, *screen2, Rect(0, i * 6, w, 3), 255);
 			dst.Blit(0, h - 3 - i * 6, *screen2, Rect(0, h - 3 - i * 6, w, 3), 255);
 		}
 		break;
 	case TransitionHorizontalStripesIn:
 	case TransitionHorizontalStripesOut:
-		for (int i = 0; i < w / 8 + 1 - w / 8 * percentage / 100; i++) {
+		for (int i = 0; i < tf_off - (current_frame + 1); i++) {
 			dst.Blit(i * 8 + 4, 0, *screen1, Rect(i * 8 + 4, 0, 4, h), 255);
 			dst.Blit(w - i * 8, 0, *screen1, Rect(w - i * 8, 0, 4, h), 255);
 		}
-		for (int i = 0; i < w / 8 * percentage / 100; i++) {
+		for (int i = 0; i < current_frame + 1; i++) {
 			dst.Blit(i * 8, 0, *screen2, Rect(i * 8, 0, 4, h), 255);
 			dst.Blit(w - 4 - i * 8, 0, *screen2, Rect(w - 4 - i * 8, 0, 4, h), 255);
 		}
@@ -265,116 +265,117 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionBorderToCenterIn:
 	case TransitionBorderToCenterOut:
 		dst.Blit(0, 0, *screen2, screen2->GetRect(), 255);
-		dst.Blit((w / 2) * percentage / 100, (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100), 255);
+		dst.Blit((w / 2) * current_frame / tf_off, (h / 2) * current_frame / tf_off, *screen1, Rect((w / 2) * current_frame / tf_off, (h / 2) * current_frame / tf_off, w - w * current_frame / tf_off, h - h * current_frame / tf_off), 255);
 		break;
 	case TransitionCenterToBorderIn:
 	case TransitionCenterToBorderOut:
 		dst.Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100), 255);
+		dst.Blit(w / 2 - (w / 2) * current_frame / tf_off, h / 2 - (h / 2) * current_frame / tf_off, *screen2, Rect(w / 2 - (w / 2) * current_frame / tf_off, h / 2 - (h / 2) * current_frame / tf_off, w * current_frame / tf_off, h * current_frame / tf_off), 255);
 		break;
 	case TransitionScrollUpIn:
 	case TransitionScrollUpOut:
-		dst.Blit(0, -h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, h - h * percentage / 100, *screen2, screen2->GetRect(), 255);
+		dst.Blit(0, -h * current_frame / tf_off, *screen1, screen1->GetRect(), 255);
+		dst.Blit(0, h - h * current_frame / tf_off, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollDownIn:
 	case TransitionScrollDownOut:
-		dst.Blit(0, h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst.Blit(0, -h + h * percentage / 100, *screen2, screen2->GetRect(), 255);
+		dst.Blit(0, h * current_frame / tf_off, *screen1, screen1->GetRect(), 255);
+		dst.Blit(0, -h + h * current_frame / tf_off, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollLeftIn:
 	case TransitionScrollLeftOut:
-		dst.Blit(-w * percentage / 100, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(w - w * percentage / 100, 0, *screen2, screen2->GetRect(), 255);
+		dst.Blit(-w * current_frame / tf_off, 0, *screen1, screen1->GetRect(), 255);
+		dst.Blit(w - w * current_frame / tf_off, 0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollRightIn:
 	case TransitionScrollRightOut:
-		dst.Blit(w * percentage / 100, 0, *screen1, screen1->GetRect(), 255);
-		dst.Blit(-w + w * percentage / 100, 0, *screen2, screen2->GetRect(), 255);
+		dst.Blit(w * current_frame / tf_off, 0, *screen1, screen1->GetRect(), 255);
+		dst.Blit(-w + w * current_frame / tf_off, 0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionVerticalCombine:
-	case TransitionVerticalDivision:
-		// If TransitionVerticalCombine, invert percentage and screen:
-		if (transition_type == TransitionVerticalCombine) { percentage = 100 - percentage; }
+	case TransitionVerticalDivision: {
+		// If TransitionVerticalCombine, invert current_frame and screen:
+		int ver_cf = transition_type == TransitionVerticalCombine ? tf_off - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionVerticalCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionVerticalCombine ? screen1 : screen2;
 
-		dst.Blit(0, -(h / 2) * percentage / 100, *screen_pointer1, Rect(0, 0, w, h / 2), 255);
-		dst.Blit(0, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(0, h / 2, w, h / 2), 255);
-		dst.Blit(0, h / 2 - (h / 2) * percentage / 100, *screen_pointer2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
+		dst.Blit(0, -(h / 2) * ver_cf / tf_off, *screen_pointer1, Rect(0, 0, w, h / 2), 255);
+		dst.Blit(0, h / 2 + (h / 2) * ver_cf / tf_off, *screen_pointer1, Rect(0, h / 2, w, h / 2), 255);
+		dst.Blit(0, h / 2 - (h / 2) * ver_cf / tf_off, *screen_pointer2, Rect(0, h / 2 - (h / 2) * ver_cf / tf_off, w, h * ver_cf / tf_off), 255);
 		break;
+	}
 	case TransitionHorizontalCombine:
-	case TransitionHorizontalDivision:
-		// If TransitionHorizontalCombine, invert percentage and screen:
-		if (transition_type == TransitionHorizontalCombine) { percentage = 100 - percentage; }
+	case TransitionHorizontalDivision: {
+		// If TransitionHorizontalCombine, invert current_frame and screen:
+		int hor_cf = transition_type == TransitionHorizontalCombine ? tf_off - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionHorizontalCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionHorizontalCombine ? screen1 : screen2;
 
-		dst.Blit(-(w / 2) * percentage / 100, 0, *screen_pointer1, Rect(0, 0, w / 2, h), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, 0, *screen_pointer1, Rect(w / 2, 0, w / 2, h), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h), 255);
+		dst.Blit(-(w / 2) * hor_cf / tf_off, 0, *screen_pointer1, Rect(0, 0, w / 2, h), 255);
+		dst.Blit(w / 2 + (w / 2) * hor_cf / tf_off, 0, *screen_pointer1, Rect(w / 2, 0, w / 2, h), 255);
+		dst.Blit(w / 2 - (w / 2) * hor_cf / tf_off, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * hor_cf / tf_off, 0, w * hor_cf / tf_off, h), 255);
 		break;
+	}
 	case TransitionCrossCombine:
-	case TransitionCrossDivision:
-		// If TransitionCrossCombine, invert percentage and screen:
-		if (transition_type == TransitionCrossCombine) { percentage = 100 - percentage; }
+	case TransitionCrossDivision: {
+		// If TransitionCrossCombine, invert current_frame and screen:
+		int cross_cf = transition_type == TransitionCrossCombine ? tf_off - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionCrossCombine ? screen2 : screen1;
 		screen_pointer2 = transition_type == TransitionCrossCombine ? screen1 : screen2;
 
-		dst.Blit(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen_pointer1, Rect(0, 0, w / 2, h / 2), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen_pointer1, Rect(w / 2, 0, w / 2, h / 2), 255);
-		dst.Blit(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
-		dst.Blit(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer1, Rect(0, h / 2, w / 2, h / 2), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100), 255);
-		dst.Blit(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen_pointer2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100), 255);
-		dst.Blit(0, h / 2 - (h / 2) * percentage / 100, *screen_pointer2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
+		dst.Blit(-(w / 2) * cross_cf / tf_off, -(h / 2) * cross_cf / tf_off, *screen_pointer1, Rect(0, 0, w / 2, h / 2), 255);
+		dst.Blit(w / 2 + (w / 2) * cross_cf / tf_off, -(h / 2) * cross_cf / tf_off, *screen_pointer1, Rect(w / 2, 0, w / 2, h / 2), 255);
+		dst.Blit(w / 2 + (w / 2) * cross_cf / tf_off, h / 2 + (h / 2) * cross_cf / tf_off, *screen_pointer1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
+		dst.Blit(-(w / 2) * cross_cf / tf_off, h / 2 + (h / 2) * cross_cf / tf_off, *screen_pointer1, Rect(0, h / 2, w / 2, h / 2), 255);
+		dst.Blit(w / 2 - (w / 2) * cross_cf / tf_off, 0, *screen_pointer2, Rect(w / 2 - (w / 2) * cross_cf / tf_off, 0, w * cross_cf / tf_off, h / 2 - (h / 2) * cross_cf / tf_off), 255);
+		dst.Blit(w / 2 - (w / 2) * cross_cf / tf_off, h / 2 + (h / 2) * cross_cf / tf_off, *screen_pointer2, Rect(w / 2 - (w / 2) * cross_cf / tf_off, h / 2 + (h / 2) * cross_cf / tf_off, w * cross_cf / tf_off, h / 2 + (h / 2) * cross_cf / tf_off), 255);
+		dst.Blit(0, h / 2 - (h / 2) * cross_cf / tf_off, *screen_pointer2, Rect(0, h / 2 - (h / 2) * cross_cf / tf_off, w, h * cross_cf / tf_off), 255);
 		break;
+	}
 	case TransitionZoomIn:
-	case TransitionZoomOut:
-		// If TransitionZoomOut, invert percentage and screen:
-		if (transition_type == TransitionZoomOut) { percentage = 100 - percentage; }
+	case TransitionZoomOut: {
+		// If TransitionZoomOut, invert current_frame and screen:
+		int z_cf = transition_type == TransitionZoomOut ? tf_off - current_frame : current_frame;
 		screen_pointer1 = transition_type == TransitionZoomOut ? screen2 : screen1;
 
 		// X Coordinate: [0]   Y Coordinate: [1]
 		z_length[0] = w;
 		z_length[1] = h;
-		percentage = percentage <= 97 ? percentage : 97;
+		z_cf = z_cf <= total_frames - 2 ? z_cf : total_frames - 2;
 
 		for (int i = 0; i < 2; i++) {
 			z_min = z_length[i] / 4;
 			z_max = z_length[i] * 3 / 4;
-			z_pos[i] = std::max(z_min, std::min((int)zoom_position[i], z_max)) * percentage / 100;
-			z_size[i] = z_length[i] * (100 - percentage) / 100;
+			z_pos[i] = std::max(z_min, std::min((int)zoom_position[i], z_max)) * z_cf / tf_off;
+			z_size[i] = z_length[i] * (tf_off - z_cf) / tf_off;
 
-			z_percent = (zoom_position[i] < z_min) ? (100 * zoom_position[i] / z_min - 100) :
-				(zoom_position[i] > z_max) ? (100 * (zoom_position[i] - z_max) / (z_length[i] - z_max)) : 0;
+			z_frame = (zoom_position[i] < z_min) ? (tf_off * zoom_position[i] / z_min - tf_off) :
+				(zoom_position[i] > z_max) ? (tf_off * (zoom_position[i] - z_max) / (z_length[i] - z_max)) : 0;
 
-			if (z_percent != 0 && percentage > 0) {
-				z_fixed_pos = z_pos[i] * std::abs(z_percent) / percentage;
-				z_fixed_size = z_length[i] * (100 - std::abs(z_percent)) / 100;
-				z_pos[i] += percentage < std::abs(z_percent) ? (z_percent > 0 ? 1 : 0) * (z_length[i] - z_size[i]) - z_pos[i] :
-					(z_percent > 0 ? z_length[i] - z_fixed_pos - z_fixed_size : -z_fixed_pos);
+			if (z_frame != 0 && z_cf > 0) {
+				z_fixed_pos = z_pos[i] * std::abs(z_frame) / z_cf;
+				z_fixed_size = z_length[i] * (tf_off - std::abs(z_frame)) / tf_off;
+				z_pos[i] += z_cf < std::abs(z_frame) ? (z_frame > 0 ? 1 : 0) * (z_length[i] - z_size[i]) - z_pos[i] :
+					(z_frame > 0 ? z_length[i] - z_fixed_pos - z_fixed_size : -z_fixed_pos);
 			}
 		}
 
 		dst.StretchBlit(Rect(0, 0, w, h), *screen_pointer1, Rect(z_pos[0], z_pos[1], z_size[0], z_size[1]), 255);
 		break;
+	}
 	case TransitionMosaicIn:
 	case TransitionMosaicOut: {
-		// Goes from scale 2 to 41 (current_frame is 0 - 39)
-		// FIXME: current_frame starts at 1 (off-by-one error?)
+		// Goes from scale 1 to 41 (current_frame is 0 - 40)
 		// If TransitionMosaicIn, invert scale and screen:
 		int32_t rand;
 		if (transition_type == TransitionMosaicIn) {
-			m_size = total_frames + 1 - current_frame;
+			m_size = total_frames - current_frame;
 			screen_pointer1 = screen2;
 			rand = mosaic_random_offset[total_frames - current_frame - 1];
 		} else {
-			// remove when off-by-one error is fixed
-			const int off_one_fix = -1;
-			m_size = current_frame + 2 + off_one_fix;
+			m_size = current_frame + 1;
 			screen_pointer1 = screen1;
-			rand = mosaic_random_offset[current_frame + off_one_fix];
+			rand = mosaic_random_offset[current_frame];
 		}
 
 		// The offset defines where at (X,Y) the pixel is picked for scaling (nearest neighbour)
@@ -399,11 +400,12 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionWaveIn:
 	case TransitionWaveOut:
 		{
-			// If TransitionWaveIn, invert percentage and screen:
-			auto p = (transition_type == TransitionWaveIn) ? 100 - percentage : percentage;
+			// If TransitionWaveIn, invert depth, phase and screen:
+			auto p = (transition_type == TransitionWaveIn) ? total_frames - current_frame : current_frame + 1;
 			auto& screen = (transition_type == TransitionWaveIn) ? *screen2 : *screen1;
-			auto depth = p * 40 / 100;
-			auto phase = p * 5 * M_PI / 100.0 + M_PI;
+			auto depth = p;
+			auto phase = p * 5 * M_PI / tf_off + M_PI;
+			dst.FillRect(Rect(0, 0, w, h), Color(0, 0, 0, 255));
 			dst.WaverBlit(0, 0, 1, 1, screen, screen.GetRect(), depth, phase, Opacity::Opaque());
 		}
 		break;
