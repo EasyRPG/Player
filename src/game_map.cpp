@@ -576,7 +576,11 @@ const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event
 }
 
 int Game_Map::GetNextAvailableEventId() {
-	return map->events.back().ID + 1;
+	if (map->events.empty()) {
+		return 1;
+	} else {
+		return map->events.back().ID + 1;
+	}
 }
 
 void Game_Map::PrepareSave(lcf::rpg::Save& save) {
