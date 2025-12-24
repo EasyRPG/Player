@@ -23,6 +23,7 @@
 #include "game_party.h"
 #include "game_system.h"
 #include "game_battle.h"
+#include "window_message.h"
 #include <player.h>
 
 Sprite_Timer::Sprite_Timer(int which) :
@@ -90,7 +91,10 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 	if (Game_Battle::IsBattleRunning()) {
 		SetY((Player::screen_height / 3 * 2) - 20);
 	}
-	else if (Game_Message::IsMessageActive() && Game_Message::GetRealPosition() == 0) {
+	// RPG_RT doesn't check for the global setting for window positioning (Top/Middle/Bottom)
+	// here. It actually just checks for the Y position of the message window, regardless if
+	// it is active or visible.
+	else if (Game_Message::GetWindow()->GetY() < 20) {
 		SetY(Player::screen_height - 20 - Player::menu_offset_y);
 	}
 	else {

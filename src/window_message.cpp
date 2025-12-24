@@ -190,11 +190,8 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 
 	DebugLog("{}: MSG TEXT \n{}", text);
 
-	auto open_frames = (!IsVisible() && !Game_Battle::IsBattleRunning()) ? message_animation_frames : 0;
-	SetOpenAnimation(open_frames);
-	DebugLog("{}: MSG START OPEN {}", open_frames);
-
-	InsertNewPage();
+	disallow_next_message = true;
+	msg_was_pushed_this_frame = true;
 }
 
 void Window_Message::OnFinishPage() {
@@ -419,7 +416,7 @@ void Window_Message::Update() {
 	if (IsClosing()) { DebugLog("{}: MSG CLOSING"); }
 
 	close_started_this_frame = false;
-	close_finished_this_frame = false;
+	disallow_next_message = false;
 
 	const bool was_closing = IsClosing();
 
@@ -428,10 +425,22 @@ void Window_Message::Update() {
 	gold_window->Update();
 
 	if (was_closing && !IsClosing()) {
-		close_finished_this_frame = true;
+		disallow_next_message = true;
 	}
 
 	if (!IsVisible()) {
+		if (msg_was_pushed_this_frame) {
+			msg_was_pushed_this_frame = false;
+			disallow_next_message = true;
+			return;
+		}
+		if (!text.empty() && text_index == text.data()) {
+			auto open_frames = (!IsVisible() && !Game_Battle::IsBattleRunning()) ? message_animation_frames : 0;
+			SetOpenAnimation(open_frames);
+			DebugLog("{}: MSG START OPEN {}", open_frames);
+			
+			InsertNewPage();
+		}
 		return;
 	}
 

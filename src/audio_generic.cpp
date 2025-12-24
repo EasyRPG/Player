@@ -229,8 +229,9 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 	chan.paused = true; // Pause channel so the audio thread doesn't work on it
 	chan.stopped = false; // Unstop channel so the audio thread doesn't delete it
 
+	std::string_view name = filestream.GetName();
 	if (!filestream) {
-		Output::Warning("BGM file not readable: {}", filestream.GetName());
+		Output::Warning("BGM file not readable: {}", name);
 		return false;
 	}
 
@@ -282,7 +283,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, Filesystem_Stream::InputStrea
 
 		return true;
 	} else {
-		Output::Warning("Couldn't play BGM {}. Format not supported", filestream.GetName());
+		Output::Warning("Couldn't play BGM {}. Format not supported", name);
 	}
 
 	return false;

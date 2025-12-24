@@ -165,8 +165,9 @@ protected:
 	// FIXME: This hacky flags exist because RPG_RT likely animates the message window
 	// after the game loop finishes. Our code isn't structured that way, so we must hack
 	// around it.
+	bool msg_was_pushed_this_frame = false;
 	bool close_started_this_frame = false;
-	bool close_finished_this_frame = false;
+	bool disallow_next_message = false;
 
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
@@ -214,8 +215,8 @@ inline AsyncOp Window_Message::GetAsyncOp() const {
 }
 
 inline bool Window_Message::GetAllowNextMessage(bool foreground) const {
-	bool is_active = (IsVisible() || close_finished_this_frame);
-	return foreground ? !is_active || close_started_this_frame : !is_active;
+	bool is_active = (IsVisible() || disallow_next_message);
+	return foreground ? !is_active || (close_started_this_frame && !disallow_next_message): !is_active;
 }
 
 inline int Window_Message::GetMaxLinesPerPage() const {
