@@ -164,6 +164,8 @@ protected:
 	void SetSceneActionSubState(int substate);
 	void ReturnToMainBattleState();
 
+	void CallBattleBeginCommonEvents();
+
 	// SceneAction State Machine Driver
 	SceneActionReturn ProcessSceneAction();
 
@@ -260,6 +262,9 @@ protected:
 	int GetNextReadyActor();
 
 	std::vector<int> atb_order;
+
+	std::vector<Game_CommonEvent*> battle_parallel_events;
+	Game_Interpreter_Battle parallel_interpreter;
 };
 
 #endif

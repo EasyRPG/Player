@@ -34,11 +34,13 @@
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
+#include "game_map.h"
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_interpreter_battle.h"
 #include "game_battlealgorithm.h"
 #include "game_screen.h"
+#include "game_switches.h"
 #include <lcf/reader_util.h>
 #include "scene_gameover.h"
 #include "utils.h"
@@ -972,6 +974,16 @@ void Scene_Battle_Rpg2k3::vUpdate() {
 			break;
 		}
 
+		if (state != State_Victory && state != State_Defeat) {
+			parallel_interpreter.Update();
+			if (!parallel_interpreter.IsRunning()) {
+				for (auto common_event : battle_parallel_events)
+				{
+					parallel_interpreter.Push<InterpreterExecutionType::BattleParallel>(common_event);
+				}
+			}
+		}
+
 		// this is checked separately because we want normal events to be processed
 		// just not sub-events called by maniacs battle hooks.
 		if (state != State_Victory && state != State_Defeat && Game_Battle::ManiacProcessSubEvents()) {
@@ -1114,6 +1126,23 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction()
 	return SceneActionReturn::eWaitTillNextFrame;
 }
 
+void Scene_Battle_Rpg2k3::CallBattleBeginCommonEvents() {
+	for (auto data_common_event : lcf::Data::commonevents) {
+		if ((!data_common_event.switch_flag || Main_Data::game_switches->Get(data_common_event.switch_id))) {
+			if (data_common_event.trigger == data_common_event.Trigger_maniac_battle_start) {
+				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
+
+				Game_Battle::GetInterpreterBattle().Push<InterpreterExecutionType::BattleParallel>(common_event);
+			}
+			else if (data_common_event.trigger == data_common_event.Trigger_maniac_battle_parallel) {
+				Game_CommonEvent* common_event = lcf::ReaderUtil::GetElement(Game_Map::GetCommonEvents(), data_common_event.ID);
+
+				battle_parallel_events.push_back(common_event);
+			}
+		}
+	}
+}
+
 Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionStart() {
 	enum SubState {
 		eStartMessage,
@@ -1153,6 +1182,7 @@ Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSt
 		EndNotification();
 		UpdateEnemiesDirection();
 		UpdateActorsDirection();
+		CallBattleBeginCommonEvents();
 		SetSceneActionSubState(eUpdateEvents);
 		return SceneActionReturn::eContinueThisFrame;
 	}
