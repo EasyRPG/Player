@@ -2197,11 +2197,13 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com) { //code 10660
 	lcf::rpg::Music music;
 	int context = com.parameters[0];
-	music.name = ToString(com.string);
-	music.fadein = com.parameters[1];
-	music.volume = com.parameters[2];
-	music.tempo = com.parameters[3];
-	music.balance = com.parameters[4];
+
+	music.name = ToString(CommandStringOrVariableBitfield(com, 5, 0, 6));
+	music.fadein = ValueOrVariableBitfield(com, 5, 1, 1);
+	music.volume = ValueOrVariableBitfield(com, 5, 2, 2);
+	music.tempo = ValueOrVariableBitfield(com, 5, 3, 3);
+	music.balance = ValueOrVariableBitfield(com, 5, 4, 4);
+
 	Main_Data::game_system->SetSystemBGM(context, std::move(music));
 	return true;
 }
@@ -2209,18 +2211,22 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com) { //code 10670
 	lcf::rpg::Sound sound;
 	int context = com.parameters[0];
-	sound.name = ToString(com.string);
-	sound.volume = com.parameters[1];
-	sound.tempo = com.parameters[2];
-	sound.balance = com.parameters[3];
+
+	sound.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
+	sound.volume = ValueOrVariableBitfield(com, 4, 1, 1);
+	sound.tempo = ValueOrVariableBitfield(com, 4, 2, 2);
+	sound.balance = ValueOrVariableBitfield(com, 4, 3, 3);
+
 	Main_Data::game_system->SetSystemSE(context, std::move(sound));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Main_Data::game_system->SetSystemGraphic(ToString(CommandStringOrVariable(com, 2, 3)),
-			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
-			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
+	std::string name = ToString(CommandStringOrVariableBitfield(com, 2, 0, 3));
+
+	Main_Data::game_system->SetSystemGraphic(name,
+		static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
+		static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
 	return true;
 }
@@ -2329,8 +2335,8 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 }
 
 bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& com) { // Code 10870
-	int event1_id = com.parameters[0];
-	int event2_id = com.parameters[1];
+	int event1_id = ValueOrVariableBitfield(2, 0, 0);
+	int event2_id = ValueOrVariableBitfield(2, 1, 1);
 
 	Game_Character *event1 = GetCharacter(event1_id, "TradeEventLocations");
 	Game_Character *event2 = GetCharacter(event2_id, "TradeEventLocations");
@@ -3372,7 +3378,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 }
 
 bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com) { // code 11710
-	int chipset_id = com.parameters[0];
+	int chipset_id = ValueOrVariableBitfield(com, 1, 0, 0);
 
 	if (chipset_id == Game_Map::GetChipset()) {
 		return true;
@@ -3392,13 +3398,15 @@ bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com
 
 bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
-	params.name = ToString(com.string);
+	params.name = ToString(CommandStringOrVariableBitfield(com, 6, 0, 7));
+
 	params.scroll_horz = com.parameters[0] != 0;
 	params.scroll_vert = com.parameters[1] != 0;
 	params.scroll_horz_auto = com.parameters[2] != 0;
-	params.scroll_horz_speed = com.parameters[3];
+	params.scroll_horz_speed = ValueOrVariableBitfield(com, 6, 4, 3);
+
 	params.scroll_vert_auto = com.parameters[4] != 0;
-	params.scroll_vert_speed = com.parameters[5];
+	params.scroll_vert_speed = ValueOrVariableBitfield(com, 6, 6, 5);
 
 	Game_Map::Parallax::ChangeBG(params);
 
