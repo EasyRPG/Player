@@ -130,6 +130,39 @@ public:
 	/** @return true if wait command (time or key) is active. Used by 2k3 battle system */
 	bool IsWaitingForWaitCommand() const;
 
+	/**
+	 * @brief Checks if the interpreter is currently in typing input mode.
+	 * @return True if in typing mode, false otherwise.
+	 */
+	bool IsInTypingMode() const { return _is_typing_mode; }
+
+	/**
+	 * @brief Appends text to the current typing buffer. Called by the UI layer.
+	 * @param text The UTF-8 text to append.
+	 */
+	void AppendTypingText(const char* text);
+
+	/**
+	 * @brief Handles a backspace key press during typing mode.
+	 */
+	void HandleTypingBackspace();
+
+	/**
+	 * @brief Handles an enter key press during typing mode.
+	 * @param is_ctrl_pressed True if the Ctrl modifier was held.
+	 */
+	void HandleTypingEnter(bool is_ctrl_pressed);
+
+	/**
+	 * @brief Handles an escape key press, canceling the typing mode.
+	 */
+	void HandleTypingEscape();
+    /**
+     * @brief Finalizes typing mode, optionally canceling it.
+     * @param cancel If true, cancels typing mode; otherwise, completes it.
+     */
+	void FinalizeTyping(bool accepted);
+
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
@@ -371,6 +404,13 @@ protected:
 		void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
 		void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
 		void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
+
+		bool _is_typing_mode = false;
+		int _typing_output_var_id = 0;
+		std::string _typing_original_text;
+		bool _typing_multiline = false;
+
+		bool CommandEasyRpgTypeMode(const lcf::rpg::EventCommand& com);
 
 	friend class Game_Interpreter_Inspector;
 };
