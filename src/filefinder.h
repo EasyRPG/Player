@@ -230,15 +230,6 @@ namespace FileFinder {
 	Filesystem_Stream::InputStream OpenText(std::string_view name);
 
 	/**
-	* Writes data to a txt file.
-	* If the file exists, it will be overwritten.
-	*
-	* @param name the text file path and name
-	* @param data the content of the text file to be written
-	*/
-	void WriteText(std::string_view name, std::string_view data);
-
-	/**
 	 * Appends name to directory.
 	 *
 	 * @param dir base directory.

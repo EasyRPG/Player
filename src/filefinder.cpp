@@ -186,7 +186,7 @@ std::string FileFinder::MakeCanonical(std::string_view path, int initial_deepnes
 				// Ignore, we are in root
 				--initial_deepness;
 			} else {
-				Output::Debug("Path traversal out of game directory: {}", path);
+				Output::Warning("Path traversal out of game directory: {}", path);
 			}
 		} else if (path_comp.empty() || path_comp == ".") {
 			// ignore
