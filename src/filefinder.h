@@ -38,7 +38,7 @@
  * insensitive files paths.
  */
 namespace FileFinder {
-	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp", ".png", ".xyz");
+	constexpr const auto IMG_TYPES = Utils::MakeSvArray(".bmp", ".png", ".xyz",".gif");
 	constexpr const auto MUSIC_TYPES = Utils::MakeSvArray(
 			".opus", ".oga", ".ogg", ".wav", ".mid", ".midi", ".mp3", ".wma");
 	constexpr const auto SOUND_TYPES = Utils::MakeSvArray(

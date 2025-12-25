@@ -40,6 +40,8 @@
 #include "bitmap_hslrgb.h"
 #include <iostream>
 
+#include "animated_bitmap.h"
+
 BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 	BitmapRef surface = Bitmap::Create(width, height, true);
 	surface->Fill(color);
@@ -47,6 +49,17 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 }
 
 BitmapRef Bitmap::Create(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {
+
+	uint8_t magic[8] = {};
+	(void)stream.read(reinterpret_cast<char*>(magic), 8).gcount();
+	stream.seekg(0, std::ios::ios_base::beg);
+	if (strncmp((char*)magic, "GIF87a", 6) == 0 || strncmp((char*)magic, "GIF89a", 6) == 0) {
+		std::vector<uint8_t> buffer = Utils::ReadStream(stream);
+		BitmapRef bmp = std::make_shared<AnimatedBitmap>(&buffer.front(), (unsigned)buffer.size(), transparent, flags);
+		if (!bmp->pixels()) return BitmapRef();
+		return bmp;
+	}
+
 	BitmapRef bmp = std::make_shared<Bitmap>(std::move(stream), transparent, flags);
 
 	if (!bmp->pixels()) {
@@ -57,6 +70,12 @@ BitmapRef Bitmap::Create(Filesystem_Stream::InputStream stream, bool transparent
 }
 
 BitmapRef Bitmap::Create(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
+	if (bytes >= 6 && (strncmp((char*)data, "GIF87a", 6) == 0 || strncmp((char*)data, "GIF89a", 6) == 0)) {
+		BitmapRef bmp = std::make_shared<AnimatedBitmap>(data, bytes, transparent, flags);
+		if (!bmp->pixels()) return BitmapRef();
+		return bmp;
+	}
+
 	BitmapRef bmp = std::make_shared<Bitmap>(data, bytes, transparent, flags);
 
 	if (!bmp->pixels()) {

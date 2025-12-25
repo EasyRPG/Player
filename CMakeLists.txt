@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 project(EasyRPG_Player VERSION 0.8.1
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
 	HOMEPAGE_URL "https://easyrpg.org"
-	LANGUAGES CXX)
+	LANGUAGES C CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -78,6 +78,14 @@ add_library(${PROJECT_NAME} OBJECT
 	src/bitmapfont_glyph.h
 	src/bitmap.h
 	src/bitmap_hslrgb.h
+	src/gif.c
+	src/lzw.c
+	src/lzw.h
+	src/nsgif.h
+	src/image_gif.h
+	src/image_gif.cpp
+	src/animated_bitmap.h
+	src/animated_bitmap.cpp
 	src/cache.cpp
 	src/cache.h
 	src/callback.h
