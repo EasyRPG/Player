@@ -325,40 +325,39 @@ void Game_Map::SetupFromSave(
 std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	std::unique_ptr<lcf::rpg::Map> map;
 
-	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
+	// Attempt to load either the EasyRPG map file or the RPG Maker map file first, depending on config.
+	// If it fails, try the other one.
 	// FIXME: Assert map was cached for async platforms
-	std::string map_name = Game_Map::ConstructMapName(map_id, true);
+	bool map_is_easyrpg_file = Player::player_config.prefer_easyrpg_map_files.Get();
+	std::string map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
 	std::string map_file = FileFinder::Game().FindFile(map_name);
 	if (map_file.empty()) {
-		map_name = Game_Map::ConstructMapName(map_id, false);
+		map_is_easyrpg_file = !map_is_easyrpg_file;
+		map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
 		map_file = FileFinder::Game().FindFile(map_name);
 
 		if (map_file.empty()) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
 			return nullptr;
 		}
+	}
 
-		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
-		if (!map_stream) {
-			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
-			return nullptr;
-		}
+	auto map_stream = FileFinder::Game().OpenInputStream(map_file);
+	if (!map_stream) {
+		Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
+		return nullptr;
+	}
 
+	if (map_is_easyrpg_file) {
+		map = lcf::LMU_Reader::LoadXml(map_stream);
+	} else {
 		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
-
 		if (Input::IsRecording()) {
 			map_stream.clear();
 			map_stream.seekg(0);
 			Input::AddRecordingData(Input::RecordingData::Hash,
-						   fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
+							fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
 		}
-	} else {
-		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
-		if (!map_stream) {
-			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
-			return nullptr;
-		}
-		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 
 	Output::Debug("Loaded Map {}", map_name);
