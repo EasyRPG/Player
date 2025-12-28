@@ -329,9 +329,13 @@ void Spriteset_Map::CalculatePanoramaRenderOffset() {
 	if (Player::game_config.fake_resolution.Get()) {
 		if (Game_Map::Parallax::FakeXPosition()) {
 			panorama->SetRenderOx((Player::screen_width - SCREEN_TARGET_WIDTH) / 2);
+		} else {
+			panorama->SetRenderOx(0);
 		}
 		if (Game_Map::Parallax::FakeYPosition()) {
 			panorama->SetRenderOy((Player::screen_height - SCREEN_TARGET_HEIGHT) / 2);
+		} else {
+			panorama->SetRenderOy(0);
 		}
 	}
 }
