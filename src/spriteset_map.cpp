@@ -328,10 +328,10 @@ void Spriteset_Map::CalculatePanoramaRenderOffset() {
 	// Resolution hack for Panorama
 	if (Player::game_config.fake_resolution.Get()) {
 		if (Game_Map::Parallax::FakeXPosition()) {
-			panorama->SetRenderOx((Player::screen_width - SCREEN_TARGET_WIDTH) / 2);
+			panorama->SetRenderOx((Player::screen_width - (Game_Map::GetTilesX() * TILE_SIZE)) / 2);
 		}
 		if (Game_Map::Parallax::FakeYPosition()) {
-			panorama->SetRenderOy((Player::screen_height - SCREEN_TARGET_HEIGHT) / 2);
+			panorama->SetRenderOy((Player::screen_height - (Game_Map::GetTilesY() * TILE_SIZE)) / 2);
 		}
 	}
 }
