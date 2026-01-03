@@ -1723,6 +1723,14 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
+		
+		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
+		if (Player::game_config.fake_resolution.Get()) {
+			int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
+			if (map_width_in_pixels < Player::screen_width) {
+				x += ((Player::screen_width - map_width_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+			}
+		}
 	} else {
 		// Do not use std::clamp here. When the map is smaller than the screen the
 		// upper bound is smaller than the lower bound making the function fail.
@@ -1747,6 +1755,14 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	const int map_height = GetTilesY() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
+
+		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
+		if (Player::game_config.fake_resolution.Get()) {
+			int map_height_in_pixels = Game_Map::GetTilesY() * TILE_SIZE;
+			if (map_height_in_pixels < Player::screen_height) {
+				y += ((Player::screen_height - map_height_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+			}
+		}
 	} else {
 		// Do not use std::clamp here. When the map is smaller than the screen the
 		// upper bound is smaller than the lower bound making the function fail.
