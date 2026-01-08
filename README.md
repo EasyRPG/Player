@@ -97,6 +97,8 @@ EasyRPG Player makes use of the following 3rd party software:
   (Yoshio Uno), provided under the (3-clause) BSD license
 * [dr_wav] WAV audio loader and writer - Copyright (c) David Reid, provided
   under public domain or MIT-0
+* [libnsgif] for progressive animated GIF decoding - Copyright (c) 2004-2022 The
+  NetSurf Browser Project, provided under the MIT license
 
 ### 3rd party resources
 
@@ -121,6 +123,7 @@ EasyRPG Player makes use of the following 3rd party software:
 [Logo2]: resources/logo2.png
 [FMMidi]: http://unhaut.epizy.com/fmmidi
 [dr_wav]: https://github.com/mackron/dr_libs
+[libnsgif]: http://www.netsurf-browser.org/projects/libnsgif/
 [baekmuk]: https://kldp.net/baekmuk
 [Shinonome]: http://openlab.ring.gr.jp/efont/shinonome
 [ttyp0]: https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0

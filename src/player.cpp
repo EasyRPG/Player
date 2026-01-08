@@ -84,6 +84,8 @@
 #include "audio_midi.h"
 #include "maniac_patch.h"
 
+#include "animated_bitmap.h"
+
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
 #endif
@@ -229,7 +231,11 @@ void Player::MainLoop() {
 	Instrumentation::FrameScope iframe;
 
 	const auto frame_time = Game_Clock::now();
-	Game_Clock::OnNextFrame(frame_time);
+	const auto delta = Game_Clock::OnNextFrame(frame_time);
+
+	// Proposed change: Update all animated bitmaps
+	AnimationManager::UpdateAll(std::chrono::duration_cast<std::chrono::microseconds>(delta));
+	// End of proposed change
 
 	Player::UpdateInput();
 
