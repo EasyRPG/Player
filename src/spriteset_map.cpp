@@ -326,12 +326,16 @@ void Spriteset_Map::CalculateMapRenderOffset() {
 
 void Spriteset_Map::CalculatePanoramaRenderOffset() {
 	// Resolution hack for Panorama
+	// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
 	if (Player::game_config.fake_resolution.Get()) {
-		if (Game_Map::Parallax::FakeXPosition()) {
-			panorama->SetRenderOx((Player::screen_width - (Game_Map::GetTilesX() * TILE_SIZE)) / 2);
+		int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
+		if (map_width_in_pixels < Player::screen_width) {
+			panorama->SetRenderOx((Player::screen_width - map_width_in_pixels) / 2);
 		}
-		if (Game_Map::Parallax::FakeYPosition()) {
-			panorama->SetRenderOy((Player::screen_height - (Game_Map::GetTilesY() * TILE_SIZE)) / 2);
+
+		int map_height_in_pixels = Game_Map::GetTilesY() * TILE_SIZE;
+		if (map_height_in_pixels < Player::screen_height) {
+			panorama->SetRenderOy((Player::screen_height - map_height_in_pixels) / 2);
 		}
 	}
 }
