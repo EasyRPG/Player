@@ -98,6 +98,8 @@ public:
 	 */
 	void SetWaverPhase(double phase);
 
+	Color GetFlashEffect() const;
+
 	/**
 	 * Set the flash effect color
 	 */
@@ -294,6 +296,10 @@ inline void Sprite::SetFlipY(bool flipy) {
 
 inline void Sprite::SetBushDepth(int bush_depth) {
 	bush_effect = bush_depth;
+}
+
+inline Color Sprite::GetFlashEffect() const {
+	return flash_effect;
 }
 
 inline void Sprite::SetFlashEffect(const Color &color) {

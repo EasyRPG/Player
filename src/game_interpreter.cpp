@@ -5315,8 +5315,6 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 
 	int target_type = com.parameters[1];
 
-	// Decode Filename using the mode in bits 4-7 of parameter 0
-	// val_idx 3 corresponds to the .dst argument
 	std::string filename = ToString(CommandStringOrVariableBitfield(com, 0, 1, 3));
 
 	if (filename.empty()) {
@@ -5334,12 +5332,9 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 
 	if (target_type == 0) {
 		// Target: Screen (.screen)
-		// Capture the current screen buffer
 		bitmap = DisplayUi->CaptureScreen();
-	}
-	else if (target_type == 1) {
+	} else if (target_type == 1) {
 		// Target: Picture (.pic)
-		// Decode Picture ID using the mode in bits 0-3 of parameter 0
 		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
 
 		if (pic_id <= 0) {
@@ -5355,77 +5350,35 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 			return true;
 		}
 
+		const auto sprite = picture.sprite.get();
+
 		// Retrieve bitmap
-		// If Opaque flag is set, prefer loading the cached image without transparency
-		// to recover the original background color (key color).
-		bool use_cached_opaque = false;
-		if (is_opaque && !picture.data.name.empty()) {
-			bool is_canvas = false;
-			if (picture.sprite && picture.sprite->GetBitmap()) {
-				// Canvas bitmaps have IDs starting with "Canvas:"
-				is_canvas = StartsWith(picture.sprite->GetBitmap()->GetId(), "Canvas:");
-			}
-			// Also if it's a Window (StringPic), we can't reload from file
-			bool is_window = picture.data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
-
-			if (!is_canvas && !is_window) {
-				use_cached_opaque = true;
-			}
-		}
-
-		if (use_cached_opaque) {
-			// Load fresh from cache with transparency disabled
-			bitmap = Cache::Picture(picture.data.name, false);
-		}
-		else if (picture.sprite) {
+		if (picture.IsWindowAttached()) {
+			// Maniac ignores the opaque setting for String Picture
 			bitmap = picture.sprite->GetBitmap();
+		} else if (picture.data.name.empty()) {
+			// Not much we can do here (also shouldn't happen normally)
+			bitmap = picture.sprite->GetBitmap();
+		} else {
+			// Fetch picture with correct transparency
+			bitmap = Cache::Picture(picture.data.name, !is_opaque);
 		}
 
-		const auto& data = picture.data;
-		Rect src_rect;
-
-		// Calculate Spritesheet frame
 		if (bitmap) {
-			src_rect = bitmap->GetRect();
-			if (picture.NumSpriteSheetFrames() > 1) {
-				int frame_w = bitmap->GetWidth() / data.spritesheet_cols;
-				int frame_h = bitmap->GetHeight() / data.spritesheet_rows;
-				int sx = (data.spritesheet_frame % data.spritesheet_cols) * frame_w;
-				int sy = (data.spritesheet_frame / data.spritesheet_cols) * frame_h;
-				src_rect = Rect(sx, sy, frame_w, frame_h);
+			// Determine Spritesheet frame
+			Rect src_rect = picture.sprite->GetSrcRect();
+
+			if (apply_effects) {
+				// .dynamic: Reflect color tone, flash, and other effects
+				auto tone = sprite->GetTone();
+				auto flash = sprite->GetFlashEffect();
+				auto flip_x = sprite->GetFlipX();
+				auto flip_y = sprite->GetFlipY();
+				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+			} else if (src_rect != bitmap->GetRect()) {
+				// .static: Crop specific cell if it's a spritesheet
+				bitmap = Bitmap::Create(*bitmap, src_rect);
 			}
-		}
-
-		if (bitmap && apply_effects) {
-			// .dynamic: Reflect color tone, flash, and other effects
-
-			// Tone
-			auto tone = Tone((int)(data.current_red * 128 / 100),
-				(int)(data.current_green * 128 / 100),
-				(int)(data.current_blue * 128 / 100),
-				(int)(data.current_sat * 128 / 100));
-
-			if (data.flags.affected_by_tint) {
-				auto screen_tone = Main_Data::game_screen->GetTone();
-				tone = Blend(tone, screen_tone);
-			}
-
-			// Flash
-			Color flash = Color();
-			if (data.flags.affected_by_flash) {
-				flash = Main_Data::game_screen->GetFlashColor();
-			}
-
-			// Flip
-			bool flip_x = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) == lcf::rpg::SavePicture::EasyRpgFlip_x;
-			bool flip_y = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) == lcf::rpg::SavePicture::EasyRpgFlip_y;
-
-			// Cache::SpriteEffect creates a new bitmap based on src_rect
-			bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
-		}
-		else if (bitmap && src_rect != bitmap->GetRect()) {
-			// .static: Crop specific cell if it's a spritesheet
-			bitmap = Bitmap::Create(*bitmap, src_rect);
 		}
 	}
 	else {
@@ -5435,40 +5388,21 @@ bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com)
 
 	// Save logic
 	if (bitmap) {
-		if (is_opaque) {
-			// .opaq: Force Alpha to 255
-			// Clone to avoid modifying the original cached/displayed bitmap
-			bitmap = Bitmap::Create(*bitmap, bitmap->GetRect());
-
-			if (bitmap->bpp() == 4) {
-				int count = bitmap->GetWidth() * bitmap->GetHeight();
-				auto* pixels = static_cast<uint32_t*>(bitmap->pixels());
-
-				uint8_t r, g, b, a;
-				for (int i = 0; i < count; ++i) {
-					Bitmap::pixel_format.uint32_to_rgba(pixels[i], r, g, b, a);
-					if (a != 255) {
-						pixels[i] = Bitmap::pixel_format.rgba_to_uint32_t(r, g, b, 255);
-					}
-				}
-			}
-		}
-
 		// Save to disk
 		// Ensure 'filename' has a valid extension (.png).
 		if (!EndsWith(Utils::LowerCase(filename), ".png")) {
 			filename += ".png";
 		}
 
-		auto os = FileFinder::Save().OpenOutputStream(filename);
+		auto found_file = FileFinder::Save().FindFile(filename);
+
+		auto os = FileFinder::Save().OpenOutputStream(found_file.empty() ? filename : found_file);
 		if (os) {
 			bitmap->WritePNG(os);
-		}
-		else {
+		} else {
 			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
 		}
-	}
-	else {
+	} else {
 		Output::Debug("ManiacSaveImage: Nothing to save (Target {})", target_type);
 	}
 
