@@ -63,9 +63,7 @@ BaseUi::BaseUi(const Game_Config& cfg)
 }
 
 BitmapRef BaseUi::CaptureScreen() {
-	BitmapRef capture = Bitmap::Create(main_surface->width(), main_surface->height(), false);
-	capture->BlitFast(0, 0, *main_surface, main_surface->GetRect(), Opacity::Opaque());
-	return capture;
+	return Bitmap::Create(*main_surface, main_surface->GetRect(), false);
 }
 
 void BaseUi::CleanDisplay() {
