@@ -18,13 +18,16 @@
 // Headers
 #include "utils.h"
 #include "compiler.h"
+#include "string_view.h"
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
 #include <cstdio>
 #include <algorithm>
-#include <cctype>
 #include <istream>
+#include <random>
+#include <cctype>
+#include <string_view>
 #include <zlib.h>
 
 namespace {
@@ -234,7 +237,7 @@ std::u32string Utils::DecodeUTF32(std::string_view str) {
 	return result;
 }
 
-std::string Utils::EncodeUTF(const std::u16string& str) {
+std::string Utils::EncodeUTF(std::u16string_view str) {
 	std::string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
 		uint16_t wc1 = *it;
@@ -277,7 +280,7 @@ std::string Utils::EncodeUTF(const std::u16string& str) {
 	return result;
 }
 
-std::string Utils::EncodeUTF(const std::u32string& str) {
+std::string Utils::EncodeUTF(std::u32string_view str) {
 	std::string result;
 	for (const char32_t& wc : str) {
 		if ((wc & 0xFFFFF800) == 0x00D800 || wc > 0x10FFFF)

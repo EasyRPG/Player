@@ -23,6 +23,7 @@
 #include "game_switches.h"
 #include <lcf/data.h>
 #include "output.h"
+#include "text.h"
 #include "utils.h"
 #include "player.h"
 #include "main_data.h"
@@ -46,6 +47,7 @@ int PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
 	msg = ApplyTextInsertingCommands(std::move(msg), Player::escape_char, command_inserter);
 	texts.push_back(std::move(msg));
+	runs.push_back(Text::Bidi(texts.back(), Text::Direction::LTR));
 	return texts.size();
 }
 
@@ -75,6 +77,7 @@ int PendingMessage::PushNumInput(int variable_id, int num_digits) {
 void PendingMessage::PushPageEnd() {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
+	// FIXME: Runs
 	if (texts.empty()) {
 		texts.push_back("");
 	}
@@ -132,7 +135,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 		if (fn_res) {
 			output.append(*fn_res);
 			start_copy = iter;
-		} 
+		}
 	}
 
 	if (start_copy == input.data()) {

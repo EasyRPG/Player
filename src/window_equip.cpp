@@ -53,7 +53,7 @@ void Window_Equip::Refresh() {
 		DrawEquipmentType(actor, 0, (12 + 4) * i + 2, i);
 		if (data[i] > 0) {
 			// Equipment and items are guaranteed to be valid
-			DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, data[i]), 60, (12 + 4) * i + 2);
+			//DrawItemName(*lcf::ReaderUtil::GetElement(lcf::Data::items, data[i]), 60, (12 + 4) * i + 2);
 		}
 	}
 }

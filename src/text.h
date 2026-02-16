@@ -25,6 +25,7 @@
 #include "color.h"
 #include "string_view.h"
 #include <string>
+#include <vector>
 
 class Font;
 class Bitmap;
@@ -38,6 +39,18 @@ namespace Text {
 		AlignCenter,
 		/** Align text to the right. */
 		AlignRight
+	};
+
+	enum Direction {
+		// Enum values equal to UBiDiDirection
+		LTR,
+		RTL
+	};
+
+	struct Run {
+		std::string text;
+		Direction direction;
+		int length = 0;
 	};
 
 	/**
@@ -86,7 +99,6 @@ namespace Text {
 	 */
 	Point Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont);
 
-
 	/**
 	 * Draws the character onto dest bitmap with given parameters. Does not draw a shadow.
 	 *
@@ -126,5 +138,9 @@ namespace Text {
 	 * @return Rect describing the rendered string boundary
 	 */
 	Rect GetSize(const Font& font, char32_t glyph, bool is_exfont);
+
+	Alignment ScriptAlignment(std::string_view text, Text::Alignment align = Text::AlignLeft);
+
+	std::vector<Run> Bidi(std::string_view text, Direction text_direction);
 }
 #endif

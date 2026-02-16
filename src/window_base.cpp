@@ -18,6 +18,7 @@
 // Headers
 #include <iomanip>
 #include <sstream>
+#include "text.h"
 #include "window_base.h"
 #include "cache.h"
 #include <lcf/data.h>
@@ -278,10 +279,10 @@ void Window_Base::DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int
 	contents->TextDraw(cx, cy, 1, name);
 }
 
-void Window_Base::DrawItemName(const lcf::rpg::Item& item, int cx, int cy, bool enabled) const {
+void Window_Base::DrawItemName(const lcf::rpg::Item& item, const Rect& rect, bool enabled) const {
 	int color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 
-	contents->TextDraw(cx, cy, color, item.name);
+	contents->TextDraw(rect, color, item.name, Text::ScriptAlignment(item.name));
 }
 
 void Window_Base::DrawSkillName(const lcf::rpg::Skill& skill, int cx, int cy, bool enabled) const {

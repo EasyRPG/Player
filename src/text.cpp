@@ -18,7 +18,9 @@
 // Headers
 #include <lcf/data.h>
 #include "cache.h"
+#include "directory_tree.h"
 #include "output.h"
+#include "player.h"
 #include "utils.h"
 #include "bitmap.h"
 #include "font.h"
@@ -27,6 +29,11 @@
 
 #include <cctype>
 #include <iterator>
+#include <lcf/string_view.h>
+
+#include <unicode/ubidi.h>
+#include <unicode/utypes.h>
+
 
 Point Text::Draw(Bitmap& dest, int x, int y, const Font& font, const Bitmap& system, int color, char32_t glyph, bool is_exfont) {
 	if (is_exfont) {
@@ -84,50 +91,58 @@ Point Text::Draw(Bitmap& dest, const int x, const int y, const Font& font, const
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
-	auto iter = text.data();
-	const auto end = iter + text.size();
-
 	if (font.CanShape()) {
+		auto runs = Bidi(text, LTR);
+
 		// Collect all glyphs until ExFont or end of string and then shape and render
-		std::u32string text32;
-		while (iter != end) {
-			auto ret = Utils::TextNext(iter, end, 0);
-
-			iter = ret.next;
-			if (EP_UNLIKELY(!ret)) {
-				continue;
+		for (const auto& run: runs) {
+			if (runs.size() > 1) {
+				Output::Debug("{} {}", run.text, (int)run.direction);
 			}
+			auto iter = run.text.data();
+			const auto end = iter + run.text.size();
+			std::u32string text32;
+			while (iter != end) {
+				auto ret = Utils::TextNext(iter, end, 0);
 
-			if (EP_UNLIKELY(Utils::IsControlCharacter(ret.ch))) {
-				next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
-				continue;
-			}
-
-			if (ret.is_exfont) {
-				if (!text32.empty()) {
-					auto shape_ret = font.Shape(text32);
-					text32.clear();
-
-					for (const auto& ch: shape_ret) {
-						next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
-					}
+				iter = ret.next;
+				if (EP_UNLIKELY(!ret)) {
+					continue;
 				}
 
-				next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, true).x;
-				continue;
+				if (EP_UNLIKELY(Utils::IsControlCharacter(ret.ch))) {
+					next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, ret.is_exfont).x;
+					continue;
+				}
+
+				if (ret.is_exfont) {
+					if (!text32.empty()) {
+						auto shape_ret = font.Shape(text32, run.direction);
+						text32.clear();
+
+						for (const auto& ch: shape_ret) {
+							next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
+						}
+					}
+
+					next_glyph_pos += Draw(dest, ix + next_glyph_pos, iy, font, system, color, ret.ch, true).x;
+					continue;
+				}
+
+				text32 += ret.ch;
 			}
 
-			text32 += ret.ch;
-		}
+			if (!text32.empty()) {
+				auto shape_ret = font.Shape(text32, run.direction);
 
-		if (!text32.empty()) {
-			auto shape_ret = font.Shape(text32);
-
-			for (const auto& ch: shape_ret) {
-				next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
+				for (const auto& ch: shape_ret) {
+					next_glyph_pos += font.Render(dest, ix + next_glyph_pos, iy, system, color, ch).x;
+				}
 			}
 		}
 	} else {
+		auto iter = text.data();
+		const auto end = iter + text.size();
 		while (iter != end) {
 			auto ret = Utils::TextNext(iter, end, 0);
 
@@ -208,7 +223,7 @@ Rect Text::GetSize(const Font& font, std::string_view text) {
 
 			if (ret.is_exfont) {
 				if (!text32.empty()) {
-					auto shape_ret = font.Shape(text32);
+					auto shape_ret = font.Shape(text32, Direction::LTR);
 					text32.clear();
 
 					for (const auto& ch: shape_ret) {
@@ -228,7 +243,7 @@ Rect Text::GetSize(const Font& font, std::string_view text) {
 		}
 
 		if (!text32.empty()) {
-			auto shape_ret = font.Shape(text32);
+			auto shape_ret = font.Shape(text32, Direction::LTR);
 
 			for (const auto& ch: shape_ret) {
 				Rect size = font.GetSize(ch);
@@ -266,4 +281,88 @@ Rect Text::GetSize(const Font& font, char32_t glyph, bool is_exfont) {
 	} else {
 		return font.GetSize(glyph);
 	}
+}
+
+Text::Alignment Text::ScriptAlignment(std::string_view text, Text::Alignment align) {
+	if (text.empty() || !Player::IsRTL()) {
+		return align;
+	}
+
+	auto bidi = Bidi(text, LTR);
+
+	if (bidi.back().direction == LTR) {
+		return align;
+	}
+
+	return
+		align == AlignLeft ? AlignRight :
+		align == AlignRight ? AlignLeft :
+		align;
+}
+
+std::vector<Text::Run> Text::Bidi(std::string_view text, Text::Direction text_direction) {
+	UErrorCode error_code = U_ZERO_ERROR;
+
+	if (U_FAILURE(error_code) || text.empty()) {
+		return {};
+	}
+
+	auto text16 = Utils::DecodeUTF16(text);
+
+	UBiDi* bidi = ubidi_openSized(text16.size(), 0, &error_code);
+	if (bidi == NULL) {
+		return {};
+	}
+
+	ubidi_setPara(bidi, text16.c_str(), text16.size(),
+		text_direction == 0 ? UBIDI_DEFAULT_LTR : UBIDI_DEFAULT_RTL, nullptr, &error_code);
+
+	if (U_FAILURE(error_code)) {
+		ubidi_close(bidi);
+		return {};
+	}
+
+	UBiDiDirection direction = ubidi_getDirection(bidi);
+	std::vector<Run> runs;
+
+	if (direction != UBIDI_MIXED) {
+		// unidirectional
+		runs.push_back({ToString(text), static_cast<Direction>(direction)});
+	} else {
+		// mixed-directional
+		int32_t count = ubidi_countRuns(bidi, &error_code);
+
+		if (U_FAILURE(error_code)) {
+			ubidi_close(bidi);
+			return {};
+		}
+
+		int32_t start, length;
+		std::string subtext;
+		std::u16string subtext16;
+
+		// iterate over directional runs
+		for (int32_t i = 0; i < count; ++i) {
+			direction = ubidi_getVisualRun(bidi, i, &start, &length);
+
+			subtext16 = std::u16string(text16.data() + start, length);
+
+			auto it = std::remove_if(subtext16.begin(), subtext16.end(), [](auto ch) {
+				// Filter out unicode bidi characters
+				return ch == u'\u200E' || ch == u'\u200F' || ch == u'\u061C' ||
+					(ch >= u'\u202A' && ch <= u'\u202E') ||
+					(ch >= u'\u2066' && ch <= u'\u2069');
+			});
+
+			subtext16.erase(it, subtext16.end());
+
+			if (!subtext16.empty()) {
+				runs.push_back({Utils::EncodeUTF(subtext16), static_cast<Direction>(direction)});
+			}
+		}
+	}
+
+	ubidi_close(bidi);
+
+	return runs;
 }

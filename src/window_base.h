@@ -64,7 +64,7 @@ public:
 	void DrawActorSp(const Game_Battler& actor, int cx, int cy, int digits, bool draw_max = true) const;
 	void DrawActorParameter(const Game_Battler& actor, int cx, int cy, int type) const;
 	void DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int type) const;
-	void DrawItemName(const lcf::rpg::Item& item, int cx, int cy, bool enabled = true) const;
+	void DrawItemName(const lcf::rpg::Item& item, const Rect& rect, bool enabled = true) const;
 	void DrawSkillName(const lcf::rpg::Skill& skill, int cx, int cy, bool enabled = true) const;
 	void DrawCurrencyValue(int money, int cx, int cy) const;
 	void DrawGauge(const Game_Battler& actor, int cx, int cy, int alpha = 255) const;

@@ -22,6 +22,8 @@
 #include <ctime>
 #include <functional>
 #include <string>
+#include <sstream>
+#include <string_view>
 #include <vector>
 #include "string_view.h"
 #include "span.h"
@@ -105,7 +107,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string EncodeUTF(const std::u16string& str);
+	std::string EncodeUTF(std::u16string_view str);
 
 	/**
 	 * Converts UTF-32 to UTF-8.
@@ -113,7 +115,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string EncodeUTF(const std::u32string& str);
+	std::string EncodeUTF(std::u32string_view str);
 
 	struct UtfNextResult {
 		const char* next = nullptr;

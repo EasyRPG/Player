@@ -926,6 +926,9 @@ player_find_package(NAME fmt TARGET fmt::fmt VERSION 5.2 REQUIRED)
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
+find_package(ICU COMPONENTS i18n uc data REQUIRED)
+target_link_libraries(${PROJECT_NAME} ICU::i18n ICU::uc ICU::data)
+
 # Always enable Wine registry support on non-Windows, but not for console ports
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows"
 	AND NOT PLAYER_CONSOLE_PORT)

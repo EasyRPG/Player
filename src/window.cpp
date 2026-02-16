@@ -74,6 +74,12 @@ void Window::SetBackgroundPreserveTransparentColor(bool preserve) {
 	bg_preserve_transparent_color = preserve;
 }
 
+void Window::ApplyRtlMirror() {
+	if (Player::IsRTL()) {
+		SetX(Player::menu_offset_x + Player::screen_width - GetX() - GetWidth());
+	}
+}
+
 void Window::Draw(Bitmap& dst) {
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > dst.GetWidth() || y < -height || y > dst.GetHeight()) return;
