@@ -208,6 +208,7 @@ void BattleAnimation::UpdateScreenFlash() {
 }
 
 void BattleAnimation::UpdateTargetFlash() {
+	if (Player::player_config.ignore_absent_battle_animation_flash.Get() && target_flash_timing == -1) return;
 	int r, g, b, p;
 	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
 	FlashTargets(r, g, b, p);

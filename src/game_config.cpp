@@ -684,6 +684,7 @@ void Game_Config::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	player.automatic_screenshots.FromIni(ini);
 	player.automatic_screenshots_interval.FromIni(ini);
 	player.prefer_easyrpg_map_files.FromIni(ini);
+	player.ignore_absent_battle_animation_flash.FromIni(ini);
 }
 
 void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
@@ -778,6 +779,7 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 	player.automatic_screenshots.ToIni(os);
 	player.automatic_screenshots_interval.ToIni(os);
 	player.prefer_easyrpg_map_files.ToIni(os);
+	player.ignore_absent_battle_animation_flash.ToIni(os);
 
 	os << "\n";
 }

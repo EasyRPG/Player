@@ -1,5 +1,6 @@
 /easyrpg-player
 /Player.app
+/EasyRPG Player.app
 *.a
 *.elf
 *.o
@@ -8,6 +9,7 @@
 *.bak
 
 # cmake
+.cmake/
 /Makefile
 CMakeFiles/
 CMakeScripts/
@@ -19,6 +21,17 @@ CPackSourceConfig.cmake
 CTestTestfile.cmake
 cmake_install.cmake
 install_manifest.txt
+.deps/
+.dirstamp
+.version-append
+.version-git
+aclocal.m4
+autom4te.cache/
+builds/autoconf/
+config.h
+config.h.in
+config.status
+stamp-h1
 
 # msvc / Windows
 *.vcxproj*

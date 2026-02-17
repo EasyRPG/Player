@@ -109,6 +109,7 @@ struct Game_ConfigPlayer {
 	BoolConfigParam automatic_screenshots{ "Automatic screenshots", "Periodically take screenshots", "Player", "AutomaticScreenshots", false };
 	RangeConfigParam<int> automatic_screenshots_interval{ "Screenshot interval", "The interval between automatic screenshots (seconds)", "Player", "AutomaticScreenshotsInterval", 30, 1, 999999 };
 	BoolConfigParam prefer_easyrpg_map_files{ "Prefer EasyRPG map files", "Attempt to load EasyRPG map files (.emu) first and fall back to RPG Maker map files (.lmu)", "Player", "PreferEasyRpgMapFiles", true };
+	BoolConfigParam ignore_absent_battle_animation_flash{ "Ignore absent battle animation flash", "In RPG Maker, Battle Animations may override flashes on an event, even if the animation does not utilize flashes. Disables that behavior if true.", "Player", "IgnoreAbsentBattleAnimationFlash", false };
 
 	void Hide();
 };
