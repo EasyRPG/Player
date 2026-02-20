@@ -807,8 +807,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
 		case Cmd::Maniac_ControlStrings:
 			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
-		case static_cast<Cmd>(3026): //Maniac_SaveImage
-			return CmdSetup<&Game_Interpreter::CommandManiacSaveImage, 5>(com);
+		case Cmd::Maniac_WritePicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
@@ -5291,7 +5291,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacSaveImage(lcf::rpg::EventCommand const& com) {
+bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
