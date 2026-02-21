@@ -87,7 +87,7 @@ Bitmap::Bitmap(int width, int height, bool transparent) {
 Bitmap::Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& _format) {
 	format = _format;
 	pixman_format = find_format(format);
-	Init(width, height, pixels, pitch, false);
+	Init(width, height, pixels, pitch, pixels == nullptr);
 }
 
 Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {

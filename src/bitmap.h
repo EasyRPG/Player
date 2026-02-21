@@ -92,7 +92,8 @@ public:
 	static BitmapRef Create(int width, int height, bool transparent = true, int bpp = 0);
 
 	/**
-	 * Creates a surface wrapper around existing pixel data.
+	 * Creates a surface wrapper around pixel data.
+	 * When the pixel data is NULL the data is allocated and managed by the bitmap.
 	 *
 	 * @param pixels pointer to pixel data.
 	 * @param width surface width.
