@@ -128,6 +128,8 @@ public:
 
 		void AttachWindow(const Window_Base& window);
 		bool IsWindowAttached() const;
+
+		bool IsCanvas() const;
 	};
 
 	Picture& GetPicture(int id);

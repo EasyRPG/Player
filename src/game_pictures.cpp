@@ -507,6 +507,10 @@ bool Game_Pictures::Picture::IsWindowAttached() const {
 	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
 }
 
+bool Game_Pictures::Picture::IsCanvas() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_canvas;
+}
+
 void Game_Pictures::Picture::Update(bool is_battle) {
 	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
 		return;

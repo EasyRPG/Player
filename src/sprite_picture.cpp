@@ -71,7 +71,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		return;
 	}
 
-	if (data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window) {
+	if (pic.IsWindowAttached()) {
 		// Paint the Window on the Picture
 		const auto& window = Main_Data::game_windows->GetWindow(pic_id);
 		window.window->Draw(*bitmap.get());
