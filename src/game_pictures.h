@@ -127,8 +127,9 @@ public:
 		void OnMapScrolled(int dx, int dy);
 
 		void AttachWindow(const Window_Base& window);
-		bool IsWindowAttached() const;
 
+		bool IsNormalPicture() const;
+		bool IsWindowAttached() const;
 		bool IsCanvas() const;
 	};
 

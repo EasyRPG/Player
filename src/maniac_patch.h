@@ -38,12 +38,25 @@ namespace ManiacPatch {
 	bool CheckString(std::string_view str_l, std::string_view str_r, int op, bool ignore_case);
 
 	/**
+	 * Reads pixel data in ARGB format out of variables and writes them into a bitmap
+	 *
+	 * @param dst Bitmap to write
+	 * @param dst_rect Bitmap area to write to
+	 * @param start_var_id Begin of variable range
+	 * @param clear_dst Clears the target area before blitting
+	 * @param ignore_alpha Blit as if no alpha channel exists (faster)
+	 * @param variables Variable list
+	 * @return true when any pixels were modified, false otherwise
+	 */
+	bool ReadPixelsFromVariable(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables);
+
+	/**
 	 * Extracts pixel data out of a bitmap writing it into a range of variables in ARGB format
 	 *
 	 * @param src Bitmap
 	 * @param src_rect Bitmap area to extract
 	 * @param start_var_id Begin of variable range
-	 * @param ignore_alpha Sets the alpha bits in all pixels to 0 (slow)
+	 * @param ignore_alpha Sets the alpha channel in all pixel to 0 (slow)
 	 * @param variables Variable list
 	 * @return true when any variables were modified, false otherwise
 	 */
