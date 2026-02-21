@@ -48,6 +48,8 @@
 #include "game_windows.h"
 #include "json_helper.h"
 #include "maniac_patch.h"
+#include "memory_management.h"
+#include "pixel_format.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -807,16 +809,16 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacChangePictureId, 6>(com);
 		case Cmd::Maniac_SetGameOption:
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
-		case Cmd::Maniac_ControlStrings:
-			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
-		case Cmd::Maniac_WritePicture:
-			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
+		case Cmd::Maniac_ControlStrings:
+			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
-		case static_cast<Cmd>(3025):
-			return CmdSetup<&Game_Interpreter::CommandManiacSetPicturePixel, 8>(com);
+		case Cmd::Maniac_EditPicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacEditPicture, 8>(com);
+		case Cmd::Maniac_WritePicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -4211,68 +4213,99 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			break;
 		case 3: // Get pixel info
 		{
-			// 1. Decode Parameters
-			// [0] Packing: Bits 0-3: X Mode, 4-7: Y Mode, etc.
-			int p_x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
-			int p_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
-			int p_w = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
-			int p_h = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
-			int dest_var_id = com.parameters[7];
+			// [0] Packing: x pos, y pos, width, height
+			int pic_x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+			int pic_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+			int pic_w = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+			int pic_h = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+			int dst_var_id = com.parameters[7];
 
 			// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
 			bool ignore_alpha = (com.parameters[2] & 1) != 0;
 
-			// 2. Capture Screen
 			// Creates a snapshot of the current frame
 			BitmapRef screen = DisplayUi->CaptureScreen();
-			if (!screen) return true;
 
+			if (pic_w <= 0 || pic_h <= 0) {
+				return true;
+			}
 
-			int screen_w = screen->GetWidth();
-			int screen_h = screen->GetHeight();
+			// Format expected by Maniacs
+			auto format = format_B8G8R8A8_a().format();
+			if (ignore_alpha) {
+				format = format_B8G8R8A8_n().format();
+			}
 
-			if (p_w <= 0 || p_h <= 0) return true;
+			// Allocate an image as large as the requested dimensions (ignoring out of bounds)
+			Rect screen_rect = screen->GetRect();
+			Rect frame_rect = screen_rect.GetSubRect({pic_x, pic_y, pic_w, pic_h});
 
-			uint32_t* pixels = static_cast<uint32_t*>(screen->pixels());
-			int pitch = screen->pitch() / 4; // stride in uint32 elements
+			if (frame_rect.width <= 0 || frame_rect.height <= 0) {
+				return true;
+			}
 
+			BitmapRef frame = Bitmap::Create(nullptr, frame_rect.width, frame_rect.height, frame_rect.width * format.bytes, format);
+
+			// Then blit the screen (converts to the correct format)
+			frame->BlitFast(0, 0, *screen, frame_rect, Opacity::Opaque());
+
+			uint32_t* pixels = static_cast<uint32_t*>(frame->pixels());
+			int px_per_row = frame->pitch() / sizeof(uint32_t);
+			uint32_t* src_row = pixels;
+
+			if (ignore_alpha) {
+				// Slow: Set all alpha values to 0
+				const auto a_mask = format.a.mask;
+				for (int y = 0; y < frame_rect.height; ++y) {
+					for (int x = 0; x < frame_rect.width; ++x) {
+						src_row[x] &= ~a_mask;
+					}
+					src_row += px_per_row;
+				}
+			}
+
+			// Rowwise memcpy
 			auto& variables = *Main_Data::game_variables;
 
-			int var_idx = 0;
-			uint8_t r, g, b, a;
+			int x_l = std::min(0, pic_x);
+			int x_r = std::max(0, pic_x + pic_w - screen_rect.width) + frame_rect.width;
+			int y_t = std::min(0, pic_y);
+			int y_b = std::max(0, pic_y + pic_h - screen_rect.height) + frame_rect.height;
 
-			// 4. Read Loop
-			for (int iy = 0; iy < p_h; ++iy) {
-				int sy = p_y + iy;
-
-				// If row out of bounds, skip variables for this row
-				if (sy < 0 || sy >= screen_h) {
-					var_idx += p_w;
+			src_row = pixels;
+			for (int y = y_t; y < y_b; ++y) {
+				// When row out of bounds write 0 in this row
+				if (y < 0 || y >= frame_rect.height) {
+					auto out_range = variables.GetWritableRange(dst_var_id, pic_w);
+					std::fill(out_range.begin(), out_range.end(), 0);
+					dst_var_id += pic_w;
 					continue;
 				}
 
-				for (int ix = 0; ix < p_w; ++ix) {
-					int target_var = dest_var_id + var_idx++;
-					int sx = p_x + ix;
-
-					if (sx >= 0 && sx < screen_w) {
-						uint32_t raw_pixel = pixels[sy * pitch + sx];
-
-						Bitmap::opaque_pixel_format.uint32_to_rgba(raw_pixel, r, g, b, a);
-
-						if (ignore_alpha) {
-							a = 0;
-						}
-						else {
-							a = 255; //In maniacs, bellow parallax layer can't be transparent is this the best approach?
-						}
-
-						// Maniacs format: AARRGGBB (Signed 32-bit)
-						uint32_t packed = (a << 24) | (r << 16) | (g << 8) | b;
-						variables.Set(target_var, static_cast<int32_t>(packed));
+				for (int x = x_l; x < x_r;) {
+					if (x < 0) {
+						// OOB to the left (write 0 for remaining cols)
+						auto out_range = variables.GetWritableRange(dst_var_id, -x_l);
+						std::fill(out_range.begin(), out_range.end(), 0);
+						dst_var_id += -x;
+						x = 0;
+					} else if (x >= frame_rect.width) {
+						// OOB to the right (write 0 for remaining cols)
+						int len = x_r - frame_rect.width;
+						auto out_range = variables.GetWritableRange(dst_var_id, len);
+						std::fill(out_range.begin(), out_range.end(), 0);
+						dst_var_id += len;
+						break;
+					} else {
+						auto out_range = variables.GetWritableRange(dst_var_id, frame_rect.width);
+						std::copy(src_row, src_row + frame_rect.width, out_range.data());
+						src_row += px_per_row;
+						dst_var_id += frame_rect.width;
+						x += frame_rect.width;
 					}
 				}
 			}
+
 			break;
 		}
 		case 4: // Get command interpreter state
