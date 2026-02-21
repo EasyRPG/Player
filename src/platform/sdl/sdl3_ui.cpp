@@ -65,7 +65,7 @@ static SDL_PixelFormat GetDefaultFormat() {
 #ifdef WORDS_BIGENDIAN
 	return SDL_PIXELFORMAT_ABGR32;
 #else
-	return SDL_PIXELFORMAT_RGBA32;
+	return SDL_PIXELFORMAT_BGRA32;
 #endif
 }
 
