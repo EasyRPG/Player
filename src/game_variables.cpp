@@ -210,12 +210,9 @@ void Game_Variables::WriteArray(const int first_id_a, const int last_id_a, const
 	}
 }
 
-std::vector<Var_t> Game_Variables::GetRange(int variable_id, int length) const {
-	std::vector<Var_t> vars;
-	for (int i = 0; i < length; ++i) {
-		vars.push_back(Get(variable_id + i));
-	}
-	return vars;
+lcf::Span<const Var_t> Game_Variables::GetRange(int variable_id, int length) {
+	PrepareRange(variable_id, variable_id + length, "Invalid write var[{},{}]!");
+	return lcf::Span<const Var_t>(&_variables[variable_id - 1], length);
 }
 
 lcf::Span<Var_t> Game_Variables::GetWritableRange(int variable_id, int length) {

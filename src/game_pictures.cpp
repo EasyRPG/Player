@@ -503,6 +503,10 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	ApplyOrigin(false);
 }
 
+bool Game_Pictures::Picture::IsNormalPicture() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_default;
+}
+
 bool Game_Pictures::Picture::IsWindowAttached() const {
 	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
 }
