@@ -5404,6 +5404,7 @@ bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& co
 		writable_bitmap = Bitmap::Create(*bitmap, src_rect, true);
 	}
 
+	picture.data.name = {};
 	picture.data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_canvas;
 
 	// Packing: x pos, y pos, width, height, var_id
