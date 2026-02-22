@@ -30,6 +30,9 @@
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
+#include "dynrpg_particleV1.h"
+#include "dynrpg_particleV2.h"
+
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -181,11 +184,18 @@ void Game_DynRpg::InitPlugins() {
 
 	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		plugins.emplace_back(new DynRpg::EasyRpgPlugin(*this));
+		plugins.emplace_back(new DynRpg::ParticleV1(*this));
 	}
 
 	if (Player::IsPatchDynRpg()) {
 		plugins.emplace_back(new DynRpg::TextPlugin(*this));
 	}
+
+	if (Player::IsPatchDynRpg()) {
+		plugins.emplace_back(new DynRpg::Particle(*this));
+	}
+
+
 
 	plugins_loaded = true;
 }
