@@ -239,24 +239,7 @@ bool Game_Strings::ToFile(Str_Params params, std::string filename, int encoding)
 		filename += ".txt";
 	}
 
-	filename = FileFinder::MakeCanonical(filename, 1);
-
-	auto txt_file = FileFinder::Save().FindFile(filename);
-	Filesystem_Stream::OutputStream txt_out;
-
-	if (txt_file.empty()) {
-		// File not found: Create directory hierarchy to ensure file creation succeeds
-		auto txt_dir = FileFinder::GetPathAndFilename(filename).first;
-
-		if (!txt_dir.empty() && !FileFinder::Save().MakeDirectory(txt_dir, false)) {
-			Output::Warning("Maniac String Op ToFile failed. Cannot create directory {}", txt_dir);
-			return false;
-		}
-
-		txt_file = filename;
-	}
-
-	txt_out = FileFinder::Save().OpenOutputStream(txt_file);
+	auto txt_out = FileFinder::OpenWrite(filename);
 	if (!txt_out) {
 		Output::Warning("Maniac String Op ToFile failed. Cannot write to {}", filename);
 		return false;

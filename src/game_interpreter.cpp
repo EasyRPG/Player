@@ -5540,11 +5540,9 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 			filename += ".png";
 		}
 
-		auto found_file = FileFinder::Save().FindFile(filename);
-
-		auto os = FileFinder::Save().OpenOutputStream(found_file.empty() ? filename : found_file);
-		if (os) {
-			bitmap->WritePNG(os);
+		auto img_out = FileFinder::OpenWrite(filename);
+		if (img_out) {
+			bitmap->WritePNG(img_out);
 		} else {
 			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
 		}
