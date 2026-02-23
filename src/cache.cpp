@@ -248,6 +248,7 @@ namespace {
 		BitmapRef bmp;
 
 		const auto key = MakeHashKey(s.directory, filename, transparent, extra_flags);
+
 		auto it = cache.find(key);
 		if (it == cache.end()) {
 			if (filename == CACHE_DEFAULT_BITMAP) {
@@ -527,6 +528,16 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 
 		return(cache_effects[key] = bitmap_effects).lock();
 	} else { return it->second.lock(); }
+}
+
+void Cache::Invalidate(std::string_view section) {
+	for (auto it = cache.begin(); it != cache.end(); ) {
+		if (StartsWith(it->first, section)) {
+			it = cache.erase(it);
+		} else {
+			++it;
+		}
+	}
 }
 
 void Cache::Clear() {

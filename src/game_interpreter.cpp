@@ -5543,6 +5543,8 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 		auto img_out = FileFinder::OpenWrite(filename);
 		if (img_out) {
 			bitmap->WritePNG(img_out);
+			// Not ideal but figuring out the exact cache entry is complicated
+			Cache::Invalidate("Picture");
 		} else {
 			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
 		}
