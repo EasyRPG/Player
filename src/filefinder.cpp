@@ -519,6 +519,25 @@ Filesystem_Stream::InputStream FileFinder::OpenText(std::string_view name) {
 	return open_generic_with_fallback("Text", name, args);
 }
 
+Filesystem_Stream::OutputStream FileFinder::OpenWrite(std::string_view name) {
+	std::string orig_name = FileFinder::MakeCanonical(name, 1);
+
+	std::string filename = FileFinder::Save().FindFile(name);
+
+	if (filename.empty()) {
+		// File not found: Create directory hierarchy to ensure file creation succeeds
+		auto dir = FileFinder::GetPathAndFilename(orig_name).first;
+
+		if (!dir.empty() && !FileFinder::Save().MakeDirectory(dir, false)) {
+			return Filesystem_Stream::OutputStream();
+		}
+
+		filename = orig_name;
+	}
+
+	return FileFinder::Save().OpenOutputStream(filename);
+}
+
 bool FileFinder::IsMajorUpdatedTree() {
 	auto fs = Game();
 	assert(fs);

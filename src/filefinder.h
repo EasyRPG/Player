@@ -30,6 +30,7 @@
 #include <cstdio>
 #include <ios>
 #include <istream>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -228,6 +229,16 @@ namespace FileFinder {
 	 * @return read handle on success or invalid handle if not found
 	 */
 	Filesystem_Stream::InputStream OpenText(std::string_view name);
+
+	/**
+	 * Opens a given file for writing in the save directory.
+	 * Sanitizes the path and creates the directory hierarchy to the file when
+	 * necessary.
+	 *
+	 * @param name
+	 * @return Filesystem_Stream::OutputStream
+	 */
+	Filesystem_Stream::OutputStream OpenWrite(std::string_view name);
 
 	/**
 	 * Appends name to directory.
