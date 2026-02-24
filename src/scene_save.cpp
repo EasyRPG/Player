@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include <sstream>
+#include "game_constants.h"
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
@@ -53,7 +53,7 @@ Scene_Save::Scene_Save() :
 void Scene_Save::Start() {
 	Scene_File::Start();
 
-	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		file_windows[i]->SetHasSave(true);
 		file_windows[i]->Refresh();
 	}

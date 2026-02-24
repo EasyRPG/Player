@@ -23,6 +23,7 @@
 #include "player.h"
 #include "utils.h"
 #include "output.h"
+#include "game_clock.h"
 
 #ifdef USE_SDL // SDL might wrap main()
 #  include <SDL.h>

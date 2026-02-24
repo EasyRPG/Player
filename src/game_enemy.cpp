@@ -17,19 +17,17 @@
 
 // Headers
 #include <cmath>
-#include <algorithm>
 #include <lcf/data.h>
 #include <lcf/rpg/enemy.h>
 #include "game_battle.h"
 #include "game_enemy.h"
-#include "game_party.h"
-#include "game_switches.h"
+#include "game_constants.h"
 #include <lcf/reader_util.h>
+#include "main_data.h"
 #include "output.h"
 #include "utils.h"
 #include "player.h"
 #include "attribute.h"
-#include "rand.h"
 
 Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 	: troop_member(member)
@@ -48,19 +46,19 @@ Game_Enemy::Game_Enemy(const lcf::rpg::TroopMember* member)
 }
 
 int Game_Enemy::MaxHpValue() const {
-	return Player::Constants::MaxEnemyHpValue();
+	return Main_Data::game_constants->MaxEnemyHpValue();
 }
 
 int Game_Enemy::MaxSpValue() const {
-	return Player::Constants::MaxEnemySpValue();
+	return Main_Data::game_constants->MaxEnemySpValue();
 }
 
 int Game_Enemy::MaxStatBattleValue() const {
-	return Player::Constants::MaxStatBattleValue();
+	return Main_Data::game_constants->MaxStatBattleValue();
 }
 
 int Game_Enemy::MaxStatBaseValue() const {
-	return Player::Constants::MaxStatBaseValue();
+	return Main_Data::game_constants->MaxStatBaseValue();
 }
 
 int Game_Enemy::GetStateProbability(int state_id) const {

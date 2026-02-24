@@ -19,11 +19,10 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
-#include "baseui.h"
 #include "cache.h"
 #include <lcf/data.h>
+#include "game_constants.h"
 #include "game_system.h"
-#include "game_party.h"
 #include "input.h"
 #include <lcf/lsd/reader.h>
 #include "player.h"
@@ -123,7 +122,7 @@ void Scene_File::Start() {
 	// Refresh File Finder Save Folder
 	fs = FileFinder::Save();
 
-	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
@@ -168,7 +167,7 @@ void Scene_File::RefreshWindows() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; i < Player::Constants::MaxSaveFiles(); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		PopulateSaveWindow(*w, i);
 		w->Refresh();

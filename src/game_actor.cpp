@@ -17,10 +17,10 @@
 
 // Headers
 #include <algorithm>
-#include <sstream>
 #include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
+#include "game_constants.h"
 #include "game_party.h"
 #include "sprite_actor.h"
 #include "main_data.h"
@@ -37,23 +37,23 @@
 #include "game_message_terms.h"
 
 int Game_Actor::MaxHpValue() const {
-	return Player::Constants::MaxActorHpValue();
+	return Main_Data::game_constants->MaxActorHpValue();
 }
 
 int Game_Actor::MaxSpValue() const {
-	return Player::Constants::MaxActorSpValue();
+	return Main_Data::game_constants->MaxActorSpValue();
 }
 
 int Game_Actor::MaxStatBattleValue() const {
-	return Player::Constants::MaxStatBattleValue();
+	return Main_Data::game_constants->MaxStatBattleValue();
 }
 
 int Game_Actor::MaxStatBaseValue() const {
-	return Player::Constants::MaxStatBaseValue();
+	return Main_Data::game_constants->MaxStatBaseValue();
 }
 
 int Game_Actor::MaxExpValue() const {
-	return Player::Constants::MaxExpValue();
+	return Main_Data::game_constants->MaxExpValue();
 }
 
 Game_Actor::Game_Actor(int actor_id) {
@@ -722,7 +722,7 @@ int Game_Actor::GetAccessoryId() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return Utils::Clamp<int32_t>(Player::Constants::MaxLevel(), 1, dbActor->final_level);
+	return Utils::Clamp<int32_t>(Main_Data::game_constants->MaxLevel(), 1, dbActor->final_level);
 }
 
 void Game_Actor::SetExp(int _exp) {

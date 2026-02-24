@@ -18,10 +18,12 @@
 #ifndef EP_EXE_READER_H
 #define EP_EXE_READER_H
 
+#include "filesystem_stream.h"
+#include "game_constants.h"
 #include <cstdint>
+#include <lcf/enum_tags.h>
 #include <string>
 #include <vector>
-#include "player.h"
 
 /**
  * Extracts resources from an EXE.
@@ -71,7 +73,7 @@ public:
 
 	const FileInfo& GetFileInfo();
 
-	std::map<Player::GameConstantType, int32_t> GetOverriddenGameConstants();
+	std::unordered_map<Game_Constants::ConstantType, int32_t> GetOverriddenGameConstants();
 
 private:
 	// Bounds-checked unaligned reader primitives.
