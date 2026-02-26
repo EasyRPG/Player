@@ -113,7 +113,7 @@ namespace Game_Message {
 		/** value that was parsed */
 		int value = 0;
 		/** multiple values in case of array parsing. For compatibility first number is also stored in `value` */
-		std::vector<int> values;
+		std::vector<int> values {};
 
 		bool is_array() const { return values.size() >= 2; }
 	};

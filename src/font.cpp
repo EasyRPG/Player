@@ -939,12 +939,10 @@ Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 	auto exfont = Cache::Exfont();
 	bm->Clear();
 
-	Rect rect(0, 0, 0, 0);
-
 	// Glyph contains two packed coordinates (YX, 8 bits each)
 	int x = glyph & 0xFF;
 	int y = (glyph >> 8) & 0xFF;
-	rect = Rect(x * WIDTH, y * HEIGHT, WIDTH, HEIGHT);
+	Rect rect = Rect(x * WIDTH, y * HEIGHT, WIDTH, HEIGHT);
 
 	if (rect.x + rect.width > exfont->GetWidth() || rect.y + rect.height > exfont->GetHeight()) {
 		// Coordinates are out of bounds for the ExFont sheet
