@@ -16,11 +16,13 @@
  */
 
 // Headers
+#include "game_constants.h"
 #include <algorithm>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
@@ -773,11 +775,16 @@ void Player::CreateGameObjects() {
 	}
 
 	int& engine = game_config.engine;
+	std::unordered_map<Game_Constants::ConstantType, int32_t> game_constant_overrides;
 
 #ifndef EMSCRIPTEN
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
-	auto exeis = FileFinder::Game().OpenFile(EXE_NAME);
+	const auto exe_file = game_config.engine_path.Get().empty() ? EXE_NAME : game_config.engine_path.Get();
+	if (!game_config.engine_path.Get().empty()) {
+		Output::Debug("Using specified .EXE '{}' for engine detection", exe_file);
+	}
+	auto exeis = FileFinder::Game().OpenFile(exe_file);
 
 	if (exeis) {
 		exe_reader.reset(new EXEReader(std::move(exeis)));
@@ -792,6 +799,8 @@ void Player::CreateGameObjects() {
 				game_config.patch_maniac.Set(maniac_patch_version);
 			}
 		}
+
+		game_constant_overrides = exe_reader->GetOverriddenGameConstants();
 
 		if (engine == EngineNone) {
 			Output::Debug("Unable to detect version from exe");
@@ -851,6 +860,13 @@ void Player::CreateGameObjects() {
 	game_config.PrintActivePatches();
 
 	ResetGameObjects();
+
+	if (!game_constant_overrides.empty()) {
+		for (auto it = game_constant_overrides.begin(); it != game_constant_overrides.end();++it) {
+			Main_Data::game_constants->OverrideGameConstant(it->first, it->second);
+		}
+		Main_Data::game_constants->PrintActiveOverrides();
+	}
 
 	LoadFonts();
 
@@ -924,25 +940,13 @@ void Player::ResetGameObjects() {
 
 	Main_Data::Cleanup();
 
+	Main_Data::game_constants = std::make_unique<Game_Constants>();
+
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 	Main_Data::game_switches->SetLowerLimit(lcf::Data::switches.size());
 
-	auto min_var = lcf::Data::system.easyrpg_variable_min_value;
-	if (min_var == 0) {
-		if (!Player::IsPatchManiac() || Player::game_config.patch_maniac.Get() == 2) {
-			min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-		} else {
-			min_var = std::numeric_limits<Game_Variables::Var_t>::min();
-		}
-	}
-	auto max_var = lcf::Data::system.easyrpg_variable_max_value;
-	if (max_var == 0) {
-		if (!Player::IsPatchManiac() || Player::game_config.patch_maniac.Get() == 2) {
-			max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
-		} else {
-			max_var = std::numeric_limits<Game_Variables::Var_t>::max();
-		}
-	}
+	auto [min_var, max_var] = Main_Data::game_constants->GetVariableLimits();
+
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 	Main_Data::game_variables->SetLowerLimit(lcf::Data::variables.size());
 
@@ -1451,6 +1455,8 @@ Engine options:
                        rpg2k3     - RPG Maker 2003 (v1.00 - v1.04)
                        rpg2k3v105 - RPG Maker 2003 (v1.05 - v1.09a)
                        rpg2k3e    - RPG Maker 2003 (English release, v1.12)
+ --engine-path EXE    Set a custom path for the executable which is to be used
+                      by the automatic engine detection.
  --font1 FILE         Font to use for the first font. The system graphic of the
                       game determines whether font 1 or 2 is used.
  --font1-size PX      Size of font 1 in pixel. The default is 12.

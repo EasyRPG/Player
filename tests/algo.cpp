@@ -1,3 +1,4 @@
+#include "main_data.h"
 #include "test_mock_actor.h"
 #include "algo.h"
 #include "rand.h"
@@ -12,7 +13,6 @@ static void testRowAdj(lcf::rpg::SaveActor::RowType row, bool offense, bool none
 	REQUIRE_EQ(surround, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_surround, offense));
 	REQUIRE_EQ(pincers, Algo::IsRowAdjusted(row, lcf::rpg::System::BattleCondition_pincers, offense));
 }
-
 
 TEST_CASE("RowAdj") {
 	const MockActor m;

@@ -17,23 +17,20 @@
  */
 
 #include <cassert>
-#include <cmath>
 #include <cstdlib>
 #include <algorithm>
-#include <sstream>
 #include "game_actor.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
 #include "game_battler.h"
+#include "game_constants.h"
 #include "game_enemy.h"
-#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_party_base.h"
 #include "game_switches.h"
 #include "game_system.h"
 #include "main_data.h"
 #include "game_message_terms.h"
-#include "output.h"
 #include "player.h"
 #include <lcf/reader_util.h>
 #include <lcf/rpg/animation.h>
@@ -52,7 +49,7 @@
 #include "feature.h"
 
 static inline int MaxDamageValue() {
-	return lcf::Data::system.easyrpg_max_damage == -1 ? (Player::IsRPG2k() ? 999 : 9999) : lcf::Data::system.easyrpg_max_damage;
+	return Main_Data::game_constants->MaxDamageValue();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :

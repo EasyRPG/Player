@@ -22,7 +22,6 @@
 #include "fileext_guesser.h"
 #include "meta.h"
 #include "translation.h"
-#include "game_clock.h"
 #include "game_config.h"
 #include "game_config_game.h"
 #include "game_interpreter_shared.h"
@@ -443,6 +442,7 @@ namespace Player {
 
 	std::optional<bool> GetRuntimeFlag(Game_Interpreter_Shared::StateRuntimeFlagRef field_on, Game_Interpreter_Shared::StateRuntimeFlagRef field_off);
 #endif
+
 }
 
 inline bool Player::IsRPG2k() {

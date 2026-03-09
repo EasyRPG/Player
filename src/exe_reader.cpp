@@ -16,16 +16,17 @@
  */
 
 // All of this code is unused on EMSCRIPTEN. *Do not use it*!
+
 #ifndef EMSCRIPTEN
 
 #include "exe_reader.h"
 #include "image_bmp.h"
 #include "output.h"
-#include "utils.h"
+#include "player.h"
 #include <algorithm>
 #include <iostream>
-#include <fstream>
 #include <zlib.h>
+#include <unordered_map>
 
 namespace {
 	// hashes of known RPG_RT startup logos
@@ -122,6 +123,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 	uint32_t sectionsOfs = optional_header + GetU16(ofs + 0x14); // skip opt header
 	uint32_t data_directory_ofs = (format_pe32 ? 0x60 : 0x70);
 	resource_rva = GetU32(optional_header + data_directory_ofs + 16);
+
 	if (!resource_rva) {
 		// Is some kind of encrypted EXE -> Give up
 		return;
@@ -138,6 +140,7 @@ EXEReader::EXEReader(Filesystem_Stream::InputStream core) : corefile(std::move(c
 
 		if (secName == 0x45444F43) { // CODE
 			file_info.code_size = sectVs;
+			file_info.code_ofs = GetU32(sectionsOfs + 0x14);
 		} else if (secName == 0x52454843) { // CHER(RY)
 			file_info.cherry_size = sectVs;
 		} else if (secName == 0x50454547) { // GEEP
@@ -561,6 +564,54 @@ int EXEReader::FileInfo::GetEngineType(int& mp_version) const {
 	}
 
 	return Player::EngineNone;
+}
+
+std::unordered_map<Game_Constants::ConstantType, int32_t> EXEReader::GetOverriddenGameConstants() {
+	std::unordered_map<Game_Constants::ConstantType, int32_t> game_constants;
+
+	auto apply_known_config = [&](Game_Constants::KnownPatchConfigurations conf) {
+		Output::Debug("Assuming known patch config '{}'", Game_Constants::kKnownPatchConfigurations.tag(static_cast<int>(conf)));
+		auto it_conf = Game_Constants::known_patch_configurations.find(conf);
+		assert(it_conf != Game_Constants::known_patch_configurations.end());
+
+		for (auto it = it_conf->second.begin(); it != it_conf->second.end(); ++it) {
+			game_constants[it->first] = it->second;
+		}
+	};
+
+	auto check_for_string = [&](uint32_t offset, const char* p) {
+		while (*p) {
+			if (GetU8(offset++) != *p++)
+				return false;
+		}
+		return true;
+	};
+
+	switch (file_info.code_size) {
+		case 0x9CC00: // RM2K 1.62
+			if (check_for_string(file_info.code_ofs + 0x07DAA6, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(Game_Constants::KnownPatchConfigurations::StatDelimiter);
+			}
+			break;
+		case 0xC8E00: // RM2K3 1.0.8.0
+			// For all known Italian translations, the "WhiteDragon" patch seems to be the only one
+			// to translate this string in RPG_RT. So this segment can be used to reliably detect
+			// the patch without having to read all individual constant values from the EXE
+			if (check_for_string(file_info.code_ofs + 0x08EBE0, "NoTitolo")) {
+				apply_known_config(Game_Constants::KnownPatchConfigurations::Rm2k3_Italian_WD_108);
+			}
+			if (check_for_string(file_info.code_ofs + 0x09D279, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(Game_Constants::KnownPatchConfigurations::StatDelimiter);
+			}
+			break;
+		case 0xC9000: // RM2K3 1.0.9.1
+			if (check_for_string(file_info.code_ofs + 0x09C5AD, "XXX" /* 3x "POP EAX" */)) {
+				apply_known_config(Game_Constants::KnownPatchConfigurations::StatDelimiter);
+			}
+			break;
+	}
+
+	return game_constants;
 }
 
 #endif

@@ -55,6 +55,7 @@
 #include "cache.h"
 #include "player.h"
 #include "compiler.h"
+#include "game_clock.h"
 
 // Static variables.
 namespace {
