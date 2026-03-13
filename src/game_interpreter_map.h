@@ -83,6 +83,7 @@ private:
 	bool CommandOpenMainMenu(lcf::rpg::EventCommand const& com);
 	bool CommandOpenLoadMenu(lcf::rpg::EventCommand const& com);
 	bool CommandToggleAtbMode(lcf::rpg::EventCommand const& com);
+	bool CommandAddMoveRoute(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgTriggerEventAt(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgPathfinder(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCommand const& com);
