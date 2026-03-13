@@ -222,7 +222,9 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionRandomBlocksUp:
 		blocks_to_print = random_blocks.size() * (current_frame + 1) / tf_off;
 
-		for (uint32_t i = current_blocks_print; i < blocks_to_print; i++) {
+		// Off-by-one error?
+		// i < random_blocks.size() prevents out of bounds access on the final frame
+		for (uint32_t i = current_blocks_print; i < blocks_to_print && i < random_blocks.size(); i++) {
 			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
 				random_blocks[i] / (w / size_random_blocks) * size_random_blocks, *screen2,
 				Rect(random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
