@@ -87,6 +87,7 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_rpg2k3_commands.Lock(false);
 			patch_anti_lag_switch.Lock(0);
 			patch_direct_menu.Lock(0);
+			patch_powermode.Lock(0);
 
 			RuntimePatches::LockPatchesAsDiabled();
 			patch_override = true;
@@ -154,6 +155,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 				patch_direct_menu.Set(0);
 				patch_override = true;
 			}
+			continue;
+		}
+		if (cp.ParseNext(arg, 0, { "--patch-powermode", "--no-patch-powermode" })) {
+			patch_powermode.Set(arg.ArgIsOn());
+			patch_override = true;
 			continue;
 		}
 		if (RuntimePatches::ParseFromCommandLine(cp)) {
@@ -232,6 +238,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_direct_menu.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_powermode.FromIni(ini)) {
 		patch_override = true;
 	}
 
