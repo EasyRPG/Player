@@ -167,7 +167,7 @@ namespace Utils {
 
 	struct ExFontRet {
 		const char* next = nullptr;
-		char value = '\0';
+		uint32_t value = 0;
 		bool is_valid = false;
 
 		explicit operator bool() const { return is_valid; }

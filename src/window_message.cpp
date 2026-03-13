@@ -574,16 +574,28 @@ void Window_Message::UpdateMessage() {
 			switch (ch) {
 			case 'c':
 			case 'C':
-				{
-					// Color
-					auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true);
-					auto value = pres.value;
-					text_index = pres.next;
-					DebugLogText("{}: MSG Color \\c[{}]", value);
-					SetWaitForNonPrintable(0);
-					text_color = value > 19 ? 0 : value;
+			{
+				// Color
+				auto pres = Game_Message::ParseColor(text_index, end, Player::escape_char, true, Game_Message::default_max_recursion, Player::IsPatchManiac());
+				text_index = pres.next;
+
+				if (Player::IsPatchManiac()) {
+					if (pres.is_array()) {
+						// Maniacs \C[x,y] -> y * 10 + x
+						text_color = pres.values[1] * 10 + pres.values[0];
+					} else {
+						// Maniacs \C[n] (arbitrary amount of colors)
+						text_color = pres.values[0];
+					}
 				}
-				break;
+				else {
+					text_color = pres.value > 19 ? 0 : pres.value;
+				}
+
+				DebugLogText("{}: MSG Color \\c[{}]", text_color);
+				SetWaitForNonPrintable(0);
+			}
+			break;
 			case 's':
 			case 'S':
 				{

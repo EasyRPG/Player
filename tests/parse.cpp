@@ -7,6 +7,7 @@
 #include "main_data.h"
 #include <iostream>
 #include "doctest.h"
+#include "player.h"
 
 TEST_SUITE_BEGIN("Parse");
 
@@ -338,6 +339,59 @@ TEST_CASE("ColorVarsRecurse") {
 	REQUIRE_EQ(ret.next, (msg.data() + msg.size()) - 1);
 }
 
+TEST_CASE("Colors ArraySyntax") {
+	DataInit init;
+
+	std::string msg;
+	Game_Message::ParseParamResult ret;
+
+	msg = u8"\\c[3]";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 3);
+	REQUIRE(!ret.is_array());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
+
+	msg = u8"\\c[3,10]";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 3);
+	REQUIRE_EQ(ret.values[0], 3);
+	REQUIRE_EQ(ret.values[1], 10);
+	REQUIRE(ret.is_array());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
+
+	msg = u8"\\c[32,4]Hello";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 32);
+	REQUIRE_EQ(ret.values[0], 32);
+	REQUIRE_EQ(ret.values[1], 4);
+	REQUIRE(ret.is_array());
+	REQUIRE_EQ(ret.next, &*msg.data() + 8);
+
+	msg = u8"\\c[3,0004]";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 3);
+	REQUIRE_EQ(ret.values[0], 3);
+	REQUIRE_EQ(ret.values[1], 4);
+	REQUIRE(ret.is_array());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
+
+	msg = u8"\\c[3,a]HelloWorld";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 3);
+	REQUIRE_EQ(ret.values[0], 3);
+	REQUIRE_EQ(ret.values[1], 0);
+	REQUIRE(ret.is_array());
+	REQUIRE_EQ(ret.next, &*msg.data() + 7);
+
+	msg = u8"\\c[3,]";
+	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape, false, Game_Message::rpg_rt_default_max_recursion, true);
+	REQUIRE_EQ(ret.value, 3);
+	REQUIRE_EQ(ret.values[0], 3);
+	REQUIRE_EQ(ret.values[1], 0);
+	REQUIRE(ret.is_array());
+	REQUIRE_EQ(ret.next, (msg.data() + msg.size()));
+}
+
 TEST_CASE("Speed") {
 	DataInit init;
 
@@ -473,6 +527,26 @@ TEST_CASE("BadSpeed") {
 	ret = Game_Message::ParseColor(msg.data(), (msg.data() + msg.size()), escape);
 	REQUIRE_EQ(ret.value, 0);
 	REQUIRE_EQ(ret.next, msg.data());
+}
+
+TEST_CASE("ParseManiacExFont") {
+	DataInit init;
+	Player::game_config.patch_maniac.Set(true);
+
+	std::string msg;
+	Utils::ExFontRet ret;
+
+	msg = u8"$[43]";
+	ret = Utils::ExFontNext(msg.data(), (msg.data() + msg.size()));
+	REQUIRE_EQ(ret.value, 0xFF0304);
+	REQUIRE_EQ(ret.next, msg.data() + msg.size());
+
+	msg = u8"$[3,40]";
+	ret = Utils::ExFontNext(msg.data(), (msg.data() + msg.size()));
+	REQUIRE_EQ(ret.value, 0xFF2803);
+	REQUIRE_EQ(ret.next, msg.data() + msg.size());
+
+	Player::game_config.patch_maniac.Set(false);
 }
 
 TEST_SUITE_END();
