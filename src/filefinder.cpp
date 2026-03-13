@@ -432,23 +432,6 @@ std::string find_generic(const DirectoryTree::Args& args) {
 	return FileFinder::Game().FindFile(args);
 }
 
-std::string find_generic_with_fallback(DirectoryTree::Args& args) {
-	// Searches first in the Save directory (because the game could have written
-	// files there, then in the Game directory.
-	// Disable this behaviour when Game and Save are shared as this breaks the
-	// translation redirection.
-	if (Player::shared_game_and_save_directory) {
-		return find_generic(args);
-	}
-
-	std::string found = FileFinder::Save().FindFile(args);
-	if (found.empty()) {
-		return find_generic(args);
-	}
-
-	return found;
-}
-
 std::string FileFinder::FindImage(std::string_view dir, std::string_view name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
 	return find_generic(args);
@@ -490,16 +473,20 @@ Filesystem_Stream::InputStream open_generic(std::string_view dir, std::string_vi
 }
 
 Filesystem_Stream::InputStream open_generic_with_fallback(std::string_view dir, std::string_view name, DirectoryTree::Args& args) {
-	if (!Tr::GetCurrentTranslationId().empty()) {
-		auto tr_fs = Tr::GetCurrentTranslationFilesystem();
-		auto is = tr_fs.OpenFile(args);
-		if (is) {
-			return is;
-		}
+	// Searches first in the Save directory (because the game could have written
+	// files there, then in the Game directory.
+	// Disable this behaviour when Game and Save are shared as this breaks the
+	// translation redirection.
+	if (Player::shared_game_and_save_directory) {
+		return open_generic(dir, name, args);
 	}
 
 	auto is = FileFinder::Save().OpenFile(args);
-	if (!is) { is = open_generic(dir, name, args); }
+
+	if (!is) {
+		is = open_generic(dir, name, args);
+	}
+
 	if (!is) {
 		Output::Debug("Unable to open in either Game or Save: {}/{}", dir, name);
 	}
@@ -509,7 +496,7 @@ Filesystem_Stream::InputStream open_generic_with_fallback(std::string_view dir, 
 
 Filesystem_Stream::InputStream FileFinder::OpenImage(std::string_view dir, std::string_view name) {
 	DirectoryTree::Args args = { MakePath(dir, name), IMG_TYPES, 1, false };
-	return open_generic(dir, name, args);
+	return open_generic_with_fallback(dir, name, args);
 }
 
 Filesystem_Stream::InputStream FileFinder::OpenMusic(std::string_view name) {
@@ -530,6 +517,25 @@ Filesystem_Stream::InputStream FileFinder::OpenFont(std::string_view name) {
 Filesystem_Stream::InputStream FileFinder::OpenText(std::string_view name) {
 	DirectoryTree::Args args = { MakePath("Text", name), TEXT_TYPES, 1, false };
 	return open_generic_with_fallback("Text", name, args);
+}
+
+Filesystem_Stream::OutputStream FileFinder::OpenWrite(std::string_view name) {
+	std::string orig_name = FileFinder::MakeCanonical(name, 1);
+
+	std::string filename = FileFinder::Save().FindFile(name);
+
+	if (filename.empty()) {
+		// File not found: Create directory hierarchy to ensure file creation succeeds
+		auto dir = FileFinder::GetPathAndFilename(orig_name).first;
+
+		if (!dir.empty() && !FileFinder::Save().MakeDirectory(dir, false)) {
+			return Filesystem_Stream::OutputStream();
+		}
+
+		filename = orig_name;
+	}
+
+	return FileFinder::Save().OpenOutputStream(filename);
 }
 
 bool FileFinder::IsMajorUpdatedTree() {
