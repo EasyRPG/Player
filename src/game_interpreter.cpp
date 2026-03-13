@@ -37,6 +37,11 @@
 #include "game_variables.h"
 #include "game_party.h"
 #include "game_actors.h"
+
+#if defined(USE_SDL)
+#include <SDL.h>
+#endif
+
 #include "game_strings.h"
 #include "game_system.h"
 #include "game_message.h"
@@ -441,7 +446,16 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			_state.wait_time--;
 			break;
 		}
-
+		#if defined(USE_SDL)
+		if (_state.wait_typing_input) {
+			if (_is_typing_mode) {
+				// We are waiting for typing to finish. Break the loop to wait another frame.
+				break;
+			}
+			// Typing is no longer active, so clear the wait flag and continue execution.
+			_state.wait_typing_input = false;
+		}
+		#endif
 		if (_state.wait_key_enter) {
 			if (Game_Message::IsMessageActive()) {
 				break;
@@ -818,6 +832,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgCloneMapEvent, 10>(com);
 		case Cmd::EasyRpg_DestroyMapEvent:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgDestroyMapEvent, 2>(com);
+		case static_cast<Cmd>(2059):
+			return CommandEasyRpgTypeMode(com);
 		default:
 			return true;
 	}
@@ -5754,6 +5770,128 @@ bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand cons
 	return true;
 }
 
+bool Game_Interpreter::CommandEasyRpgTypeMode(const lcf::rpg::EventCommand& com) {
+	#if defined(USE_SDL)
+
+	int output_var_id = 0;
+	if (com.parameters.size() > 1) {
+		output_var_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	}
+
+	if (output_var_id <= 0 || output_var_id > Main_Data::game_strings->GetSizeWithLimit()) {
+		if (_is_typing_mode) {
+			FinalizeTyping(true); 
+		}
+		if (output_var_id != 0) {
+			Output::Warning("TypeMode: Invalid or zero Output String Variable ID provided: {}", output_var_id);
+		}
+		return true;
+	}
+
+	if (_is_typing_mode) {
+		Output::Warning("TypeMode: Command called to start while already active. Ignoring.");
+		return true;
+	}
+
+	_is_typing_mode = true;
+	_typing_output_var_id = output_var_id;
+	_typing_original_text = std::string(Main_Data::game_strings->Get(_typing_output_var_id));
+
+	std::string default_text;
+	if (!com.string.empty()) {
+		// Case 1: com.string has a value, use it directly.
+		default_text = ToString(com.string);
+	}
+	else {
+		// Case 2: com.string is blank, check parameters.
+		int default_text_mode = com.parameters.size() > 2 ? com.parameters[2] : 0;
+		int default_text_value_id = com.parameters.size() > 3 ? com.parameters[3] : 0;
+
+		switch (default_text_mode) {
+		case 0: // Use existing text from the output variable itself.
+			default_text = _typing_original_text;
+			break;
+		case 1: // Use text from another String Variable (direct ID).
+			default_text = std::string(Main_Data::game_strings->Get(default_text_value_id));
+			break;
+		case 2: // Use text from another String Variable (indirect ID).
+			default_text = std::string(Main_Data::game_strings->Get(Main_Data::game_variables->Get(default_text_value_id)));
+			break;
+		default:
+			Output::Warning("TypeMode: Invalid default text mode {}", default_text_mode);
+			// Fallback to existing text in the output variable.
+			default_text = _typing_original_text;
+			break;
+		}
+	}
+
+	Main_Data::game_strings->Asg(_typing_output_var_id, default_text);
+
+	_typing_multiline = (com.parameters.size() > 4 && com.parameters[4] == 1);
+
+	_state.wait_typing_input = true;
+	SDL_StartTextInput();
+
+	return true;
+	#endif
+
+	Output::Warning("TypeMode: SDL not supported on this platform");
+	return true;
+}
+
+// --- public methods for UI layer ---
+#if defined(USE_SDL)
+void Game_Interpreter::AppendTypingText(const char* text) {
+	if (!_is_typing_mode) return;
+	std::string current_text = std::string(Main_Data::game_strings->Get(_typing_output_var_id));
+	current_text += text;
+	Main_Data::game_strings->Asg(_typing_output_var_id, current_text);
+}
+
+void Game_Interpreter::HandleTypingBackspace() {
+	if (!_is_typing_mode) return;
+	std::string current_text = std::string(Main_Data::game_strings->Get(_typing_output_var_id));
+	if (!current_text.empty()) {
+		std::u32string u32_text = Utils::DecodeUTF32(current_text);
+		if (!u32_text.empty()) {
+			u32_text.pop_back();
+			Main_Data::game_strings->Asg(_typing_output_var_id, Utils::EncodeUTF(u32_text));
+		}
+	}
+}
+
+void Game_Interpreter::HandleTypingEnter(bool is_ctrl_pressed) {
+	if (!_is_typing_mode) return;
+	if (_typing_multiline && is_ctrl_pressed) {
+		AppendTypingText("\n");
+	}
+	else {
+		FinalizeTyping(true);
+	}
+}
+
+void Game_Interpreter::HandleTypingEscape() {
+	if (!_is_typing_mode) return;
+	FinalizeTyping(false);
+}
+
+// --- Helper function ---
+
+void Game_Interpreter::FinalizeTyping(bool accepted) {
+	if (!_is_typing_mode) return;
+
+	_is_typing_mode = false;
+	#if defined(USE_SDL)
+	SDL_StopTextInput();
+	#endif
+
+	if (!accepted) {
+		if (_typing_output_var_id > 0) {
+			Main_Data::game_strings->Asg(_typing_output_var_id, _typing_original_text);
+		}
+	}
+}
+#endif
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 	return Game_Battle::IsBattleRunning()
 		? Game_Battle::GetInterpreter()
