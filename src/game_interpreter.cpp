@@ -4877,7 +4877,7 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 	}
 
 	int mode = com.parameters[0];
-	//bool is_replace_range = com.parameters[1] != 0; FIXME not implemented
+	bool is_replace_range = com.parameters[1] != 0;
 	bool is_upper_layer = com.parameters[2] != 0;
 
 	int tile_index = ValueOrVariableBitfield(mode, 0, com.parameters[3]);
@@ -4892,18 +4892,29 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 	if (!scene)
 		return true;
 
+	// Lambda to handle iteration and ID resolution
+	auto apply_rewrite = [&](auto replace_func) {
+		for (auto y = y_start; y < y_start + height; ++y) {
+			for (auto x = x_start; x < x_start + width; ++x) {
+				int tid = tile_index;
+				if (is_replace_range) {
+					// Calculate offset based on row-major order
+					int var_offset = (y - y_start) * width + (x - x_start);
+					tid = Main_Data::game_variables->Get(tile_index + var_offset);
+				}
+				replace_func(x, y, tid);
+			}
+		}
+	};
+
 	if (is_upper_layer) {
-		for (auto y = y_start; y < y_start + height; ++y) {
-			for (auto x = x_start; x < x_start + width; ++x) {
-				scene->spriteset->ReplaceUpAt(x, y, tile_index);
-			}
-		}
+		apply_rewrite([&](int x, int y, int tid) {
+			scene->spriteset->ReplaceUpAt(x, y, tid);
+		});
 	} else {
-		for (auto y = y_start; y < y_start + height; ++y) {
-			for (auto x = x_start; x < x_start + width; ++x) {
-				scene->spriteset->ReplaceDownAt(x, y, tile_index, disable_autotile);
-			}
-		}
+		apply_rewrite([&](int x, int y, int tid) {
+			scene->spriteset->ReplaceDownAt(x, y, tid, disable_autotile);
+		});
 	}
 
 	return true;
