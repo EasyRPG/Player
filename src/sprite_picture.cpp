@@ -24,6 +24,7 @@
 #include "game_windows.h"
 #include "player.h"
 #include "bitmap.h"
+#include "game_map.h"
 
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	: Sprite(flags),
@@ -106,8 +107,26 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	}
 
 	if (Player::game_config.fake_resolution.Get()) {
-		SetX(x + Player::menu_offset_x);
-		SetY(y + Player::menu_offset_y);
+		if (data.fixed_to_map) {
+			// If the picture scrolls with the map, apply the black border if the map is too small
+			int offset_x = 0;
+			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
+			if (map_width < Player::screen_width) {
+				offset_x += (Player::screen_width - map_width) / 2;
+			}
+			SetX(x + offset_x);
+			
+			int offset_y = 0;
+			int map_height = Game_Map::GetTilesY() * TILE_SIZE;
+			if (map_height < Player::screen_height) {
+				offset_y += (Player::screen_height - map_height) / 2;
+			}
+			SetY(y + offset_y);
+		} else {
+			// If the picture doesn't scroll with the map, simulate the 340x240 screen
+			SetX(x + Player::menu_offset_x);
+			SetY(y + Player::menu_offset_y);
+		}
 	} else {
 		SetX(x);
 		SetY(y);
