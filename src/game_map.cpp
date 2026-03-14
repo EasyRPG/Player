@@ -2320,11 +2320,3 @@ void Game_Map::Parallax::ClearChangedBG() {
 	Params params {}; // default Param indicates no override
 	ChangeBG(params);
 }
-
-bool Game_Map::Parallax::FakeXPosition() {
-	return parallax_fake_x;
-}
-
-bool Game_Map::Parallax::FakeYPosition() {
-	return parallax_fake_y;
-}
