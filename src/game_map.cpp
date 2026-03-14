@@ -2051,9 +2051,6 @@ void Game_Map::Caching::MapEventCache::RemoveEvent(const lcf::rpg::Event& ev) {
 namespace {
 	int parallax_width;
 	int parallax_height;
-
-	bool parallax_fake_x;
-	bool parallax_fake_y;
 }
 
 /* Helper function to get the current parallax parameters. If the default
@@ -2157,8 +2154,6 @@ void Game_Map::Parallax::ResetPositionX() {
 		return;
 	}
 
-	parallax_fake_x = false;
-
 	if (!params.scroll_horz && !LoopHorizontal()) {
 		// What is the width of the panorama to display on screen?
 		int pan_screen_width = Player::screen_width;
@@ -2185,10 +2180,7 @@ void Game_Map::Parallax::ResetPositionX() {
 			}
 		} else {
 			panorama.pan_x = 0;
-			parallax_fake_x = true;
 		}
-	} else {
-		parallax_fake_x = true;
 	}
 }
 
@@ -2198,8 +2190,6 @@ void Game_Map::Parallax::ResetPositionY() {
 	if (params.name.empty()) {
 		return;
 	}
-
-	parallax_fake_y = false;
 
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
 		// What is the height of the panorama to display on screen?
@@ -2222,10 +2212,7 @@ void Game_Map::Parallax::ResetPositionY() {
 			SetPositionY(pv);
 		} else {
 			panorama.pan_y = 0;
-			parallax_fake_y = true;
 		}
-	} else {
-		parallax_fake_y = true;
 	}
 }
 
