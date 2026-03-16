@@ -124,24 +124,24 @@ void Transition::Init(Type type, Scene *linked_scene, int duration, bool next_er
 void Transition::SetAttributesTransitions() {
 	int w, h, beg_i, mid_i, end_i, length;
 
-	zoom_position = std::vector<int>(2);
-	random_blocks = std::vector<uint32_t>(Player::screen_width * Player::screen_height / (size_random_blocks * size_random_blocks));
-	mosaic_random_offset.resize(total_frames);
+	auto init_random_blocks = [&]() {
+		random_blocks = std::vector<uint32_t>(Player::screen_width * Player::screen_height / (size_random_blocks * size_random_blocks));
+		for (uint32_t i = 0; i < random_blocks.size(); i++) {
+			random_blocks[i] = i;
+		}
 
-	for (uint32_t i = 0; i < random_blocks.size(); i++) {
-		random_blocks[i] = i;
-	}
+		random_block_transition = Bitmap::Create(Player::screen_width, Player::screen_height, true);
+		current_blocks_print = 0;
+	};
 
 	switch (transition_type) {
 	case TransitionRandomBlocks:
-		random_block_transition = Bitmap::Create(Player::screen_width, Player::screen_height, true);
-		current_blocks_print = 0;
+		init_random_blocks();
 		std::shuffle(random_blocks.begin(), random_blocks.end(), Rand::GetRNG());
 		break;
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
-		random_block_transition = Bitmap::Create(Player::screen_width, Player::screen_height, true);
-		current_blocks_print = 0;
+		init_random_blocks();
 		if (transition_type == TransitionRandomBlocksUp) { std::reverse(random_blocks.begin(), random_blocks.end()); }
 
 		w = Player::screen_width / 4;
@@ -161,6 +161,8 @@ void Transition::SetAttributesTransitions() {
 		break;
 	case TransitionZoomIn:
 	case TransitionZoomOut:
+		zoom_position = std::vector<int>(2);
+
 		if (scene != nullptr && scene->type == Scene::Map) {
 			auto map = static_cast<Scene_Map*>(scene);
 
@@ -174,6 +176,8 @@ void Transition::SetAttributesTransitions() {
 		break;
 	case TransitionMosaicIn:
 	case TransitionMosaicOut:
+		mosaic_random_offset.resize(total_frames);
+
 		for (int i = 0; i < total_frames; ++i) {
 			// by default i 0..40 for scale 1..41
 			mosaic_random_offset[i] = Rand::GetRandomNumber(0, i);
@@ -204,7 +208,7 @@ void Transition::Draw(Bitmap& dst) {
 		dst.BlendBlit(0, 0, *screen1, screen1->GetRect(), color, 255);
 		return;
 	}
-	
+
 	int tf_off = total_frames - 1;
 
 	switch (transition_type) {
@@ -218,7 +222,9 @@ void Transition::Draw(Bitmap& dst) {
 	case TransitionRandomBlocksUp:
 		blocks_to_print = random_blocks.size() * (current_frame + 1) / tf_off;
 
-		for (uint32_t i = current_blocks_print; i < blocks_to_print; i++) {
+		// Off-by-one error?
+		// i < random_blocks.size() prevents out of bounds access on the final frame
+		for (uint32_t i = current_blocks_print; i < blocks_to_print && i < random_blocks.size(); i++) {
 			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
 				random_blocks[i] / (w / size_random_blocks) * size_random_blocks, *screen2,
 				Rect(random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
