@@ -1,4 +1,5 @@
 #include "game_actors.h"
+#include "game_constants.h"
 #include "game_message.h"
 #include "game_party.h"
 #include "options.h"
@@ -6,6 +7,7 @@
 #include "game_variables.h"
 #include "main_data.h"
 #include <iostream>
+#include <memory>
 #include "doctest.h"
 #include "player.h"
 
@@ -23,6 +25,7 @@ struct DataInit {
 		lcf::rpg::SaveInventory inventory;
 		inventory.party.push_back(3);
 
+		Main_Data::game_constants = std::make_unique<Game_Constants>();
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_party = std::make_unique<Game_Party>();
 		Main_Data::game_party->SetupFromSave(std::move(inventory));
