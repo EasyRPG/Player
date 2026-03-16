@@ -248,7 +248,6 @@ public class GameBrowserActivity extends BaseActivity
         getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
 
         gamesGridRecyclerView = findViewById(R.id.games_grid_recycle_view);
-        gamesGridRecyclerView.setHasFixedSize(true);
         setGamesGridSize();
 
         reorderGameList();
