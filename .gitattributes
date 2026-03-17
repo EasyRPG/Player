@@ -6,6 +6,7 @@
 *.py      text
 *.rb      text
 *.sh      text
+*.bat     text eol=crlf
 
 # external sources
 tests/doctest.h -diff linguist-vendored
