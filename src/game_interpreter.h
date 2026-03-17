@@ -334,7 +334,7 @@ protected:
 
 	struct KeyInputState {
 		lcf::FlagSet<Keys> keys = {};
-		int variable = 0;
+		uint8_t variable = 0;
 		int time_variable = 0;
 		int wait_frames = 0;
 		bool wait = false;

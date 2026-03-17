@@ -146,3 +146,4 @@ eboot.bin
 *.pem
 *.keystore
 *.jks
+games/

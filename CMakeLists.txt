@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 project(EasyRPG_Player VERSION 0.8.1.1
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
 	HOMEPAGE_URL "https://easyrpg.org"
-	LANGUAGES CXX)
+	LANGUAGES C CXX)
 
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
@@ -30,6 +30,19 @@ set(CMAKE_CXX_EXTENSIONS ON)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
+if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	add_compile_options(
+		-Wall
+		-Wextra
+		$<$<CONFIG:Release>:-funroll-loops>
+	)
+endif()
+
+file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
+	src/leasy/lua/*.c
+	src/leasy/*.cpp
+	src/leasy/*.hpp
+)
 
 # Source Files
 add_library(${PROJECT_NAME} OBJECT
@@ -476,6 +489,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_teleport.h
 	src/window_varlist.cpp
 	src/window_varlist.h
+	${LEASY_SRC}
 )
 
 # These are actually unused when building in CMake

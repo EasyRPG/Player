@@ -86,6 +86,9 @@
 #include "message_overlay.h"
 #include "audio_midi.h"
 
+// leasy
+#include "leasy/leasy.hpp"
+
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
 #endif
@@ -228,6 +231,11 @@ void Player::Run() {
 }
 
 void Player::MainLoop() {
+	if (leasy::app::exit_requested()) {
+		std::cout << "[leasy]: exiting ..." << std::endl;
+		return;
+	}
+	
 	Instrumentation::FrameScope iframe;
 
 	const auto frame_time = Game_Clock::now();
