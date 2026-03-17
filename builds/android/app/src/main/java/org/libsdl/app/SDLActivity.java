@@ -54,18 +54,16 @@ import java.util.Hashtable;
 import java.util.Locale;
 
 // EasyRPG additions
-import org.easyrpg.player.R;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
     SDL Activity
 */
-// EasyRPG modification: extends AppCompatActivity
-public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVisibilityChangeListener {
+public class SDLActivity extends Activity implements View.OnSystemUiVisibilityChangeListener {
     private static final String TAG = "SDL";
     private static final int SDL_MAJOR_VERSION = 2;
     private static final int SDL_MINOR_VERSION = 32;
-    private static final int SDL_MICRO_VERSION = 6;
+    private static final int SDL_MICRO_VERSION = 10;
 /*
     // Display InputType.SOURCE/CLASS of events and devices
     //
@@ -334,9 +332,6 @@ public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVis
             Log.v(TAG, "modify thread properties failed " + e.toString());
         }
 
-        // EasyRPG modification: overwrite layout
-        setContentView(R.layout.activity_player);
-
         // Load shared libraries
         String errorMsgBrokenLib = "";
         try {
@@ -402,10 +397,8 @@ public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVis
         // Set up the surface
         mSurface = createSDLSurface(this);
 
-        /* EasyRPG modification: overwrite layout
         mLayout = new RelativeLayout(this);
         mLayout.addView(mSurface);
-        */
 
         // Get our current screen orientation and pass it down.
         mCurrentOrientation = SDLActivity.getCurrentOrientation();
@@ -421,9 +414,7 @@ public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVis
         } catch(Exception ignored) {
         }
 
-        /* EasyRPG modification: overwrite layout
         setContentView(mLayout);
-        */
 
         setWindowStyle(false);
 
@@ -1323,13 +1314,6 @@ public class SDLActivity extends AppCompatActivity implements View.OnSystemUiVis
     }
 
     public static boolean handleKeyEvent(View v, int keyCode, KeyEvent event, InputConnection ic) {
-        // EasyRPG addition: handle back button on Xperia
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU ||
-            ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed()))) {
-            return false;
-        }
-        // End of EasyRPG addition
-
         int deviceId = event.getDeviceId();
         int source = event.getSource();
 
