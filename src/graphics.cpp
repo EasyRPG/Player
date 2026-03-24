@@ -31,6 +31,8 @@
 #include "baseui.h"
 #include "game_clock.h"
 
+#include "leasy/leasy.hpp"
+
 using namespace std::chrono_literals;
 
 namespace Graphics {
@@ -115,7 +117,9 @@ void Graphics::Draw(Bitmap& dst) {
 		min_z = transition.GetZ() + 1;
 		dst.Clear();
 	}
+
 	LocalDraw(dst, min_z, max_z);
+	leasy::app::draw(&dst);
 }
 
 void Graphics::LocalDraw(Bitmap& dst, Drawable::Z_t min_z, Drawable::Z_t max_z) {

@@ -12,5 +12,19 @@ namespace leasy {
      * @brief This asks the leasy engine for exiting. This won't make the process exit directly.
      */
     void request_exit();
+
+    /** @brief This function is called after that EasyRPG is initialized. */
+    void ready(void);
+
+    /** @brief This function is called everytime EasyRPG updates. */
+    void process(void);
+
+    /** @brief This function is called before exiting (maybe, let's hope guys). */
+    void exit(void); 
+
+    /** @brief This function is called when drawing. (i swear) */
+    void draw(Bitmap */* map */);
+
+    void lmain(void);
   }
 }

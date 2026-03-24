@@ -54,6 +54,8 @@
 #  include "platform/macos/macos_utils.h"
 #endif
 
+#include "leasy/ldebug.hpp"
+
 // Global variables.
 std::string project_path;
 
@@ -112,7 +114,7 @@ void Main_Data::Init() {
 			}
 #endif
 		}
-	}
+	};
 }
 
 void Main_Data::Cleanup() {

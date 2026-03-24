@@ -35,21 +35,24 @@
 #  include "platform/android/android.h"
 #endif
 
+
 #ifdef __ANDROID__
 static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserData /* userdata */) {
-#  ifdef NDEBUG
+	#  ifdef NDEBUG
 	// docs say debugging logs should be disabled for release builds
 	if (lvl == LogLevel::Debug || lvl == LogLevel::Info) return;
-#  endif
-
+	#  endif
+	
 	int prio = (lvl == LogLevel::Error) ? ANDROID_LOG_ERROR :
-		(lvl == LogLevel::Warning) ? ANDROID_LOG_WARN :
-		(lvl == LogLevel::Debug) ? ANDROID_LOG_DEBUG :
-		ANDROID_LOG_INFO;
-
+	(lvl == LogLevel::Warning) ? ANDROID_LOG_WARN :
+	(lvl == LogLevel::Debug) ? ANDROID_LOG_DEBUG :
+	ANDROID_LOG_INFO;
+	
 	__android_log_write(prio, GAME_TITLE, msg.c_str());
 }
 #endif
+
+#include "leasy/leasy.hpp"
 
 /**
  * If the main function ever needs to change, be sure to update the `main()`
@@ -82,6 +85,7 @@ extern "C" int main(int argc, char* argv[]) {
 #endif
 
 	Player::Init(std::move(args));
+	leasy::app::lmain();
 	Player::Run();
 
 	// Close

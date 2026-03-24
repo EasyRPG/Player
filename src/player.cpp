@@ -364,6 +364,7 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+	leasy::app::process();
 
 	// Game events can query full screen status and change their behavior, so this needs to
 	// be a game key and not a system key.

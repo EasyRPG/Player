@@ -146,4 +146,12 @@ eboot.bin
 *.pem
 *.keystore
 *.jks
+
+# idk guys
 games/
+EasyRPG Player.app/
+./leasy.user.lua
+# and doc thingies
+docs/html/
+docs/latex/
+doxygen-awesome-css/

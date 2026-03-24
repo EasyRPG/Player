@@ -1,0 +1,23 @@
+PROJECT_NAME           = "Leasy — Lua and EasyRPG guys!!"
+PROJECT_BRIEF          = "Be happy guys"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = src
+RECURSIVE              = YES
+FILE_PATTERNS          = *.cpp *.h *.hpp *.c
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = NO
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = src
+HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css \
+                         doxygen-awesome-css/doxygen-awesome-sidebar-only.css
+HTML_DYNAMIC_SECTIONS  = YES
+HTML_COLORSTYLE        = LIGHT
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+SEARCHENGINE           = YES
+WARN_IF_UNDOCUMENTED   = NO
+PROJECT_LOGO           = resources/logo.png

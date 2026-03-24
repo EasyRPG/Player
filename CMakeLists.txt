@@ -23,6 +23,7 @@ endif()
 
 # C++17 is required
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
@@ -41,7 +42,21 @@ endif()
 file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
 	src/leasy/lua/*.c
 	src/leasy/*.cpp
+	src/leasy/*.c
+	src/leasy/*.h
 	src/leasy/*.hpp
+	src/leasy/ul2/*.cpp
+	src/leasy/ul2/*.c
+	src/leasy/ul2/*.h
+	src/leasy/ul2/*.hpp
+	src/leasy/ily3/*.cpp
+	src/leasy/ily3/*.c
+	src/leasy/ily3/*.h
+	src/leasy/ily3/*.hpp
+	src/leasy/libs2/**/*.cpp
+	src/leasy/libs2/**/*.c
+	src/leasy/libs2/**/*.h
+	src/leasy/libs2/**/*.hpp
 )
 
 # Source Files

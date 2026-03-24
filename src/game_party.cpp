@@ -33,8 +33,9 @@
 #include "output.h"
 #include "algo.h"
 
-Game_Party::Game_Party() {
-}
+#include "leasy/ldebug.hpp"
+
+Game_Party::Game_Party() {}
 
 void Game_Party::SetupNewGame() {
 	Clear();

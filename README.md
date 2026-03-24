@@ -1,3 +1,6 @@
+# LEASY — A FORK FROM EASYRPG PLAYER !!!
+This is a fork of a huge project called EasyRPG Player, bringing to this project a Lua support.
+
 # EasyRPG Player
 
 EasyRPG Player is a game interpreter to play RPG Maker 2000, 2003 and EasyRPG
