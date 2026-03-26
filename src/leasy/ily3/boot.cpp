@@ -7,6 +7,7 @@
 #include "../ul2/state.hpp"
 #include "../ldebug.hpp"
 #include "../lio.hpp"
+#include "_lua_scripts.hpp"
 
 namespace fs = std::filesystem;
 
@@ -22,7 +23,7 @@ namespace leasy::ily3 {
       printerr(lua_file << ": file not found! (cannot load any mod!)");
       return;
     }
-
+		global::state.dostring(lscripts::set_require);
     global::state.dofile(lua_file.string());
   }
 }
