@@ -1,4 +1,3 @@
-
 #include "bitmap.h"
 #include "sprite.h"
 #include "text.h"
