@@ -1723,6 +1723,14 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
+		
+		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
+		if (Player::game_config.fake_resolution.Get()) {
+			int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
+			if (map_width_in_pixels < Player::screen_width) {
+				x += ((Player::screen_width - map_width_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+			}
+		}
 	} else {
 		// Do not use std::clamp here. When the map is smaller than the screen the
 		// upper bound is smaller than the lower bound making the function fail.
@@ -1747,6 +1755,14 @@ void Game_Map::SetPositionY(int y, bool reset_panorama) {
 	const int map_height = GetTilesY() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
+
+		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
+		if (Player::game_config.fake_resolution.Get()) {
+			int map_height_in_pixels = Game_Map::GetTilesY() * TILE_SIZE;
+			if (map_height_in_pixels < Player::screen_height) {
+				y += ((Player::screen_height - map_height_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+			}
+		}
 	} else {
 		// Do not use std::clamp here. When the map is smaller than the screen the
 		// upper bound is smaller than the lower bound making the function fail.
@@ -2035,9 +2051,6 @@ void Game_Map::Caching::MapEventCache::RemoveEvent(const lcf::rpg::Event& ev) {
 namespace {
 	int parallax_width;
 	int parallax_height;
-
-	bool parallax_fake_x;
-	bool parallax_fake_y;
 }
 
 /* Helper function to get the current parallax parameters. If the default
@@ -2141,12 +2154,14 @@ void Game_Map::Parallax::ResetPositionX() {
 		return;
 	}
 
-	parallax_fake_x = false;
-
 	if (!params.scroll_horz && !LoopHorizontal()) {
+		// What is the width of the panorama to display on screen?
 		int pan_screen_width = Player::screen_width;
-		if (Player::game_config.fake_resolution.Get()) {
-			pan_screen_width = SCREEN_TARGET_WIDTH;
+		if (Player::game_config.fake_resolution.Get()) {			
+			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
+			if (map_width < pan_screen_width) {
+				pan_screen_width = map_width;
+			}
 		}
 
 		int tiles_per_screen = pan_screen_width / TILE_SIZE;
@@ -2165,10 +2180,7 @@ void Game_Map::Parallax::ResetPositionX() {
 			}
 		} else {
 			panorama.pan_x = 0;
-			parallax_fake_x = true;
 		}
-	} else {
-		parallax_fake_x = true;
 	}
 }
 
@@ -2179,12 +2191,14 @@ void Game_Map::Parallax::ResetPositionY() {
 		return;
 	}
 
-	parallax_fake_y = false;
-
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
+		// What is the height of the panorama to display on screen?
 		int pan_screen_height = Player::screen_height;
 		if (Player::game_config.fake_resolution.Get()) {
-			pan_screen_height = SCREEN_TARGET_HEIGHT;
+			int map_height = Game_Map::GetTilesY() * TILE_SIZE;
+			if (map_height < pan_screen_height) {
+				pan_screen_height = map_height;
+			}
 		}
 
 		int tiles_per_screen = pan_screen_height / TILE_SIZE;
@@ -2198,10 +2212,7 @@ void Game_Map::Parallax::ResetPositionY() {
 			SetPositionY(pv);
 		} else {
 			panorama.pan_y = 0;
-			parallax_fake_y = true;
 		}
-	} else {
-		parallax_fake_y = true;
 	}
 }
 
@@ -2295,12 +2306,4 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 void Game_Map::Parallax::ClearChangedBG() {
 	Params params {}; // default Param indicates no override
 	ChangeBG(params);
-}
-
-bool Game_Map::Parallax::FakeXPosition() {
-	return parallax_fake_x;
-}
-
-bool Game_Map::Parallax::FakeYPosition() {
-	return parallax_fake_y;
 }
