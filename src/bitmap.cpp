@@ -87,7 +87,7 @@ Bitmap::Bitmap(int width, int height, bool transparent) {
 Bitmap::Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& _format) {
 	format = _format;
 	pixman_format = find_format(format);
-	Init(width, height, pixels, pitch, false);
+	Init(width, height, pixels, pitch, pixels == nullptr);
 }
 
 Bitmap::Bitmap(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags) {
@@ -184,11 +184,19 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	auto format = PIXMAN_b8g8r8;
 #endif
 
+	if (GetTransparent()) {
+#ifdef WORDS_BIGENDIAN
+		format = PIXMAN_r8g8b8a8;
+#else
+		format = PIXMAN_a8b8g8r8;
+#endif
+	}
+
 	auto dst = PixmanImagePtr{pixman_image_create_bits(format, width, height, &data.front(), stride)};
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap.get(), NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
 
-	return ImagePNG::Write(os, width, height, &data.front());
+	return ImagePNG::Write(os, width, height, &data.front(), GetTransparent());
 }
 
 size_t Bitmap::GetSize() const {

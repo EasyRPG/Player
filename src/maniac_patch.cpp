@@ -17,6 +17,7 @@
 
 #include "maniac_patch.h"
 
+#include "bitmap.h"
 #include "filesystem_stream.h"
 #include "input.h"
 #include "game_actors.h"
@@ -28,6 +29,7 @@
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
+#include "pixel_format.h"
 #include "player.h"
 
 #include <lcf/reader_lcf.h>
@@ -709,6 +711,175 @@ bool ManiacPatch::CheckString(std::string_view str_l, std::string_view str_r, in
 	}
 
 	return check(str_l, str_r);
+}
+
+bool ManiacPatch::ReadPixelsFromVariable(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables) {
+	int pic_x = dst_rect.x;
+	int pic_y = dst_rect.y;
+	int pic_w = dst_rect.width;
+	int pic_h = dst_rect.height;
+
+	if (pic_w <= 0 || pic_h <= 0) {
+		return false;
+	}
+
+	// Format expected by Maniacs
+	auto format = format_B8G8R8A8_a().format();
+	if (ignore_alpha) {
+		format = format_B8G8R8A8_n().format();
+	}
+
+	// Allocate an image as large as the requested dimensions (ignoring out of bounds)
+	Rect bmp_rect = dst.GetRect();
+	Rect frame_rect = bmp_rect.GetSubRect(dst_rect);
+
+	if (frame_rect.width <= 0 || frame_rect.height <= 0) {
+		return false;
+	}
+
+	BitmapRef frame = Bitmap::Create(nullptr, frame_rect.width, frame_rect.height, frame_rect.width * format.bytes, format);
+
+	uint32_t* pixels = static_cast<uint32_t*>(frame->pixels());
+	int px_per_row = frame->pitch() / sizeof(uint32_t);
+	uint32_t* dst_row = pixels;
+
+	// Rowwise memcpy
+	int x_l = std::min(0, pic_x);
+	int x_r = std::max(0, pic_x + pic_w - bmp_rect.width) + frame_rect.width;
+	int y_t = std::min(0, pic_y);
+	int y_b = std::max(0, pic_y + pic_h - bmp_rect.height) + frame_rect.height;
+
+	int src_var_id = start_var_id;
+	dst_row = pixels;
+	for (int y = y_t; y < y_b; ++y) {
+		// When row out of bounds skip
+		if (y < 0 || y >= frame_rect.height) {
+			src_var_id += pic_w;
+			continue;
+		}
+
+		for (int x = x_l; x < x_r;) {
+			if (x < 0) {
+				// OOB to the left (skip)
+				src_var_id += -x;
+				x = 0;
+			} else if (x >= frame_rect.width) {
+				// OOB to the right (skip)
+				int len = x_r - frame_rect.width;
+				src_var_id += len;
+				break;
+			} else {
+				auto in_range = variables.GetRange(src_var_id, frame_rect.width);
+				std::copy(in_range.begin(), in_range.end(), dst_row);
+				dst_row += px_per_row;
+				src_var_id += frame_rect.width;
+				x += frame_rect.width;
+			}
+		}
+	}
+
+	if (clear_dst) {
+		dst.ClearRect({pic_x, pic_y, frame_rect.width, frame_rect.height});
+	}
+
+	dst.Blit(pic_x, pic_y, *frame, frame->GetRect(), Opacity::Opaque(),
+		ignore_alpha ? Bitmap::BlendMode::NormalWithoutAlpha : Bitmap::BlendMode::Normal);
+
+	return true;
+}
+
+bool ManiacPatch::WritePixelsToVariable(const Bitmap& src, Rect src_rect, int start_var_id, bool ignore_alpha, Game_Variables& variables) {
+	// FIXME: Because we use premultiplied alpha the colors of transparent pixels are lost (always 0)
+	// Maniacs appears to preserve them
+	// E.g. when reading a transparent pixel from Chara1 (which was green) then Maniac will read green and we read 0
+	// This is noticable e.g. when using the EditPicture command with the opaque flag when reading from a transparent image
+
+	int pic_x = src_rect.x;
+	int pic_y = src_rect.y;
+	int pic_w = src_rect.width;
+	int pic_h = src_rect.height;
+
+	if (pic_w <= 0 || pic_h <= 0) {
+		return false;
+	}
+
+	// Format expected by Maniacs
+	auto format = format_B8G8R8A8_a().format();
+	if (ignore_alpha) {
+		format = format_B8G8R8A8_n().format();
+	}
+
+	// Allocate an image as large as the requested dimensions (ignoring out of bounds)
+	Rect bmp_rect = src.GetRect();
+	Rect frame_rect = bmp_rect.GetSubRect(src_rect);
+
+	if (frame_rect.width <= 0 || frame_rect.height <= 0) {
+		return false;
+	}
+
+	BitmapRef frame = Bitmap::Create(nullptr, frame_rect.width, frame_rect.height, frame_rect.width * format.bytes, format);
+
+	// Then blit the screen (converts to the correct format)
+	frame->Blit(0, 0, src, frame_rect, Opacity::Opaque(),
+		ignore_alpha ? Bitmap::BlendMode::NormalWithoutAlpha : Bitmap::BlendMode::Default);
+
+	uint32_t* pixels = static_cast<uint32_t*>(frame->pixels());
+	int px_per_row = frame->pitch() / sizeof(uint32_t);
+	uint32_t* src_row = pixels;
+
+	if (ignore_alpha) {
+		// Slow: Set all alpha values to 0
+		const auto a_mask = format.a.mask;
+		for (int y = 0; y < frame_rect.height; ++y) {
+			for (int x = 0; x < frame_rect.width; ++x) {
+				src_row[x] &= ~a_mask;
+			}
+			src_row += px_per_row;
+		}
+	}
+
+	// Rowwise memcpy
+	int x_l = std::min(0, pic_x);
+	int x_r = std::max(0, pic_x + pic_w - bmp_rect.width) + frame_rect.width;
+	int y_t = std::min(0, pic_y);
+	int y_b = std::max(0, pic_y + pic_h - bmp_rect.height) + frame_rect.height;
+
+	int dst_var_id = start_var_id;
+	src_row = pixels;
+	for (int y = y_t; y < y_b; ++y) {
+		// When row out of bounds write 0 in this row
+		if (y < 0 || y >= frame_rect.height) {
+			auto out_range = variables.GetWritableRange(dst_var_id, pic_w);
+			std::fill(out_range.begin(), out_range.end(), 0);
+			dst_var_id += pic_w;
+			continue;
+		}
+
+		for (int x = x_l; x < x_r;) {
+			if (x < 0) {
+				// OOB to the left (write 0 for remaining cols)
+				auto out_range = variables.GetWritableRange(dst_var_id, -x_l);
+				std::fill(out_range.begin(), out_range.end(), 0);
+				dst_var_id += -x;
+				x = 0;
+			} else if (x >= frame_rect.width) {
+				// OOB to the right (write 0 for remaining cols)
+				int len = x_r - frame_rect.width;
+				auto out_range = variables.GetWritableRange(dst_var_id, len);
+				std::fill(out_range.begin(), out_range.end(), 0);
+				dst_var_id += len;
+				break;
+			} else {
+				auto out_range = variables.GetWritableRange(dst_var_id, frame_rect.width);
+				std::copy(src_row, src_row + frame_rect.width, out_range.data());
+				src_row += px_per_row;
+				dst_var_id += frame_rect.width;
+				x += frame_rect.width;
+			}
+		}
+	}
+
+	return true;
 }
 
 std::string_view ManiacPatch::GetLcfName(int data_type, int id, bool is_dynamic) {

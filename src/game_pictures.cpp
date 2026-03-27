@@ -16,7 +16,9 @@
  */
 
 #include <cmath>
+#include <zlib.h>
 #include "bitmap.h"
+#include "lcf/rpg/savepicture.h"
 #include "options.h"
 #include "cache.h"
 #include "output.h"
@@ -103,7 +105,7 @@ std::vector<lcf::rpg::SavePicture> Game_Pictures::GetSaveData() const {
 	save.reserve(data_size);
 
 	for (auto& pic: pictures) {
-		save.push_back(pic.data);
+		save.push_back(pic.OnSave());
 	}
 
 	// RPG_RT Save game data always has a constant number of pictures
@@ -368,6 +370,10 @@ void Game_Pictures::Picture::MakeRequestImportant() const {
 void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	const auto& name = pic.data.name;
 	if (name.empty()) {
+		if (Player::IsPatchManiac()) {
+			pic.LoadCanvas();
+		}
+
 		return;
 	}
 
@@ -504,8 +510,130 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	ApplyOrigin(false);
 }
 
+void Game_Pictures::Picture::LoadCanvas() {
+	if (data.maniac_image_data.empty()) {
+		return;
+	}
+
+	// Size is stored in the (unused in later 2k3) current_bot_trans, wtf?
+	std::array<uint32_t, 2> dim;
+	std::memcpy(dim.data(), &data.current_bot_trans, 8);
+
+	// Image data is a compressed buffer (deflate)
+	auto& compressed = data.maniac_image_data;
+	z_stream strm{};
+	strm.next_in = const_cast<Bytef*>(compressed.data());
+	strm.avail_in = static_cast<uInt>(compressed.size());
+
+	if (inflateInit(&strm) != Z_OK) {
+		Output::Warning("LoadCanvas (Pic {}}: inflateInit failed", data.ID);
+		return;
+	}
+
+	std::vector<unsigned char> output;
+	const size_t CHUNK_SIZE = 16384;
+	unsigned char temp[CHUNK_SIZE];
+
+	int ret;
+	do {
+		strm.next_out = temp;
+		strm.avail_out = CHUNK_SIZE;
+
+		ret = inflate(&strm, Z_NO_FLUSH);
+
+		if (ret != Z_OK && ret != Z_STREAM_END) {
+			inflateEnd(&strm);
+			Output::Warning("LoadCanvas (Pic {}}: inflate failed (err={})", data.ID, ret);
+			return;
+		}
+
+		size_t bytes_produced = CHUNK_SIZE - strm.avail_out;
+		output.insert(output.end(), temp, temp + bytes_produced);
+	} while (ret != Z_STREAM_END);
+
+	inflateEnd(&strm);
+
+	if (output.size() != dim[0] * dim[1] * 4) {
+		Output::Warning("LoadCanvas (Pic {}): Wrong buffer size", data.ID);
+		return;
+	}
+
+	// Convert from Maniac Patch format to our screen format
+	auto format = format_B8G8R8A8_a().format();
+	auto bmp = Bitmap::Create(output.data(), dim[0], dim[1], dim[0] * 4, format);
+	CreateSprite();
+	sprite->SetBitmap(Bitmap::Create(*bmp, bmp->GetRect()));
+	data.maniac_image_data = {}; // Save memory
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_canvas;
+}
+
+lcf::rpg::SavePicture Game_Pictures::Picture::OnSave() const {
+	auto save_data = data;
+
+	if (IsCanvas()) {
+		// Write compressed image data into the savefile
+		auto& bitmap = *sprite->GetBitmap();
+
+		// Convert from our screen format to Maniac Patch format
+		auto format = format_B8G8R8A8_a().format();
+		auto bmp_out = Bitmap::Create(nullptr, bitmap.width(), bitmap.height(), bitmap.width() * 4, format);
+		bmp_out->Blit(0, 0, bitmap, bitmap.GetRect(), Opacity::Opaque());
+
+		// Compress
+		z_stream strm{};
+		strm.next_in = reinterpret_cast<Bytef*>(bmp_out->pixels());
+		strm.avail_in = static_cast<uInt>(bitmap.pitch() * bitmap.height());
+
+		if (deflateInit(&strm, Z_DEFAULT_COMPRESSION) != Z_OK) {
+			Output::Warning("LoadCanvas (Pic {}}: deflateInit failed", data.ID);
+			return {};
+		}
+
+		std::vector<unsigned char> output;
+		const size_t CHUNK_SIZE = 16384;
+		unsigned char temp[CHUNK_SIZE];
+
+		int ret;
+		do {
+			strm.next_out = temp;
+			strm.avail_out = CHUNK_SIZE;
+
+			ret = deflate(&strm, Z_FINISH);
+
+			if (ret != Z_OK && ret != Z_STREAM_END) {
+				deflateEnd(&strm);
+				Output::Warning("LoadCanvas (Pic {}}: deflate failed", data.ID);
+				return {};
+			}
+
+			size_t bytes_produced = CHUNK_SIZE - strm.avail_out;
+			output.insert(output.end(), temp, temp + bytes_produced);
+		} while (ret != Z_STREAM_END);
+
+		deflateEnd(&strm);
+
+		// Save the data
+		save_data.maniac_image_data = output;
+
+		std::array<uint32_t, 2> dim;
+		dim[0] = bitmap.width();
+		dim[1] = bitmap.height();
+		std::memcpy(&save_data.current_bot_trans, dim.data(), 8);
+	}
+
+	return save_data;
+}
+
+bool Game_Pictures::Picture::IsNormalPicture() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_default;
+}
+
 bool Game_Pictures::Picture::IsWindowAttached() const {
 	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
+}
+
+bool Game_Pictures::Picture::IsCanvas() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_canvas;
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {
