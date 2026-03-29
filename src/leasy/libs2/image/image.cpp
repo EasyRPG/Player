@@ -22,8 +22,8 @@ namespace leasy::libs2 {
     return Image::PNG;
   }
 
-  void Image::Open(const std::filesystem::path &path, const Type &hint) {
-    this->Destroy();
+  void Image::open(const std::filesystem::path &path, const Type &hint) {
+    this->destroy();
 
     this->imgout = ily3::guard<ImageOut>();
     this->path = path;
@@ -79,7 +79,7 @@ namespace leasy::libs2 {
       }
     };
 
-    this->map = std::make_unique<Bitmap>(
+    this->map = std::make_shared<Bitmap>(
       this->imgout.resource.pixels,
       this->imgout.resource.width,
       this->imgout.resource.height,
@@ -88,43 +88,27 @@ namespace leasy::libs2 {
     );
   }
 
-  Image::Image() : Drawable(255) {}
+  Image::Image() {}
 
-  Image::Image(const std::filesystem::path &path, const Type &type)
-    : Drawable(255) {
-    this->Open(path, type);
+  Image::Image(const std::filesystem::path &path, const Type &type) {
+    this->open(path, type);
   }
 
-  void Image::Destroy() {
+  void Image::destroy() {
     this->map.reset();
     this->imgout.reset();
   }
 
-  ImageOut *Image::SourceImage() {
+  ImageOut *Image::image() {
     return &this->imgout.resource;
   }
 
-  std::filesystem::path Image::FilePath() {
+  std::filesystem::path Image::filepath() {
     return this->path;
   }
 
-  ily3::twin<int> &Image::Position() {
-    return this->pos;
-  }
-
-  ily3::twin<int> Image::Size() {
-    return ily3::make_twin<int>(
-      this->imgout.resource.width,
-      this->imgout.resource.height
-    );
-  }
-
-  Opacity *Image::Opacity() {
-    return &this->opa;
-  }
-
   void Image::Draw(Bitmap &dst) {
-    if (!this->map) return; // prevent crash
+    if (!this->map) return; // prevent crash (lol)
 
     dst.Blit(
       this->pos.x,

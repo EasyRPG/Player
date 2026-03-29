@@ -5,6 +5,33 @@ project(EasyRPG_Player VERSION 0.8.1.1
 	HOMEPAGE_URL "https://easyrpg.org"
 	LANGUAGES C CXX)
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
+	set(DEBUG_FLAGS
+		-g3
+		-O0
+		-fno-omit-frame-pointer
+		-fno-inline
+		-fno-optimize-sibling-calls
+
+	)
+
+	set(WARNING_FLAGS
+		-Wall
+		-Wextra
+		-Wpedantic
+		-Wshadow
+		-Wconversion
+		-Wsign-conversion
+		-Wnull-dereference
+		-Wdouble-promotion
+		-Wformat=2
+	)
+
+	set(SANITIZER_FLAGS
+		-fsanitize=address,undefined
+	)
+endif()
+
 # Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 include(CMakeDependentOption)
@@ -31,13 +58,16 @@ set(CMAKE_CXX_EXTENSIONS ON)
 option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
-if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	add_compile_options(
-		-Wall
-		-Wextra
-		$<$<CONFIG:Release>:-funroll-loops>
-	)
-endif()
+
+# add_compile_options(
+# 	${WARNING_FLAGS}
+# 	${DEBUG_FLAGS}
+# 	${SANITIZER_FLAGS}
+# )
+# 
+# add_link_options(
+# 	${SANITIZER_FLAGS}
+# )
 
 file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
 	src/leasy/lua/*.c
@@ -1190,15 +1220,21 @@ if(PLAYER_HAS_AUDIO)
 	endif()
 endif()
 
+option(PLAYER_MACOS_BUNDLE "Build macOS app bundle" ON)
 # Executable
 if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND NOT PLAYER_CONSOLE_PORT)
-	if(APPLE)
-		set(EXE_NAME "EasyRPG-Player.app")
-		set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-		add_executable(${EXE_NAME} MACOSX_BUNDLE "src/platform/sdl/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
-		configure_file(resources/macos/Info.plist.in resources/macos/Info.plist @ONLY)
-		set_target_properties(${EXE_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/macos/Info.plist")
-		set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
+	if (APPLE) 
+		if(APPLE AND PLAYER_MACOS_BUNDLE)
+			set(EXE_NAME "EasyRPG-Player.app")
+			set_source_files_properties(${${PROJECT_NAME}_BUNDLE_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+			add_executable(${EXE_NAME} MACOSX_BUNDLE "src/platform/sdl/main.cpp" ${${PROJECT_NAME}_BUNDLE_ICON})
+			configure_file(resources/macos/Info.plist.in resources/macos/Info.plist @ONLY)
+			set_target_properties(${EXE_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/resources/macos/Info.plist")
+			set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
+		else()
+			set(EXE_NAME easyrpg-player)
+			add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
+		endif()
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)
 		if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")

@@ -17,9 +17,17 @@ namespace leasy::ily3 {
     inline fun() : name(".."), fn(nullptr) {} // So can't be pushed hahahaha
     
     template <auto F> inline fun(const std::string &name)
-      : fn(ul2::dispatch<F>)
+      : name(name), fn(ul2::dispatch<F>)
       {}
+
+    inline fun(const std::string &name, lua_CFunction fun)
+      : name(name), fn(fun) {}
   };
+
+  template <auto F>
+  inline fun make_fun(const std::string& name) {
+    return fun{ name, ul2::dispatch<F> };
+  }
 
   struct lib {
     std::string name;
