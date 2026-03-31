@@ -25,6 +25,7 @@
 #include <unordered_set>
 #include "audio.h"
 #include "feature.h"
+#include "game_strings.h"
 #include "game_character.h"
 #include "game_map.h"
 #include "game_battle.h"
@@ -242,6 +243,8 @@ bool Game_Interpreter_Map::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter_Map::CommandOpenLoadMenu, 0>(com);
 		case Cmd::ToggleAtbMode:
 			return CmdSetup<&Game_Interpreter_Map::CommandToggleAtbMode, 0>(com);
+		case static_cast<Cmd>(3027): // CommandAddMoveRoute
+			return CmdSetup<&Game_Interpreter_Map::CommandAddMoveRoute, 0>(com);
 		case Cmd::EasyRpg_TriggerEventAt:
 			return CmdSetup<&Game_Interpreter_Map::CommandEasyRpgTriggerEventAt, 4>(com);
 		case Cmd::EasyRpg_WaitForSingleMovement:
@@ -870,6 +873,175 @@ bool Game_Interpreter_Map::CommandToggleAtbMode(lcf::rpg::EventCommand const& /*
 	}
 
 	Main_Data::game_system->ToggleAtbMode();
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandAddMoveRoute(lcf::rpg::EventCommand const& com) { // code 3027
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	if (!_move_route_chain_active) {
+		Output::Warning("AddMoveRoute: This command must be used after a MoveEvent command.");
+		return true;
+	}
+
+	// Helper to safely decode parameters. It checks if the parameter exists before access.
+	auto get_p = [&](int mode_bit, int val_idx, int default_val = 0) {
+		if (com.parameters.size() <= static_cast<size_t>(val_idx)) {
+			return default_val;
+		}
+		return ValueOrVariableBitfield(com, 0, mode_bit, val_idx);
+		};
+
+	// Helper to add a command to the buffer, optionally repeated.
+	auto add_command_to_buffer = [&](const lcf::rpg::MoveCommand& cmd, int repeat = 1) {
+		for (int i = 0; i < repeat; ++i) {
+			_move_route_buffer.move_commands.push_back(cmd);
+		}
+		};
+
+	if (com.parameters.size() < 2) {
+		Output::Warning("AddMoveRoute: Command is missing action_type parameter.");
+		_move_route_chain_active = false; // Break chain on error
+		return true;
+	}
+
+	int action_type = com.parameters[1];
+	lcf::rpg::MoveCommand cmd;
+
+	switch (action_type) {
+	case 0: { // .move(direction, distance) and specific moves like .moveUp(n)
+		cmd.command_id = get_p(1, 2);
+		int distance = get_p(2, 3, 1);
+		if (cmd.command_id >= 0 && cmd.command_id <= 11) {
+			add_command_to_buffer(cmd, distance);
+		}
+		break;
+	}
+	case 1: { // .face(direction) and specific facings like .faceUp
+		int direction = get_p(1, 2);
+		if (direction >= 0 && direction <= 10) {
+			cmd.command_id = direction + 12; // Offset to LCF MoveCommand IDs 12-22
+			add_command_to_buffer(cmd);
+		}
+		break;
+	}
+	case 2: { // .pause
+		cmd.command_id = 23; // Wait
+		add_command_to_buffer(cmd);
+		break;
+	}
+	case 3: { // .jump(x_offset, y_offset)
+		int x_offset = get_p(1, 2);
+		int y_offset = get_p(2, 3);
+
+		cmd.command_id = 24; add_command_to_buffer(cmd);
+		cmd.command_id = (int32_t)((x_offset >= 0) ? lcf::rpg::MoveCommand::Code::move_right : lcf::rpg::MoveCommand::Code::move_left);
+		add_command_to_buffer(cmd, std::abs(x_offset));
+		cmd.command_id = (int32_t)((y_offset >= 0) ? lcf::rpg::MoveCommand::Code::move_down : lcf::rpg::MoveCommand::Code::move_up);
+		add_command_to_buffer(cmd, std::abs(y_offset));
+		cmd.command_id = 25; add_command_to_buffer(cmd);
+		break;
+	}
+	case 4: { // Toggles like .fixDir/[on|off], .beginThrough/[on|off]
+		int toggle_type = get_p(1, 2);
+		bool is_on = get_p(2, 3) != 0;
+		int base_cmd_id = 0;
+		switch (toggle_type) {
+		case 0: base_cmd_id = 24; break; // Begin/End Jump
+		case 1: base_cmd_id = 26; break; // Lock/Unlock Facing
+		case 2: base_cmd_id = 36; break; // Through ON/OFF
+		case 3: base_cmd_id = 38; break; // Stop/Start Animation
+		default: return true;
+		}
+		cmd.command_id = base_cmd_id + (is_on ? 0 : 1);
+		add_command_to_buffer(cmd);
+		break;
+	}
+	case 5: { // Direct setters like .speed(n), .freq(n), .trans(n)
+		int type = get_p(1, 2);
+		int value = get_p(2, 3);
+		switch (type) {
+		case 0: cmd.command_id = 100; value += 4;  break; // Custom: Set Speed
+		case 1: cmd.command_id = 101; break; // Custom: Set Freq
+		case 2: cmd.command_id = 102; break; // Custom: Set Transparency
+		default: return true;
+		}
+		cmd.parameter_a = value;
+		add_command_to_buffer(cmd);
+		break;
+	}
+	case 6: { // .switch(id, val)
+		cmd.parameter_a = get_p(1, 2);
+		cmd.command_id = get_p(2, 3) != 0 ? 32 : 33; // Switch ON / OFF
+		add_command_to_buffer(cmd);
+		break;
+	}
+	case 7: { // .setBody("[name]", [index])
+		cmd.command_id = 34;
+		int string_mode = (com.parameters[0] >> 16) & 0xF; // logical arg 4 is at bit 16
+		if (string_mode == 0) { // literal
+			cmd.parameter_string = com.string;
+		}
+		else if (string_mode == 1) { // direct t[id]
+			cmd.parameter_string = lcf::DBString(Main_Data::game_strings->Get(com.parameters[5]));
+		}
+		else if (string_mode == 2) { // indirect t[v[id]]
+			int var_id = Main_Data::game_variables->Get(com.parameters[5]);
+			cmd.parameter_string = lcf::DBString(Main_Data::game_strings->Get(var_id));
+		}
+		cmd.parameter_a = get_p(1, 2);
+		add_command_to_buffer(cmd);
+		break;
+	}
+	case 8: { // .se("[name]", vol, pitch, balance)
+		cmd.command_id = 35;
+		int string_mode = (com.parameters[0] >> 20) & 0xF; // logical arg 5 is at bit 20
+		if (string_mode == 0) { // literal
+			cmd.parameter_string = com.string;
+		}
+		else if (string_mode == 1) { // direct t[id]
+			cmd.parameter_string = lcf::DBString(Main_Data::game_strings->Get(com.parameters[5]));
+		}
+		else if (string_mode == 2) { // indirect t[v[id]]
+			int var_id = Main_Data::game_variables->Get(com.parameters[5]);
+			cmd.parameter_string = lcf::DBString(Main_Data::game_strings->Get(var_id));
+		}
+		cmd.parameter_a = get_p(1, 2, 100);
+		cmd.parameter_b = get_p(2, 3, 100);
+		cmd.parameter_c = get_p(3, 4, 50);
+		add_command_to_buffer(cmd);
+		break;
+	}
+	default:
+		Output::Warning("AddMoveRoute: Unknown action type {}", action_type);
+		break;
+	}
+
+	_move_route_buffer.repeat = (com.parameters[0] & (1 << 24)) != 0;
+	_move_route_buffer.skippable = (com.parameters[0] & (1 << 25)) != 0;
+
+	auto& frame = GetFrame();
+	bool is_chain_end = (frame.current_command + 1 >= static_cast<int>(frame.commands.size()) ||
+		frame.commands[frame.current_command + 1].code != 3027 /* AddMoveRoute */);
+
+	if (is_chain_end) {
+		Game_Character* event = GetCharacter(_move_route_event_id, "AddMoveRoute (exec)");
+		if (event != nullptr) {
+			if (_move_route_event_id >= Game_Character::CharBoat && _move_route_event_id <= Game_Character::CharAirship) {
+				if (static_cast<Game_Vehicle*>(event)->IsInUse()) {
+					event = Main_Data::game_player.get();
+				}
+			}
+			event->ForceMoveRoute(_move_route_buffer, _move_route_frequency);
+		}
+		else {
+			Output::Warning("AddMoveRoute: Could not find cached event with id {} to execute route.", _move_route_event_id);
+		}
+		_move_route_chain_active = false;
+	}
+
 	return true;
 }
 
