@@ -439,13 +439,6 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			return false;
 		}
 
-#ifdef _WIN32
-		HWND window = GetWindowHandle(sdl_window);
-		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
-		int window_rounding = 1; // DWMWCP_DONOTROUND
-		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
-#endif
-
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
 	} else {
@@ -469,6 +462,13 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	// Need to set up icon again, some platforms recreate the window when
 	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
 	SetAppIcon();
+
+#ifdef _WIN32
+	HWND window = GetWindowHandle(sdl_window);
+	// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+	int window_rounding = 1; // DWMWCP_DONOTROUND
+	DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
 
 	uint32_t sdl_pixel_fmt = GetDefaultFormat();
 	int a, w, h;

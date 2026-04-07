@@ -25,7 +25,6 @@
 
 #ifdef _WIN32
 #  include <windows.h>
-#  include <SDL_syswm.h>
 #  include <dwmapi.h>
 #elif defined(__ANDROID__)
 #  include <jni.h>
@@ -86,14 +85,11 @@ static DynamicFormat GetDynamicFormat(uint32_t fmt) {
 
 #ifdef _WIN32
 HWND GetWindowHandle(SDL_Window* window) {
-	SDL_SysWMinfo wminfo;
-	SDL_VERSION(&wminfo.version)
-	SDL_bool success = SDL_GetWindowWMInfo(window, &wminfo);
-
-	if (success < 0)
-		Output::Error("Wrong SDL version");
-
-	return wminfo.info.win.window;
+	return (HWND)SDL_GetPointerProperty(
+		SDL_GetWindowProperties(window),
+		SDL_PROP_WINDOW_WIN32_HWND_POINTER,
+		NULL
+	);
 }
 #endif
 
@@ -304,9 +300,7 @@ bool Sdl3Ui::RefreshDisplayMode() {
 		#endif
 
 		#if defined(EMSCRIPTEN) || defined(_WIN32)
-		// FIXME: This will not DPI-scale on Windows due to SDL2 limitations.
-		// Is properly fixed in SDL3. See #2764
-		flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
 		#endif
 
 		// Create our window
@@ -380,13 +374,6 @@ bool Sdl3Ui::RefreshDisplayMode() {
 
 		SDL_SetTextureScaleMode(sdl_texture_game, SDL_SCALEMODE_NEAREST);
 
-#ifdef _WIN32
-		HWND window = GetWindowHandle(sdl_window);
-		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
-		int window_rounding = 1; // DWMWCP_DONOTROUND
-		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
-#endif
-
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
 	} else {
@@ -410,6 +397,13 @@ bool Sdl3Ui::RefreshDisplayMode() {
 	// Need to set up icon again, some platforms recreate the window when
 	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
 	SetAppIcon();
+
+#ifdef _WIN32
+	HWND window = GetWindowHandle(sdl_window);
+	// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+	int window_rounding = 1; // DWMWCP_DONOTROUND
+	DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
 
 	uint32_t sdl_pixel_fmt = GetDefaultFormat();
 

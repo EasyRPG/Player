@@ -584,6 +584,10 @@ if(PLAYER_TARGET_PLATFORM STREQUAL "SDL3")
 	if(ANDROID)
 		set(PLAYER_BUILD_EXECUTABLE OFF)
 	endif()
+
+	if(WIN32)
+		target_link_libraries(${PROJECT_NAME} "Dwmapi")
+	endif()
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL2")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/sdl/sdl2_ui.cpp

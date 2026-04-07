@@ -22,8 +22,10 @@
 #include "utils.h"
 #include "output.h"
 
-#if USE_SDL == 3 // This is needed on Windows, SDL wraps main()
+#if USE_SDL == 3
 #  include <SDL3/SDL.h>
+// This is needed on Windows, SDL wraps main()
+#  include <SDL3/SDL_main.h>
 #elif USE_SDL <= 2
 #  include <SDL.h>
 #endif
