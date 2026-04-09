@@ -756,12 +756,6 @@ void Sdl3Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		window.width = evnt.window.data1;
 		window.height = evnt.window.data2;
 
-#ifdef __EMSCRIPTEN__
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		window.width = static_cast<int>(window.width * display_ratio);
-		window.height = static_cast<int>(window.height * display_ratio);
-#endif
-
 		window.size_changed = true;
 	}
 }
@@ -809,14 +803,8 @@ void Sdl3Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
-#ifdef __EMSCRIPTEN__
-	double display_ratio = emscripten_get_device_pixel_ratio();
-	mouse_pos.x = (evnt.motion.x * display_ratio - viewport.x) * main_surface->width() / xw;
-	mouse_pos.y = (evnt.motion.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
 	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
 	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
-#endif
 
 #else
 	/* unused */
@@ -949,14 +937,8 @@ void Sdl3Ui::ProcessFingerEvent(SDL_Event& evnt) {
 			return;
 		}
 
-#ifdef __EMSCRIPTEN__
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		int x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
-		int y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
 		int x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
 		int y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
-#endif
 
 		fi->Down(evnt.tfinger.fingerID, x, y);
 	} else if (evnt.type == SDL_EVENT_FINGER_UP) {
