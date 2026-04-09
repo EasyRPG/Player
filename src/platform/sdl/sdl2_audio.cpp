@@ -26,7 +26,7 @@
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include <emscripten.h>
 #endif
 
@@ -75,7 +75,7 @@ Sdl2Audio::Sdl2Audio(const Game_ConfigAudio& cfg) :
 		return;
 	}
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// Get preferred sample rate from Browser (-> OS)
 	const int frequency = EM_ASM_INT_V({
 		var context;

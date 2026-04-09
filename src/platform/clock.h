@@ -34,7 +34,7 @@ using Platform_Clock = NxClock;
 #elif defined(__vita__)
 #include "platform/psvita/clock.h"
 using Platform_Clock = Psp2Clock;
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 #include "platform/emscripten/clock.h"
 using Platform_Clock = EmscriptenClock;
 #elif defined(USE_LIBRETRO)

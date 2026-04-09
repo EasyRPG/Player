@@ -55,7 +55,7 @@ bool Window_GameList::Refresh(FilesystemView filesystem_base, bool show_dotdot) 
 #endif
 		assert(!dir.second.name.empty() && "VFS BUG: Empty filename in the folder");
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 		if (dir.second.name == "Save") {
 			continue;
 		}
@@ -159,7 +159,7 @@ void Window_GameList::DrawItem(int index) {
 
 void Window_GameList::DrawErrorText(bool show_dotdot) {
 	std::vector<std::string> error_msg = {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 		"Did you type in a wrong URL?",
 		"",
 		"If you think this is an error, contact the owner",
@@ -183,7 +183,7 @@ void Window_GameList::DrawErrorText(bool show_dotdot) {
 
 	int y = (show_dotdot ? 4 + 14 : 0);
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	contents->TextDraw(0, y, Font::ColorKnockout, "The game was not found.");
 #else
 	contents->TextDraw(0, y, Font::ColorKnockout, "No games found in the current directory.");

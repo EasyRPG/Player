@@ -19,9 +19,9 @@
 #include "game_destiny.h"
 #include "filefinder.h"
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 #include "exe_reader.h"
-#endif // !EMSCRIPTEN
+#endif // !__EMSCRIPTEN__
 #include "output.h"
 
 using Destiny::InterpretFlag;
@@ -52,7 +52,7 @@ void Game_Destiny::Load()
 	uint32_t floatSize = 0;
 	uint32_t stringSize = 0;
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	Filesystem_Stream::InputStream exe = FileFinder::Game().OpenFile(EXE_NAME);
 
 	if (exe)
@@ -80,7 +80,7 @@ void Game_Destiny::Load()
 	gameVersion = 0x20000107;
 	extra = 0x01;
 	dwordSize = floatSize = stringSize = 0x64;
-#endif // !EMSCRIPTEN
+#endif // !__EMSCRIPTEN__
 
 	Initialize(dllVersion, language, gameVersion, extra, dwordSize, floatSize, stringSize);
 }

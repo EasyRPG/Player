@@ -25,7 +25,7 @@
 #include <chrono>
 #include <SDL3/SDL.h>
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include <emscripten.h>
 #endif
 
@@ -78,7 +78,7 @@ Sdl3Audio::Sdl3Audio(const Game_ConfigAudio& cfg) :
 		return;
 	}
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// Get preferred sample rate from Browser (-> OS)
 	const int frequency = EM_ASM_INT_V({
 		var context;
