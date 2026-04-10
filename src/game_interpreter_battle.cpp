@@ -645,7 +645,7 @@ bool Game_Interpreter_Battle::ManiacBattleHook(ManiacBattleHookType hook_type, i
 		Output::Warning("CommandManiacControlBattle: Can't call invalid common event {}", common_event_id);
 		return false;
 	}
-	
+
 	// pushes the common event to be run into the queue of events.
 	maniac_interpreter->Push<ExecutionType::ManiacHook>(common_event);
 
@@ -874,11 +874,15 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 			case 1:
 			{
 				// states: size, [...state_id]
-				auto states = lcf::Data::states.size();
-				Main_Data::game_variables->Set(information_identifier, states);
-				for (size_t i = 0; i < states; i++)
+				auto states_size = lcf::Data::states.size();
+				auto states = battler->GetStates();
+				// The states list is only as large as the highest inflicted state
+				// Resize it to the number of available states
+				states.resize(states_size);
+				Main_Data::game_variables->Set(information_identifier, states.size());
+				for (size_t i = 0; i < states.size(); i++)
 				{
-					Main_Data::game_variables->Set(information_identifier + i + 1, battler->HasState(lcf::Data::states[i].ID));
+					Main_Data::game_variables->Set(information_identifier + i + 1, states[i]);
 				}
 				break;
 			}
