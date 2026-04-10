@@ -926,6 +926,7 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 		case 0:
 			// actor
 			if (target_id > 0) {
+				// Starts with 1 because it uses the Actor ID, not the index
 				executeOperationSingle(Main_Data::game_actors->GetActor(target_id), Actor);
 			}
 			break;
@@ -944,14 +945,12 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 			break;
 		}
 		case 3:
-			// troop member
-			if (target_id > 0) {
-				executeOperationSingle(Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
-			}
+			// troop member (enemy)
+			executeOperationSingle(Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
 			break;
 		case 4:
 		{
-			// entire troop
+			// entire troop (enemy)
 			auto count = 0;
 			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
 				count += executeOperationMany(member);
