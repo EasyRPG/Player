@@ -1336,7 +1336,7 @@ void Player::SetupBattleTest() {
 	// Battle Test also enables Test Play mode
 	debug_flag = true;
 
-	Scene::Push(Scene_Battle::Create(std::move(args)), true);
+	Scene::Push(Scene_Battle::Create(std::move(args)));
 }
 
 std::string Player::GetEncoding() {
