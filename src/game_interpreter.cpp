@@ -1545,19 +1545,20 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin) const {
+Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin, bool silent) const {
 	if (event_id == Game_Character::CharThisEvent) {
 		event_id = GetThisEventId();
 		// Is a common event
 		if (event_id == 0) {
 			// With no map parent
+			// Still reported even when "silent" as this would hide a bug
 			Output::Warning("{}: Can't use ThisEvent in common event: Not called from a map event", origin);
 			return nullptr;
 		}
 	}
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
-	if (!ch) {
+	if (!ch && !silent) {
 		Output::Warning("{}: Unknown event with id {}", origin, event_id);
 	}
 	return ch;
@@ -3623,9 +3624,14 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			chara_id = ValueOrVariable(com.parameters[3], chara_id);
 		}
 
-		character = GetCharacter(chara_id, "ConditionalBranch");
-		if (character != NULL) {
-			result = character->GetFacing() == com.parameters[2];
+		if (Player::IsPatchManiac() && com.parameters[4] == 1) {
+			// Existance check
+			result = GetCharacter(chara_id, "ConditionalBranch", true) != nullptr;
+		} else {
+			character = GetCharacter(chara_id, "ConditionalBranch");
+			if (character) {
+				result = character->GetFacing() == com.parameters[2];
+			}
 		}
 		break;
 	}
