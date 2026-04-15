@@ -1076,16 +1076,16 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 		int val = com.parameters[3];
 
 		if (start == end) {
-			if (val < 2) {
+			if (val == 0 || val == 1) {
 				Main_Data::game_switches->Set(start, val == 0);
-			} else {
+			} else if (val == 2) {
 				Main_Data::game_switches->Flip(start);
 			}
 			Game_Map::SetNeedRefreshForSwitchChange(start);
 		} else {
-			if (val < 2) {
+			if (val == 0 || val == 1) {
 				Main_Data::game_switches->SetRange(start, end, val == 0);
-			} else {
+			} else if (val == 2) {
 				Main_Data::game_switches->FlipRange(start, end);
 			}
 			Game_Map::SetNeedRefresh(true);
