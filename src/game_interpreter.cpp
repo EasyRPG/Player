@@ -4680,7 +4680,31 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	}
 
 	params.system_name = components[2];
+	uint32_t var_id = 0;
+	auto mode = delims[1] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(params.system_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad system name arg (id={}, arg={})", pic_id, components[2]);
+			return true;
+		}
+
+		params.system_name = Main_Data::game_strings->GetWithMode(
+			params.system_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
+
 	text.font_name = components[3];
+	mode = delims[2] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(text.font_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad font name arg (id={}, arg={})", pic_id, components[2]);
+			return true;
+		}
+
+		text.font_name = Main_Data::game_strings->GetWithMode(
+			text.font_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
 
 	params.texts = {text};
 
