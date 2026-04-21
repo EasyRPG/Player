@@ -41,11 +41,23 @@
 #include <lcf/rpg/savevehiclelocation.h>
 #include <lcf/rpg/savecommonevent.h>
 
+#include "tilemap_layer.h"
+
 class FileRequestAsync;
 struct BattleArgs;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
+
+const int INPUT4_VALUES[4] = { 2,6,8,4 };
+// const int INPUT8_VALUES[8] = { 2,6,8,4,1,3,7,9 };
+// const int INPUT8_VALUES[8] = { 7,8,9,6,3,2,1,4 };  // works North/South, but reverses East/West
+// const int INPUT8_VALUES[8] = { 8,9,6,3,2,1,4,7 };  // works North/South, but reverses East/West
+const int INPUT8_VALUES[8] = {1,2,3,6,9,8,7,4};
+
+//  1 = DownLeft, 2 = Down, 3 = DownRight, 4 = Left, 6 = Right, 7 = UpLeft, 8 = Up, 9 = UpRight
+
+
 
 class MapUpdateAsyncContext {
 public:
@@ -78,6 +90,12 @@ private:
  * Game_Map namespace
  */
 namespace Game_Map {
+
+
+	bool WouldCollideWithCharacter(const Game_Character& self, const Game_Character& other, bool self_conflict); // TODO - PIXELMOVE
+
+
+
 	/**
 	 * Initialize Game_Map.
 	 */
@@ -365,6 +383,7 @@ namespace Game_Map {
 	 * @param is_preupdate Update only common events and map events
 	 */
 	void Update(MapUpdateAsyncContext& actx, bool is_preupdate = false);
+    void UpdateMode7();
 
 	/**
 	 * Gets current map info.
@@ -428,6 +447,61 @@ namespace Game_Map {
 
 	/** @return battle encounter steps. */
 	int GetEncounterSteps();
+
+    /** @return If map is set to Mode7 */
+	int GetMoveDirection(int d);
+	int GetGraphicDirection(int d);
+	bool GetIsMode7();
+	void SetIsMode7(bool v);
+	float GetMode7Slant();
+	float GetMode7Yaw();
+	int GetMode7Horizon();
+	int GetMode7Baseline();
+	double GetMode7Scale();
+	void TiltMode7(int v);
+	void RotateMode7(int v);
+	void TiltTowardsMode7(int v, int duration);
+	void RotateTowardsMode7(int v, int duration);
+	void SetMode7Slant(int v);
+	void SetMode7Yaw(int v);
+	void SetMode7Horizon(int h);
+	void SetMode7Zoom(int zoom_factor);
+	void SetMode7Scale(int scale_factor);
+
+	void SetMode7Background(std::string_view name);
+    std::string GetMode7Background();
+
+    void SetMode7FadeWidth(int pixels);
+    int GetMode7FadeWidth();
+
+    struct Mode7SkyLayer {
+    std::string name;
+    float anchor_percent; // 0-100 (Where it sits in the 360 degree loop)
+    int y_offset;         // Vertical position relative to horizon
+    float scroll_ratio;   // 1.0 = moves with camera, 0.5 = half speed (depth)
+
+
+};
+
+    void SetMode7Overlay(int slot, std::string_view name, float anchor, int y, float scroll);
+    void ClearMode7Overlays();
+    const std::map<int, Mode7SkyLayer>& GetMode7Overlays();
+
+
+
+
+
+
+	/** Updates flag based on map's name. */
+	void RefreshMode7();
+
+	struct Mode7TransformResult {
+    int screen_x;
+    int screen_y;
+    double zoom;
+    };
+
+    Mode7TransformResult TransformToMode7(int screen_x, int screen_y);
 
 	/**
 	 * Sets battle encounter steps.
@@ -752,6 +826,12 @@ namespace Game_Map {
 	void SetNeedRefreshForVarChange(int var_id);
 	void SetNeedRefreshForSwitchChange(std::initializer_list<int> switch_ids);
 	void SetNeedRefreshForVarChange(std::initializer_list<int> var_ids);
+
+
+	int GetTileID(int x, int y, int layer);
+	TilemapLayer* GetTilemap(int i);
+
+
 
 	namespace Parallax {
 		struct Params {

@@ -70,6 +70,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			new_game.Set(arg.ArgIsOn());
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, {"--pixel-movement", "--no-pixel-movement"})) {
+			allow_pixel_movement.Set(arg.ArgIsOn());
+			patch_override = true;
+			continue;
+		}
 		if (cp.ParseNext(arg, 1, "--engine")) {
 			if (arg.NumValues() > 0) {
 				const auto& v = arg.Value(0);
@@ -232,6 +237,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_direct_menu.FromIni(ini)) {
+		patch_override = true;
+	}
+
+    if (allow_pixel_movement.FromIni(ini)) {
 		patch_override = true;
 	}
 

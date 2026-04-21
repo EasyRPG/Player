@@ -24,6 +24,7 @@
 #include <climits>
 #include <numeric>
 #include <unordered_set>
+#include <cmath>
 
 #include "async_handler.h"
 #include "options.h"
@@ -68,6 +69,28 @@ namespace {
 
 	bool need_refresh;
 
+	bool isMode7 = false;
+	float mode7Slant = 60;
+	float mode7Yaw = 0;
+	int mode7Horizon = 20;
+	double mode7Scale = 200.0;
+
+	float mode7Zoom = 1.0f;
+	float mode7ZoomTarget = 1.0f;
+	float mode7ZoomSpeed = 0.0f;
+	int mode7ZOffset = 0;
+		//
+	float mode7SlantTarget = 0;
+	float mode7SlantSpeed = 0;
+	float mode7YawTarget = 0;
+	float mode7YawSpeed = 0;
+
+	std::string mode7BackgroundName = "";
+
+	int mode7FadeWidth = 16;
+
+	std::map<int, Game_Map::Mode7SkyLayer> mode7SkyLayers;
+
 	int animation_type;
 	bool animation_fast;
 	std::vector<unsigned char> passages_down;
@@ -105,6 +128,10 @@ void Game_Map::OnContinueFromBattle() {
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
+
+   	screen_width = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	screen_height = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
+
 	Dispose();
 
 	map_info = {};
@@ -143,6 +170,23 @@ void Game_Map::Quit() {
 	common_events.clear();
 	interpreter.reset();
 	map_cache.reset();
+
+	vehicles.clear();
+
+
+// Reset all Mode7 parameters to their default state
+	isMode7 = false;
+	mode7Slant = 60; // Reset to default
+	mode7Yaw = 0;
+	mode7Horizon = 20; // Reset to default
+	mode7Zoom = 1.0f;
+	mode7Scale = 200.0; // Reset to default
+
+	// Reset any timed movement parameters for Mode7
+	mode7SlantTarget = 0;
+	mode7SlantSpeed = 0;
+	mode7YawTarget = 0;
+	mode7YawSpeed = 0;
 }
 
 int Game_Map::GetMapSaveCount() {
@@ -152,7 +196,12 @@ int Game_Map::GetMapSaveCount() {
 }
 
 void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
+
 	Dispose();
+
+
+	screen_width = (Player::screen_width / 16) * SCREEN_TILE_SIZE;
+	screen_height = (Player::screen_height / 16) * SCREEN_TILE_SIZE;
 
 	map = std::move(map_in);
 
@@ -207,6 +256,11 @@ void Game_Map::Setup(std::unique_ptr<lcf::rpg::Map> map_in) {
 
 	SetPositionX(player.GetX() * SCREEN_TILE_SIZE - player.GetPanX());
 	SetPositionY(player.GetY() * SCREEN_TILE_SIZE - player.GetPanY());
+
+		// Set Mode7 flag
+	RefreshMode7();
+
+
 
 	// Update the save counts so that if the player saves the game
 	// events will properly resume upon loading.
@@ -325,39 +379,40 @@ void Game_Map::SetupFromSave(
 std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	std::unique_ptr<lcf::rpg::Map> map;
 
-	// Attempt to load either the EasyRPG map file or the RPG Maker map file first, depending on config.
-	// If it fails, try the other one.
+	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	// FIXME: Assert map was cached for async platforms
-	bool map_is_easyrpg_file = Player::player_config.prefer_easyrpg_map_files.Get();
-	std::string map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
+	std::string map_name = Game_Map::ConstructMapName(map_id, true);
 	std::string map_file = FileFinder::Game().FindFile(map_name);
 	if (map_file.empty()) {
-		map_is_easyrpg_file = !map_is_easyrpg_file;
-		map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
+		map_name = Game_Map::ConstructMapName(map_id, false);
 		map_file = FileFinder::Game().FindFile(map_name);
 
 		if (map_file.empty()) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
 			return nullptr;
 		}
-	}
 
-	auto map_stream = FileFinder::Game().OpenInputStream(map_file);
-	if (!map_stream) {
-		Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
-		return nullptr;
-	}
+		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
+		if (!map_stream) {
+			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
+			return nullptr;
+		}
 
-	if (map_is_easyrpg_file) {
-		map = lcf::LMU_Reader::LoadXml(map_stream);
-	} else {
 		map = lcf::LMU_Reader::Load(map_stream, Player::encoding);
+
 		if (Input::IsRecording()) {
 			map_stream.clear();
 			map_stream.seekg(0);
 			Input::AddRecordingData(Input::RecordingData::Hash,
-							fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
+						   fmt::format("map{:04} {:#08x}", map_id, Utils::CRC32(map_stream)));
 		}
+	} else {
+		auto map_stream = FileFinder::Game().OpenInputStream(map_file);
+		if (!map_stream) {
+			Output::Error("Loading of Map {} failed.\nMap not readable.", map_name);
+			return nullptr;
+		}
+		map = lcf::LMU_Reader::LoadXml(map_stream);
 	}
 
 	Output::Debug("Loaded Map {}", map_name);
@@ -575,11 +630,7 @@ const lcf::rpg::Event* Game_Map::FindEventById(const std::vector<lcf::rpg::Event
 }
 
 int Game_Map::GetNextAvailableEventId() {
-	if (map->events.empty()) {
-		return 1;
-	} else {
-		return map->events.back().ID + 1;
-	}
+	return map->events.back().ID + 1;
 }
 
 void Game_Map::PrepareSave(lcf::rpg::Save& save) {
@@ -746,6 +797,14 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 	return false;
 }
 
+bool Game_Map::WouldCollideWithCharacter(const Game_Character& self, const Game_Character& other, bool self_conflict) { // TODO - PIXELMOVE
+	if (&self == &other) {
+		return false;
+	}
+	return WouldCollide(self, other, self_conflict);
+} // END - PIXELMOVE
+
+
 template <typename T>
 static void MakeWayUpdate(T& other) {
 	other.Update();
@@ -789,8 +848,14 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 }
 
 static Game_Vehicle::Type GetCollisionVehicleType(const Game_Character* ch) {
-	if (ch && ch->GetType() == Game_Character::Vehicle) {
-		return static_cast<Game_Vehicle::Type>(static_cast<const Game_Vehicle*>(ch)->GetVehicleType());
+	if (ch) {
+		if (ch->GetType() == Game_Character::Vehicle) {
+			return static_cast<Game_Vehicle::Type>(static_cast<const Game_Vehicle*>(ch)->GetVehicleType());
+		}
+		// ADDED: Check if the character is the player and if they are in a vehicle.
+		if (ch->GetType() == Game_Character::Player) {
+			return static_cast<Game_Vehicle::Type>(static_cast<const Game_Player*>(ch)->GetVehicleType());
+		}
 	}
 	return Game_Vehicle::None;
 }
@@ -1104,20 +1169,72 @@ bool Game_Map::IsPassableTile(
 
 	if (check_map_geometry) {
 		int tile_index = x + y * GetTilesX();
-		int tile_id = map->upper_layer[tile_index] - BLOCK_F;
-		tile_id = map_info.upper_tiles[tile_id];
+		// --- MODIFIED BLOCK START ---
+		int tile_raw_id = map->upper_layer[tile_index];
 
-		if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
-			if ((passages_up[tile_id] & Passable::Above) == 0)
+		// If the tile on the upper layer is actually a Lower Layer tile (A-E)
+		if (tile_raw_id < BLOCK_F) {
+			// Reuse the lower layer passability logic for this specific tile ID
+			// We pass the tile_index, but IsPassableLowerTile usually looks at map->lower_layer.
+			// We need to verify IsPassableLowerTile handles arbitrary IDs or if we need to copy logic.
+
+			// IsPassableLowerTile reads directly from map->lower_layer[tile_index].
+			// We can't use it directly without modification because we want to test 'tile_raw_id'.
+			// So we replicate the LowerTile logic here for the upper layer slot:
+
+			int tile_id = 0;
+			if (tile_raw_id >= BLOCK_E) {
+				tile_id = tile_raw_id - BLOCK_E;
+				tile_id = map_info.lower_tiles[tile_id] + BLOCK_E_INDEX;
+			} else if (tile_raw_id >= BLOCK_D) {
+				tile_id = (tile_raw_id - BLOCK_D) / BLOCK_D_STRIDE + BLOCK_D_INDEX;
+				int autotile_id = (tile_raw_id - BLOCK_D) % BLOCK_D_STRIDE;
+
+				// Wall check logic for autotiles
+				if (((passages_down[tile_id] & Passable::Wall) != 0) && (
+						(autotile_id >= 20 && autotile_id <= 23) ||
+						(autotile_id >= 33 && autotile_id <= 37) ||
+						autotile_id == 42 || autotile_id == 43 ||
+						autotile_id == 45 || autotile_id == 46))
+					return true; // Walls block "bit" check below, effectively returning false for movement
+			} else if (tile_raw_id >= BLOCK_C) {
+				tile_id = (tile_raw_id - BLOCK_C) / BLOCK_C_STRIDE + BLOCK_C_INDEX;
+			} else {
+				tile_id = tile_raw_id / BLOCK_B_STRIDE;
+			}
+
+			// Check collision
+			if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
+				// Boats can only pass if it's NOT an "Above" tile (Star)
+				// But for lower tiles, Star usually means "Overhead", so boats pass UNDER it?
+				// Standard behavior: Boats fail if not Star.
+				if ((passages_down[tile_id] & Passable::Above) == 0) return false;
+				return true;
+			}
+
+			if ((passages_down[tile_id] & bit) == 0) return false;
+
+			// If it's a Star tile on the upper layer, we treat it as passable but check the layer below
+			if ((passages_down[tile_id] & Passable::Above) == 0) return true;
+
+		} else {
+			// Standard Upper Layer Logic (Block F)
+			int tile_id = tile_raw_id - BLOCK_F;
+			tile_id = map_info.upper_tiles[tile_id];
+
+			if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
+				if ((passages_up[tile_id] & Passable::Above) == 0)
+					return false;
+				return true;
+			}
+
+			if ((passages_up[tile_id] & bit) == 0)
 				return false;
-			return true;
+
+			if ((passages_up[tile_id] & Passable::Above) == 0)
+				return true;
 		}
-
-		if ((passages_up[tile_id] & bit) == 0)
-			return false;
-
-		if ((passages_up[tile_id] & Passable::Above) == 0)
-			return true;
+		// --- MODIFIED BLOCK END ---
 
 		return IsPassableLowerTile(bit, tile_index);
 	} else {
@@ -1315,8 +1432,62 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 	Parallax::Update();
 
+    if (isMode7) {
+		UpdateMode7();
+	}
+
 	actx = {};
 }
+
+void Game_Map::UpdateMode7() {
+	if (mode7SlantSpeed > 0) {
+		if (mode7SlantTarget > mode7Slant) {
+			mode7Slant += mode7SlantSpeed;
+			if (mode7SlantTarget <= mode7Slant) {
+				mode7Slant = mode7SlantTarget;
+				mode7SlantSpeed = 0;
+			}
+		}
+		else {
+			mode7Slant -= mode7SlantSpeed;
+			if (mode7SlantTarget >= mode7Slant) {
+				mode7Slant = mode7SlantTarget;
+				mode7SlantSpeed = 0;
+			}
+		}
+	}
+	if (mode7YawSpeed > 0) {
+		float tt = mode7YawTarget;
+		float left = (mode7Yaw < tt) ? 360 - tt + mode7Yaw : mode7Yaw - tt;
+		float right = (mode7Yaw < tt) ? tt - mode7Yaw : 360 - mode7Yaw + tt;
+
+		bool rotLeft = (left < right);
+
+		if (rotLeft) {
+			mode7Yaw -= mode7YawSpeed;
+			if (mode7Yaw < 0) mode7Yaw += 360;
+
+			// Check if we passed the target (handling wraparound)
+			float newDist = (mode7Yaw < tt) ? 360 - tt + mode7Yaw : mode7Yaw - tt;
+			if (newDist > left) { // Distance increased means we passed it
+				mode7Yaw = mode7YawTarget;
+				mode7YawSpeed = 0;
+			}
+		}
+		else {
+			mode7Yaw += mode7YawSpeed;
+			if (mode7Yaw >= 360) mode7Yaw -= 360;
+
+			// Check if we passed the target
+			float newDist = (mode7Yaw < tt) ? tt - mode7Yaw : 360 - mode7Yaw + tt;
+			if (newDist > right) {
+				mode7Yaw = mode7YawTarget;
+				mode7YawSpeed = 0;
+			}
+		}
+	}
+}
+
 
 void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
 	for (Game_Event& ev : events) {
@@ -1549,6 +1720,151 @@ int Game_Map::GetOriginalEncounterSteps() {
 int Game_Map::GetEncounterSteps() {
 	return map_info.encounter_steps;
 }
+
+int Game_Map::GetMoveDirection(int dir) {
+	if (dir == 0) return 0;
+	if (isMode7) {
+		int idx = 0;
+		for (int i = 0; i < 8; i++) {
+			if (INPUT8_VALUES[i] == dir) {
+				idx = i;
+				break;
+			}
+		}
+
+        float yaw = mode7Yaw;
+        yaw = fmodf(yaw + 22.5f, 360.0f);
+        if (yaw < 0) yaw += 360.0f; // Handle negative result from fmodf
+
+        idx = static_cast<int>(idx + (yaw / 45.0f)) % 8;
+
+		dir = INPUT8_VALUES[idx];
+	}
+	return dir;
+}
+
+int Game_Map::GetGraphicDirection(int d) {
+	if (isMode7) {
+		float yaw = mode7Yaw;
+		yaw = fmodf(yaw + 22.5f, 360.0f);
+		if (yaw < 0) yaw += 360.0f;
+
+		int idx = (d + static_cast<int>(yaw / 90.0f)) % 4;
+		return idx;
+	}
+	return d;
+}
+
+bool Game_Map::GetIsMode7() {
+	return isMode7;
+}
+
+void Game_Map::SetIsMode7(bool v) {
+    isMode7 = v;
+}
+
+float Game_Map::GetMode7Slant() {
+	return mode7Slant;
+}
+
+void Game_Map::TiltMode7(int v) {
+	// Clear any active transition first
+	mode7SlantSpeed = 0;
+	SetMode7Slant(static_cast<int>(mode7Slant * 100) + v);
+}
+
+void Game_Map::TiltTowardsMode7(int v, int duration) {
+	float vv = v / 100.0f;
+	mode7SlantTarget = vv;
+	float delta = abs(mode7Slant - mode7SlantTarget);
+	mode7SlantSpeed = (duration > 0) ? delta / duration : delta;
+}
+
+void Game_Map::SetMode7Slant(int v) {
+	// Clear any active transition
+	mode7SlantSpeed = 0;
+
+	float vv = v / 100.0f;
+	mode7Slant = vv;
+	if (mode7Slant < 25) mode7Slant = 25;
+	if (mode7Slant > 90) mode7Slant = 90;
+}
+
+float Game_Map::GetMode7Yaw() {
+	return mode7Yaw;
+}
+
+void Game_Map::RotateMode7(int v) {
+	// Clear any active transition
+	mode7YawSpeed = 0;
+
+	float vv = v / 100.0f;
+	mode7Yaw += vv;
+	while (mode7Yaw >= 360.0f) mode7Yaw -= 360.0f;
+	while (mode7Yaw < 0.0f) mode7Yaw += 360.0f;
+}
+
+void Game_Map::RotateTowardsMode7(int v, int duration) {
+	float vv = v / 100.0f;
+	// Normalize target to [0, 360)
+	while (vv >= 360.0f) vv -= 360.0f;
+	while (vv < 0.0f) vv += 360.0f;
+	mode7YawTarget = vv;
+
+	// Calculate shortest path
+	float diff = mode7YawTarget - mode7Yaw;
+	while (diff <= -180.0f) diff += 360.0f;
+	while (diff > 180.0f) diff -= 360.0f;
+
+	// Set speed based on absolute difference
+	mode7YawSpeed = (duration > 0) ? std::abs(diff) / duration : std::abs(diff);
+}
+
+void Game_Map::SetMode7Yaw(int v) {
+	// Clear any active transition
+	mode7YawSpeed = 0;
+
+	float vv = v / 100.0f;
+	mode7Yaw = vv;
+	while (mode7Yaw < 0) mode7Yaw += 360;
+	while (mode7Yaw >= 360) mode7Yaw -= 360;
+}
+
+int Game_Map::GetMode7Horizon() {
+	return mode7Horizon;
+}
+
+int Game_Map::GetMode7Baseline() {
+	return 4;
+}
+
+double Game_Map::GetMode7Scale() {
+	return mode7Scale;
+}
+
+void Game_Map::SetMode7Scale(int scale_factor) {
+	// Value is passed as an integer multiplied by 100.
+	mode7Scale = scale_factor / 100.0;
+	if (mode7Scale <= 0) {
+		mode7Scale = 0.1; // Prevent division by zero or negative values.
+	}
+}
+
+
+void Game_Map::RefreshMode7() {
+	isMode7 = false;
+	const auto* current_info = &GetMapInfo();
+	std::string s = current_info->name.data();
+	int v = s.find("[M7]");
+	if (v != std::string::npos) {
+		isMode7 = true;
+		mode7Yaw = 0;
+		printf("Mode7 Enabled!");
+	}
+}
+
+
+
 
 void Game_Map::SetEncounterSteps(int step) {
 	if (step < 0) {
@@ -2304,3 +2620,128 @@ bool Game_Map::Parallax::FakeXPosition() {
 bool Game_Map::Parallax::FakeYPosition() {
 	return parallax_fake_y;
 }
+
+
+
+
+
+int Game_Map::GetTileID(int x, int y, int layer) {
+
+
+	int tile_index = x + y * GetTilesX();
+	int tile_raw_id = map->lower_layer[tile_index];
+	int tile_id = 0;
+
+	if (tile_raw_id >= BLOCK_E) {
+		tile_id = tile_raw_id - BLOCK_E;
+		tile_id = map_info.lower_tiles[tile_id] + BLOCK_E_INDEX;
+
+	}
+	else if (tile_raw_id >= BLOCK_D) {
+		/*tile_id = (tile_raw_id - BLOCK_D) / BLOCK_D_STRIDE + BLOCK_D_INDEX;
+		int autotile_id = (tile_raw_id - BLOCK_D) % BLOCK_D_STRIDE;
+		Output::Debug(" {} {} {}", tile_id, autotile_id, tile_raw_id);*/
+		//return tile_id;
+		/*if (((Passable::Wall) != 0) && (
+			(autotile_id >= 20 && autotile_id <= 23) ||
+			(autotile_id >= 33 && autotile_id <= 37) ||
+			autotile_id == 42 || autotile_id == 43 ||
+			autotile_id == 45 || autotile_id == 46))
+			return autotile_id;*/
+
+	}
+	else if (tile_raw_id >= BLOCK_C) {
+		tile_id = (tile_raw_id - BLOCK_C) / BLOCK_C_STRIDE + BLOCK_C_INDEX;
+
+	}
+	else if (map->lower_layer[tile_index] < BLOCK_C) {
+		tile_id = tile_raw_id / BLOCK_B_STRIDE;
+	}
+
+	return tile_id;
+}
+
+
+Game_Map::Mode7TransformResult Game_Map::TransformToMode7(int screen_x, int screen_y) {
+	// This function takes a standard 2D screen coordinate and projects it
+	// into the pseudo-3D Mode 7 space, returning the new on-screen
+	// coordinates and the appropriate zoom/scale factor.
+
+	// Get map properties.
+	const int center_x = Player::screen_width / 2 - 8;
+	const int center_y = Player::screen_height / 2 + 8;
+	float yaw = Game_Map::GetMode7Yaw();
+	int slant = Game_Map::GetMode7Slant();
+	int horizon = Game_Map::GetMode7Horizon();
+	horizon = (horizon * (90 - slant)) / 90;
+	int baseline = center_y + Game_Map::GetMode7Baseline();
+	double scale = Game_Map::GetMode7Scale();
+
+	// Rotate.
+	double angle = (yaw * (2 * M_PI) / 360);
+	int xx = screen_x - center_x;
+	int yy = screen_y - center_y;
+	double cosA = cos(-angle);
+	double sinA = sin(-angle);
+	int rotatedX = (cosA * xx) + (sinA * yy);
+	int rotatedY = (cosA * yy) - (sinA * xx);
+
+	// Transform
+	double iConst = 1 + (slant / (baseline + horizon));
+	double distanceBase = slant * scale / (baseline + horizon);
+	double syBase = distanceBase * 2;
+	double distance = (syBase - rotatedY) / 2;
+
+	double zoom = (iConst - (distance / scale)) * 2.0;
+    int sy = ((slant * scale) / distance) - horizon - (Player::screen_height / 2) - 4;
+	int sx = rotatedX * zoom;
+
+	return {center_x + sx, center_y + sy, zoom};
+}
+
+void Game_Map::SetMode7Horizon(int h) {
+	mode7Horizon = h;
+}
+
+void Game_Map::SetMode7Zoom(int zoom_factor) {
+	// Value is passed as an integer multiplied by 100 for precision
+	mode7Zoom = zoom_factor / 100.0f;
+	if (mode7Zoom < 0.1f) {
+		mode7Zoom = 0.1f;
+	}
+}
+
+
+void Game_Map::SetMode7Background(std::string_view name) {
+    mode7BackgroundName = ToString(name);
+}
+
+std::string Game_Map::GetMode7Background() {
+    return mode7BackgroundName;
+}
+
+void Game_Map::SetMode7FadeWidth(int pixels) {
+    mode7FadeWidth = std::max(1, pixels); // Prevent division by zero
+}
+
+int Game_Map::GetMode7FadeWidth() {
+    return mode7FadeWidth;
+}
+
+void Game_Map::SetMode7Overlay(int slot, std::string_view name, float anchor, int y, float scroll) {
+    if (name.empty()) {
+        mode7SkyLayers.erase(slot);
+        return;
+    }
+    mode7SkyLayers[slot] = { ToString(name), anchor, y, scroll };
+}
+
+void Game_Map::ClearMode7Overlays() {
+    mode7SkyLayers.clear();
+}
+
+const std::map<int, Game_Map::Mode7SkyLayer>& Game_Map::GetMode7Overlays() {
+    return mode7SkyLayers;
+}
+
+

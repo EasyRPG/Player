@@ -48,6 +48,7 @@ public:
 	/** Load from saved game */
 	void SetSaveData(lcf::rpg::SaveMapEvent save);
 
+
 	/** @return save game data */
 	lcf::rpg::SaveMapEvent GetSaveData() const;
 

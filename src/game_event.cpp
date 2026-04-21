@@ -34,6 +34,7 @@
 #include "output.h"
 #include <cmath>
 #include <cassert>
+#include "cute_c2.h"
 
 Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 	Game_EventBase(Event),
@@ -44,7 +45,18 @@ Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 	SetX(event->x);
 	SetY(event->y);
 
+//	if (true) {
+    if (Player::game_config.allow_pixel_movement.Get()){            //TODO - PIXELMOVE
+		real_x = (float)GetX();
+		real_y = (float)GetY();
+		//Output::Warning("Event Pos = {}x{}", real_x, real_y);
+	}// END - PIXELMOVE
+
+
 	RefreshPage();
+
+	Output::Debug("event[{}].name: {}", data()->ID, GetSpriteName()); //TODO - PIXELMOVE
+
 }
 
 void Game_Event::SanitizeData() {
@@ -92,6 +104,13 @@ void Game_Event::SetSaveData(lcf::rpg::SaveMapEvent save)
 			interpreter->SetState(state);
 		}
 	}
+
+//  if (true) {
+    if (Player::game_config.allow_pixel_movement.Get()){            // TODO - PIXELMOVE
+		real_x = (float)GetX();
+		real_y = (float)GetY();
+	} // END - PIXELMOVE
+
 }
 
 lcf::rpg::SaveMapEvent Game_Event::GetSaveData() const {
@@ -469,7 +488,24 @@ void Game_Event::MoveTypeRandom() {
 		return;
 	}
 
+/*
 	Move(GetDirection());
+*/
+
+//	if (true) { // TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
+		c2v target = c2V(
+			round(real_x + GetDxFromDirection(GetDirection())),
+			round(real_y + GetDyFromDirection(GetDirection()))
+		);
+		SetMoveTowardTarget(target, true);
+		UpdateMoveTowardTarget();
+	}
+	else {
+		Move(GetDirection());
+	} // END - PIXELMOVE
+
+
 
 	if (IsStopping()) {
 		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {
@@ -535,6 +571,7 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 
 	const auto prev_dir = GetDirection();
 
+    /*
 	int dir = 0;
 	if (!in_sight) {
 		dir = Rand::GetRandomNumber(0, 3);
@@ -552,6 +589,71 @@ void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
 	}
 
 	Move(dir);
+    */
+
+
+//	if (true) {
+    if (Player::game_config.allow_pixel_movement.Get()){ //TODO - PIXELMOVE
+		int dir = 0;
+		int draw = 0;
+		c2v target;
+		if (!in_sight) {
+			dir = Rand::GetRandomNumber(0, 3);
+		}
+		else {
+			draw = Rand::GetRandomNumber(0, 9);
+			if (draw == 0) {
+				dir = GetDirection();
+			}
+			else if (draw == 1) {
+				dir = Rand::GetRandomNumber(0, 3);
+			}
+		}
+		if (towards) {
+			TurnTowardCharacter(GetPlayer());
+		}
+		else {
+			TurnAwayFromCharacter(GetPlayer());
+		}
+		if (draw > 1) {
+			int flag = towards ? 1 : -1;
+			target.x = (Main_Data::game_player->real_x - real_x) * flag;
+			target.y = (Main_Data::game_player->real_y - real_y) * flag;
+			target = c2Add(c2Norm(target), c2V(real_x, real_y));
+		}
+		else {
+			SetDirection(dir);
+			target.x = round(real_x + GetDxFromDirection(dir));
+			target.y = round(real_y + GetDyFromDirection(dir));
+		}
+		SetMoveTowardTarget(target, true);
+		UpdateMoveTowardTarget();
+	}
+	else {
+		int dir = 0;
+		if (!in_sight) {
+			dir = Rand::GetRandomNumber(0, 3);
+		}
+		else {
+			int draw = Rand::GetRandomNumber(0, 9);
+			if (draw == 0) {
+				dir = GetDirection();
+			}
+			else if (draw == 1) {
+				dir = Rand::GetRandomNumber(0, 3);
+			}
+			else {
+				dir = towards
+					? GetDirectionToCharacter(GetPlayer())
+					: GetDirectionAwayCharacter(GetPlayer());
+			}
+		}
+
+		Move(dir);
+	} // END - PIXEL MOVE
+
+
+
 
 	if (IsStopping()) {
 		if (IsWaitingForegroundExecution() || (GetStopCount() >= GetMaxStopCount() + 60)) {

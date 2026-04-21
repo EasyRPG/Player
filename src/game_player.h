@@ -52,6 +52,7 @@ public:
 	bool MakeWay(int from_x, int from_y, int to_x, int to_y) override;
 	void UpdateNextMovementAction() override;
 	void UpdateMovement(int amount) override;
+    int GetInputDirection();
 	void MoveRouteSetSpriteGraphic(std::string sprite_name, int index) override;
 	bool Move(int dir) override;
 	/** @} */
@@ -156,15 +157,38 @@ public:
 	bool IsDatabaseCompatibleWithSave(int database_save_count) const;
 
 	void UpdateSaveCounts(int db_save_count, int map_save_count);
-private:
+
+// private:
+
+	bool canMove = false;
+
+	float GetRealX() const { return real_x; }
+	float GetRealY() const { return real_y; }
+
+	int doomMoveType = -1;
+
+	float angle = 0.0f;
+		// Move things here
+	bool CheckActionEvent();
+
+
 	using TriggerSet = lcf::FlagSet<lcf::rpg::EventPage::Trigger>;
+
+//	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key);
+//	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key);
+
+	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key, bool face_player = true);
+	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key, bool face_player = true);
+
+private:
+
+
 
 	void UpdateScroll(int amount, bool was_jumping);
 	void UpdatePan();
 	void UpdateEncounterSteps();
-	bool CheckActionEvent();
-	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key, bool face_player = true);
-	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key, bool face_player = true);
+	// bool CheckActionEvent();
+
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	bool UpdateAirship();

@@ -70,7 +70,7 @@ struct Game_ConfigGame {
 
 	ConfigParam<int> patch_guardrevamp_normal{ "GuardRevamp", "Changes damage calculation for defense situations (Normal)", "Patch", "GuardRevamp.NormalDefense", 0 };
 	ConfigParam<int> patch_guardrevamp_strong{ "GuardRevamp", "Changes damage calculation for defense situations (Strong)", "Patch", "GuardRevamp.StrongDefense", 0 };
-
+	ConfigParam<int> allow_pixel_movement{"allow_pixel_movement", "Allow pixel-based movement instead of tile-based.", "Patch", "allow_pixel_movement", false};
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 

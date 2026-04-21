@@ -29,12 +29,45 @@
 #include <lcf/rpg/savemapeventbase.h>
 #include "drawable.h"
 #include "utils.h"
+#include "cute_c2.h"
 
 /**
  * Game_Character class.
  */
 class Game_Character {
 public:
+
+
+	//TODO - PIXELMOVE
+	float real_x;
+	float real_y;
+
+	float target_x;
+	float target_y;
+	c2v move_direction;
+	bool forced_skip = false; //When a movement is not skippable, but it is forced to be skiped.
+	bool is_moving_toward_target = false;
+	bool is_move_toward_target_skippable = false;
+
+	bool MoveVector(c2v vector);
+	bool MoveVector(float vx, float vy);
+	float GetCustomZoom() const { return custom_zoom; }
+    void SetCustomZoom(float z) { custom_zoom = z; }
+
+	float GetRealX() const;
+	float GetRealY() const;
+
+	void SetMoveTowardTarget(c2v position, bool skippable);
+	void SetMoveTowardTarget(float x, float y, bool skippable);
+	bool UpdateMoveTowardTarget();
+
+	float GetStepSize() const;
+
+
+	// END - PIXELMOVE
+
+
+
 	using AnimType = lcf::rpg::EventPage::AnimType;
 
 	enum Type {
@@ -585,6 +618,7 @@ public:
 	 * @post If successful, IsStopping() == false.
 	 */
 	bool Jump(int x, int y);
+	bool Jump(float x, float y);
 
 	/**
 	 * Check if this can move to the given tile.
@@ -913,6 +947,9 @@ public:
 		UpLeft
 	};
 
+	float Epsilon = pow(256, -2); //TODO - PIXELMOVE
+
+
 	static bool IsDirectionDiagonal(int d);
 
 	/** Reverses a direction, ex: ReverseDir(Up) == Down. */
@@ -923,6 +960,10 @@ public:
 
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
+
+	/** Wait time for DOOM mode */
+	int doomWait = 0;
+
 
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
@@ -944,10 +985,18 @@ protected:
 	void UpdateFlash();
 	bool BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
 
+// For pixel-perfect jumping
+	float jump_start_real_x = 0.0f;
+	float jump_start_real_y = 0.0f;
+	float jump_end_real_x = 0.0f;
+	float jump_end_real_y = 0.0f;
+
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;
 
 	int original_move_frequency = 2;
+
+    float custom_zoom = 1.0f; // Default is 100%
 	// contains if any movement (<= step_forward) of a forced move route was successful
 
 	Type _type = {};
@@ -993,6 +1042,14 @@ inline const lcf::rpg::SaveMapEventBase* Game_Character::data() const {
 inline Game_Character::Type Game_Character::GetType() const {
 	return _type;
 }
+
+
+//TODO - PIXELMOVE
+inline float Game_Character::GetStepSize() const {
+	return (float)(1 << (1 + GetMoveSpeed())) / 256.0; // SCREEN_TILE_SIZE == 265
+}
+//END - PIXELMOVE
+
 
 inline int Game_Character::GetX() const {
 	return data()->position_x;

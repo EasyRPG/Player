@@ -42,6 +42,7 @@
 #include <algorithm>
 #include <cmath>
 #include "scene_gameover.h"
+#include "cute_c2.h"
 
 Game_Player::Game_Player(): Game_PlayerBase(Player)
 {
@@ -59,6 +60,14 @@ void Game_Player::SetSaveData(lcf::rpg::SavePartyLocation save)
 	// RPG_RT will always reset the hero graphic on loading a save, even if
 	// a move route changed the graphic.
 	ResetGraphic();
+
+
+//	if (true) { // TODO - PIXELMOVE
+	if (Player::game_config.allow_pixel_movement.Get()){
+		real_x = (float)GetX();
+		real_y = (float)GetY();
+	} // END - PIXELMOVE
+
 }
 
 lcf::rpg::SavePartyLocation Game_Player::GetSaveData() const {
@@ -133,6 +142,9 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 	SetTotalEncounterRate(0);
 	SetMenuCalling(false);
 
+//   UpdateScroll(1, 0); // TODO - PIXELMOVE
+
+
 	auto* vehicle = GetVehicle();
 	if (vehicle) {
 		// RPG_RT doesn't check the aboard flag for this one
@@ -162,8 +174,23 @@ void Game_Player::MoveTo(int map_id, int x, int y) {
 		// if you change maps during a jump
 		SetJumping(false);
 	} else {
+
+	/*
 		Game_Map::SetPositionX(GetSpriteX() - GetPanX());
 		Game_Map::SetPositionY(GetSpriteY() - GetPanY());
+	*/
+
+//		if (true) { // TODO - PIXELMOVE
+		if (Player::game_config.allow_pixel_movement.Get()){
+			Game_Map::SetPositionX(real_x * SCREEN_TILE_SIZE - SCREEN_TILE_SIZE / 2 - GetPanX());
+			Game_Map::SetPositionY(real_y * SCREEN_TILE_SIZE + SCREEN_TILE_SIZE / 2 - GetPanY());
+		}
+		else {
+			Game_Map::SetPositionX(GetSpriteX() - GetPanX());
+			Game_Map::SetPositionY(GetSpriteY() - GetPanY());
+		} // END PIXELMOVE
+
+
 	}
 
 	ResetGraphic();
@@ -187,6 +214,17 @@ void Game_Player::MoveRouteSetSpriteGraphic(std::string sprite_name, int index) 
 }
 
 void Game_Player::UpdateScroll(int amount, bool was_jumping) {
+
+//    if (true) { // TODO - PIXELMOVE
+	if (Player::game_config.allow_pixel_movement.Get()){
+		float dx = real_x * SCREEN_TILE_SIZE - Game_Map::GetPositionX() - (Player::screen_width / 2) * TILE_SIZE + SCREEN_TILE_SIZE / 2;
+		float dy = real_y * SCREEN_TILE_SIZE - Game_Map::GetPositionY() - (Player::screen_height / 2) * TILE_SIZE + SCREEN_TILE_SIZE;
+
+		Game_Map::Scroll(floor(dx), floor(dy));
+		return;
+	} // END - PIXELMOVE
+
+
 	if (IsPanLocked()) {
 		return;
 	}
@@ -265,6 +303,13 @@ bool Game_Player::UpdateAirship() {
 }
 
 void Game_Player::UpdateNextMovementAction() {
+
+    canMove = false;
+
+	if (doomWait > 0) {
+		doomWait--;
+	}
+
 	if (UpdateAirship()) {
 		return;
 	}
@@ -300,13 +345,24 @@ void Game_Player::UpdateNextMovementAction() {
 		return;
 	}
 
+//	CheckEventTriggerHere({ lcf::rpg::EventPage::Trigger_collision }, false);
+
+
+
+
 	CheckEventTriggerHere({ lcf::rpg::EventPage::Trigger_collision }, false);
+
 
 	if (Game_Map::IsAnyEventStarting()) {
 		return;
 	}
 
+	canMove = true;
+
+
 	int move_dir = -1;
+
+/*
 	switch (Input::dir4) {
 		case 2:
 			move_dir = Down;
@@ -321,23 +377,231 @@ void Game_Player::UpdateNextMovementAction() {
 			move_dir = Up;
 			break;
 	}
-	if (move_dir >= 0) {
-		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->move_route_through);
-		Move(move_dir);
-		ResetThrough();
-		if (IsStopping()) {
-			int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
+
+*/
+
+
+//	if (true) { //TODO - PIXELMOVE
+	if (Player::game_config.allow_pixel_movement.Get()){
+		int dx = Input::IsPressed(Input::RIGHT) - Input::IsPressed(Input::LEFT);
+		int dy = Input::IsPressed(Input::DOWN) - Input::IsPressed(Input::UP);
+
+		int dir8 = 5 + dx - dy * 3;
+
+//		switch (dir8) {
+        switch (GetInputDirection()) {          // This is the only code from pixelmovement that I had to change - LK
+		case 2:
+			move_dir = Down;
+			break;
+		case 4:
+			move_dir = Left;
+			break;
+		case 6:
+			move_dir = Right;
+			break;
+		case 8:
+			move_dir = Up;
+			break;
+		case 1:
+			move_dir = DownLeft;
+			break;
+		case 3:
+			move_dir = DownRight;
+			break;
+		case 7:
+			move_dir = UpLeft;
+			break;
+		case 9:
+			move_dir = UpRight;
+			break;
 		}
+
+
+//      switch (Input::dir4) {
+		switch (Input::dir8) {
+		case 2:
+			move_dir = Down;
+			break;
+		case 4:
+			move_dir = Left;
+			break;
+		case 6:
+			move_dir = Right;
+			break;
+		case 8:
+			move_dir = Up;
+			break;
+        case 1:
+			move_dir = DownLeft;
+			break;
+		case 3:
+			move_dir = DownRight;
+			break;
+		case 7:
+			move_dir = UpLeft;
+			break;
+		case 9:
+			move_dir = UpRight;
+			break;
+		}
+}
+	else {
+        switch (Input::dir4) {
+		case 2:
+			move_dir = Down;
+			break;
+		case 4:
+			move_dir = Left;
+			break;
+		case 6:
+			move_dir = Right;
+			break;
+		case 8:
+			move_dir = Up;
+			break;
 	}
 
-	if (IsStopping()) {
+	}
+
+
+
+//	if (move_dir >= 0) {
+
+	if (move_dir >= 0 && ((doomMoveType <= 0 || doomMoveType == 2) && doomWait <= 0)) {
+
+		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->move_route_through);
+
+		if (doomMoveType == 0) {
+
+			static const int turn_speed[] = { 64, 32, 24, 16, 12, 8 };
+			static const int move_speed[] = { 16, 8, 6, 4, 3, 2 };
+
+			if (move_dir == Left) {
+				if (Input::IsPressed(Input::SHIFT)) {
+					int d = GetDirection();
+					Turn90DegreeLeft();
+					Move(GetDirection());
+					doomWait = move_speed[GetMoveSpeed() - 1];
+					int left_x = Game_Map::XwithDirection(GetX(), d);
+					int left_y = Game_Map::YwithDirection(GetY(), d);
+                    CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, left_x, left_y, false);
+
+					SetDirection(d);
+
+                } else if (Player::game_config.allow_pixel_movement.Get()) {
+			// NEW: Smooth continuous turning for pixel movement
+
+                    SetFacing(GetDirection());
+					doomWait = turn_speed[GetMoveSpeed() - 1];//1 << (1 + GetMoveSpeed());
+
+                    int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+					int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+					CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched}, front_x, front_y, false);
+                    CheckEventTriggerHere({ lcf::rpg::EventPage::Trigger_collision }, false);
+
+
+                } else {
+					Turn90DegreeLeft();
+					SetFacing(GetDirection());
+					doomWait = turn_speed[GetMoveSpeed() - 1];//1 << (1 + GetMoveSpeed());
+				}
+			}
+			else if (move_dir == Right) {
+
+				if (Input::IsPressed(Input::SHIFT)) {
+					int d = GetDirection();
+					Turn90DegreeRight();
+					Move(GetDirection());
+					doomWait = move_speed[GetMoveSpeed() - 1];
+                    int right_x = Game_Map::XwithDirection(GetX(), d);
+					int right_y = Game_Map::YwithDirection(GetY(), d);
+                    CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, right_x, right_y, false);
+
+					SetDirection(d);
+				} else if (Player::game_config.allow_pixel_movement.Get()) {
+			// NEW: Smooth continuous turning for pixel movement
+                    SetFacing(GetDirection());
+					doomWait = turn_speed[GetMoveSpeed() - 1];//1 << (1 + GetMoveSpeed());
+
+                    int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+					int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+					CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched}, front_x, front_y, false);
+                    CheckEventTriggerHere({ lcf::rpg::EventPage::Trigger_collision }, false);
+
+
+                } else {
+					Turn90DegreeRight();
+					SetFacing(GetDirection());
+					doomWait = turn_speed[GetMoveSpeed() - 1];
+				}
+
+			}
+			else if (move_dir == Up) {
+
+				Move(GetDirection());
+				doomWait = move_speed[GetMoveSpeed() - 1];
+
+			}
+			else if (move_dir == Down) {
+				if (Input::IsPressed(Input::SHIFT) || Player::game_config.allow_pixel_movement.Get() ) {
+					int d = GetDirection();
+					Turn180Degree();
+					Move(GetDirection());
+					int back_x = Game_Map::XwithDirection(GetX(), d);
+					int back_y = Game_Map::YwithDirection(GetY(), d);
+                    CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, back_x, back_y, false);
+
+					doomWait = move_speed[GetMoveSpeed() - 1];
+					SetDirection(d);
+												}
+
+				else {
+					Turn180Degree();
+					SetFacing(GetDirection());
+					doomWait = turn_speed[GetMoveSpeed() - 1];
+				}
+
+			}
+
+
+//		- END: CORRECTED Continuous Movement Logic ---
+		} else {
+			Move(move_dir);
+
+
+		}
+
+
+		ResetThrough();
+//		if (IsStopping()) {
+			int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+            int self_x = GetX();
+            int self_y = GetY();
+            int self_dir = GetDirection();
+
+        	int front_id = Game_Map::CheckEvent(front_x, front_y);
+
+
+			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
+
+
+
+//	}
+
+//	if (IsStopping()) {             // This was preventing activating events while moving		if (Input::IsTriggered(Input::DECISION)) {
+
+		}
+//		return;
+//	}
+
+
+//	if (IsStopping()) {
 		if (Input::IsTriggered(Input::DECISION)) {
 			if (!GetOnOffVehicle()) {
 				CheckActionEvent();
 			}
-		}
+//		}
 		return;
 	}
 
@@ -347,6 +611,17 @@ void Game_Player::UpdateNextMovementAction() {
 	}
 	UpdateEncounterSteps();
 }
+
+
+
+int Game_Player::GetInputDirection() {
+
+        return Game_Map::GetMoveDirection(Input::dir8);
+        return Game_Map::GetMoveDirection(Input::dir4);
+        // This is the only part of Mode7 I had to change - LK
+}
+
+
 
 void Game_Player::UpdateMovement(int amount) {
 	const bool was_jumping = IsJumping();
@@ -362,9 +637,38 @@ void Game_Player::UpdateMovement(int amount) {
 }
 
 void Game_Player::Update() {
-	Game_Character::Update();
 
+// PIXELMOVE: Handle the smooth, multi-frame transition for boarding/unboarding.
+	if (Player::game_config.allow_pixel_movement.Get() && IsBoardingOrUnboarding()) {
+		if (data()->boarding) {
+			Game_Vehicle* vehicle = GetVehicle();
+			if (vehicle) {
+				// Move towards the vehicle's center
+				SetMoveTowardTarget(vehicle->real_x, vehicle->real_y, false);
+				if (!UpdateMoveTowardTarget()) {
+					// Arrived at the vehicle, finalize state
+					data()->boarding = false;
+					data()->aboard = true;
+					SetFacing(Left); // RPG_RT behavior
+					SetMoveSpeed(vehicle->GetMoveSpeed());
+				}
+			}
+		} else if (data()->unboarding) {
+			if (!UpdateMoveTowardTarget()) {
+				// Arrived at shore, finalize state
+				data()->unboarding = false;
+			}
+		}
+		// Call base update to handle animations, but skip player input processing
+		Game_Character::Update();
+		// Early return to prevent normal movement logic from running
+		return;
+	}
+
+
+	Game_Character::Update();
 	if (IsStopping()) {
+	if (!Player::game_config.allow_pixel_movement.Get()) {
 		if (data()->boarding) {
 			// Boarding completed
 			data()->aboard = true;
@@ -379,6 +683,7 @@ void Game_Player::Update() {
 			// Unboarding completed
 			data()->unboarding = false;
 		}
+	}
 	}
 
 	auto* vehicle = GetVehicle();
@@ -397,6 +702,26 @@ void Game_Player::Update() {
 		if (Input::IsTriggered(Input::CANCEL)) {
 			SetMenuCalling(true);
 		}
+
+		if (Input::IsPressed(Input::PLUS)) {
+			Game_Map::RotateMode7(200);
+		}
+		if (Input::IsPressed(Input::MINUS)) {
+			Game_Map::RotateMode7(-200);
+		}
+		if (Input::IsPressed(Input::N1)) {
+			Game_Map::TiltMode7(-100);
+		}
+		if (Input::IsPressed(Input::N3)) {
+			Game_Map::TiltMode7(100);
+		}
+		if (Input::IsPressed(Input::N5)) {
+			Game_Map::RotateTowardsMode7(0, 20);
+			Game_Map::TiltTowardsMode7(6000, 20);
+		}
+
+
+
 	}
 }
 
@@ -406,25 +731,31 @@ bool Game_Player::CheckActionEvent() {
 	}
 
 	bool result = false;
-	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+
+    int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, true);
+	// Check for "Action Key" on events in front of the player (Same as Hero layer)
+	result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
+
+	// Check for "Action Key" on events the player is standing on (Above/Below Hero layers)
 	result |= CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true);
 
-	// Counter tile loop stops only if you talk to an action event.
-	bool got_action = CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
-	// RPG_RT allows maximum of 3 counter tiles
-	for (int i = 0; !got_action && i < 3; ++i) {
-		if (!Game_Map::IsCounter(front_x, front_y)) {
-			break;
+	// Counter tile logic
+		// Counter tile loop stops only if you talk to an action event.
+		bool got_action = result;
+		for (int i = 0; !got_action && i < 3; ++i) {
+			if (!Game_Map::IsCounter(front_x, front_y)) {
+				break;
+			}
+
+			front_x = Game_Map::XwithDirection(front_x, GetDirection());
+			front_y = Game_Map::YwithDirection(front_y, GetDirection());
+
+			got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
 		}
+		result |= got_action;
 
-		front_x = Game_Map::XwithDirection(front_x, GetDirection());
-		front_y = Game_Map::YwithDirection(front_y, GetDirection());
-
-		got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
-	}
 	return result || got_action;
 }
 
@@ -435,6 +766,7 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 
 	bool result = false;
 
+/*
 	for (auto& ev: Game_Map::GetEvents()) {
 		const auto trigger = ev.GetTrigger();
 		if (ev.IsActive()
@@ -447,25 +779,123 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
 	}
+
+*/
+
+        int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+        int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+
+//	if (true) {
+	if (Player::game_config.allow_pixel_movement.Get()) {
+
+		c2Circle self;
+		c2Circle other;
+
+		self.p = c2V(real_x, real_y); // Use the float position
+        self.r = 0.3f; // See Part 2 below for explanation of this change
+        other.r = 0.4f;
+
+    for (auto& ev : Game_Map::GetEvents()) {
+        const auto trigger = ev.GetTrigger();
+		other.p = c2V(static_cast<float>(ev.GetX()), static_cast<float>(ev.GetY()));
+		if (ev.IsActive()
+			&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same // This function is ONLY for different-layer events
+			&& trigger >= 0
+			&& triggers[trigger]
+			&& c2CircletoCircle(self, other)) {
+			SetEncounterCalling(false);
+            result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+		}
+	}
+} else { // Standard tile-based logic
+    for (auto& ev : Game_Map::GetEvents()) {
+		const auto trigger = ev.GetTrigger();
+		if (ev.IsActive()
+			&& ev.GetX() == GetX()
+			&& ev.GetY() == GetY()
+			&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same // This function is ONLY for different-layer events
+			&& trigger >= 0
+			&& triggers[trigger]) {
+			SetEncounterCalling(false);
+            result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+			}
+		}
+	} // END - PIXELMOVE
+
+
+
 	return result;
 }
 
+// CORRECTED and FINAL CheckEventTriggerThere function
 bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool triggered_by_decision_key, bool face_player) {
 	if (InAirship()) {
 		return false;
 	}
 	bool result = false;
 
-	for (auto& ev : Game_Map::GetEvents()) {
-		const auto trigger = ev.GetTrigger();
-		if (ev.IsActive()
-				&& ev.GetX() == x
-				&& ev.GetY() == y
+	// *** NEW PIXEL MOVEMENT LOGIC ***
+	if (Player::game_config.allow_pixel_movement.Get()) {
+		// Define an "interaction box" in front of the player
+		c2AABB interaction_box;
+		const float box_width_half = 0.3f;  // A bit less than half a tile wide
+		const float box_depth = 0.4f;       // Extends half a tile forward
+		const float offset = 0.3f;          // Starts slightly in front of the player center
+
+		// Get the player's float position and direction
+		float px = real_x;
+		float py = real_y;
+		int dir = GetDirection();
+
+		// Position the interaction box based on player's direction
+		if (dir == Up) {
+			interaction_box.min = c2V(px - box_width_half, py - offset - box_depth);
+			interaction_box.max = c2V(px + box_width_half, py - offset);
+		} else if (dir == Down) {
+			interaction_box.min = c2V(px - box_width_half, py + offset);
+			interaction_box.max = c2V(px + box_width_half, py + offset + box_depth);
+		} else if (dir == Left) {
+			interaction_box.min = c2V(px - offset - box_depth, py - box_width_half);
+			interaction_box.max = c2V(px - offset, py + box_width_half);
+		} else { // Right
+			interaction_box.min = c2V(px + offset, py - box_width_half);
+			interaction_box.max = c2V(px + offset + box_depth, py + box_width_half);
+		}
+
+		for (auto& ev : Game_Map::GetEvents()) {
+			const auto trigger = ev.GetTrigger();
+
+			// Only check same-layer events that match the trigger type
+			if (ev.IsActive()
 				&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
 				&& trigger >= 0
-				&& triggers[trigger]) {
-			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+				&& triggers[trigger])
+			{
+				// Check for collision between the event's circle and the player's interaction box
+				c2Circle event_circle;
+				event_circle.p = c2V(ev.real_x, ev.real_y);
+				event_circle.r = 0.4f; // Event's hitbox is a full tile
+
+				if (c2CircletoAABB(event_circle, interaction_box)) {
+					SetEncounterCalling(false);
+					result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+				}
+			}
+		}
+	} else {
+		// --- Original Tile-Based Logic ---
+		for (auto& ev : Game_Map::GetEvents()) {
+			const auto trigger = ev.GetTrigger();
+			if (ev.IsActive()
+					&& ev.GetX() == x
+					&& ev.GetY() == y
+					&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
+					&& trigger >= 0
+					&& triggers[trigger]) {
+				SetEncounterCalling(false);
+				result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+			}
 		}
 	}
 	return result;
@@ -482,6 +912,9 @@ void Game_Player::ResetGraphic() {
 
 	SetSpriteGraphic(ToString(actor->GetSpriteName()), actor->GetSpriteIndex());
 	SetTransparency(actor->GetSpriteTransparency());
+
+	Output::Debug("player.name: {}", GetSpriteName()); // TODO - PIXELMOVE
+
 }
 
 bool Game_Player::GetOnOffVehicle() {
@@ -489,99 +922,148 @@ bool Game_Player::GetOnOffVehicle() {
 		SetDirection(GetFacing());
 	}
 
-	return IsAboard()
-		? GetOffVehicle()
-		: GetOnVehicle();
+	return IsAboard() ? GetOffVehicle() : GetOnVehicle();
 }
 
 bool Game_Player::GetOnVehicle() {
-	assert(!IsDirectionDiagonal(GetDirection()));
-	assert(!IsAboard());
+    assert(!IsDirectionDiagonal(GetDirection()));
+    assert(!IsAboard());
 
-	auto* vehicle = Game_Map::GetVehicle(Game_Vehicle::Airship);
+    auto* vehicle = Game_Map::GetVehicle(Game_Vehicle::Airship);
 
-	if (vehicle->IsInPosition(GetX(), GetY()) && IsStopping() && vehicle->IsStopping()) {
-		data()->vehicle = Game_Vehicle::Airship;
-		data()->aboard = true;
+    if (vehicle->IsInPosition(GetX(), GetY()) && IsStopping() && vehicle->IsStopping()) {
+        data()->vehicle = Game_Vehicle::Airship;
+        data()->aboard = true;
+        SetFacing(Left);
+        data()->preboard_move_speed = GetMoveSpeed();
+        SetMoveSpeed(vehicle->GetMoveSpeed());
+        vehicle->StartAscent();
+        Main_Data::game_player->SetFlying(vehicle->IsFlying());
+    } else {
+        const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+        const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-		// Note: RPG_RT ignores the lock_facing flag here!
-		SetFacing(Left);
+        vehicle = Game_Map::GetVehicle(Game_Vehicle::Ship);
+        if (!vehicle->IsInPosition(front_x, front_y)) {
+            vehicle = Game_Map::GetVehicle(Game_Vehicle::Boat);
+            if (!vehicle->IsInPosition(front_x, front_y)) {
+                return false;
+            }
+        }
 
-		data()->preboard_move_speed = GetMoveSpeed();
-		SetMoveSpeed(vehicle->GetMoveSpeed());
-		vehicle->StartAscent();
-		Main_Data::game_player->SetFlying(vehicle->IsFlying());
-	} else {
-		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+        if (!Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
+            return false;
+        }
 
-		vehicle = Game_Map::GetVehicle(Game_Vehicle::Ship);
-		if (!vehicle->IsInPosition(front_x, front_y)) {
-			vehicle = Game_Map::GetVehicle(Game_Vehicle::Boat);
-			if (!vehicle->IsInPosition(front_x, front_y)) {
-				return false;
-			}
-		}
+        // MODIFIED:
+        if (Player::game_config.allow_pixel_movement.Get()) {
+            // Force player to vehicle's position.
+            // RPG_RT vehicles are 1x1, so we snap to the center of the vehicle's tile.
+            real_x = vehicle->real_x;
+            real_y = vehicle->real_y;
+            SetX(static_cast<int>(round(real_x)));
+            SetY(static_cast<int>(round(real_y)));
 
-		if (!Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
-			return false;
-		}
+            // ADDED: Force camera update to new position instantly
+            Game_Map::SetPositionX(real_x * SCREEN_TILE_SIZE - SCREEN_TILE_SIZE / 2 - GetPanX());
+            Game_Map::SetPositionY(real_y * SCREEN_TILE_SIZE + SCREEN_TILE_SIZE / 2 - GetPanY());
 
-		SetThrough(true);
-		Move(GetDirection());
-		// FIXME: RPG_RT resets through to move_route_through || not visible?
-		ResetThrough();
+            // Instant boarding, no need for boarding flag update logic in Update()
+            data()->boarding = true;    // if this is false, the player just moves onto the water tile! We could use this for a swimming effector surfing effect possibly.
+        } else {
+            SetThrough(true);
+            Move(GetDirection());
+            ResetThrough();
+            data()->boarding = true;
+        }
 
-		data()->vehicle = vehicle->GetVehicleType();
-		data()->preboard_move_speed = GetMoveSpeed();
-		data()->boarding = true;
-	}
+        data()->vehicle = vehicle->GetVehicleType();
+        data()->preboard_move_speed = GetMoveSpeed();
+    }
 
-	Main_Data::game_system->SetBeforeVehicleMusic(Main_Data::game_system->GetCurrentBGM());
-	Main_Data::game_system->BgmPlay(vehicle->GetBGM());
-	return true;
+    Main_Data::game_system->SetBeforeVehicleMusic(Main_Data::game_system->GetCurrentBGM());
+    Main_Data::game_system->BgmPlay(vehicle->GetBGM());
+    return true;
 }
 
 bool Game_Player::GetOffVehicle() {
-	assert(!IsDirectionDiagonal(GetDirection()));
-	assert(IsAboard());
+    assert(!IsDirectionDiagonal(GetDirection()));
+    assert(IsAboard());
 
-	auto* vehicle = GetVehicle();
-	if (!vehicle) {
-		return false;
-	}
+    auto* vehicle = GetVehicle();
+    if (!vehicle) {
+        return false;
+    }
 
-	if (InAirship()) {
-		if (vehicle->IsAscendingOrDescending()) {
-			return false;
-		}
+    if (InAirship()) {
+        if (vehicle->IsAscendingOrDescending()) {
+            return false;
+        }
+        SetFacing(Left);
+        vehicle->StartDescent();
+        return true;
+    }
 
-		// Note: RPG_RT ignores the lock_facing flag here!
-		SetFacing(Left);
-		vehicle->StartDescent();
-		return true;
-	}
+    const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+    const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+    if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
+        return false;
+    }
 
-	if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
-		return false;
-	}
+    vehicle->SetDefaultDirection();
+    data()->aboard = false;
+    SetMoveSpeed(data()->preboard_move_speed);
+    data()->unboarding = true;
 
-	vehicle->SetDefaultDirection();
-	data()->aboard = false;
-	SetMoveSpeed(data()->preboard_move_speed);
-	data()->unboarding = true;
+    // MODIFIED:
+    if (Player::game_config.allow_pixel_movement.Get()) {
+        // Manually calculate target coordinate (16px = 1.0f tile unit)
+        // and force position update to avoid SetThrough/Move overloading issues.
+        float dest_x = real_x;
+        float dest_y = real_y;
 
-	SetThrough(true);
-	Move(GetDirection());
-	ResetThrough();
+        switch (GetDirection()) {
+            case Up:    dest_y -= 1.0f; break;
+            case Down:  dest_y += 1.0f; break;
+            case Left:  dest_x -= 1.0f; break;
+            case Right: dest_x += 1.0f; break;
+        }
 
-	data()->vehicle = 0;
-	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
+        // Handle Map Looping for the destination
+        if (Game_Map::LoopHorizontal()) {
+            float width = static_cast<float>(Game_Map::GetTilesX());
+            if (dest_x < 0) dest_x += width;
+            else if (dest_x >= width) dest_x -= width;
+        }
 
-	return true;
+        if (Game_Map::LoopVertical()) {
+            float height = static_cast<float>(Game_Map::GetTilesY());
+            if (dest_y < 0) dest_y += height;
+            else if (dest_y >= height) dest_y -= height;
+        }
+
+        // Apply Position
+        real_x = dest_x;
+        real_y = dest_y;
+        SetX(static_cast<int>(round(real_x)));
+        SetY(static_cast<int>(round(real_y)));
+
+        // ADDED: Force camera update to new position instantly
+        Game_Map::SetPositionX(real_x * SCREEN_TILE_SIZE - SCREEN_TILE_SIZE / 2 - GetPanX());
+        Game_Map::SetPositionY(real_y * SCREEN_TILE_SIZE + SCREEN_TILE_SIZE / 2 - GetPanY());
+
+        // Since we moved instantly, we are done unboarding.
+        data()->unboarding = false;
+    } else {
+        SetThrough(true);
+        Move(GetDirection());
+        ResetThrough();
+    }
+
+    data()->vehicle = 0;
+    Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
+    return true;
 }
 
 void Game_Player::ForceGetOffVehicle() {
@@ -707,30 +1189,10 @@ void Game_Player::UpdateEncounterSteps() {
 		float pmod;
 	};
 
-#if 1
 	static constexpr Row enc_table[] = {
-		{ 0, 0.0625},
-		{ 20, 0.125 },
-		{ 40, 0.25 },
-		{ 60, 0.5 },
-		{ 100, 2.0 },
-		{ 140, 4.0 },
-		{ 160, 8.0 },
-		{ 180, 16.0 },
-		{ INT_MAX, 16.0 }
+		{ 0, 0.0625}, { 20, 0.125 }, { 40, 0.25 }, { 60, 0.5 }, { 100, 2.0 },
+		{ 140, 4.0 }, { 160, 8.0 }, { 180, 16.0 }, { INT_MAX, 16.0 }
 	};
-#else
-	//Old versions of RM2k used this table.
-	//Left here for posterity.
-	static constexpr Row enc_table[] = {
-		{ 0, 0.5 },
-		{ 20, 2.0 / 3.0 },
-		{ 50, 5.0 / 6.0 },
-		{ 100, 6.0 / 5.0 },
-		{ 200, 3.0 / 2.0 },
-		{ INT_MAX, 3.0 / 2.0 }
-	};
-#endif
 	const auto ratio = GetTotalEncounterRate() / encounter_steps;
 
 	auto& idx = last_encounter_idx;
@@ -774,24 +1236,14 @@ void Game_Player::UnlockPan() {
 void Game_Player::StartPan(int direction, int distance, int speed) {
 	distance *= SCREEN_TILE_SIZE;
 
-	if (direction == PanUp) {
-		int new_pan = data()->pan_finish_y + distance;
-		data()->pan_finish_y = new_pan;
-	} else if (direction == PanRight) {
-		int new_pan = data()->pan_finish_x - distance;
-		data()->pan_finish_x = new_pan;
-	} else if (direction == PanDown) {
-		int new_pan = data()->pan_finish_y - distance;
-		data()->pan_finish_y = new_pan;
-	} else if (direction == PanLeft) {
-		int new_pan = data()->pan_finish_x + distance;
-		data()->pan_finish_x = new_pan;
-	}
+	if (direction == PanUp) data()->pan_finish_y += distance;
+	else if (direction == PanRight) data()->pan_finish_x -= distance;
+	else if (direction == PanDown) data()->pan_finish_y -= distance;
+	else if (direction == PanLeft) data()->pan_finish_x += distance;
 
 	data()->pan_speed = 2 << speed;
 
 	if (Player::IsPatchManiac()) {
-		// Maniac uses separate horizontal/vertical pan for everything
 		data()->maniac_horizontal_pan_speed = data()->pan_speed;
 		data()->maniac_vertical_pan_speed = data()->pan_speed;
 	}
@@ -808,8 +1260,7 @@ void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool
 	maniac_pan_current_x = static_cast<double>(data()->pan_current_x);
 	maniac_pan_current_y = static_cast<double>(data()->pan_current_y);
 
-	int new_pan_x;
-	int new_pan_y;
+	int new_pan_x, new_pan_y;
 
 	if (relative && centered) {
 		int screen_width = static_cast<int>(std::ceil(static_cast<float>(Player::screen_width) / 2)) * TILE_SIZE;
@@ -827,19 +1278,15 @@ void Game_Player::StartPixelPan(int h, int v, int speed, bool interpolated, bool
 		new_pan_y = GetSpriteY() - v;
 	}
 
-	double h_speed;
-	double v_speed;
+	double h_speed, v_speed;
 
 	if (speed == 0) {
-		// Instant pan if speed is zero
 		h_speed = std::abs((static_cast<double>(new_pan_x) - maniac_pan_current_x));
 		v_speed = std::abs((static_cast<double>(new_pan_y) - maniac_pan_current_y));
 	} else if (interpolated) {
-		// Interpolate distance by number of frames
 		h_speed = std::abs((static_cast<double>(new_pan_x) - maniac_pan_current_x)) / (speed + 1);
 		v_speed = std::abs((static_cast<double>(new_pan_y) - maniac_pan_current_y)) / (speed + 1);
 	} else {
-		// Multiply speed by 0.001
 		h_speed = std::max(static_cast<double>(speed * TILE_SIZE * 0.001), 1.0);
 		v_speed = std::max(static_cast<double>(speed * TILE_SIZE * 0.001), 1.0);
 	}
@@ -856,7 +1303,6 @@ void Game_Player::ResetPan(int speed) {
 	data()->pan_speed = 2 << speed;
 
 	if (Player::IsPatchManiac()) {
-		// Maniac uses separate horizontal/vertical pan for everything
 		data()->maniac_horizontal_pan_speed = data()->pan_speed;
 		data()->maniac_vertical_pan_speed = data()->pan_speed;
 	}
@@ -864,54 +1310,35 @@ void Game_Player::ResetPan(int speed) {
 
 int Game_Player::GetPanWait() {
 	bool is_maniac = Player::IsPatchManiac();
-	const auto distance = std::max(
-			std::abs(data()->pan_current_x - data()->pan_finish_x),
-			std::abs(data()->pan_current_y - data()->pan_finish_y));
-	const auto speed = !is_maniac ? data()->pan_speed : static_cast<int>(std::max(
-			std::abs(data()->maniac_horizontal_pan_speed),
-			std::abs(data()->maniac_vertical_pan_speed)));
+	const auto distance = std::max(std::abs(data()->pan_current_x - data()->pan_finish_x), std::abs(data()->pan_current_y - data()->pan_finish_y));
+	const auto speed = !is_maniac ? data()->pan_speed : static_cast<int>(std::max(std::abs(data()->maniac_horizontal_pan_speed), std::abs(data()->maniac_vertical_pan_speed)));
 	assert(speed > 0);
 	return distance / speed + (distance % speed != 0);
 }
 
-// Fixes compilation error with OpenOrbis toolchain where std::abs fails to cast to double on values where it should
-#if __PS4__
-#	define PS4_WORKAROUND (double)
-#else
-#	define PS4_WORKAROUND
-#endif
 void Game_Player::UpdatePan() {
-	if (!IsPanActive())
-		return;
+	if (!IsPanActive()) return;
 
 	const int step = data()->pan_speed;
 	const int pan_remain_x = data()->pan_current_x - data()->pan_finish_x;
 	const int pan_remain_y = data()->pan_current_y - data()->pan_finish_y;
 
-	int dx;
-	int dy;
+	int dx, dy;
 
 	if (Player::IsPatchManiac()) {
 		const double step_x = data()->maniac_horizontal_pan_speed;
 		const double step_y = data()->maniac_vertical_pan_speed;
-
-		// Maniac uses doubles for smoother screen scrolling
-		double dx2 = std::min(step_x, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_x)));
-		double dy2 = std::min(step_y, PS4_WORKAROUND std::abs(static_cast<double>(pan_remain_y)));
-
+		double dx2 = std::min(step_x, std::abs(static_cast<double>(pan_remain_x)));
+		double dy2 = std::min(step_y, std::abs(static_cast<double>(pan_remain_y)));
 		dx2 = pan_remain_x >= 0 ? dx2 : -dx2;
 		dy2 = pan_remain_y >= 0 ? dy2 : -dy2;
-
 		maniac_pan_current_x -= dx2;
 		maniac_pan_current_y -= dy2;
-
-		// Depending on the position, floor or ceil the value
 		dx = Utils::RoundTo<double>(std::abs(maniac_pan_current_x)) == std::ceil(std::abs(maniac_pan_current_x)) ? static_cast<int>(std::floor(dx2)) : static_cast<int>(std::ceil(dx2));
 		dy = Utils::RoundTo<double>(std::abs(maniac_pan_current_y)) == std::ceil(std::abs(maniac_pan_current_y)) ? static_cast<int>(std::floor(dy2)) : static_cast<int>(std::ceil(dy2));
 	} else {
 		dx = std::min(step, std::abs(pan_remain_x));
 		dy = std::min(step, std::abs(pan_remain_y));
-
 		dx = pan_remain_x >= 0 ? dx : -dx;
 		dy = pan_remain_y >= 0 ? dy : -dy;
 	}
@@ -922,10 +1349,7 @@ void Game_Player::UpdatePan() {
 	Game_Map::AddScreenX(screen_x, dx);
 	Game_Map::AddScreenY(screen_y, dy);
 
-	// If we hit the edge of the map before pan finishes.
-	if (dx == 0 && dy == 0) {
-		return;
-	}
+	if (dx == 0 && dy == 0) return;
 
 	Game_Map::Scroll(dx, dy);
 
