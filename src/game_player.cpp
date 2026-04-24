@@ -459,8 +459,8 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 				&& ev.GetX() == GetX()
 				&& ev.GetY() == GetY()
 				&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same
-				&& trigger >= 0
-				&& triggers[trigger]) {
+				&& trigger.has_value()
+				&& triggers[*trigger]) {
 			SetEncounterCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
@@ -480,8 +480,8 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 				&& ev.GetX() == x
 				&& ev.GetY() == y
 				&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
-				&& trigger >= 0
-				&& triggers[trigger]) {
+				&& trigger.has_value()
+				&& triggers[*trigger]) {
 			SetEncounterCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}

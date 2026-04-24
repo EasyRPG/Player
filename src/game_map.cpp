@@ -1452,8 +1452,8 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 		if (run_ev) {
 			if (run_ev->WasStartedByDecisionKey()) {
 				interp.Push<InterpreterExecutionType::Action>(run_ev);
-			} else {
-				switch (run_ev->GetTrigger()) {
+			} else if (auto t = run_ev->GetTrigger()) {
+				switch (*t) {
 					case lcf::rpg::EventPage::Trigger_touched:
 						interp.Push<InterpreterExecutionType::Touch>(run_ev);
 						break;
@@ -1464,10 +1464,12 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 						interp.Push<InterpreterExecutionType::AutoStart>(run_ev);
 						break;
 					case lcf::rpg::EventPage::Trigger_action:
-					default:
+					case lcf::rpg::EventPage::Trigger_parallel:
 						interp.Push<InterpreterExecutionType::Action>(run_ev);
 						break;
 				}
+			} else {
+				interp.Push<InterpreterExecutionType::Action>(run_ev);
 			}
 			run_ev->ClearWaitingForegroundExecution();
 		}
@@ -1723,7 +1725,7 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
-		
+
 		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
 		if (Player::game_config.fake_resolution.Get()) {
 			int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
@@ -2157,7 +2159,7 @@ void Game_Map::Parallax::ResetPositionX() {
 	if (!params.scroll_horz && !LoopHorizontal()) {
 		// What is the width of the panorama to display on screen?
 		int pan_screen_width = Player::screen_width;
-		if (Player::game_config.fake_resolution.Get()) {			
+		if (Player::game_config.fake_resolution.Get()) {
 			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
 			if (map_width < pan_screen_width) {
 				pan_screen_width = map_width;

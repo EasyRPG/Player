@@ -34,6 +34,7 @@
 #include "output.h"
 #include <cmath>
 #include <cassert>
+#include <optional>
 
 Game_Event::Game_Event(int map_id, const lcf::rpg::Event* event) :
 	Game_EventBase(Event),
@@ -309,9 +310,10 @@ bool Game_Event::WasStartedByDecisionKey() const {
 	return data()->triggered_by_decision_key;
 }
 
-lcf::rpg::EventPage::Trigger Game_Event::GetTrigger() const {
-	int trigger = page ? page->trigger : -1;
-	return static_cast<lcf::rpg::EventPage::Trigger>(trigger);
+std::optional<lcf::rpg::EventPage::Trigger> Game_Event::GetTrigger() const {
+	if (page)
+		return static_cast<lcf::rpg::EventPage::Trigger>(page->trigger);
+	return std::nullopt;
 }
 
 
