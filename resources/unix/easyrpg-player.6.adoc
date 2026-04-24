@@ -369,6 +369,9 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *Maniac*=_1_::
   Same as *--patch-maniac*.
 
+*Maniac*=_2_::
+  Same as *--patch-maniac*, but keeps the variable range of RPG Maker 2003.
+
 *PicUnlock*=_1_::
   Same as *--patch-pic-unlock*.
 
