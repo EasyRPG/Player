@@ -27,7 +27,7 @@
 #ifdef _WIN32
 #  include "platform/windows/utils.h"
 #  include <windows.h>
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 #  include <emscripten.h>
 #endif
 
@@ -90,7 +90,7 @@
 #include "platform/android/android.h"
 #endif
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 // This is not used on Emscripten.
 #include "exe_reader.h"
 #endif
@@ -135,7 +135,7 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	std::string emscripten_game_name;
 #endif
 	Game_Clock::time_point last_auto_screenshot;
@@ -217,7 +217,7 @@ void Player::Run() {
 	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
-#if defined(USE_LIBRETRO) || defined(EMSCRIPTEN)
+#if defined(USE_LIBRETRO) || defined(__EMSCRIPTEN__)
 	// emscripten implemented in main.cpp
 	// libretro invokes the MainLoop through a retro_run-callback
 #else
@@ -412,7 +412,7 @@ void Player::Exit() {
 	}
 
 	Graphics::UpdateSceneCallback();
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string message = "It's now safe to turn off\n      your browser.";
 	DisplayUi->CleanDisplay();
@@ -678,7 +678,7 @@ Game_Config Player::ParseCommandLine() {
 			exit(0);
 			break;
 		}
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 		if (cp.ParseNext(arg, 1, "--game")) {
 			if (arg.NumValues() > 0) {
 				emscripten_game_name = arg.Value(0);
@@ -777,7 +777,7 @@ void Player::CreateGameObjects() {
 	int& engine = game_config.engine;
 	std::unordered_map<Game_Constants::ConstantType, int32_t> game_constant_overrides;
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	// Attempt reading ExFont and version information from RPG_RT.exe (not supported on Emscripten)
 	std::unique_ptr<EXEReader> exe_reader;
 	const auto exe_file = game_config.engine_path.Get().empty() ? EXE_NAME : game_config.engine_path.Get();
@@ -1358,7 +1358,7 @@ std::string Player::GetEncoding() {
 			if (db) {
 				std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(*db);
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 				for (std::string &enc : encodings) {
 					// Heuristic: Check title graphic, system graphic, cursor SE, title BGM
 					// Pure ASCII is skipped as it provides no added value

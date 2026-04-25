@@ -25,12 +25,11 @@
 
 #ifdef _WIN32
 #  include <windows.h>
-#  include <SDL_syswm.h>
 #  include <dwmapi.h>
 #elif defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
-#elif defined(EMSCRIPTEN)
+#elif defined(__EMSCRIPTEN__)
 #  include <emscripten.h>
 #elif defined(__WIIU__)
 #  include "platform/wiiu/main.h"
@@ -86,14 +85,11 @@ static DynamicFormat GetDynamicFormat(uint32_t fmt) {
 
 #ifdef _WIN32
 HWND GetWindowHandle(SDL_Window* window) {
-	SDL_SysWMinfo wminfo;
-	SDL_VERSION(&wminfo.version)
-	SDL_bool success = SDL_GetWindowWMInfo(window, &wminfo);
-
-	if (success < 0)
-		Output::Error("Wrong SDL version");
-
-	return wminfo.info.win.window;
+	return (HWND)SDL_GetPointerProperty(
+		SDL_GetWindowProperties(window),
+		SDL_PROP_WINDOW_WIN32_HWND_POINTER,
+		NULL
+	);
 }
 #endif
 
@@ -115,7 +111,7 @@ Sdl3Ui::Sdl3Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 	// Set the application class name
 	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
 #endif
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
 	// Only handle keyboard events when the canvas has focus
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
@@ -264,7 +260,7 @@ void Sdl3Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 			SetIsFullscreen(true);
 #else
 			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN);
@@ -303,10 +299,8 @@ bool Sdl3Ui::RefreshDisplayMode() {
 		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 		#endif
 
-		#if defined(EMSCRIPTEN) || defined(_WIN32)
-		// FIXME: This will not DPI-scale on Windows due to SDL2 limitations.
-		// Is properly fixed in SDL3. See #2764
-		flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		#if defined(__EMSCRIPTEN__) || defined(_WIN32)
+		flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
 		#endif
 
 		// Create our window
@@ -380,18 +374,11 @@ bool Sdl3Ui::RefreshDisplayMode() {
 
 		SDL_SetTextureScaleMode(sdl_texture_game, SDL_SCALEMODE_NEAREST);
 
-#ifdef _WIN32
-		HWND window = GetWindowHandle(sdl_window);
-		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
-		int window_rounding = 1; // DWMWCP_DONOTROUND
-		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
-#endif
-
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 		bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN;
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN);
@@ -410,6 +397,13 @@ bool Sdl3Ui::RefreshDisplayMode() {
 	// Need to set up icon again, some platforms recreate the window when
 	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
 	SetAppIcon();
+
+#ifdef _WIN32
+	HWND window = GetWindowHandle(sdl_window);
+	// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+	int window_rounding = 1; // DWMWCP_DONOTROUND
+	DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
 
 	uint32_t sdl_pixel_fmt = GetDefaultFormat();
 
@@ -762,12 +756,6 @@ void Sdl3Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		window.width = evnt.window.data1;
 		window.height = evnt.window.data2;
 
-#ifdef EMSCRIPTEN
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		window.width = static_cast<int>(window.width * display_ratio);
-		window.height = static_cast<int>(window.height * display_ratio);
-#endif
-
 		window.size_changed = true;
 	}
 }
@@ -815,14 +803,8 @@ void Sdl3Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
-#ifdef EMSCRIPTEN
-	double display_ratio = emscripten_get_device_pixel_ratio();
-	mouse_pos.x = (evnt.motion.x * display_ratio - viewport.x) * main_surface->width() / xw;
-	mouse_pos.y = (evnt.motion.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
 	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
 	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
-#endif
 
 #else
 	/* unused */
@@ -955,14 +937,8 @@ void Sdl3Ui::ProcessFingerEvent(SDL_Event& evnt) {
 			return;
 		}
 
-#ifdef EMSCRIPTEN
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		int x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
-		int y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
 		int x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
 		int y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
-#endif
 
 		fi->Down(evnt.tfinger.fingerID, x, y);
 	} else if (evnt.type == SDL_EVENT_FINGER_UP) {
@@ -1197,7 +1173,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 }
 
 void Sdl3Ui::vGetConfig(Game_ConfigVideo& cfg) const {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	cfg.renderer.Lock("SDL2 (Software, Emscripten)");
 #elif defined(__wii__)
 	cfg.renderer.Lock("SDL2 (Software, Wii)");
@@ -1224,7 +1200,7 @@ void Sdl3Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.window_zoom.Set(current_display_mode.zoom);
 	cfg.fullscreen.Set(IsFullscreen());
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// Fullscreen is handled by the browser
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.fps_limit.SetOptionVisible(false);

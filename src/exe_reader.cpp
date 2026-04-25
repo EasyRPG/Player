@@ -17,7 +17,7 @@
 
 // All of this code is unused on EMSCRIPTEN. *Do not use it*!
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 
 #include "exe_reader.h"
 #include "image_bmp.h"

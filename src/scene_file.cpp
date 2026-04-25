@@ -31,7 +31,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include <emscripten.h>
 #  include "platform/emscripten/interface.h"
 #endif
@@ -148,7 +148,7 @@ void Scene_File::Start() {
 	}
 
 	std::vector<std::string> commands;
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	commands.emplace_back("Download Savegame");
 	commands.emplace_back("Upload Savegame");
 #endif
@@ -200,7 +200,7 @@ void Scene_File::vUpdate() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	} else if (Input::IsTriggered(Input::SHIFT)) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 		extra_commands_window->SetX(SCREEN_TARGET_WIDTH - extra_commands_window->GetWidth() - 8);
 		extra_commands_window->SetY(file_windows[index]->GetY() + 8);
 		extra_commands_window->SetItemEnabled(0, file_windows[index]->IsValid() && file_windows[index]->HasParty());
@@ -297,7 +297,7 @@ bool Scene_File::HandleExtraCommandsWindow() {
 
 	extra_commands_window->Update();
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (extra_commands_window->GetIndex() == 0) {
 			// Download

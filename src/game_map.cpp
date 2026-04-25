@@ -1723,7 +1723,7 @@ void Game_Map::SetPositionX(int x, bool reset_panorama) {
 	const int map_width = GetTilesX() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
-		
+
 		// If the map is too small to fit in the screen, add an offset corresponding to the black border's size
 		if (Player::game_config.fake_resolution.Get()) {
 			int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
@@ -2016,7 +2016,7 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 }
 
 FileRequestAsync* Game_Map::RequestMap(int map_id) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	Player::translation.RequestAndAddMap(map_id);
 #endif
 
@@ -2157,7 +2157,7 @@ void Game_Map::Parallax::ResetPositionX() {
 	if (!params.scroll_horz && !LoopHorizontal()) {
 		// What is the width of the panorama to display on screen?
 		int pan_screen_width = Player::screen_width;
-		if (Player::game_config.fake_resolution.Get()) {			
+		if (Player::game_config.fake_resolution.Get()) {
 			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
 			if (map_width < pan_screen_width) {
 				pan_screen_width = map_width;

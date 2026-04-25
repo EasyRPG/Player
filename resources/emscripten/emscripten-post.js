@@ -1,18 +1,3 @@
-// Move to different directory to prevent save file collisions in IDBFS
-FS.mkdir("easyrpg");
-FS.chdir("easyrpg");
-
-if (Module.game.length > 0) {
-  FS.mkdir(Module.game);
-  FS.chdir(Module.game);
-}
-
-// Use IDBFS for save file storage when the filesystem was not
-// overwritten by a custom emscripten shell file
-if (Module.saveFs === undefined) {
-  Module.saveFs = IDBFS;
-}
-
 Module.initApi = function() {
   Module.api_private.download_js = function (buffer, size, filename) {
     const blob = new Blob([Module.HEAPU8.slice(buffer, buffer + size)]);

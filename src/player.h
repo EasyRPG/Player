@@ -431,7 +431,7 @@ namespace Player {
 	/** game specific configuration */
 	extern Game_ConfigGame game_config;
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif

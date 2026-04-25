@@ -90,8 +90,23 @@ function parseArgs () {
 }
 
 function onPreRun () {
+  // Move to different directory to prevent save file collisions in IDBFS
+  FS.mkdir("easyrpg");
+  FS.chdir("easyrpg");
+
+  if (Module.game.length > 0) {
+    FS.mkdir(Module.game);
+    FS.chdir(Module.game);
+  }
+
   // Retrieve save directory from persistent storage before using it
   FS.mkdir("Save");
+
+  // Use IDBFS for save file storage when the filesystem was not
+  // overwritten by a custom emscripten shell file
+  if (Module.saveFs === undefined) {
+    Module.saveFs = IDBFS;
+  }
   FS.mount(Module.saveFs, {}, 'Save');
 
   // For preserving the configuration. Shared across website
