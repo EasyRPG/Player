@@ -258,6 +258,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 				const auto* end = line.data() + line.size();
 
 				while (text_index != end) {
+					auto prev_text_index = text_index;
 					auto tret = Utils::TextNext(text_index, end, Player::escape_char);
 					text_index = tret.next;
 
@@ -287,7 +288,8 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 					if (tret.is_exfont) {
 						// exfont processed later
-						line32 += '$';
+						line32 += Utils::DecodeUTF32(std::string_view(prev_text_index, text_index - prev_text_index));
+						continue;
 					}
 
 					if (tret.is_escape && ch != Player::escape_char) {
@@ -391,6 +393,7 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 			const auto* end = line.data() + line.size();
 
 			while (text_index != end) {
+				auto prev_text_index = text_index;
 				auto tret = Utils::TextNext(text_index, end, Player::escape_char);
 				text_index = tret.next;
 
@@ -418,7 +421,8 @@ void Game_Windows::Window_User::Refresh(bool& async_wait) {
 
 				if (tret.is_exfont) {
 					// exfont processed later
-					line32 += '$';
+					line32 += Utils::DecodeUTF32(std::string_view(prev_text_index, text_index - prev_text_index));
+					continue;
 				}
 
 				if (tret.is_escape && ch != Player::escape_char) {

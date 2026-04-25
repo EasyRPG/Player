@@ -645,7 +645,7 @@ bool Game_Interpreter_Battle::ManiacBattleHook(ManiacBattleHookType hook_type, i
 		Output::Warning("CommandManiacControlBattle: Can't call invalid common event {}", common_event_id);
 		return false;
 	}
-	
+
 	// pushes the common event to be run into the queue of events.
 	maniac_interpreter->Push<ExecutionType::ManiacHook>(common_event);
 
@@ -874,11 +874,15 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 			case 1:
 			{
 				// states: size, [...state_id]
-				auto states = lcf::Data::states.size();
-				Main_Data::game_variables->Set(information_identifier, states);
-				for (size_t i = 0; i < states; i++)
+				auto states_size = lcf::Data::states.size();
+				auto states = battler->GetStates();
+				// The states list is only as large as the highest inflicted state
+				// Resize it to the number of available states
+				states.resize(states_size);
+				Main_Data::game_variables->Set(information_identifier, states.size());
+				for (size_t i = 0; i < states.size(); i++)
 				{
-					Main_Data::game_variables->Set(information_identifier + i + 1, battler->HasState(lcf::Data::states[i].ID));
+					Main_Data::game_variables->Set(information_identifier + i + 1, states[i]);
 				}
 				break;
 			}
@@ -926,6 +930,7 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 		case 0:
 			// actor
 			if (target_id > 0) {
+				// Starts with 1 because it uses the Actor ID, not the index
 				executeOperationSingle(Main_Data::game_actors->GetActor(target_id), Actor);
 			}
 			break;
@@ -944,14 +949,12 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 			break;
 		}
 		case 3:
-			// troop member
-			if (target_id > 0) {
-				executeOperationSingle(Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
-			}
+			// troop member (enemy)
+			executeOperationSingle(Main_Data::game_enemyparty->GetEnemy(target_id), Enemy);
 			break;
 		case 4:
 		{
-			// entire troop
+			// entire troop (enemy)
 			auto count = 0;
 			for (Game_Battler* member : Main_Data::game_enemyparty->GetEnemies()) {
 				count += executeOperationMany(member);
