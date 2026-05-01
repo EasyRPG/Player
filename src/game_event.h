@@ -19,6 +19,7 @@
 #define EP_GAME_EVENT_H
 
 // Headers
+#include <optional>
 #include <string>
 #include <vector>
 #include "game_character.h"
@@ -99,7 +100,7 @@ public:
 	 *
 	 * @return trigger condition.
 	 */
-	lcf::rpg::EventPage::Trigger GetTrigger() const;
+	std::optional<lcf::rpg::EventPage::Trigger> GetTrigger() const;
 
 	/**
 	 * Gets event commands list.

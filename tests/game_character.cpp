@@ -4,6 +4,7 @@
 #include "game_vehicle.h"
 #include "doctest.h"
 #include <climits>
+#include <optional>
 
 static_assert(Game_Character::GetMaxStopCountForStep(1) == 256, "StopCountBroken");
 static_assert(Game_Character::GetMaxStopCountForStep(2) == 128, "StopCountBroken");
@@ -225,7 +226,7 @@ TEST_CASE("InitEventNoPage") {
 
 	REQUIRE(!ch.IsWaitingForegroundExecution());
 	REQUIRE(!ch.WasStartedByDecisionKey());
-	REQUIRE_EQ(ch.GetTrigger(), -1);
+	REQUIRE_EQ(ch.GetTrigger(), std::nullopt);
 	REQUIRE_EQ(ch.GetOriginalMoveRouteIndex(), 0);
 	REQUIRE_EQ(ch.GetPage(1), nullptr);
 	REQUIRE_EQ(ch.GetActivePage(), nullptr);

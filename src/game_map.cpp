@@ -1452,8 +1452,8 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 		if (run_ev) {
 			if (run_ev->WasStartedByDecisionKey()) {
 				interp.Push<InterpreterExecutionType::Action>(run_ev);
-			} else {
-				switch (run_ev->GetTrigger()) {
+			} else if (auto t = run_ev->GetTrigger()) {
+				switch (*t) {
 					case lcf::rpg::EventPage::Trigger_touched:
 						interp.Push<InterpreterExecutionType::Touch>(run_ev);
 						break;
@@ -1464,10 +1464,12 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 						interp.Push<InterpreterExecutionType::AutoStart>(run_ev);
 						break;
 					case lcf::rpg::EventPage::Trigger_action:
-					default:
+					case lcf::rpg::EventPage::Trigger_parallel:
 						interp.Push<InterpreterExecutionType::Action>(run_ev);
 						break;
 				}
+			} else {
+				interp.Push<InterpreterExecutionType::Action>(run_ev);
 			}
 			run_ev->ClearWaitingForegroundExecution();
 		}
