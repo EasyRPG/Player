@@ -872,12 +872,11 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 	// Let's find the choices
 	if (index + 1 >= static_cast<int>(list.size())) return {};
 
-	auto first_opt = ResolveEventCommand(list[index + 1]);
-	int current_indent = first_opt.indent;
+	int current_indent = ResolveEventCommand(list[index + 1]).indent;
 
 	std::vector<std::string> s_choices;
 	for (int index_temp = index + 1; index_temp < static_cast<int>(list.size()); ++index_temp) {
-		auto com = ResolveEventCommand(list[index_temp]);
+		const auto& com = ResolveEventCommand(list[index_temp]);
 
 		if (com.indent != current_indent) {
 			continue;
@@ -926,7 +925,7 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 
 	// Check for continued lines via ShowMessage_2
 	while (index < static_cast<int>(list.size())) {
-		auto next_cmd = ResolveEventCommand(list[index]);
+		const auto& next_cmd = ResolveEventCommand(list[index]);
 
 		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowMessage_2) {
 			pm.PushLine(ToString(next_cmd.string));
@@ -939,7 +938,8 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 
 	// Handle Choices or number
 	if (index < static_cast<int>(list.size())) {
-		auto next_cmd = ResolveEventCommand(list[index]);
+		// If next event command is show choices
+		const auto& next_cmd = ResolveEventCommand(list[index]);
 
 		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices(4);
@@ -949,10 +949,10 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 				SetupChoices(s_choices, next_cmd.indent, pm);
 				++index;
 			}
-			// If next event command is input number
-			// If input number fits on screen
 		}
 		else if (static_cast<Cmd>(next_cmd.code) == Cmd::InputNumber) {
+			// If next event command is input number and
+			// input number fits on screen
 			if (pm.NumLines() < 4) {
 				int digits = next_cmd.parameters[0];
 				int variable_id = next_cmd.parameters[1];
@@ -3784,11 +3784,11 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
-		auto scanned_cmd = ResolveEventCommand(list[idx]);
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
 
-		if (static_cast<Cmd>(scanned_cmd.code) != Cmd::Label)
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Label)
 			continue;
-		if (scanned_cmd.parameters.empty() || scanned_cmd.parameters[0] != label_id)
+		if (next_cmd.parameters.empty() || next_cmd.parameters[0] != label_id)
 			continue;
 		index = idx;
 		break;
@@ -3946,13 +3946,13 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 
 	// Restart the loop
 	for (int idx = index; idx >= 0; idx--) {
-		auto scanned_cmd = ResolveEventCommand(list[idx]);
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
 
-		if (scanned_cmd.indent > indent)
+		if (next_cmd.indent > indent)
 			continue;
-		if (scanned_cmd.indent < indent)
+		if (next_cmd.indent < indent)
 			return false;
-		if (static_cast<Cmd>(scanned_cmd.code) != Cmd::Loop)
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Loop)
 			continue;
 		index = idx;
 		break;
@@ -5305,7 +5305,7 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	return true;
 }
 
-lcf::rpg::EventCommand Game_Interpreter::ResolveEventCommand(const lcf::rpg::EventCommand& com) {
+const lcf::rpg::EventCommand& Game_Interpreter::ResolveEventCommand(const lcf::rpg::EventCommand& com) {
 	if (static_cast<Cmd>(com.code) != Cmd::Maniac_CallCommand || !Player::IsPatchManiac()) {
 		return com;
 	}
@@ -5321,7 +5321,7 @@ lcf::rpg::EventCommand Game_Interpreter::ResolveEventCommand(const lcf::rpg::Eve
 	std::vector<int32_t> values;
 
 	// Create command with basic parameters
-	lcf::rpg::EventCommand cmd;
+	lcf::rpg::EventCommand& cmd = resolved_cmd;
 	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
 	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
@@ -5368,6 +5368,19 @@ lcf::rpg::EventCommand Game_Interpreter::ResolveEventCommand(const lcf::rpg::Eve
 
 	// Finalize command parameters
 	cmd.parameters = lcf::DBArray<int32_t>(values.begin(), values.end());
+
+	// Debug output
+	/*
+	Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
+	Output::Warning("Command code: {}", cmd.code);
+	Output::Warning("Command string: {}", cmd.string);
+	std::string params_str;
+	for (const auto& param : values) {
+		params_str += " " + std::to_string(param);
+	}
+	Output::Warning("Command parameters:{}", params_str);
+	Output::Info("--------------------\n");
+	*/
 
 	return cmd;
 }

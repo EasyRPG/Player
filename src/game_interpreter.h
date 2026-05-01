@@ -86,16 +86,18 @@ public:
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
-	/*
+	/**
 	 * Resolves a Maniac Patch @cmd (Call Command) into the actual EventCommand it represents.
-	 * If the input is not a @cmd, it returns the input copy.
-	 * This handles variables, pointers, and expressions to build the final command.
-	*/
-	lcf::rpg::EventCommand ResolveEventCommand(const lcf::rpg::EventCommand& com);
+	 * If the input is not a @cmd it returns the command itself.
+	 * The resolved command is shared and overwritten on subsequent calls.
+	 *
+	 * @param com Command to process
+	 * @return com itself or a parsed Call Command
+	 */
+	const lcf::rpg::EventCommand& ResolveEventCommand(const lcf::rpg::EventCommand& com);
 
 	bool ExecuteCommand();
 	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
-
 
 	/**
 	 * Returns the interpreters current state information.
@@ -367,17 +369,20 @@ protected:
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
-	private:
-		void PushInternal(
-			InterpreterPush push_info,
-			std::vector<lcf::rpg::EventCommand> _list,
-			int _event_id,
-			int event_page_id = 0
-		);
+	/** Shared instance for ResolveEventCommand */
+	lcf::rpg::EventCommand resolved_cmd;
 
-		void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
-		void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
-		void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
+private:
+	void PushInternal(
+		InterpreterPush push_info,
+		std::vector<lcf::rpg::EventCommand> _list,
+		int _event_id,
+		int event_page_id = 0
+	);
+
+	void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
+	void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
+	void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
 
 	friend class Game_Interpreter_Inspector;
 };
