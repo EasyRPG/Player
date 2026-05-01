@@ -853,27 +853,29 @@ bool ManiacPatch::DecodeStringToInt(std::string_view str, uint32_t& out) {
 		return false;
 	}
 
-	auto in_range = [](uint32_t value) {
+	auto in_range = [](int32_t value) {
 		return value >= 0 && value < 32;
 	};
 
-	out = (str.back() - 'A' + 1);
+	int32_t result = (str.back() - 'A' + 1);
 
-	if (!in_range(out)) {
+	if (!in_range(result)) {
 		return false;
 	}
+
+	out = static_cast<uint32_t>(result);
 
 	str.remove_suffix(1);
 
 	for (size_t i = 0; i < str.size(); ++i) {
-		uint32_t result = (str[i] - 'a' + 1);
+		result = (str[i] - 'a' + 1);
 
 		if (!in_range(result)) {
 			return false;
 		}
 
 		int chidx = str.size() - i;
-		out += (result << (chidx * 5));
+		out += static_cast<uint32_t>(result << (chidx * 5));
 	}
 
 	return out;

@@ -4697,7 +4697,7 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	mode = delims[2] - 1;
 	if (mode > 0) {
 		if (!ManiacPatch::DecodeStringToInt(text.font_name, var_id)) {
-			Output::Warning("ShowStringPic: Bad font name arg (id={}, arg={})", pic_id, components[2]);
+			Output::Warning("ShowStringPic: Bad font name arg (id={}, arg={})", pic_id, components[3]);
 			return true;
 		}
 
