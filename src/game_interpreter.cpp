@@ -590,7 +590,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 	}
 
 	for (++index; index < static_cast<int>(list.size()); ++index) {
-		const auto& com = list[index];
+		const auto& com = ResolveEventCommand(list[index]);
 		if (com.indent > indent) {
 			continue;
 		}
@@ -874,17 +874,21 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 	auto& index = frame.current_command;
 
 	// Let's find the choices
-	int current_indent = list[index + 1].indent;
+	if (index + 1 >= static_cast<int>(list.size())) return {};
+
+	int current_indent = ResolveEventCommand(list[index + 1]).indent;
+
 	std::vector<std::string> s_choices;
 	for (int index_temp = index + 1; index_temp < static_cast<int>(list.size()); ++index_temp) {
-		const auto& com = list[index_temp];
+		const auto& com = ResolveEventCommand(list[index_temp]);
+
 		if (com.indent != current_indent) {
 			continue;
 		}
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
-			s_choices.push_back(ToString(list[index_temp].string));
+			s_choices.push_back(ToString(com.string));
 		}
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceEnd) {
@@ -924,29 +928,38 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	++index;
 
 	// Check for continued lines via ShowMessage_2
-	while (index < static_cast<int>(list.size()) && static_cast<Cmd>(list[index].code) == Cmd::ShowMessage_2) {
-		// Add second (another) line
-		pm.PushLine(ToString(list[index].string));
-		++index;
+	while (index < static_cast<int>(list.size())) {
+		const auto& next_cmd = ResolveEventCommand(list[index]);
+
+		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowMessage_2) {
+			pm.PushLine(ToString(next_cmd.string));
+			++index;
+		}
+		else {
+			break;
+		}
 	}
 
 	// Handle Choices or number
 	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
-		if (static_cast<Cmd>(list[index].code) == Cmd::ShowChoice) {
+		const auto& next_cmd = ResolveEventCommand(list[index]);
+
+		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices(4);
 			// If choices fit on screen
 			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
-				pm.SetChoiceCancelType(list[index].parameters[0]);
-				SetupChoices(s_choices, com.indent, pm);
+				pm.SetChoiceCancelType(next_cmd.parameters[0]);
+				SetupChoices(s_choices, next_cmd.indent, pm);
 				++index;
 			}
-		} else if (static_cast<Cmd>(list[index].code) == Cmd::InputNumber) {
-			// If next event command is input number
-			// If input number fits on screen
+		}
+		else if (static_cast<Cmd>(next_cmd.code) == Cmd::InputNumber) {
+			// If next event command is input number and
+			// input number fits on screen
 			if (pm.NumLines() < 4) {
-				int digits = list[index].parameters[0];
-				int variable_id = list[index].parameters[1];
+				int digits = next_cmd.parameters[0];
+				int variable_id = next_cmd.parameters[1];
 				pm.PushNumInput(variable_id, digits);
 				++index;
 			}
@@ -2070,7 +2083,7 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
-			const auto& cmd = list[i];
+			const auto& cmd = ResolveEventCommand(list[i]);
 			if (cmd.code == static_cast<uint32_t>(Cmd::Comment_2) &&
 					!cmd.string.empty() && cmd.string[0] != '@') {
 				command += ToString(cmd.string);
@@ -3794,9 +3807,11 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
-		if (static_cast<Cmd>(list[idx].code) != Cmd::Label)
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
+
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Label)
 			continue;
-		if (list[idx].parameters.empty() || list[idx].parameters[0] != label_id)
+		if (next_cmd.parameters.empty() || next_cmd.parameters[0] != label_id)
 			continue;
 		index = idx;
 		break;
@@ -3876,19 +3891,19 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	bool has_bug = !Player::IsPatchManiac();
 	if (!has_bug) {
-		SkipToNextConditional({ Cmd::EndLoop }, list[index].indent - 1);
+		SkipToNextConditional({ Cmd::EndLoop }, ResolveEventCommand(list[index]).indent - 1);
 		++index;
 		return true;
 	}
 
 	// This emulates an RPG_RT bug where break loop ignores scopes and
 	// unconditionally jumps to the next EndLoop command.
-	auto pcode = static_cast<Cmd>(list[index].code);
+	auto pcode = static_cast<Cmd>(ResolveEventCommand(list[index]).code);
 	for (++index; index < (int)list.size(); ++index) {
 		if (pcode == Cmd::EndLoop) {
 			break;
 		}
-		pcode = static_cast<Cmd>(list[index].code);
+		pcode = static_cast<Cmd>(ResolveEventCommand(list[index]).code);
 	}
 
 	return true;
@@ -3954,11 +3969,13 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 
 	// Restart the loop
 	for (int idx = index; idx >= 0; idx--) {
-		if (list[idx].indent > indent)
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
+
+		if (next_cmd.indent > indent)
 			continue;
-		if (list[idx].indent < indent)
+		if (next_cmd.indent < indent)
 			return false;
-		if (static_cast<Cmd>(list[idx].code) != Cmd::Loop)
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Loop)
 			continue;
 		index = idx;
 		break;
@@ -5311,9 +5328,9 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& com) {
-	if (!Player::IsPatchManiac()) {
-		return true;
+const lcf::rpg::EventCommand& Game_Interpreter::ResolveEventCommand(const lcf::rpg::EventCommand& com) {
+	if (static_cast<Cmd>(com.code) != Cmd::Maniac_CallCommand || !Player::IsPatchManiac()) {
+		return com;
 	}
 
 	enum class ProcessingMode {
@@ -5327,10 +5344,13 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	std::vector<int32_t> values;
 
 	// Create command with basic parameters
-	lcf::rpg::EventCommand cmd;
+	lcf::rpg::EventCommand& cmd = resolved_cmd;
 	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
 	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
+
+	// Preserve the indentation level so loops and branches can find their pairs
+	cmd.indent = com.indent;
 
 	// Determine processing mode
 	auto processing_mode = static_cast<ProcessingMode>((com.parameters[0] >> 4) & 0b1111);
@@ -5369,14 +5389,15 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	}
 	default:
 		Output::Warning("Call Command: Unsupported Processing Mode: {}", static_cast<int>(processing_mode));
-		return true;
+		return com;
 	}
 
 	// Finalize command parameters
 	cmd.parameters = lcf::DBArray<int32_t>(values.begin(), values.end());
 
 	// Debug output
-	/*Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
+	/*
+	Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
 	Output::Warning("Command code: {}", cmd.code);
 	Output::Warning("Command string: {}", cmd.string);
 	std::string params_str;
@@ -5384,13 +5405,40 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 		params_str += " " + std::to_string(param);
 	}
 	Output::Warning("Command parameters:{}", params_str);
-	Output::Info("--------------------\n");*/
+	Output::Info("--------------------\n");
+	*/
 
-	// Our implementation pushes a new frame containing the command instead of invoking it directly.
-	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push<ExecutionType::Eval, EventType::None>({ cmd }, GetCurrentEventId(), 0);
+	return cmd;
+}
 
-	return true;
+bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	const auto& cmd = ResolveEventCommand(com);
+
+	switch (static_cast<Cmd>(cmd.code)) {
+		case Cmd::JumpToLabel:
+		case Cmd::Label:
+		case Cmd::Loop:
+		case Cmd::BreakLoop:
+		case Cmd::EndLoop:
+		case Cmd::EndEventProcessing:
+		case Cmd::EraseEvent:
+			// Everything that is flow control must (unfortunately) run inside
+			// current frame
+			return ExecuteCommand(cmd);
+		default: {
+			// In all other cases our implementation is incompatible to Maniacs
+			// and pushes a new frame containing the command instead of invoking
+			// it directly. Is safer to do.
+			auto new_cmd = cmd;
+			new_cmd.indent = 0; // reset the indent
+			Push<ExecutionType::Eval, EventType::None>({ new_cmd }, GetCurrentEventId(), 0);
+			return true;
+		}
+	}
 }
 
 bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com) {
