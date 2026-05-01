@@ -18,6 +18,7 @@
 // Headers
 #include "ui.h"
 #include "clock.h"
+#include "filesystem_libretro.h"
 #include "bitmap.h"
 #include "color.h"
 #include "filefinder.h"
@@ -316,6 +317,12 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 		{ nullptr, nullptr }
 	};
 	cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
+
+	struct retro_vfs_interface_info vfs;
+	vfs.required_interface_version = EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION;
+	if (cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs)) {
+		LibretroFilesystem::vfs = vfs;
+	}
 }
 
 RETRO_API void retro_set_video_refresh(retro_video_refresh_t cb) {
