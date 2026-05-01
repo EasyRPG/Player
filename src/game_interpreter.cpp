@@ -5326,6 +5326,9 @@ const lcf::rpg::EventCommand& Game_Interpreter::ResolveEventCommand(const lcf::r
 
 	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
 
+	// Preserve the indentation level so loops and branches can find their pairs
+	cmd.indent = com.indent;
+
 	// Determine processing mode
 	auto processing_mode = static_cast<ProcessingMode>((com.parameters[0] >> 4) & 0b1111);
 
@@ -5392,11 +5395,27 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 
 	const auto& cmd = ResolveEventCommand(com);
 
-	// Our implementation pushes a new frame containing the command instead of invoking it directly.
-	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push<ExecutionType::Eval, EventType::None>({ cmd }, GetCurrentEventId(), 0);
-
-	return true;
+	switch (static_cast<Cmd>(cmd.code)) {
+		case Cmd::JumpToLabel:
+		case Cmd::Label:
+		case Cmd::Loop:
+		case Cmd::BreakLoop:
+		case Cmd::EndLoop:
+		case Cmd::EndEventProcessing:
+		case Cmd::EraseEvent:
+			// Everything that is flow control must (unfortunately) run inside
+			// current frame
+			return ExecuteCommand(cmd);
+		default: {
+			// In all other cases our implementation is incompatible to Maniacs
+			// and pushes a new frame containing the command instead of invoking
+			// it directly. Is safer to do.
+			auto new_cmd = cmd;
+			new_cmd.indent = 0; // reset the indent
+			Push<ExecutionType::Eval, EventType::None>({ new_cmd }, GetCurrentEventId(), 0);
+			return true;
+		}
+	}
 }
 
 bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com) {
