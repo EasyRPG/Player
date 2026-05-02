@@ -74,12 +74,12 @@ void Game_Character::SanitizeMoveRoute(std::string_view name, const lcf::rpg::Mo
 
 void Game_Character::MoveTo(int map_id, int x, int y) {
 //  if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){            // TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         is_moving_toward_target = false;
         real_x = (float)x;
         real_y = (float)y;
         //Output::Warning("Char Pos = {}x{}", real_x, real_y);
-    }// END - PIXELMOVE
+    }
 
     data()->map_id = map_id;
     // RPG_RT does not round the position for this function.
@@ -193,9 +193,9 @@ void Game_Character::Update() {
 
 
 //	if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         UpdateMoveTowardTarget();
-    } // END - PIXELMOVE
+    }
 
 
     if (IsStopping()) {
@@ -315,9 +315,9 @@ void Game_Character::UpdateFlash() {
 
 void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::MoveRoute& current_route, bool is_overwrite) {
 
-    if (true && is_moving_toward_target && !current_route.skippable) { // TODO - PIXELMOVE
+    if (true && is_moving_toward_target && !current_route.skippable) {
         return;
-    } // END - PIXELMOVE
+    }
 
 
 
@@ -398,7 +398,6 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
             */
 
 
-//			if (true && (cmd >= Code::move_towards_hero && cmd <= Code::move_away_from_hero)) { // TODO - PIXELMOVE
             if (Player::game_config.allow_pixel_movement.Get() && (cmd >= Code::move_towards_hero && cmd <= Code::move_away_from_hero)) {
                 int flag = (1 - (cmd == Code::move_away_from_hero) * 2);
                 float vx = (Main_Data::game_player->real_x - real_x) * flag;
@@ -407,8 +406,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
                 float step_size = GetStepSize();
                 MoveVector(step_size * (vx / length), step_size * (vy / length));
             }
-//			else if (true) {
-            else if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXELMOVE
+            else if (Player::game_config.allow_pixel_movement.Get()){
                 float vx = (float)GetDxFromDirection(GetDirection());
                 float vy = (float)GetDyFromDirection(GetDirection());
                 c2v target;
@@ -429,7 +427,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const lcf::rpg::Mov
             }
             else {
                 Move(GetDirection());
-            } // END - PIXELMOV
+            }
 
 
             static const int move_speed[] = { 16, 8, 6, 4, 3, 2 };
@@ -668,7 +666,7 @@ bool Game_Character::MoveVector(c2v vector) {
     return MoveVector(vector.x, vector.y);
 }
 
-bool Game_Character::MoveVector(float vx, float vy) {  // TODO - PIXELMOVE
+bool Game_Character::MoveVector(float vx, float vy) {
 //	if (abs(vx) <= Epsilon && abs(vy) <= Epsilon) {
 //		return false;
 //	}
@@ -940,7 +938,7 @@ bool Game_Character::MoveVector(float vx, float vy) {  // TODO - PIXELMOVE
 
 bool Game_Character::Move(int dir) {
 //    	if (true) {
-        if (Player::game_config.allow_pixel_movement.Get()){// TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         SetDirection(dir);
         c2v vector = c2V(GetDxFromDirection(dir), GetDyFromDirection(dir));
         float step_size = GetStepSize();
@@ -1277,12 +1275,12 @@ bool Game_Character::Jump(int x, int y) {
     SetJumping(true);
     SetRemainingStep(SCREEN_TILE_SIZE);
 
- /*     if (true) { // TODO - PIXELMOVE
+ /*     if (true) {
 
 
 
 //      SetDirection(GetDirection());
-        c2v vector = c2V(GetDxFromDirection(GetDirection()), GetDyFromDirection(GetDirection()));
+        c2v vector = c2V(GetDxFromDirection(dir), GetDyFromDirection(dir));
 //      c2v vector = c2V(real_x - begin_x, real_y - begin_y);
         float length = c2Len(vector);
         c2v vectorNorm = c2Div(vector, length);
@@ -1325,7 +1323,7 @@ bool Game_Character::Jump(int x, int y) {
 int Game_Character::GetDistanceXfromCharacter(const Game_Character& target) const {
 
 // 	if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
 
         float sx = real_x - Main_Data::game_player->real_x;
 
@@ -1338,7 +1336,7 @@ int Game_Character::GetDistanceXfromCharacter(const Game_Character& target) cons
             }
         }
         return round(sx * SCREEN_TILE_SIZE);
-    } //END - PIXELMOVE
+    }
 
 
     int sx = GetX() - target.GetX();
@@ -1356,7 +1354,7 @@ int Game_Character::GetDistanceXfromCharacter(const Game_Character& target) cons
 int Game_Character::GetDistanceYfromCharacter(const Game_Character& target) const {
 
 // 	if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXELMOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         float sy = real_y - Main_Data::game_player->real_y;
 
         if (Game_Map::LoopVertical()) {
@@ -1368,7 +1366,7 @@ int Game_Character::GetDistanceYfromCharacter(const Game_Character& target) cons
             }
         }
         return round(sy * SCREEN_TILE_SIZE);
-    } // END - PIXELMOVE
+    }
 
 
 
@@ -1720,9 +1718,9 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 int Game_Character::GetSpriteX() const {
 
 //	if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXEL MOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         return round(real_x * SCREEN_TILE_SIZE);
-    } // END - PIXELMOVE
+    }
 
 
     int x = GetX() * SCREEN_TILE_SIZE;
@@ -1743,9 +1741,9 @@ int Game_Character::GetSpriteX() const {
 int Game_Character::GetSpriteY() const {
 
 //	if (true) {
-    if (Player::game_config.allow_pixel_movement.Get()){        // TODO - PIXEL MOVE
+    if (Player::game_config.allow_pixel_movement.Get()){
         return round(real_x * SCREEN_TILE_SIZE);
-    } // END - PIXELMOVE
+    }
 
 
     int y = GetY() * SCREEN_TILE_SIZE;
