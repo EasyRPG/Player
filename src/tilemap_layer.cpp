@@ -722,6 +722,10 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	map_data = std::move(nmap_data);
 }
 
+static inline bool IsAutotileD(int tile_id) {
+	return tile_id >= BLOCK_D && tile_id < BLOCK_E;
+}
+
 static inline bool IsTileFromBlock(int tile_id, int block) {
 	switch (block) {
 	case BLOCK_A: return tile_id >= BLOCK_A && tile_id < BLOCK_A_END;
@@ -734,41 +738,11 @@ static inline bool IsTileFromBlock(int tile_id, int block) {
 	}
 }
 
-void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
-	if(!IsInMapBounds(x, y))
-		return;
-
-	substitutions = Game_Map::GetTilesLayer(layer);
-
-	bool is_autotile = IsTileFromBlock(tile_id, BLOCK_A) || IsTileFromBlock(tile_id, BLOCK_B) || IsTileFromBlock(tile_id, BLOCK_D);
-
-	if (disable_autotile || !is_autotile) {
-		RecreateTileDataAt(x, y, tile_id);
-	} else {
-		// Recalculate the replaced tile itself + every neighboring tile
-		static constexpr struct { int dx; int dy; } adjacent[8] = {
-				{-1, -1}, { 0, -1}, { 1, -1},
-				{-1,  0}, { 1,  0},
-				{-1,  1}, { 0,  1}, { 1,  1}
-		};
-
-		// TODO: make it work for AB autotiles
-		RecalculateAutotile(x, y, tile_id);
-
-		for (const auto& adj : adjacent) {
-			auto nx = x + adj.dx;
-			auto ny = y + adj.dy;
-			if (IsInMapBounds(nx, ny)) {
-				RecalculateAutotile(nx, ny, GetDataCache(nx, ny).ID);
-			}
-		}
-	}
-
-	SetMapData(map_data);
+static bool IsWaterTile(int tile_id) {
+	return tile_id >= 0 && tile_id < 3000;
 }
-
-static inline bool IsAutotileD(int tile_id) {
-	return tile_id >= BLOCK_D && tile_id < BLOCK_E;
+static bool IsDeepWaterTile(int tile_id) {
+	return tile_id >= 2000 && tile_id < 3000;
 }
 
 static inline bool IsSameAutotileAB(int current_tile_id, int neighbor_tile_id) {
@@ -818,6 +792,39 @@ static inline void ApplyCornerFixups(uint8_t& neighbors) {
 	}
 }
 
+//Maniac Patch - Rewrite Map Main Method:
+void TilemapLayer::SetMapTileDataAt(int x, int y, int tile_id, bool disable_autotile) {
+	if(!IsInMapBounds(x, y))
+		return;
+
+	substitutions = Game_Map::GetTilesLayer(layer);
+
+	bool is_autotile = IsTileFromBlock(tile_id, BLOCK_A) || IsTileFromBlock(tile_id, BLOCK_B) || IsTileFromBlock(tile_id, BLOCK_D);
+
+	if (disable_autotile || !is_autotile) {
+		RecreateTileDataAt(x, y, tile_id);
+	} else {
+		// Recalculate the replaced tile itself + every neighboring tile
+		static constexpr struct { int dx; int dy; } adjacent[8] = {
+				{-1, -1}, { 0, -1}, { 1, -1},
+				{-1,  0}, { 1,  0},
+				{-1,  1}, { 0,  1}, { 1,  1}
+		};
+
+		RecalculateAutotile(x, y, tile_id);
+
+		for (const auto& adj : adjacent) {
+			auto nx = x + adj.dx;
+			auto ny = y + adj.dy;
+			if (IsInMapBounds(nx, ny)) {
+				RecalculateAutotile(nx, ny, GetDataCache(nx, ny).ID);
+			}
+		}
+	}
+
+	SetMapData(map_data);
+}
+
 void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 	static constexpr struct { int dx; int dy; uint8_t bit; } adjacent[8] = {
 		{-1, -1, NEIGHBOR_NW}, { 0, -1, NEIGHBOR_N}, { 1, -1, NEIGHBOR_NE},
@@ -847,16 +854,90 @@ void TilemapLayer::RecalculateAutotile(int x, int y, int tile_id) {
 		RecreateTileDataAt(x, y, new_tile_id);
 		};
 
-	if (IsTileFromBlock(tile_id, BLOCK_A)) {
-		processBlock(BLOCK_A, BLOCK_A_STRIDE, BLOCK_A, IsSameAutotileAB);
+	if (IsWaterTile(tile_id)) {
+		int type = tile_id / 1000;
+		int base = type * 1000;
+
+		// 1. Calculate a_subtile (Coastline) - 8 neighbors
+		// Any Water connects to Any Water (0-2999) + Animated (3000-3999)
+		auto isWaterCompatible = [&](int /*curr*/, int neighbor) {
+			return IsWaterTile(neighbor) || (neighbor >= 3000 && neighbor < 4000);
+			};
+
+		uint8_t neighbors_a = calculateNeighbors(isWaterCompatible);
+		int a_subtile = AUTOTILE_D_VARIANTS_MAP.at(neighbors_a);
+
+		// 2. Calculate b_subtile (Deep Boundary) - 4 neighbors (N, E, S, W)
+		auto is_b_compatible = [&](int nid) {
+			bool n_deep = IsDeepWaterTile(nid);
+			bool n_water = IsWaterTile(nid) || (nid >= 3000 && nid < 4000);
+
+			if (type == 2) { // Deep
+				// Deep connects to Deep or Land (Non-Water). Blocks on Shallow.
+				return n_deep || !n_water;
+			}
+			else { // Shallow
+				// Shallow connects to Shallow or Land. Blocks on Deep.
+				return !n_deep;
+			}
+			};
+
+		auto check_blocked = [&](int dx, int dy) {
+			auto nx = x + dx;
+			auto ny = y + dy;
+			if (!IsInMapBounds(nx, ny)) return type == 2;
+			auto adj_id = GetDataCache(nx, ny).ID;
+			return !is_b_compatible(adj_id);
+			};
+
+		bool b_n = check_blocked(0, -1);
+		bool b_e = check_blocked(1, 0);
+		bool b_s = check_blocked(0, 1);
+		bool b_w = check_blocked(-1, 0);
+
+		int b_subtile = 0;
+
+		if (type == 2) {
+			// Handle diagonal connections for Deep Water (Type 2)
+			// A corner is only cut (border added) if the cardinal neighbors are blocked
+			// AND the corresponding diagonal neighbor is NOT Deep Water.
+			// If the diagonal neighbor IS Deep Water, we maintain the connection (don't cut).
+
+			auto check_diag_deep = [&](int dx, int dy) {
+				auto nx = x + dx;
+				auto ny = y + dy;
+				if (!IsInMapBounds(nx, ny)) return false;
+				auto adj_id = GetDataCache(nx, ny).ID;
+				return IsDeepWaterTile(adj_id);
+				};
+
+			bool d_nw = check_diag_deep(-1, -1);
+			bool d_ne = check_diag_deep(1, -1);
+			bool d_sw = check_diag_deep(-1, 1);
+			bool d_se = check_diag_deep(1, 1);
+
+			if (b_n && b_w && !d_nw) b_subtile |= 1; // TL
+			if (b_n && b_e && !d_ne) b_subtile |= 2; // TR
+			if (b_s && b_w && !d_sw) b_subtile |= 4; // BL
+			if (b_s && b_e && !d_se) b_subtile |= 8; // BR
+		}
+		else {
+			// Shallow Water (Type 0 & 1) - Standard corner logic
+			if (b_n && b_w) b_subtile |= 1; // TL
+			if (b_n && b_e) b_subtile |= 2; // TR
+			if (b_s && b_w) b_subtile |= 4; // BL
+			if (b_s && b_e) b_subtile |= 8; // BR
+		}
+
+		int new_tile_id = base + (b_subtile * 50) + a_subtile;
+		RecreateTileDataAt(x, y, new_tile_id);
 	}
-	if (IsTileFromBlock(tile_id, BLOCK_B)) {
-		processBlock(BLOCK_B, BLOCK_B_STRIDE, BLOCK_B, IsSameAutotileAB);
-	}
+
 	if (IsTileFromBlock(tile_id, BLOCK_D)) {
 		processBlock(BLOCK_D, BLOCK_D_STRIDE, BLOCK_D, IsSameAutotileD);
 	}
 }
+
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 	passable = std::move(npassable);
 
