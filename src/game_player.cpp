@@ -752,7 +752,7 @@ void Game_Player::UpdateEncounterSteps() {
 	const auto ratio = GetTotalEncounterRate() / encounter_steps;
 
 	auto& idx = last_encounter_idx;
-	while (ratio > enc_table[idx+1].ratio) {
+	while (ratio >= enc_table[idx+1].ratio) {
 		++idx;
 	}
 	const auto& row = enc_table[idx];
