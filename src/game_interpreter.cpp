@@ -28,6 +28,7 @@
 #include "async_handler.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
+#include "cache.h"
 #include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -810,6 +811,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
 		case Cmd::Maniac_ControlStrings:
 			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
+		case Cmd::Maniac_WritePicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
@@ -5308,6 +5311,124 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 		Output::Warning("Unknown or unimplemented string operation {}", op);
 		break;
 	}
+	return true;
+}
+
+bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	/*
+	TPC Structure Reference:
+	@img.save .screen .dst "filename"
+	@img.save .pic ID .static/.dynamic .opaq .dst "filename"
+
+	Parameters:
+	[0] Packing:
+		Bits 0-3: Picture ID Mode (0: Const, 1: Var, 2: Indirect)
+		Bits 4-7: Filename Mode (0: Literal, 1: String/Variable)
+	[1] Target Type: 0 = Screen, 1 = Picture
+	[2] Picture ID (Value)
+	[3] Filename ID (Value if not literal)
+	[4] Flags:
+		Bit 0: Dynamic (1) / Static (0)
+		Bit 1: Opaque (1)
+	*/
+
+	int target_type = com.parameters[1];
+
+	std::string filename = ToString(CommandStringOrVariableBitfield(com, 0, 1, 3));
+
+	if (filename.empty()) {
+		Output::Warning("ManiacSaveImage: Filename is empty");
+		return true;
+	}
+
+	// Decode Flags
+	int flags = com.parameters[4];
+	bool apply_effects = (flags & 1) != 0;
+	bool is_opaque = (flags & 2) != 0;
+
+	// Prepare Bitmap
+	BitmapRef bitmap;
+
+	if (target_type == 0) {
+		// Target: Screen (.screen)
+		bitmap = DisplayUi->CaptureScreen();
+	} else if (target_type == 1) {
+		// Target: Picture (.pic)
+		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
+
+		if (pic_id <= 0) {
+			Output::Warning("ManiacSaveImage: Invalid Picture ID {}", pic_id);
+			return true;
+		}
+
+		auto& picture = Main_Data::game_pictures->GetPicture(pic_id);
+
+		if (picture.IsRequestPending()) {
+			picture.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+
+		const auto sprite = picture.sprite.get();
+
+		// Retrieve bitmap
+		if (picture.IsWindowAttached()) {
+			// Maniac ignores the opaque setting for String Picture
+			bitmap = picture.sprite->GetBitmap();
+		} else if (picture.data.name.empty()) {
+			// Not much we can do here (also shouldn't happen normally)
+			bitmap = picture.sprite->GetBitmap();
+		} else {
+			// Fetch picture with correct transparency
+			bitmap = Cache::Picture(picture.data.name, !is_opaque);
+		}
+
+		if (bitmap) {
+			// Determine Spritesheet frame
+			Rect src_rect = picture.sprite->GetSrcRect();
+
+			if (apply_effects) {
+				// .dynamic: Reflect color tone, flash, and other effects
+				auto tone = sprite->GetTone();
+				auto flash = sprite->GetFlashEffect();
+				auto flip_x = sprite->GetFlipX();
+				auto flip_y = sprite->GetFlipY();
+				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+			} else if (src_rect != bitmap->GetRect()) {
+				// .static: Crop specific cell if it's a spritesheet
+				bitmap = Bitmap::Create(*bitmap, src_rect);
+			}
+		}
+	}
+	else {
+		Output::Warning("ManiacSaveImage: Unsupported target type {}", target_type);
+		return true;
+	}
+
+	// Save logic
+	if (bitmap) {
+		// Save to disk
+		// Ensure 'filename' has a valid extension (.png).
+		if (!EndsWith(Utils::LowerCase(filename), ".png")) {
+			filename += ".png";
+		}
+
+		auto found_file = FileFinder::Save().FindFile(filename);
+
+		auto os = FileFinder::Save().OpenOutputStream(found_file.empty() ? filename : found_file);
+		if (os) {
+			bitmap->WritePNG(os);
+		} else {
+			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
+		}
+	} else {
+		Output::Debug("ManiacSaveImage: Nothing to save (Target {})", target_type);
+	}
+
 	return true;
 }
 
