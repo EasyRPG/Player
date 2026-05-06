@@ -1079,16 +1079,16 @@ bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com)
 		int val = com.parameters[3];
 
 		if (start == end) {
-			if (val < 2) {
+			if (val == 0 || val == 1) {
 				Main_Data::game_switches->Set(start, val == 0);
-			} else {
+			} else if (val == 2) {
 				Main_Data::game_switches->Flip(start);
 			}
 			Game_Map::SetNeedRefreshForSwitchChange(start);
 		} else {
-			if (val < 2) {
+			if (val == 0 || val == 1) {
 				Main_Data::game_switches->SetRange(start, end, val == 0);
-			} else {
+			} else if (val == 2) {
 				Main_Data::game_switches->FlipRange(start, end);
 			}
 			Game_Map::SetNeedRefresh(true);
@@ -1548,19 +1548,20 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin) const {
+Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin, bool silent) const {
 	if (event_id == Game_Character::CharThisEvent) {
 		event_id = GetThisEventId();
 		// Is a common event
 		if (event_id == 0) {
 			// With no map parent
+			// Still reported even when "silent" as this would hide a bug
 			Output::Warning("{}: Can't use ThisEvent in common event: Not called from a map event", origin);
 			return nullptr;
 		}
 	}
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
-	if (!ch) {
+	if (!ch && !silent) {
 		Output::Warning("{}: Unknown event with id {}", origin, event_id);
 	}
 	return ch;
@@ -3634,9 +3635,14 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			chara_id = ValueOrVariable(com.parameters[3], chara_id);
 		}
 
-		character = GetCharacter(chara_id, "ConditionalBranch");
-		if (character != NULL) {
-			result = character->GetFacing() == com.parameters[2];
+		if (Player::IsPatchManiac() && com.parameters[4] == 1) {
+			// Existance check
+			result = GetCharacter(chara_id, "ConditionalBranch", true) != nullptr;
+		} else {
+			character = GetCharacter(chara_id, "ConditionalBranch");
+			if (character) {
+				result = character->GetFacing() == com.parameters[2];
+			}
 		}
 		break;
 	}
@@ -4685,7 +4691,31 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	}
 
 	params.system_name = components[2];
+	uint32_t var_id = 0;
+	auto mode = delims[1] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(params.system_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad system name arg (id={}, arg={})", pic_id, components[2]);
+			return true;
+		}
+
+		params.system_name = Main_Data::game_strings->GetWithMode(
+			params.system_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
+
 	text.font_name = components[3];
+	mode = delims[2] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(text.font_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad font name arg (id={}, arg={})", pic_id, components[3]);
+			return true;
+		}
+
+		text.font_name = Main_Data::game_strings->GetWithMode(
+			text.font_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
 
 	params.texts = {text};
 

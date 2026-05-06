@@ -38,6 +38,17 @@ namespace ManiacPatch {
 	std::string_view GetLcfName(int data_type, int id, bool is_dynamic);
 	std::string_view GetLcfDescription(int data_type, int id, bool is_dynamic);
 
+	/**
+	 * Decodes an encoded string as used by the ShowStringPicture to the number
+	 * representation.
+	 *
+	 * @param str String to decode
+	 * @param out The number represented by the string
+	 *
+	 * @return Whether the decoding was successful (this function will reject malformed strings)
+	 */
+	bool DecodeStringToInt(std::string_view str, uint32_t& out);
+
 	namespace GlobalSave {
 		/**
 		* Attempts to load Save.lgs from the save directory.

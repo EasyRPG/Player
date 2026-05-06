@@ -252,7 +252,7 @@ public:
 	virtual ~Game_BaseInterpreterContext() {}
 
 	virtual int GetThisEventId() const = 0;
-	virtual Game_Character* GetCharacter(int event_id, std::string_view origin) const = 0;
+	virtual Game_Character* GetCharacter(int event_id, std::string_view origin, bool silent = false) const = 0;
 
 	virtual const lcf::rpg::SaveEventExecState& GetState() const = 0;
 	virtual const lcf::rpg::SaveEventExecFrame& GetFrame() const = 0;

@@ -834,6 +834,53 @@ std::string_view ManiacPatch::GetLcfDescription(int data_type, int id, bool is_d
 	return {};
 }
 
+bool ManiacPatch::DecodeStringToInt(std::string_view str, uint32_t& out) {
+	/*
+	Is a custom 5 bit encoding:
+
+	For the rightmost character c the value is:
+	c - A + 1
+
+	For all other characters c with index i the value is:
+	(c - a + 1) << (i * 5)
+
+	Due to integer overflow the max string length is 6.
+	*/
+
+	out = 0;
+
+	if (!(str.size() > 0 && str.size() <= 6)) {
+		return false;
+	}
+
+	auto in_range = [](int32_t value) {
+		return value >= 0 && value < 32;
+	};
+
+	int32_t result = (str.back() - 'A' + 1);
+
+	if (!in_range(result)) {
+		return false;
+	}
+
+	out = static_cast<uint32_t>(result);
+
+	str.remove_suffix(1);
+
+	for (size_t i = 0; i < str.size(); ++i) {
+		result = (str[i] - 'a' + 1);
+
+		if (!in_range(result)) {
+			return false;
+		}
+
+		int chidx = str.size() - i;
+		out += static_cast<uint32_t>(result << (chidx * 5));
+	}
+
+	return out;
+}
+
 bool ManiacPatch::GlobalSave::Load() {
 	if (!Player::IsPatchManiac()) {
 		return true;
