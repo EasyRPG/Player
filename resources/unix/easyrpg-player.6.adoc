@@ -357,6 +357,9 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *CommonThisEvent*=_1_::
   Same as *--patch-common-this*.
 
+*DirectMenu*=_1_::
+  Same as *--patch-direct-menu* 'VAR'.
+
 *DynRPG*=_1_::
   Same as *--patch-dynrpg*.
 
@@ -366,11 +369,8 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *KeyPatch*=_1_::
   Same as *--patch-key-patch*.
 
-*Maniac*=_1_::
-  Same as *--patch-maniac*.
-
-*Maniac*=_2_::
-  Same as *--patch-maniac*, but keeps the variable range of RPG Maker 2000/2003 to make porting games to this patch easier.
+*Maniac*=_[N]_::
+  Same as *--patch-maniac* 'N'.
 
 *PicUnlock*=_1_::
   Same as *--patch-pic-unlock*.
