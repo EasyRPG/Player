@@ -357,7 +357,7 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *CommonThisEvent*=_1_::
   Same as *--patch-common-this*.
 
-*DirectMenu*=_1_::
+*DirectMenu*=_VAR_::
   Same as *--patch-direct-menu* 'VAR'.
 
 *DynRPG*=_1_::
