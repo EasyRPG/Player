@@ -2818,10 +2818,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 		}
 		if (com.parameters[19] != 0) {
-			int var = 0;
-			if (Main_Data::game_variables->IsValid(com.parameters[19])) {
-				var = Main_Data::game_variables->Get(com.parameters[19]);
-			}
+			int var = Main_Data::game_variables->Get(com.parameters[19]);
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
 
@@ -5011,6 +5008,7 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 	//int value = ValueOrVariable(com.parameters[0], com.parameters[2]);
 
 	switch (operation) {
+		case 1: // Set variable count (noop, Player auto-expands the variable array on access)
 		case 2: // Change Picture Limit (noop, we support arbitrary amount of pictures)
 			break;
 		default:
