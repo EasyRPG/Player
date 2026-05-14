@@ -431,6 +431,12 @@ namespace Player {
 	/** game specific configuration */
 	extern Game_ConfigGame game_config;
 
+	/**
+	 * Sets the frame skipping rate for the main loop.
+	 * @param mode 0: Full, 1: 1/5, 2: 1/3, 3: 1/2
+	 */
+	void SetFrameSkip(int mode);
+
 #ifdef __EMSCRIPTEN__
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;

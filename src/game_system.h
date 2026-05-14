@@ -436,6 +436,19 @@ public:
 	/** @return Whether the game was loaded from a savegame in the current frame */
 	bool IsLoadedThisFrame() const;
 
+	void SetFastForwardText(bool enabled);
+	bool GetFastForwardText() const;
+
+	void SetMessageMouseDisabled(bool disabled);
+	bool IsMessageMouseDisabled() const;
+
+	void SetBattleOrigin(int origin);
+	int GetBattleOrigin() const;
+
+	void SetMessageFaceSize(int width, int height);
+	int GetMessageFaceWidth() const;
+	int GetMessageFaceHeight() const;
+
 private:
 	std::string InelukiReadLink(Filesystem_Stream::InputStream& stream);
 
@@ -453,6 +466,10 @@ private:
 	Color bg_color = Color{ 0, 0, 0, 255 };
 	bool bgm_pending = false;
 	int loaded_frame_count = 0;
+
+	// Game options that are not saved
+	bool maniac_fast_forward_text = false;
+	bool message_mouse_disabled = false;
 };
 
 inline bool Game_System::HasSystemGraphic() {
@@ -661,6 +678,47 @@ inline void Game_System::SetAllowMenu(bool allow) {
 inline bool Game_System::GetAllowMenu() {
 	return data.menu_allowed;
 }
+
+inline void Game_System::SetFastForwardText(bool enabled) {
+	maniac_fast_forward_text = enabled;
+}
+
+inline bool Game_System::GetFastForwardText() const {
+	return maniac_fast_forward_text;
+}
+
+inline void Game_System::SetMessageMouseDisabled(bool disabled) {
+	message_mouse_disabled = disabled;
+}
+
+inline bool Game_System::IsMessageMouseDisabled() const {
+	return message_mouse_disabled;
+}
+
+inline void Game_System::SetBattleOrigin(int origin) {
+	//data.maniac_battle_position = origin;
+}
+
+inline int Game_System::GetBattleOrigin() const {
+	//return data.maniac_battle_position;
+	return 0;
+}
+
+inline void Game_System::SetMessageFaceSize(int width, int height) {
+	//data.maniac_message_face_width = width;
+	//data.maniac_message_face_height = height;
+}
+
+inline int Game_System::GetMessageFaceWidth() const {
+	//return data.maniac_message_face_width;
+	return 0;
+}
+
+inline int Game_System::GetMessageFaceHeight() const {
+	//return data.maniac_message_face_height;
+	return 0;
+}
+
 
 
 #endif
