@@ -20,6 +20,7 @@
 #include <lcf/data.h>
 #include "player.h"
 #include "game_actors.h"
+#include "game_commonevent.h"
 #include "game_enemyparty.h"
 #include "game_message.h"
 #include "game_party.h"
@@ -43,6 +44,8 @@ namespace Game_Battle {
 	std::string background_name;
 
 	std::unique_ptr<Game_Interpreter_Battle> interpreter;
+	std::vector<Game_CommonEvent> common_events;
+
 	/** Contains battle related sprites */
 	std::unique_ptr<Spriteset_Battle> spriteset;
 
@@ -76,9 +79,18 @@ void Game_Battle::Init(int troop_id) {
 	animation_actors.reset();
 	animation_enemies.reset();
 
+	InitCommonEvents();
 
 	for (auto* actor: Main_Data::game_party->GetActors()) {
 		actor->ResetEquipmentStates(true);
+	}
+}
+
+void Game_Battle::InitCommonEvents() {
+	common_events.clear();
+	common_events.reserve(lcf::Data::commonevents.size());
+	for (const lcf::rpg::CommonEvent& ev : lcf::Data::commonevents) {
+		common_events.emplace_back(ev.ID, false);
 	}
 }
 
@@ -88,6 +100,7 @@ void Game_Battle::Quit() {
 	}
 
 	interpreter.reset();
+	common_events.clear();
 	spriteset.reset();
 	animation_actors.reset();
 	animation_enemies.reset();
@@ -274,6 +287,10 @@ Game_Interpreter& Game_Battle::GetInterpreter() {
 Game_Interpreter_Battle& Game_Battle::GetInterpreterBattle() {
 	assert(interpreter);
 	return *interpreter;
+}
+
+std::vector<Game_CommonEvent>& Game_Battle::GetCommonEvents() {
+	return common_events;
 }
 
 void Game_Battle::SetTerrainId(int id) {

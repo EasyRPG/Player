@@ -89,12 +89,19 @@ public:
 	bool ExecuteCommand();
 	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
 
-
 	/**
 	 * Returns the interpreters current state information.
 	 * For saving state into a save file, use GetSaveState instead.
 	 */
 	const lcf::rpg::SaveEventExecState& GetState() const override;
+
+	/**
+	 * Sets up the interpreter with given state.
+	 *
+	 * @param save event to load.
+	 *
+	 */
+	void SetState(const lcf::rpg::SaveEventExecState& save);
 
 	/**
 	 * Returns a SaveEventExecState needed for the savefile.
@@ -122,7 +129,7 @@ public:
 	void ClearOriginalEventId();
 
 	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
-	bool IsAsyncPending();
+	bool IsAsyncPending() const;
 
 	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
 	AsyncOp GetAsyncOp() const;
@@ -412,6 +419,7 @@ inline void Game_Interpreter::Push(Game_Event* ev, const lcf::rpg::EventPage* pa
 template<InterpreterExecutionType type_ex>
 inline void Game_Interpreter::Push(Game_CommonEvent* ev) {
 	static_assert(type_ex == InterpreterExecutionType::AutoStart || type_ex == InterpreterExecutionType::Parallel
+		|| type_ex == InterpreterExecutionType::BattleStart || type_ex == InterpreterExecutionType::BattleParallel
 		|| type_ex == InterpreterExecutionType::Call || type_ex == InterpreterExecutionType::DeathHandler
 		|| type_ex == InterpreterExecutionType::DebugCall || type_ex == InterpreterExecutionType::ManiacHook, "Unexpected ExecutionType for CommonEvent"
 	);
@@ -457,7 +465,7 @@ inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
 }
 
-inline bool Game_Interpreter::IsAsyncPending() {
+inline bool Game_Interpreter::IsAsyncPending() const {
 	return GetAsyncOp().IsActive();
 }
 

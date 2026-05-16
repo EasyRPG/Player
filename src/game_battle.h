@@ -48,6 +48,11 @@ namespace Game_Battle {
 	 */
 	void Init(int troop_id);
 
+	/**
+	 * Initializes Common Events.
+	 */
+	void InitCommonEvents();
+
 	/** @return true if a battle is currently running */
 	bool IsBattleRunning();
 
@@ -140,6 +145,13 @@ namespace Game_Battle {
 	 * @return the battle game interpreter.
 	 */
 	Game_Interpreter_Battle& GetInterpreterBattle();
+
+	/**
+	 * Gets common events list.
+	 *
+	 * @return common events list.
+	 */
+	std::vector<Game_CommonEvent>& GetCommonEvents();
 
 	void SetTerrainId(int id);
 	int GetTerrainId();

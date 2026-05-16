@@ -144,6 +144,11 @@ void Game_Interpreter::PushInternal(
 	_state.stack.push_back(std::move(frame));
 }
 
+void Game_Interpreter::SetState(const lcf::rpg::SaveEventExecState& save) {
+	Clear();
+	_state = save;
+	_keyinput.fromSave(save);
+}
 
 void Game_Interpreter::KeyInputState::fromSave(const lcf::rpg::SaveEventExecState& save) {
 	*this = {};
