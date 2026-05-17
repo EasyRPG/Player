@@ -222,6 +222,13 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 	++iter;
 	bool stop_parsing = false;
 	bool got_valid_number = false;
+	bool is_negative = false;
+
+	// Maniac Patch: support negative variable IDs like \v[-1]
+	if (iter != end && *iter == '-') {
+		is_negative = true;
+		++iter;
+	}
 
 	while (iter != end && *iter != ']') {
 		if (stop_parsing) {
@@ -283,6 +290,7 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		++iter;
 	}
 
+	if (is_negative) { value = -value; }
 	values.emplace_back(value);
 
 	// Actor 0 references the first party member
