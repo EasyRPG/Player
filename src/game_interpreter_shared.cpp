@@ -78,6 +78,24 @@ inline bool Game_Interpreter_Shared::DecodeTargetEvaluationMode(lcf::rpg::EventC
 				return true;
 			}
 			break;
+		case 5: // Maniac Patch ScopedSingle: params[1] is positive self-var index → negative ID
+			if constexpr (validate_patches) {
+				if (!Player::IsPatchManiac()) {
+					return false;
+				}
+			}
+			id_0 = -com.parameters[1];
+			id_1 = id_0;
+			break;
+		case 6: // Maniac Patch ScopedRange
+			if constexpr (validate_patches) {
+				if (!Player::IsPatchManiac()) {
+					return false;
+				}
+			}
+			id_0 = -com.parameters[1];
+			id_1 = -com.parameters[2];
+			break;
 		default:
 			id_0 = 0;
 			id_1 = 0;
