@@ -158,6 +158,9 @@ private:
 		void WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op);
 
 	Variables_t _variables;
+	// Maniac Patch self-variables: negative IDs (-1..-N) map to self_vars[0..N-1]
+	static constexpr int kSelfVarCount = 64;
+	Var_t _self_vars[kSelfVarCount] = {};
 	Var_t _min = 0;
 	Var_t _max = 0;
 	size_t lower_limit = 0;
@@ -189,10 +192,18 @@ inline bool Game_Variables::IsValid(int variable_id) const {
 }
 
 inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
+	// Self-variables (negative IDs in range) are valid, don't warn for them
+	if (first_id < 0 && first_id >= -kSelfVarCount && last_id < 0 && last_id >= -kSelfVarCount) {
+		return false;
+	}
 	return (first_id <= 0 || last_id > GetSizeWithLimit()) && _warnings > 0;
 }
 
 inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
+	// Maniac Patch self-variables: -1..-kSelfVarCount map to local storage
+	if (variable_id < 0 && variable_id >= -kSelfVarCount) {
+		return _self_vars[(-variable_id) - 1];
+	}
 	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
 		WarnGet(variable_id);
 	}

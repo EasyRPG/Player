@@ -145,6 +145,13 @@ void Game_Variables::WarnGet(int variable_id) const {
 
 template <typename F>
 Game_Variables::Var_t Game_Variables::SetOp(int variable_id, Var_t value, F&& op, const char* warn) {
+	// Maniac Patch self-variables: -1..-kSelfVarCount map to local storage
+	if (variable_id < 0 && variable_id >= -kSelfVarCount) {
+		auto& v = _self_vars[(-variable_id) - 1];
+		value = op(v, value);
+		v = Utils::Clamp(value, _min, _max);
+		return v;
+	}
 	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
 		Output::Debug(warn, variable_id, value);
 		--_warnings;
