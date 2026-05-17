@@ -3882,9 +3882,43 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	// BreakLoop will jump to the end of the event if there is no loop.
 
-	bool has_bug = !Player::IsPatchManiac();
-	if (!has_bug) {
-		SkipToNextConditional({ Cmd::EndLoop }, list[index].indent - 1);
+	if (Player::IsPatchManiac()) {
+		// Maniac Patch: find the actual innermost enclosing loop by scanning backward.
+		// This correctly handles BreakLoop inside conditionals nested within a loop —
+		// e.g. BreakLoop at indent=2 inside an if (indent=1) inside an infinite loop
+		// (indent=0) must break the outer loop, not some unrelated inner loop that
+		// happens to appear later in the same loop body.
+		int break_indent = list[index].indent;
+		int target_indent = -1;
+
+		// endloop_depth[M] counts how many EndLoops at indent=M we have seen going
+		// backward; a matching Loop cancels one out rather than being the enclosing loop.
+		constexpr int kMaxIndent = 20;
+		int endloop_depth[kMaxIndent] = {};
+
+		for (int i = index - 1; i >= 0; --i) {
+			const auto& c = list[i];
+			if (c.indent >= break_indent) continue;
+			auto cc = static_cast<Cmd>(c.code);
+			if (cc == Cmd::EndLoop) {
+				if (c.indent < kMaxIndent) endloop_depth[c.indent]++;
+			} else if (cc == Cmd::Loop) {
+				int d = (c.indent < kMaxIndent) ? endloop_depth[c.indent] : 0;
+				if (d > 0) {
+					endloop_depth[c.indent]--;
+				} else {
+					target_indent = c.indent;
+					break;
+				}
+			}
+		}
+
+		if (target_indent < 0) {
+			index = static_cast<int>(list.size());
+			return true;
+		}
+
+		SkipToNextConditional({ Cmd::EndLoop }, target_indent);
 		++index;
 		return true;
 	}
