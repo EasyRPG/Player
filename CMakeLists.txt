@@ -71,22 +71,10 @@ option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXX
 
 file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
 	src/leasy/lua/*.c
-	src/leasy/*.cpp
-	src/leasy/*.c
-	src/leasy/*.h
-	src/leasy/*.hpp
-	src/leasy/ul2/*.cpp
-	src/leasy/ul2/*.c
-	src/leasy/ul2/*.h
-	src/leasy/ul2/*.hpp
-	src/leasy/ily3/*.cpp
-	src/leasy/ily3/*.c
-	src/leasy/ily3/*.h
-	src/leasy/ily3/*.hpp
-	src/leasy/libs2/**/*.cpp
-	src/leasy/libs2/**/*.c
-	src/leasy/libs2/**/*.h
-	src/leasy/libs2/**/*.hpp
+	src/leasy/**/*.cpp
+	src/leasy/**/*.c
+	src/leasy/**/*.h
+	src/leasy/**/*.hpp
 )
 
 # Source Files

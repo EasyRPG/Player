@@ -3,7 +3,7 @@
 #include "ldebug.hpp"
 #include "ul2/state.hpp"
 #include "ily3/ily3.hpp"
-#include "libs2/drawing/image.hpp"
+#include "libs2/image/image.hpp"
 
 namespace leasy {
   namespace ily3 {
