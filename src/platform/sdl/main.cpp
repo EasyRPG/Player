@@ -58,7 +58,7 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
  * If the main function ever needs to change, be sure to update the `main()`
  * functions of the other platforms as well.
  */
-extern "C" int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	std::vector<std::string> args;
 
 #if defined(_WIN32)

@@ -1,6 +1,440 @@
 #pragma once
 
+#include <algorithm>
+#include <chrono>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <memory>
+#include <mutex>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <thread>
+#include <vector>
 
-#define printerr(X) std::cout << "[leasy.Stderr]: " << __func__ << "(*)\t" << X << std::endl;
-#define printinf(X) std::cout << "[leasy.Stdout]: " << __func__ << "(*)\t" << X << std::endl;
+#include "kits/ps7k.hpp"
+
+namespace leasy::ios {
+
+  class buffer {
+  public:
+    template<typename... Args>
+    inline void write(Args&&... args) {
+      (stream_ << ... << std::forward<Args>(args));
+    }
+
+    inline std::string str() const {
+      return stream_.str();
+    }
+
+    inline void clear() {
+      stream_.str("");
+      stream_.clear();
+    }
+
+  private:
+    std::ostringstream stream_;
+  };
+
+  class sink {
+  public:
+    inline virtual ~sink() = default;
+
+    inline virtual void write(std::string_view text) = 0;
+
+    inline virtual void flush() { }
+  };
+
+  class console_sink final : public sink {
+  public:
+    inline explicit console_sink(std::ostream& os = std::cout)
+      : os_(os) {
+    }
+
+    inline void write(std::string_view text) override {
+      std::lock_guard lock(mutex_);
+      os_ << text;
+    }
+
+    inline void flush() override {
+      std::lock_guard lock(mutex_);
+      os_.flush();
+    }
+
+  private:
+    std::ostream& os_;
+    std::mutex mutex_;
+  };
+
+  class file_sink final : public sink {
+  public:
+    inline explicit file_sink(const std::filesystem::path& path)
+      : file_(path, std::ios::app) {
+    }
+
+    inline void write(std::string_view text) override {
+      std::lock_guard lock(mutex_);
+      file_ << text;
+    }
+
+    inline void flush() override {
+      std::lock_guard lock(mutex_);
+      file_.flush();
+    }
+
+  private:
+    std::ofstream file_;
+    std::mutex mutex_;
+  };
+
+  class memory_sink final : public sink {
+  public:
+    inline void write(std::string_view text) override {
+      std::lock_guard lock(mutex_);
+      data_ += text;
+    }
+
+    inline std::string str() const {
+      std::lock_guard lock(mutex_);
+      return data_;
+    }
+
+    inline void clear() {
+      std::lock_guard lock(mutex_);
+      data_.clear();
+    }
+
+  private:
+    mutable std::mutex mutex_;
+    std::string data_;
+  };
+
+  class channel;
+
+  class attachment {
+    friend class channel;
+
+  public:
+    inline attachment() = default;
+
+    inline attachment(const attachment&) = delete;
+    inline attachment& operator=(const attachment&) = delete;
+
+    inline attachment(attachment&& other) noexcept
+      : owner_(other.owner_),
+        sink_(std::move(other.sink_)) {
+      other.owner_ = nullptr;
+    }
+
+    inline attachment &operator=(attachment&& other) noexcept {
+      if (this == &other)
+        return *this;
+
+      disconnect();
+
+      owner_ = other.owner_;
+      sink_ = std::move(other.sink_);
+
+      other.owner_ = nullptr;
+
+      return *this;
+    }
+
+    inline ~attachment() {
+      disconnect();
+    }
+
+    inline void disconnect();
+
+    inline bool connected() const {
+      return owner_ != nullptr;
+    }
+
+  private:
+    inline attachment(
+      channel* owner,
+      std::shared_ptr<sink> sink
+    )
+      : owner_(owner),
+        sink_(std::move(sink)) {
+    }
+
+    channel* owner_ = nullptr;
+    std::shared_ptr<sink> sink_;
+  };
+
+  struct format_options {
+    bool timestamp = false;
+    bool thread_id = false;
+    std::string prefix;
+  };
+
+  class channel {
+  public:
+    channel() = default;
+
+    template<typename... Args>
+    inline void write(Args&&... args) {
+      if (!enabled_)
+        return;
+
+      std::ostringstream ss;
+      (ss << ... << std::forward<Args>(args));
+
+      dispatch(format(ss.str()));
+    }
+
+    template<typename... Args>
+    inline void writeln(Args&&... args) {
+      if (!enabled_)
+        return;
+
+      std::ostringstream ss;
+      (ss << ... << std::forward<Args>(args));
+      ss << '\n';
+
+      dispatch(format(ss.str()), true);
+    }
+
+    inline attachment attach(std::shared_ptr<sink> output) {
+      {
+        std::lock_guard lock(mutex_);
+        outputs_.push_back(output);
+      }
+
+      return attachment(this, std::move(output));
+    }
+
+    inline void clear_outputs() {
+      std::lock_guard lock(mutex_);
+      outputs_.clear();
+    }
+
+    inline channel &enabled(bool value) {
+      enabled_ = value;
+      return *this;
+    }
+
+    inline channel &timestamp(bool value) {
+      format_.timestamp = value;
+      return *this;
+    }
+
+    inline channel &thread_id(bool value) {
+      format_.thread_id = value;
+      return *this;
+    }
+
+    inline channel &prefix(std::string value) {
+      format_.prefix = std::move(value);
+      return *this;
+    }
+
+  private:
+    friend class attachment;
+
+    inline void detach(const std::shared_ptr<sink>& target) {
+      std::lock_guard lock(mutex_);
+
+      compat::erase_if(
+        outputs_,
+        [&](const auto& weak) {
+          auto locked = weak.lock();
+
+          return !locked ||
+                 locked == target;
+        }
+      );
+    }
+
+    inline void dispatch(
+      const std::string& text,
+      bool flush = false
+    ) {
+      std::vector<std::shared_ptr<sink>> sinks;
+
+      {
+        std::lock_guard lock(mutex_);
+
+        compat::erase_if(
+          outputs_,
+          [](const auto& weak) {
+            return weak.expired();
+          }
+        );
+
+        sinks.reserve(outputs_.size());
+
+        for (auto& weak : outputs_) {
+          if (auto sink = weak.lock())
+            sinks.push_back(std::move(sink));
+        }
+      }
+
+      for (auto& sink : sinks) {
+        if (!text.empty())
+          sink->write(text);
+
+        if (flush)
+          sink->flush();
+      }
+    }
+
+    inline std::string format(
+      const std::string& text
+    ) const {
+      std::ostringstream ss;
+
+      if (format_.timestamp) {
+        auto now =
+          std::chrono::system_clock::now();
+
+        auto tt =
+          std::chrono::system_clock::to_time_t(now);
+
+        std::tm tm{};
+
+#ifdef _WIN32
+        localtime_s(&tm, &tt);
+#else
+        localtime_r(&tt, &tm);
+#endif
+
+        ss
+          << '['
+          << std::put_time(&tm, "%H:%M:%S")
+          << "] ";
+      }
+
+      if (format_.thread_id) {
+        ss
+          << "[T:"
+          << std::this_thread::get_id()
+          << "] ";
+      }
+
+      if (!format_.prefix.empty()) {
+        ss << format_.prefix << ' ';
+      }
+
+      ss << text;
+
+      return ss.str();
+    }
+
+    mutable std::mutex mutex_;
+    std::vector<std::weak_ptr<sink>> outputs_;
+
+    bool enabled_ = true;
+    format_options format_;
+  };
+
+  inline void attachment::disconnect() {
+    if (!owner_)
+      return;
+
+    owner_->detach(sink_);
+
+    sink_.reset();
+    owner_ = nullptr;
+  }
+
+  class temp_file {
+  public:
+    inline temp_file() {
+      auto dir =
+        std::filesystem::temp_directory_path();
+
+      path_ =
+        dir /
+        (
+          "leasy_" +
+          std::to_string(
+            std::chrono::steady_clock::now()
+              .time_since_epoch()
+              .count()
+          ) +
+          ".tmp"
+        );
+
+      std::ofstream file(path_);
+    }
+
+    inline ~temp_file() {
+      std::error_code ec;
+      std::filesystem::remove(path_, ec);
+    }
+
+    inline const std::filesystem::path& path() const {
+      return path_;
+    }
+
+  private:
+    std::filesystem::path path_;
+  };
+
+  inline std::shared_ptr<sink>
+  console(std::ostream& stream = std::cout) {
+    return std::make_shared<console_sink>(stream);
+  }
+
+  inline std::shared_ptr<sink>
+  file(const std::filesystem::path& path) {
+    return std::make_shared<file_sink>(path);
+  }
+
+  inline std::shared_ptr<memory_sink>
+  memory() {
+    return std::make_shared<memory_sink>();
+  }
+
+  class io_system {
+  public:
+    channel System;
+    channel Debug;
+    channel Warning;
+    channel Error;
+
+    inline io_system() {
+      System.prefix("leasy.System");
+      Debug.prefix("leasy.Debug");
+      Warning.prefix("leasy.Warning");
+      Error.prefix("leasy.Error");
+    }
+
+    inline void basicsetup() {
+      system_console_ = System.attach(console());
+
+      debug_console_ = Debug.attach(console());
+
+      warning_console_ =
+        Warning.attach(
+          console(std::cerr)
+        );
+
+      error_console_ =
+        Error.attach(
+          console(std::cerr)
+        );
+
+      System.timestamp(true);
+      Debug.timestamp(true);
+      Warning.timestamp(true);
+      Error.timestamp(true);
+    }
+
+  private:
+    attachment system_console_;
+    attachment debug_console_;
+    attachment warning_console_;
+    attachment error_console_;
+  };
+
+}
+
+namespace leasy {
+  extern ios::io_system io;
+}

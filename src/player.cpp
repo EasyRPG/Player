@@ -231,11 +231,6 @@ void Player::Run() {
 }
 
 void Player::MainLoop() {
-	if (leasy::app::exit_requested()) {
-		std::cout << "[leasy]: exiting ..." << std::endl;
-		return;
-	}
-	
 	Instrumentation::FrameScope iframe;
 
 	const auto frame_time = Game_Clock::now();

@@ -24,4 +24,6 @@ namespace leasy::iky7 {
 
     inline std::chrono::duration<uint64_t> internalpoint() const { return this->p; }
   };
+  
+  // TODO: timeSinceStart!
 }

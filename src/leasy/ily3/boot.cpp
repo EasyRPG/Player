@@ -12,6 +12,7 @@
 namespace fs = std::filesystem;
 
 namespace leasy::ily3 {
+
   namespace global {
     extern ul2::lstate state;
   }
@@ -20,7 +21,7 @@ namespace leasy::ily3 {
     auto lua_file = p / "leasy.user.lua";
 
     if (!fs::exists(lua_file)) {
-      printerr(lua_file << ": file not found! (cannot load any mod!)");
+      io.Error.writeln(lua_file, ": file not found! (cannot load any mod!)");
       return;
     }
 		global::state.dostring(lscripts::set_require);

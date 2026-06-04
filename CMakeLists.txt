@@ -75,6 +75,10 @@ file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
 	src/leasy/**/*.c
 	src/leasy/**/*.h
 	src/leasy/**/*.hpp
+	src/leasy/*.cpp
+	src/leasy/*.c
+	src/leasy/*.h
+	src/leasy/*.hpp
 )
 
 # Source Files
