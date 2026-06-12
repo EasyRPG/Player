@@ -2,6 +2,7 @@
 
 #include "../ldebug.hpp"
 #include "../ul2/state.hpp"
+#include "../lio.hpp"
 
 namespace leasy::ily3 {
   namespace global {
@@ -12,18 +13,57 @@ namespace leasy::ily3 {
   }
 
   namespace lua_scripts {
-    const char *init = 
-R"(leasy.user = {}
-leasy.user.ready = function() end
-leasy.user.process = function() end
-leasy.user.draw = function() end)";
+    const char *init = // The only reason of this is maybe to make the code easier to read. That's kinda all.
+R"(leasy = leasy or {}
+leasy.User = {}
+leasy.User.ready = function() end
+leasy.User.process = function() end
+leasy.User.draw = function() end
+leasy.Engine = {}
+leasy.Engine.on_map_loaded = function() end
+leasy.Engine.on_map_init = function() end
+leasy.Engine.on_map_quit = function() end)";
+  }
+
+  static int lprint(lua_State* L) {
+    int nargs = lua_gettop(L);
+    std::ostringstream oss;
+
+    for (int i = 1; i <= nargs; ++i) {
+      const char* str = lua_tostring(L, i);
+      if (str) oss << (str);
+      else oss << (luaL_typename(L, i));
+      if (i < nargs) oss << '\t';
+    }
+
+    io.System.writeln(oss.str());
+
+    return 0;
+  }
+
+  static int lwarn(lua_State* L) {
+    int nargs = lua_gettop(L);
+    std::ostringstream oss;
+
+    for (int i = 1; i <= nargs; ++i) {
+      const char* str = lua_tostring(L, i);
+      if (str) oss << (str);
+      else oss << (luaL_typename(L, i));
+      if (i < nargs) oss << '\t';
+    }
+
+    io.Warning.writeln(oss.str());
+
+    return 0;
   }
 
   void setup_lua(void) { 
-    global::state.push("leasy.system.version.full", Version::GetVersionString());
-    global::state.push("leasy.system.version.major", Version::MAJOR);
-    global::state.push("leasy.system.version.minor", Version::MINOR);
-    global::state.push("leasy.system.version.fix", Version::PATCH);
+    global::state.push("leasy.System.version.full", Version::GetVersionString());
+    global::state.push("leasy.System.version.major", Version::MAJOR);
+    global::state.push("leasy.System.version.minor", Version::MINOR);
+    global::state.push("leasy.System.version.fix", Version::PATCH);
     global::state.dostring(lua_scripts::init);
+    global::state.push("print", lprint);
+    global::state.push("warn", lwarn);
   }
 }

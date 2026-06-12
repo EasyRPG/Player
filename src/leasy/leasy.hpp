@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ily3/ily3.hpp"
+
 namespace leasy {
   namespace app {
     /** 
@@ -26,5 +28,15 @@ namespace leasy {
     void draw(Bitmap */* map */);
 
     void lmain(void);
+
+    template <class... Args>
+    inline void call(const std::string &name, Args...args) {
+      ily3::global::state.call<void>(name, args...);
+    }
+
+    template <typename R, class... Args>
+    inline R call(const std::string &name, Args...args) {
+      return ily3::global::state.call(name, args...);
+    }
   }
 }

@@ -1,6 +1,8 @@
 #include "../../ily3/libsys.hpp"
 #include "../../ily3/basetypes.hpp"
 #include "../../ily3/drawqueue.hpp"
+#include "../../lio.hpp"
+#include "../../diag5/here.h"
 #include "image.hpp"
 
 #include <string>
@@ -29,15 +31,23 @@ namespace /* nameless HAHAHAHA */ {
       return cache[p.string()]; // this cute
     } else {
       // stfu i like else blocks.
-      auto cid = idref++;
-      images[cid] = std::make_shared<libs2::Image>(p, miav(p));
-      return cid;
+      try {
+        auto cid = idref++;
+        images[cid] = std::make_shared<libs2::Image>(p, miav(p));
+        return cid;
+      } catch (const leasy::ul2::ulexception2 &ex) {
+        io.Error.writeln(here, "caught exception: ", ex.whut());
+      } catch (const std::exception &e) {
+        io.Error.writeln(here, " caught exception: ", e.what());
+      }
+      return -1;
     }
   };
 
   void imgdraw(unsigned int id, int x, int y) {
     if (images.find(id) == images.end()) {
-      ulthrow("invalid id: " + std::to_string(id));
+      io.Error.writeln(ulmkerr("requested to draw image, but got <invalid id>: " + std::to_string(id)).whut());
+      return;
     }
 
     auto img = (images[id]);
@@ -49,6 +59,7 @@ namespace /* nameless HAHAHAHA */ {
   void imgdelete(unsigned int id) {
     if (images.find(id) != images.end()) {
       images[id].reset();
+      images.erase(id);
     }
   }
 

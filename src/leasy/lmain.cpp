@@ -11,9 +11,9 @@
 namespace leasy {
   namespace app {
     void ready(void);
+    leasy::ios::attachment logfile = io.Debug.attach(ios::file("leasy.io.Debug.log"));
     
     void lmain() {
-      io.basicsetup();
       io.System.writeln(__func__, ": leasy subsystem started!");
       ily3::setup();
       ily3::setup_lua();

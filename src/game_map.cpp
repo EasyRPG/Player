@@ -57,6 +57,13 @@
 #include "scene_gameover.h"
 #include "feature.h"
 
+#include "leasy/lio.hpp"
+#include "leasy/diag5/here.h"
+#include "leasy/leasy.hpp"
+#include "leasy/events.hpp"
+
+using leasy::io;
+
 namespace {
 	// Intended bad value, Game_Map::Init sets them correctly
 	int screen_width = -1;
@@ -104,6 +111,7 @@ void Game_Map::OnContinueFromBattle() {
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
+	leasy::engine::event("on_map_init");
 	Dispose();
 
 	map_info = {};
@@ -138,6 +146,7 @@ void Game_Map::Dispose() {
 }
 
 void Game_Map::Quit() {
+	leasy::engine::event("on_map_quit");
 	Dispose();
 	common_events.clear();
 	interpreter.reset();
@@ -361,6 +370,7 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	}
 
 	Output::Debug("Loaded Map {}", map_name);
+	leasy::engine::event("on_map_loaded", map_name);
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());

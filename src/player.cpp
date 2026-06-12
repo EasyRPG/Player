@@ -88,6 +88,7 @@
 
 // leasy
 #include "leasy/leasy.hpp"
+#include "leasy/events.hpp"
 
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
@@ -301,12 +302,14 @@ void Player::MainLoop() {
 
 void Player::Pause() {
 	Audio().BGM_Pause();
+	leasy::engine::event("paused", true);
 }
 
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
 	Game_Clock::ResetFrame(Game_Clock::now());
+	leasy::engine::event("paused", false);
 }
 
 void Player::UpdateInput() {
@@ -432,6 +435,7 @@ void Player::Exit() {
 	Output::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
+	leasy::engine::event("on_exit");
 }
 
 Game_Config Player::ParseCommandLine() {
@@ -856,6 +860,9 @@ void Player::CreateGameObjects() {
 	if (Player::IsPatchDestiny()) {
 		Main_Data::game_destiny->Load();
 	}
+
+	// i fire the event at THE END, otherwise, those dummy modders will block and make the engine explose lol.
+	leasy::engine::event("on_game_loaded", game_title.empty() ? "unknown" : game_title, game_path);
 }
 
 void Player::UpdateTitle(std::string new_game_title) {
@@ -876,6 +883,7 @@ void Player::UpdateTitle(std::string new_game_title) {
 	} else {
 		Output::Debug("Could not read game title.");
 	}
+	
 	title << GAME_TITLE;
 	DisplayUi->SetTitle(title.str());
 }

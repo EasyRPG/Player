@@ -36,6 +36,9 @@
 #include "algo.h"
 #include "game_message_terms.h"
 
+#include "leasy/diag5/diagnostics.hpp"
+#include "leasy/diag5/here.h"
+
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 
@@ -80,8 +83,14 @@ int Game_Actor::MaxExpValue() const {
 }
 
 Game_Actor::Game_Actor(int actor_id) {
+	using leasy::io;
+	leasy::diag5::dgpoint p(here);
+	dumpvout(actor_id);
 	data.ID = actor_id;
 	if (actor_id == 0) {
+		// I may fuck this off in order to add my OWN damn FUCKING actors.
+		// Note: This may (i fucking said may) turn leasy.drawqueue useless for drawing sys
+		// TL;DR: stfu.
 		return;
 	}
 	ReloadDbActor();

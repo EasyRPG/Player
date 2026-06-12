@@ -36,9 +36,17 @@
 #include <limits>
 #include <unordered_set>
 
+#include "leasy/diag5/diagnostics.hpp"
+#include "leasy/diag5/here.h"
+
+using leasy::io;
+
 Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 	_type(type), _data(d)
 {
+	io.Debug.writeln(here, " constructor ", __func__, " called");
+	dumpvout(type);
+	dumpvout(TypeToStr(type));
 }
 
 void Game_Character::SanitizeData(std::string_view name) {
@@ -54,6 +62,9 @@ void Game_Character::SanitizeMoveRoute(std::string_view name, const lcf::rpg::Mo
 }
 
 void Game_Character::MoveTo(int map_id, int x, int y) {
+	dumpvout(map_id);
+	dumpvout(x);
+	dumpvout(y);
 	data()->map_id = map_id;
 	// RPG_RT does not round the position for this function.
 	SetX(x);

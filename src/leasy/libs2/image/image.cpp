@@ -1,6 +1,7 @@
 #include "image.hpp"
 #include "../../ily3/easyfs.hpp"
 #include "../../ul2/ulexception2.hpp"
+#include "../../lio.hpp"
 
 #include "image_bmp.h"
 #include "image_png.h"
@@ -29,18 +30,18 @@ namespace leasy::libs2 {
     this->path = path;
 
     auto strname = path.lexically_normal().string();
-    LDBG("[Image] Loading: " << strname);
-
+    io.Debug.writeln("img> loading image: ", strname);
+    
     auto stream = ily3::efs::nfs.OpenInputStream(strname);
-
+    
     if (!stream) {
       ulthrow("Failed to open image stream: " + strname);
     }
-
+    
     Type actual = DetectType(path);
-
+    
     if (hint != actual) {
-      LDBG("[Image] Using hint over detected type\n");
+      io.Debug.writeln("<img> using hint over detected type", strname);
       actual = hint;
     }
 
