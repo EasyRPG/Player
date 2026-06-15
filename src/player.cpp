@@ -333,6 +333,7 @@ void Player::UpdateInput() {
 	if (Input::IsSystemPressed(Input::FAST_FORWARD_B)) {
 		speed = Input::GetInputSource()->GetConfig().speed_modifier_b.Get();
 	}
+
 	Game_Clock::SetGameSpeedFactor(speed);
 
 	if (Main_Data::game_quit) {

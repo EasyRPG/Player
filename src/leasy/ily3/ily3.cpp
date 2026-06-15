@@ -7,7 +7,6 @@
 namespace leasy::ily3 {
   namespace global {
     ul2::lstate state = ([](void) -> ul2::lstate {
-      LDBG("creating instance");
       return ul2::lstate(true);
     })();
   }
@@ -19,10 +18,7 @@ leasy.User = {}
 leasy.User.ready = function() end
 leasy.User.process = function() end
 leasy.User.draw = function() end
-leasy.Engine = {}
-leasy.Engine.on_map_loaded = function() end
-leasy.Engine.on_map_init = function() end
-leasy.Engine.on_map_quit = function() end)";
+leasy.Engine = {})";
   }
 
   static int lprint(lua_State* L) {

@@ -29,9 +29,9 @@ namespace leasy::ily3 {
 
   inline Color color_from_u32(uint32_t v) {
     Color col;
-    col.red = (v >> 24) & 0xFF;
+    col.red = (v >> 24)   & 0xFF;
     col.green = (v >> 16) & 0xFF;
-    col.blue = (v >> 8)  & 0xFF;
+    col.blue = (v >> 8)   & 0xFF;
     col.alpha = (v)       & 0xFF;
     return col;
   }

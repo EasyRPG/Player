@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "ily3/ily3.hpp"
+#include "baseui.h"
 
 namespace leasy {
   namespace app {
@@ -19,7 +22,7 @@ namespace leasy {
     void ready(void);
 
     /** @brief This function is called everytime EasyRPG updates. */
-    void process(void);
+    void process();
 
     /** @brief This function is called before exiting (maybe, let's hope guys). */
     void exit(void); 
@@ -29,13 +32,18 @@ namespace leasy {
 
     void lmain(void);
 
+    void disable();
+    bool is_enabled();
+
     template <class... Args>
     inline void call(const std::string &name, Args...args) {
+      if (! is_enabled()) return;
       ily3::global::state.call<void>(name, args...);
     }
-
+    
     template <typename R, class... Args>
     inline R call(const std::string &name, Args...args) {
+      if (! is_enabled()) return;
       return ily3::global::state.call(name, args...);
     }
   }
