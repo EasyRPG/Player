@@ -81,11 +81,6 @@ protected:
 	 * Get the appropriate actor for the index from the player or enemy party.
 	 */
 	const Game_Battler* GetActorForItem(int i_actor);
-
-	/**
-	 * Clear the graphics for one character's row or face portrait area.
-	 */
-	void ClearItemGraphics(int i_item);
 	
 	/**
 	 * Redraws the characters time gauge, as well as HP and SP if applicable.

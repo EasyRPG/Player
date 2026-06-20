@@ -137,7 +137,7 @@ void Window_BattleStatus::Refresh() {
 				int sp_x = 220 - spdigits * 6;
 
 				// Just clear and redraw the whole Status/HP/MP area for now when something changes
-				if (!isEmpty) { contents->ClearRect(Rect(state_x, y, sp_x - state_x, menu_item_height)); }
+				if (!isEmpty) { contents->ClearRect(Rect(state_x, y, width - state_x, menu_item_height)); }
 				DrawActorState(*actor, state_x, y);
 				DrawActorHp(*actor, 178 - hpdigits * 6 - spdigits * 6, y, hpdigits, true);
 				DrawActorSp(*actor, sp_x, y, spdigits, false);
@@ -192,16 +192,6 @@ const Game_Battler* Window_BattleStatus::GetActorForItem(int i_actor) {
 	}
 }
 
-void Window_BattleStatus::ClearItemGraphics(int i_item) {
-	if (lcf::Data::battlecommands.battle_type == lcf::rpg::BattleCommands::BattleType_gauge) {
-		contents->ClearRect(Rect(80 * i_item, 0, 80, height)); 
-	}
-	else {
-		contents->ClearRect(Rect(0, menu_item_height / 8 + i_item * menu_item_height, width, menu_item_height));
-	}
-	
-}
-
 void Window_BattleStatus::RefreshGauge(const Game_Battler* actor, int i_item, bool hp_changed, bool hp_max_changed, bool sp_changed, bool sp_max_changed) {
 
 	if (!Feature::HasRpg2k3BattleSystem()) {
@@ -227,13 +217,18 @@ void Window_BattleStatus::RefreshGauge(const Game_Battler* actor, int i_item, bo
 		// is also overlapped by the gauge graphics, so just redraw everything.  (also do this if the ATB gauge resets.) 
 		// Could be fine-tuned, but performance seems ok for now.
 		if (hp_changed || hp_max_changed || sp_changed || sp_max_changed || face_changed || atb_bar_w < itemStates[i_item].atb_bar_width) {
-			// Clear the entire area for this item, just in case
-			if (!isEmpty) {
-				ClearItemGraphics(i_item);
+			
+			if (!isEmpty && face_changed) {
+				// If the face graphic changed, clear the entire available area for this actor item. 
+				contents->ClearRect(Rect(80 * i_item, 0, 80, height)); 
+			}
+			else if (!isEmpty) {
+				// Otherwise, just clear the part of the face that could be overlapped by the numbers.
+				// Note that both clear and redraw are needed because some games don't have 
+				// face graphics that are huge enough to clear the left side of the number area (e.g. Ara Fell)
+				contents->ClearRect(Rect(40 + 80 * i_item, actor_face_height, 8 * 4, 48));
 			}
 			
-			// Note that both clear and redraw are needed because some games don't have 
-			// face graphics that are huge enough to clear the left side of the number area (e.g. Ara Fell)
 			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i_item, actor_face_height);
 			
 			int x = x_start; 
@@ -283,7 +278,7 @@ void Window_BattleStatus::RefreshGauge(const Game_Battler* actor, int i_item, bo
 			// If any of these have changed, then full clear and redraw since there's so much overlap.
 			if (hp_changed || hp_max_changed || sp_changed || sp_max_changed || atb_bar_w < itemStates[i_item].atb_bar_width || has_opaque_gauge != itemStates[i_item].has_opaque_gauge) {
 				if (!isEmpty) {
-					contents->ClearRect(Rect(192, y, 107, menu_item_height));
+					contents->ClearRect(Rect(130, y, width - 130, menu_item_height));
 				}
 				// RPG_RT Bug (?): Gauge hidden when selected due to transparency (wrong color when rendering)
 				if (has_opaque_gauge) {
