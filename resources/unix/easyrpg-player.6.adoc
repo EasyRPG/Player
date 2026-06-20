@@ -138,7 +138,7 @@ NOTE: For games that only use ASCII (English games) use '1252'.
 
 *--patch-pic-unlock*::
   Picture movement is not interrupted by messages in any version of the engine.
-  By default, this behaviour is only enabled for RPG Maker 2003 v1.12.
+  By default, this behaviour is only enabled for RPG Maker 2000 v1.61 and RPG Maker 2003 v1.12.
 
 *--patch-rpg2k3-cmds*::
   Support all RPG Maker 2003 event commands in any version of the engine.
