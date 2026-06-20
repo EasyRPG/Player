@@ -47,7 +47,8 @@ public:
 	Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy = false);
 
 	/**
-	 * Renders the current status on the window.
+	 * Renders the current status on the window.  Updates incrementally, based on current party state when called.
+	 * This allows Refresh() to be called every frame without significant CPU load.
 	 */
 	void Refresh();
 
@@ -75,6 +76,11 @@ protected:
 	 * Updates the cursor rectangle.
 	 */
 	void UpdateCursorRect() override;
+
+	/**
+	 * Get the appropriate actor for the index from the player or enemy party.
+	 */
+	const Game_Battler* GetActorForItem(int i_actor);
 
 	/**
 	 * Clear the graphics for one character's row or face portrait area.

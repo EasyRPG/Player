@@ -82,22 +82,36 @@ void Window_BattleStatus::Refresh() {
 
 	item_max = std::min(item_max, 4);
 
+	bool needs_redraw = false;
+	// Check if any actor IDs have changed, and if so, redraw the whole window.
+	for (int i = 0; i < item_max; i++) {
+		const Game_Battler* actor = GetActorForItem(i);
+		if (itemStates[i].actor_id != actor->GetId()) {
+			needs_redraw = true;
+			break;
+		}
+	}
+	// Also redraw if we have any rows to remove
+	for (int i = item_max; i < 4; i++) {
+		if (itemStates[i].is_drawn) {
+			needs_redraw = true;
+			break;
+		}
+	}
+	if (needs_redraw) {
+		if (!isEmpty) {
+			contents->Clear();
+			isEmpty = true;
+		}
+		for (int i = item_max; i < 4; i++) {	
+			itemStates[i].reset();
+		}
+	}
+
 	for (int i = 0; i < item_max; i++) {
 		// The party only contains valid battlers
-		const Game_Battler* actor;
-		if (enemy) {
-			actor = &(*Main_Data::game_enemyparty)[i];
-		}
-		else {
-			actor = &(*Main_Data::game_party)[i];
-		}
-
-		// If the actor ID for this item has changed, clear the graphics and reset the cached data 
-		if (itemStates[i].actor_id != actor->GetId()) {
-			if (!isEmpty) { ClearItemGraphics(i); }
-			itemStates[i].reset();
-			itemStates[i].actor_id = actor->GetId();
-		}
+		const Game_Battler* actor = GetActorForItem(i);
+		itemStates[i].actor_id = actor->GetId();
 
 		bool hp_changed = itemStates[i].hp != actor->GetHp();
 		bool hp_max_changed = itemStates[i].max_hp != actor->GetMaxHp();
@@ -105,11 +119,13 @@ void Window_BattleStatus::Refresh() {
 		bool sp_max_changed = itemStates[i].max_sp != actor->GetMaxSp();
 
 		if (lcf::Data::battlecommands.battle_type != lcf::rpg::BattleCommands::BattleType_gauge || enemy) {
+			
+			
 			int y = menu_item_height / 8 + i * menu_item_height; 
 
 			const lcf::rpg::State* state = actor->GetSignificantState();
-			bool state_changed = (state == NULL && itemStates[i].state_name.compare("") != 0 || itemStates[i].state_color != 0);
-			state_changed = state_changed || (state != NULL && (itemStates[i].state_name.compare(ToString(state->name)) != 0 || itemStates[i].state_color != state->color));
+			bool state_changed = (state == NULL && itemStates[i].state_name.compare("") != 0 || itemStates[i].state_color != 0)
+								 || (state != NULL && (itemStates[i].state_name.compare(ToString(state->name)) != 0 || itemStates[i].state_color != state->color));
 			
 								 
 			int state_x;
@@ -164,13 +180,16 @@ void Window_BattleStatus::Refresh() {
 
 		itemStates[i].is_drawn = true;
 	}
-	for (int i = item_max; i < 4; i++) {
-		if (itemStates[i].is_drawn) {
-			ClearItemGraphics(i);
-			itemStates[i].reset();
-		}
-	}
 	isEmpty = false;
+}
+
+const Game_Battler* Window_BattleStatus::GetActorForItem(int i_actor) {
+	if (enemy) {
+		return &(*Main_Data::game_enemyparty)[i_actor];
+	}
+	else {
+		return &(*Main_Data::game_party)[i_actor];
+	}
 }
 
 void Window_BattleStatus::ClearItemGraphics(int i_item) {
@@ -208,9 +227,9 @@ void Window_BattleStatus::RefreshGauge(const Game_Battler* actor, int i_item, bo
 		// is also overlapped by the gauge graphics, so just redraw everything.  (also do this if the ATB gauge resets.) 
 		// Could be fine-tuned, but performance seems ok for now.
 		if (hp_changed || hp_max_changed || sp_changed || sp_max_changed || face_changed || atb_bar_w < itemStates[i_item].atb_bar_width) {
-			// Clear number and gauge drawing area
+			// Clear the entire area for this item, just in case
 			if (!isEmpty) {
-				contents->ClearRect(Rect(40 + 80 * i_item, actor_face_height, 8 * 4, 48));
+				ClearItemGraphics(i_item);
 			}
 			
 			// Note that both clear and redraw are needed because some games don't have 
