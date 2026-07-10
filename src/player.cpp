@@ -996,7 +996,7 @@ static bool DefaultLmuStartFileExists(const FilesystemView& fs) {
 	std::string mapName = Game_Map::ConstructMapName(map_id, false);
 
 	// Now see if the file exists, preferring the "Map" subfolder.
-	return !fs.FindFile(MAPS_DIR_NAME, mapName).empty() || !fs.FindFile(mapName).empty();
+	return !fs.FindFile(MAP_DIR_NAME, mapName).empty() || !fs.FindFile(mapName).empty();
 }
 
 void Player::GuessNonStandardExtensions() {

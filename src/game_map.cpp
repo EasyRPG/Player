@@ -2018,10 +2018,10 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 }
 
 std::string Game_Map::FindMapFile(std::string_view map_name) {
-	// Maps are preferably stored in the "Maps" subfolder, but fall back to
+	// Maps are preferably stored in the "Map" subfolder, but fall back to
 	// the game's root directory for compatibility with games that keep
 	// their maps there.
-	std::string map_file = FileFinder::Game().FindFile(MAPS_DIR_NAME, map_name);
+	std::string map_file = FileFinder::Game().FindFile(MAP_DIR_NAME, map_name);
 	if (map_file.empty()) {
 		map_file = FileFinder::Game().FindFile(map_name);
 	}
@@ -2041,7 +2041,7 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	// downloaded, so existence can't be probed in advance: request the
 	// preferred directory and let AsyncHandler fall back to the root
 	// directory automatically if that attempt fails.
-	auto* request = AsyncHandler::RequestFile(MAPS_DIR_NAME, ".", map_name);
+	auto* request = AsyncHandler::RequestFile(MAP_DIR_NAME, ".", map_name);
 	request->SetImportantFile(true);
 	return request;
 }
