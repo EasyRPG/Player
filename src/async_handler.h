@@ -76,7 +76,7 @@ namespace AsyncHandler {
 	 * The file is requested from preferred_dir first. On platforms with
 	 * synchronous file access (i.e. everywhere except Emscripten) whether
 	 * the file actually exists there is already known at this point.
-	 * On platforms without asynchronous access, existence can only be
+	 * On platforms without synchronous access, existence can only be
 	 * determined by attempting the download: if that attempt fails, a
 	 * fallback request for fallback_dir is issued automatically, and the
 	 * request is only considered finished once that also completes.
