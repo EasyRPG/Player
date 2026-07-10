@@ -2018,7 +2018,7 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 }
 
 std::string Game_Map::FindMapFile(std::string_view map_name) {
-	// Maps are preferably stored in the "Maps" subfolder, but fall back to
+	// Maps are preferably stored in the "Map" subfolder, but fall back to
 	// the game's root directory for compatibility with games that keep
 	// their maps there.
 	std::string map_file = FileFinder::Game().FindFile(MAPS_DIR_NAME, map_name);

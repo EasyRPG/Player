@@ -108,7 +108,7 @@ void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta cons
 	// Try to rescue and determine file extensions.
 	// Without metadata, scan for matching files. Stop after you find a few;
 	//   we can't just pick the first since there may be some backup files on disk.
-	// Maps are preferably stored in the "Maps" subfolder, but fall back to
+	// Maps are preferably stored in the "Map" subfolder, but fall back to
 	// the project root for games that keep their maps there.
 	FilesystemView maps_fs = fs.Subtree(MAPS_DIR_NAME);
 	if (maps_fs) {

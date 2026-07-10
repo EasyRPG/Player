@@ -995,7 +995,7 @@ static bool DefaultLmuStartFileExists(const FilesystemView& fs) {
 	int map_id = Player::start_map_id == -1 ? lcf::Data::treemap.start.party_map_id : Player::start_map_id;
 	std::string mapName = Game_Map::ConstructMapName(map_id, false);
 
-	// Now see if the file exists, preferring the "Maps" subfolder.
+	// Now see if the file exists, preferring the "Map" subfolder.
 	return !fs.FindFile(MAPS_DIR_NAME, mapName).empty() || !fs.FindFile(mapName).empty();
 }
 

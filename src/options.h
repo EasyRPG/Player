@@ -84,7 +84,7 @@
 
 /** Subfolder that map files (.lmu/.emu) are preferably stored in.
  *  Games that still keep them in the project root are also supported. */
-#define MAPS_DIR_NAME "Maps"
+#define MAPS_DIR_NAME "Map"
 
 /** File name for additional metadata, such as multi-game save imports. */
 #define META_NAME "Meta.ini"

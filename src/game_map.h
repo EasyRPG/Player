@@ -712,7 +712,7 @@ namespace Game_Map {
 
 	/**
 	 * Searches for a map file on disk. Maps are preferably stored in the
-	 * "Maps" subfolder, but the game's root directory is also searched for
+	 * "Map" subfolder, but the game's root directory is also searched for
 	 * compatibility with existing games that were never reorganized.
 	 *
 	 * @param map_name The filename to search for, as returned by ConstructMapName
