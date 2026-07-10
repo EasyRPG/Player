@@ -82,6 +82,10 @@
 #define TREEMAP_NAME RPG_RT_PREFIX "." SUFFIX_LMT
 #define TREEMAP_NAME_EASYRPG EASY_RT_PREFIX "." SUFFIX_EMT
 
+/** Subfolder that map files (.lmu/.emu) are preferably stored in.
+ *  Games that still keep them in the project root are also supported. */
+#define MAPS_DIR_NAME "Maps"
+
 /** File name for additional metadata, such as multi-game save imports. */
 #define META_NAME "Meta.ini"
 

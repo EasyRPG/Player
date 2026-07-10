@@ -67,17 +67,10 @@ FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectW
 	return RPG2KNonStandardFilenameGuesser();
 }
 
-void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta const& meta, RPG2KFileExtRemap& mapping)
-{
-	// If metadata is provided, rely on that.
-	std::string metaLmu = meta.GetLmuAlias();
-	if (!metaLmu.empty()) {
-		mapping.extMap[SUFFIX_LMU] = metaLmu;
-		Output::Debug("Metadata-provided non-standard extension for LMU({})", metaLmu);
-	} else {
-		// Try to rescue and determine file extensions.
-		// Without metadata, scan for matching files. Stop after you find a few;
-		//   we can't just pick the first since there may be some backup files on disk.
+namespace {
+	// Scans a single directory for "mapXXXX.???" files and guesses the LMU
+	// extension from whichever non-standard extension occurs most often.
+	void GuessLmuExtensionIn(const FilesystemView& fs, FileExtGuesser::RPG2KFileExtRemap& mapping) {
 		std::unordered_map<std::string, int> extCounts; // ext => count
 
 		const auto* entries = fs.ListDirectory();
@@ -94,11 +87,35 @@ void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta cons
 					if (extCounts[ext] >= 5) {
 						mapping.extMap[SUFFIX_LMU] = ext;
 						Output::Debug("Guessing non-standard extension for LMU({})", ext);
-						break;
+						return;
 					}
 				}
 			}
 		}
+	}
+}
+
+void FileExtGuesser::GuessAndAddLmuExtension(const FilesystemView& fs, Meta const& meta, RPG2KFileExtRemap& mapping)
+{
+	// If metadata is provided, rely on that.
+	std::string metaLmu = meta.GetLmuAlias();
+	if (!metaLmu.empty()) {
+		mapping.extMap[SUFFIX_LMU] = metaLmu;
+		Output::Debug("Metadata-provided non-standard extension for LMU({})", metaLmu);
+		return;
+	}
+
+	// Try to rescue and determine file extensions.
+	// Without metadata, scan for matching files. Stop after you find a few;
+	//   we can't just pick the first since there may be some backup files on disk.
+	// Maps are preferably stored in the "Maps" subfolder, but fall back to
+	// the project root for games that keep their maps there.
+	FilesystemView maps_fs = fs.Subtree(MAPS_DIR_NAME);
+	if (maps_fs) {
+		GuessLmuExtensionIn(maps_fs, mapping);
+	}
+	if (mapping.extMap.find(SUFFIX_LMU) == mapping.extMap.end()) {
+		GuessLmuExtensionIn(fs, mapping);
 	}
 }
 

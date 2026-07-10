@@ -710,6 +710,16 @@ namespace Game_Map {
 	 */
 	std::string ConstructMapName(int map_id, bool is_easyrpg);
 
+	/**
+	 * Searches for a map file on disk. Maps are preferably stored in the
+	 * "Maps" subfolder, but the game's root directory is also searched for
+	 * compatibility with existing games that were never reorganized.
+	 *
+	 * @param map_name The filename to search for, as returned by ConstructMapName
+	 * @return Path to the found file, or an empty string when not found
+	 */
+	std::string FindMapFile(std::string_view map_name);
+
 	FileRequestAsync* RequestMap(int map_id);
 
 	namespace Caching {

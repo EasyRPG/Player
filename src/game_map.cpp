@@ -330,11 +330,11 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	// FIXME: Assert map was cached for async platforms
 	bool map_is_easyrpg_file = Player::player_config.prefer_easyrpg_map_files.Get();
 	std::string map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
-	std::string map_file = FileFinder::Game().FindFile(map_name);
+	std::string map_file = Game_Map::FindMapFile(map_name);
 	if (map_file.empty()) {
 		map_is_easyrpg_file = !map_is_easyrpg_file;
 		map_name = Game_Map::ConstructMapName(map_id, map_is_easyrpg_file);
-		map_file = FileFinder::Game().FindFile(map_name);
+		map_file = Game_Map::FindMapFile(map_name);
 
 		if (map_file.empty()) {
 			Output::Error("Loading of Map {} failed.\nThe map was not found.", map_name);
@@ -2017,12 +2017,26 @@ std::string Game_Map::ConstructMapName(int map_id, bool is_easyrpg) {
 	}
 }
 
+std::string Game_Map::FindMapFile(std::string_view map_name) {
+	// Maps are preferably stored in the "Maps" subfolder, but fall back to
+	// the game's root directory for compatibility with games that keep
+	// their maps there.
+	std::string map_file = FileFinder::Game().FindFile(MAPS_DIR_NAME, map_name);
+	if (map_file.empty()) {
+		map_file = FileFinder::Game().FindFile(map_name);
+	}
+	return map_file;
+}
+
 FileRequestAsync* Game_Map::RequestMap(int map_id) {
 #ifdef __EMSCRIPTEN__
 	Player::translation.RequestAndAddMap(map_id);
 #endif
 
-	auto* request = AsyncHandler::RequestFile(Game_Map::ConstructMapName(map_id, false));
+	std::string map_name = Game_Map::ConstructMapName(map_id, false);
+	bool in_maps_dir = !FileFinder::Game().FindFile(MAPS_DIR_NAME, map_name).empty();
+
+	auto* request = AsyncHandler::RequestFile(in_maps_dir ? MAPS_DIR_NAME : ".", map_name);
 	request->SetImportantFile(true);
 	return request;
 }
