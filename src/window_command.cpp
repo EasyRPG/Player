@@ -100,6 +100,7 @@ void Window_Command::ReplaceCommands(std::vector<std::string> in_commands, std::
 		SetContents(Bitmap::Create(this->width - 16, num_contents * menu_item_height));
 	}
 	
+	index = 0;
 	SetTopRow(0);
 
 	for (int i = 0; i < in_commands.size(); i++) {
