@@ -33,21 +33,24 @@ static int CalculateWidth(const std::vector<std::string>& commands, int width) {
 	}
 }
 
-Window_Command::Window_Command(std::vector<std::string> in_commands, int width, int max_item) :
+Window_Command::Window_Command(std::vector<std::string> in_commands, int width, int max_item, std::vector<bool>* in_commands_enabled) :
 	Window_Selectable(0, 0, CalculateWidth(in_commands, width), (max_item < 0 ? in_commands.size() : max_item) * 16 + 16)
 {
-	ReplaceCommands(std::move(in_commands));
+	ReplaceCommands(std::move(in_commands), in_commands_enabled);
 }
 
 void Window_Command::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < item_max; i++) {
-		DrawItem(i, IsItemEnabled(i) ? Font::ColorDefault : Font::ColorDisabled);
+		DrawItem(i, GetItemColor(index));
 	}
 }
 
-void Window_Command::DrawItem(int index, Font::SystemColor color) {
+void Window_Command::ClearItem(int index) {
 	contents->ClearRect(Rect(0, menu_item_height * index, contents->GetWidth() - 0, menu_item_height));
+}
+
+void Window_Command::DrawItem(int index, Font::SystemColor color) {
 	contents->TextDraw(0, menu_item_height * index + menu_item_height / 8, color, commands[index]);
 }
 
@@ -60,8 +63,11 @@ void Window_Command::EnableItem(int i) {
 }
 
 void Window_Command::SetItemEnabled(int index, bool enabled) {
-	DrawItem(index, enabled ? Font::ColorDefault : Font::ColorDisabled);
-	commands_enabled[index] = enabled;
+	if (index < commands.size() && commands_enabled[index] != enabled) {
+		commands_enabled[index] = enabled;
+		ClearItem(index);
+		DrawItem(index, GetItemColor(index));
+	}
 }
 
 bool Window_Command::IsItemEnabled(int index) {
@@ -73,21 +79,43 @@ bool Window_Command::IsItemEnabled(int index) {
 }
 
 void Window_Command::SetItemText(unsigned index, std::string_view text) {
-	if (index < commands.size()) {
+	if (index < commands.size() && commands[index].compare(text) != 0) {
 		commands[index] = ToString(text);
-		DrawItem(index, IsItemEnabled(index) ? Font::ColorDefault : Font::ColorDisabled);
+		ClearItem(index);
+		DrawItem(index, GetItemColor(index));
 	}
 }
 
-void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
-	commands = std::move(in_commands);
-	commands_enabled.clear();
-	commands_enabled.resize(commands.size(), true);
-	index = 0;
-	item_max = commands.size();
-	const int num_contents = item_max > 0 ? item_max : 1;
-	SetContents(Bitmap::Create(this->width - 16, num_contents * menu_item_height));
+void Window_Command::ReplaceCommands(std::vector<std::string> in_commands, std::vector<bool>* in_commands_enabled) {
+	bool redraw_all = false;
+
+	// If the number of commands changes, then the size of the underlying bitmap 
+	// changes, and everything will need to be redrawn.
+	if (in_commands.size() != commands.size()) {
+		redraw_all = true;
+		commands.resize(in_commands.size(), "");
+		commands_enabled.resize(in_commands.size(), true);
+		item_max = in_commands.size();
+		const int num_contents = item_max > 0 ? item_max : 1;
+		SetContents(Bitmap::Create(this->width - 16, num_contents * menu_item_height));
+	}
+	
 	SetTopRow(0);
 
-	Refresh();
+	for (int i = 0; i < in_commands.size(); i++) {
+		// If NULL was passed for in_commands_enabled, all commands are enabled
+		bool command_enabled_in = in_commands_enabled ? (*in_commands_enabled)[i] : true;
+		if (redraw_all || command_enabled_in != commands_enabled[i] || commands[i].compare(in_commands[i]) != 0) {
+			commands[i] = in_commands[i];
+			commands_enabled[i] = command_enabled_in;
+			if (!redraw_all) {
+				ClearItem(i);
+			}
+			DrawItem(i, GetItemColor(i));
+		}
+	}
 }
+
+Font::SystemColor Window_Command::GetItemColor(int index) {
+	return IsItemEnabled(index) ? Font::ColorDefault : Font::ColorDisabled;
+};
