@@ -92,6 +92,29 @@ public class SafFile {
         return metaFileSize;
     }
 
+    public boolean makeDirectory() {
+        if (exists()) {
+            return isDirectory();
+        }
+
+        // To create it the parent directory must be obtained
+        String full_path = rootUri.toString();
+        int last_slash = full_path.lastIndexOf("%2F");
+        if (last_slash == -1) {
+            return false;
+        }
+        String directory = full_path.substring(0, last_slash);
+        String filename = full_path.substring(last_slash + 3);
+        filename = Uri.decode(filename);
+
+        DocumentFile df = DocumentFile.fromTreeUri(context, Uri.parse(directory));
+        if (df == null || !df.exists()) {
+            return false;
+        }
+        df = df.createDirectory(filename);
+        return df != null && df.exists();
+    }
+
     public int createInputFileDescriptor() {
         // No difference between read mode and binary read mode
         try (ParcelFileDescriptor fd = context.getContentResolver().openFileDescriptor(rootUri, "r")) {

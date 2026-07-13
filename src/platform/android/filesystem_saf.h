@@ -41,6 +41,7 @@ protected:
 	bool IsDirectory(std::string_view path, bool follow_symlinks) const override;
 	bool Exists(std::string_view path) const override;
 	int64_t GetFilesize(std::string_view path) const override;
+	bool vMakeDirectory(std::string_view path, bool follow_symlinks) const override;
 	std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
 	std::streambuf* CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
 	bool GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const override;
