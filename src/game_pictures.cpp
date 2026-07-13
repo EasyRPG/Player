@@ -148,6 +148,10 @@ int Game_Pictures::GetDefaultNumberOfPictures() {
 	return 0;
 }
 
+int Game_Pictures::GetPictureCount() const {
+	return static_cast<int>(pictures.size());
+}
+
 Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
 		pictures.reserve(id);

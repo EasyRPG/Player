@@ -308,8 +308,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/scene.cpp
 	src/scene_debug.cpp
 	src/scene_debug.h
-	src/scene_debug_picture.cpp
-	src/scene_debug_picture.h
 	src/scene_end.cpp
 	src/scene_end.h
 	src/scene_equip.cpp
@@ -405,6 +403,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/version.h
 	src/weather.cpp
 	src/weather.h
+	src/window.cpp
+	src/window.h
 	src/window_about.cpp
 	src/window_about.h
 	src/window_actorinfo.cpp
@@ -427,7 +427,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_command_horizontal.h
 	src/window_debug_picture.cpp
 	src/window_debug_picture.h
-	src/window.cpp
 	src/window_equip.cpp
 	src/window_equip.h
 	src/window_equipitem.cpp
@@ -440,7 +439,6 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_gamelist.h
 	src/window_gold.cpp
 	src/window_gold.h
-	src/window.h
 	src/window_help.cpp
 	src/window_help.h
 	src/window_import_progress.cpp

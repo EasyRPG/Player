@@ -18,24 +18,8 @@
 #ifndef EP_WINDOW_DEBUG_PICTURE_H
 #define EP_WINDOW_DEBUG_PICTURE_H
 
-#include "window_selectable.h"
 #include "window_base.h"
 #include <vector>
-#include <string>
-
- /**
-  * Debug window showing the list of active pictures.
-  */
-class Window_DebugPictureList : public Window_Selectable {
-public:
-	Window_DebugPictureList(int x, int y, int w, int h);
-
-	void Refresh();
-	int GetPictureId() const;
-
-private:
-	std::vector<int> picture_ids;
-};
 
 /**
  * Debug window showing details of a specific picture.

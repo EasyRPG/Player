@@ -41,6 +41,7 @@ public:
 	void InitGraphics();
 
 	static int GetDefaultNumberOfPictures();
+	int GetPictureCount() const;
 
 	struct Params {
 		int position_x = 0;

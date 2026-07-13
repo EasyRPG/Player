@@ -22,71 +22,10 @@
 #include "bitmap.h"
 #include "font.h"
 #include "utils.h"
-#include <iomanip>
-#include <sstream>
+#include <string>
 #include <fmt/format.h>
 #include <lcf/rpg/savepicture.h>
 #include <lcf/rpg/saveeasyrpgwindow.h>
-
-Window_DebugPictureList::Window_DebugPictureList(int x, int y, int w, int h) :
-	Window_Selectable(x, y, w, h)
-{
-	SetMenuItemHeight(16);
-	SetColumnMax(1);
-	SetContents(Bitmap::Create(width, height));
-	Refresh();
-}
-
-void Window_DebugPictureList::Refresh() {
-	picture_ids.clear();
-
-	// Scan all allocated pictures
-	for (int i = 1; ; ++i) {
-		auto* pic = Main_Data::game_pictures->GetPicturePtr(i);
-		if (!pic) {
-			break;
-		}
-
-		if (pic->Exists() || pic->IsWindowAttached()) {
-			picture_ids.push_back(i);
-		}
-	}
-
-	item_max = picture_ids.size();
-
-	int required_height = std::max(height - 32, (int)(item_max * menu_item_height));
-	if (contents->GetHeight() != required_height) {
-		SetContents(Bitmap::Create(contents->GetWidth(), required_height));
-	}
-
-	contents->Clear();
-
-	if (item_max == 0) {
-		contents->TextDraw(0, 0, Font::ColorDisabled, "No Pic");
-	}
-	else {
-		for (int i = 0; i < item_max; ++i) {
-			Rect rect = GetItemRect(i);
-			int id = picture_ids[i];
-			auto* pic = Main_Data::game_pictures->GetPicturePtr(id);
-
-			std::string suffix = "";
-			if (pic->IsWindowAttached()) suffix = " T"; // Text/String
-
-			std::string text = fmt::format("{:04d}{}", id, suffix);
-			contents->TextDraw(rect.x, rect.y, Font::ColorDefault, text);
-		}
-	}
-}
-
-int Window_DebugPictureList::GetPictureId() const {
-	if (index >= 0 && index < static_cast<int>(picture_ids.size())) {
-		return picture_ids[index];
-	}
-	return 0;
-}
-
-// ---------------------------------------------------------------------------
 
 Window_DebugPictureInfo::Window_DebugPictureInfo(int x, int y, int w, int h) :
 	Window_Base(x, y, w, h)
@@ -127,7 +66,6 @@ int Window_DebugPictureInfo::DrawSeparator(int y) {
 
 int Window_DebugPictureInfo::DrawFlags(int y, const std::vector<FlagInfo>& flags) {
 	int x = 0;
-	int row_start_y = y;
 
 	for (const auto& flag : flags) {
 		int w = Text::GetSize(*Font::Default(), flag.name).width + 4;
@@ -169,8 +107,6 @@ void Window_DebugPictureInfo::Refresh() {
 	const auto& d = pic->data;
 	int y = 0;
 
-	// === COMMON PROPERTIES ===
-
 	// ID & Type
 	std::string type_str = is_str ? "String" : "Image";
 	DrawDualLine(y, "ID", fmt::format("{}", picture_id), "Type", type_str);
@@ -190,7 +126,7 @@ void Window_DebugPictureInfo::Refresh() {
 	if (d.maniac_current_magnify_height != d.current_magnify) {
 		scale_str += fmt::format(" / {:.0f}", d.maniac_current_magnify_height);
 	}
-	
+
 
 	// Transparency
 	std::string trans_str;
@@ -200,7 +136,7 @@ void Window_DebugPictureInfo::Refresh() {
 	else {
 		trans_str = fmt::format("{:.0f}/{:.0f}", d.current_top_trans, d.current_bot_trans);
 	}
-	
+
 
 	y = DrawDualLine(y, "Scale", scale_str + "%", "Trans", trans_str + "%");
 
@@ -249,10 +185,8 @@ void Window_DebugPictureInfo::Refresh() {
 
 	y = DrawSeparator(y);
 
-	// === SPECIFIC PROPERTIES ===
-
 	if (!is_str) {
-		// FILE PICTURE
+		// File Picture
 		std::string name_str = std::string(d.name);
 		if (name_str.length() > 18) name_str = "..." + name_str.substr(name_str.length() - 15);
 		y = DrawLine(y, "File", name_str);
@@ -267,7 +201,7 @@ void Window_DebugPictureInfo::Refresh() {
 		}
 	}
 	else {
-		// STRING PICTURE
+		// String Picture
 		auto& win = Main_Data::game_windows->GetWindow(picture_id);
 		const auto& wd = win.data;
 
