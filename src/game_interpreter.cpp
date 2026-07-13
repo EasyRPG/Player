@@ -5186,121 +5186,9 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 	}
 
 	auto& pictures = *Main_Data::game_pictures;
-	auto& windows = *Main_Data::game_windows;
 
 	auto isValidId = [](int id) {
 		return id > 0;
-		};
-
-	// Helper to move a single picture from src to dst
-	auto move_picture = [&](int src, int dst) {
-		// Ensure existence in vectors to avoid reference invalidation during assignments
-		int max_id = std::max(src, dst);
-		pictures.GetPicture(max_id);
-		windows.GetWindow(max_id);
-
-		auto& src_pic = pictures.GetPicture(src);
-		auto& dst_pic = pictures.GetPicture(dst);
-
-		// If source is empty, erase destination
-		if (!src_pic.Exists() && !src_pic.IsWindowAttached()) {
-			dst_pic.Erase();
-			return;
-		}
-
-		// 1. Handle Window Data (String Pictures)
-		if (src_pic.IsWindowAttached()) {
-			auto& src_win = windows.GetWindow(src);
-			auto& dst_win = windows.GetWindow(dst);
-			dst_win.data = src_win.data;
-			dst_win.data.ID = dst;
-			src_win.Erase();
-		}
-		else {
-			// If overwriting a window picture with a normal one, clear the old window data
-			// (Safe to call even if dst wasn't a window before)
-			windows.GetWindow(dst).Erase();
-		}
-
-		// 2. Handle Picture Data
-		BitmapRef src_bmp = src_pic.sprite ? src_pic.sprite->GetBitmap() : nullptr;
-		auto request_id = src_pic.request_id;
-		src_pic.request_id = nullptr; // Prevent cancellation on Erase
-
-		dst_pic.data = src_pic.data;
-		dst_pic.data.ID = dst;
-		dst_pic.request_id = request_id;
-
-		src_pic.Erase();
-
-		// 3. Refresh Sprite
-		if (dst_pic.IsWindowAttached()) {
-			// Re-attach window to generate sprite
-			bool async;
-			windows.GetWindow(dst).Refresh(async);
-		}
-		else if (!dst_pic.data.name.empty()) {
-			if (!dst_pic.sprite) dst_pic.CreateSprite();
-			if (src_bmp) {
-				dst_pic.sprite->SetBitmap(src_bmp);
-				dst_pic.sprite->OnPictureShow();
-				dst_pic.sprite->SetVisible(true);
-			}
-		}
-		else {
-			dst_pic.sprite.reset();
-		}
-		};
-
-	// Helper to swap two pictures
-	auto swap_picture = [&](int id1, int id2) {
-		// Ensure existence in vectors to avoid reference invalidation during assignments
-		int max_id = std::max(id1, id2);
-		pictures.GetPicture(max_id);
-		windows.GetWindow(max_id);
-
-		auto& p1 = pictures.GetPicture(id1);
-		auto& p2 = pictures.GetPicture(id2);
-
-		// Swap Window Data
-		auto& w1 = windows.GetWindow(id1);
-		auto& w2 = windows.GetWindow(id2);
-		std::swap(w1.data, w2.data);
-		w1.data.ID = id1;
-		w2.data.ID = id2;
-
-		// Swap Picture Data
-		BitmapRef b1 = p1.sprite ? p1.sprite->GetBitmap() : nullptr;
-		BitmapRef b2 = p2.sprite ? p2.sprite->GetBitmap() : nullptr;
-
-		using std::swap;
-		swap(p1.data, p2.data);
-		swap(p1.request_id, p2.request_id);
-
-		p1.data.ID = id1;
-		p2.data.ID = id2;
-
-		// Refresh Sprites Helper
-		auto refresh = [&](Game_Pictures::Picture& p, BitmapRef bmp) {
-			if (p.IsWindowAttached()) {
-				bool async;
-				windows.GetWindow(p.data.ID).Refresh(async);
-			}
-			else if (!p.data.name.empty()) {
-				if (!p.sprite) p.CreateSprite();
-				if (bmp) {
-					p.sprite->SetBitmap(bmp);
-					p.sprite->OnPictureShow();
-					p.sprite->SetVisible(true);
-				}
-			}
-			else {
-				p.sprite.reset();
-			}
-			};
-
-		refresh(p1, b2);
-		refresh(p2, b1);
 		};
 
 	if (operation == 0 || operation == 2) {
@@ -5346,7 +5234,7 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 			}
 
 			if (src_id != dst_id) {
-				move_picture(src_id, dst_id);
+				pictures.MovePictureId(src_id, dst_id);
 			}
 		}
 	}
@@ -5371,7 +5259,7 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 			}
 
 			if (valid1 && valid2) {
-				swap_picture(id1, id2);
+				pictures.SwapPictureId(id1, id2);
 			}
 			else if (valid1 && !valid2) {
 				// Valid swap with invalid -> erase valid

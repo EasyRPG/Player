@@ -138,6 +138,22 @@ public:
 	Picture& GetPicture(int id);
 	Picture* GetPicturePtr(int id);
 
+	/**
+	 * Moves picture data to a different ID
+	 *
+	 * @param src_id Source ID to move from
+	 * @param dst_id Destination ID to move to
+	 */
+	void MovePictureId(int src_id, int dst_id);
+
+	/**
+	 * Swaps picture data between two IDs
+	 *
+	 * @param id1 First ID to swap with
+	 * @param id2 Second ID to swap with
+	 */
+	void SwapPictureId(int id1, int id2);
+
 private:
 	void RequestPictureSprite(Picture& pic);
 	void OnPictureSpriteReady(FileRequestResult*, int id);
