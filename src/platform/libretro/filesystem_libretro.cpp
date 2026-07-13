@@ -87,7 +87,7 @@ public:
 		return traits_type::to_int_type(*gptr());
 	}
 
-	std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override {
+	std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode /*mode*/) override {
 		if (dir == std::ios_base::cur) {
 			offset += static_cast<std::streambuf::off_type>(gptr() - egptr());
 		}
