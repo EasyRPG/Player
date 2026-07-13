@@ -195,39 +195,52 @@ bool Filesystem::MakeDirectory(std::string_view path, bool follow_symlinks) cons
 		cur_path += "/";
 	}
 
-	bool first = true;
+	// Create all the subpaths
+	// This will create e.g. for /a/b/c/d:
+	// ["/a", "/a/b", "/a/b/c", "/a/b/c/d"]
+	std::vector<std::string> full_paths;
 	for (const auto& comp : components) {
 		if (comp.empty() || comp == ".") {
 			continue;
 		}
 
 		cur_path = FileFinder::MakePath(cur_path, comp);
+		full_paths.push_back(cur_path);
+	}
 
-		if (first) {
-			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
-			// Some systems do not consider them directories
-			first = false;
-			if (comp.back() == ':') {
-				continue;
-			}
+	if (full_paths.empty()) {
+		return true;
+	}
+
+	// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+	// Some systems do not consider them directories
+	if (full_paths[0].back() == ':') {
+		full_paths.erase(full_paths.begin());
+	}
+
+	// Traverse from the longest subpath and find the first one that exists
+	// e.g. assuming "/a/b" exists:
+	// First it checks "/a/b/c/d" (*), then "/a/b/c" (*), then ends at "/a/b"
+	std::vector<std::string_view> to_create;
+	for (auto it = full_paths.rbegin(); it != full_paths.rend(); ++it) {
+		const std::string& p = *it;
+
+		if (IsDirectory(p, follow_symlinks)) {
+			break;
 		}
 
-#if defined(__WIIU__)
-		if (cur_path == "fs:/vol" || cur_path == "/vol") {
-			// /vol is part of the path but checking for existance fails
-			continue;
-		}
-#endif
-
-		if (IsDirectory(cur_path, follow_symlinks)) {
-			continue;
-		} else if (Exists(cur_path)) {
+		if (Exists(p)) {
 			// Exists but not a directory
 			return false;
-		} else {
-			if (!vMakeDirectory(cur_path, follow_symlinks)) {
-				return false;
-			}
+		}
+
+		to_create.push_back(p);
+	}
+
+	// (*) These paths will be created hereZ
+	for (auto it = to_create.rbegin(); it != to_create.rend(); ++it) {
+		if (!vMakeDirectory(*it, follow_symlinks)) {
+			return false;
 		}
 	}
 
