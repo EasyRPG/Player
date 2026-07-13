@@ -104,7 +104,7 @@ bool RootFilesystem::GetDirectoryContent(std::string_view path, std::vector<Dire
 	return FilesystemForPath(path).GetDirectoryContent(path, tree);
 }
 
-bool RootFilesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
+bool RootFilesystem::vMakeDirectory(std::string_view path, bool follow_symlinks) const {
 	return FilesystemForPath(path).MakeDirectory(path, follow_symlinks);
 }
 

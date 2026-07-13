@@ -184,7 +184,57 @@ FilesystemView Filesystem::Subtree(std::string sub_path) const {
 	return FilesystemView(shared_from_this(), sub_path);
 }
 
-bool Filesystem::MakeDirectory(std::string_view, bool) const {
+bool Filesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
+	if (IsDirectory(path, follow_symlinks)) {
+		return true;
+	}
+
+	auto components = FileFinder::SplitPath(path);
+	std::string cur_path;
+	if (StartsWith(path, "/")) {
+		cur_path += "/";
+	}
+
+	bool first = true;
+	for (const auto& comp : components) {
+		if (comp.empty() || comp == ".") {
+			continue;
+		}
+
+		cur_path = FileFinder::MakePath(cur_path, comp);
+
+		if (first) {
+			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+			// Some systems do not consider them directories
+			first = false;
+			if (comp.back() == ':') {
+				continue;
+			}
+		}
+
+#if defined(__WIIU__)
+		if (cur_path == "fs:/vol" || cur_path == "/vol") {
+			// /vol is part of the path but checking for existance fails
+			continue;
+		}
+#endif
+
+		if (IsDirectory(cur_path, follow_symlinks)) {
+			continue;
+		} else if (Exists(cur_path)) {
+			// Exists but not a directory
+			return false;
+		} else {
+			if (!vMakeDirectory(cur_path, follow_symlinks)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Filesystem::vMakeDirectory(std::string_view, bool) const {
 	return false;
 }
 

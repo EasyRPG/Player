@@ -47,7 +47,7 @@ protected:
 	std::streambuf* CreateInputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
 	std::streambuf* CreateOutputStreambuffer(std::string_view path, std::ios_base::openmode mode) const override;
 	bool GetDirectoryContent(std::string_view path, std::vector<DirectoryTree::Entry>& entries) const override;
-	bool MakeDirectory(std::string_view path, bool follow_symlinks) const override;
+	bool vMakeDirectory(std::string_view path, bool follow_symlinks) const override;
 	bool IsFeatureSupported(Feature f) const override;
 	std::string Describe() const override;
 	/** @} */
