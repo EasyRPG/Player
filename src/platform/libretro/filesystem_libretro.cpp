@@ -98,7 +98,13 @@ public:
 			offset += static_cast<std::streambuf::off_type>(gptr() - egptr());
 		}
 		int cdir = Filesystem_Stream::CppSeekdirToCSeekdir(dir);
-		auto res = LibretroFilesystem::vfs.iface->seek(handle, offset, cdir == SEEK_CUR ? RETRO_VFS_SEEK_POSITION_CURRENT : cdir == SEEK_END ? RETRO_VFS_SEEK_POSITION_END : RETRO_VFS_SEEK_POSITION_START);
+		if (LibretroFilesystem::vfs.iface->seek(handle, offset, cdir == SEEK_CUR ? RETRO_VFS_SEEK_POSITION_CURRENT : cdir == SEEK_END ? RETRO_VFS_SEEK_POSITION_END : RETRO_VFS_SEEK_POSITION_START) == -1) {
+			return -1;
+		}
+		auto res = LibretroFilesystem::vfs.iface->tell(handle);
+		if (res == -1) {
+			return -1;
+		}
 		setg(buffer_start, buffer_end, buffer_end);
 		return res;
 	}
