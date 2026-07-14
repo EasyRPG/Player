@@ -124,7 +124,7 @@ void Window_BattleStatus::Refresh() {
 			int y = menu_item_height / 8 + i * menu_item_height; 
 
 			const lcf::rpg::State* state = actor->GetSignificantState();
-			bool state_changed = (state == NULL && itemStates[i].state_name.compare("") != 0 || itemStates[i].state_color != 0)
+			bool state_changed = (state == NULL && (itemStates[i].state_name.compare("") != 0 || itemStates[i].state_color != 0))
 								 || (state != NULL && (itemStates[i].state_name.compare(ToString(state->name)) != 0 || itemStates[i].state_color != state->color));
 			
 								 
