@@ -408,6 +408,9 @@ namespace Player {
 	/** Original game title, in case it was overriden by a translation. */
 	extern std::string game_title_original;
 
+	/** Command line arguments. */
+	extern std::vector<std::string> arguments;
+
 	/** Indicates whether FileFinder::Game() and Save() point to the same directory. */
 	extern bool shared_game_and_save_directory;
 
@@ -430,6 +433,18 @@ namespace Player {
 
 	/** game specific configuration */
 	extern Game_ConfigGame game_config;
+
+	struct ParentGame {
+		std::vector<std::string> arguments;
+		FilesystemView game_fs;
+		FilesystemView save_fs;
+		int exit_behavior;
+		int save_slot;
+	};
+
+	extern std::vector<ParentGame> parent_games;
+
+	void RestoreParentGame();
 
 #ifdef __EMSCRIPTEN__
 	/** Name of game emscripten uses */

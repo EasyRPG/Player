@@ -825,6 +825,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgCloneMapEvent, 10>(com);
 		case Cmd::EasyRpg_DestroyMapEvent:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgDestroyMapEvent, 2>(com);
+		case static_cast<Cmd>(2059):
+			return CmdSetup<&Game_Interpreter::CommandEasyRpgLoadGame, 4>(com);
 		default:
 			return true;
 	}
@@ -5929,6 +5931,117 @@ bool Game_Interpreter::CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand cons
 	_async_op = AsyncOp::MakeDestroyMapEvent(target_event);
 
 	return true;
+}
+
+// Helper function for parsing MS-DOS style string with quotes and arguments
+static std::vector<std::string> ParseCLIString(const std::string& cmdline) {
+	std::vector<std::string> args;
+	std::string current;
+	bool in_quotes = false;
+
+	for (char c : cmdline) {
+		if (c == '"') {
+			in_quotes = !in_quotes;
+		}
+		else if (c == ' ' && !in_quotes) {
+			if (!current.empty()) {
+				args.push_back(current);
+				current.clear();
+			}
+		}
+		else {
+			current += c;
+		}
+	}
+	if (!current.empty()) args.push_back(current);
+
+	return args;
+}
+
+bool Game_Interpreter::CommandEasyRpgLoadGame(lcf::rpg::EventCommand const& com) {
+	if (!Player::HasEasyRpgExtensions()) {
+		return true;
+	}
+
+	// [0] Exit Behavior Type (0: Constant, 1: Variable)
+	// [1] Exit Behavior Value (0: Exit, 1: Parent Title, 2: Parent Map/Savestate)
+	int exit_behavior = ValueOrVariable(com.parameters[0], com.parameters[1]);
+
+	// [2] Target String Type (0: String Literal, 1: String Var Const, 2: String Var from Var)
+	// [3] Target String Value (Ignored for 0, otherwise ID of String Var)
+	std::string cmd;
+	if (com.parameters[2] == 0) {
+		cmd = ToString(com.string);
+		cmd = PendingMessage::ApplyTextInsertingCommands(cmd, Player::escape_char, Game_Message::CommandCodeInserter);
+	}
+	else {
+		int str_var_id = ValueOrVariable(com.parameters[2] - 1, com.parameters[3]);
+		cmd = ToString(Main_Data::game_strings->Get(str_var_id));
+	}
+
+	std::vector<std::string> parsed_args = ParseCLIString(cmd);
+	if (parsed_args.empty()) {
+		Output::Warning("CommandEasyRpgLoadGame: Empty game string.");
+		return true;
+	}
+
+
+
+	std::string subgame_path = parsed_args[0];
+
+	auto new_fs = FileFinder::Game().Create(subgame_path);
+	if (!new_fs || FileFinder::GetProjectType(new_fs) > FileFinder::ProjectType::Supported) {
+		Output::Warning("CommandEasyRpgLoadGame: Invalid game path or unsupported engine: {}", subgame_path);
+		return true;
+	}
+
+	Player::ParentGame parent;
+	parent.arguments = Player::arguments;
+	parent.game_fs = FileFinder::Game();
+	parent.save_fs = FileFinder::Save();
+	parent.exit_behavior = exit_behavior;
+	parent.save_slot = 900000; // Store states in a dedicated/invisible slot
+
+	GetFrame().current_command++;
+
+	if (exit_behavior == 2) {
+		Scene_Save::Save(parent.save_fs, parent.save_slot, true);
+	}
+	Player::parent_games.push_back(parent);
+
+	std::vector<std::string> final_args = { "easyrpg-player" };
+	final_args.insert(final_args.end(), parsed_args.begin() + 1, parsed_args.end());
+	Player::arguments = final_args;
+
+	Player::load_game_id = 0;
+	for (size_t i = 1; i < parsed_args.size(); ++i) {
+		if (parsed_args[i] == "--load-game-id" && i + 1 < parsed_args.size()) {
+			Player::load_game_id = std::stoi(parsed_args[i + 1]);
+		}
+		else if (parsed_args[i] == "--test-play") {
+			Player::debug_flag = true;
+		}
+	}
+
+	// Clear active transitions to prevent dangling pointers
+	Transition::instance().Init(Transition::TransitionNone, nullptr, 0, false);
+
+	Main_Data::game_system->BgmStop();
+	Cache::ClearAll();
+	AudioSeCache::Clear();
+	MidiDecoder::Reset();
+	lcf::Data::Clear();
+
+	Player::RestoreBaseResolution();
+	Player::has_custom_resolution = false;
+
+	FileFinder::SetGameFilesystem(new_fs);
+	FileFinder::SetSaveFilesystem(FilesystemView());
+
+	Scene::PopUntil(Scene::Null);
+	Scene::Push(std::make_shared<Scene_Logo>());
+
+	return false; // Yield interpreter cleanly
 }
 
 Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
