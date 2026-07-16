@@ -78,8 +78,7 @@
     <string name="navigation_drawer_open">Открыть боковое меню</string>
     <string name="navigation_drawer_close">Закрыть боковое меню</string>
     <string name="menu">Открыть меню Android</string>
-    <string name="no_games_found_and_explanation_android_30">RPG Maker 2000/2003 игр не найдено. Положите их в подраздел папки с играми.
-\nИгры могут находится в этом разделе в виде ZIP файла. EasyRPG папка может изменять эти настройки.</string>
+    <string name="no_games_found_and_explanation_android_30">RPG Maker 2000/2003 игр не найдено. Положите их в подраздел папки с играми.\nИгры могут находится в этом разделе в виде ZIP файла. EasyRPG папка может изменять эти настройки.</string>
     <string name="easyrpg_folders">Папки EasyRPG</string>
     <string name="screen_size">Разрешение экрана:</string>
     <string name="settings_custom_soundfont">Пользовательские звуковые эффекты:</string>
@@ -95,13 +94,7 @@
     <string name="settings_resolution_widescreen">Широкоформатный (416x240, 16:9, Экспериментальный)</string>
     <string name="settings_resolution_ultrawide">Сверхшироформатный (560x240, 21:9, экспериментальный)</string>
     <string name="open_games_folder">Открыть папку с играми (games)</string>
-    <string name="how_to_use_easy_rpg_explanation_android_30">Поместите свои игры RPG Maker 2000/2003 в подкаталоги папки «games».
-\nИгры должны быть в несжатом виде или в ZIP-архиве.
-\nФайлы RAR, LZH и EXE НЕ поддерживаются.
-\n
-\nДополнительные функции (см. настройки):
-\n- Может быть предоставлен RTP (общие активы, используемые некоторыми играми).
-\n- Пользовательский звуковой шрифт для изменения того, как могут быть предоставлены звуки MIDI-музыки.</string>
+    <string name="how_to_use_easy_rpg_explanation_android_30">Поместите свои игры RPG Maker 2000/2003 в подкаталоги папки «games».\nИгры должны быть в несжатом виде или в ZIP-архиве.\nФайлы RAR, LZH и EXE НЕ поддерживаются.\n \nДополнительные функции (см. настройки):\n- Может быть предоставлен RTP (общие активы, используемые некоторыми играми).\n- Пользовательский звуковой шрифт для изменения того, как могут быть предоставлены звуки MIDI-музыки.</string>
     <string name="settings_soundfont_explanation">Поместите звуковые шрифты в формате SF2 в папку «soundfonts». Soundfonts изменяют звучание MIDI-музыки.</string>
     <string name="settings_default_soundfont">Обычный soundfount</string>
     <string name="select_the_games_folder">Выберите папку EasyRPG</string>
@@ -133,4 +126,35 @@
 \n</string>
     <string name="fast_forward_mode_hold">Удерживать</string>
     <string name="fast_forward_mode_tap">Нажимать</string>
+    <string name="view_show_game_folder">Использовать имя папки</string>
+    <string name="view_show_title_desc">Выберите, как будут называться игры</string>
+    <string name="view_show_game_title">Использовать название</string>
+    <string name="settings_fonts_explanation">Поместите шрифты в папку \"fonts\" Для достижения наилучшего результата используйте шрифты TTF или растровые шрифты (FON).</string>
+    <string name="fullscreen_mode">Полноэкранный</string>
+    <string name="settings_soundfont_found">Звуковые эффекты:</string>
+    <string name="toggle_fps">Включить отображение FPS</string>
+    <string name="game_rename">Переименовать игру</string>
+    <string name="revert">Возврат по умолчанию</string>
+    <string name="settings_input_show_ab_as_zx">Отображать кнопки A и B как Z и X</string>
+    <string name="settings_edit_layout_explanation">При редактировании макета ввода можно добавлять кнопки (например, кнопку Shift).\n Чтобы добавить кнопку, нажмите кнопку «Назад» и выберите «Добавить кнопку».</string>
+    <string name="do_want_reset">Вы действительно хотите выполнить сброс?</string>
+    <string name="settings_font_1">Первый шрифт:</string>
+    <string name="settings_font_size">Размер шрифта</string>
+    <string name="settings_font_2">Второй шрифт:</string>
+    <string name="settings_font_default">Встроенный шрифт</string>
+    <string name="reset_game">Сбросить игру</string>
+    <string name="open_fonts_folder">Открыть папку \"fonts\"</string>
+    <string name="settings_fonts_size_explanation2">Размер должен быть установлен таким образом, чтобы символ # был виден хотя бы частично. Если он не виден, текст будет обрезан в игре.</string>
+    <string name="view">Вид</string>
+    <string name="key_debug_menu">Открыть debug меню (требуется debug)</string>
+    <string name="unsupported_engine_card">$ENGINE не поддерживается</string>
+    <string name="settings_fonts_explanation2">Игра сама решает, какой шрифт использовать: первый или второй.</string>
+    <string name="unsupported_engine_explanation">В эту игру невозможно играть в EasyRPG Player, поскольку она была создана с помощью $ENGINE .\n\nEasyRPG Player разработан для поддержки только игр RPG Maker 2000 и 2003, расширение на другие движки не планируется.\n\nИнформацию о программном обеспечении, позволяющем запустить эту игру, можно найти в Play Store</string>
+    <string name="unsupported_engine_title">Не поддерживаемый движок</string>
+    <string name="settings_fonts_size_explanation">Настройка размера шрифта не имеет эффекта при использовании встроенного шрифта или некоторых растровых шрифтов.</string>
+    <string name="rtp_not_found">RTP $YEAR не найден. В играх, требующих этот RTP, будут отсутствовать ресурсы.</string>
+    <string name="font">Шрифт</string>
+    <string name="key_debug_walk_through_walls">Проход сквозь стены (требуется debug)</string>
+    <string name="open_save_folder">Открыть папку сохранений игры</string>
+    <string name="rtp_found">RTP $YEAR найдено: $NAME ( $FOUND из $MAX найденных активов)</string>
 </resources>

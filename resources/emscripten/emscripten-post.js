@@ -30,7 +30,7 @@ Module.initApi = function() {
   Module.api_private.uploadSavegame_js = function (slot) {
     Module.api_private.createInputElement_js('easyrpg_saveFile', function (file) {
       const result = new Uint8Array(file.currentTarget.result);
-      var buf = Module._malloc(result.length);
+      const buf = Module._malloc(result.length);
       Module.HEAPU8.set(result, buf);
       Module.api_private.uploadSavegameStep2(slot, buf, result.length);
       Module._free(buf);
@@ -41,12 +41,9 @@ Module.initApi = function() {
   Module.api_private.uploadSoundfont_js = function () {
     Module.api_private.createInputElement_js('easyrpg_sfFile', function (file, name) {
       const result = new Uint8Array(file.currentTarget.result);
-      //const name_buf = Module._malloc(name.length + 1);
-      //stringToUTF8(name, name_buf, name.length + 1);
       const content_buf = Module._malloc(result.length);
       Module.HEAPU8.set(result, content_buf);
       Module.api_private.uploadSoundfontStep2(name, content_buf, result.length);
-      //Module._free(name_buf);
       Module._free(content_buf);
       Module.api.refreshScene();
     });
@@ -55,12 +52,9 @@ Module.initApi = function() {
   Module.api_private.uploadFont_js = function () {
     Module.api_private.createInputElement_js('easyrpg_sfFile', function (file, name) {
       const result = new Uint8Array(file.currentTarget.result);
-      //const name_buf = Module._malloc(name.length + 1);
-      //stringToUTF8(name, name_buf, name.length + 1);
       const content_buf = Module._malloc(result.length);
       Module.HEAPU8.set(result, content_buf);
       Module.api_private.uploadFontStep2(name, content_buf, result.length);
-      //Module._free(name_buf);
       Module._free(content_buf);
       Module.api.refreshScene();
     });
@@ -70,12 +64,12 @@ Module.initApi = function() {
 // Display the nice end message forever
 Module["onExit"] = function() {
   // load image
-  let imageContent = FS.readFile("/tmp/message.png");
-  var img = document.createElement('img');
+  const imageContent = FS.readFile("/tmp/message.png");
+  const img = document.createElement('img');
   img.id = "canvas";
   img.src = URL.createObjectURL(new Blob([imageContent], {type: "image/png"}));
 
   // replace canvas
-  var cvs = document.getElementById('canvas');
+  const cvs = document.getElementById('canvas');
   cvs.parentNode.replaceChild(img, cvs);
 }

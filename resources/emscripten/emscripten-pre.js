@@ -50,7 +50,7 @@ Module = { ...Module,
  * Parses the current location query to setup a specific game
  */
 function parseArgs () {
-  const items = window.location.search.substr(1).split("&");
+  const items = window.location.search.slice(1).split("&");
   let result = [];
 
   // Store saves in subdirectory `Save`
