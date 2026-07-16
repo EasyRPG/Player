@@ -95,62 +95,60 @@ bool DynRpg::EasyRpgPlugin::Invoke(std::string_view func, dyn_arg_list args, boo
 		return EasyOput(args);
 	} else if (func == "easyrpg_add") {
 		return EasyAdd(args);
-	} else if (func == "easyrpg_set_event_frame") {
-    auto func_name = "easyrpg_set_event_frame";
-    bool okay = false;
-    int char_id;
-    std::string sequence_str;
+	}     else if (func == "easyrpg_set_event_frame") {
+        auto func_name = "easyrpg_set_event_frame";
+        bool okay = false;
+        int char_id;
+        std::string sequence_str;
 
-    std::tie(char_id, sequence_str) = DynRpg::ParseArgs<int, std::string>(func_name, args, &okay);
-    if (!okay) return true;
+        std::tie(char_id, sequence_str) = DynRpg::ParseArgs<int, std::string>(func_name, args, &okay);
+        if (!okay) return true;
 
-    Game_Character* target = interpreter->GetCharacter(char_id, func_name);
-    if (target) {
-        std::vector<int> seq;
-        auto tokens = Utils::Tokenize(sequence_str, [](char32_t c) { return c == ','; });
-        for (const auto& t : tokens) {
-            try {
-                seq.push_back(std::stoi(t));
-            } catch (...) {
-                Output::Warning("Invalid frame index in sequence: {}", t);
+        Game_Character* target = interpreter->GetCharacter(char_id, func_name);
+        if (target) {
+            std::vector<int> seq;
+            auto tokens = Utils::Tokenize(sequence_str, [](char32_t c) { return c == ','; });
+            for (const auto& t : tokens) {
+                try {
+                    seq.push_back(std::stoi(t));
+                } catch (...) {
+                    Output::Warning("Invalid frame index in sequence: {}", t);
+                }
             }
+            target->SetCustomAnimationSequence(seq);
         }
-        target->SetCustomAnimationSequence(seq);
+        return true;
     }
-    return true;
-    } else if (func == "easyrpg_get_event_frame") {
-    auto func_name = "easyrpg_get_event_frame";
-    bool okay = false;
-    int char_id, var_id;
+    else if (func == "easyrpg_event_anim_reset") {
+        auto func_name = "easyrpg_event_anim_reset";
+        bool okay = false;
+        int char_id;
 
-    // Arguments: Event ID (0=this, -1=player, >0=ID), Variable ID to store result
-    std::tie(char_id, var_id) = DynRpg::ParseArgs<int, int>(func_name, args, &okay);
-    if (!okay) return true;
+        std::tie(char_id) = DynRpg::ParseArgs<int>(func_name, args, &okay);
+        if (!okay) return true;
 
-    Game_Character* target = interpreter->GetCharacter(char_id, func_name);
-    if (target) {
-        // Get the current logical animation frame
-        int frame = target->GetAnimFrame();
-
-        // Store it in the requested variable
-        Main_Data::game_variables->Set(var_id, frame);
-
-        // Ensure the map refreshes if any event depends on this variable
-        Game_Map::SetNeedRefreshForVarChange(var_id);
+        Game_Character* target = interpreter->GetCharacter(char_id, func_name);
+        if (target) {
+            target->ClearCustomAnimationSequence();
+        }
+        return true;
     }
-    return true;
-    } else if (func == "easyrpg_event_anim_reset") {
-    bool okay = false;
-    int char_id;
-    std::tie(char_id) = DynRpg::ParseArgs<int>("easyrpg_event_anim_reset", args, &okay);
-    if (!okay) return true;
+    else if (func == "easyrpg_get_event_frame") {
+        auto func_name = "easyrpg_get_event_frame";
+        bool okay = false;
+        int char_id, var_id;
 
-    Game_Character* target = interpreter->GetCharacter(char_id, "easyrpg_event_anim_reset");
-    if (target) {
-        target->ClearCustomAnimationSequence();
+        std::tie(char_id, var_id) = DynRpg::ParseArgs<int, int>(func_name, args, &okay);
+        if (!okay) return true;
+
+        Game_Character* target = interpreter->GetCharacter(char_id, func_name);
+        if (target) {
+            int frame = target->GetAnimFrame();
+            Main_Data::game_variables->Set(var_id, frame);
+            Game_Map::SetNeedRefreshForVarChange(var_id);
+        }
+        return true;
     }
-    return true;
-}
 	return false;
 }
 

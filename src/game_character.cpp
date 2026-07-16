@@ -194,8 +194,8 @@ void Game_Character::ClearCustomAnimationSequence() {
 void Game_Character::UpdateAnimation() {
     const auto speed = Utils::Clamp(GetMoveSpeed(), 1, 6);
 
-    // CUSTOM SEQUENCE LOGIC
     if (is_custom_anim && !custom_sequence.empty()) {
+        // --- NEW CUSTOM BRANCH ---
         const auto limit = GetStationaryAnimFrames(speed);
         IncAnimCount();
         if (GetAnimCount() >= limit) {
@@ -203,45 +203,44 @@ void Game_Character::UpdateAnimation() {
             data()->anim_frame = custom_sequence[sequence_index];
             SetAnimCount(0);
         }
-        return;
-    }
+    } else {
+        // --- ORIGINAL ENGINE BRANCH ---
+        if (IsSpinning()) {
+            const auto limit = GetSpinAnimFrames(speed);
 
-    // ORIGINAL ENGINE LOGIC
-    if (IsSpinning()) {
-        const auto limit = GetSpinAnimFrames(speed);
+            IncAnimCount();
 
-        IncAnimCount();
-
-        if (GetAnimCount() >= limit) {
-            SetFacing((GetFacing() + 1) % 4);
-            SetAnimCount(0);
+            if (GetAnimCount() >= limit) {
+                SetFacing((GetFacing() + 1) % 4);
+                SetAnimCount(0);
+            }
+            return;
         }
-        return;
-    }
 
-    if (IsAnimPaused() || IsJumping()) {
-        ResetAnimation();
-        return;
-    }
+        if (IsAnimPaused() || IsJumping()) {
+            ResetAnimation();
+            return;
+        }
 
-    if (!IsAnimated()) {
-        return;
-    }
+        if (!IsAnimated()) {
+            return;
+        }
 
-    const auto stationary_limit = GetStationaryAnimFrames(speed);
-    const auto continuous_limit = GetContinuousAnimFrames(speed);
+        const auto stationary_limit = GetStationaryAnimFrames(speed);
+        const auto continuous_limit = GetContinuousAnimFrames(speed);
 
-    if (IsContinuous()
-            || GetStopCount() == 0
-            || data()->anim_frame == lcf::rpg::EventPage::Frame_left || data()->anim_frame == lcf::rpg::EventPage::Frame_right
-            || GetAnimCount() < stationary_limit - 1) {
-        IncAnimCount();
-    }
+        if (IsContinuous()
+                || GetStopCount() == 0
+                || data()->anim_frame == lcf::rpg::EventPage::Frame_left || data()->anim_frame == lcf::rpg::EventPage::Frame_right
+                || GetAnimCount() < stationary_limit - 1) {
+            IncAnimCount();
+        }
 
-    if (GetAnimCount() >= continuous_limit
-            || (GetStopCount() == 0 && GetAnimCount() >= stationary_limit)) {
-        IncAnimFrame();
-        return;
+        if (GetAnimCount() >= continuous_limit
+                || (GetStopCount() == 0 && GetAnimCount() >= stationary_limit)) {
+            IncAnimFrame();
+            return;
+        }
     }
 }
 
