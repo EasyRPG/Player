@@ -22,15 +22,15 @@
 #include "game_dynrpg.h"
 
 namespace DynRpg {
-    class ParticleV1 : public DynRpgPlugin {
-    public:
-        ParticleV1(Game_DynRpg& instance);
-        ~ParticleV1() override;
+	class ParticleV1 : public DynRpgPlugin {
+	public:
+		ParticleV1(Game_DynRpg& instance);
+		~ParticleV1() override;
 
-        bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
-        void Update() override;
-        void OnMapChange();
-    };
+		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
+		void Update() override;
+		void OnMapChange();
+	};
 }
 
 #endif
