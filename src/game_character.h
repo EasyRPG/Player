@@ -809,12 +809,36 @@ public:
 	int GetDistanceYfromCharacter(const Game_Character& target) const;
 
 	/**
+	 * Calculates the relative tile offsets based on filename tags.
+	 * min_dx/max_dx handle horizontal ({_#}) and min_dy/max_dy handle vertical ({!#}).
+	 */
+	void GetTileOffsets(int& min_dx, int& max_dx, int& min_dy, int& max_dy) const;
+
+	/** Returns the total width of the character in 16px tiles. */
+	int GetTileWidth() const;
+
+	/** Returns the total height of the character in 16px tiles. */
+	int GetTileHeight() const;
+
+	/** Returns the collision radius in units (1.0 = 16px) for pixel movement. */
+	float GetHitboxRadius() const;
+
+	/** Returns the absolute X center of the expanded hitbox in logical units. */
+	float GetHitboxCenterX() const;
+
+	/** Returns the absolute Y center of the expanded hitbox in logical units. */
+	float GetHitboxCenterY() const;
+
+	/**
 	 * Tests if the character is currently on the tile at x/y or moving
 	 * towards it.
 	 *
 	 * @param x X tile position
 	 * @param y Y tile position
 	 * @return If on tile or moving towards
+	 * Checks if the character footprint overlaps the given tile coordinates.
+	 * Overrides the standard 1-to-1 coordinate check.
+
 	 */
 	virtual bool IsInPosition(int x, int y) const;
 

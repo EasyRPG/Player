@@ -359,34 +359,77 @@ bool Game_Event::CheckEventCollision() {
 	if (GetTrigger() == lcf::rpg::EventPage::Trigger_collision
 			&& GetLayer() != lcf::rpg::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
-			&& !Game_Map::GetInterpreter().IsRunning()
-			&& Main_Data::game_player->GetX() == GetX()
-			&& Main_Data::game_player->GetY() == GetY())
+			&& !Game_Map::GetInterpreter().IsRunning())
 	{
-		ScheduleForegroundExecution(false, true);
-		SetStopCount(0);
-		return true;
+		int x1, x2, y1, y2;
+		GetTileOffsets(x1, x2, y1, y2);
+		bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+		if (!is_expanded) {
+			// Standard logic
+			if (Main_Data::game_player->GetX() == GetX() && Main_Data::game_player->GetY() == GetY()) {
+				ScheduleForegroundExecution(false, true);
+				SetStopCount(0);
+				return true;
+			}
+			return false;
+		}
+
+		for (int dy = y1; dy <= y2; ++dy) {
+			for (int dx = x1; dx <= x2; ++dx) {
+				if (Main_Data::game_player->IsInPosition(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy))) {
+					ScheduleForegroundExecution(false, true);
+					SetStopCount(0);
+					return true;
+				}
+			}
+		}
 	}
 	return false;
 }
 
 void Game_Event::CheckCollisonOnMoveFailure() {
-	if (Game_Map::GetInterpreter().IsRunning()) {
+	if (Game_Map::GetInterpreter().IsRunning()) return;
+
+	int x1, x2, y1, y2;
+	GetTileOffsets(x1, x2, y1, y2);
+	bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+	if (!is_expanded) {
+		// Standard logic
+		int fx = Game_Map::XwithDirection(GetX(), GetDirection());
+		int fy = Game_Map::YwithDirection(GetY(), GetDirection());
+		if (Main_Data::game_player->GetX() == fx && Main_Data::game_player->GetY() == fy &&
+			GetLayer() == lcf::rpg::EventPage::Layers_same && GetTrigger() == lcf::rpg::EventPage::Trigger_collision) {
+			ScheduleForegroundExecution(false, true);
+			SetStopCount(0);
+		}
 		return;
 	}
 
-	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-
-	if (Main_Data::game_player->GetX() == front_x
-			&& Main_Data::game_player->GetY() == front_y
-			&& GetLayer() == lcf::rpg::EventPage::Layers_same
-			&& GetTrigger() == lcf::rpg::EventPage::Trigger_collision)
-	{
-		ScheduleForegroundExecution(false, true);
-		// Events with trigger collision and layer same always reset their
-		// stop_count when they fail movement to a tile that the player inhabits.
-		SetStopCount(0);
+	int dir = GetDirection();
+	if (dir == Up || dir == Down) {
+		int target_dy = (dir == Up) ? y1 : y2;
+		for (int dx = x1; dx <= x2; ++dx) {
+			int fx = Game_Map::RoundX(GetX() + dx);
+			int fy = Game_Map::RoundY(Game_Map::YwithDirection(GetY() + target_dy, dir));
+			if (Main_Data::game_player->IsInPosition(fx, fy) && GetLayer() == lcf::rpg::EventPage::Layers_same && GetTrigger() == lcf::rpg::EventPage::Trigger_collision) {
+				ScheduleForegroundExecution(false, true);
+				SetStopCount(0);
+				return;
+			}
+		}
+	} else {
+		int target_dx = (dir == Left) ? x1 : x2;
+		for (int dy = y1; dy <= y2; ++dy) {
+			int fx = Game_Map::RoundX(Game_Map::XwithDirection(GetX() + target_dx, dir));
+			int fy = Game_Map::RoundY(GetY() + dy);
+			if (Main_Data::game_player->IsInPosition(fx, fy) && GetLayer() == lcf::rpg::EventPage::Layers_same && GetTrigger() == lcf::rpg::EventPage::Trigger_collision) {
+				ScheduleForegroundExecution(false, true);
+				SetStopCount(0);
+				return;
+			}
+		}
 	}
 }
 
