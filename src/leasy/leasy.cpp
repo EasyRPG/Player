@@ -1,3 +1,29 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A
+ * 
+ * **********************************************************************/
+
+#warning TODO: leasy.errors[] ~ classes that make errors better. (can unpromote them as warnings etc)
+#warning TODO: leasy.settings?
+#warning TODO: leasy.globals?
+
 #include <chrono>
 #include <string>
 #include <fstream>
@@ -7,30 +33,29 @@
 #include "ldebug.hpp"
 #include "ul2/state.hpp"
 #include "ily3/ily3.hpp"
-#include "libs2/image/image.hpp"
 #include "diag5/here.h"
 
 #include "ui/window.hpp"
 #include "ui/winstream.hpp"
+
+#include "metadata/namespace.hpp"
+#include "metadata/json.hpp"
+
+#include "signals.hpp"
 
 namespace leasy {
   namespace ily3 {
     extern std::vector<std::shared_ptr<Drawable>> leasy_draw_queue;
   }
 
-  namespace user9::share {
-    extern std::unordered_map<unsigned long long, std::weak_ptr<std::function<void(double)>>> holdupdates;
-    extern std::unordered_map<unsigned long long, std::weak_ptr<std::function<void(void)>>> holddraws;
-    extern std::vector<std::function<void(void)>> atexitholds;
-    extern std::vector<std::function<void(double)>> holdnextupdate;
-    extern std::vector<std::function<void(void)>> holdnextdraw;
-  }
+  Signal<> ready   = {};
+  Signal<double> process = {};
+  Signal<Bitmap*> draw = {};
 
   namespace app {
     static bool should_exit = false;
     static auto last = std::chrono::high_resolution_clock::now();
     static bool leasy_enabled = true;
-    ui3::GraphicalConsole console = ui3::GraphicalConsole(ily3::make_twin<int>(0, 5));
 
     bool exit_requested() {
       return should_exit;
@@ -42,10 +67,10 @@ namespace leasy {
 
     void ready(void) {
       if (! leasy_enabled) return;
-      // Use a chrono + ... so i can bench start-time ?
-      // Still ain't done
-
+      leasy::ready.emit();
       ily3::global::state.call<void>("leasy.User.ready");
+      std::ofstream of("dump.json");
+      metadata::json::write(of, metadata::EasyRPG().dump());
     }
     
     void process() {
@@ -53,27 +78,14 @@ namespace leasy {
       auto now = std::chrono::high_resolution_clock::now();
       double delta = std::chrono::duration<double>(now - last).count();
 
-      ily3::global::state.call<void>("leasy.User.process", delta);
-
-      std::vector<unsigned long long> ids {};
-      for (const auto &[id, func]: user9::share::holdupdates) {
-        if (! func.expired()) {
-          (*func.lock())(delta);
-        } else ids.push_back(id);
-      }
-
-      for (const auto &func: user9::share::holdnextupdate) {
-        func(delta);
-      }
-
-      user9::share::holdnextupdate.clear();
-      for (const auto &id: ids) user9::share::holdupdates.erase(id);
-
-      last = now;
+      leasy::process.emit(delta);
+      ily3::global::state.call<void>("leasy.User.process", delta);      
     }
 
     void draw(Bitmap *map) {
       if (! leasy_enabled) return;
+
+      leasy::draw.emit(map);
       ily3::global::state.call<void>("leasy.User.draw");
       
       for (const auto &drawable: ily3::leasy_draw_queue) {
@@ -81,25 +93,6 @@ namespace leasy {
       }
 
       ui3::update_windows();
-
-      std::vector<unsigned long long> ids {};
-      for (const auto &[id, func]: user9::share::holddraws) {
-        if (! func.expired()) {
-          (*func.lock())();
-        } else ids.push_back(id);
-      }
-
-      for (const auto &func: user9::share::holdnextdraw) {
-        func();
-      }
-
-      user9::share::holdnextdraw.clear();
-      for (const auto &id: ids) user9::share::holddraws.erase(id);
-
-      std::vector<std::shared_ptr<Drawable>> queue;
-      queue.reserve(32);
-      ily3::leasy_draw_queue.swap(queue);
-      console.Draw(*map);
     }
 
     void exit(void) { }

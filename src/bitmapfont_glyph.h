@@ -1,3 +1,4 @@
+#pragma once
 #ifndef EP_BITMAPFONT_GLYPH_H
 #define EP_BITMAPFONT_GLYPH_H
 

@@ -1,3 +1,4 @@
+#pragma once
 /*
 Copyright (c) 2003-2006 yuno
 All rights reserved.

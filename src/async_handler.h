@@ -1,3 +1,5 @@
+#pragma once
+#undef signbit
 /*
  * This file is part of EasyRPG Player.
  *

@@ -1,11 +1,40 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A@wys-prog.https://github.com/wys-prog/leasy
+ * 
+ * **********************************************************************/
+
+
 #pragma once
 
 #include <memory>
 
 #include "ily3/ily3.hpp"
+#include "signals.hpp"
 #include "baseui.h"
+#include "dec.h"
 
 namespace leasy {
+  extern Signal<> ready;
+  extern Signal<double> process;
+  extern Signal<Bitmap*> draw;
+
   namespace app {
     /** 
      * @brief This returns true only if an internal error happens, or a command invokes

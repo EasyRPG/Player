@@ -1,3 +1,25 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A@wys-prog.https://github.com/wys-prog/leasy
+ * 
+ * **********************************************************************/
+
 #ifndef __FUCKING_HERE_SHIT_H__
 #define __FUCKING_HERE_SHIT_H__ // I think nobody would define a macro like that one ... Like honestly
 

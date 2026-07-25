@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of EasyRPG Player.
  *

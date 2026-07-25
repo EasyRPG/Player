@@ -1,3 +1,4 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8.1.1
@@ -59,18 +60,7 @@ option(BUILD_SHARED_LIBS "Build shared easyrpg_libretro core" ON)
 
 option(CMAKE_FIND_PACKAGE_PREFER_CONFIG "Prefer config files over bundled FindXXX files. Set this to OFF when configuration fails and report a bug." ON)
 
-# add_compile_options(
-# 	${WARNING_FLAGS}
-# 	${DEBUG_FLAGS}
-# 	${SANITIZER_FLAGS}
-# )
-# 
-# add_link_options(
-# 	${SANITIZER_FLAGS}
-# )
-
 file(GLOB_RECURSE LEASY_SRC CONFIGURE_DEPENDS
-	src/leasy/lua/*.c
 	src/leasy/**/*.cpp
 	src/leasy/**/*.c
 	src/leasy/**/*.h
@@ -527,6 +517,7 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_varlist.cpp
 	src/window_varlist.h
 	${LEASY_SRC}
+	src/leasy/dec.h
 )
 
 # These are actually unused when building in CMake

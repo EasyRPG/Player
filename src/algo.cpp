@@ -347,3 +347,32 @@ int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon) {
 }
 
 } // namespace Algo
+
+#include "leasy/metadata/namespace.hpp"
+
+namespace leasy::metadata::builtin {
+	typedef bool(*IsRowAdjusted_OV1)(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense);
+  typedef bool(*IsRowAdjusted_OV2)(const Game_Battler& battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy);
+
+	auto foooo = ([]() -> bool {
+		auto algo = EasyRPG().sub("Algo")
+		.function("IsRowAdjusted", (IsRowAdjusted_OV1)Algo::IsRowAdjusted, (IsRowAdjusted_OV2)Algo::IsRowAdjusted)
+		.function("VarianceAdjustEffect", Algo::VarianceAdjustEffect)
+		.function("CalcNormalAttackToHit", Algo::CalcNormalAttackToHit)
+		.function("CalcSkillToHit", Algo::CalcSkillToHit)
+		.function("CalcCriticalHitChance", Algo::CalcCriticalHitChance)
+		.function("AdjustDamageForDefend", Algo::AdjustDamageForDefend)
+		.function("CalcNormalAttackEffect", Algo::CalcNormalAttackEffect)
+		.function("CalcSkillEffect", Algo::CalcSkillEffect)
+		.function("CalcSelfDestructEffect", Algo::CalcSelfDestructEffect)
+		.function("CalcSkillCost", Algo::CalcSkillCost)
+		.function("CalcSkillHpCost", Algo::CalcSkillHpCost)
+		.function("IsSkillUsable", Algo::IsSkillUsable)
+		.function("IsNormalOrSubskill", Algo::IsNormalOrSubskill)
+		.function("SkillTargetsEnemies", Algo::SkillTargetsEnemies)
+		.function("SkillTargetsAllies", Algo::SkillTargetsAllies)
+		.function("SkillTargetsOne", Algo::SkillTargetsOne)
+		.function("GetNumberOfAttacks", Algo::GetNumberOfAttacks);
+		return false;
+	}());
+}

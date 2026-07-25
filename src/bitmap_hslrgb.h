@@ -1,3 +1,4 @@
+#pragma once
 
 static inline void RGB_to_HSL(const uint8_t& r, const uint8_t& g, const uint8_t& b,
 							  int &h, int &s, int &l)

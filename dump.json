@@ -1,0 +1,553 @@
+{
+  "name": "EasyRPGPlayer",
+  "functions": {},
+  "classes": {},
+  "namespaces": {
+    "Algo": {
+      "namespaces": {},
+      "classes": {},
+      "functions": {
+        "IsRowAdjusted": {
+          "name": "IsRowAdjusted",
+          "overloads": [
+            {
+              "return": {
+                "size": 0,
+                "hash": 6628506493,
+                "implname": "b",
+                "name": "bool"
+              },
+              "arguments": [
+                {
+                  "size": 0,
+                  "hash": 4175493968664669524,
+                  "implname": "N3lcf3rpg9SaveActor7RowTypeE",
+                  "name": "lcf::rpg::SaveActor::RowType"
+                },
+                {
+                  "size": 0,
+                  "hash": 1485114547661566828,
+                  "implname": "N3lcf3rpg6System15BattleConditionE",
+                  "name": "lcf::rpg::System::BattleCondition"
+                },
+                {
+                  "size": 0,
+                  "hash": 6628506493,
+                  "implname": "b",
+                  "name": "bool"
+                }
+              ],
+              "name": "IsRowAdjusted"
+            },
+            {
+              "return": {
+                "size": 0,
+                "hash": 6628506493,
+                "implname": "b",
+                "name": "bool"
+              },
+              "arguments": [
+                {
+                  "size": 0,
+                  "hash": 4340839793,
+                  "implname": "12Game_Battler",
+                  "name": "const Game_Battler &"
+                },
+                {
+                  "size": 0,
+                  "hash": 1485114547661566828,
+                  "implname": "N3lcf3rpg6System15BattleConditionE",
+                  "name": "lcf::rpg::System::BattleCondition"
+                },
+                {
+                  "size": 0,
+                  "hash": 6628506493,
+                  "implname": "b",
+                  "name": "bool"
+                },
+                {
+                  "size": 0,
+                  "hash": 6628506493,
+                  "implname": "b",
+                  "name": "bool"
+                }
+              ],
+              "name": "IsRowAdjusted"
+            }
+          ]
+        },
+        "SkillTargetsEnemies": {
+          "name": "SkillTargetsEnemies",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506493,
+            "implname": "b",
+            "name": "bool"
+          }
+        },
+        "CalcSelfDestructEffect": {
+          "name": "CalcSelfDestructEffect",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcSkillToHit": {
+          "name": "CalcSkillToHit",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            },
+            {
+              "size": 0,
+              "hash": 1485114547661566828,
+              "implname": "N3lcf3rpg6System15BattleConditionE",
+              "name": "lcf::rpg::System::BattleCondition"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcCriticalHitChance": {
+          "name": "CalcCriticalHitChance",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 843925990230665840,
+              "implname": "N12Game_Battler6WeaponE",
+              "name": "Game_Battler::Weapon"
+            },
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcNormalAttackToHit": {
+          "name": "CalcNormalAttackToHit",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 843925990230665840,
+              "implname": "N12Game_Battler6WeaponE",
+              "name": "Game_Battler::Weapon"
+            },
+            {
+              "size": 0,
+              "hash": 1485114547661566828,
+              "implname": "N3lcf3rpg6System15BattleConditionE",
+              "name": "lcf::rpg::System::BattleCondition"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcNormalAttackEffect": {
+          "name": "CalcNormalAttackEffect",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 843925990230665840,
+              "implname": "N12Game_Battler6WeaponE",
+              "name": "Game_Battler::Weapon"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            },
+            {
+              "size": 0,
+              "hash": 1485114547661566828,
+              "implname": "N3lcf3rpg6System15BattleConditionE",
+              "name": "lcf::rpg::System::BattleCondition"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcSkillCost": {
+          "name": "CalcSkillCost",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            },
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "VarianceAdjustEffect": {
+          "name": "VarianceAdjustEffect",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            },
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcSkillHpCost": {
+          "name": "CalcSkillHpCost",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            },
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "AdjustDamageForDefend": {
+          "name": "AdjustDamageForDefend",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "CalcSkillEffect": {
+          "name": "CalcSkillEffect",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4340839793,
+              "implname": "12Game_Battler",
+              "name": "const Game_Battler &"
+            },
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            },
+            {
+              "size": 0,
+              "hash": 1485114547661566828,
+              "implname": "N3lcf3rpg6System15BattleConditionE",
+              "name": "lcf::rpg::System::BattleCondition"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        },
+        "IsSkillUsable": {
+          "name": "IsSkillUsable",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            },
+            {
+              "size": 0,
+              "hash": 6628506493,
+              "implname": "b",
+              "name": "bool"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506493,
+            "implname": "b",
+            "name": "bool"
+          }
+        },
+        "SkillTargetsOne": {
+          "name": "SkillTargetsOne",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506493,
+            "implname": "b",
+            "name": "bool"
+          }
+        },
+        "IsNormalOrSubskill": {
+          "name": "IsNormalOrSubskill",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506493,
+            "implname": "b",
+            "name": "bool"
+          }
+        },
+        "SkillTargetsAllies": {
+          "name": "SkillTargetsAllies",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 4420775708918966150,
+              "implname": "N3lcf3rpg5SkillE",
+              "name": "const lcf::rpg::Skill &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506493,
+            "implname": "b",
+            "name": "bool"
+          }
+        },
+        "GetNumberOfAttacks": {
+          "name": "GetNumberOfAttacks",
+          "arguments": [
+            {
+              "size": 0,
+              "hash": 6628506556,
+              "implname": "i",
+              "name": "int"
+            },
+            {
+              "size": 0,
+              "hash": 13549776772121148003,
+              "implname": "N3lcf3rpg4ItemE",
+              "name": "const lcf::rpg::Item &"
+            }
+          ],
+          "return": {
+            "size": 0,
+            "hash": 6628506556,
+            "implname": "i",
+            "name": "int"
+          }
+        }
+      },
+      "name": "Algo"
+    }
+  }
+}

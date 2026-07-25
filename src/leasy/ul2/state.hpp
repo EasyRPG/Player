@@ -1,8 +1,31 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A
+ * 
+ * **********************************************************************/
+
 #pragma once
 
 #include <string>
-#include <sstream>
 #include <vector>
+#include <sstream>
+#include <functional>
 #include <type_traits>
 
 #include "../lua/lua.hpp"
@@ -12,7 +35,24 @@
 #include "dispatcher.hpp"
 
 namespace leasy::ul2 {
-  
+  struct function_holder { // damnit, it's for yk destroying idk what func when lua can't blabla
+    std::function<int(lua_State*)> fn;  // I knew lua was boring sometimes... Anyways, it's cute..
+  };
+
+  static int function_dispatch(lua_State* L) {
+    auto* holder = static_cast<function_holder*>(
+        lua_touserdata(L, lua_upvalueindex(1))
+    );
+
+    return holder->fn(L);
+  }
+
+  static int function_gc(lua_State* L) {
+    auto* holder = static_cast<function_holder*>(lua_touserdata(L, 1));
+    holder->~function_holder();
+    return 0;
+  }
+
   /**
    * @class lstate
    * @brief Lua VM babysitter.
@@ -21,11 +61,9 @@ namespace leasy::ul2 {
    * (you still can, just slightly harder now).
    * If something breaks, it throws. Aggressively.
    */
-  class lstate {
-    private:
+  class lstate final {
+  private:
     lua_State *L;
-
-    private:
     
     /**
      * @brief Splits a dotted string into pieces.
@@ -109,6 +147,13 @@ namespace leasy::ul2 {
      */
     inline lstate(bool libs = true) : L(luaL_newstate()) {
       if (libs) luaL_openlibs(L);
+
+      luaL_newmetatable(L, "__leasy_function");
+
+      lua_pushcfunction(L, function_gc);
+      lua_setfield(L, -2, "__gc");
+
+      lua_pop(L, 1);
     }
 
     /**
@@ -186,7 +231,65 @@ namespace leasy::ul2 {
       lua_pop(L, 1);
     }
 
+    /**
+     * @brief basically this binds a std::function<int(lua_State*)> to lua. Magic. Wow.
+     */
+    inline void bind2(const std::string& name, std::function<int(lua_State*)> fn) {
+      auto parts = split(name);
+
+      if (parts.size() > 1) {
+        push_path(parts, true);
+
+        if (!lua_istable(L, -1)) ulthrow("Target parent is not a table (bind2)");
+      }
+
+      auto* holder = static_cast<function_holder*>(
+        lua_newuserdatauv(L, sizeof(function_holder), 0)
+      );
+      new (holder) function_holder{ std::move(fn) };
+
+      luaL_getmetatable(L, "__leasy_function");
+      lua_setmetatable(L, -2);
+
+      lua_pushcclosure(L, function_dispatch, 1);
+
+      if (parts.size() == 1) {
+        lua_setglobal(L, parts[0].c_str());
+      } else {
+        lua_setfield(L, -2, parts.back().c_str());
+        lua_pop(L, 1); // pop parent table
+      }
+    }
+
+    template <typename F>
+    static std::function<int(lua_State*)> bridge(const F& f) {
+      using traits = function_traits<std::decay_t<F>>;
+      return std::function<int(lua_State*)>([&f](lua_State *L) mutable -> int {
+        return invoke_stdfn<
+          typename traits::return_type,
+          F, 
+          typename traits::args_tuple
+        >(f, L, std::make_index_sequence<traits::arity>{});
+      });
+    }
+
+    template<typename F>
+    void bind(const std::string& name, F&& fn) {
+      bind2(name, bridge(fn));
+    }
+
   private:
+    template <typename R, typename Callable, typename Tuple, size_t... I>
+    static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {
+      if constexpr (std::is_void_v<R>) {
+        std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
+        return 0;
+      } else {
+        auto r = std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
+        lua_stack<R>::push(L, r);
+        return 1;
+      }
+    }
 
     /**
      * @brief Push helper (generic version).
@@ -293,4 +396,50 @@ namespace leasy::ul2 {
     }
   };
 
+
+  template<typename... Fs>
+  class overload
+  {
+  public:
+    explicit overload(Fs... f)
+    : funcs(std::move(f)...)
+    {
+    }
+
+    int operator()(lua_State* L) const
+    {
+      return call<0>(L);
+    }
+
+    int impl(lua_State* L) const {
+      return call<0>(L);
+    }
+
+  protected:
+    std::tuple<Fs...> funcs;
+
+    template<std::size_t I>
+    int call(lua_State* L) const
+    {
+      if constexpr (I == sizeof...(Fs)) {
+        return luaL_error(L, "No matching overload.");
+      } else {
+        using fn_t = std::tuple_element_t<I, std::tuple<Fs...>>;
+
+        if (matches<fn_t>(L)) {
+          return lstate::bridge(std::get<I>(funcs))(L);
+        }
+
+        return call<I + 1>(L);
+      }
+    }
+  };
+
+  template <typename... Fs>
+  inline std::function<int(lua_State*)> make_overload(Fs... f) {
+    overload<Fs...> ov(f...);
+    return [ov = std::move(ov)](lua_State *L) -> int {
+      return ov.impl(L);
+    };
+  }
 }

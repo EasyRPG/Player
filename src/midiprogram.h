@@ -1,3 +1,5 @@
+#ifdef LEASY_REFLECTION_EXCLUDER
+#else
 p.ALG = 4, p.FB = 3, p.LFO = 0,
 p.op1.AR = 26, p.op1.DR = 10, p.op1.SR = 1, p.op1.RR = 0, p.op1.SL = 0, p.op1.TL = 2, p.op1.KS = 0, p.op1.ML = 1, p.op1.DT = 3, p.op1.AMS = 0,
 p.op2.AR = 26, p.op2.DR = 10, p.op2.SR = 2, p.op2.RR = 7, p.op2.SL = 2, p.op2.TL = 0, p.op2.KS = 0, p.op2.ML = 2, p.op2.DT = 3, p.op2.AMS = 0,
@@ -892,3 +894,4 @@ p.op2.AR = 31, p.op2.DR = 24, p.op2.SR = 13, p.op2.RR = 6, p.op2.SL = 0, p.op2.T
 p.op3.AR = 31, p.op3.DR = 24, p.op3.SR = 13, p.op3.RR = 6, p.op3.SL = 0, p.op3.TL = 0, p.op3.KS = 0, p.op3.ML = 15, p.op3.DT = 0, p.op3.AMS = 0,
 p.op4.AR = 31, p.op4.DR = 31, p.op4.SR = 31, p.op4.RR = 15, p.op4.SL = 0, p.op4.TL = 127, p.op4.KS = 0, p.op4.ML = 15, p.op4.DT = 0, p.op4.AMS = 0;
 note_factory->set_drum_program(81, p);
+#endif

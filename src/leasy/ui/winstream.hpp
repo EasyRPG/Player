@@ -1,13 +1,35 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A
+ * 
+ * **********************************************************************/
+
 #pragma once
 
 #include <string>
 #include <chrono>
 
-#include "../lio.hpp"
 #include "baseui.h"
 #include "bitmap.h"
 #include "drawable.h"
-#include "../user9/cycles.hpp"
+#include "../lio.hpp"
+#include "../leasy.hpp"
 #include "../ily3/basetypes.hpp"
 #include "../ily3/math.hpp"
 
@@ -72,15 +94,12 @@ namespace leasy::ui3 {
   };
 
   class gui_sink final : public ios::sink, public GraphicalConsole {
-  private:
-    std::shared_ptr<std::function<void(Bitmap &)>> hold;
-
   public:
     inline gui_sink(const ily3::twin<int>& st)
       : GraphicalConsole(st) {
       // Self-subscribe haha
-      hold = user9::ondraw([this](Bitmap &map) -> void {
-        this->Draw(map);
+      leasy::draw.connect([this](Bitmap* map) {
+        this->Draw(*map);
       });
     }
 

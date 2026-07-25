@@ -1,3 +1,4 @@
+#pragma once
 /*
   Contains default graphics for RPG Maker assets 
 */

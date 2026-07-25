@@ -155,3 +155,7 @@ EasyRPG Player.app/
 docs/html/
 docs/latex/
 doxygen-awesome-css/
+__pycache__/
+# tools/
+dump/
+tests/
